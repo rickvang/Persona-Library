@@ -24,6 +24,7 @@
       background: var(--paper);
       font-synthesis: none;
     }
+    html { scroll-behavior: smooth; }
     * { box-sizing: border-box; }
     body { margin: 0; background: var(--paper); }
     button, input { font: inherit; }
@@ -53,14 +54,14 @@
     #search { width: 100%; padding: 14px 18px 14px 44px; border: 1px solid var(--line); border-radius: 12px; outline: none; background: var(--card); color: var(--ink); }
     #search:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(16,24,39,.1); }
     .count { color: var(--ink-soft); font-size: 14px; }
-    .library-layout { display: grid; grid-template-columns: 210px 1fr; gap: 28px; align-items: start; }
+    .library-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 28px; align-items: start; }
     .filters { position: sticky; top: 18px; }
     .filter-label { margin: 0 0 10px; color: var(--ink-soft); font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
     .filter-group { margin-bottom: 24px; }
     .filter-btn { display: block; width: 100%; padding: 9px 11px; border: 0; border-radius: 8px; text-align: left; color: var(--ink-soft); background: transparent; }
     .filter-btn:hover, .filter-btn.active { color: var(--ink); background: #e5e8e2; font-weight: 700; }
     .filter-btn .pill-count { float: right; color: #82909d; font-size: 12px; font-weight: 500; }
-    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; min-width: 0; }
     .persona-card { min-height: 320px; display: flex; flex-direction: column; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); transition: transform .18s ease, box-shadow .18s ease; }
     .persona-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(16,24,39,.08); }
     .card-top { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
@@ -107,6 +108,15 @@
       .filter-btn { width: auto; } .grid { grid-template-columns: 1fr; } .persona-card { min-height: 285px; }
       .method { display: block; margin-top: 50px; } .method p { margin-top: 12px; } .method-steps { grid-template-columns: 1fr; margin-top: 22px; }
       .detail-grid { grid-template-columns: 1fr; gap: 18px; }
+    }
+    @media (max-width: 430px) {
+      h1 { font-size: 37px; }
+      .intro-copy { font-size: 16px; }
+      .stats { display: grid; grid-template-columns: 1fr 1fr; }
+      .stat:last-child { grid-column: 1 / -1; }
+      .persona-card { padding: 17px; }
+      .drawer-head, .drawer-body { padding-left: 20px; padding-right: 20px; }
+      .drawer-head h2 { font-size: 27px; }
     }
   </style>
 </head>
