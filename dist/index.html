@@ -103,9 +103,10 @@
       .topbar { padding: 16px 20px; } .topnav { display: none; }
       .intro { padding: 36px 20px 30px; } .intro-row { display: block; } .stats { justify-content: start; margin-top: 22px; }
       .workspace { padding: 24px 20px 54px; } .toolbar { display: block; } .count { display: block; margin-top: 10px; }
-      .library-layout { display: block; } .filters { position: static; display: flex; gap: 12px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 2px; }
-      .filter-group { display: flex; gap: 5px; align-items: center; margin: 0; white-space: nowrap; } .filter-label { display: none; }
-      .filter-btn { width: auto; } .grid { grid-template-columns: 1fr; } .persona-card { min-height: 285px; }
+      .library-layout { display: block; } .filters { position: static; display: grid; gap: 12px; overflow: visible; margin-bottom: 20px; padding-bottom: 2px; }
+      .filter-group { display: flex; gap: 5px; align-items: center; margin: 0; padding-bottom: 3px; overflow-x: auto; white-space: nowrap; scrollbar-width: thin; }
+      .filter-label { display: block; flex: 0 0 82px; margin: 0; align-self: center; font-size: 11px; }
+      .filter-btn { width: auto; flex: 0 0 auto; } .grid { grid-template-columns: 1fr; } .persona-card { min-height: 285px; }
       .method { display: block; margin-top: 50px; } .method p { margin-top: 12px; } .method-steps { grid-template-columns: 1fr; margin-top: 22px; }
       .detail-grid { grid-template-columns: 1fr; gap: 18px; }
     }
