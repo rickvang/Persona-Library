@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A practical library of product personas for sharper decisions." />
+  <title>Persona Library — Field Notes</title>
+  <style>
+    :root {
+      --ink: #101827;
+      --ink-soft: #526174;
+      --night: #08111f;
+      --night-2: #101d30;
+      --paper: #f5f4ef;
+      --card: #fffefa;
+      --line: #d8dcd6;
+      --coral: #ff7c62;
+      --mint: #a6ead7;
+      --yellow: #f2d47e;
+      --blue: #92bdf2;
+      --radius: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .shell { min-height: 100vh; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px clamp(20px, 4vw, 60px); border-bottom: 1px solid rgba(255,255,255,.14);
+      color: #fff; background: var(--night);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -.03em; }
+    .mark { width: 28px; height: 28px; display: grid; place-items: center; color: var(--night); background: var(--coral); border-radius: 8px; font-size: 12px; font-weight: 900; }
+    .topnav { display: flex; gap: 22px; font-size: 13px; color: #c0cad6; }
+    .topnav a { color: inherit; text-decoration: none; }
+    .topnav a:first-child { color: #fff; }
+    .intro { padding: 46px clamp(20px, 7vw, 112px) 34px; color: #fff; background: var(--night); }
+    .eyebrow { margin: 0 0 16px; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--mint); }
+    h1 { max-width: 720px; margin: 0; font-size: clamp(38px, 6vw, 76px); line-height: .98; letter-spacing: -.065em; }
+    .intro-row { display: flex; justify-content: space-between; gap: 36px; align-items: end; margin-top: 26px; }
+    .intro-copy { max-width: 560px; margin: 0; color: #bdc8d5; font-size: 17px; line-height: 1.55; }
+    .stats { display: flex; gap: 8px; flex-wrap: wrap; justify-content: end; }
+    .stat { padding: 10px 12px; border: 1px solid rgba(255,255,255,.18); border-radius: 999px; color: #f7f7f4; font-size: 12px; white-space: nowrap; }
+    .workspace { max-width: 1440px; margin: 0 auto; padding: 34px clamp(20px, 4vw, 60px) 70px; }
+    .toolbar { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 24px; }
+    .search-wrap { position: relative; flex: 1; max-width: 560px; }
+    .search-wrap span { position: absolute; left: 16px; top: 13px; color: var(--ink-soft); font-size: 18px; }
+    #search { width: 100%; padding: 14px 18px 14px 44px; border: 1px solid var(--line); border-radius: 12px; outline: none; background: var(--card); color: var(--ink); }
+    #search:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(16,24,39,.1); }
+    .count { color: var(--ink-soft); font-size: 14px; }
+    .library-layout { display: grid; grid-template-columns: 210px 1fr; gap: 28px; align-items: start; }
+    .filters { position: sticky; top: 18px; }
+    .filter-label { margin: 0 0 10px; color: var(--ink-soft); font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .filter-group { margin-bottom: 24px; }
+    .filter-btn { display: block; width: 100%; padding: 9px 11px; border: 0; border-radius: 8px; text-align: left; color: var(--ink-soft); background: transparent; }
+    .filter-btn:hover, .filter-btn.active { color: var(--ink); background: #e5e8e2; font-weight: 700; }
+    .filter-btn .pill-count { float: right; color: #82909d; font-size: 12px; font-weight: 500; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .persona-card { min-height: 320px; display: flex; flex-direction: column; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); transition: transform .18s ease, box-shadow .18s ease; }
+    .persona-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(16,24,39,.08); }
+    .card-top { display: flex; justify-content: space-between; align-items: start; gap: 10px; }
+    .avatar { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 13px; font-size: 15px; font-weight: 900; color: var(--ink); }
+    .a-coral { background: var(--coral); } .a-mint { background: var(--mint); } .a-blue { background: var(--blue); } .a-yellow { background: var(--yellow); }
+    .role { margin: 0; color: var(--ink-soft); font-size: 12px; font-weight: 700; letter-spacing: .02em; text-align: right; }
+    .persona-card h2 { margin: 22px 0 6px; font-size: 25px; letter-spacing: -.04em; }
+    .archetype { margin: 0; color: var(--coral); font-size: 14px; font-weight: 800; }
+    .quote { margin: 20px 0 18px; color: #314154; font-family: Georgia, serif; font-size: 17px; line-height: 1.35; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+    .tag { padding: 5px 8px; border-radius: 999px; color: #536272; background: #edf0eb; font-size: 11px; font-weight: 700; }
+    .open-card { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 18px; padding: 11px 0 0; border: 0; border-top: 1px solid var(--line); color: var(--ink); background: transparent; font-size: 13px; font-weight: 800; }
+    .arrow { font-size: 18px; transition: transform .18s ease; } .open-card:hover .arrow { transform: translateX(4px); }
+    .empty { grid-column: 1 / -1; padding: 42px; border: 1px dashed #bac2bd; border-radius: var(--radius); text-align: center; color: var(--ink-soft); }
+    .method { display: grid; grid-template-columns: 1.2fr 2fr; gap: 28px; margin-top: 70px; padding: 26px 0 0; border-top: 1px solid var(--line); }
+    .method h2 { margin: 0; font-size: 22px; letter-spacing: -.04em; }
+    .method p { margin: 0; color: var(--ink-soft); line-height: 1.55; }
+    .method-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .step { padding: 16px; border-radius: 13px; background: #e9ece6; }
+    .step-num { color: var(--coral); font-size: 12px; font-weight: 900; }
+    .step strong { display: block; margin-top: 18px; font-size: 14px; }
+    .step span { display: block; margin-top: 6px; color: var(--ink-soft); font-size: 13px; line-height: 1.4; }
+    dialog { width: min(680px, calc(100vw - 28px)); max-height: calc(100vh - 28px); padding: 0; border: 0; border-radius: 20px; color: var(--ink); background: var(--card); box-shadow: 0 28px 100px rgba(0,0,0,.35); }
+    dialog::backdrop { background: rgba(4,10,18,.72); backdrop-filter: blur(4px); }
+    .drawer-head { display: flex; justify-content: space-between; align-items: start; padding: 24px 26px 20px; color: #fff; background: var(--night); }
+    .drawer-head h2 { margin: 7px 0 4px; font-size: 30px; letter-spacing: -.05em; }
+    .drawer-head p { margin: 0; color: var(--mint); font-size: 13px; font-weight: 800; }
+    .close { width: 34px; height: 34px; border: 1px solid rgba(255,255,255,.25); border-radius: 50%; color: #fff; background: transparent; font-size: 20px; }
+    .drawer-body { overflow: auto; padding: 26px; }
+    .drawer-quote { margin: 0 0 24px; padding-bottom: 22px; border-bottom: 1px solid var(--line); font-family: Georgia, serif; font-size: 21px; line-height: 1.35; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .detail h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); }
+    .detail p { margin: 0; line-height: 1.5; }
+    .detail ul { margin: 0; padding-left: 18px; color: #314154; line-height: 1.6; }
+    .implication { margin-top: 24px; padding: 16px; border-radius: 13px; background: var(--mint); }
+    .implication h3 { color: #1d5d50; }
+    @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 720px) {
+      .topbar { padding: 16px 20px; } .topnav { display: none; }
+      .intro { padding: 36px 20px 30px; } .intro-row { display: block; } .stats { justify-content: start; margin-top: 22px; }
+      .workspace { padding: 24px 20px 54px; } .toolbar { display: block; } .count { display: block; margin-top: 10px; }
+      .library-layout { display: block; } .filters { position: static; display: flex; gap: 12px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 2px; }
+      .filter-group { display: flex; gap: 5px; align-items: center; margin: 0; white-space: nowrap; } .filter-label { display: none; }
+      .filter-btn { width: auto; } .grid { grid-template-columns: 1fr; } .persona-card { min-height: 285px; }
+      .method { display: block; margin-top: 50px; } .method p { margin-top: 12px; } .method-steps { grid-template-columns: 1fr; margin-top: 22px; }
+      .detail-grid { grid-template-columns: 1fr; gap: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="mark">PL</span><span>Persona Library</span></div>
+      <nav class="topnav" aria-label="Primary"><a href="#library">Library</a><a href="#method">How to use</a></nav>
+    </header>
+    <section class="intro">
+      <p class="eyebrow">Field notes / product research</p>
+      <h1>Make the user visible in the room.</h1>
+      <div class="intro-row">
+        <p class="intro-copy">A shared shelf of working personas for sharper product decisions. Browse the people behind the problem, then bring their context into the conversation.</p>
+        <div class="stats" aria-label="Library summary"><span class="stat">06 personas</span><span class="stat">04 journeys</span><span class="stat">Last updated today</span></div>
+      </div>
+    </section>
+    <main class="workspace" id="library">
+      <div class="toolbar">
+        <label class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search by name, role, need, or tag…" aria-label="Search personas" /></label>
+        <span class="count" id="count">Showing 6 personas</span>
+      </div>
+      <div class="library-layout">
+        <aside class="filters" aria-label="Filter personas">
+          <div class="filter-group"><p class="filter-label">Role</p><button class="filter-btn active" data-filter="role" data-value="all">All roles <span class="pill-count">6</span></button><button class="filter-btn" data-filter="role" data-value="operator">Operators <span class="pill-count">2</span></button><button class="filter-btn" data-filter="role" data-value="leader">Leaders <span class="pill-count">2</span></button><button class="filter-btn" data-filter="role" data-value="specialist">Specialists <span class="pill-count">2</span></button></div>
+          <div class="filter-group"><p class="filter-label">Journey stage</p><button class="filter-btn active" data-filter="stage" data-value="all">All stages</button><button class="filter-btn" data-filter="stage" data-value="starting">Starting out</button><button class="filter-btn" data-filter="stage" data-value="scaling">Scaling up</button><button class="filter-btn" data-filter="stage" data-value="under pressure">Under pressure</button></div>
+        </aside>
+        <section class="grid" id="grid" aria-live="polite"></section>
+      </div>
+      <section class="method" id="method">
+        <div><h2>Use personas as a lens, not a label.</h2><p>These are prompts for better questions, not fictional people to design around blindly.</p></div>
+        <div class="method-steps"><div class="step"><span class="step-num">01 / FRAME</span><strong>Start with context</strong><span>Choose the persona closest to the decision in front of you.</span></div><div class="step"><span class="step-num">02 / PRESSURE-TEST</span><strong>Ask what changes</strong><span>Use goals and friction to challenge the default solution.</span></div><div class="step"><span class="step-num">03 / ACT</span><strong>Make it concrete</strong><span>Turn one insight into a product or research next step.</span></div></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="detail-dialog" aria-labelledby="detail-name">
+    <div class="drawer-head"><div><p id="detail-role"></p><h2 id="detail-name"></h2></div><button class="close" id="close-dialog" aria-label="Close persona details">×</button></div>
+    <div class="drawer-body"><p class="drawer-quote" id="detail-quote"></p><div class="detail-grid"><div class="detail"><h3>In their words</h3><p id="detail-overview"></p></div><div class="detail"><h3>Context</h3><p id="detail-context"></p></div><div class="detail"><h3>Goals</h3><ul id="detail-goals"></ul></div><div class="detail"><h3>Friction</h3><ul id="detail-pains"></ul></div><div class="detail"><h3>Behaviors</h3><ul id="detail-behaviors"></ul></div><div class="detail"><h3>Needs</h3><ul id="detail-needs"></ul></div></div><div class="implication detail"><h3>Product implication</h3><p id="detail-implication"></p></div></div>
+  </dialog>
+
+  <script>
+    const personas = [
+      { id:'maya', name:'Maya Chen', initials:'MC', role:'operator', roleLabel:'Operations lead', stage:'scaling', archetype:'The calm orchestrator', color:'a-coral', quote:'“I can make the process work. I just need to see where it is about to break.”', tags:['B2B SaaS','high ownership','scaling'], overview:'Maya keeps a growing service reliable while the team, tools, and edge cases multiply around her.', context:'Runs a 22-person customer operations team at a fast-growing software company. Her day is split between exceptions, handoffs, and coaching.', goals:['Keep service quality consistent','Spot risk before it becomes an escalation','Give her team autonomy without losing visibility'], pains:['Important work lives in too many places','Dashboards show lagging indicators','Every exception becomes a custom workaround'], behaviors:['Builds lightweight trackers','Checks details before making a call','Shares screenshots in team chat'], needs:['A trustworthy pulse on operations','Clear ownership at every handoff','Short paths from signal to action'], implication:'Design for the moment before failure: surface leading indicators, make ownership explicit, and support fast exception handling.' },
+      { id:'tomas', name:'Tomás Rivera', initials:'TR', role:'operator', roleLabel:'Independent maker', stage:'starting', archetype:'The resourceful beginner', color:'a-mint', quote:'“Tell me what matters first. I’ll figure out the rest.”', tags:['self-serve','learning','time-poor'], overview:'Tomás is building something real for the first time and wants momentum more than a perfect process.', context:'A solo founder testing a new service on evenings and weekends. He is comfortable learning, but not with wasting time.', goals:['Get to a useful first version quickly','Know which decisions are reversible','Look credible to early customers'], pains:['Too many choices before seeing value','Advice assumes a larger team','Setup work steals time from learning'], behaviors:['Starts with examples','Uses defaults until they block him','Asks peers for a second opinion'], needs:['A clear first path','Safe, undoable actions','Examples that feel close to his situation'], implication:'Earn trust early with a guided path, useful defaults, and progressive detail instead of a wall of configuration.' },
+      { id:'nia', name:'Nia Okafor', initials:'NO', role:'leader', roleLabel:'People leader', stage:'under pressure', archetype:'The context carrier', color:'a-blue', quote:'“The decision is easy. Getting everyone to see the same picture is the hard part.”', tags:['alignment','teams','decision-making'], overview:'Nia translates between executives, specialists, and customers—and feels the cost when context gets lost.', context:'Leads product at a 140-person company after a year of rapid change. She is accountable for direction and the confidence behind it.', goals:['Align teams around the why','Make tradeoffs visible','Keep customer reality present in leadership decisions'], pains:['Meetings produce agreement but not movement','Evidence is scattered across teams','Roadmaps flatten important nuance'], behaviors:['Writes narrative briefs','Collects customer language','Uses rituals to create shared memory'], needs:['A shared source of context','Traceable evidence','Tools that help people prepare, not just report'], implication:'Help Nia carry context forward: connect decisions to evidence, make tradeoffs legible, and leave a durable record.' },
+      { id:'jin', name:'Jin Park', initials:'JP', role:'leader', roleLabel:'Finance partner', stage:'scaling', archetype:'The evidence keeper', color:'a-yellow', quote:'“I’m not trying to slow the team down. I’m trying to make the bet legible.”', tags:['planning','evidence','risk'], overview:'Jin makes investment decisions under uncertainty and needs a reliable line from activity to outcome.', context:'Partners with three business units on annual planning and monthly performance reviews. He joins late-stage decisions when stakes are already high.', goals:['Compare opportunities fairly','Understand assumptions behind forecasts','Protect focus without killing experimentation'], pains:['Numbers arrive without definitions','Teams measure activity differently','Risks surface after commitments are made'], behaviors:['Asks for the denominator','Builds scenario models','Keeps a private list of assumptions'], needs:['Comparable signals','Confidence ranges, not false precision','A clear audit trail for decisions'], implication:'Make assumptions and confidence visible alongside the headline metric so Jin can support thoughtful risk, not blanket caution.' },
+      { id:'amina', name:'Amina Bello', initials:'AB', role:'specialist', roleLabel:'Research specialist', stage:'starting', archetype:'The pattern finder', color:'a-coral', quote:'“The insight is usually in the detail people skip past.”', tags:['research','qualitative','depth'], overview:'Amina turns messy conversations into patterns, while protecting the nuance that makes the patterns useful.', context:'Works across two product squads, often brought in after a question has already been framed. She has more evidence than time.', goals:['Connect evidence to decisions','Keep participant voices intact','Make research reusable beyond one project'], pains:['Research is hard to find later','Synthesis gets reduced to a slide','Teams ask for answers before agreeing on the question'], behaviors:['Annotates everything','Groups by tension, not topic','Revisits old evidence with new questions'], needs:['Flexible evidence capture','A place for nuance and disagreement','A simple path from finding to implication'], implication:'Preserve the texture of evidence while making patterns easy to scan, cite, and revisit.' },
+      { id:'victor', name:'Victor Adeyemi', initials:'VA', role:'specialist', roleLabel:'Frontline expert', stage:'under pressure', archetype:'The practical skeptic', color:'a-blue', quote:'“If this adds one more step to the day, it needs to earn that step.”', tags:['frontline','workflow','trust'], overview:'Victor knows where the official process meets reality—and quickly spots tools designed from a distance.', context:'A senior field technician whose work happens across job sites, low-connectivity moments, and changing conditions.', goals:['Finish work safely and correctly','Avoid re-entering the same information','Trust the system when conditions change'], pains:['Tools assume perfect connectivity','Forms ignore the actual sequence of work','Small errors create expensive rework'], behaviors:['Creates shortcuts','Relies on memory under pressure','Shares workarounds with peers'], needs:['Fast, resilient workflows','Useful offline behavior','A voice in how the process is designed'], implication:'Respect the real workflow: reduce steps, design for interruption, and treat frontline workarounds as product evidence.' }
+    ];
+    let roleFilter = 'all';
+    let stageFilter = 'all';
+    const grid = document.querySelector('#grid');
+    const search = document.querySelector('#search');
+    const count = document.querySelector('#count');
+    const dialog = document.querySelector('#detail-dialog');
+
+    function render() {
+      const term = search.value.trim().toLowerCase();
+      const visible = personas.filter(p => {
+        const haystack = [p.name,p.roleLabel,p.archetype,p.stage,p.tags.join(' '),p.quote,p.overview,p.needs.join(' ')].join(' ').toLowerCase();
+        return (roleFilter === 'all' || p.role === roleFilter) && (stageFilter === 'all' || p.stage === stageFilter) && (!term || haystack.includes(term));
+      });
+      count.textContent = `Showing ${visible.length} ${visible.length === 1 ? 'persona' : 'personas'}`;
+      grid.innerHTML = visible.length ? visible.map(p => `<article class="persona-card"><div class="card-top"><div class="avatar ${p.color}">${p.initials}</div><p class="role">${p.roleLabel}<br><span style="font-weight:500">${p.stage}</span></p></div><h2>${p.name}</h2><p class="archetype">${p.archetype}</p><p class="quote">${p.quote}</p><div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div><button class="open-card" data-id="${p.id}"><span>Open persona</span><span class="arrow">→</span></button></article>`).join('') : '<div class="empty"><strong>No personas match that search.</strong><br>Try a broader term or clear a filter.</div>';
+      document.querySelectorAll('.open-card').forEach(btn => btn.addEventListener('click', () => openPersona(btn.dataset.id)));
+    }
+    function fillList(id, items) { document.querySelector(id).innerHTML = items.map(item => `<li>${item}</li>`).join(''); }
+    function openPersona(id) {
+      const p = personas.find(item => item.id === id); if (!p) return;
+      document.querySelector('#detail-role').textContent = p.roleLabel;
+      document.querySelector('#detail-name').textContent = p.name;
+      document.querySelector('#detail-quote').textContent = p.quote;
+      document.querySelector('#detail-overview').textContent = p.overview;
+      document.querySelector('#detail-context').textContent = p.context;
+      document.querySelector('#detail-implication').textContent = p.implication;
+      fillList('#detail-goals', p.goals); fillList('#detail-pains', p.pains); fillList('#detail-behaviors', p.behaviors); fillList('#detail-needs', p.needs);
+      dialog.showModal();
+    }
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+      const group = btn.dataset.filter; if (group === 'role') roleFilter = btn.dataset.value; if (group === 'stage') stageFilter = btn.dataset.value;
+      document.querySelectorAll(`.filter-btn[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === btn)); render();
+    }));
+    search.addEventListener('input', render);
+    document.querySelector('#close-dialog').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    render();
+  </script>
+</body>
+</html>
