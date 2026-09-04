@@ -14,8 +14,8 @@ const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
 const data = sandbox.window.PersonaLibraryData;
-if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !Array.isArray(data.skillCatalog)) {
-  throw new Error('Content module must expose personas, skillLibrary, flowLibrary, and skillCatalog');
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !Array.isArray(data.skillCatalog) || !data.maintenance) {
+  throw new Error('Content module must expose personas, skillLibrary, flowLibrary, skillCatalog, and maintenance');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
 if (!page.includes('<script src="data/library-data.js"></script>')) throw new Error('Library page is not loading the canonical content module');
@@ -67,6 +67,19 @@ for (const skill of data.skillCatalog) {
   if (!skill.name || !Array.isArray(skill.personas) || !skill.personas.length || !Array.isArray(skill.profiles) || !skill.profiles.length) throw new Error(`Incomplete skill catalog entry: ${skill.id}`);
   for (const persona of skill.personas) if (!personaIds.has(persona.id)) throw new Error(`${skill.id} references an unknown persona: ${persona.id}`);
   for (const profile of skill.profiles) if (!personaIds.has(profile.personaId) || !profile.definition || !profile.triggers || !profile.workflows || !profile.actions || !profile.evidence) throw new Error(`Incomplete skill profile in catalog entry: ${skill.id}`);
+}
+
+for (const persona of data.personas) {
+  const maintenance = data.maintenance.personas?.[persona.id];
+  if (!maintenance || !/^\d+\.\d+$/.test(maintenance.version) || !Array.isArray(maintenance.improvements) || !Array.isArray(maintenance.revisions)) throw new Error(`${persona.id} has incomplete maintenance metadata`);
+  for (const improvement of maintenance.improvements) if (!improvement.title || !improvement.rationale || !Array.isArray(improvement.affectedFields) || !improvement.evidenceNeeded || !improvement.status) throw new Error(`${persona.id} has an incomplete potential improvement`);
+  for (const revision of maintenance.revisions) if (!revision.version || !revision.date || !revision.changeType || !revision.summary || !Array.isArray(revision.affectedFields) || !revision.evidence || !revision.confidenceChange) throw new Error(`${persona.id} has an incomplete revision record`);
+}
+for (const skill of data.skillCatalog) {
+  const maintenance = data.maintenance.skills?.[skill.id];
+  if (!maintenance || !/^\d+\.\d+$/.test(maintenance.version) || !Array.isArray(maintenance.improvements) || !Array.isArray(maintenance.revisions)) throw new Error(`${skill.id} has incomplete maintenance metadata`);
+  for (const improvement of maintenance.improvements) if (!improvement.title || !improvement.rationale || !Array.isArray(improvement.affectedFields) || !improvement.evidenceNeeded || !improvement.status) throw new Error(`${skill.id} has an incomplete potential improvement`);
+  for (const revision of maintenance.revisions) if (!revision.version || !revision.date || !revision.changeType || !revision.summary || !Array.isArray(revision.affectedFields) || !revision.evidence || !revision.confidenceChange) throw new Error(`${skill.id} has an incomplete revision record`);
 }
 
 const roleCounts = data.personas.reduce((counts, persona) => {

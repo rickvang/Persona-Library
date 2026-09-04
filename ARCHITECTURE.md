@@ -19,10 +19,11 @@ private Sites deployment
 
 ## Source of truth
 
-- `content/library-data.js` owns personas, workflow maps, skill profiles, resource trails, and the derived normalized `skillCatalog`.
+- `content/library-data.js` owns personas, workflow maps, skill profiles, resource trails, the derived normalized `skillCatalog`, and semantic `maintenance` metadata.
 - `dist/data/library-data.js` is generated output consumed by `dist/index.html` and `dist/skills.html`.
 - `dist/index.html` owns presentation and interaction, not persona records.
 - `dist/skills.html` is the cross-persona Skills Library: it indexes reusable capabilities and opens their triggers, observable actions, workflow reach, evidence, and persona applications.
+- Persona and skill maintenance metadata keeps Potential improvements separate from Resources and records semantic revisions alongside file-level Git history.
 - `dist/guide.html`, `dist/decisions.html`, `dist/activity-views.html`, and `dist/skill-views.html` remain documentation and exploration surfaces.
 
 ## Invariants
