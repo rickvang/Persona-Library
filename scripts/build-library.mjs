@@ -3,10 +3,17 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const source = path.join(root, 'content', 'library-data.js');
-const outputDir = path.join(root, 'dist', 'data');
-const output = path.join(outputDir, 'library-data.js');
+const files = [
+  ['content/library-data.js', 'dist/data/library-data.js'],
+  ['content/library-model.js', 'dist/data/library-model.js'],
+  ['client/library-ui.js', 'dist/js/library-ui.js'],
+  ['client/library-state.js', 'dist/js/library-state.js']
+];
 
-await mkdir(outputDir, { recursive: true });
-await copyFile(source, output);
-console.log(`Copied ${path.relative(root, source)} -> ${path.relative(root, output)}`);
+for (const [sourcePath, outputPath] of files) {
+  const source = path.join(root, sourcePath);
+  const output = path.join(root, outputPath);
+  await mkdir(path.dirname(output), { recursive: true });
+  await copyFile(source, output);
+  console.log(`Copied ${sourcePath} -> ${outputPath}`);
+}

@@ -6,19 +6,41 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const contentPath = path.join(root, 'content', 'library-data.js');
 const outputPath = path.join(root, 'dist', 'data', 'library-data.js');
+const modelPath = path.join(root, 'content', 'library-model.js');
+const modelOutputPath = path.join(root, 'dist', 'data', 'library-model.js');
+const uiPath = path.join(root, 'client', 'library-ui.js');
+const uiOutputPath = path.join(root, 'dist', 'js', 'library-ui.js');
+const statePath = path.join(root, 'client', 'library-state.js');
+const stateOutputPath = path.join(root, 'dist', 'js', 'library-state.js');
 const pagePath = path.join(root, 'dist', 'index.html');
+const skillsPagePath = path.join(root, 'dist', 'skills.html');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
+const modelSource = await readFile(modelPath, 'utf8');
+const modelOutput = await readFile(modelOutputPath, 'utf8');
+const uiSource = await readFile(uiPath, 'utf8');
+const uiOutput = await readFile(uiOutputPath, 'utf8');
+const stateSource = await readFile(statePath, 'utf8');
+const stateOutput = await readFile(stateOutputPath, 'utf8');
 const page = await readFile(pagePath, 'utf8');
+const skillsPage = await readFile(skillsPagePath, 'utf8');
 const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
+vm.runInNewContext(modelSource, sandbox, { filename: modelPath });
 const data = sandbox.window.PersonaLibraryData;
-if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !Array.isArray(data.skillCatalog) || !data.maintenance) {
-  throw new Error('Content module must expose personas, skillLibrary, flowLibrary, skillCatalog, and maintenance');
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !Array.isArray(data.skillCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
+  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillCatalog, maintenance, and PersonaLibraryModel');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
-if (!page.includes('<script src="data/library-data.js"></script>')) throw new Error('Library page is not loading the canonical content module');
+if (modelSource !== modelOutput) throw new Error('Generated dist/data/library-model.js is stale; run build-library.mjs');
+if (uiSource !== uiOutput) throw new Error('Generated dist/js/library-ui.js is stale; run build-library.mjs');
+if (stateSource !== stateOutput) throw new Error('Generated dist/js/library-state.js is stale; run build-library.mjs');
+for (const [name, html] of [['library', page], ['skills', skillsPage]]) {
+  for (const script of ['data/library-data.js', 'data/library-model.js', 'js/library-ui.js', 'js/library-state.js']) {
+    if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);
+  }
+}
 
 const personaIds = new Set();
 const allowedRoles = new Set(['operator', 'leader', 'specialist']);

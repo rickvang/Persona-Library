@@ -229,14 +229,20 @@
   </dialog>
 
   <script src="data/library-data.js"></script>
+  <script src="data/library-model.js"></script>
+  <script src="js/library-ui.js"></script>
+  <script src="js/library-state.js"></script>
   <script>
     const { personas, skillLibrary, flowLibrary, maintenance } = window.PersonaLibraryData;
-    let roleFilter = 'all';
+    const uiState = PersonaLibraryState.create({ defaults: { role: 'all', query: '', selected: '' }, queryKeys: { role: 'role', query: 'q', selected: 'persona' } });
+    let roleFilter = uiState.get('role') || 'all';
     const grid = document.querySelector('#grid');
     const search = document.querySelector('#search');
     const count = document.querySelector('#count');
     const clearButton = document.querySelector('#clear-filters');
     const dialog = document.querySelector('#detail-dialog');
+    search.value = uiState.get('query') || '';
+    let activeSkillProfiles = [];
     const flowTypes = [
       {key:'foundational', label:'Foundational flows', className:'foundation'},
       {key:'supporting', label:'Supporting flows', className:'supporting'},
@@ -269,18 +275,11 @@
         const haystack = [p.name,p.roleLabel,p.archetype,p.lifecycle,p.operatingContext,p.operatingState,p.useWhen,p.tags.join(' '),p.quote,p.overview,p.needs.join(' '),JSON.stringify(flowLibrary[p.id] || [])].join(' ').toLowerCase();
         return (roleFilter === 'all' || p.role === roleFilter) && (!term || haystack.includes(term));
       });
-      count.textContent = `Showing ${visible.length} ${visible.length === 1 ? 'persona' : 'personas'}`;
       clearButton.hidden = !term && roleFilter === 'all';
       grid.innerHTML = visible.length ? visible.map(p => { const counts = flowCounts(p.id); return `<article class="persona-card"><div class="card-top"><div class="avatar ${p.color}">${p.initials}</div><p class="role">${p.roleLabel}</p></div><h2>${p.name}</h2><p class="archetype">${p.archetype}</p><span class="status-badge">${p.confidence}</span><div class="flow-mix" aria-label="Workflow mix"><span class="flow-count foundation">${counts.foundational} foundational</span><span class="flow-count supporting">${counts.supporting} supporting</span><span class="flow-count edge">${counts.edge} edge-case</span></div><p class="quote">${p.quote}</p><div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div><button class="open-card" data-id="${p.id}"><span>Open persona</span><span class="arrow">→</span></button></article>`; }).join('') : '<div class="empty"><strong>No personas match that search.</strong><br>Try a broader term or clear a filter.</div>';
       document.querySelectorAll('.open-card').forEach(btn => btn.addEventListener('click', () => openPersona(btn.dataset.id)));
     }
-    function fillList(id, items) { document.querySelector(id).innerHTML = items.map(item => `<li>${item}</li>`).join(''); }
-    function renderResources(p) {
-      const resources = p.resources || [];
-      const prompt = `Check another source for the ${p.roleLabel} persona (${p.name}), summarize what it supports or changes, and add the cited source to the Resources section.`;
-      return `<section class="resources-panel" aria-label="Resources"><div class="resources-head"><h3>Resources</h3><span>${resources.length ? `${resources.length} cited sources` : 'Source trail not started'}</span></div><p class="resources-intro">Sources used to shape this persona. Ask for another source when you want to extend or challenge the current evidence.</p>${resources.length ? `<div class="resources-list">${resources.map(resource => `<div class="resource-item"><a href="${resource.url}" target="_blank" rel="noreferrer">${resource.title}</a><p>${resource.publisher} · ${resource.checked}<br>${resource.why}</p></div>`).join('')}</div>` : '<p class="resources-empty">No cited sources yet. Ask me to check or find a source for this persona and add it here.</p>'}<div class="resource-actions"><button class="resource-request" type="button" data-prompt="${prompt}">Copy follow-up prompt</button><span>Or ask directly: “Check another source and add it to this persona.”</span></div></section>`;
-    }
-    function renderMaintenance(record) { const revisions = record?.revisions || []; return `<section class="maintenance-panel" aria-label="Persona revision history"><div class="maintenance-head"><h3>Revision history</h3><span>Revision ${record?.version || '1.0'} · Updated ${record?.updated || 'Not dated'}</span></div><div class="revision-list">${revisions.slice().reverse().map(item => `<article class="revision-item"><strong>v${item.version} · ${item.summary}</strong><span class="maintenance-meta">${item.date} · ${item.changeType}</span><p><strong>Affected:</strong> ${item.affectedFields.join(' · ')}<br><strong>Evidence:</strong> ${item.evidence}<br><strong>Confidence:</strong> ${item.confidenceChange}</p></article>`).join('')}</div></section>`; }
+    const { fillList, renderResources, renderRevisionHistory } = PersonaLibraryUI;
     function getSkillProfiles(p) {
       if (skillLibrary[p.id]) return skillLibrary[p.id];
       const skills = p.skills || [];
@@ -319,18 +318,19 @@
       document.querySelector('#detail-use').textContent = p.useWhen;
       document.querySelector('#detail-evidence').textContent = p.evidence;
       document.querySelector('#detail-implication').textContent = p.implication;
-      document.querySelector('#detail-maintenance').innerHTML = renderMaintenance(maintenance?.personas?.[p.id]);
+      document.querySelector('#detail-maintenance').innerHTML = renderRevisionHistory(maintenance?.personas?.[p.id]);
       fillList('#detail-goals', p.goals); fillList('#detail-pains', p.pains); fillList('#detail-behaviors', p.behaviors); fillList('#detail-needs', p.needs); renderSkillBrowser(p);
+      uiState.set({ selected: p.id });
       dialog.showModal();
     }
     document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
-      const group = btn.dataset.filter; if (group === 'role') roleFilter = btn.dataset.value;
+      const group = btn.dataset.filter; if (group === 'role') { roleFilter = btn.dataset.value; uiState.set({ role: roleFilter }); }
       document.querySelectorAll(`.filter-btn[data-filter="${group}"]`).forEach(item => item.classList.toggle('active', item === btn)); render();
     }));
-    search.addEventListener('input', render);
-    clearButton.addEventListener('click', () => { roleFilter = 'all'; search.value = ''; document.querySelectorAll('.filter-btn').forEach(item => item.classList.toggle('active', item.dataset.value === 'all')); render(); });
-    document.querySelector('#close-dialog').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    search.addEventListener('input', () => { uiState.set({ query: search.value }); render(); });
+    clearButton.addEventListener('click', () => { roleFilter = 'all'; search.value = ''; uiState.reset(['role', 'query']); document.querySelectorAll('.filter-btn').forEach(item => item.classList.toggle('active', item.dataset.value === 'all')); render(); });
+    document.querySelector('#close-dialog').addEventListener('click', () => { uiState.set({ selected: '' }); dialog.close(); });
+    dialog.addEventListener('click', event => { if (event.target === dialog) { uiState.set({ selected: '' }); dialog.close(); } });
     document.querySelector('#detail-skill-index').addEventListener('click', event => { const button = event.target.closest('.skill-index-item'); if (!button) return; showSkillProfile(Number(button.dataset.skillIndex)); });
     document.querySelector('#detail-resources').addEventListener('click', async event => {
       const button = event.target.closest('.resource-request'); if (!button) return;
@@ -338,7 +338,9 @@
       try { await navigator.clipboard.writeText(prompt); button.textContent = 'Prompt copied'; } catch { button.textContent = 'Ask: check another source'; }
       setTimeout(() => { button.textContent = 'Copy follow-up prompt'; }, 2200);
     });
+    document.querySelectorAll('.filter-btn[data-filter="role"]').forEach(item => item.classList.toggle('active', item.dataset.value === roleFilter));
     render();
+    if (uiState.get('selected')) openPersona(uiState.get('selected'));
   </script>
 </body>
 </html>

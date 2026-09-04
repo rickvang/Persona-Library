@@ -5,13 +5,13 @@
 The library remains a static Site. Persona content is the source of truth; the browser page is a renderer of that content.
 
 ```text
-content/library-data.js
+content/library-data.js + content/library-model.js
         |
         v
 scripts/build-library.mjs
         |
         v
-dist/data/library-data.js + dist/*.html
+dist/data/*.js + dist/js/*.js + dist/*.html
         |
         v
 private Sites deployment
@@ -19,19 +19,22 @@ private Sites deployment
 
 ## Source of truth
 
-- `content/library-data.js` owns personas, workflow maps, skill profiles, resource trails, the derived normalized `skillCatalog`, and semantic `maintenance` metadata.
-- `dist/data/library-data.js` is generated output consumed by `dist/index.html` and `dist/skills.html`.
-- `dist/index.html` owns presentation and interaction, not persona records.
+- `content/library-data.js` owns authored personas, workflow maps, skill profiles, and resource trails.
+- `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, and creates maintenance metadata.
+- `client/library-ui.js` owns shared browser render helpers for lists, resources, revision history, escaping, and trigger chips.
+- `client/library-state.js` owns small URL-aware page state such as role filters, search terms, and selected records.
+- `dist/data/*.js` and `dist/js/*.js` are generated output consumed by `dist/index.html` and `dist/skills.html`.
+- `dist/index.html` owns persona presentation and page-specific interaction, not persona records or shared render primitives.
 - `dist/skills.html` is the cross-persona Skills Library: it indexes reusable capabilities and opens their triggers, observable actions, workflow reach, evidence, and persona applications.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
 - `dist/guide.html`, `dist/decisions.html`, `dist/activity-views.html`, and `dist/skill-views.html` remain documentation and exploration surfaces.
 
 ## Invariants
 
-Run `node scripts/build-library.mjs` after changing content, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, and stale generated output.
+Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, and the page script boundary.
 
 Counts and filters should be derived from the content module. Do not hand-edit persona totals or role totals as the library grows.
 
 ## When to expand the stack
 
-Keep the static-first architecture while content is primarily authored in Git and the library is read-only. Add a database and authenticated authoring only when the product needs collaborative editing, comments, permissions, persistent user-created personas, or server-backed search.
+Keep the static-first architecture while content is primarily authored in Git and the library is read-only. Add a database and authenticated authoring only when the product needs collaborative editing, comments, permissions, persistent user-created personas, or server-backed search. Keep page state in the URL-aware helper until state must persist across users or sessions.
