@@ -1,0 +1,67 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import vm from 'node:vm';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const contentPath = path.join(root, 'content', 'library-data.js');
+const outputPath = path.join(root, 'dist', 'data', 'library-data.js');
+const pagePath = path.join(root, 'dist', 'index.html');
+const source = await readFile(contentPath, 'utf8');
+const output = await readFile(outputPath, 'utf8');
+const page = await readFile(pagePath, 'utf8');
+const sandbox = { window: {} };
+
+vm.runInNewContext(source, sandbox, { filename: contentPath });
+const data = sandbox.window.PersonaLibraryData;
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary) {
+  throw new Error('Content module must expose personas, skillLibrary, and flowLibrary');
+}
+if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
+if (!page.includes('<script src="data/library-data.js"></script>')) throw new Error('Library page is not loading the canonical content module');
+
+const personaIds = new Set();
+const allowedRoles = new Set(['operator', 'leader', 'specialist']);
+const allowedFlowTypes = new Set(['foundational', 'supporting', 'edge']);
+for (const persona of data.personas) {
+  if (!persona.id || personaIds.has(persona.id)) throw new Error(`Duplicate or missing persona id: ${persona.id || '(missing)'}`);
+  personaIds.add(persona.id);
+  for (const field of ['name', 'role', 'roleLabel', 'lifecycle', 'operatingContext', 'operatingState', 'confidence']) {
+    if (persona[field] === undefined || persona[field] === null || persona[field] === '') throw new Error(`${persona.id} is missing ${field}`);
+  }
+  if (!allowedRoles.has(persona.role)) throw new Error(`${persona.id} has an unsupported role: ${persona.role}`);
+  const skillNames = new Set((persona.skills || []).map(skill => skill.split(' — ')[0]));
+  const profiles = data.skillLibrary[persona.id] || [];
+  for (const profile of profiles) if (!skillNames.has(profile.name)) throw new Error(`${persona.id} has an unregistered skill profile: ${profile.name}`);
+  for (const resource of persona.resources || []) if (!/^https?:\/\//.test(resource.url || '')) throw new Error(`${persona.id} has an invalid resource URL`);
+}
+
+for (const [personaId, profiles] of Object.entries(data.skillLibrary)) {
+  if (!personaIds.has(personaId)) throw new Error(`Skill library has no matching persona: ${personaId}`);
+  const names = new Set();
+  for (const profile of profiles) {
+    if (!profile.name || names.has(profile.name)) throw new Error(`Duplicate or missing skill name for ${personaId}`);
+    names.add(profile.name);
+    for (const field of ['definition', 'triggers', 'workflows', 'actions', 'evidence']) if (!profile[field]) throw new Error(`${personaId}/${profile.name} is missing ${field}`);
+  }
+}
+
+for (const persona of data.personas) {
+  const flows = data.flowLibrary[persona.id];
+  if (!Array.isArray(flows) || !flows.length) throw new Error(`${persona.id} has no workflow map`);
+  const titles = new Set();
+  for (const flow of flows) {
+    if (!allowedFlowTypes.has(flow.type)) throw new Error(`${persona.id} has an unsupported flow type: ${flow.type}`);
+    if (!flow.title || titles.has(flow.title)) throw new Error(`Duplicate or missing flow title for ${persona.id}`);
+    titles.add(flow.title);
+    if (!Array.isArray(flow.activities) || !flow.activities.length) throw new Error(`${persona.id}/${flow.title} has no activities`);
+    for (const activity of flow.activities) if (!Array.isArray(activity) || activity.length < 4) throw new Error(`${persona.id}/${flow.title} has an incomplete activity row`);
+  }
+}
+for (const personaId of Object.keys(data.flowLibrary)) if (!personaIds.has(personaId)) throw new Error(`Flow library has no matching persona: ${personaId}`);
+
+const roleCounts = data.personas.reduce((counts, persona) => {
+  counts[persona.role] = (counts[persona.role] || 0) + 1;
+  return counts;
+}, {});
+console.log(`Validated ${data.personas.length} personas, ${roleCounts.operator || 0} operators, ${roleCounts.leader || 0} leaders, ${roleCounts.specialist || 0} specialists, ${Object.keys(data.flowLibrary).length} workflow maps.`);
