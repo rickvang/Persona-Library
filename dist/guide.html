@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="How to create, research, and extend personas in the Persona Library." />
-  <title>Using persona-research — Persona Library</title>
+  <meta name="description" content="How to create, research, and extend personas in the Personas system." />
+  <title>Using persona-research — Personas</title>
   <style>
     :root { --ink:#101827; --ink-soft:#526174; --night:#08111f; --paper:#f5f4ef; --card:#fffefa; --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); font-synthesis:none; }
     * { box-sizing:border-box; }
@@ -69,19 +69,21 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="index.html"><span class="mark">PL</span><span>Persona Library</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="index.html">Library</a><a href="skills.html">Skills</a><a href="job-search.html">Job search</a><a href="guide.html" aria-current="page">Using the skill</a><a href="decisions.html">Decisions</a></nav>
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="playbooks.html">Playbooks</a><a href="guide.html" aria-current="page">Using the skill</a><a href="decisions.html">Decisions</a></nav>
   </header>
   <section class="hero">
-    <p class="crumbs"><a href="index.html">Persona Library</a> / Using the skill</p>
+    <p class="crumbs"><a href="index.html">Personas</a> / Using the skill</p>
     <p class="eyebrow">Reference guide</p>
     <h1>Using persona research</h1>
-    <p class="hero-copy">A short reference for researching personas, defining the skills behind their work, adding them to the library, and keeping them current.</p>
+    <p class="hero-copy">A short reference for researching personas, defining the skills behind their work, composing playbooks, and keeping the system current.</p>
   </section>
   <div class="docs-layout">
     <nav class="sidebar" aria-label="Guide sections">
       <p class="sidebar-label">On this page</p>
       <a href="#start">Start here</a>
+      <a href="#mental-model">Mental model</a>
+      <a href="#playbooks">Playbooks</a>
       <a href="#create">Create a persona</a>
       <a href="#research-only">Research only</a>
       <a href="#update">Update a persona</a>
@@ -90,7 +92,7 @@
       <a href="#persona-reconciliation">Reconciliation</a>
       <a href="#layout-lab">Layout Lab</a>
       <a href="#sources">Source updates</a>
-      <a href="#library">In the library</a>
+      <a href="#library">In Personas</a>
     </nav>
     <article>
       <section class="article-section" id="start">
@@ -98,8 +100,8 @@
         <p class="lede">For most new personas, use this prompt. Replace the bracketed parts if you have them; otherwise the research will use a cross-industry default.</p>
         <div class="prompt-card">
           <div class="prompt-meta"><h3>Create and add a persona</h3><span class="tag">Recommended</span></div>
-          <p>Research the role, map its activities and workflows, then add it to the library.</p>
-          <pre id="prompt-create">Create a well-researched persona for a [role] in [industry or context] and add it to the Persona Library.</pre>
+          <p>Research the role, map its activities and workflows, then add it to Personas.</p>
+          <pre id="prompt-create">Create a well-researched persona for a [role] in [industry or context] and add it to Personas.</pre>
           <button class="copy" data-copy-id="prompt-create">Copy prompt</button>
         </div>
         <div class="note"><p><strong>You don’t need to say “use the skill.”</strong> The persona-research method is intended to activate automatically when the request is clearly about researching or creating a persona.</p></div>
@@ -107,17 +109,17 @@
 
       <section class="article-section" id="create">
         <h2>Create a persona</h2>
-        <p>Use this when you want a new persona researched and added to the library. You can optionally invoke the skill explicitly.</p>
+        <p>Use this when you want a new persona researched and added to Personas. You can optionally invoke the skill explicitly.</p>
         <div class="prompt-list">
-          <div class="prompt-card"><div class="prompt-meta"><h3>Plain-language request</h3><span class="tag">Recommended</span></div><p>The skill should activate automatically for a clear persona request.</p><pre id="prompt-create-plain">Create a well-researched persona for a [role] in [industry or context] and add it to the Persona Library.</pre><button class="copy" data-copy-id="prompt-create-plain">Copy prompt</button></div>
-          <div class="prompt-card"><div class="prompt-meta"><h3>Explicit skill request</h3><span class="tag">Optional</span></div><p>Use this when you want to make the research method unambiguous.</p><pre id="prompt-explicit">Use $persona-research to create a persona for a [role]. Add it to the Persona Library.</pre><button class="copy" data-copy-id="prompt-explicit">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Plain-language request</h3><span class="tag">Recommended</span></div><p>The skill should activate automatically for a clear persona request.</p><pre id="prompt-create-plain">Create a well-researched persona for a [role] in [industry or context] and add it to Personas.</pre><button class="copy" data-copy-id="prompt-create-plain">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Explicit skill request</h3><span class="tag">Optional</span></div><p>Use this when you want to make the research method unambiguous.</p><pre id="prompt-explicit">Use $persona-research to create a persona for a [role]. Add it to Personas.</pre><button class="copy" data-copy-id="prompt-explicit">Copy prompt</button></div>
         </div>
       </section>
 
       <section class="article-section" id="research-only">
         <h2>Research only</h2>
         <p>Use this when you want the findings and synthesis but do not want the live library changed.</p>
-        <div class="prompt-card"><pre id="prompt-only">Research the persona of a [role] in [context]. Give me the findings only; don’t update the Persona Library.</pre><button class="copy" data-copy-id="prompt-only">Copy prompt</button></div>
+        <div class="prompt-card"><pre id="prompt-only">Research the persona of a [role] in [context]. Give me the findings only; don’t update Personas.</pre><button class="copy" data-copy-id="prompt-only">Copy prompt</button></div>
       </section>
 
       <section class="article-section" id="update">
@@ -179,13 +181,29 @@
         <div class="source-callout"><div><h3>Use this exact request</h3><p>Ask me to check a named source or find an authoritative one, explain what it contributes, and add it to the persona’s Resources section.</p></div><button class="copy" data-copy-id="prompt-source">Copy source request</button></div>
       </section>
 
+      <section class="article-section" id="mental-model">
+        <h2>The mental model</h2>
+        <p class="lede">The site has four layers. Each layer has one job, so larger workflows can compose existing material without turning every use case into a new kind of record.</p>
+        <table class="mini-table"><thead><tr><th>Layer</th><th>What it answers</th></tr></thead><tbody><tr><td>Persona</td><td>Who is operating, in what lifecycle, context, and state?</td></tr><tr><td>Skill</td><td>What capability is needed, and how can quality be recognized?</td></tr><tr><td>Persona workflow</td><td>How does that person perform a meaningful flow of activities?</td></tr><tr><td>Playbook</td><td>How do several personas, skills, workflows, artifacts, and gates coordinate toward an outcome?</td></tr></tbody></table>
+        <div class="note"><p><strong>Keep the distinction clear:</strong> personas are lenses, skills are reusable capabilities, workflows are how a persona works, and playbooks are reusable operating models for outcomes.</p></div>
+      </section>
+
+      <section class="article-section" id="playbooks">
+        <h2>Composed playbooks</h2>
+        <p>A playbook is larger than one persona or skill. It defines stages, participants, handoffs, decision rights, shared state, quality gates, and a learning loop. It calls existing personas and skills rather than copying them.</p>
+        <ul class="rule-list"><li><strong>Primitives</strong><span>Personas, skills, resources, tools, artifacts, and persona-owned workflows.</span></li><li><strong>Composition</strong><span>Stages, routing, handoffs, decision rights, quality gates, and flow dependencies.</span></li><li><strong>Instance</strong><span>The user’s actual goal, constraints, evidence, artifact versions, decisions, and feedback.</span></li></ul>
+        <div class="source-callout"><div><h3>Current example</h3><p><strong>Evidence-led job search</strong> coordinates role calibration, evidence mapping, ATS review, human narrative, visual communication, outreach, interviews, and learning.</p></div><a class="back" href="playbooks.html">Open Playbooks →</a></div>
+        <div class="note"><p><strong>Skill boundary:</strong> a dedicated playbooks skill is justified when we begin creating or running multiple playbooks. It should handle outcome framing, stage decomposition, routing, shared state, gates, handoffs, and reconciliation; it should call <code>persona-research</code> and <code>persona-skills</code> when new lenses or capabilities are needed.</p></div>
+      </section>
+
       <section class="article-section" id="library">
-        <h2>Library behavior</h2>
-        <p>When a persona is added to the library, the site keeps the browsing model simple and the detail view deep.</p>
+        <h2>Personas behavior</h2>
+        <p>When a persona is added to Personas, the site keeps the browsing model simple and the detail view deep.</p>
         <ul class="rule-list"><li><strong>Top level</strong><span>Browse and filter by role group, such as Operators, Leaders, or Specialists.</span></li><li><strong>Persona detail</strong><span>See lifecycle, operating context, operating state, activities, tools, skills, journeys, and flow hierarchy.</span></li><li><strong>Skills</strong><span>Browse reusable capabilities across personas, then open a skill to inspect triggers, observable practice, workflows, and evidence.</span></li><li><strong>Revision history</strong><span>Review the semantic record of what changed and which evidence or confidence supported the change.</span></li><li><strong>Resources</strong><span>Find the cited source trail at the end of the persona detail, after revision history and the product implication.</span></li></ul>
-        <a class="back" href="skills.html">Browse the Skills Library →</a><br />
+        <a class="back" href="skills.html">Browse Skills →</a><br />
+        <a class="back" href="playbooks.html">Browse Playbooks →</a><br />
         <a class="back" href="skill-views.html">Compare skill presentation options →</a><br />
-        <a class="back" href="index.html">← Back to the library</a>
+        <a class="back" href="index.html">← Back to Personas</a>
       </section>
     </article>
   </div>

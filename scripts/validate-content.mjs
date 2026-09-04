@@ -15,6 +15,7 @@ const stateOutputPath = path.join(root, 'dist', 'js', 'library-state.js');
 const pagePath = path.join(root, 'dist', 'index.html');
 const skillsPagePath = path.join(root, 'dist', 'skills.html');
 const jobSearchPagePath = path.join(root, 'dist', 'job-search.html');
+const playbooksPagePath = path.join(root, 'dist', 'playbooks.html');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
 const modelSource = await readFile(modelPath, 'utf8');
@@ -26,6 +27,7 @@ const stateOutput = await readFile(stateOutputPath, 'utf8');
 const page = await readFile(pagePath, 'utf8');
 const skillsPage = await readFile(skillsPagePath, 'utf8');
 const jobSearchPage = await readFile(jobSearchPagePath, 'utf8');
+const playbooksPage = await readFile(playbooksPagePath, 'utf8');
 const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
@@ -46,7 +48,10 @@ for (const [name, html] of [['library', page], ['skills', skillsPage]]) {
 if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchPage.includes('Define target') || !jobSearchPage.includes('ATS quality') || !jobSearchPage.includes('Integrity quality')) {
   throw new Error('Job search page is missing its system summary or quality gates');
 }
-for (const html of [page, skillsPage, jobSearchPage]) if (!html.includes('job-search.html')) throw new Error('Primary pages must link to the Job search page');
+if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Shared state keeps the playbook coherent')) {
+  throw new Error('Playbooks page is missing its mental model or current playbook');
+}
+for (const html of [page, skillsPage, jobSearchPage, playbooksPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
 
 const personaIds = new Set();
 const allowedRoles = new Set(['operator', 'leader', 'specialist']);

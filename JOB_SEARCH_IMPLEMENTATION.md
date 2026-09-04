@@ -6,6 +6,8 @@ Build a research-backed job-search workspace that helps a person define a target
 
 The system should optimize for truthful fit and useful clarity—not keyword stuffing, generic personal branding, or visual polish detached from the role.
 
+This is a playbook, not a new persona category. It composes existing Personas, Skills, persona-owned workflows, shared evidence, artifacts, decision rights, quality gates, and a learning loop around one outcome.
+
 ## Recommended operating model
 
 Use one primary candidate persona with a coordinated set of specialist lenses:
@@ -27,7 +29,7 @@ ATS and human review must remain separate gates. A document can be technically p
 The first build is a responsive reference surface plus actual working-draft persona records, not a full application tracker. It includes:
 
 - The persona and responsibilities of each supporting role
-- Five new job-search persona records in the Persona Library: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), and Samira Nguyen (outreach and interview coach)
+- Five new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), and Samira Nguyen (outreach and interview coach)
 - Reuse of Camille Ortiz for visual communication review and Riley Morgan for orchestration
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
 - The end-to-end search workflow

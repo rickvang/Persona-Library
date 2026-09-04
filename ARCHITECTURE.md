@@ -1,4 +1,4 @@
-# Persona Library architecture
+# Personas system architecture
 
 ## Current boundary
 
@@ -25,9 +25,10 @@ private Sites deployment
 - `client/library-state.js` owns small URL-aware page state such as role filters, search terms, and selected records.
 - `dist/data/*.js` and `dist/js/*.js` are generated output consumed by `dist/index.html` and `dist/skills.html`.
 - `dist/index.html` owns persona presentation and page-specific interaction, not persona records or shared render primitives.
-- `dist/skills.html` is the cross-persona Skills Library: it indexes reusable capabilities and opens their triggers, operating model, quality signals, observable actions, workflow reach, evidence, modular anatomy, and persona applications.
+- `dist/skills.html` is the cross-persona Skills space: it indexes reusable capabilities and opens their triggers, operating model, quality signals, observable actions, workflow reach, evidence, modular anatomy, and persona applications.
+- `dist/playbooks.html` is the Playbooks space: it explains how personas, skills, workflows, artifacts, evidence, and quality gates compose around an outcome. Detailed playbooks can live behind it as deep links, such as `dist/job-search.html`.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
-- `dist/guide.html`, `dist/decisions.html`, `dist/activity-views.html`, `dist/skill-views.html`, and `dist/job-search.html` remain documentation and exploration surfaces. The Decisions page also holds parked future capability ideas with implementation notes; the job-search page is the first planning surface for a future evidence-led application workspace.
+- `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html`, `dist/activity-views.html`, and `dist/skill-views.html` remain documentation and exploration surfaces. The Decisions page also holds parked future capability ideas with implementation notes; `dist/job-search.html` is the first detailed playbook surface.
 - `JOB_SEARCH_IMPLEMENTATION.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
 
 ## Invariants
