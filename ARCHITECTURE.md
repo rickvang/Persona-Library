@@ -29,7 +29,7 @@ private Sites deployment
 - `dist/playbooks.html` is the Playbooks space: it explains how personas, skills, workflows, artifacts, evidence, and quality gates compose around an outcome. Detailed playbooks can live behind it as deep links, such as `dist/job-search.html`.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
 - `dist/prototyping.html` is the active prototype index. `dist/activity-views.html` and `dist/skill-views.html` are focused prototype detail surfaces; future experiments should be added here before they affect the current system.
-- `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html` is the private archive of selected and applied decisions; `dist/job-search.html` is the first detailed playbook surface.
+- `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html` is the private archive of individually addressable decision records with status filters, prototype evidence, affected surfaces, and revisit conditions; `dist/job-search.html` is the first detailed playbook surface.
 - `JOB_SEARCH_IMPLEMENTATION.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
 
 ## Docs, prototyping, and decisions boundary
@@ -43,6 +43,8 @@ Keep the three spaces complementary:
 The working rule is: **Prototyping explores; Decisions archive; Docs explain what is true now.** Link a prototype to its decision record, link the decision to the Docs section or product surface it changed, and avoid copying whole explanations between the three spaces.
 
 Use prototype status `Active → Selected → Archived`. Use decision status `Proposed → Decided → Applied → Superseded`. Use `Parked` for a useful idea intentionally deferred.
+
+Each archived decision should preserve its question, chosen direction, rationale, tradeoffs, affected surfaces, source prototype, and revisit condition. A changed conclusion creates a new record and marks the previous record `Superseded`; it does not rewrite the old rationale.
 
 ## Invariants
 
