@@ -81,15 +81,16 @@
   <div class="docs-layout">
     <nav class="sidebar" aria-label="Guide sections">
       <p class="sidebar-label">On this page</p>
-      <a href="#quick-start">Quick start</a>
-      <a href="#choose-request">Choose a request</a>
-      <a href="#automatic">What happens automatically</a>
-      <a href="#sources">Source updates</a>
-      <a href="#library">Library behavior</a>
+      <a href="#start">Start here</a>
+      <a href="#create">Create a persona</a>
+      <a href="#research-only">Research only</a>
+      <a href="#update">Update a persona</a>
+      <a href="#output">What you’ll get</a>
+      <a href="#library">In the library</a>
     </nav>
     <article>
-      <section class="article-section" id="quick-start">
-        <h2>Quick start</h2>
+      <section class="article-section" id="start">
+        <h2>Start here</h2>
         <p class="lede">For most new personas, use this prompt. Replace the bracketed parts if you have them; otherwise the research will use a cross-industry default.</p>
         <div class="prompt-card">
           <div class="prompt-meta"><h3>Create and add a persona</h3><span class="tag">Recommended</span></div>
@@ -100,18 +101,30 @@
         <div class="note"><p><strong>You don’t need to say “use the skill.”</strong> The persona-research method is intended to activate automatically when the request is clearly about researching or creating a persona.</p></div>
       </section>
 
-      <section class="article-section" id="choose-request">
-        <h2>Choose a request</h2>
-        <p>Use the version that matches what you want changed.</p>
+      <section class="article-section" id="create">
+        <h2>Create a persona</h2>
+        <p>Use this when you want a new persona researched and added to the library. You can optionally invoke the skill explicitly.</p>
         <div class="prompt-list">
-          <div class="prompt-card"><div class="prompt-meta"><h3>Explicitly invoke the skill</h3><span class="tag">Optional</span></div><p>Useful when you want to make the method unambiguous.</p><pre id="prompt-explicit">Use $persona-research to create a persona for a [role]. Add it to the Persona Library.</pre><button class="copy" data-copy-id="prompt-explicit">Copy prompt</button></div>
-          <div class="prompt-card"><div class="prompt-meta"><h3>Research only</h3><span class="tag">No site change</span></div><p>Get the research and synthesis without changing the live library.</p><pre id="prompt-only">Research the persona of a [role] in [context]. Give me the findings only; don’t update the Persona Library.</pre><button class="copy" data-copy-id="prompt-only">Copy prompt</button></div>
-          <div class="prompt-card"><div class="prompt-meta"><h3>Check another source</h3><span class="tag">Update evidence</span></div><p>Give a URL or ask for a new source. Only affected claims and workflows should change.</p><pre id="prompt-source">Check another source for [persona name], summarize what it confirms, extends, qualifies, or contradicts, and add it to the Resources section.</pre><button class="copy" data-copy-id="prompt-source">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Plain-language request</h3><span class="tag">Recommended</span></div><p>The skill should activate automatically for a clear persona request.</p><pre id="prompt-create-plain">Create a well-researched persona for a [role] in [industry or context] and add it to the Persona Library.</pre><button class="copy" data-copy-id="prompt-create-plain">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Explicit skill request</h3><span class="tag">Optional</span></div><p>Use this when you want to make the research method unambiguous.</p><pre id="prompt-explicit">Use $persona-research to create a persona for a [role]. Add it to the Persona Library.</pre><button class="copy" data-copy-id="prompt-explicit">Copy prompt</button></div>
         </div>
       </section>
 
-      <section class="article-section" id="automatic">
-        <h2>What happens automatically</h2>
+      <section class="article-section" id="research-only">
+        <h2>Research only</h2>
+        <p>Use this when you want the findings and synthesis but do not want the live library changed.</p>
+        <div class="prompt-card"><pre id="prompt-only">Research the persona of a [role] in [context]. Give me the findings only; don’t update the Persona Library.</pre><button class="copy" data-copy-id="prompt-only">Copy prompt</button></div>
+      </section>
+
+      <section class="article-section" id="update">
+        <h2>Update a persona</h2>
+        <p>Use this to check a named source or ask for a new authoritative source. The current persona is compared with the new evidence rather than rewritten wholesale.</p>
+        <div class="prompt-card"><pre id="prompt-source">Check another source for [persona name], summarize what it confirms, extends, qualifies, or contradicts, and add it to the Resources section.</pre><button class="copy" data-copy-id="prompt-source">Copy prompt</button></div>
+        <div class="source-callout"><div><h3>What changes?</h3><p>Only affected claims, workflows, priorities, confidence, or open questions should be updated. The source is added with a note about what it contributes.</p></div><button class="copy" data-copy-id="prompt-source">Copy source request</button></div>
+      </section>
+
+      <section class="article-section" id="output">
+        <h2>What you’ll get</h2>
         <ul class="rule-list">
           <li><strong>Ambiguity is scoped</strong><span>If a role has materially different interpretations, you’ll get a short multiple-choice question with an “Other — describe” option. Otherwise a sensible default is chosen and stated.</span></li>
           <li><strong>The day is mapped</strong><span>Research is organized into activities, journeys, and workflows, with foundational, supporting, and edge-case flows separated when appropriate.</span></li>
