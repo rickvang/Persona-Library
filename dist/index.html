@@ -181,7 +181,7 @@
       </div>
       <div class="library-layout">
         <aside class="filters" aria-label="Filter personas">
-          <div class="filter-group role-filter"><p class="filter-label">Role group</p><button class="filter-btn active" data-filter="role" data-value="all">All roles <span class="pill-count">6</span></button><button class="filter-btn" data-filter="role" data-value="operator">Operators <span class="pill-count">2</span></button><button class="filter-btn" data-filter="role" data-value="leader">Leaders <span class="pill-count">2</span></button><button class="filter-btn" data-filter="role" data-value="specialist">Specialists <span class="pill-count">2</span></button></div>
+          <div class="filter-group role-filter"><p class="filter-label">Role group</p><button class="filter-btn active" data-filter="role" data-value="all">All roles <span class="pill-count" id="role-count-all">7</span></button><button class="filter-btn" data-filter="role" data-value="operator">Operators <span class="pill-count" id="role-count-operator">2</span></button><button class="filter-btn" data-filter="role" data-value="leader">Leaders <span class="pill-count" id="role-count-leader">2</span></button><button class="filter-btn" data-filter="role" data-value="specialist">Specialists <span class="pill-count" id="role-count-specialist">3</span></button></div>
         </aside>
         <section class="grid" id="grid" aria-live="polite"></section>
       </div>
@@ -281,6 +281,11 @@
       const flows = flowLibrary[id] || [];
       return flowTypes.reduce((counts, type) => { counts[type.key] = flows.filter(flow => flow.type === type.key).length; return counts; }, {});
     }
+    function updateRoleCounts() {
+      const counts = personas.reduce((all, persona) => { all[persona.role] = (all[persona.role] || 0) + 1; return all; }, {operator:0, leader:0, specialist:0});
+      document.querySelector('#role-count-all').textContent = personas.length;
+      Object.keys(counts).forEach(role => { document.querySelector(`#role-count-${role}`).textContent = counts[role]; });
+    }
     function renderFlows(id) {
       const flows = flowLibrary[id] || [];
       return flowTypes.map(type => {
@@ -291,6 +296,7 @@
     }
 
     function render() {
+      updateRoleCounts();
       const term = search.value.trim().toLowerCase();
       const visible = personas.filter(p => {
         const haystack = [p.name,p.roleLabel,p.archetype,p.lifecycle,p.operatingContext,p.operatingState,p.useWhen,p.tags.join(' '),p.quote,p.overview,p.needs.join(' '),JSON.stringify(flowLibrary[p.id] || [])].join(' ').toLowerCase();
