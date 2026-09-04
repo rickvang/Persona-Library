@@ -31,6 +31,17 @@ private Sites deployment
 - `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html`, `dist/activity-views.html`, and `dist/skill-views.html` remain documentation and exploration surfaces. The Decisions page also holds parked future capability ideas with implementation notes; `dist/job-search.html` is the first detailed playbook surface.
 - `JOB_SEARCH_IMPLEMENTATION.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
 
+## Docs and decisions boundary
+
+Keep the two spaces complementary:
+
+- Docs contain the current truth: definitions, boundaries, instructions, examples, prompts, and the current information architecture. They should be enough for orientation and reuse.
+- Decisions contain the reasoning and history behind that truth: explorations, alternatives, tradeoffs, evidence, status, affected surfaces, and revisit conditions. They should make change understandable and accountable.
+
+The working rule is: **Docs explain what is true now; Decisions explain why it is true and when it may change.** Link from a current Docs rule to its decision record, and from the decision record back to the Docs section it changed. Avoid copying whole explanations between the two spaces.
+
+Use the status flow `Exploring → Proposed → Decided → Applied → Superseded`. Use `Parked` for a useful idea intentionally deferred.
+
 ## Invariants
 
 Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, and the page script boundary.
