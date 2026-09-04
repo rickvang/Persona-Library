@@ -1,0 +1,139 @@
+# Job search system implementation plan
+
+## Purpose
+
+Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.
+
+The system should optimize for truthful fit and useful clarity—not keyword stuffing, generic personal branding, or visual polish detached from the role.
+
+## Recommended operating model
+
+Use one primary candidate persona with a coordinated set of specialist lenses:
+
+1. **Job seeker** — source of truth for goals, constraints, experience, preferences, voice, and evidence.
+2. **Search strategist** — defines target roles, search boundaries, positioning, channels, and prioritization.
+3. **Hiring manager / role calibrator** — interprets the role, separates required signals from noise, and defines what success would look like.
+4. **ATS application specialist** — checks parsing, terminology alignment, structure, and truthful coverage.
+5. **Human narrative editor** — improves clarity, relevance, voice, credibility, and story.
+6. **Visual communication reviewer** — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish.
+7. **Research and verification analyst** — researches companies, teams, role expectations, and evidence.
+8. **Outreach and interview coach** — prepares networking messages, follow-ups, interview stories, and questions.
+9. **Job-search orchestrator** — coordinates the lenses, preserves decisions, and keeps the search coherent over time.
+
+ATS and human review must remain separate gates. A document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system.
+
+## MVP scope
+
+The first build is a responsive reference and planning surface, not a full application tracker. It includes:
+
+- The persona and responsibilities of each supporting role
+- The end-to-end search workflow
+- Quality gates for ATS compatibility, human readability, evidence, and visual communication
+- A clear boundary between current capabilities and later product work
+
+The first workflow is:
+
+`Define target → Analyze role → Map evidence → Draft application → ATS review → Human review → Submit → Learn`
+
+## Data model
+
+Each future job-search record should preserve:
+
+- Candidate goals, constraints, target roles, and acceptable adjacent roles
+- Job description, source URL, company context, and research date
+- Requirement-to-evidence mappings with confidence and gaps
+- Resume, cover letter, portfolio, outreach, and interview artifacts
+- ATS review findings and human review findings as separate records
+- Version history, decisions, submitted date, outcome, and learning
+- Open questions and what evidence would change the search strategy
+
+Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct.
+
+## Phased delivery
+
+### Phase 0 — Define the search
+
+- Capture role family, level, industry, geography, work mode, compensation, timing, and constraints.
+- Define a primary target plus acceptable adjacent targets.
+- Create an evidence inventory: outcomes, scope, decisions, artifacts, metrics, and examples.
+
+### Phase 1 — Role and evidence alignment
+
+- Parse a job description into responsibilities, capabilities, outcomes, and signals.
+- Map each requirement to evidence, confidence, and a gap or follow-up question.
+- Produce a truthful positioning statement and role-specific evidence shortlist.
+
+### Phase 2 — Application packet
+
+- Draft a resume or application using the evidence map.
+- Draft a cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry.
+- Generate portfolio or case-study emphasis for design-oriented roles.
+
+### Phase 3 — Quality review
+
+- Run the ATS pass for parseability, terminology coverage, structure, and truthful alignment.
+- Run the human pass for clarity, credibility, narrative, specificity, and role fit.
+- Run the visual pass for hierarchy, scan path, density, typography, and context.
+- Record unresolved tradeoffs instead of silently flattening them.
+
+### Phase 4 — Outreach and interview
+
+- Create targeted outreach and follow-up messages.
+- Prepare evidence-led interview stories and questions.
+- Practice likely role-specific scenarios and evaluate answers against the same quality model.
+
+### Phase 5 — Search learning loop
+
+- Track submissions, responses, interviews, and rejection signals.
+- Separate market feedback from noise and small-sample assumptions.
+- Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.
+
+## Quality gates
+
+### ATS quality
+
+- The document parses into the intended sections.
+- Role-relevant terminology appears naturally where supported by evidence.
+- Dates, titles, employers, and outcomes remain unambiguous.
+- Formatting does not hide important content from extraction.
+
+### Human quality
+
+- The first scan communicates role, level, and relevant value quickly.
+- Claims are specific, credible, and supported by examples.
+- The story reflects the target role without erasing the candidate’s voice.
+- The cover letter adds a useful connection rather than repeating the resume.
+
+### Visual quality
+
+- Hierarchy supports the reader’s decision path.
+- Density is appropriate to the role and reading context.
+- Aesthetic choices fit the industry, seniority, and medium.
+- Portfolio visuals clarify decisions and outcomes rather than acting as decoration.
+
+### Integrity quality
+
+- No invented metrics, tools, responsibilities, or outcomes.
+- Uncertainty and gaps are visible.
+- Generated language is edited against the candidate’s actual voice.
+- Company research is dated and sourced.
+
+## Deliberately out of scope for the MVP
+
+- Automatic job scraping or mass application submission
+- Unverified salary, culture, or hiring-probability claims
+- Autonomous outreach or recruiter messaging
+- A single universal resume template
+- An aggregate score that pretends to replace judgment
+- Persistent application tracking and reminders before the evidence model is stable
+
+These are future opportunities, not implied capabilities of the current reference page.
+
+## Validation questions
+
+- Can a candidate explain why a role is in or out of scope?
+- Can each important claim in an application be traced to evidence?
+- Does the ATS pass improve retrieval without making the writing unnatural?
+- Can a human reviewer identify fit, level, and contribution quickly?
+- Does visual treatment support the context rather than merely signal taste?
+- Does feedback change the search model only when it is repeated or well-supported?

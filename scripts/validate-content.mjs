@@ -14,6 +14,7 @@ const statePath = path.join(root, 'client', 'library-state.js');
 const stateOutputPath = path.join(root, 'dist', 'js', 'library-state.js');
 const pagePath = path.join(root, 'dist', 'index.html');
 const skillsPagePath = path.join(root, 'dist', 'skills.html');
+const jobSearchPagePath = path.join(root, 'dist', 'job-search.html');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
 const modelSource = await readFile(modelPath, 'utf8');
@@ -24,6 +25,7 @@ const stateSource = await readFile(statePath, 'utf8');
 const stateOutput = await readFile(stateOutputPath, 'utf8');
 const page = await readFile(pagePath, 'utf8');
 const skillsPage = await readFile(skillsPagePath, 'utf8');
+const jobSearchPage = await readFile(jobSearchPagePath, 'utf8');
 const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
@@ -41,6 +43,10 @@ for (const [name, html] of [['library', page], ['skills', skillsPage]]) {
     if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);
   }
 }
+if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchPage.includes('Define target') || !jobSearchPage.includes('ATS quality') || !jobSearchPage.includes('Integrity quality')) {
+  throw new Error('Job search page is missing its system summary or quality gates');
+}
+for (const html of [page, skillsPage, jobSearchPage]) if (!html.includes('job-search.html')) throw new Error('Primary pages must link to the Job search page');
 
 const personaIds = new Set();
 const allowedRoles = new Set(['operator', 'leader', 'specialist']);
