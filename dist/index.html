@@ -75,6 +75,9 @@
     .persona-card h2 { margin: 22px 0 6px; font-size: 25px; letter-spacing: -.04em; }
     .archetype { margin: 0; color: var(--coral); font-size: 14px; font-weight: 800; }
     .status-badge { display: inline-block; margin-top: 10px; padding: 5px 8px; border-radius: 999px; color: #5c4d24; background: #f8e9af; font-size: 11px; font-weight: 800; }
+    .flow-mix { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 13px; }
+    .flow-count { padding: 5px 7px; border-radius: 999px; color: #526174; background: #edf0eb; font-size: 10px; font-weight: 800; }
+    .flow-count.foundation { color: #266354; background: #e2f4ef; } .flow-count.supporting { color: #59622a; background: #f5f0ce; } .flow-count.edge { color: #87513f; background: #ffe8df; }
     .quote { margin: 20px 0 18px; color: #314154; font-family: Georgia, serif; font-size: 17px; line-height: 1.35; }
     .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
     .tag { padding: 5px 8px; border-radius: 999px; color: #536272; background: #edf0eb; font-size: 11px; font-weight: 700; }
@@ -108,6 +111,17 @@
     .detail ul { margin: 0; padding-left: 18px; color: #314154; line-height: 1.6; }
     .detail.evidence { padding: 14px; border-radius: 13px; background: #f3efe3; }
     .detail.evidence h3 { color: #6e5c28; }
+    .flow-sections { display: grid; gap: 16px; margin-bottom: 28px; }
+    .flow-tier-section { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: #f7f8f4; }
+    .flow-tier-section.foundation { border-color: #b8dfd3; background: #effaf6; } .flow-tier-section.supporting { background: #f4f5f1; } .flow-tier-section.edge { border-color: #e8d394; background: #fff8dc; }
+    .tier-header { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; margin-bottom: 12px; }
+    .tier-header h3 { margin: 0; font-size: 15px; letter-spacing: -.02em; } .tier-header span { color: var(--ink-soft); font-size: 11px; font-weight: 700; }
+    .flow-list { display: grid; gap: 8px; }
+    .flow-card { border: 1px solid var(--line); border-radius: 10px; background: var(--card); overflow: hidden; }
+    .flow-card summary { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 12px; list-style: none; cursor: pointer; } .flow-card summary::-webkit-details-marker { display: none; }
+    .flow-card summary strong { display: block; font-size: 14px; } .flow-card summary span { color: var(--ink-soft); font-size: 11px; } .flow-card summary .flow-toggle { color: var(--ink); font-size: 18px; font-weight: 400; }
+    .flow-card[open] summary .flow-toggle { transform: rotate(45deg); } .flow-card > p { margin: 0; padding: 0 12px 11px; color: var(--ink-soft); font-size: 12px; line-height: 1.4; }
+    .activity-inventory { padding: 0 12px 12px; } .activity-row { display: grid; grid-template-columns: 1.1fr .65fr 1.1fr 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 11px; line-height: 1.35; } .activity-row:first-child { color: var(--ink-soft); font-size: 9px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; } .activity-row span { color: var(--ink-soft); } .activity-row em { color: #355d55; font-style: normal; font-weight: 700; }
     .implication { margin-top: 24px; padding: 16px; border-radius: 13px; background: var(--mint); }
     .implication h3 { color: #1d5d50; }
     @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -121,6 +135,7 @@
       .filter-btn { width: auto; flex: 0 0 auto; } .grid { grid-template-columns: 1fr; } .persona-card { min-height: 285px; }
       .method { display: block; margin-top: 50px; } .method p { margin-top: 12px; } .method-steps { grid-template-columns: 1fr; margin-top: 22px; }
       .persona-facts, .detail-grid { grid-template-columns: 1fr; gap: 12px; }
+      .activity-row { grid-template-columns: 1fr 1fr; gap: 5px 12px; } .activity-row:first-child { display: none; } .activity-row span:nth-child(2) { text-align: right; } .activity-row span:nth-child(3), .activity-row span:nth-child(4) { padding-top: 2px; }
     }
     @media (max-width: 430px) {
       h1 { font-size: 37px; }
@@ -167,7 +182,7 @@
 
   <dialog id="detail-dialog" aria-labelledby="detail-name">
     <div class="drawer-head"><div><p id="detail-role"></p><h2 id="detail-name"></h2><span class="drawer-status" id="detail-confidence"></span></div><button class="close" id="close-dialog" aria-label="Close persona details">×</button></div>
-    <div class="drawer-body"><p class="drawer-quote" id="detail-quote"></p><div class="persona-facts" aria-label="Persona context"><div class="persona-fact"><span>Lifecycle</span><strong id="detail-lifecycle"></strong></div><div class="persona-fact"><span>Operating context</span><strong id="detail-operating-context"></strong></div><div class="persona-fact"><span>Operating state</span><strong id="detail-operating-state"></strong></div></div><div class="detail-grid"><div class="detail"><h3>In their words</h3><p id="detail-overview"></p></div><div class="detail"><h3>Context</h3><p id="detail-context"></p></div><div class="detail"><h3>Use this lens when</h3><p id="detail-use"></p></div><div class="detail evidence"><h3>Evidence status</h3><p id="detail-evidence"></p></div><div class="detail"><h3>Goals</h3><ul id="detail-goals"></ul></div><div class="detail"><h3>Friction</h3><ul id="detail-pains"></ul></div><div class="detail"><h3>Behaviors</h3><ul id="detail-behaviors"></ul></div><div class="detail"><h3>Needs</h3><ul id="detail-needs"></ul></div></div><div class="implication detail"><h3>Product implication</h3><p id="detail-implication"></p></div></div>
+    <div class="drawer-body"><p class="drawer-quote" id="detail-quote"></p><div class="persona-facts" aria-label="Persona context"><div class="persona-fact"><span>Lifecycle</span><strong id="detail-lifecycle"></strong></div><div class="persona-fact"><span>Operating context</span><strong id="detail-operating-context"></strong></div><div class="persona-fact"><span>Operating state</span><strong id="detail-operating-state"></strong></div></div><div class="flow-sections" id="detail-flows"></div><div class="detail-grid"><div class="detail"><h3>In their words</h3><p id="detail-overview"></p></div><div class="detail"><h3>Context</h3><p id="detail-context"></p></div><div class="detail"><h3>Use this lens when</h3><p id="detail-use"></p></div><div class="detail evidence"><h3>Evidence status</h3><p id="detail-evidence"></p></div><div class="detail"><h3>Goals</h3><ul id="detail-goals"></ul></div><div class="detail"><h3>Friction</h3><ul id="detail-pains"></ul></div><div class="detail"><h3>Behaviors</h3><ul id="detail-behaviors"></ul></div><div class="detail"><h3>Needs</h3><ul id="detail-needs"></ul></div></div><div class="implication detail"><h3>Product implication</h3><p id="detail-implication"></p></div></div>
   </dialog>
 
   <script>
@@ -179,22 +194,90 @@
       { id:'amina', name:'Amina Bello', initials:'AB', role:'specialist', roleLabel:'Research specialist', lifecycle:'Starting out', operatingContext:'Cross-squad work', operatingState:'Making sense of evidence', confidence:'Working draft', evidence:'Starter synthesis — validate with interviews, support logs, or analytics before treating this as representative.', useWhen:'You are making qualitative evidence reusable across more than one team or decision.', archetype:'The pattern finder', color:'a-coral', quote:'“The insight is usually in the detail people skip past.”', tags:['research','qualitative','depth'], overview:'Amina turns messy conversations into patterns, while protecting the nuance that makes the patterns useful.', context:'Works across two product squads, often brought in after a question has already been framed. She has more evidence than time.', goals:['Connect evidence to decisions','Keep participant voices intact','Make research reusable beyond one project'], pains:['Research is hard to find later','Synthesis gets reduced to a slide','Teams ask for answers before agreeing on the question'], behaviors:['Annotates everything','Groups by tension, not topic','Revisits old evidence with new questions'], needs:['Flexible evidence capture','A place for nuance and disagreement','A simple path from finding to implication'], implication:'Preserve the texture of evidence while making patterns easy to scan, cite, and revisit.' },
       { id:'victor', name:'Victor Adeyemi', initials:'VA', role:'specialist', roleLabel:'Frontline expert', lifecycle:'Established', operatingContext:'Field work', operatingState:'Under pressure', confidence:'Working draft', evidence:'Starter synthesis — validate with interviews, support logs, or analytics before treating this as representative.', useWhen:'You are designing for interrupted, physical, or low-connectivity work.', archetype:'The practical skeptic', color:'a-blue', quote:'“If this adds one more step to the day, it needs to earn that step.”', tags:['frontline','workflow','trust'], overview:'Victor knows where the official process meets reality—and quickly spots tools designed from a distance.', context:'A senior field technician whose work happens across job sites, low-connectivity moments, and changing conditions.', goals:['Finish work safely and correctly','Avoid re-entering the same information','Trust the system when conditions change'], pains:['Tools assume perfect connectivity','Forms ignore the actual sequence of work','Small errors create expensive rework'], behaviors:['Creates shortcuts','Relies on memory under pressure','Shares workarounds with peers'], needs:['Fast, resilient workflows','Useful offline behavior','A voice in how the process is designed'], implication:'Respect the real workflow: reduce steps, design for interruption, and treat frontline workarounds as product evidence.' }
     ];
+    const flowLibrary = {
+      maya:[
+        {type:'foundational',title:'Triage incoming work',cadence:'Daily',summary:'Sort requests, spot risk, and assign the next owner.',activities:[['Review queue','Daily','Visibility','Information is scattered'],['Assign owner','Daily','Clear ownership','Handoffs are easy to miss']]},
+        {type:'foundational',title:'Monitor service quality',cadence:'Daily',summary:'Watch leading signals before customers feel the impact.',activities:[['Check leading signals','Daily','Early warning','Dashboards lag'],['Review exceptions','Daily','Consistency','Patterns are hard to compare']]},
+        {type:'supporting',title:'Improve a broken process',cadence:'Weekly',summary:'Turn a recurring workaround into a better team practice.',activities:[['Capture workaround','Weekly','Practicality','Fixes stay local'],['Update playbook','Weekly','Reuse','Documentation goes stale']]},
+        {type:'supporting',title:'Report operational health',cadence:'Weekly',summary:'Explain the state of service to the wider organization.',activities:[['Compile signal','Weekly','Accuracy','Metrics use different definitions'],['Explain variance','Weekly','Context','Numbers arrive without the why']]},
+        {type:'edge',title:'Recover after escalation',cadence:'As needed',summary:'Rebuild the timeline and coordinate a fast response.',activities:[['Rebuild timeline','As needed','Fast context','History is split across tools'],['Close the loop','As needed','Confidence','Resolution is hard to verify']]},
+        {type:'edge',title:'Cover a capacity gap',cadence:'As needed',summary:'Rebalance work when the team or demand changes suddenly.',activities:[['Rebalance queue','As needed','Fairness','Tradeoffs are implicit'],['Reset expectations','As needed','Trust','Updates take too long']]}
+      ],
+      tomas:[
+        {type:'foundational',title:'Set up a useful first version',cadence:'Weekly',summary:'Choose a path, configure the essentials, and test value.',activities:[['Choose a path','Weekly','Momentum','Too many choices appear first'],['Test with a real task','Weekly','Relevance','Examples feel generic']]},
+        {type:'foundational',title:'Learn from early users',cadence:'Weekly',summary:'Turn early reactions into the next product decision.',activities:[['Observe a user','Weekly','Signal','Feedback is sparse'],['Adjust the offer','Weekly','Speed','Learning competes with setup work']]},
+        {type:'supporting',title:'Keep work moving solo',cadence:'Daily',summary:'Protect limited focus while switching between roles.',activities:[['Plan focus','Daily','Control','Every task feels urgent'],['Track open work','Daily','Visibility','Memory becomes the system']]},
+        {type:'supporting',title:'Show progress to customers',cadence:'Weekly',summary:'Package enough proof to build confidence before the product is mature.',activities:[['Package proof','Weekly','Credibility','Evidence is scattered'],['Answer questions','Weekly','Clarity','Requests interrupt building']]},
+        {type:'edge',title:'Undo a wrong turn',cadence:'Sometimes',summary:'Recognize a poor path and recover without losing momentum.',activities:[['Spot mismatch','Sometimes','Low risk','Errors feel expensive'],['Roll back','Sometimes','Reversibility','Undo paths are unclear']]},
+        {type:'edge',title:'Respond when a customer is blocked',cadence:'As needed',summary:'Reproduce the issue, patch the path, and communicate clearly.',activities:[['Reproduce issue','As needed','Speed','Context is incomplete'],['Communicate update','As needed','Trust','Status work steals focus']]}
+      ],
+      nia:[
+        {type:'foundational',title:'Set team direction',cadence:'Quarterly',summary:'Turn customer, business, and team signals into a clear bet.',activities:[['Synthesize signal','Quarterly','Meaning','Evidence lives in silos'],['Frame decision','Quarterly','Alignment','Tradeoffs stay implicit']]},
+        {type:'foundational',title:'Carry context into decisions',cadence:'Weekly',summary:'Make the why durable as work moves between teams.',activities:[['Write brief','Weekly','Shared understanding','Nuance gets compressed'],['Record rationale','Weekly','Traceability','Decisions disappear into meetings']]},
+        {type:'supporting',title:'Prepare a leadership review',cadence:'Monthly',summary:'Create a narrative that is honest about progress and risk.',activities:[['Gather evidence','Monthly','Confidence','Definitions vary'],['Anticipate questions','Monthly','Preparedness','Late asks cause churn']]},
+        {type:'supporting',title:'Build team confidence',cadence:'Weekly',summary:'Hear concerns, clarify tradeoffs, and reinforce focus.',activities:[['Hear concerns','Weekly','Psychological safety','Signals stay private'],['Clarify tradeoff','Weekly','Direction','Different teams hear different versions']]},
+        {type:'edge',title:'Resolve a cross-team disagreement',cadence:'As needed',summary:'Surface the real difference and choose a principle for moving forward.',activities:[['Surface difference','As needed','Honesty','People argue past each other'],['Choose principle','As needed','Fairness','Decision rights are unclear']]},
+        {type:'edge',title:'Reframe after new evidence',cadence:'As needed',summary:'Change direction without making the previous work feel wasted.',activities:[['Assess change','As needed','Learning','New signal arrives late'],['Explain why','As needed','Trust','Change can look arbitrary']]}
+      ],
+      jin:[
+        {type:'foundational',title:'Evaluate an investment',cadence:'Monthly',summary:'Compare opportunities while making assumptions visible.',activities:[['Define case','Monthly','Comparability','Teams frame value differently'],['Compare scenarios','Monthly','Confidence','Precision hides uncertainty']]},
+        {type:'foundational',title:'Review performance',cadence:'Monthly',summary:'Separate signal from noise and decide what deserves attention.',activities:[['Normalize metric','Monthly','Accuracy','Inputs are inconsistent'],['Question variance','Monthly','Causality','Activity is mistaken for outcome']]},
+        {type:'supporting',title:'Improve planning inputs',cadence:'Quarterly',summary:'Help teams provide clearer, more decision-ready information.',activities:[['Define template','Quarterly','Consistency','Templates become bureaucracy'],['Coach teams','Quarterly','Understanding','Questions arrive too late']]},
+        {type:'supporting',title:'Protect focus',cadence:'Weekly',summary:'Sequence commitments so the portfolio does not become noise.',activities:[['Review commitments','Weekly','Prioritization','Every request sounds important'],['Flag spread','Weekly','Control','Risk is visible after the fact']]},
+        {type:'edge',title:'Challenge a late-stage request',cadence:'As needed',summary:'Ask for missing evidence without becoming the blocker.',activities:[['Locate gap','As needed','Fairness','Pressure changes the conversation'],['Decide risk','As needed','Trust','Assumptions are undocumented']]},
+        {type:'edge',title:'Reforecast after a shock',cadence:'As needed',summary:'Update the model and communicate a new range with calm.',activities:[['Update model','As needed','Speed','Inputs change mid-cycle'],['Share range','As needed','Clarity','People want false certainty']]}
+      ],
+      amina:[
+        {type:'foundational',title:'Plan a research study',cadence:'Per project',summary:'Frame the question, choose a method, and align the team.',activities:[['Frame question','Per project','Relevance','The question is already assumed'],['Select method','Per project','Fit','Constraints appear late']]},
+        {type:'foundational',title:'Synthesize field evidence',cadence:'Per project',summary:'Find patterns without stripping away the participant voice.',activities:[['Annotate notes','Per project','Depth','Evidence is messy'],['Group tensions','Per project','Meaning','Themes flatten disagreement']]},
+        {type:'supporting',title:'Make research reusable',cadence:'Weekly',summary:'Leave enough structure that the next team can find and trust the work.',activities:[['Tag source','Weekly','Findability','Taxonomy takes time'],['Save excerpt','Weekly','Traceability','Quotes lose context']]},
+        {type:'supporting',title:'Help teams use a finding',cadence:'Weekly',summary:'Connect evidence to a decision without overclaiming what it proves.',activities:[['Prepare readout','Weekly','Clarity','Slides simplify too much'],['Connect implication','Weekly','Actionability','Teams jump to solutions']]},
+        {type:'edge',title:'Revisit evidence after a surprise',cadence:'As needed',summary:'Return to the material when a new pattern challenges the first read.',activities:[['Test alternate pattern','As needed','Openness','Old synthesis feels final'],['Update finding','As needed','Integrity','Change needs a record']]},
+        {type:'edge',title:'Defend nuance under time pressure',cadence:'As needed',summary:'Protect important limits when a decision wants a simpler answer.',activities:[['Separate signal','As needed','Accuracy','The headline wins'],['Clarify limits','As needed','Trust','Caveats are treated as friction']]}
+      ],
+      victor:[
+        {type:'foundational',title:'Prepare for a job',cadence:'Daily',summary:'Review the route, constraints, and equipment before leaving.',activities:[['Check route','Daily','Predictability','Conditions change'],['Load kit','Daily','Readiness','Missing tools create rework']]},
+        {type:'foundational',title:'Complete work on site',cadence:'Daily',summary:'Perform the task safely while conditions change around the work.',activities:[['Inspect site','Daily','Safety','Forms ignore sequence'],['Record work','Daily','Low friction','Re-entry slows the job']]},
+        {type:'supporting',title:'Keep the team aligned',cadence:'Weekly',summary:'Share status, workarounds, and a clean handoff.',activities:[['Update status','Weekly','Visibility','Updates happen in fragments'],['Share workaround','Weekly','Peer trust','Fixes stay informal']]},
+        {type:'supporting',title:'Maintain equipment readiness',cadence:'Weekly',summary:'Check the kit and raise issues before they interrupt a job.',activities:[['Check condition','Weekly','Reliability','Small issues are easy to defer'],['Request replacement','Weekly','Speed','Approval paths are unclear']]},
+        {type:'edge',title:'Recover after interruption',cadence:'Often',summary:'Find the last reliable state and resume without guessing.',activities:[['Find last state','Often','Fast recovery','Context is split'],['Confirm change','Often','Confidence','Handoffs are incomplete']]},
+        {type:'edge',title:'Work with poor connectivity',cadence:'Sometimes',summary:'Capture what matters offline and sync it later without duplicate work.',activities:[['Cache details','Sometimes','Continuity','Offline behavior is unclear'],['Sync later','Sometimes','Accuracy','Conflicts need manual repair']]}
+      ]
+    };
     let roleFilter = 'all';
     const grid = document.querySelector('#grid');
     const search = document.querySelector('#search');
     const count = document.querySelector('#count');
     const clearButton = document.querySelector('#clear-filters');
     const dialog = document.querySelector('#detail-dialog');
+    const flowTypes = [
+      {key:'foundational', label:'Foundational flows', className:'foundation'},
+      {key:'supporting', label:'Supporting flows', className:'supporting'},
+      {key:'edge', label:'Edge-case flows', className:'edge'}
+    ];
+
+    function flowCounts(id) {
+      const flows = flowLibrary[id] || [];
+      return flowTypes.reduce((counts, type) => { counts[type.key] = flows.filter(flow => flow.type === type.key).length; return counts; }, {});
+    }
+    function renderFlows(id) {
+      const flows = flowLibrary[id] || [];
+      return flowTypes.map(type => {
+        const group = flows.filter(flow => flow.type === type.key);
+        if (!group.length) return '';
+        return `<section class="flow-tier-section ${type.className}"><div class="tier-header"><h3>${type.label}</h3><span>${group.length} ${group.length === 1 ? 'workflow' : 'workflows'}</span></div><div class="flow-list">${group.map((flow, index) => `<details class="flow-card" ${type.key === 'foundational' && index === 0 ? 'open' : ''}><summary><span><strong>${flow.title}</strong><span>${flow.cadence}</span></span><span class="flow-toggle">+</span></summary><p>${flow.summary}</p><div class="activity-inventory"><div class="activity-row"><span>Activity</span><span>Cadence</span><span>Cares most about</span><span>Friction</span></div>${flow.activities.map(activity => `<div class="activity-row"><strong>${activity[0]}</strong><span>${activity[1]}</span><em>${activity[2]}</em><span>${activity[3]}</span></div>`).join('')}</div></details>`).join('')}</div></section>`;
+      }).join('');
+    }
 
     function render() {
       const term = search.value.trim().toLowerCase();
       const visible = personas.filter(p => {
-        const haystack = [p.name,p.roleLabel,p.archetype,p.lifecycle,p.operatingContext,p.operatingState,p.useWhen,p.tags.join(' '),p.quote,p.overview,p.needs.join(' ')].join(' ').toLowerCase();
+        const haystack = [p.name,p.roleLabel,p.archetype,p.lifecycle,p.operatingContext,p.operatingState,p.useWhen,p.tags.join(' '),p.quote,p.overview,p.needs.join(' '),JSON.stringify(flowLibrary[p.id] || [])].join(' ').toLowerCase();
         return (roleFilter === 'all' || p.role === roleFilter) && (!term || haystack.includes(term));
       });
       count.textContent = `Showing ${visible.length} ${visible.length === 1 ? 'persona' : 'personas'}`;
       clearButton.hidden = !term && roleFilter === 'all';
-      grid.innerHTML = visible.length ? visible.map(p => `<article class="persona-card"><div class="card-top"><div class="avatar ${p.color}">${p.initials}</div><p class="role">${p.roleLabel}</p></div><h2>${p.name}</h2><p class="archetype">${p.archetype}</p><span class="status-badge">${p.confidence}</span><p class="quote">${p.quote}</p><div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div><button class="open-card" data-id="${p.id}"><span>Open persona</span><span class="arrow">→</span></button></article>`).join('') : '<div class="empty"><strong>No personas match that search.</strong><br>Try a broader term or clear a filter.</div>';
+      grid.innerHTML = visible.length ? visible.map(p => { const counts = flowCounts(p.id); return `<article class="persona-card"><div class="card-top"><div class="avatar ${p.color}">${p.initials}</div><p class="role">${p.roleLabel}</p></div><h2>${p.name}</h2><p class="archetype">${p.archetype}</p><span class="status-badge">${p.confidence}</span><div class="flow-mix" aria-label="Workflow mix"><span class="flow-count foundation">${counts.foundational} foundational</span><span class="flow-count supporting">${counts.supporting} supporting</span><span class="flow-count edge">${counts.edge} edge-case</span></div><p class="quote">${p.quote}</p><div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div><button class="open-card" data-id="${p.id}"><span>Open persona</span><span class="arrow">→</span></button></article>`; }).join('') : '<div class="empty"><strong>No personas match that search.</strong><br>Try a broader term or clear a filter.</div>';
       document.querySelectorAll('.open-card').forEach(btn => btn.addEventListener('click', () => openPersona(btn.dataset.id)));
     }
     function fillList(id, items) { document.querySelector(id).innerHTML = items.map(item => `<li>${item}</li>`).join(''); }
@@ -207,6 +290,7 @@
       document.querySelector('#detail-lifecycle').textContent = p.lifecycle;
       document.querySelector('#detail-operating-context').textContent = p.operatingContext;
       document.querySelector('#detail-operating-state').textContent = p.operatingState;
+      document.querySelector('#detail-flows').innerHTML = renderFlows(p.id);
       document.querySelector('#detail-overview').textContent = p.overview;
       document.querySelector('#detail-context').textContent = p.context;
       document.querySelector('#detail-use').textContent = p.useWhen;
