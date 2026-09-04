@@ -75,8 +75,8 @@
   <section class="hero">
     <p class="crumbs"><a href="index.html">Persona Library</a> / Using the skill</p>
     <p class="eyebrow">Reference guide</p>
-    <h1>Using persona-research</h1>
-    <p class="hero-copy">A short reference for creating, researching, adding, and updating personas. You can use the plain-language prompts below without remembering a special format.</p>
+    <h1>Using persona research</h1>
+    <p class="hero-copy">A short reference for researching personas, defining the skills behind their work, adding them to the library, and keeping them current.</p>
   </section>
   <div class="docs-layout">
     <nav class="sidebar" aria-label="Guide sections">
@@ -86,6 +86,8 @@
       <a href="#research-only">Research only</a>
       <a href="#update">Update a persona</a>
       <a href="#output">What you’ll get</a>
+      <a href="#persona-skills">Persona skills</a>
+      <a href="#sources">Source updates</a>
       <a href="#library">In the library</a>
     </nav>
     <article>
@@ -132,6 +134,18 @@
           <li><strong>Capabilities are explained</strong><span>The persona identifies the skills needed to perform the work and ties them to the activities and workflows that depend on them.</span></li>
           <li><strong>Evidence stays visible</strong><span>New secondary-research personas are marked Working draft, with confidence, open questions, limits, and sources kept visible.</span></li>
         </ul>
+      </section>
+
+      <section class="article-section" id="persona-skills">
+        <h2>Persona skills</h2>
+        <p>Use <code>$persona-skills</code> when you want to identify, explain, or maintain the capabilities behind a persona’s activities and workflows. It complements <code>$persona-research</code>: one establishes the role and its work; the other makes the skills needed to do that work explicit.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Identify needed skills</h3><span class="tag">Recommended</span></div><p>Start with a persona and connect its skills to the work already mapped.</p><pre id="prompt-skills">Use $persona-skills to identify the skills needed by this persona and connect them to its activities and workflows.</pre><button class="copy" data-copy-id="prompt-skills">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Expand one skill</h3><span class="tag">Profile</span></div><p>Turn a capability into an evidence-backed profile with observable behavior and proficiency signals.</p><pre id="prompt-skill-profile">Use $persona-skills to expand [skill] for [persona name] into a profile with observable behaviors, tools, proficiency signals, evidence, and validation questions.</pre><button class="copy" data-copy-id="prompt-skill-profile">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Check a skill source</h3><span class="tag">Update</span></div><p>Use a new source to improve only the skill claims it actually supports.</p><pre id="prompt-skill-source">Use $persona-skills to check this source for [persona name]’s [skill] and update only what it confirms, extends, qualifies, or contradicts.</pre><button class="copy" data-copy-id="prompt-skill-source">Copy prompt</button></div>
+        </div>
+        <div class="note"><p><strong>What it covers:</strong> skill definitions, related workflows, observable actions and decisions, prerequisites, tools and artifacts, failure modes, proficiency signals, evidence status, source links, and validation questions.</p></div>
+        <a class="back" href="skill-views.html">Compare skill presentation options in the Skill Layout Lab →</a>
       </section>
 
       <section class="article-section" id="sources">
