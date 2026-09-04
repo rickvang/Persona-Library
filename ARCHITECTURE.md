@@ -28,19 +28,21 @@ private Sites deployment
 - `dist/skills.html` is the cross-persona Skills space: it indexes reusable capabilities and opens their triggers, operating model, quality signals, observable actions, workflow reach, evidence, modular anatomy, and persona applications.
 - `dist/playbooks.html` is the Playbooks space: it explains how personas, skills, workflows, artifacts, evidence, and quality gates compose around an outcome. Detailed playbooks can live behind it as deep links, such as `dist/job-search.html`.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
-- `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html`, `dist/activity-views.html`, and `dist/skill-views.html` remain documentation and exploration surfaces. The Decisions page also holds parked future capability ideas with implementation notes; `dist/job-search.html` is the first detailed playbook surface.
+- `dist/prototyping.html` is the active prototype index. `dist/activity-views.html` and `dist/skill-views.html` are focused prototype detail surfaces; future experiments should be added here before they affect the current system.
+- `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html` is the private archive of selected and applied decisions; `dist/job-search.html` is the first detailed playbook surface.
 - `JOB_SEARCH_IMPLEMENTATION.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
 
-## Docs and decisions boundary
+## Docs, prototyping, and decisions boundary
 
-Keep the two spaces complementary:
+Keep the three spaces complementary:
 
 - Docs contain the current truth: definitions, boundaries, instructions, examples, prompts, and the current information architecture. They should be enough for orientation and reuse.
+- Prototyping contains active experiments: alternative structures, interaction directions, sample content, and temporary comparison surfaces. It is safe to change or discard a prototype.
 - Decisions contain the reasoning and history behind that truth: explorations, alternatives, tradeoffs, evidence, status, affected surfaces, and revisit conditions. They should make change understandable and accountable.
 
-The working rule is: **Docs explain what is true now; Decisions explain why it is true and when it may change.** Link from a current Docs rule to its decision record, and from the decision record back to the Docs section it changed. Avoid copying whole explanations between the two spaces.
+The working rule is: **Prototyping explores; Decisions archive; Docs explain what is true now.** Link a prototype to its decision record, link the decision to the Docs section or product surface it changed, and avoid copying whole explanations between the three spaces.
 
-Use the status flow `Exploring → Proposed → Decided → Applied → Superseded`. Use `Parked` for a useful idea intentionally deferred.
+Use prototype status `Active → Selected → Archived`. Use decision status `Proposed → Decided → Applied → Superseded`. Use `Parked` for a useful idea intentionally deferred.
 
 ## Invariants
 

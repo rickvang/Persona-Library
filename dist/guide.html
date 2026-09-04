@@ -70,7 +70,7 @@
 <body>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="playbooks.html">Playbooks</a><a href="guide.html" aria-current="page">Docs</a><a href="decisions.html">Decisions</a></nav>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="playbooks.html">Playbooks</a><a href="prototyping.html">Prototyping</a><a href="guide.html" aria-current="page">Docs</a><a href="decisions.html">Decisions</a></nav>
   </header>
   <section class="hero">
     <p class="crumbs"><a href="index.html">Personas</a> / Docs</p>
@@ -91,7 +91,7 @@
       <a href="#output">What you’ll get</a>
       <a href="#persona-skills">Persona skills</a>
       <a href="#persona-reconciliation">Reconciliation</a>
-      <a href="#layout-lab">Layout Lab</a>
+      <a href="#layout-lab">Prototyping</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In Personas</a>
     </nav>
@@ -166,14 +166,14 @@
       </section>
 
       <section class="article-section" id="layout-lab">
-        <h2>Layout Lab</h2>
-        <p>Use <code>$layout-lab</code> when the information architecture is unsettled and you want to compare real structures before changing the main experience. It creates a throwaway comparison surface, keeps the sample content constant, records the choice, and then applies the selected direction to the Site or product surface.</p>
+        <h2>Prototyping</h2>
+        <p>Use <code>$layout-lab</code> when the information architecture is unsettled and you want to compare real structures before changing the main experience. Prototyping is the active working space: it creates a throwaway comparison surface and keeps the sample content constant. Once a direction is chosen, archive the rationale in Decisions before applying it to the Site or product surface.</p>
         <div class="prompt-list">
           <div class="prompt-card"><div class="prompt-meta"><h3>Explore options</h3><span class="tag">Recommended</span></div><p>Ask for a small set of materially different structures using the same content.</p><pre id="prompt-layout-lab">Use $layout-lab to show me three ways to organize [content or workflow] before changing the main page. Keep the sample content constant and explain the tradeoffs.</pre><button class="copy" data-copy-id="prompt-layout-lab">Copy prompt</button></div>
           <div class="prompt-card"><div class="prompt-meta"><h3>Apply a choice</h3><span class="tag">After selection</span></div><p>Carry the chosen direction through the live page and any related documentation.</p><pre id="prompt-layout-apply">I choose Option [A–F]. Use $layout-lab to apply it to the main page, update any related skill or Docs page, and record the decision.</pre><button class="copy" data-copy-id="prompt-layout-apply">Copy prompt</button></div>
         </div>
         <div class="note"><p><strong>Good labs compare structure, not decoration.</strong> Keep the lab available as an exploration, make the chosen direction obvious, and record what remains open for validation.</p></div>
-        <div class="links"><a class="back" href="activity-views.html">Open the Layout Lab →</a><a class="back" href="skill-views.html">Open the Skill Layout Lab →</a><a class="back" href="decisions.html">Open the decision record →</a></div>
+        <div class="links"><a class="back" href="prototyping.html">Open Prototyping →</a><a class="back" href="activity-views.html">Open the Layout Lab →</a><a class="back" href="skill-views.html">Open the Skill Layout Lab →</a><a class="back" href="decisions.html">Open the decision archive →</a></div>
       </section>
 
       <section class="article-section" id="sources">
@@ -185,18 +185,18 @@
 
       <section class="article-section" id="mental-model">
         <h2>The mental model</h2>
-        <p class="lede">The site has four layers. Each layer has one job, so larger workflows can compose existing material without turning every use case into a new kind of record.</p>
-        <table class="mini-table"><thead><tr><th>Layer</th><th>What it answers</th></tr></thead><tbody><tr><td>Persona</td><td>Who is operating, in what lifecycle, context, and state?</td></tr><tr><td>Skill</td><td>What capability is needed, and how can quality be recognized?</td></tr><tr><td>Persona workflow</td><td>How does that person perform a meaningful flow of activities?</td></tr><tr><td>Playbook</td><td>How do several personas, skills, workflows, artifacts, and gates coordinate toward an outcome?</td></tr></tbody></table>
+        <p class="lede">The site has reusable knowledge layers and separate working-record layers. Each has one job, so larger workflows can compose existing material without turning every use case into a new kind of record.</p>
+        <table class="mini-table"><thead><tr><th>Layer</th><th>What it answers</th></tr></thead><tbody><tr><td>Persona</td><td>Who is operating, in what lifecycle, context, and state?</td></tr><tr><td>Skill</td><td>What capability is needed, and how can quality be recognized?</td></tr><tr><td>Persona workflow</td><td>How does that person perform a meaningful flow of activities?</td></tr><tr><td>Playbook</td><td>How do several personas, skills, workflows, artifacts, and gates coordinate toward an outcome?</td></tr><tr><td>Prototyping</td><td>Which structure or interaction direction should be tested before it becomes current?</td></tr><tr><td>Decision</td><td>What choice is durable, why was it made, and what does it affect?</td></tr></tbody></table>
         <div class="note"><p><strong>Keep the distinction clear:</strong> personas are lenses, skills are reusable capabilities, workflows are how a persona works, and playbooks are reusable operating models for outcomes.</p></div>
       </section>
 
       <section class="article-section" id="docs-vs-decisions">
-        <h2>Docs vs Decisions</h2>
-        <p class="lede">Use the two spaces together without making them duplicate each other. Docs are the current reference; Decisions preserve the reasoning that produced it.</p>
-        <table class="mini-table"><thead><tr><th>Space</th><th>Primary question</th><th>Keep here</th></tr></thead><tbody><tr><td>Docs</td><td>What is true now, and how do I use it?</td><td>Definitions, boundaries, instructions, examples, prompts, and the current information architecture.</td></tr><tr><td>Decisions</td><td>Why is it this way, what changed, and when should we revisit it?</td><td>Explorations, alternatives, tradeoffs, evidence, status, affected surfaces, and revisit conditions.</td></tr></tbody></table>
-        <div class="note"><p><strong>Working rule:</strong> Docs contain the current truth. Decisions contain the rationale and history behind that truth. Link from the current rule to its decision record, and from the decision back to the Docs section it changed.</p></div>
-        <ul class="rule-list"><li><strong>Use Docs for orientation</strong><span>Someone should be able to learn the system or complete a task without reading the entire history.</span></li><li><strong>Use Decisions for trust</strong><span>Someone should be able to understand the tradeoff, see what was applied, and know what could cause the choice to change.</span></li><li><strong>Do not copy whole sections</strong><span>Keep one canonical explanation in Docs and point to the relevant decision record when context matters.</span></li></ul>
-        <div class="source-callout"><div><h3>Status flow</h3><p>Track meaningful changes as <strong>Exploring → Proposed → Decided → Applied → Superseded</strong>. Use <strong>Parked</strong> for a useful idea intentionally deferred.</p></div><a class="back" href="decisions.html">Open Decisions →</a></div>
+        <h2>Docs, Prototyping, and Decisions</h2>
+        <p class="lede">Use the three spaces together without making them duplicate each other. Prototyping is active experimentation, Decisions preserve selected choices, and Docs explain the current system.</p>
+        <table class="mini-table"><thead><tr><th>Space</th><th>Primary question</th><th>Keep here</th></tr></thead><tbody><tr><td>Docs</td><td>What is true now, and how do I use it?</td><td>Definitions, boundaries, instructions, examples, prompts, and the current information architecture.</td></tr><tr><td>Prototyping</td><td>What could this become, and which direction works best?</td><td>Alternative structures, interaction directions, sample content, and temporary comparison surfaces.</td></tr><tr><td>Decisions</td><td>Why was this direction chosen, what changed, and when should we revisit it?</td><td>Selected options, alternatives considered, tradeoffs, evidence, status, affected surfaces, and revisit conditions.</td></tr></tbody></table>
+        <div class="note"><p><strong>Working rule:</strong> Prototyping explores. Decisions archive. Docs contain the current truth. Link a prototype to its decision record, and link the decision back to the Docs section or product surface it changed.</p></div>
+        <ul class="rule-list"><li><strong>Use Docs for orientation</strong><span>Someone should be able to learn the system or complete a task without reading the entire history.</span></li><li><strong>Use Prototyping for comparison</strong><span>Keep alternatives visible while the structure is unsettled, without implying that any option is current truth.</span></li><li><strong>Use Decisions for trust</strong><span>Someone should be able to understand the tradeoff, see what was applied, and know what could cause the choice to change.</span></li><li><strong>Keep one canonical explanation</strong><span>Do not copy whole sections between spaces. Point from the current Docs rule to its decision record when context matters.</span></li></ul>
+        <div class="source-callout"><div><h3>Status flows</h3><p>Prototypes move <strong>Active → Selected → Archived</strong>. Decisions move <strong>Proposed → Decided → Applied → Superseded</strong>. Use <strong>Parked</strong> for a useful idea intentionally deferred.</p></div><a class="back" href="decisions.html">Open Decisions →</a></div>
       </section>
 
       <section class="article-section" id="playbooks">
