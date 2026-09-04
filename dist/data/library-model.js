@@ -2,7 +2,7 @@
   const data = window.PersonaLibraryData;
   const slugify = value => `skill-${value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 
-  function buildSkillCatalog({ personas, skillLibrary, flowLibrary }) {
+  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [] }) {
     const catalog = new Map();
     for (const persona of personas) {
       for (const profile of skillLibrary[persona.id] || []) {
@@ -30,6 +30,27 @@
           }
         }
       }
+    }
+    const unitsById = new Map(skillUnits.map(unit => [unit.id, { id: unit.id, kind: unit.kind, name: unit.name, summary: unit.summary }]));
+    const skillsById = new Map(catalog);
+    const entityFor = id => {
+      if (unitsById.has(id)) return unitsById.get(id);
+      const skill = skillsById.get(id);
+      return skill ? { id: skill.id, kind: 'composed', name: skill.name, summary: skill.profiles[0]?.definition || '' } : null;
+    };
+    for (const skill of catalog.values()) {
+      skill.buildingBlocks = skillRelations
+        .filter(relation => relation.from === skill.id && relation.type === 'built-from')
+        .map(relation => entityFor(relation.to))
+        .filter(Boolean);
+      skill.supportingConnections = skillRelations
+        .filter(relation => relation.to === skill.id && relation.type === 'supports')
+        .map(relation => entityFor(relation.from))
+        .filter(Boolean);
+      skill.relatedSkills = skillRelations
+        .filter(relation => relation.from === skill.id && relation.type === 'related-to')
+        .map(relation => entityFor(relation.to))
+        .filter(Boolean);
     }
     return [...catalog.values()].sort((a, b) => a.name.localeCompare(b.name));
   }

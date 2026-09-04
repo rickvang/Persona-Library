@@ -115,5 +115,24 @@ window.PersonaLibraryData = {
         {type:'edge',title:'Reconcile conflicting evidence',cadence:'As needed',summary:'Make a defensible call when research, analytics, stakeholder goals, and technical constraints disagree.',activities:[['Separate signal from assumption','As needed','Integrity','The loudest input wins','Research repository + analytics dashboard (representative)'],['Make tradeoffs explicit','As needed','Trust','Decision rights are unclear','Decision log + workshop board (representative)'],['Record what would change the call','As needed','Learning','Uncertainty disappears from the plan','Product document + decision log (representative)']]},
         {type:'edge',title:'Recover a compromised experience',cadence:'As needed',summary:'Respond when a release, accessibility review, or late constraint puts user value at risk.',activities:[['Assess user impact','As needed','Safety and severity','Issues are triaged by visibility','Analytics dashboard + support ticket system (representative)'],['Find the smallest safe correction','As needed','Momentum','A quick fix can create new debt','Issue tracker + design workspace (representative)'],['Plan follow-through','As needed','Accountability','Temporary workarounds become permanent','Roadmap or backlog + release notes (representative)']]}
       ]
-    }
+    },
+  skillUnits: [
+    {id:'unit-content-prioritization',kind:'primitive',name:'Content prioritization',summary:'Decide what people need to notice first based on task consequence and intent.'},
+    {id:'unit-semantic-grouping',kind:'primitive',name:'Semantic grouping',summary:'Organize related information so the structure can be understood before every detail is read.'},
+    {id:'unit-visual-emphasis',kind:'primitive',name:'Visual emphasis',summary:'Use scale, contrast, color, spacing, and position to communicate relative importance.'},
+    {id:'unit-contextual-composition',kind:'primitive',name:'Contextual composition',summary:'Adapt proportion, rhythm, density, and tone to the product, audience, and situation.'},
+    {id:'unit-responsive-translation',kind:'primitive',name:'Responsive translation',summary:'Preserve hierarchy and control as content and interaction move across environments.'},
+    {id:'unit-hierarchy-validation',kind:'primitive',name:'Hierarchy validation',summary:'Check whether real people and realistic content perceive the intended order and emphasis.'}
+  ],
+  skillRelations: [
+    {from:'skill-interface-hierarchy-and-visual-communication',to:'unit-content-prioritization',type:'built-from'},
+    {from:'skill-interface-hierarchy-and-visual-communication',to:'unit-semantic-grouping',type:'built-from'},
+    {from:'skill-interface-hierarchy-and-visual-communication',to:'unit-visual-emphasis',type:'built-from'},
+    {from:'skill-interface-hierarchy-and-visual-communication',to:'unit-contextual-composition',type:'built-from'},
+    {from:'skill-interface-hierarchy-and-visual-communication',to:'unit-responsive-translation',type:'built-from'},
+    {from:'skill-interface-hierarchy-and-visual-communication',to:'unit-hierarchy-validation',type:'built-from'},
+    {from:'unit-visual-emphasis',to:'skill-accessibility-and-inclusive-design',type:'supports'},
+    {from:'unit-semantic-grouping',to:'skill-interaction-design-and-information-architecture',type:'supports'},
+    {from:'skill-interface-hierarchy-and-visual-communication',to:'skill-contextual-visual-judgment-and-composition',type:'related-to'}
+  ]
 };
