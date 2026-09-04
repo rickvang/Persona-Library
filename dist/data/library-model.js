@@ -2,12 +2,12 @@
   const data = window.PersonaLibraryData;
   const slugify = value => `skill-${value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 
-  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [] }) {
+  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {} }) {
     const catalog = new Map();
     for (const persona of personas) {
       for (const profile of skillLibrary[persona.id] || []) {
         const id = slugify(profile.name);
-        if (!catalog.has(id)) catalog.set(id, { id, name: profile.name, personas: [], profiles: [], workflows: [] });
+        if (!catalog.has(id)) catalog.set(id, { id, name: profile.name, personas: [], profiles: [], workflows: [], guidance: skillGuidance[id] || null });
         const skill = catalog.get(id);
         if (!skill.personas.some(item => item.id === persona.id)) {
           skill.personas.push({ id: persona.id, name: persona.name, roleLabel: persona.roleLabel, role: persona.role });

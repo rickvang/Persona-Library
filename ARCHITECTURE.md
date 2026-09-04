@@ -19,13 +19,13 @@ private Sites deployment
 
 ## Source of truth
 
-- `content/library-data.js` owns authored personas, workflow maps, skill profiles, resource trails, primitive skill units, and typed skill relationships.
-- `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, resolves modular building blocks and related connections, and creates maintenance metadata.
+- `content/library-data.js` owns authored personas, workflow maps, skill profiles, resource trails, modular skill guidance, primitive skill units, and typed skill relationships.
+- `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, resolves operating and quality guidance plus modular building blocks and related connections, and creates maintenance metadata.
 - `client/library-ui.js` owns shared browser render helpers for lists, resources, revision history, escaping, and trigger chips.
 - `client/library-state.js` owns small URL-aware page state such as role filters, search terms, and selected records.
 - `dist/data/*.js` and `dist/js/*.js` are generated output consumed by `dist/index.html` and `dist/skills.html`.
 - `dist/index.html` owns persona presentation and page-specific interaction, not persona records or shared render primitives.
-- `dist/skills.html` is the cross-persona Skills Library: it indexes reusable capabilities and opens their triggers, observable actions, workflow reach, evidence, and persona applications.
+- `dist/skills.html` is the cross-persona Skills Library: it indexes reusable capabilities and opens their triggers, operating model, quality signals, observable actions, workflow reach, evidence, modular anatomy, and persona applications.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
 - `dist/guide.html`, `dist/decisions.html`, `dist/activity-views.html`, and `dist/skill-views.html` remain documentation and exploration surfaces. The Decisions page also holds parked future capability ideas with implementation notes.
 

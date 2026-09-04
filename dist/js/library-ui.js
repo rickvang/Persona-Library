@@ -29,6 +29,15 @@
     return `<button class="connection-chip" type="button" data-connection-kind="${escapeHtml(kind)}" data-connection-name="${escapeHtml(item.name)}" data-connection-summary="${escapeHtml(item.summary || item.definition || '')}">${escapeHtml(item.name)}</button>`;
   }
 
+  function renderSkillPractice(skill) {
+    const guidance = skill.guidance;
+    if (!guidance?.operation || !guidance?.quality) return '';
+    const operation = guidance.operation;
+    const quality = guidance.quality;
+    const list = items => (items || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+    return `<section class="skill-practice" aria-label="How this skill operates and how to recognize quality"><div class="practice-head"><div><h3>How this skill operates</h3><p>Use the operating model to understand the decisions and behaviors behind the capability.</p></div></div><div class="practice-overview"><div><span>Starts with</span><p>${escapeHtml(operation.startsWith)}</p></div><div><span>Leaves behind</span><p>${escapeHtml(operation.leavesBehind)}</p></div></div><div class="practice-moves"><h4>Operating moves</h4><ol>${list(operation.moves)}</ol></div><div class="quality-head"><div><h3>Recognize quality</h3><p>Quality is visible in the result, the reasoning, and how the capability holds up under variation.</p></div></div><div class="quality-grid"><section><h4>Look for</h4><ul>${list(quality.signals)}</ul></section><section><h4>Inspect with</h4><ul>${list(quality.checks)}</ul></section><section><h4>Watch for</h4><ul>${list(quality.watchFor)}</ul></section></div></section>`;
+  }
+
   function renderSkillAnatomy(skill) {
     const buildingBlocks = skill.buildingBlocks || [];
     const supportingConnections = skill.supportingConnections || [];
@@ -42,5 +51,5 @@
     return `<section class="skill-anatomy"><div class="skill-anatomy-head"><div><h3>Skill anatomy</h3><p>See the reusable pieces behind this capability, then open the focused map when you want more context.</p></div><button class="explore-connections" type="button" data-action="toggle-connections" aria-expanded="false">Explore connections</button></div><div class="anatomy-grid">${group('Built from', buildingBlocks, 'building-block')}${group('Supports', supportingConnections, 'supporting-connection')}${group('Related skills', relatedSkills, 'related-skill')}</div><p class="connection-detail" id="dialog-connection-detail" hidden></p><div class="connection-explorer" data-connection-explorer><h4>Focused connection map</h4><div class="connection-map"><section class="connection-cluster"><h5>Building blocks</h5><ul>${buildingBlocks.map(item => `<li>${escapeHtml(item.name)}</li>`).join('') || '<li>Not mapped yet</li>'}</ul></section><div class="connection-center">${escapeHtml(skill.name)}</div><section class="connection-cluster"><h5>Applications</h5><ul>${applicationItems.map(item => `<li>${escapeHtml(item)}</li>`).join('') || '<li>Not mapped yet</li>'}</ul></section></div><div class="connection-list"><strong>Reference list:</strong> ${escapeHtml(buildingBlocks.map(item => item.name).join(' · ') || 'No building blocks mapped yet.')}</div></div></section>`;
   }
 
-  window.PersonaLibraryUI = { escapeHtml, triggersFor, fillList, renderRevisionHistory, renderResources, renderSkillAnatomy };
+  window.PersonaLibraryUI = { escapeHtml, triggersFor, fillList, renderRevisionHistory, renderResources, renderSkillPractice, renderSkillAnatomy };
 })();
