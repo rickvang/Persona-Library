@@ -138,7 +138,7 @@
     .implication h3 { color: #1d5d50; }
     @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 720px) {
-      .topbar { padding: 16px 20px; } .topnav { display: none; }
+      .topbar { padding: 16px 20px; } .topnav { gap: 12px; font-size: 12px; white-space: nowrap; }
       .intro { padding: 36px 20px 30px; } .intro-row { display: block; } .stats { justify-content: start; margin-top: 22px; }
       .workspace { padding: 24px 20px 54px; } .toolbar { display: block; } .count { display: inline-block; margin-top: 10px; } .clear-filters { float: right; margin-top: 5px; }
       .library-layout { display: block; } .filters { position: static; display: grid; gap: 12px; overflow: visible; margin-bottom: 20px; padding-bottom: 2px; }
@@ -164,7 +164,7 @@
   <div class="shell">
     <header class="topbar">
       <div class="brand"><span class="mark">PL</span><span>Persona Library</span></div>
-      <nav class="topnav" aria-label="Primary"><a href="#library">Library</a><a href="guide.html">Using the skill</a></nav>
+      <nav class="topnav" aria-label="Primary"><a href="index.html" aria-current="page">Library</a><a href="guide.html">Using the skill</a></nav>
     </header>
     <section class="intro">
       <p class="eyebrow">Field notes / product research</p>
