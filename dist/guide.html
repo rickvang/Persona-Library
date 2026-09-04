@@ -87,6 +87,7 @@
       <a href="#update">Update a persona</a>
       <a href="#output">What you’ll get</a>
       <a href="#persona-skills">Persona skills</a>
+      <a href="#persona-reconciliation">Reconciliation</a>
       <a href="#layout-lab">Layout Lab</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In the library</a>
@@ -147,6 +148,17 @@
         </div>
         <div class="note"><p><strong>What it covers:</strong> skill definitions, related workflows, observable actions and decisions, prerequisites, tools and artifacts, failure modes, proficiency signals, evidence status, source links, and validation questions.</p></div>
         <a class="back" href="skill-views.html">Compare skill presentation options in the Skill Layout Lab →</a>
+      </section>
+
+      <section class="article-section" id="persona-reconciliation">
+        <h2>Persona reconciliation</h2>
+        <p>Use <code>$persona-reconciliation</code> after adding or changing a source, claim, skill, workflow, activity, tool, or capability. It performs a scoped consistency pass so related persona content stays aligned without rewriting unrelated fields.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile a skill update</h3><span class="tag">Recommended</span></div><p>Check the downstream effect of a new or changed capability.</p><pre id="prompt-reconcile-skill">Use $persona-reconciliation to review this skill change for [persona name], update affected workflows, activities, tools, priorities, needs, implications, resources, confidence, and open questions, and leave unrelated fields unchanged.</pre><button class="copy" data-copy-id="prompt-reconcile-skill">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile a new source</h3><span class="tag">Evidence</span></div><p>Classify what a source does to the current evidence before updating claims.</p><pre id="prompt-reconcile-source">Use $persona-reconciliation to check this source for [persona name], classify it as confirms, extends, qualifies, or contradicts, and update only affected claims.</pre><button class="copy" data-copy-id="prompt-reconcile-source">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile a workflow change</h3><span class="tag">Structure</span></div><p>Keep activities, tools, skills, priorities, and flow tier connected.</p><pre id="prompt-reconcile-workflow">Use $persona-reconciliation to review this new workflow or activity for [persona name], update related skills, tools, priorities, and flow tier, and identify what remains unchanged.</pre><button class="copy" data-copy-id="prompt-reconcile-workflow">Copy prompt</button></div>
+        </div>
+        <div class="note"><p><strong>What it returns:</strong> a scoped update set, checked unchanged fields, evidence and confidence changes, resource entries, and open questions. It is the shared final pass called by <code>$persona-research</code> and <code>$persona-skills</code>; use it directly when you already know what changed.</p></div>
       </section>
 
       <section class="article-section" id="layout-lab">
