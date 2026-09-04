@@ -143,13 +143,11 @@ window.PersonaLibraryData.maintenance = (() => {
   const personaMaintenance = Object.fromEntries(personas.map(persona => [persona.id, {
     version: '1.0',
     updated: '2026-09-04',
-    improvements: [],
     revisions: [{ version: '1.0', date: '2026-09-04', changeType: 'initial-synthesis', summary: 'Initial persona synthesis added to the library.', affectedFields: ['context', 'workflows', 'skills', 'needs'], evidence: persona.evidence, confidenceChange: 'Working draft established' }]
   }]));
   personaMaintenance['ui-expert'] = {
     version: '1.1',
     updated: '2026-09-04',
-    improvements: [{ title: 'Make visual-reference selection systematic', rationale: 'The persona can study references, but the selection criteria and comparison method are still implicit.', affectedFields: ['skills', 'triggers', 'observable actions', 'validation'], evidenceNeeded: 'Compare the protocol against real design critiques and portfolio reviews.', status: 'Proposed' }],
     revisions: [
       ...personaMaintenance['ui-expert'].revisions,
       { version: '1.1', date: '2026-09-04', changeType: 'capability-reconciliation', summary: 'Reconciled contextual visual judgment into Camille’s goals, behaviors, needs, foundational workflows, and product implication.', affectedFields: ['goals', 'behaviors', 'needs', 'workflows', 'implication', 'tags'], evidence: 'Visual-design principles, layout guidance, and design-system contribution practice', confidenceChange: 'Remains synthesized' }
@@ -158,14 +156,12 @@ window.PersonaLibraryData.maintenance = (() => {
   const skillMaintenance = Object.fromEntries(skillCatalog.map(skill => [skill.id, {
     version: '1.0',
     updated: '2026-09-04',
-    improvements: [],
     revisions: [{ version: '1.0', date: '2026-09-04', changeType: 'initial-profile', summary: 'Initial capability profile added to the Skills Library.', affectedFields: ['definition', 'triggers', 'workflows', 'actions', 'evidence'], evidence: skill.profiles[0]?.evidence || 'Working synthesis', confidenceChange: 'Synthesized unless otherwise noted' }]
   }]));
   const visualSkillId = 'skill-contextual-visual-judgment-and-composition';
   skillMaintenance[visualSkillId] = {
     version: '1.1',
     updated: '2026-09-04',
-    improvements: [{ title: 'Formalize contextual reference study', rationale: 'The skill describes studying references but does not yet specify how to choose, compare, and interpret them.', affectedFields: ['triggers', 'observable actions', 'evidence', 'validation'], evidenceNeeded: 'Test a repeatable reference-selection protocol against design evaluation requests.', status: 'Proposed' }],
     revisions: [
       ...skillMaintenance[visualSkillId].revisions,
       { version: '1.1', date: '2026-09-04', changeType: 'persona-reconciliation', summary: 'Expanded visual judgment into contextual composition, triggers, reference study, and explicit tradeoff reasoning.', affectedFields: ['definition', 'triggers', 'actions', 'evidence'], evidence: 'Visual-design principles, Material layout guidance, and design-system contribution practice', confidenceChange: 'Remains synthesized' }
