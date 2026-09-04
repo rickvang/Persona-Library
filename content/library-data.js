@@ -117,3 +117,23 @@ window.PersonaLibraryData = {
       ]
     }
 };
+
+window.PersonaLibraryData.skillCatalog = (() => {
+  const { personas, skillLibrary, flowLibrary } = window.PersonaLibraryData;
+  const slugify = value => `skill-${value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+  const catalog = new Map();
+  for (const persona of personas) {
+    for (const profile of skillLibrary[persona.id] || []) {
+      const id = slugify(profile.name);
+      if (!catalog.has(id)) catalog.set(id, { id, name: profile.name, personas: [], profiles: [], workflows: [] });
+      const skill = catalog.get(id);
+      if (!skill.personas.some(item => item.id === persona.id)) skill.personas.push({ id: persona.id, name: persona.name, roleLabel: persona.roleLabel, role: persona.role });
+      skill.profiles.push({ personaId: persona.id, personaName: persona.name, roleLabel: persona.roleLabel, status: profile.status, definition: profile.definition, triggers: profile.triggers, workflows: profile.workflows, actions: profile.actions, evidence: profile.evidence });
+      const workflowNames = (profile.workflows || '').split(' · ').map(item => item.trim()).filter(Boolean);
+      for (const flow of flowLibrary[persona.id] || []) {
+        if (workflowNames.includes(flow.title) && !skill.workflows.some(item => item.personaId === persona.id && item.title === flow.title)) skill.workflows.push({ personaId: persona.id, personaName: persona.name, type: flow.type, title: flow.title, cadence: flow.cadence });
+      }
+    }
+  }
+  return [...catalog.values()].sort((a, b) => a.name.localeCompare(b.name));
+})();

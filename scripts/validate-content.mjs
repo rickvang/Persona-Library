@@ -14,8 +14,8 @@ const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
 const data = sandbox.window.PersonaLibraryData;
-if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary) {
-  throw new Error('Content module must expose personas, skillLibrary, and flowLibrary');
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !Array.isArray(data.skillCatalog)) {
+  throw new Error('Content module must expose personas, skillLibrary, flowLibrary, and skillCatalog');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
 if (!page.includes('<script src="data/library-data.js"></script>')) throw new Error('Library page is not loading the canonical content module');
@@ -59,6 +59,15 @@ for (const persona of data.personas) {
   }
 }
 for (const personaId of Object.keys(data.flowLibrary)) if (!personaIds.has(personaId)) throw new Error(`Flow library has no matching persona: ${personaId}`);
+
+const catalogIds = new Set();
+for (const skill of data.skillCatalog) {
+  if (!skill.id || catalogIds.has(skill.id)) throw new Error(`Duplicate or missing catalog skill id: ${skill.id || '(missing)'}`);
+  catalogIds.add(skill.id);
+  if (!skill.name || !Array.isArray(skill.personas) || !skill.personas.length || !Array.isArray(skill.profiles) || !skill.profiles.length) throw new Error(`Incomplete skill catalog entry: ${skill.id}`);
+  for (const persona of skill.personas) if (!personaIds.has(persona.id)) throw new Error(`${skill.id} references an unknown persona: ${persona.id}`);
+  for (const profile of skill.profiles) if (!personaIds.has(profile.personaId) || !profile.definition || !profile.triggers || !profile.workflows || !profile.actions || !profile.evidence) throw new Error(`Incomplete skill profile in catalog entry: ${skill.id}`);
+}
 
 const roleCounts = data.personas.reduce((counts, persona) => {
   counts[persona.role] = (counts[persona.role] || 0) + 1;
