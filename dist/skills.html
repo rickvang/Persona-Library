@@ -24,13 +24,12 @@
     .skill-practice { margin-top:24px; padding:18px; border:1px solid var(--line); border-radius:14px; background:#fff; }
     .practice-head h3,.quality-head h3 { margin:0; font-size:15px; }
     .practice-head p,.quality-head p { margin:5px 0 0; color:var(--ink-soft); font-size:13px; line-height:1.45; }
-    .practice-overview { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
-    .practice-overview > div,.practice-moves,.quality-grid > section { padding:12px; border-radius:11px; background:#f7f8f4; }
-    .practice-overview span,.practice-moves h4,.quality-grid h4 { color:var(--ink-soft); font-size:10px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
-    .practice-overview p { margin:7px 0 0; color:#314154; font-size:13px; line-height:1.45; }
-    .practice-moves { margin-top:10px; }
-    .practice-moves h4,.quality-grid h4 { margin:0; }
-    .practice-moves ol,.quality-grid ul { margin:8px 0 0; padding-left:18px; color:#314154; font-size:12px; line-height:1.5; }
+    .practice-loop,.practice-model > section,.quality-grid > section { padding:12px; border-radius:11px; background:#f7f8f4; }
+    .practice-loop { margin-top:14px; }
+    .practice-loop h4,.practice-model h4,.quality-grid h4 { margin:0; color:var(--ink-soft); font-size:10px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    .practice-loop ol,.practice-model ul,.quality-grid ul { margin:8px 0 0; padding-left:18px; color:#314154; font-size:12px; line-height:1.5; }
+    .practice-model { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:10px; }
+    .practice-model > section:last-child { grid-column:1 / -1; }
     .quality-head { margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
     .quality-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:12px; }
     .quality-grid ul { margin-top:8px; }
@@ -60,7 +59,7 @@
     @media (max-width:1000px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
     @media (max-width:720px) { .topbar { padding:16px 20px; } .topnav { gap:12px; font-size:12px; white-space:nowrap; } .intro { padding:36px 20px 30px; } .intro-row { display:block; } .stats { justify-content:start; margin-top:22px; } .workspace { padding:24px 20px 54px; } .toolbar { display:block; } .count { display:inline-block; margin-top:10px; } .clear { float:right; margin-top:5px; } .library-layout { display:block; } .filters { position:static; display:grid; gap:12px; margin-bottom:20px; } .filter-group { display:flex; gap:5px; align-items:center; margin:0; padding-bottom:3px; overflow-x:auto; white-space:nowrap; } .filter-label { flex:0 0 82px; margin:0; } .filter-btn { width:auto; flex:0 0 auto; } .grid { grid-template-columns:1fr; } .method { display:block; margin-top:50px; } .method p { margin-top:12px; } .method-steps { grid-template-columns:1fr; margin-top:22px; } .detail-grid { grid-template-columns:1fr; } }
     @media (max-width:430px) { h1 { font-size:37px; } .intro-copy { font-size:16px; } .stats { display:grid; grid-template-columns:1fr 1fr; } .stat:last-child { grid-column:1 / -1; } .dialog-head,.dialog-body { padding-left:20px; padding-right:20px; } .dialog-head h2 { font-size:27px; } }
-    @media (max-width:720px) { .practice-overview,.quality-grid { grid-template-columns:1fr; } .skill-anatomy-head { display:block; } .explore-connections { margin-top:12px; } .anatomy-grid { grid-template-columns:1fr; } .connection-map { grid-template-columns:1fr; } }
+    @media (max-width:720px) { .practice-model,.quality-grid { grid-template-columns:1fr; } .practice-model > section:last-child { grid-column:auto; } .skill-anatomy-head { display:block; } .explore-connections { margin-top:12px; } .anatomy-grid { grid-template-columns:1fr; } .connection-map { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -81,7 +80,7 @@
     </div>
     <section class="method"><div><h2>A capability is a practice, not a label.</h2><p>Skills are connected to the situations, decisions, tools, and quality signals where they become observable.</p></div><div class="method-steps"><div class="step"><span class="step-num">01 / NOTICE</span><strong>Start with a trigger</strong><span>Identify the situation that calls the capability into use.</span></div><div class="step"><span class="step-num">02 / INSPECT</span><strong>Look for behavior</strong><span>Separate what someone does from a tool, trait, or job title.</span></div><div class="step"><span class="step-num">03 / VALIDATE</span><strong>Check the context</strong><span>Use evidence and realistic work to test whether the skill holds.</span></div></div></section>
   </main>
-  <dialog id="skill-dialog" aria-labelledby="dialog-name"><div class="dialog-head"><div><p id="dialog-family"></p><h2 id="dialog-name"></h2><span class="status" id="dialog-status"></span></div><button class="close" id="close-dialog" aria-label="Close skill details">×</button></div><div class="dialog-body"><p class="dialog-definition" id="dialog-definition"></p><div class="detail-grid"><section class="detail-block"><h3>Potential triggers</h3><ul class="trigger-list" id="dialog-triggers"></ul></section><section class="detail-block"><h3>Observable actions</h3><p id="dialog-actions"></p></section><section class="detail-block"><h3>Evidence + validation</h3><p id="dialog-evidence"></p></section><section class="detail-block"><h3>Workflow reach</h3><p id="dialog-workflow-count"></p><ul class="workflow-list" id="dialog-workflows"></ul></section></div><div id="dialog-practice" hidden></div><div id="dialog-anatomy" hidden></div><section class="application"><h3>How it appears across personas</h3><div class="application-list" id="dialog-applications"></div></section><div id="dialog-maintenance" aria-label="Skill maintenance"></div></div></dialog>
+  <dialog id="skill-dialog" aria-labelledby="dialog-name"><div class="dialog-head"><div><p id="dialog-family"></p><h2 id="dialog-name"></h2><span class="status" id="dialog-status"></span></div><button class="close" id="close-dialog" aria-label="Close skill details">×</button></div><div class="dialog-body"><p class="dialog-definition" id="dialog-definition"></p><div id="dialog-practice" hidden></div><div class="detail-grid"><section class="detail-block"><h3>Potential triggers</h3><ul class="trigger-list" id="dialog-triggers"></ul></section><section class="detail-block"><h3>Observable actions</h3><p id="dialog-actions"></p></section><section class="detail-block"><h3>Evidence + validation</h3><p id="dialog-evidence"></p></section><section class="detail-block"><h3>Workflow reach</h3><p id="dialog-workflow-count"></p><ul class="workflow-list" id="dialog-workflows"></ul></section></div><div id="dialog-anatomy" hidden></div><section class="application"><h3>How it appears across personas</h3><div class="application-list" id="dialog-applications"></div></section><div id="dialog-maintenance" aria-label="Skill maintenance"></div></div></dialog>
   <script src="data/library-data.js"></script>
   <script src="data/library-model.js"></script>
   <script src="js/library-ui.js"></script>

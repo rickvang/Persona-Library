@@ -19,8 +19,8 @@ private Sites deployment
 
 ## Source of truth
 
-- `content/library-data.js` owns authored personas, workflow maps, skill profiles, resource trails, modular skill guidance, primitive skill units, and typed skill relationships.
-- `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, resolves operating and quality guidance plus modular building blocks and related connections, and creates maintenance metadata.
+- `content/library-data.js` owns authored personas, workflow maps, skill profiles, resource trails, modular skill guidance and practice overrides, primitive skill units, and typed skill relationships.
+- `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, resolves operating and quality guidance plus modular building blocks and related connections, and supplies a reusable operating-loop fallback for less-expanded skills.
 - `client/library-ui.js` owns shared browser render helpers for lists, resources, revision history, escaping, and trigger chips.
 - `client/library-state.js` owns small URL-aware page state such as role filters, search terms, and selected records.
 - `dist/data/*.js` and `dist/js/*.js` are generated output consumed by `dist/index.html` and `dist/skills.html`.

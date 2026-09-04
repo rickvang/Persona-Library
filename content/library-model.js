@@ -2,7 +2,7 @@
   const data = window.PersonaLibraryData;
   const slugify = value => `skill-${value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 
-  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {} }) {
+  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {} }) {
     const catalog = new Map();
     for (const persona of personas) {
       for (const profile of skillLibrary[persona.id] || []) {
@@ -30,6 +30,32 @@
           }
         }
       }
+    }
+    for (const skill of catalog.values()) {
+      const base = skill.guidance || {};
+      const primary = skill.profiles[0] || {};
+      const operation = {...(base.operation || {}), ...(skillPractice[skill.id]?.operation || {})};
+      const quality = {...(base.quality || {}), ...(skillPractice[skill.id]?.quality || {})};
+      const moves = operation.moves || [primary.actions || primary.definition || 'Apply the capability through observable practice.'];
+      const checks = quality.checks || [primary.evidence || 'Review the result against the intended outcome and realistic variation.'];
+      skill.guidance = {
+        operation: {
+          startsWith: operation.startsWith || primary.triggers || 'A situation where this capability is relevant.',
+          loop: operation.loop || [`Notice the trigger: ${primary.triggers || 'identify the relevant situation.'}`, 'Frame the decision and relevant constraints.', `Apply the capability: ${moves[0]}`, `Check the result: ${checks[0]}`, 'Adjust the approach based on what was learned.'],
+          inputs: operation.inputs || [primary.triggers || 'Relevant signals and constraints'],
+          decisions: operation.decisions || moves,
+          outputs: operation.outputs || [operation.leavesBehind || primary.definition || 'A clearer path toward the intended outcome.'],
+          feedback: operation.feedback || checks,
+          boundaries: operation.boundaries || 'This capability informs the decision; it does not replace domain knowledge, evidence, or decision ownership.',
+          moves,
+          leavesBehind: operation.leavesBehind || primary.definition || 'A result that supports the intended outcome.'
+        },
+        quality: {
+          signals: quality.signals || ['The result supports the intended outcome and holds up under realistic variation.'],
+          checks,
+          watchFor: quality.watchFor || ['A plausible-looking shortcut is treated as evidence of capability.']
+        }
+      };
     }
     const unitsById = new Map(skillUnits.map(unit => [unit.id, { id: unit.id, kind: unit.kind, name: unit.name, summary: unit.summary }]));
     const skillsById = new Map(catalog);
