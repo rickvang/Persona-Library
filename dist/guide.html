@@ -4,123 +4,137 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="How to create, research, and extend personas in the Persona Library." />
-  <title>How to use the Persona Library</title>
+  <title>Using persona-research — Persona Library</title>
   <style>
     :root { --ink:#101827; --ink-soft:#526174; --night:#08111f; --paper:#f5f4ef; --card:#fffefa; --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); font-synthesis:none; }
     * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
     body { margin:0; background:var(--paper); }
     a { color:inherit; }
     button { font:inherit; cursor:pointer; }
     .topbar { display:flex; justify-content:space-between; align-items:center; padding:20px clamp(20px,4vw,60px); color:#fff; background:var(--night); }
-    .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:-.03em; }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:-.03em; text-decoration:none; }
     .mark { width:28px; height:28px; display:grid; place-items:center; color:var(--night); background:var(--coral); border-radius:8px; font-size:12px; font-weight:900; }
     .topnav { display:flex; gap:22px; font-size:13px; color:#c0cad6; }
     .topnav a { text-decoration:none; }
     .topnav a:last-child { color:#fff; }
-    .hero { padding:56px clamp(20px,7vw,112px) 46px; color:#fff; background:var(--night); }
-    .eyebrow { margin:0 0 14px; color:var(--mint); font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
-    h1 { max-width:760px; margin:0; font-size:clamp(42px,7vw,78px); line-height:.96; letter-spacing:-.07em; }
-    .hero p { max-width:620px; margin:24px 0 0; color:#bdc8d5; font-size:17px; line-height:1.55; }
-    main { max-width:1120px; margin:0 auto; padding:42px clamp(20px,4vw,60px) 80px; }
-    .section { margin-bottom:44px; }
-    .section h2 { margin:0 0 8px; font-size:25px; letter-spacing:-.04em; }
-    .section > p { max-width:680px; margin:0 0 20px; color:var(--ink-soft); line-height:1.55; }
-    .prompt-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-    .prompt-card, .rule-card, .source-callout { padding:20px; border:1px solid var(--line); border-radius:16px; background:var(--card); }
+    .hero { padding:38px clamp(20px,7vw,112px) 40px; color:#fff; background:var(--night); }
+    .crumbs { margin:0 0 28px; color:#94a4b5; font-size:13px; }
+    .crumbs a { color:#cbd5df; text-underline-offset:3px; }
+    .eyebrow { margin:0 0 12px; color:var(--mint); font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+    h1 { max-width:760px; margin:0; font-size:clamp(38px,6vw,68px); line-height:.98; letter-spacing:-.07em; }
+    .hero-copy { max-width:660px; margin:20px 0 0; color:#bdc8d5; font-size:17px; line-height:1.55; }
+    .docs-layout { max-width:1180px; display:grid; grid-template-columns:220px minmax(0,760px); gap:56px; margin:0 auto; padding:44px clamp(20px,4vw,60px) 80px; }
+    .sidebar { position:sticky; top:20px; align-self:start; padding:15px 0; border-right:1px solid var(--line); }
+    .sidebar-label { margin:0 20px 10px 0; color:var(--ink-soft); font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+    .sidebar a { display:block; padding:9px 20px 9px 0; color:var(--ink-soft); font-size:14px; text-decoration:none; }
+    .sidebar a:hover, .sidebar a:focus { color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+    article { min-width:0; }
+    .article-section { padding-top:4px; margin-bottom:48px; scroll-margin-top:20px; }
+    .article-section + .article-section { padding-top:34px; border-top:1px solid var(--line); }
+    h2 { margin:0 0 10px; font-size:28px; letter-spacing:-.05em; }
+    h3 { margin:24px 0 7px; font-size:17px; letter-spacing:-.03em; }
+    p { color:var(--ink-soft); line-height:1.55; }
+    .lede { margin:0 0 20px; font-size:16px; }
+    .note { margin:18px 0; padding:15px 17px; border-left:3px solid var(--coral); background:#fffefa; }
+    .note p { margin:0; font-size:14px; }
+    .prompt-list { display:grid; gap:14px; }
+    .prompt-card { padding:17px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
     .prompt-card:nth-child(2) { background:#effaf6; border-color:#b8dfd3; }
     .prompt-card:nth-child(3) { background:#fff8dc; border-color:#e8d394; }
     .prompt-card:nth-child(4) { background:#edf4ff; border-color:#c6d9f2; }
-    .kicker { margin:0 0 10px; color:var(--ink-soft); font-size:11px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
-    .prompt-card h3, .rule-card h3 { margin:0 0 7px; font-size:18px; letter-spacing:-.03em; }
-    .prompt-card p, .rule-card p { margin:0; color:var(--ink-soft); font-size:14px; line-height:1.5; }
-    pre { margin:16px 0 12px; padding:13px; border-radius:10px; color:#eaf0f7; background:var(--night); font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; }
+    .prompt-meta { display:flex; justify-content:space-between; gap:14px; align-items:baseline; }
+    .prompt-meta h3 { margin:0; }
+    .tag { color:var(--ink-soft); font-size:11px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    .prompt-card p { margin:5px 0 0; font-size:14px; }
+    pre { margin:14px 0 10px; padding:13px; border-radius:10px; color:#eaf0f7; background:var(--night); font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; }
     .copy { padding:8px 11px; border:1px solid #b9c7bf; border-radius:9px; color:#1d5d50; background:#e9f6f1; font-size:12px; font-weight:800; }
-    .rule-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
-    .rule-card strong { display:block; margin-bottom:6px; font-size:14px; }
-    .source-callout { display:flex; justify-content:space-between; gap:24px; align-items:center; border-color:#d7c98d; background:#fff8dc; }
-    .source-callout h2 { margin:0 0 8px; }
-    .source-callout p { max-width:700px; margin:0; color:#5e5739; line-height:1.5; }
+    .rule-list { display:grid; gap:0; margin:0; padding:0; list-style:none; }
+    .rule-list li { display:grid; grid-template-columns:180px 1fr; gap:18px; padding:14px 0; border-top:1px solid var(--line); }
+    .rule-list strong { font-size:14px; }
+    .rule-list span { color:var(--ink-soft); font-size:14px; line-height:1.5; }
+    .source-callout { display:flex; justify-content:space-between; gap:22px; align-items:center; padding:18px; border:1px solid #d7c98d; border-radius:14px; background:#fff8dc; }
+    .source-callout h3 { margin:0 0 5px; }
+    .source-callout p { max-width:610px; margin:0; color:#5e5739; font-size:14px; }
     .source-callout .copy { flex:0 0 auto; color:#5e5739; border-color:#d4c68a; background:#fffdf0; }
-    .steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; counter-reset:step; }
-    .step { position:relative; padding:20px 20px 20px 58px; border-top:2px solid var(--coral); background:#e9ece6; }
-    .step::before { content:counter(step); counter-increment:step; position:absolute; left:20px; top:18px; width:24px; height:24px; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--night); font-size:12px; font-weight:900; }
-    .step strong { display:block; margin-bottom:6px; font-size:15px; }
-    .step span { color:var(--ink-soft); font-size:13px; line-height:1.45; }
-    .back { display:inline-block; margin-top:8px; color:#234f68; font-size:14px; font-weight:800; text-underline-offset:3px; }
-    @media (max-width:720px) { .topbar { padding:16px 20px; } .topnav { gap:12px; } .hero { padding:42px 20px 34px; } main { padding:32px 20px 60px; } .prompt-grid, .rule-grid, .steps { grid-template-columns:1fr; } .source-callout { display:block; } .source-callout .copy { margin-top:16px; } }
-    @media (max-width:430px) { h1 { font-size:42px; } .topnav { font-size:12px; } .brand { font-size:14px; } }
+    .mini-table { width:100%; border-collapse:collapse; font-size:14px; }
+    .mini-table th, .mini-table td { padding:12px 10px; border-top:1px solid var(--line); text-align:left; vertical-align:top; }
+    .mini-table th { color:var(--ink-soft); font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+    .mini-table td { color:var(--ink-soft); line-height:1.45; }
+    .mini-table td:first-child { width:26%; color:var(--ink); font-weight:800; }
+    .back { display:inline-block; margin-top:4px; color:#234f68; font-size:14px; font-weight:800; text-underline-offset:3px; }
+    @media (max-width:800px) { .docs-layout { grid-template-columns:1fr; gap:18px; padding-top:26px; } .sidebar { position:static; display:flex; gap:5px; overflow-x:auto; border-right:0; border-bottom:1px solid var(--line); padding:0 0 12px; white-space:nowrap; } .sidebar-label { display:none; } .sidebar a { padding:8px 11px; border-radius:8px; background:#e9ece6; } .rule-list li { grid-template-columns:1fr; gap:5px; } }
+    @media (max-width:520px) { .topbar { padding:16px 20px; } .topnav { gap:12px; font-size:12px; white-space:nowrap; } .hero { padding:30px 20px 32px; } .docs-layout { padding-left:20px; padding-right:20px; } .source-callout { display:block; } .source-callout .copy { margin-top:14px; } .mini-table { display:block; overflow-x:auto; white-space:normal; } }
   </style>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="mark">PL</span><span>Persona Library</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="index.html">Library</a><a href="guide.html">Using the skill</a></nav>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Library</a><a href="guide.html" aria-current="page">Using the skill</a></nav>
   </header>
   <section class="hero">
-    <p class="eyebrow">A small prompt guide</p>
-    <h1>Ask for the persona you need.</h1>
-    <p>You don’t need to remember a special format. Describe the role and what you want done. These examples cover the common cases.</p>
+    <p class="crumbs"><a href="index.html">Persona Library</a> / Using the skill</p>
+    <p class="eyebrow">Reference guide</p>
+    <h1>Using persona-research</h1>
+    <p class="hero-copy">A short reference for creating, researching, adding, and updating personas. You can use the plain-language prompts below without remembering a special format.</p>
   </section>
-  <main>
-    <section class="section">
-      <h2>Start here</h2>
-      <p>Use the first prompt for most new personas. Add an industry or context when it changes how the role works; otherwise the research uses a cross-industry default.</p>
-      <div class="prompt-grid">
-        <article class="prompt-card">
-          <p class="kicker">Recommended</p>
-          <h3>Create and add a persona</h3>
+  <div class="docs-layout">
+    <nav class="sidebar" aria-label="Guide sections">
+      <p class="sidebar-label">On this page</p>
+      <a href="#quick-start">Quick start</a>
+      <a href="#choose-request">Choose a request</a>
+      <a href="#automatic">What happens automatically</a>
+      <a href="#sources">Source updates</a>
+      <a href="#library">Library behavior</a>
+    </nav>
+    <article>
+      <section class="article-section" id="quick-start">
+        <h2>Quick start</h2>
+        <p class="lede">For most new personas, use this prompt. Replace the bracketed parts if you have them; otherwise the research will use a cross-industry default.</p>
+        <div class="prompt-card">
+          <div class="prompt-meta"><h3>Create and add a persona</h3><span class="tag">Recommended</span></div>
           <p>Research the role, map its activities and workflows, then add it to the library.</p>
           <pre id="prompt-create">Create a well-researched persona for a [role] in [industry or context] and add it to the Persona Library.</pre>
           <button class="copy" data-copy-id="prompt-create">Copy prompt</button>
-        </article>
-        <article class="prompt-card">
-          <p class="kicker">When you want to be explicit</p>
-          <h3>Invoke the skill directly</h3>
-          <p>Use this when you want to make sure the reusable research method is used.</p>
-          <pre id="prompt-explicit">Use $persona-research to create a persona for a [role]. Add it to the Persona Library.</pre>
-          <button class="copy" data-copy-id="prompt-explicit">Copy prompt</button>
-        </article>
-        <article class="prompt-card">
-          <p class="kicker">Research only</p>
-          <h3>Keep it out of the library</h3>
-          <p>Get the research and synthesis without changing the live site.</p>
-          <pre id="prompt-only">Research the persona of a [role] in [context]. Give me the findings only; don’t update the Persona Library.</pre>
-          <button class="copy" data-copy-id="prompt-only">Copy prompt</button>
-        </article>
-        <article class="prompt-card">
-          <p class="kicker">Extend an existing persona</p>
-          <h3>Check another source</h3>
-          <p>Give a URL or ask for a new source. The persona will be updated only where the evidence changes it.</p>
-          <pre id="prompt-source">Check another source for [persona name], summarize what it confirms, extends, qualifies, or contradicts, and add it to the Resources section.</pre>
-          <button class="copy" data-copy-id="prompt-source">Copy prompt</button>
-        </article>
-      </div>
-    </section>
+        </div>
+        <div class="note"><p><strong>You don’t need to say “use the skill.”</strong> The persona-research method is intended to activate automatically when the request is clearly about researching or creating a persona.</p></div>
+      </section>
 
-    <section class="section">
-      <h2>What happens automatically</h2>
-      <div class="rule-grid">
-        <article class="rule-card"><strong>Ambiguity is scoped, not dumped on you.</strong><p>If a role has multiple materially different interpretations, I’ll ask a short multiple-choice question with an Other option. Otherwise I’ll choose a sensible default and state it.</p></article>
-        <article class="rule-card"><strong>The role is mapped across the day.</strong><p>Research is organized into activities, journeys, and workflows, with foundational, supporting, and edge-case flows separated when the evidence supports it.</p></article>
-        <article class="rule-card"><strong>Evidence stays visible.</strong><p>New personas are marked Working draft until validated. Sources, confidence, open questions, and research limits remain visible.</p></article>
-      </div>
-    </section>
+      <section class="article-section" id="choose-request">
+        <h2>Choose a request</h2>
+        <p>Use the version that matches what you want changed.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Explicitly invoke the skill</h3><span class="tag">Optional</span></div><p>Useful when you want to make the method unambiguous.</p><pre id="prompt-explicit">Use $persona-research to create a persona for a [role]. Add it to the Persona Library.</pre><button class="copy" data-copy-id="prompt-explicit">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Research only</h3><span class="tag">No site change</span></div><p>Get the research and synthesis without changing the live library.</p><pre id="prompt-only">Research the persona of a [role] in [context]. Give me the findings only; don’t update the Persona Library.</pre><button class="copy" data-copy-id="prompt-only">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Check another source</h3><span class="tag">Update evidence</span></div><p>Give a URL or ask for a new source. Only affected claims and workflows should change.</p><pre id="prompt-source">Check another source for [persona name], summarize what it confirms, extends, qualifies, or contradicts, and add it to the Resources section.</pre><button class="copy" data-copy-id="prompt-source">Copy prompt</button></div>
+        </div>
+      </section>
 
-    <section class="source-callout" aria-labelledby="source-title">
-      <div><h2 id="source-title">Want to strengthen a persona?</h2><p>Ask me to find or check a source. I’ll add the source trail, explain what it contributes, and revise only the affected claims or workflows.</p></div>
-      <button class="copy" data-copy-id="prompt-source">Copy source request</button>
-    </section>
+      <section class="article-section" id="automatic">
+        <h2>What happens automatically</h2>
+        <ul class="rule-list">
+          <li><strong>Ambiguity is scoped</strong><span>If a role has materially different interpretations, you’ll get a short multiple-choice question with an “Other — describe” option. Otherwise a sensible default is chosen and stated.</span></li>
+          <li><strong>The day is mapped</strong><span>Research is organized into activities, journeys, and workflows, with foundational, supporting, and edge-case flows separated when appropriate.</span></li>
+          <li><strong>Priorities are workflow-specific</strong><span>The persona shows what the person cares about most in each workflow rather than one generic list of values.</span></li>
+          <li><strong>Evidence stays visible</strong><span>New secondary-research personas are marked Working draft, with confidence, open questions, limits, and sources kept visible.</span></li>
+        </ul>
+      </section>
 
-    <section class="section" style="margin-top:44px">
-      <h2>The library workflow</h2>
-      <div class="steps">
-        <div class="step"><strong>Research</strong><span>Understand responsibilities, constraints, incentives, tools, and changing conditions.</span></div>
-        <div class="step"><strong>Shape</strong><span>Turn evidence into activities, journeys, workflow tiers, priorities, and a usable persona.</span></div>
-        <div class="step"><strong>Keep current</strong><span>Check new sources later and update the evidence trail without rewriting everything.</span></div>
-      </div>
-      <a class="back" href="index.html">← Back to the library</a>
-    </section>
-  </main>
+      <section class="article-section" id="sources">
+        <h2>Source updates</h2>
+        <p class="lede">A persona can be strengthened over time. When you ask for another source, the current evidence is compared with the new evidence instead of being overwritten wholesale.</p>
+        <table class="mini-table"><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody><tr><td>Confirms</td><td>The new source supports an existing claim or workflow.</td></tr><tr><td>Extends</td><td>The new source adds a useful responsibility, constraint, or priority.</td></tr><tr><td>Qualifies</td><td>The new source narrows the claim or adds an important condition.</td></tr><tr><td>Contradicts</td><td>The new source conflicts with the current synthesis and may lower confidence or create an open question.</td></tr></tbody></table>
+        <div class="source-callout"><div><h3>Use this exact request</h3><p>Ask me to check a named source or find an authoritative one, explain what it contributes, and add it to the persona’s Resources section.</p></div><button class="copy" data-copy-id="prompt-source">Copy source request</button></div>
+      </section>
+
+      <section class="article-section" id="library">
+        <h2>Library behavior</h2>
+        <p>When a persona is added to the library, the site keeps the browsing model simple and the detail view deep.</p>
+        <ul class="rule-list"><li><strong>Top level</strong><span>Browse and filter by role group, such as Operators, Leaders, or Specialists.</span></li><li><strong>Persona detail</strong><span>See lifecycle, operating context, operating state, day-in-the-life activities, journeys, and flow hierarchy.</span></li><li><strong>Resources</strong><span>Find the cited source trail at the end of the persona detail, after the product implication.</span></li></ul>
+        <a class="back" href="index.html">← Back to the library</a>
+      </section>
+    </article>
+  </div>
   <script>
     document.querySelectorAll('[data-copy-id]').forEach(button => button.addEventListener('click', async () => {
       const prompt = document.querySelector('#' + button.dataset.copyId).textContent;
