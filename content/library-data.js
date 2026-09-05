@@ -221,6 +221,26 @@ window.PersonaLibraryData = {
         {type:'edge',title:'Reconcile drift after a change',cadence:'After a model or high-reuse change',summary:'Find and repair stale labels, broken relationships, duplicated guidance, or records that no longer fit the architecture.',activities:[['Detect structural or language drift','After change','Early warning','Stale content still looks authoritative','Repository search + link checker (representative)'],['Assess impact and confidence','After change','Proportionate effort','A small mismatch triggers a full rewrite','Impact matrix + evidence notes (representative)'],['Repair, retire, or park the affected record','After change','System health','Old concepts remain active by inertia','Content module + decisions backlog (representative)']]}
       ]
     },
+  toolUseRecipes: [
+    {
+      id:'recipe-figma-hierarchy-inspection',
+      title:'Inspect a Figma prototype for hierarchy',
+      tool:'Figma',
+      toolHref:'tool.html',
+      skillId:'skill-interface-hierarchy-and-visual-communication',
+      skillName:'Interface hierarchy and visual communication',
+      personaIds:['ui-expert'],
+      personaNames:['Camille Ortiz'],
+      playbook:'Validate a visual direction',
+      when:'A design direction needs to be checked against user consequence, realistic content, and responsive behavior.',
+      mode:'Read-only',
+      requires:'Named Figma file or exported frames',
+      steps:['Open the named file and identify the intended user decision.','Inspect grouping, emphasis, states, content length, and responsive variants.','Compare the visible order with the semantic and interaction order.','Record the evidence, tradeoff, and unresolved question.'],
+      output:'A prioritized hierarchy note with evidence and a next design decision.',
+      fallback:'Attached frames or screenshots can support the same inspection without a Figma connector.',
+      status:'Representative'
+    }
+  ],
   skillGuidance: {
     'skill-interface-hierarchy-and-visual-communication': {operation:{startsWith:'User intent, content consequence, and the competing things people need to notice.',moves:['Groups and sequences information by meaning and task priority.','Uses type, spacing, contrast, scale, and position to establish emphasis.','Tests the visual order with realistic content, devices, and interaction states.'],leavesBehind:'A clear, adaptable hierarchy that makes the next useful action legible.'},quality:{signals:['The primary action and most important information are apparent without explanation.','Emphasis follows user consequence rather than author preference or decoration.','The hierarchy survives long content, narrow screens, zoom, and state changes.'],checks:['Ask someone to point to the next action and explain what they noticed first.','Compare visual, semantic, keyboard, and responsive order.'],watchFor:['Everything has equal emphasis or competing calls to action.','A polished composition hides content, state, or recovery problems.']}},
     'skill-contextual-visual-judgment-and-composition': {operation:{startsWith:'A design question where visual language, product context, audience, or pattern consistency is uncertain.',moves:['Studies relevant visual and interaction references for principles, not imitation.','Compares proportion, rhythm, density, typography, color, grouping, and tone against the context.','Makes the tradeoff explicit and tests the direction with representative content.'],leavesBehind:'A defensible visual direction with clear reasons, limits, and examples.'},quality:{signals:['The visual language feels specific to the product and situation, not generically fashionable.','Taste judgments are connected to user needs, meaning, and interaction consequences.','References are translated into principles and decisions rather than copied literally.'],checks:['Ask what context makes this direction appropriate and what would change the call.','Compare the direction against realistic content, adjacent patterns, and the intended emotional tone.'],watchFor:['“Feels better” is the only rationale.','Reference study becomes moodboarding without a decision or test.']}},

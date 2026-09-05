@@ -2,7 +2,7 @@
   const data = window.PersonaLibraryData;
   const slugify = value => `skill-${value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 
-  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {} }) {
+  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [] }) {
     const catalog = new Map();
     for (const persona of personas) {
       for (const profile of skillLibrary[persona.id] || []) {
@@ -38,6 +38,7 @@
       const quality = {...(base.quality || {}), ...(skillPractice[skill.id]?.quality || {})};
       const moves = operation.moves || [primary.actions || primary.definition || 'Apply the capability through observable practice.'];
       const checks = quality.checks || [primary.evidence || 'Review the result against the intended outcome and realistic variation.'];
+      skill.toolUseRecipes = toolUseRecipes.filter(recipe => recipe.skillId === skill.id);
       skill.guidance = {
         operation: {
           startsWith: operation.startsWith || primary.triggers || 'A situation where this capability is relevant.',

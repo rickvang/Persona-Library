@@ -19,15 +19,15 @@ private Sites deployment
 
 ## Source of truth
 
-- `content/library-data.js` owns authored personas, workflow maps, skill profiles, resource trails, modular skill guidance and practice overrides, primitive skill units, and typed skill relationships.
-- `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, resolves operating and quality guidance plus modular building blocks and related connections, and supplies a reusable operating-loop fallback for less-expanded skills.
+- `content/library-data.js` owns authored personas, workflow maps, skill profiles, resource trails, modular skill guidance and practice overrides, primitive skill units, typed skill relationships, and tool-use recipes.
+- `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, resolves operating and quality guidance plus modular building blocks and related connections, and attaches tool-use recipes to the portable skills they make practical.
 - `client/library-ui.js` owns shared browser render helpers for lists, resources, revision history, escaping, and trigger chips.
 - `client/library-state.js` owns small URL-aware page state such as role filters, search terms, and selected records.
 - `dist/data/*.js` and `dist/js/*.js` are generated output consumed by `dist/index.html` and `dist/skills.html`.
 - `dist/index.html` owns persona presentation and page-specific interaction, not persona records or shared render primitives.
 - `dist/skills.html` is the cross-persona Skills space: it indexes reusable capabilities and opens their triggers, operating model, quality signals, observable actions, workflow reach, evidence, modular anatomy, and persona applications.
-- `dist/tools.html` is the first-class Tools space: it catalogs tools, research references, execution environments, and MCP adapters by capability, availability, scope, and risk.
-- `dist/tool.html` is the first canonical tool detail record. It demonstrates the execution-ready contract: capability, connector, workspace, permission, approval, verification, fallback, usage recipes, lessons, failure modes, and version history.
+- `dist/tools.html` is the first-class Tools space: it catalogs tools, research references, execution environments, and MCP adapters by capability, availability, scope, and risk. It also indexes representative tool-use recipes.
+- `dist/tool.html` is the first canonical tool detail record. It demonstrates the execution-ready contract: capability, connector, workspace, permission, approval, verification, fallback, tool-use recipes, lessons, failure modes, and version history.
 - `tool-discovery-and-safe-execution/` is a reusable skill for resolving a capability to the safest available tool or MCP, running a bounded probe, and promoting reviewed usage evidence into reusable guidance without silent permission or content changes.
 - `persona-panel-orchestration/` is a reusable reasoning skill for consultations and panels. It requires explicitly named participants, processes each persona independently, preserves material disagreement, and synthesizes a clean response without silently updating durable records.
 - `dist/playbooks.html` is the Playbooks space: it explains how personas, skills, workflows, artifacts, evidence, and quality gates compose around an outcome. Detailed playbooks can live behind it as deep links, such as `dist/job-search.html`.
@@ -50,11 +50,11 @@ Use prototype status `Active → Selected → Archived`. Use decision status `Pr
 
 Each archived decision should preserve its question, chosen direction, rationale, tradeoffs, affected surfaces, source prototype, and revisit condition. A changed conclusion creates a new record and marks the previous record `Superseded`; it does not rewrite the old rationale.
 
-Tools follow a separate boundary: **Tools describe what can act; Skills describe how capability should be performed; Personas describe why and when a person uses it; Playbooks coordinate tool use toward an outcome.** A tool record must not imply that a connector, credential, workspace, or permission is configured. A usage note is evidence of one attempt; only reviewed or repeated evidence can become shared guidance.
+Tools follow a separate boundary: **Tools describe what can act; Skills describe portable capability and quality; Tool-use recipes bind a skill to a task in a specific tool; Personas describe why and when a person uses it; Playbooks coordinate the pieces toward an outcome.** A recipe is not a new skill unless it contains independent reusable judgment. A tool record must not imply that a connector, credential, workspace, or permission is configured. A usage note is evidence of one attempt; only reviewed or repeated evidence can become shared guidance.
 
 ## Invariants
 
-Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, and the page script boundary. Tool records should additionally check that every capability has a scope, permission, approval rule, verification method, and fallback, and that lessons carry evidence status and revision context.
+Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, and the page script boundary. Tool-use recipes should additionally check that their skill, tool, persona, and playbook references resolve, and that every recipe has a mode, prerequisite, output, fallback, and verification path. Tool records should additionally check that every capability has a scope, permission, approval rule, verification method, and fallback, and that lessons carry evidence status and revision context.
 
 Counts and filters should be derived from the content module. Do not hand-edit persona totals or role totals as the library grows.
 
