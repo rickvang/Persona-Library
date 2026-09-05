@@ -145,7 +145,15 @@
     return { personas: personaMaintenance, skills: skillMaintenance };
   }
 
+  function buildPersonaToolRequirements({ personas, personaToolRequirements = [] }) {
+    const personaIds = new Set(personas.map(persona => persona.id));
+    return personaToolRequirements
+      .filter(requirement => personaIds.has(requirement.personaId))
+      .map(requirement => ({ ...requirement }));
+  }
+
   data.skillCatalog = buildSkillCatalog(data);
+  data.personaToolRequirements = buildPersonaToolRequirements(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildMaintenance };
+  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildPersonaToolRequirements, buildMaintenance };
 })();

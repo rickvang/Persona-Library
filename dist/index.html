@@ -154,6 +154,22 @@
     .flow-card summary strong { display: block; font-size: 14px; } .flow-card summary span { color: var(--ink-soft); font-size: 11px; } .flow-card summary .flow-toggle { color: var(--ink); font-size: 18px; font-weight: 400; }
     .flow-card[open] summary .flow-toggle { transform: rotate(45deg); } .flow-card > p { margin: 0; padding: 0 12px 11px; color: var(--ink-soft); font-size: 12px; line-height: 1.4; }
     .activity-inventory { padding: 0 12px 12px; } .activity-row { display: grid; grid-template-columns: 1.1fr .65fr 1.05fr 1.1fr 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 11px; line-height: 1.35; } .activity-row:first-child { color: var(--ink-soft); font-size: 9px; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; } .activity-row span { color: var(--ink-soft); } .activity-row .activity-tool { color: #234f68; font-weight: 700; } .activity-row em { color: #355d55; font-style: normal; font-weight: 700; }
+    .tool-requirements { margin-bottom: 28px; padding: 18px; border: 1px solid #c6d9f2; border-radius: 14px; background: #edf4ff; }
+    .tool-requirements-head { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; }
+    .tool-requirements-head h3 { margin: 0; font-size: 16px; letter-spacing: -.02em; }
+    .tool-requirements-head span { color: #315474; font-size: 11px; font-weight: 800; }
+    .tool-requirements-intro { max-width: 560px; margin: 7px 0 0; color: #315474; font-size: 13px; line-height: 1.45; }
+    .tool-requirement-list { display: grid; gap: 9px; margin-top: 15px; }
+    .tool-requirement { padding: 13px; border: 1px solid #c6d9f2; border-radius: 11px; background: var(--card); }
+    .tool-requirement-top { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+    .tool-requirement-top strong { display: block; font-size: 14px; }
+    .tool-requirement-top span { color: #315474; font-size: 10px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    .tool-requirement p { margin: 5px 0 0; color: var(--ink-soft); font-size: 12px; line-height: 1.4; }
+    .tool-requirement-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+    .tool-requirement-fact { padding: 9px; border-radius: 8px; background: #f0f4f9; }
+    .tool-requirement-fact b { display: block; color: #536272; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+    .tool-requirement-fact span { display: block; margin-top: 4px; color: #314154; font-size: 11px; line-height: 1.35; }
+    .tool-requirement a { display: inline-block; margin-top: 10px; color: #234f68; font-size: 12px; font-weight: 900; text-underline-offset: 3px; }
     .implication { margin-top: 24px; padding: 16px; border-radius: 13px; background: var(--mint); }
     .implication h3 { color: #1d5d50; }
     .maintenance-panel { margin-top: 24px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: #f7f8f4; }
@@ -178,7 +194,7 @@
       .filter-btn { width: auto; flex: 0 0 auto; } .grid { grid-template-columns: 1fr; } .persona-card { min-height: 285px; }
       .method { display: block; margin-top: 50px; } .method p { margin-top: 12px; } .method-steps { grid-template-columns: 1fr; margin-top: 22px; }
       .persona-facts, .detail-grid { grid-template-columns: 1fr; gap: 12px; }
-      .activity-row { grid-template-columns: 1fr 1fr; gap: 5px 12px; } .activity-row:first-child { display: none; } .activity-row span:nth-child(2) { text-align: right; } .activity-row span:nth-child(3), .activity-row span:nth-child(4), .activity-row span:nth-child(5) { padding-top: 2px; } .skill-browser { grid-template-columns: 1fr; } .skill-index { grid-template-columns: repeat(2, minmax(0, 1fr)); } .skill-profile-grid { grid-template-columns: 1fr; }
+      .activity-row { grid-template-columns: 1fr 1fr; gap: 5px 12px; } .activity-row:first-child { display: none; } .activity-row span:nth-child(2) { text-align: right; } .activity-row span:nth-child(3), .activity-row span:nth-child(4), .activity-row span:nth-child(5) { padding-top: 2px; } .tool-requirement-grid { grid-template-columns: 1fr; } .tool-requirement-top { display: block; } .tool-requirement-top span { display: inline-block; margin-top: 6px; } .skill-browser { grid-template-columns: 1fr; } .skill-index { grid-template-columns: repeat(2, minmax(0, 1fr)); } .skill-profile-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 430px) {
       h1 { font-size: 37px; }
@@ -233,7 +249,7 @@
   <script src="js/library-ui.js"></script>
   <script src="js/library-state.js"></script>
   <script>
-    const { personas, skillLibrary, flowLibrary, maintenance } = window.PersonaLibraryData;
+    const { personas, skillLibrary, flowLibrary, maintenance, personaToolRequirements = [] } = window.PersonaLibraryData;
     const uiState = PersonaLibraryState.create({ defaults: { role: 'all', query: '', selected: '' }, queryKeys: { role: 'role', query: 'q', selected: 'persona' } });
     let roleFilter = uiState.get('role') || 'all';
     const grid = document.querySelector('#grid');
@@ -266,6 +282,12 @@
         if (!group.length) return '';
         return `<section class="flow-tier-section ${type.className}"><div class="tier-header"><h3>${type.label}</h3><span>${group.length} ${group.length === 1 ? 'workflow' : 'workflows'}</span></div><div class="flow-list">${group.map((flow, index) => `<details class="flow-card" ${type.key === 'foundational' && index === 0 ? 'open' : ''}><summary><span><strong>${flow.title}</strong><span>${flow.cadence}</span></span><span class="flow-toggle">+</span></summary><p>${flow.summary}</p><div class="activity-inventory"><div class="activity-row"><span>Activity</span><span>Cadence</span><span>Tools</span><span>Cares most about</span><span>Friction</span></div>${flow.activities.map(activity => `<div class="activity-row"><strong>${activity[0]}</strong><span>${activity[1]}</span><span class="activity-tool">${activity[4] || 'Not mapped yet'}</span><em>${activity[2]}</em><span>${activity[3]}</span></div>`).join('')}</div></details>`).join('')}</div></section>`;
       }).join('');
+    }
+
+    function renderToolRequirements(id) {
+      const requirements = personaToolRequirements.filter(item => item.personaId === id);
+      if (!requirements.length) return '';
+      return `<section class="tool-requirements" aria-label="Tool requirements"><div class="tool-requirements-head"><h3>Tool requirements</h3><span>${requirements.length} mapped ${requirements.length === 1 ? 'requirement' : 'requirements'}</span></div><p class="tool-requirements-intro">These are capability needs attached to the persona’s work. The requester-provided runtime resolves them; the persona does not assume access or execute a connector by itself.</p><div class="tool-requirement-list">${requirements.map(item => `<article class="tool-requirement"><div class="tool-requirement-top"><strong>${item.activity}</strong><span>${item.status}</span></div><p><strong>${item.capability}</strong> · ${item.workflow}</p><div class="tool-requirement-grid"><div class="tool-requirement-fact"><b>Preferred path</b><span>${item.preferredTool}</span></div><div class="tool-requirement-fact"><b>Mode</b><span>${item.mode}</span></div><div class="tool-requirement-fact"><b>Scope</b><span>${item.scope}</span></div><div class="tool-requirement-fact"><b>Fallback</b><span>${item.fallback}</span></div></div><p>${item.why}</p><a href="${item.toolHref}">Open tool or recipe context →</a></article>`).join('')}</div></section>`;
     }
 
     function render() {
@@ -312,6 +334,9 @@
       document.querySelector('#detail-operating-context').textContent = p.operatingContext;
       document.querySelector('#detail-operating-state').textContent = p.operatingState;
       document.querySelector('#detail-flows').innerHTML = renderFlows(p.id);
+      let toolRequirementPanel = document.querySelector('#detail-tool-requirements');
+      if (!toolRequirementPanel) { toolRequirementPanel = document.createElement('div'); toolRequirementPanel.id = 'detail-tool-requirements'; document.querySelector('.detail-grid').before(toolRequirementPanel); }
+      toolRequirementPanel.innerHTML = renderToolRequirements(p.id);
       document.querySelector('#detail-resources').innerHTML = renderResources(p);
       document.querySelector('#detail-overview').textContent = p.overview;
       document.querySelector('#detail-context').textContent = p.context;

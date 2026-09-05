@@ -33,8 +33,8 @@ const sandbox = { window: {} };
 vm.runInNewContext(source, sandbox, { filename: contentPath });
 vm.runInNewContext(modelSource, sandbox, { filename: modelPath });
 const data = sandbox.window.PersonaLibraryData;
-if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.skillCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
-  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, skillCatalog, maintenance, and PersonaLibraryModel');
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.skillCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
+  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, skillCatalog, maintenance, and PersonaLibraryModel');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
 if (modelSource !== modelOutput) throw new Error('Generated dist/data/library-model.js is stale; run build-library.mjs');
@@ -115,6 +115,17 @@ for (const recipe of data.toolUseRecipes) {
   if (!Array.isArray(recipe.personaIds) || !recipe.personaIds.length || recipe.personaIds.some(id => !personaIds.has(id))) throw new Error(`Tool-use recipe references an unknown persona: ${recipe.id}`);
   if (!Array.isArray(recipe.steps) || !recipe.steps.length) throw new Error(`Tool-use recipe has no steps: ${recipe.id}`);
   if (!data.skillCatalog.find(skill => skill.id === recipe.skillId)?.toolUseRecipes.some(item => item.id === recipe.id)) throw new Error(`Tool-use recipe was not attached to its skill: ${recipe.id}`);
+}
+
+const requirementIds = new Set();
+for (const requirement of data.personaToolRequirements) {
+  if (!requirement.id || requirementIds.has(requirement.id) || !requirement.personaId || !requirement.activity || !requirement.workflow || !requirement.capability || !requirement.preferredTool || !requirement.recipeId || !requirement.recipeTitle || !requirement.mode || !requirement.scope || !requirement.fallback || !requirement.status || !requirement.why) {
+    throw new Error(`Invalid or duplicate persona tool requirement: ${requirement.id || '(missing)'}`);
+  }
+  requirementIds.add(requirement.id);
+  if (!personaIds.has(requirement.personaId)) throw new Error(`Persona tool requirement references an unknown persona: ${requirement.id}`);
+  const recipe = data.toolUseRecipes.find(item => item.id === requirement.recipeId);
+  if (!recipe || !recipe.personaIds.includes(requirement.personaId) || recipe.title !== requirement.recipeTitle) throw new Error(`Persona tool requirement has an invalid recipe relationship: ${requirement.id}`);
 }
 
 const skillUnitIds = new Set();
