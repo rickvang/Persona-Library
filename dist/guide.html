@@ -82,6 +82,7 @@
     <nav class="sidebar" aria-label="Guide sections">
       <p class="sidebar-label">On this page</p>
       <a href="#start">Start here</a>
+      <a href="#agent-orientation">Agent orientation</a>
       <a href="#mental-model">Mental model</a>
       <a href="#docs-vs-decisions">Docs vs Decisions</a>
       <a href="#playbooks">Playbooks</a>
@@ -110,6 +111,20 @@
           <button class="copy" data-copy-id="prompt-create">Copy prompt</button>
         </div>
         <div class="note"><p><strong>You don’t need to say “use the skill.”</strong> The persona-research method is intended to activate automatically when the request is clearly about researching or creating a persona.</p></div>
+      </section>
+
+      <section class="article-section" id="agent-orientation">
+        <h2>Agent orientation</h2>
+        <p class="lede">Before working with this system, load the orientation manifest. It gives an agent the smallest useful route through Personas, Skills, Tools, Playbooks, Docs, Decisions, and Prototyping.</p>
+        <div class="prompt-card">
+          <div class="prompt-meta"><h3>Activation prompt</h3><span class="tag">Recommended</span></div>
+          <p>Use this at the start of a session or task when the agent does not already know the system.</p>
+          <pre id="prompt-orientation">Use $persona-library-orientation before working with the Personas system. Load the orientation manifest, classify my request, identify the relevant space, state what you will and will not update, then proceed with the smallest useful action.</pre>
+          <button class="copy" data-copy-id="prompt-orientation">Copy activation prompt</button>
+        </div>
+        <table class="mini-table"><thead><tr><th>Space</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td>Personas</td><td>Role lenses, workflows, activities, priorities, tools, skills, and evidence.</td><td>Temporary experiments or broad coordination.</td></tr><tr><td>Skills</td><td>Reusable capabilities, operating loops, quality signals, and persona applications.</td><td>Tool credentials or one-off task instructions.</td></tr><tr><td>Tools</td><td>Capabilities, scope, permissions, availability, recipes, and lessons.</td><td>Assuming access is configured or executing without authorization.</td></tr><tr><td>Playbooks</td><td>Multi-persona outcomes, stages, handoffs, shared state, and quality gates.</td><td>Duplicating the underlying persona or skill definitions.</td></tr><tr><td>Docs</td><td>Current definitions, instructions, boundaries, and examples.</td><td>Unsettled alternatives or hidden history.</td></tr><tr><td>Decisions</td><td>Durable choices, rationale, tradeoffs, affected surfaces, and revisit conditions.</td><td>Silent rewrites of the current truth.</td></tr><tr><td>Prototyping</td><td>Isolated alternatives and persona concepts being tested.</td><td>Live records or production dependencies.</td></tr></tbody></table>
+        <div class="note"><p><strong>Default behavior:</strong> read first, classify the request, state assumptions and scope, and remain read-only unless the requester explicitly authorizes a durable update. Finish with outcome, evidence or checks, limitations or blockers, and next action.</p></div>
+        <div class="source-callout"><div><h3>Machine-readable source</h3><p>The canonical manifest is generated into the Site so another agent or environment can load the same orientation contract.</p></div><a class="back" href="data/site-orientation.json">Open orientation manifest →</a></div>
       </section>
 
       <section class="article-section" id="create">

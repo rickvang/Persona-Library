@@ -20,6 +20,7 @@ private Sites deployment
 ## Source of truth
 
 - `content/library-data.js` owns authored personas, workflow maps, skill profiles, resource trails, modular skill guidance and practice overrides, primitive skill units, typed skill relationships, tool-use recipes, and explicit persona tool requirements.
+- `content/site-orientation.json` is the canonical machine-readable bootstrap manifest for routing requests, scoping reads and writes, and describing the system's response contract.
 - `content/library-model.js` is the canonical normalizer. It derives stable skill IDs, merges persona-specific skill applications, maps workflow reach, resolves operating and quality guidance plus modular building blocks and related connections, attaches tool-use recipes to the portable skills they make practical, and filters persona tool requirements to known personas.
 - `client/library-ui.js` owns shared browser render helpers for lists, resources, revision history, escaping, and trigger chips.
 - `client/library-state.js` owns small URL-aware page state such as role filters, search terms, and selected records.
@@ -36,6 +37,7 @@ private Sites deployment
 - `dist/prototyping.html` is the active prototype index. It also owns isolated persona prototypes such as `proto-persona-surface-aware-partner`; these are test records, not live Personas, and must not affect counts, filters, shared skill catalogs, or production workflows until explicitly promoted.
 - `dist/activity-views.html` and `dist/skill-views.html` are focused prototype detail surfaces; future experiments should be added here before they affect the current system.
 - `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html` is the private archive of individually addressable decision records with status filters, prototype evidence, affected surfaces, and revisit conditions; `dist/job-search.html` is the first detailed playbook surface.
+- `AGENTS.md` is the repository activation entry point. It points agents to the orientation manifest before they modify the project; `dist/data/site-orientation.json` is the generated copy for Site and other read-only consumers.
 - `JOB_SEARCH_IMPLEMENTATION.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
 
 ## Docs, prototyping, and decisions boundary
@@ -48,6 +50,8 @@ Keep the three spaces complementary:
 
 The working rule is: **Prototyping explores; Decisions archive; Docs explain what is true now.** Link a prototype to its decision record, link the decision to the Docs section or product surface it changed, and avoid copying whole explanations between the three spaces.
 
+Docs provide the human-readable orientation page; the orientation manifest provides the compact machine-readable contract. Keep the two aligned through the build and validation checks rather than maintaining separate instructions by hand.
+
 Use prototype status `Active → Selected → Archived`. Persona prototypes additionally use a `Testing` state and a promotion gate: representative test scenarios, observed behavior, open questions, and an explicit Decisions record before promotion. Use decision status `Proposed → Decided → Applied → Superseded`. Use `Parked` for a useful idea intentionally deferred.
 
 The working rule for persona prototypes is: **prototype records can reference live personas and skills, but live records cannot depend on prototype records.** A promotion creates a deliberate change set and reconciliation pass; an archive leaves the live system untouched.
@@ -58,7 +62,7 @@ Tools follow a separate boundary: **Tools describe what can act; Skills describe
 
 ## Invariants
 
-Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, and the page script boundary. Tool-use recipes should additionally check that their skill, tool, persona, and playbook references resolve, and that every recipe has a mode, prerequisite, output, fallback, and verification path. Persona tool requirements should additionally check that the persona and linked recipe resolve and that capability, preferred path, mode, scope, fallback, status, and rationale are present. Tool records should additionally check that every capability has a scope, permission, approval rule, verification method, and fallback, and that lessons carry evidence status and revision context.
+Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, orientation-manifest freshness and schema, and the page script boundary. Tool-use recipes should additionally check that their skill, tool, persona, and playbook references resolve, and that every recipe has a mode, prerequisite, output, fallback, and verification path. Persona tool requirements should additionally check that the persona and linked recipe resolve and that capability, preferred path, mode, scope, fallback, status, and rationale are present. Tool records should additionally check that every capability has a scope, permission, approval rule, verification method, and fallback, and that lessons carry evidence status and revision context.
 
 Counts and filters should be derived from the content module. Do not hand-edit persona totals or role totals as the library grows.
 

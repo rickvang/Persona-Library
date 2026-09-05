@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const contentPath = path.join(root, 'content', 'library-data.js');
 const outputPath = path.join(root, 'dist', 'data', 'library-data.js');
+const orientationPath = path.join(root, 'content', 'site-orientation.json');
+const orientationOutputPath = path.join(root, 'dist', 'data', 'site-orientation.json');
 const modelPath = path.join(root, 'content', 'library-model.js');
 const modelOutputPath = path.join(root, 'dist', 'data', 'library-model.js');
 const uiPath = path.join(root, 'client', 'library-ui.js');
@@ -14,11 +16,14 @@ const statePath = path.join(root, 'client', 'library-state.js');
 const stateOutputPath = path.join(root, 'dist', 'js', 'library-state.js');
 const pagePath = path.join(root, 'dist', 'index.html');
 const skillsPagePath = path.join(root, 'dist', 'skills.html');
+const guidePagePath = path.join(root, 'dist', 'guide.html');
 const jobSearchPagePath = path.join(root, 'dist', 'job-search.html');
 const playbooksPagePath = path.join(root, 'dist', 'playbooks.html');
 const prototypingPagePath = path.join(root, 'dist', 'prototyping.html');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
+const orientationSource = await readFile(orientationPath, 'utf8');
+const orientationOutput = await readFile(orientationOutputPath, 'utf8');
 const modelSource = await readFile(modelPath, 'utf8');
 const modelOutput = await readFile(modelOutputPath, 'utf8');
 const uiSource = await readFile(uiPath, 'utf8');
@@ -27,9 +32,12 @@ const stateSource = await readFile(statePath, 'utf8');
 const stateOutput = await readFile(stateOutputPath, 'utf8');
 const page = await readFile(pagePath, 'utf8');
 const skillsPage = await readFile(skillsPagePath, 'utf8');
+const guidePage = await readFile(guidePagePath, 'utf8');
 const jobSearchPage = await readFile(jobSearchPagePath, 'utf8');
 const playbooksPage = await readFile(playbooksPagePath, 'utf8');
 const prototypingPage = await readFile(prototypingPagePath, 'utf8');
+const orientation = JSON.parse(orientationSource);
+const generatedOrientation = JSON.parse(orientationOutput);
 const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
@@ -39,6 +47,7 @@ if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLi
   throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, skillCatalog, maintenance, and PersonaLibraryModel');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
+if (orientationSource !== orientationOutput) throw new Error('Generated dist/data/site-orientation.json is stale; run build-library.mjs');
 if (modelSource !== modelOutput) throw new Error('Generated dist/data/library-model.js is stale; run build-library.mjs');
 if (uiSource !== uiOutput) throw new Error('Generated dist/js/library-ui.js is stale; run build-library.mjs');
 if (stateSource !== stateOutput) throw new Error('Generated dist/js/library-state.js is stale; run build-library.mjs');
@@ -56,6 +65,18 @@ if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.i
 if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate')) {
   throw new Error('Prototyping page is missing the isolated persona prototype workspace');
 }
+if (!guidePage.includes('agent-orientation') || !orientation.default_entry.includes('guide.html#agent-orientation')) {
+  throw new Error('Agent orientation must be linked from the Docs page and manifest');
+}
+const requiredSpaces = ['personas', 'skills', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
+if (orientation.schema_version !== '1.0' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation')) {
+  throw new Error('Orientation manifest is missing required bootstrap, process, mutation, or response fields');
+}
+for (const space of requiredSpaces) {
+  const record = orientation.spaces[space];
+  if (!record || !record.label || !record.answers || !record.read || !record.write || !record.do_not) throw new Error(`Orientation manifest has an incomplete space: ${space}`);
+}
+if (JSON.stringify(orientation) !== JSON.stringify(generatedOrientation)) throw new Error('Generated orientation manifest does not match its source');
 for (const html of [page, skillsPage, jobSearchPage, playbooksPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
 
 const personaIds = new Set();
