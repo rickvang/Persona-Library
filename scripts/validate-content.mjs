@@ -16,6 +16,7 @@ const pagePath = path.join(root, 'dist', 'index.html');
 const skillsPagePath = path.join(root, 'dist', 'skills.html');
 const jobSearchPagePath = path.join(root, 'dist', 'job-search.html');
 const playbooksPagePath = path.join(root, 'dist', 'playbooks.html');
+const prototypingPagePath = path.join(root, 'dist', 'prototyping.html');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
 const modelSource = await readFile(modelPath, 'utf8');
@@ -28,6 +29,7 @@ const page = await readFile(pagePath, 'utf8');
 const skillsPage = await readFile(skillsPagePath, 'utf8');
 const jobSearchPage = await readFile(jobSearchPagePath, 'utf8');
 const playbooksPage = await readFile(playbooksPagePath, 'utf8');
+const prototypingPage = await readFile(prototypingPagePath, 'utf8');
 const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
@@ -50,6 +52,9 @@ if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchP
 }
 if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Shared state keeps the playbook coherent')) {
   throw new Error('Playbooks page is missing its mental model or current playbook');
+}
+if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate')) {
+  throw new Error('Prototyping page is missing the isolated persona prototype workspace');
 }
 for (const html of [page, skillsPage, jobSearchPage, playbooksPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
 

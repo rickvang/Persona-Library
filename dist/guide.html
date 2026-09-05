@@ -94,6 +94,7 @@
       <a href="#persona-panel">Persona panels</a>
       <a href="#tool-execution">Tool execution</a>
       <a href="#tool-maintenance">Tool records</a>
+      <a href="#persona-prototypes">Persona prototypes</a>
       <a href="#layout-lab">Prototyping</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In Personas</a>
@@ -201,6 +202,17 @@
         </div>
         <ul class="rule-list"><li><strong>Record is not availability</strong><span>A tool record explains what could be used; the requester’s exposed tools determine what is actually available now.</span></li><li><strong>Recipe is not a new core skill</strong><span>Keep portable judgment in Skills and tool-specific procedures in recipes linked from the Tool record.</span></li><li><strong>Maintenance is not execution</strong><span>Use $tool-discovery-and-safe-execution separately when a safe probe or real tool action is needed.</span></li></ul>
         <div class="links"><a class="back" href="tools.html">Open the Tools catalog →</a><a class="back" href="tool.html">See the Figma record →</a></div>
+      </section>
+
+      <section class="article-section" id="persona-prototypes">
+        <h2>Persona prototypes</h2>
+        <p>Use a prototype persona when you want to test a role concept without changing the live Personas library. A prototype can reference existing personas, skills, tools, and workflows, but live records must not depend on it until it passes a promotion gate.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Test a persona concept</h3><span class="tag">Isolated</span></div><p>Run representative conversations without changing Personas, Skills, or Playbooks.</p><pre id="prompt-persona-prototype">Create a prototype persona for [concept]. Keep it isolated from the live Personas library. Define its assumptions, workflows, skills, tools, quality signals, test scenarios, and open questions. Do not update existing records.</pre><button class="copy" data-copy-id="prompt-persona-prototype">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Evaluate promotion</h3><span class="tag">After testing</span></div><p>Use evidence from representative scenarios before deciding whether the prototype should become live.</p><pre id="prompt-persona-promote">Evaluate prototype persona [name] against [test scenarios]. Preserve disagreements and open questions. Recommend archive, continue testing, or promote, and if promoting list the affected Personas, Skills, Tools, Playbooks, Docs, and Decisions.</pre><button class="copy" data-copy-id="prompt-persona-promote">Copy prompt</button></div>
+        </div>
+        <div class="note"><p><strong>Boundary:</strong> prototype records use a <code>proto-persona-</code> ID, remain outside live counts and catalogs, and move to the live system only through an explicit Decisions record followed by reconciliation.</p></div>
+        <div class="links"><a class="back" href="prototyping.html#persona-prototypes">Open Persona prototypes →</a><a class="back" href="decisions.html">Open the decision archive →</a></div>
       </section>
 
       <section class="article-section" id="layout-lab">
