@@ -62,8 +62,11 @@ if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchP
 if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Shared state keeps the playbook coherent')) {
   throw new Error('Playbooks page is missing its mental model or current playbook');
 }
-if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate')) {
+if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('proto-persona-library-guide') || !prototypingPage.includes('Persona Library Guide') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate')) {
   throw new Error('Prototyping page is missing the isolated persona prototype workspace');
+}
+if (!guidePage.includes('persona-library-guide') || !guidePage.includes('Consult the Persona Library Guide')) {
+  throw new Error('Docs page is missing the Persona Library Guide handoff');
 }
 if (!guidePage.includes('agent-orientation') || !orientation.default_entry.includes('guide.html#agent-orientation')) {
   throw new Error('Agent orientation must be linked from the Docs page and manifest');

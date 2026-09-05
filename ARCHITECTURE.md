@@ -37,6 +37,7 @@ private Sites deployment
 - `dist/prototyping.html` is the active prototype index. It also owns isolated persona prototypes such as `proto-persona-surface-aware-partner`; these are test records, not live Personas, and must not affect counts, filters, shared skill catalogs, or production workflows until explicitly promoted.
 - `dist/activity-views.html` and `dist/skill-views.html` are focused prototype detail surfaces; future experiments should be added here before they affect the current system.
 - `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html` is the private archive of individually addressable decision records with status filters, prototype evidence, affected surfaces, and revisit conditions; `dist/job-search.html` is the first detailed playbook surface.
+- The `Persona Library Guide` is currently an isolated prototype. It is an onboarding and routing interface for newly connected LLMs; it prepares context and handoffs but does not become a live dependency until promoted through Decisions.
 - `AGENTS.md` is the repository activation entry point. It points agents to the orientation manifest before they modify the project; `dist/data/site-orientation.json` is the generated copy for Site and other read-only consumers.
 - `JOB_SEARCH_IMPLEMENTATION.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
 
