@@ -26,6 +26,9 @@ private Sites deployment
 - `dist/data/*.js` and `dist/js/*.js` are generated output consumed by `dist/index.html` and `dist/skills.html`.
 - `dist/index.html` owns persona presentation and page-specific interaction, not persona records or shared render primitives.
 - `dist/skills.html` is the cross-persona Skills space: it indexes reusable capabilities and opens their triggers, operating model, quality signals, observable actions, workflow reach, evidence, modular anatomy, and persona applications.
+- `dist/tools.html` is the first-class Tools space: it catalogs tools, research references, execution environments, and MCP adapters by capability, availability, scope, and risk.
+- `dist/tool.html` is the first canonical tool detail record. It demonstrates the execution-ready contract: capability, connector, workspace, permission, approval, verification, fallback, usage recipes, lessons, failure modes, and version history.
+- `tool-discovery-and-safe-execution/` is a reusable skill for resolving a capability to the safest available tool or MCP, running a bounded probe, and promoting reviewed usage evidence into reusable guidance without silent permission or content changes.
 - `persona-panel-orchestration/` is a reusable reasoning skill for consultations and panels. It requires explicitly named participants, processes each persona independently, preserves material disagreement, and synthesizes a clean response without silently updating durable records.
 - `dist/playbooks.html` is the Playbooks space: it explains how personas, skills, workflows, artifacts, evidence, and quality gates compose around an outcome. Detailed playbooks can live behind it as deep links, such as `dist/job-search.html`.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
@@ -47,9 +50,11 @@ Use prototype status `Active → Selected → Archived`. Use decision status `Pr
 
 Each archived decision should preserve its question, chosen direction, rationale, tradeoffs, affected surfaces, source prototype, and revisit condition. A changed conclusion creates a new record and marks the previous record `Superseded`; it does not rewrite the old rationale.
 
+Tools follow a separate boundary: **Tools describe what can act; Skills describe how capability should be performed; Personas describe why and when a person uses it; Playbooks coordinate tool use toward an outcome.** A tool record must not imply that a connector, credential, workspace, or permission is configured. A usage note is evidence of one attempt; only reviewed or repeated evidence can become shared guidance.
+
 ## Invariants
 
-Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, and the page script boundary.
+Run `node scripts/build-library.mjs` after changing content or client modules, then run `node scripts/validate-content.mjs` before publishing. Validation checks stable IDs, supported roles and flow tiers, complete workflow activity rows, skill-profile references, normalized catalog relationships, resource URLs, generated module freshness, and the page script boundary. Tool records should additionally check that every capability has a scope, permission, approval rule, verification method, and fallback, and that lessons carry evidence status and revision context.
 
 Counts and filters should be derived from the content module. Do not hand-edit persona totals or role totals as the library grows.
 

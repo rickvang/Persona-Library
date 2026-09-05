@@ -70,7 +70,7 @@
 <body>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="playbooks.html">Playbooks</a><a href="guide.html" aria-current="page">Docs</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html" aria-current="page">Docs</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
   </header>
   <section class="hero">
     <p class="crumbs"><a href="index.html">Personas</a> / Docs</p>
@@ -92,6 +92,7 @@
       <a href="#persona-skills">Persona skills</a>
       <a href="#persona-reconciliation">Reconciliation</a>
       <a href="#persona-panel">Persona panels</a>
+      <a href="#tool-execution">Tool execution</a>
       <a href="#layout-lab">Prototyping</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In Personas</a>
@@ -176,6 +177,18 @@
         </div>
         <ul class="rule-list"><li><strong>You choose the participants</strong><span>The first version does not automatically select or invent a meta-persona. If the choice materially changes the result, you’ll get a bounded question with concrete options.</span></li><li><strong>Each perspective stays grounded</strong><span>The skill uses the persona’s workflows, skills, priorities, sources, confidence, and open questions rather than theatrical role-play.</span></li><li><strong>The synthesis is not a silent update</strong><span>It can offer Save as Draft, Propose Decision, Add to Docs, or Create Playbook Artifact, but durable changes require an explicit request.</span></li></ul>
         <div class="note"><p><strong>Default response:</strong> recommendation, why, persona perspectives, agreement and disagreement, assumptions and confidence, then the smallest useful next action.</p></div>
+      </section>
+
+      <section class="article-section" id="tool-execution">
+        <h2>Tool discovery and safe execution</h2>
+        <p>Use <code>$tool-discovery-and-safe-execution</code> when work needs a new tool, connector, MCP, repository, document space, design file, or local workspace. It resolves the smallest capability, names the workspace and permission boundary, runs a safe probe, and records what can be learned.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Resolve a capability</h3><span class="tag">Recommended</span></div><p>Ask the skill to find the safest available tool without hard-coding a vendor into the persona.</p><pre id="prompt-tool-resolve">Use $tool-discovery-and-safe-execution to resolve the safest available tool for [capability] within [workspace or scope], and return the proposed action, permission, fallback, and verification method.</pre><button class="copy" data-copy-id="prompt-tool-resolve">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Adopt a new tool or MCP</h3><span class="tag">Onboarding</span></div><p>Use this when the capability is not yet mapped or a new connector needs a safe first test.</p><pre id="prompt-tool-adopt">Use $tool-discovery-and-safe-execution to assess [tool or MCP] for [capability]. Run a read-only or sandboxed probe, document its limits, and do not grant new permissions or make shared changes.</pre><button class="copy" data-copy-id="prompt-tool-adopt">Copy prompt</button></div>
+        </div>
+        <ul class="rule-list"><li><strong>Capability before vendor</strong><span>Request inspect, search, prototype, edit, verify, or publish first; resolve the actual tool second.</span></li><li><strong>Scope before action</strong><span>Name the file, repository, folder, page, branch, or local path and the exact permission before using it.</span></li><li><strong>Evidence before learning</strong><span>One run creates a usage note. Shared guidance requires review, repeated evidence, or explicit approval.</span></li></ul>
+        <div class="note"><p><strong>Default response:</strong> outcome, required capability, selected tool and connector, workspace, permission and approval status, action or blocker, verification evidence, usage-record status, lesson status, and next action.</p></div>
+        <div class="links"><a class="back" href="tools.html">Open Tools →</a><a class="back" href="tool.html">Open the Figma tool record →</a></div>
       </section>
 
       <section class="article-section" id="layout-lab">
