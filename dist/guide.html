@@ -91,6 +91,7 @@
       <a href="#output">What you’ll get</a>
       <a href="#persona-skills">Persona skills</a>
       <a href="#persona-reconciliation">Reconciliation</a>
+      <a href="#persona-panel">Persona panels</a>
       <a href="#layout-lab">Prototyping</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In Personas</a>
@@ -163,6 +164,18 @@
           <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile a workflow change</h3><span class="tag">Structure</span></div><p>Keep activities, tools, skills, priorities, and flow tier connected.</p><pre id="prompt-reconcile-workflow">Use $persona-reconciliation to review this new workflow or activity for [persona name], update related skills, tools, priorities, and flow tier, and identify what remains unchanged.</pre><button class="copy" data-copy-id="prompt-reconcile-workflow">Copy prompt</button></div>
         </div>
         <div class="note"><p><strong>What it returns:</strong> a scoped update set, checked unchanged fields, evidence and confidence changes, resource entries, and open questions. It is the shared final pass called by <code>$persona-research</code> and <code>$persona-skills</code>; use it directly when you already know what changed.</p></div>
+      </section>
+
+      <section class="article-section" id="persona-panel">
+        <h2>Persona panel orchestration</h2>
+        <p>Use <code>$persona-panel-orchestration</code> when you want one or more named personas to assess a question, artifact, draft, or decision. The skill processes each selected persona independently, compares their perspectives, and returns a concise synthesis.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Consult one persona</h3><span class="tag">Single lens</span></div><p>Use one persona’s workflows, skills, priorities, and evidence as the primary lens.</p><pre id="prompt-panel-single">Use $persona-panel-orchestration with [persona name] to help me [goal]. Return a recommendation, relevant quality signals, risks, evidence, and next actions.</pre><button class="copy" data-copy-id="prompt-panel-single">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Assemble a panel</h3><span class="tag">Multiple lenses</span></div><p>Name two to four personas with distinct perspectives; the skill keeps their independent judgments visible before synthesizing.</p><pre id="prompt-panel-many">Use $persona-panel-orchestration with [persona 1], [persona 2], and [persona 3] to review [artifact or question]. Synthesize the recommendation and preserve disagreements, assumptions, evidence, and next actions.</pre><button class="copy" data-copy-id="prompt-panel-many">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Run a playbook</h3><span class="tag">Coordinated workflow</span></div><p>Use a named playbook when the work needs stages, handoffs, decision rights, shared state, or quality gates.</p><pre id="prompt-panel-playbook">Use $persona-panel-orchestration with the [playbook name] playbook to help me [goal]. Show the current stage, participant perspectives, evidence gaps, and next action.</pre><button class="copy" data-copy-id="prompt-panel-playbook">Copy prompt</button></div>
+        </div>
+        <ul class="rule-list"><li><strong>You choose the participants</strong><span>The first version does not automatically select or invent a meta-persona. If the choice materially changes the result, you’ll get a bounded question with concrete options.</span></li><li><strong>Each perspective stays grounded</strong><span>The skill uses the persona’s workflows, skills, priorities, sources, confidence, and open questions rather than theatrical role-play.</span></li><li><strong>The synthesis is not a silent update</strong><span>It can offer Save as Draft, Propose Decision, Add to Docs, or Create Playbook Artifact, but durable changes require an explicit request.</span></li></ul>
+        <div class="note"><p><strong>Default response:</strong> recommendation, why, persona perspectives, agreement and disagreement, assumptions and confidence, then the smallest useful next action.</p></div>
       </section>
 
       <section class="article-section" id="layout-lab">
