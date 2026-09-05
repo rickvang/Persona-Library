@@ -93,6 +93,7 @@
       <a href="#persona-reconciliation">Reconciliation</a>
       <a href="#persona-panel">Persona panels</a>
       <a href="#tool-execution">Tool execution</a>
+      <a href="#tool-maintenance">Tool records</a>
       <a href="#layout-lab">Prototyping</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In Personas</a>
@@ -189,6 +190,17 @@
         <ul class="rule-list"><li><strong>Capability before vendor</strong><span>Request inspect, search, prototype, edit, verify, or publish first; resolve the actual tool second.</span></li><li><strong>Scope before action</strong><span>Name the file, repository, folder, page, branch, or local path and the exact permission before using it.</span></li><li><strong>Evidence before learning</strong><span>One run creates a usage note. Shared guidance requires review, repeated evidence, or explicit approval.</span></li></ul>
         <div class="note"><p><strong>Default response:</strong> outcome, required capability, selected tool and connector, workspace, permission and approval status, action or blocker, verification evidence, usage-record status, lesson status, and next action.</p></div>
         <div class="links"><a class="back" href="tools.html">Open Tools →</a><a class="back" href="tool.html">Open the Figma tool record →</a></div>
+      </section>
+
+      <section class="article-section" id="tool-maintenance">
+        <h2>Tool record maintenance</h2>
+        <p>Use <code>$tool-record-maintenance</code> when the canonical Tools catalog needs a new record, field update, relationship, reconciliation, audit, or retirement. It maintains documentation and relationships; it does not configure access or execute a connector.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Add or update a record</h3><span class="tag">Catalog</span></div><p>Describe the change while preserving scope, availability, evidence, and revision history.</p><pre id="prompt-tool-maintain">Use $tool-record-maintenance to [add or update] the [tool or MCP] record. Include capabilities, scope, risk, permissions, fallbacks, availability status, related personas, skills, playbooks, recipes, evidence, and revision history. Do not execute the tool or change access.</pre><button class="copy" data-copy-id="prompt-tool-maintain">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile overlapping tools</h3><span class="tag">Architecture</span></div><p>Use this when two records may describe the same capability or have different boundaries.</p><pre id="prompt-tool-reconcile">Use $tool-record-maintenance to reconcile [tool record A] and [tool record B]. Compare identity, capability, connector, scope, risk, evidence, and relationships, then recommend merge, preserve, supersede, or keep both.</pre><button class="copy" data-copy-id="prompt-tool-reconcile">Copy prompt</button></div>
+        </div>
+        <ul class="rule-list"><li><strong>Record is not availability</strong><span>A tool record explains what could be used; the requester’s exposed tools determine what is actually available now.</span></li><li><strong>Recipe is not a new core skill</strong><span>Keep portable judgment in Skills and tool-specific procedures in recipes linked from the Tool record.</span></li><li><strong>Maintenance is not execution</strong><span>Use $tool-discovery-and-safe-execution separately when a safe probe or real tool action is needed.</span></li></ul>
+        <div class="links"><a class="back" href="tools.html">Open the Tools catalog →</a><a class="back" href="tool.html">See the Figma record →</a></div>
       </section>
 
       <section class="article-section" id="layout-lab">

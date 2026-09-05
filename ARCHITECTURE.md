@@ -29,6 +29,7 @@ private Sites deployment
 - `dist/tools.html` is the first-class Tools space: it catalogs tools, research references, execution environments, and MCP adapters by capability, availability, scope, and risk. It also indexes representative tool-use recipes.
 - `dist/tool.html` is the first canonical tool detail record. It demonstrates the execution-ready contract: capability, connector, workspace, permission, approval, verification, fallback, tool-use recipes, lessons, failure modes, and version history.
 - `tool-discovery-and-safe-execution/` is a reusable skill for resolving a capability to the safest available tool or MCP, running a bounded probe, and promoting reviewed usage evidence into reusable guidance without silent permission or content changes.
+- `tool-record-maintenance/` is a reusable skill for adding, updating, relating, reconciling, auditing, and retiring canonical tool records without executing tools or changing access.
 - `persona-panel-orchestration/` is a reusable reasoning skill for consultations and panels. It requires explicitly named participants, processes each persona independently, preserves material disagreement, and synthesizes a clean response without silently updating durable records.
 - `dist/playbooks.html` is the Playbooks space: it explains how personas, skills, workflows, artifacts, evidence, and quality gates compose around an outcome. Detailed playbooks can live behind it as deep links, such as `dist/job-search.html`.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
