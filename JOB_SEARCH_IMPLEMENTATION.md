@@ -76,8 +76,21 @@ Keep candidate facts, researched claims, interpretations, and generated writing 
 - Draft a cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry.
 - Generate portfolio or case-study emphasis for design-oriented roles.
 
+### Application preflight — before the council
+
+Run a small deterministic structural check before persona review. This is a builder rule, not a judgment the personas should have to remember:
+
+- Parse every role’s start and end date into a consistent month-level representation.
+- Sort the employer-facing resume reverse chronologically by end date unless a deliberate functional format is documented.
+- Check for missing dates, inconsistent date formats, duplicate employer records, same-month ties, and month-level overlaps.
+- Preserve source ambiguity. Do not invent day-level precision to make the timeline look cleaner.
+- Carry the preflight result into the ATS, human-reader, and integrity reviews so a polished draft cannot hide a basic chronology error.
+
+Leah owns the ATS and human-readable review of the result. Riley records the flags and reconciliation decision. A failed ordering check should stop the packet before council synthesis; an overlap or same-month ambiguity should remain visible until the source is confirmed or the user explicitly accepts it.
+
 ### Phase 3 — Quality review
 
+- Start with the preflight result rather than relying on visual inspection or persona memory.
 - Run the ATS pass for parseability, terminology coverage, structure, and truthful alignment.
 - Run the human pass for clarity, credibility, narrative, specificity, and role fit.
 - Run the visual pass for hierarchy, scan path, density, typography, and context.
@@ -102,6 +115,8 @@ Keep candidate facts, researched claims, interpretations, and generated writing 
 - The document parses into the intended sections.
 - Role-relevant terminology appears naturally where supported by evidence.
 - Dates, titles, employers, and outcomes remain unambiguous.
+- Roles are reverse chronological, or the chosen alternative format is explicitly documented.
+- Missing dates, month-only ambiguity, duplicate employers, and overlaps are flagged rather than silently resolved.
 - Formatting does not hide important content from extraction.
 
 ### Human quality
@@ -140,6 +155,7 @@ These are future opportunities, not implied capabilities of the current referenc
 
 - Can a candidate explain why a role is in or out of scope?
 - Can each important claim in an application be traced to evidence?
+- Does the preflight catch wrong role order even when the content and visual review look good?
 - Does the ATS pass improve retrieval without making the writing unnatural?
 - Can a human reviewer identify fit, level, and contribution quickly?
 - Does visual treatment support the context rather than merely signal taste?

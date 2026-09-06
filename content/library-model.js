@@ -142,6 +142,23 @@
         }
       ]
     };
+    const atsSkillId = 'skill-ats-aware-formatting-and-terminology';
+    skillMaintenance[atsSkillId] = {
+      version: '1.1',
+      updated: '2026-09-06',
+      revisions: [
+        ...skillMaintenance[atsSkillId].revisions,
+        {
+          version: '1.1',
+          date: '2026-09-06',
+          changeType: 'preflight-reconciliation',
+          summary: 'Added deterministic resume preflight for chronology, date consistency, overlaps, employer records, and parser-safe structure before council review.',
+          affectedFields: ['operation', 'quality', 'workflows', 'actions'],
+          evidence: 'Observed chronology error in a council-reviewed draft packet; ATS and integrity requirements',
+          confidenceChange: 'Rule is deterministic; role-specific interpretation remains subject to review'
+        }
+      ]
+    };
     return { personas: personaMaintenance, skills: skillMaintenance };
   }
 
