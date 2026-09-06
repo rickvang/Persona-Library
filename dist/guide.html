@@ -97,6 +97,7 @@
       <a href="#tool-maintenance">Tool records</a>
       <a href="#persona-prototypes">Persona prototypes</a>
       <a href="#persona-library-guide">Library Guide</a>
+      <a href="#change-reconciliation">Change reconciliation</a>
       <a href="#layout-lab">Prototyping</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In Personas</a>
@@ -239,6 +240,15 @@
         <div class="note"><p><strong>Do not bypass missing evidence:</strong> selecting “full packet” chooses the desired output, not permission to invent or imply tailored content. The guide should preserve the choice, identify blocking inputs, and offer the smallest safe next step.</p></div>
         <div class="note"><p><strong>Prototype status:</strong> the guide is being tested separately in Prototyping. It becomes a live Persona only after representative routing tests and an explicit Decisions record.</p></div>
         <div class="links"><a class="back" href="prototyping.html#persona-prototypes">Test the Persona Library Guide →</a><a class="back" href="data/site-orientation.json">Open the orientation manifest →</a></div>
+      </section>
+
+      <section class="article-section" id="change-reconciliation">
+        <h2>Change-impact reconciliation</h2>
+        <p class="lede">Use <code>$change-impact-reconciliation</code> when new evidence, a record, a decision, a prototype promotion, or a generated artifact changes. It checks downstream effects so stale placeholders, assumptions, and contradictory claims do not survive a source update.</p>
+        <div class="prompt-card"><div class="prompt-meta"><h3>Run a reconciliation pass</h3><span class="tag">After changes</span></div><p>Use this after adding a source or updating a durable record. It is read-only unless the request explicitly authorizes a write.</p><pre id="prompt-change-reconciliation">Use $change-impact-reconciliation after this change. Identify affected records and artifacts, classify each impact as confirms, extends, qualifies, contradicts, invalidates, or unrelated, update only affected fields, scan for stale placeholders and assumptions, validate downstream outputs, and return blockers, confidence, revision summary, and next action. Do not make durable changes unless I authorize them.</pre><button class="copy" data-copy-id="prompt-change-reconciliation">Copy prompt</button></div>
+        <table class="mini-table"><thead><tr><th>Space</th><th>Reconciliation check</th></tr></thead><tbody><tr><td>Personas</td><td>Workflows, activities, skills, tools, priorities, resources, confidence, and open questions.</td></tr><tr><td>Skills</td><td>Operating loop, quality signals, triggers, evidence, persona applications, and related capabilities.</td></tr><tr><td>Tools</td><td>Capability availability, permission scope, recipes, fallbacks, and lessons learned.</td></tr><tr><td>Playbooks</td><td>Stages, prerequisites, handoffs, shared state, artifacts, and quality gates.</td></tr><tr><td>Docs</td><td>Current truth, links, navigation, boundaries, and prototype-versus-live labels.</td></tr><tr><td>Generated artifacts</td><td>Source traceability, stale placeholders, duplicate or contradictory content, and completion status.</td></tr></tbody></table>
+        <div class="note"><p><strong>Working rule:</strong> a skill-specific workflow does the research or update; reconciliation checks what that work changed elsewhere. An <em>unrelated</em> or <em>unchanged</em> result is valid when the review finds no material downstream effect.</p></div>
+        <div class="links"><a class="back" href="prototyping.html#change-reconciliation-prototype">Test the reconciliation prototype →</a><a class="back" href="guide.html#persona-reconciliation">Read the persona-specific adapter →</a></div>
       </section>
 
       <section class="article-section" id="layout-lab">

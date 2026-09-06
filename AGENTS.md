@@ -9,4 +9,5 @@ Use the shortest relevant path:
 3. Treat the default mode as read-only.
 4. Keep prototype records isolated from live Personas, Skills, Tools, Playbooks, and production workflows.
 5. Append durable rationale to Decisions instead of silently rewriting history.
-6. Validate the result and report outcome, assumptions, evidence, limitations, and next action.
+6. After a source, record, Decision, prototype promotion, or generated artifact changes, run `$change-impact-reconciliation` when available; keep it read-only unless the requested scope authorizes updates.
+7. Validate the result and report outcome, assumptions, evidence, limitations, and next action.
