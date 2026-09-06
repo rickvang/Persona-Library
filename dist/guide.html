@@ -98,6 +98,7 @@
       <a href="#persona-prototypes">Persona prototypes</a>
       <a href="#persona-library-guide">Library Guide</a>
       <a href="#change-reconciliation">Change reconciliation</a>
+      <a href="#skill-contract">Skill contract</a>
       <a href="#layout-lab">Prototyping</a>
       <a href="#sources">Source updates</a>
       <a href="#library">In Personas</a>
@@ -249,6 +250,15 @@
         <table class="mini-table"><thead><tr><th>Space</th><th>Reconciliation check</th></tr></thead><tbody><tr><td>Personas</td><td>Workflows, activities, skills, tools, priorities, resources, confidence, and open questions.</td></tr><tr><td>Skills</td><td>Operating loop, quality signals, triggers, evidence, persona applications, and related capabilities.</td></tr><tr><td>Tools</td><td>Capability availability, permission scope, recipes, fallbacks, and lessons learned.</td></tr><tr><td>Playbooks</td><td>Stages, prerequisites, handoffs, shared state, artifacts, and quality gates.</td></tr><tr><td>Docs</td><td>Current truth, links, navigation, boundaries, and prototype-versus-live labels.</td></tr><tr><td>Generated artifacts</td><td>Source traceability, stale placeholders, duplicate or contradictory content, and completion status.</td></tr></tbody></table>
         <div class="note"><p><strong>Working rule:</strong> a skill-specific workflow does the research or update; reconciliation checks what that work changed elsewhere. An <em>unrelated</em> or <em>unchanged</em> result is valid when the review finds no material downstream effect.</p></div>
         <div class="links"><a class="back" href="prototyping.html#change-reconciliation-prototype">Test the reconciliation prototype →</a><a class="back" href="guide.html#persona-reconciliation">Read the persona-specific adapter →</a></div>
+      </section>
+
+      <section class="article-section" id="skill-contract">
+        <h2>Conditional skill contract</h2>
+        <p class="lede">Every skill declares how its work can change the system. That declaration lets a lower-reasoning model route the reconciliation step consistently without running it for every read-only consultation.</p>
+        <table class="mini-table"><thead><tr><th>Change mode</th><th>Default handoff</th></tr></thead><tbody><tr><td><code>read_only</code></td><td>Skip reconciliation unless the skill creates a durable artifact or an impact review is requested.</td></tr><tr><td><code>prototype</code></td><td>Check isolation and live-record leakage only; prototype content is not live truth.</td></tr><tr><td><code>source_update</code>, <code>record_update</code>, <code>artifact_generation</code></td><td>Invoke <code>$change-impact-reconciliation</code> before the final handoff.</td></tr><tr><td><code>external_execution</code></td><td>Invoke it when the execution creates a durable usage record, lesson, recipe, or artifact.</td></tr><tr><td><code>reconciliation_adapter</code></td><td>Run the domain adapter first, then one universal pass without recursion.</td></tr></tbody></table>
+        <div class="prompt-card"><div class="prompt-meta"><h3>Author a new skill</h3><span class="tag">Contract</span></div><p>Declare these fields in the skill frontmatter. They route behavior; they never grant permission to write.</p><pre id="prompt-skill-contract">When creating or updating a skill, declare metadata: change_mode, change_domain, and reconciliation. If the mode is source_update, record_update, artifact_generation, or applicable external_execution, invoke $change-impact-reconciliation before handoff. If it is read_only, skip it unless a durable artifact is created. If it is prototype, check isolation only. Keep all reconciliation read-only unless I explicitly authorize a durable update.</pre><button class="copy" data-copy-id="prompt-skill-contract">Copy prompt</button></div>
+        <div class="note"><p><strong>Important:</strong> automatic means “part of the skill’s default process,” not a hidden runtime scheduler. A skill without metadata falls back to read-only behavior and reports the missing contract.</p></div>
+        <div class="links"><a class="back" href="prototyping.html#skill-contract-prototype">Test the skill contract →</a><a class="back" href="data/site-orientation.json">Open the machine-readable contract →</a></div>
       </section>
 
       <section class="article-section" id="layout-lab">

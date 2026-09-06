@@ -63,6 +63,19 @@
     "update": "Modify an existing live record only after explicit authorization and scoped impact review.",
     "consult": "Use one or more named personas independently, then synthesize agreement, disagreement, assumptions, and next action."
   },
+  "skill_contract": {
+    "required_metadata": ["change_mode", "change_domain", "reconciliation"],
+    "routing": {
+      "read_only": "Skip reconciliation unless a durable artifact is created or an impact review is requested.",
+      "prototype": "Check isolation and live-record leakage only; do not reconcile prototype content as live truth.",
+      "source_update": "Invoke $change-impact-reconciliation before the final handoff.",
+      "record_update": "Invoke $change-impact-reconciliation before the final handoff.",
+      "artifact_generation": "Invoke $change-impact-reconciliation before the final handoff.",
+      "external_execution": "Invoke it when execution creates a durable usage record, lesson, recipe, or artifact.",
+      "reconciliation_adapter": "Run the domain adapter first, then one universal pass without recursion."
+    },
+    "default": "Missing metadata means safest read-only behavior and an explicit contract gap; metadata never authorizes a write."
+  },
   "default_process": [
     "Classify the request and desired outcome.",
     "Identify the relevant space and read its minimum linked records.",
