@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "site": "Personas",
+  "purpose": "A structured library of personas, reusable skills, tools, playbooks, documentation, decisions, and safe prototypes.",
+  "default_entry": "guide.html#agent-orientation",
+  "bootstrap_rule": "Load this manifest before interpreting a request about the Personas system. Classify the request, select the smallest relevant space, and state whether the work is read-only, prototype-only, or a live update.",
+  "spaces": {
+    "personas": {
+      "label": "Personas",
+      "answers": "Who is operating, in what lifecycle, context, and state, and how do they work?",
+      "read": ["persona record", "relevant workflow maps", "skills needed", "resources", "revision history"],
+      "write": "Only when explicitly asked to add or update a live persona.",
+      "do_not": ["Do not use a prototype persona as live evidence.", "Do not rewrite unrelated persona fields."]
+    },
+    "skills": {
+      "label": "Skills",
+      "answers": "What reusable capability is needed, how does it operate, and how can quality be recognized?",
+      "read": ["skill definition", "operating model", "quality signals", "workflow reach", "persona applications"],
+      "write": "Check for an existing skill first; create or change one only when the capability is reusable and the request authorizes it.",
+      "do_not": ["Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."]
+    },
+    "tools": {
+      "label": "Tools",
+      "answers": "What capability, scope, permission, fallback, and evidence does a tool or MCP provide?",
+      "read": ["tool record", "availability status", "scope and approval boundary", "tool-use recipe"],
+      "write": "Maintain a tool record only when explicitly requested; execution and record maintenance are separate concerns.",
+      "do_not": ["Never infer that a documented tool is available in the current runtime.", "Never imply credentials or permissions are configured."]
+    },
+    "playbooks": {
+      "label": "Playbooks",
+      "answers": "How do multiple personas, skills, tools, workflows, artifacts, and quality gates coordinate toward an outcome?",
+      "read": ["outcome", "stages", "participants", "shared state", "quality gates", "learning loop"],
+      "write": "Add or change a playbook only when the work is a reusable multi-stage operating model, not a one-off task.",
+      "do_not": ["Do not copy persona or skill definitions into a playbook when a reference is enough."]
+    },
+    "docs": {
+      "label": "Docs",
+      "answers": "What is currently true, how should the system be used, and what are the boundaries?",
+      "read": ["agent orientation", "mental model", "current instructions", "prompts", "space boundaries"],
+      "write": "Update Docs when a current definition or instruction changes; keep durable rationale in Decisions.",
+      "do_not": ["Do not use Docs to hide unresolved alternatives or decision history."]
+    },
+    "decisions": {
+      "label": "Decisions",
+      "answers": "What durable choice was made, why, what alternatives were considered, and what could cause revision?",
+      "read": ["question", "options", "rationale", "tradeoffs", "evidence", "affected surfaces", "revisit condition"],
+      "write": "Append a new decision record when a choice becomes durable; supersede rather than erase prior rationale.",
+      "do_not": ["Do not silently convert a prototype selection into current truth."]
+    },
+    "prototyping": {
+      "label": "Prototyping",
+      "answers": "What alternative structure, interaction, or persona concept should be tested before commitment?",
+      "read": ["prototype status", "hypothesis", "test scenarios", "observed evidence", "open questions"],
+      "write": "Use for reversible experiments. Prototype records remain isolated until an explicit promotion decision.",
+      "do_not": ["Prototype records must not affect live counts, filters, catalogs, or production workflows.", "Live records must not depend on prototype records."]
+    }
+  },
+  "request_modes": {
+    "answer": "Explain or recommend without changing durable records.",
+    "research": "Gather and synthesize evidence; keep confidence and sources visible.",
+    "plan": "Describe scope, dependencies, risks, and next actions without implementing.",
+    "prototype": "Create or compare a reversible experiment outside live records.",
+    "update": "Modify an existing live record only after explicit authorization and scoped impact review.",
+    "consult": "Use one or more named personas independently, then synthesize agreement, disagreement, assumptions, and next action."
+  },
+  "skill_contract": {
+    "required_metadata": ["change_mode", "change_domain", "reconciliation"],
+    "routing": {
+      "read_only": "Skip reconciliation unless a durable artifact is created or an impact review is requested.",
+      "prototype": "Check isolation and live-record leakage only; do not reconcile prototype content as live truth.",
+      "source_update": "Invoke $change-impact-reconciliation before the final handoff.",
+      "record_update": "Invoke $change-impact-reconciliation before the final handoff.",
+      "artifact_generation": "Invoke $change-impact-reconciliation before the final handoff.",
+      "external_execution": "Invoke it when execution creates a durable usage record, lesson, recipe, or artifact.",
+      "reconciliation_adapter": "Run the domain adapter first, then one universal pass without recursion."
+    },
+    "default": "Missing metadata means safest read-only behavior and an explicit contract gap; metadata never authorizes a write."
+  },
+  "default_process": [
+    "Classify the request and desired outcome.",
+    "Identify the relevant space and read its minimum linked records.",
+    "Build a compact context packet: goal, artifacts, constraints, tools, permissions, and success criteria.",
+    "Ask a scoped multiple-choice question only when ambiguity would materially change the work; otherwise state the default assumption.",
+    "Choose answer, research, plan, prototype, consult, or authorized update.",
+    "Make the smallest useful and reversible step.",
+    "Validate against the request, relevant quality signals, realistic variation, and affected surfaces.",
+    "Return outcome, assumptions, evidence, limitations, and the smallest next action."
+  ],
+  "mutation_policy": {
+    "default": "Read-only",
+    "live_update_requires": ["explicit user authorization", "identified target records", "scoped impact review", "validation after change"],
+    "prototype_update_requires": ["prototype scope", "isolated identifier beginning with proto-persona- when applicable", "test scenarios", "no live-record dependency"],
+    "decision_update_requires": ["append-only rationale", "affected surfaces", "revisit condition"]
+  },
+  "response_contract": ["outcome", "mode used", "assumptions", "evidence or checks", "limitations or blockers", "next action"],
+  "activation": {
+    "explicit_prompt": "Use $persona-library-orientation before working with the Personas system.",
+    "repository_instruction": "Before modifying this project, read content/site-orientation.json and follow its routing and mutation rules.",
+    "site_instruction": "Open Docs → Agent orientation before working with the Site; use the manifest as the system map."
+  }
+}

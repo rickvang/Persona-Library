@@ -1,14 +1,26 @@
 # Persona Library
 
-A static, self-contained version of the Persona Library — a shared shelf of working personas for sharper product and design decisions.
+This repository contains the source and generated output for the Persona Library Site.
 
-## Included spaces
+## What is included
 
-- **Personas** — browse role groups, search by context, and open a working persona.
-- **Skills** — explore reusable capabilities and the people who rely on them.
-- **Tools** — review tool boundaries, scope, risk, and fallback.
-- **Playbooks** — see how personas, skills, tools, and evidence compose around outcomes.
-- **Docs, Decisions, Prototyping** — keep the operating model and learning loop legible.
+- `content/` — the authored persona, skill, tool, playbook, and orientation data.
+- `client/` — shared browser state and rendering helpers.
+- `scripts/` — the build and content-validation scripts.
+- `dist/` — the generated, dependency-free Site, including all public pages and the onboarding guidance.
+- `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
+- `JOB_SEARCH_IMPLEMENTATION.md` — the job-search workspace scope and sequencing plan.
+- `AGENTS.md` — the repository activation and orientation entry point.
 
-Open index.html in a browser, or serve the folder with any static web server. No build step or external dependency is required.
+## Run locally
 
+Open `dist/index.html` directly in a browser, or serve the `dist` folder with any static web server. The Site has no package install or build dependency.
+
+To regenerate and validate the generated output after changing source content:
+
+```text
+node scripts/build-library.mjs
+node scripts/validate-content.mjs
+```
+
+The `dist` directory is the publishable Site output configured in `.openai/hosting.json`.

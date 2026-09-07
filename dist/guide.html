@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="How to create, research, and extend personas in the Personas system." />
+  <title>Using persona-research — Personas</title>
+  <style>
+    :root { --ink:#101827; --ink-soft:#526174; --night:#08111f; --paper:#f5f4ef; --card:#fffefa; --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); font-synthesis:none; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--paper); }
+    a { color:inherit; }
+    button { font:inherit; cursor:pointer; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; padding:20px clamp(20px,4vw,60px); color:#fff; background:var(--night); }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:-.03em; text-decoration:none; }
+    .mark { width:28px; height:28px; display:grid; place-items:center; color:var(--night); background:var(--coral); border-radius:8px; font-size:12px; font-weight:900; }
+    .topnav { display:flex; gap:22px; font-size:13px; color:#c0cad6; }
+    .topnav a { text-decoration:none; }
+    .topnav a[aria-current="page"] { color:#fff; }
+    .hero { padding:38px clamp(20px,7vw,112px) 40px; color:#fff; background:var(--night); }
+    .crumbs { margin:0 0 28px; color:#94a4b5; font-size:13px; }
+    .crumbs a { color:#cbd5df; text-underline-offset:3px; }
+    .eyebrow { margin:0 0 12px; color:var(--mint); font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+    h1 { max-width:760px; margin:0; font-size:clamp(38px,6vw,68px); line-height:.98; letter-spacing:-.07em; }
+    .hero-copy { max-width:660px; margin:20px 0 0; color:#bdc8d5; font-size:17px; line-height:1.55; }
+    .docs-layout { max-width:1180px; display:grid; grid-template-columns:220px minmax(0,760px); gap:56px; margin:0 auto; padding:44px clamp(20px,4vw,60px) 80px; }
+    .sidebar { position:sticky; top:20px; align-self:start; padding:15px 0; border-right:1px solid var(--line); }
+    .sidebar-label { margin:0 20px 10px 0; color:var(--ink-soft); font-size:11px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+    .sidebar a { display:block; padding:9px 20px 9px 0; color:var(--ink-soft); font-size:14px; text-decoration:none; }
+    .sidebar a:hover, .sidebar a:focus { color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+    article { min-width:0; }
+    .article-section { padding-top:4px; margin-bottom:48px; scroll-margin-top:20px; }
+    .article-section + .article-section { padding-top:34px; border-top:1px solid var(--line); }
+    h2 { margin:0 0 10px; font-size:28px; letter-spacing:-.05em; }
+    h3 { margin:24px 0 7px; font-size:17px; letter-spacing:-.03em; }
+    p { color:var(--ink-soft); line-height:1.55; }
+    .lede { margin:0 0 20px; font-size:16px; }
+    .note { margin:18px 0; padding:15px 17px; border-left:3px solid var(--coral); background:#fffefa; }
+    .note p { margin:0; font-size:14px; }
+    .prompt-list { display:grid; gap:14px; }
+    .prompt-card { padding:17px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
+    .prompt-card:nth-child(2) { background:#effaf6; border-color:#b8dfd3; }
+    .prompt-card:nth-child(3) { background:#fff8dc; border-color:#e8d394; }
+    .prompt-card:nth-child(4) { background:#edf4ff; border-color:#c6d9f2; }
+    .prompt-meta { display:flex; justify-content:space-between; gap:14px; align-items:baseline; }
+    .prompt-meta h3 { margin:0; }
+    .tag { color:var(--ink-soft); font-size:11px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    .prompt-card p { margin:5px 0 0; font-size:14px; }
+    pre { margin:14px 0 10px; padding:13px; border-radius:10px; color:#eaf0f7; background:var(--night); font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; }
+    .copy { padding:8px 11px; border:1px solid #b9c7bf; border-radius:9px; color:#1d5d50; background:#e9f6f1; font-size:12px; font-weight:800; }
+    .rule-list { display:grid; gap:0; margin:0; padding:0; list-style:none; }
+    .rule-list li { display:grid; grid-template-columns:180px 1fr; gap:18px; padding:14px 0; border-top:1px solid var(--line); }
+    .rule-list strong { font-size:14px; }
+    .rule-list span { color:var(--ink-soft); font-size:14px; line-height:1.5; }
+    .source-callout { display:flex; justify-content:space-between; gap:22px; align-items:center; padding:18px; border:1px solid #d7c98d; border-radius:14px; background:#fff8dc; }
+    .source-callout h3 { margin:0 0 5px; }
+    .source-callout p { max-width:610px; margin:0; color:#5e5739; font-size:14px; }
+    .source-callout .copy { flex:0 0 auto; color:#5e5739; border-color:#d4c68a; background:#fffdf0; }
+    .mini-table { width:100%; border-collapse:collapse; font-size:14px; }
+    .mini-table th, .mini-table td { padding:12px 10px; border-top:1px solid var(--line); text-align:left; vertical-align:top; }
+    .mini-table th { color:var(--ink-soft); font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+    .mini-table td { color:var(--ink-soft); line-height:1.45; }
+    .mini-table td:first-child { width:26%; color:var(--ink); font-weight:800; }
+    .back { display:inline-block; margin-top:4px; color:#234f68; font-size:14px; font-weight:800; text-underline-offset:3px; }
+    @media (max-width:800px) { .docs-layout { grid-template-columns:1fr; gap:18px; padding-top:26px; } .sidebar { position:static; display:flex; gap:5px; overflow-x:auto; border-right:0; border-bottom:1px solid var(--line); padding:0 0 12px; white-space:nowrap; } .sidebar-label { display:none; } .sidebar a { padding:8px 11px; border-radius:8px; background:#e9ece6; } .rule-list li { grid-template-columns:1fr; gap:5px; } }
+    @media (max-width:520px) { .topbar { padding:16px 20px; } .topnav { gap:12px; font-size:12px; white-space:nowrap; } .hero { padding:30px 20px 32px; } .docs-layout { padding-left:20px; padding-right:20px; } .source-callout { display:block; } .source-callout .copy { margin-top:14px; } .mini-table { display:block; overflow-x:auto; white-space:normal; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html" aria-current="page">Docs</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <section class="hero">
+    <p class="crumbs"><a href="index.html">Personas</a> / Docs</p>
+    <p class="eyebrow">Reference guide</p>
+    <h1>Docs</h1>
+    <p class="hero-copy">A practical reference for researching personas, defining the skills behind their work, composing playbooks, and keeping the system current.</p>
+  </section>
+  <div class="docs-layout">
+    <nav class="sidebar" aria-label="Guide sections">
+      <p class="sidebar-label">On this page</p>
+      <a href="#start">Start here</a>
+      <a href="#agent-orientation">Agent orientation</a>
+      <a href="#mental-model">Mental model</a>
+      <a href="#docs-vs-decisions">Docs vs Decisions</a>
+      <a href="#playbooks">Playbooks</a><a href="#application-context">Application context and reviews</a>
+      <a href="#create">Create a persona</a>
+      <a href="#research-only">Research only</a>
+      <a href="#update">Update a persona</a>
+      <a href="#output">What you’ll get</a>
+      <a href="#persona-skills">Persona skills</a>
+      <a href="#persona-reconciliation">Reconciliation</a>
+      <a href="#persona-panel">Persona panels</a>
+      <a href="#tool-execution">Tool execution</a>
+      <a href="#tool-maintenance">Tool records</a>
+      <a href="#persona-prototypes">Persona prototypes</a>
+      <a href="#persona-library-guide">Library Guide</a>
+      <a href="#change-reconciliation">Change reconciliation</a>
+      <a href="#skill-contract">Skill contract</a>
+      <a href="#layout-lab">Prototyping</a>
+      <a href="#sources">Source updates</a>
+      <a href="#library">In Personas</a>
+    </nav>
+    <article>
+      <section class="article-section" id="start">
+        <h2>Start here</h2>
+        <p class="lede">For most new personas, use this prompt. Replace the bracketed parts if you have them; otherwise the research will use a cross-industry default.</p>
+        <div class="prompt-card">
+          <div class="prompt-meta"><h3>Create and add a persona</h3><span class="tag">Recommended</span></div>
+          <p>Research the role, map its activities and workflows, then add it to Personas.</p>
+          <pre id="prompt-create">Create a well-researched persona for a [role] in [industry or context] and add it to Personas.</pre>
+          <button class="copy" data-copy-id="prompt-create">Copy prompt</button>
+        </div>
+        <div class="note"><p><strong>You don’t need to say “use the skill.”</strong> The persona-research method is intended to activate automatically when the request is clearly about researching or creating a persona.</p></div>
+      </section>
+
+      <section class="article-section" id="agent-orientation">
+        <h2>Agent orientation</h2>
+        <p class="lede">Before working with this system, load the orientation manifest. It gives an agent the smallest useful route through Personas, Skills, Tools, Playbooks, Docs, Decisions, and Prototyping.</p>
+        <div class="prompt-card">
+          <div class="prompt-meta"><h3>Activation prompt</h3><span class="tag">Recommended</span></div>
+          <p>Use this at the start of a session or task when the agent does not already know the system.</p>
+          <pre id="prompt-orientation">Use $persona-library-orientation before working with the Personas system. Load the orientation manifest, classify my request, identify the relevant space, state what you will and will not update, then proceed with the smallest useful action.</pre>
+          <button class="copy" data-copy-id="prompt-orientation">Copy activation prompt</button>
+        </div>
+        <table class="mini-table"><thead><tr><th>Space</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td>Personas</td><td>Role lenses, workflows, activities, priorities, tools, skills, and evidence.</td><td>Temporary experiments or broad coordination.</td></tr><tr><td>Skills</td><td>Reusable capabilities, operating loops, quality signals, and persona applications.</td><td>Tool credentials or one-off task instructions.</td></tr><tr><td>Tools</td><td>Capabilities, scope, permissions, availability, recipes, and lessons.</td><td>Assuming access is configured or executing without authorization.</td></tr><tr><td>Playbooks</td><td>Multi-persona outcomes, stages, handoffs, shared state, and quality gates.</td><td>Duplicating the underlying persona or skill definitions.</td></tr><tr><td>Docs</td><td>Current definitions, instructions, boundaries, and examples.</td><td>Unsettled alternatives or hidden history.</td></tr><tr><td>Decisions</td><td>Durable choices, rationale, tradeoffs, affected surfaces, and revisit conditions.</td><td>Silent rewrites of the current truth.</td></tr><tr><td>Prototyping</td><td>Isolated alternatives and persona concepts being tested.</td><td>Live records or production dependencies.</td></tr></tbody></table>
+        <div class="note"><p><strong>Default behavior:</strong> read first, classify the request, state assumptions and scope, and remain read-only unless the requester explicitly authorizes a durable update. Finish with outcome, evidence or checks, limitations or blockers, and next action.</p></div>
+        <div class="source-callout"><div><h3>Machine-readable source</h3><p>The canonical manifest is generated into the Site so another agent or environment can load the same orientation contract.</p></div><a class="back" href="data/site-orientation.json">Open orientation manifest →</a></div>
+      </section>
+
+      <section class="article-section" id="create">
+        <h2>Create a persona</h2>
+        <p>Use this when you want a new persona researched and added to Personas. You can optionally invoke the skill explicitly.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Plain-language request</h3><span class="tag">Recommended</span></div><p>The skill should activate automatically for a clear persona request.</p><pre id="prompt-create-plain">Create a well-researched persona for a [role] in [industry or context] and add it to Personas.</pre><button class="copy" data-copy-id="prompt-create-plain">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Explicit skill request</h3><span class="tag">Optional</span></div><p>Use this when you want to make the research method unambiguous.</p><pre id="prompt-explicit">Use $persona-research to create a persona for a [role]. Add it to Personas.</pre><button class="copy" data-copy-id="prompt-explicit">Copy prompt</button></div>
+        </div>
+      </section>
+
+      <section class="article-section" id="research-only">
+        <h2>Research only</h2>
+        <p>Use this when you want the findings and synthesis but do not want the live library changed.</p>
+        <div class="prompt-card"><pre id="prompt-only">Research the persona of a [role] in [context]. Give me the findings only; don’t update Personas.</pre><button class="copy" data-copy-id="prompt-only">Copy prompt</button></div>
+      </section>
+
+      <section class="article-section" id="update">
+        <h2>Update a persona</h2>
+        <p>Use this to check a named source or ask for a new authoritative source. The current persona is compared with the new evidence rather than rewritten wholesale.</p>
+        <div class="prompt-card"><pre id="prompt-source">Check another source for [persona name], summarize what it confirms, extends, qualifies, or contradicts, and add it to the Resources section.</pre><button class="copy" data-copy-id="prompt-source">Copy prompt</button></div>
+        <div class="source-callout"><div><h3>What changes?</h3><p>Only affected claims, workflows, priorities, confidence, or open questions should be updated. The source is added with a note about what it contributes.</p></div><button class="copy" data-copy-id="prompt-source">Copy source request</button></div>
+      </section>
+
+      <section class="article-section" id="output">
+        <h2>What you’ll get</h2>
+        <ul class="rule-list">
+          <li><strong>Ambiguity is scoped</strong><span>If a role has materially different interpretations, you’ll get a short multiple-choice question with an “Other — describe” option. Otherwise a sensible default is chosen and stated.</span></li>
+          <li><strong>The day is mapped</strong><span>Research is organized into activities, journeys, and workflows, with tools kept attached to the activities where they are used.</span></li>
+          <li><strong>Priorities are workflow-specific</strong><span>The persona shows what the person cares about most in each workflow rather than one generic list of values.</span></li>
+          <li><strong>Capabilities are explained</strong><span>The persona identifies the skills needed to perform the work and ties them to the activities and workflows that depend on them.</span></li>
+          <li><strong>Evidence stays visible</strong><span>New secondary-research personas are marked Working draft, with confidence, open questions, limits, and sources kept visible.</span></li>
+        </ul>
+      </section>
+
+      <section class="article-section" id="persona-skills">
+        <h2>Persona skills</h2>
+        <p>Use <code>$persona-skills</code> when you want to identify, explain, or maintain the capabilities behind a persona’s activities and workflows. It complements <code>$persona-research</code>: one establishes the role and its work; the other makes the skills needed to do that work explicit.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Identify needed skills</h3><span class="tag">Recommended</span></div><p>Start with a persona and connect its skills to the work already mapped.</p><pre id="prompt-skills">Use $persona-skills to identify the skills needed by this persona and connect them to its activities and workflows.</pre><button class="copy" data-copy-id="prompt-skills">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Expand one skill</h3><span class="tag">Profile</span></div><p>Turn a capability into an evidence-backed profile with observable behavior and proficiency signals.</p><pre id="prompt-skill-profile">Use $persona-skills to expand [skill] for [persona name] into a profile with observable behaviors, tools, proficiency signals, evidence, and validation questions.</pre><button class="copy" data-copy-id="prompt-skill-profile">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Form a reusable skill</h3><span class="tag">Playbook</span></div><p>Use several bounded persona perspectives when the capability spans roles or needs more than one quality lens.</p><pre id="prompt-skill-formation">Use the skill formation playbook to create and integrate a reusable skill for [capability]. Have [persona 1], [persona 2], and [persona 3] contribute distinct workflows, tools, evidence, and quality signals, then use Create-skill and reconciliation.</pre><button class="copy" data-copy-id="prompt-skill-formation">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Check a skill source</h3><span class="tag">Update</span></div><p>Use a new source to improve only the skill claims it actually supports.</p><pre id="prompt-skill-source">Use $persona-skills to check this source for [persona name]’s [skill] and update only what it confirms, extends, qualifies, or contradicts.</pre><button class="copy" data-copy-id="prompt-skill-source">Copy prompt</button></div>
+        </div>
+        <div class="note"><p><strong>What it covers:</strong> skill definitions, related workflows, observable actions and decisions, prerequisites, tools and artifacts, failure modes, proficiency signals, evidence status, source links, and validation questions.</p></div>
+        <a class="back" href="skill-views.html">Compare skill presentation options in the Skill Layout Lab →</a>
+      </section>
+
+      <section class="article-section" id="persona-reconciliation">
+        <h2>Persona reconciliation</h2>
+        <p>Use <code>$persona-reconciliation</code> after adding or changing a source, claim, skill, workflow, activity, tool, or capability. It performs a scoped consistency pass so related persona content stays aligned without rewriting unrelated fields.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile a skill update</h3><span class="tag">Recommended</span></div><p>Check the downstream effect of a new or changed capability.</p><pre id="prompt-reconcile-skill">Use $persona-reconciliation to review this skill change for [persona name], update affected workflows, activities, tools, priorities, needs, implications, resources, confidence, and open questions, and leave unrelated fields unchanged.</pre><button class="copy" data-copy-id="prompt-reconcile-skill">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile a new source</h3><span class="tag">Evidence</span></div><p>Classify what a source does to the current evidence before updating claims.</p><pre id="prompt-reconcile-source">Use $persona-reconciliation to check this source for [persona name], classify it as confirms, extends, qualifies, or contradicts, and update only affected claims.</pre><button class="copy" data-copy-id="prompt-reconcile-source">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile a workflow change</h3><span class="tag">Structure</span></div><p>Keep activities, tools, skills, priorities, and flow tier connected.</p><pre id="prompt-reconcile-workflow">Use $persona-reconciliation to review this new workflow or activity for [persona name], update related skills, tools, priorities, and flow tier, and identify what remains unchanged.</pre><button class="copy" data-copy-id="prompt-reconcile-workflow">Copy prompt</button></div>
+        </div>
+        <div class="note"><p><strong>What it returns:</strong> a scoped update set, checked unchanged fields, evidence and confidence changes, resource entries, and open questions. It is the shared final pass called by <code>$persona-research</code> and <code>$persona-skills</code>; use it directly when you already know what changed.</p></div>
+      </section>
+
+      <section class="article-section" id="persona-panel">
+        <h2>Persona panel orchestration</h2>
+        <p>Use <code>$persona-panel-orchestration</code> when you want one or more named personas to assess a question, artifact, draft, or decision. The skill processes each selected persona independently, compares their perspectives, and returns a concise synthesis.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Consult one persona</h3><span class="tag">Single lens</span></div><p>Use one persona’s workflows, skills, priorities, and evidence as the primary lens.</p><pre id="prompt-panel-single">Use $persona-panel-orchestration with [persona name] to help me [goal]. Return a recommendation, relevant quality signals, risks, evidence, and next actions.</pre><button class="copy" data-copy-id="prompt-panel-single">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Assemble a panel</h3><span class="tag">Multiple lenses</span></div><p>Name two to four personas with distinct perspectives; the skill keeps their independent judgments visible before synthesizing.</p><pre id="prompt-panel-many">Use $persona-panel-orchestration with [persona 1], [persona 2], and [persona 3] to review [artifact or question]. Synthesize the recommendation and preserve disagreements, assumptions, evidence, and next actions.</pre><button class="copy" data-copy-id="prompt-panel-many">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Run a playbook</h3><span class="tag">Coordinated workflow</span></div><p>Use a named playbook when the work needs stages, handoffs, decision rights, shared state, or quality gates.</p><pre id="prompt-panel-playbook">Use $persona-panel-orchestration with the [playbook name] playbook to help me [goal]. Show the current stage, participant perspectives, evidence gaps, and next action.</pre><button class="copy" data-copy-id="prompt-panel-playbook">Copy prompt</button></div>
+        </div>
+        <ul class="rule-list"><li><strong>You choose the participants</strong><span>The first version does not automatically select or invent a meta-persona. If the choice materially changes the result, you’ll get a bounded question with concrete options.</span></li><li><strong>Each perspective stays grounded</strong><span>The skill uses the persona’s workflows, skills, priorities, sources, confidence, and open questions rather than theatrical role-play.</span></li><li><strong>The synthesis is not a silent update</strong><span>It can offer Save as Draft, Propose Decision, Add to Docs, or Create Playbook Artifact, but durable changes require an explicit request.</span></li></ul>
+        <div class="note"><p><strong>Default response:</strong> recommendation, why, persona perspectives, agreement and disagreement, assumptions and confidence, then the smallest useful next action.</p></div>
+      </section>
+
+      <section class="article-section" id="tool-execution">
+        <h2>Tool discovery and safe execution</h2>
+        <p>Use <code>$tool-discovery-and-safe-execution</code> when work needs a new tool, connector, MCP, repository, document space, design file, or local workspace. It resolves the smallest capability, names the workspace and permission boundary, runs a safe probe, and records what can be learned.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Resolve a capability</h3><span class="tag">Recommended</span></div><p>Ask the skill to find the safest available tool without hard-coding a vendor into the persona.</p><pre id="prompt-tool-resolve">Use $tool-discovery-and-safe-execution to resolve the safest available tool for [capability] within [workspace or scope], and return the proposed action, permission, fallback, and verification method.</pre><button class="copy" data-copy-id="prompt-tool-resolve">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Adopt a new tool or MCP</h3><span class="tag">Onboarding</span></div><p>Use this when the capability is not yet mapped or a new connector needs a safe first test.</p><pre id="prompt-tool-adopt">Use $tool-discovery-and-safe-execution to assess [tool or MCP] for [capability]. Run a read-only or sandboxed probe, document its limits, and do not grant new permissions or make shared changes.</pre><button class="copy" data-copy-id="prompt-tool-adopt">Copy prompt</button></div>
+        </div>
+        <ul class="rule-list"><li><strong>Capability before vendor</strong><span>Request inspect, search, prototype, edit, verify, or publish first; resolve the actual tool second.</span></li><li><strong>Scope before action</strong><span>Name the file, repository, folder, page, branch, or local path and the exact permission before using it.</span></li><li><strong>Evidence before learning</strong><span>One run creates a usage note. Shared guidance requires review, repeated evidence, or explicit approval.</span></li></ul>
+        <div class="note"><p><strong>Default response:</strong> outcome, required capability, selected tool and connector, workspace, permission and approval status, action or blocker, verification evidence, usage-record status, lesson status, and next action.</p></div>
+        <div class="links"><a class="back" href="tools.html">Open Tools →</a><a class="back" href="tool.html">Open the Figma tool record →</a></div>
+      </section>
+
+      <section class="article-section" id="tool-maintenance">
+        <h2>Tool record maintenance</h2>
+        <p>Use <code>$tool-record-maintenance</code> when the canonical Tools catalog needs a new record, field update, relationship, reconciliation, audit, or retirement. It maintains documentation and relationships; it does not configure access or execute a connector.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Add or update a record</h3><span class="tag">Catalog</span></div><p>Describe the change while preserving scope, availability, evidence, and revision history.</p><pre id="prompt-tool-maintain">Use $tool-record-maintenance to [add or update] the [tool or MCP] record. Include capabilities, scope, risk, permissions, fallbacks, availability status, related personas, skills, playbooks, recipes, evidence, and revision history. Do not execute the tool or change access.</pre><button class="copy" data-copy-id="prompt-tool-maintain">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Reconcile overlapping tools</h3><span class="tag">Architecture</span></div><p>Use this when two records may describe the same capability or have different boundaries.</p><pre id="prompt-tool-reconcile">Use $tool-record-maintenance to reconcile [tool record A] and [tool record B]. Compare identity, capability, connector, scope, risk, evidence, and relationships, then recommend merge, preserve, supersede, or keep both.</pre><button class="copy" data-copy-id="prompt-tool-reconcile">Copy prompt</button></div>
+        </div>
+        <ul class="rule-list"><li><strong>Record is not availability</strong><span>A tool record explains what could be used; the requester’s exposed tools determine what is actually available now.</span></li><li><strong>Recipe is not a new core skill</strong><span>Keep portable judgment in Skills and tool-specific procedures in recipes linked from the Tool record.</span></li><li><strong>Maintenance is not execution</strong><span>Use $tool-discovery-and-safe-execution separately when a safe probe or real tool action is needed.</span></li></ul>
+        <div class="links"><a class="back" href="tools.html">Open the Tools catalog →</a><a class="back" href="tool.html">See the Figma record →</a></div>
+      </section>
+
+      <section class="article-section" id="persona-prototypes">
+        <h2>Persona prototypes</h2>
+        <p>Use a prototype persona when you want to test a role concept without changing the live Personas library. A prototype can reference existing personas, skills, tools, and workflows, but live records must not depend on it until it passes a promotion gate.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Test a persona concept</h3><span class="tag">Isolated</span></div><p>Run representative conversations without changing Personas, Skills, or Playbooks.</p><pre id="prompt-persona-prototype">Create a prototype persona for [concept]. Keep it isolated from the live Personas library. Define its assumptions, workflows, skills, tools, quality signals, test scenarios, and open questions. Do not update existing records.</pre><button class="copy" data-copy-id="prompt-persona-prototype">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Evaluate promotion</h3><span class="tag">After testing</span></div><p>Use evidence from representative scenarios before deciding whether the prototype should become live.</p><pre id="prompt-persona-promote">Evaluate prototype persona [name] against [test scenarios]. Preserve disagreements and open questions. Recommend archive, continue testing, or promote, and if promoting list the affected Personas, Skills, Tools, Playbooks, Docs, and Decisions.</pre><button class="copy" data-copy-id="prompt-persona-promote">Copy prompt</button></div>
+        </div>
+        <div class="note"><p><strong>Boundary:</strong> prototype records use a <code>proto-persona-</code> ID, remain outside live counts and catalogs, and move to the live system only through an explicit Decisions record followed by reconciliation.</p></div>
+        <div class="links"><a class="back" href="prototyping.html#persona-prototypes-heading">Open Persona prototypes →</a><a class="back" href="decisions.html">Open the decision archive →</a></div>
+      </section>
+
+      <section class="article-section" id="persona-library-guide">
+        <h2>Persona Library Guide</h2>
+        <p>Use the Persona Library Guide when a new LLM needs to enter the system without loading every record at once. It is an onboarding and routing persona: it prepares a grounded handoff to the relevant persona, skill, tool, or playbook.</p>
+        <div class="prompt-card"><div class="prompt-meta"><h3>Bootstrap a new LLM</h3><span class="tag">Recommended</span></div><p>Give the new model the system map, request classification, and safe mutation boundary before asking it to do substantive work.</p><pre id="prompt-library-guide">Consult the Persona Library Guide. Read the orientation manifest, classify my request, identify the smallest relevant space and records, assemble the minimum context packet, state assumptions and permission boundaries, then give me the recommended persona or skill invocation. Do not update anything.</pre><button class="copy" data-copy-id="prompt-library-guide">Copy bootstrap prompt</button></div>
+        <table class="mini-table"><thead><tr><th>Guide output</th><th>What it provides</th></tr></thead><tbody><tr><td>Classification</td><td>Answer, research, plan, prototype, consult, or authorized update.</td></tr><tr><td>Routing</td><td>The smallest relevant space and record types.</td></tr><tr><td>Context packet</td><td>Goal, artifacts, constraints, capabilities, permissions, and success criteria.</td></tr><tr><td>Handoff</td><td>A precise prompt for the selected persona, skill, tool recipe, or playbook.</td></tr><tr><td>Safety boundary</td><td>What is unavailable, read-only, prototype-only, or explicitly authorized.</td></tr><tr><td>Prerequisite gate</td><td>After an output is selected, re-check required inputs. Offer a bounded choice between providing missing materials and creating a placeholder template.</td></tr></tbody></table>
+        <div class="note"><p><strong>Do not bypass missing evidence:</strong> selecting “full packet” chooses the desired output, not permission to invent or imply tailored content. The guide should preserve the choice, identify blocking inputs, and offer the smallest safe next step.</p></div>
+        <div class="note"><p><strong>Prototype status:</strong> the guide is being tested separately in Prototyping. It becomes a live Persona only after representative routing tests and an explicit Decisions record.</p></div>
+        <div class="links"><a class="back" href="prototyping.html#persona-prototypes-heading">Test the Persona Library Guide →</a><a class="back" href="data/site-orientation.json">Open the orientation manifest →</a></div>
+      </section>
+
+      <section class="article-section" id="change-reconciliation">
+        <h2>Change-impact reconciliation</h2>
+        <p class="lede">Use <code>$change-impact-reconciliation</code> when new evidence, a record, a decision, a prototype promotion, or a generated artifact changes. It checks downstream effects so stale placeholders, assumptions, and contradictory claims do not survive a source update.</p>
+        <div class="prompt-card"><div class="prompt-meta"><h3>Run a reconciliation pass</h3><span class="tag">After changes</span></div><p>Use this after adding a source or updating a durable record. It is read-only unless the request explicitly authorizes a write.</p><pre id="prompt-change-reconciliation">Use $change-impact-reconciliation after this change. Identify affected records and artifacts, classify each impact as confirms, extends, qualifies, contradicts, invalidates, or unrelated, update only affected fields, scan for stale placeholders and assumptions, validate downstream outputs, and return blockers, confidence, revision summary, and next action. Do not make durable changes unless I authorize them.</pre><button class="copy" data-copy-id="prompt-change-reconciliation">Copy prompt</button></div>
+        <table class="mini-table"><thead><tr><th>Space</th><th>Reconciliation check</th></tr></thead><tbody><tr><td>Personas</td><td>Workflows, activities, skills, tools, priorities, resources, confidence, and open questions.</td></tr><tr><td>Skills</td><td>Operating loop, quality signals, triggers, evidence, persona applications, and related capabilities.</td></tr><tr><td>Tools</td><td>Capability availability, permission scope, recipes, fallbacks, and lessons learned.</td></tr><tr><td>Playbooks</td><td>Stages, prerequisites, handoffs, shared state, artifacts, and quality gates.</td></tr><tr><td>Docs</td><td>Current truth, links, navigation, boundaries, and prototype-versus-live labels.</td></tr><tr><td>Generated artifacts</td><td>Source traceability, stale placeholders, duplicate or contradictory content, and completion status.</td></tr></tbody></table>
+        <div class="note"><p><strong>Working rule:</strong> a skill-specific workflow does the research or update; reconciliation checks what that work changed elsewhere. An <em>unrelated</em> or <em>unchanged</em> result is valid when the review finds no material downstream effect.</p></div>
+        <div class="links"><a class="back" href="prototyping.html#change-reconciliation-prototype">Test the reconciliation prototype →</a><a class="back" href="guide.html#persona-reconciliation">Read the persona-specific adapter →</a></div>
+      </section>
+
+      <section class="article-section" id="skill-contract">
+        <h2>Conditional skill contract</h2>
+        <p class="lede">Every skill declares how its work can change the system. That declaration lets a lower-reasoning model route the reconciliation step consistently without running it for every read-only consultation.</p>
+        <table class="mini-table"><thead><tr><th>Change mode</th><th>Default handoff</th></tr></thead><tbody><tr><td><code>read_only</code></td><td>Skip reconciliation unless the skill creates a durable artifact or an impact review is requested.</td></tr><tr><td><code>prototype</code></td><td>Check isolation and live-record leakage only; prototype content is not live truth.</td></tr><tr><td><code>source_update</code>, <code>record_update</code>, <code>artifact_generation</code></td><td>Invoke <code>$change-impact-reconciliation</code> before the final handoff.</td></tr><tr><td><code>external_execution</code></td><td>Invoke it when the execution creates a durable usage record, lesson, recipe, or artifact.</td></tr><tr><td><code>reconciliation_adapter</code></td><td>Run the domain adapter first, then one universal pass without recursion.</td></tr></tbody></table>
+        <div class="prompt-card"><div class="prompt-meta"><h3>Author a new skill</h3><span class="tag">Contract</span></div><p>Declare these fields in the skill frontmatter. They route behavior; they never grant permission to write.</p><pre id="prompt-skill-contract">When creating or updating a skill, declare metadata: change_mode, change_domain, and reconciliation. If the mode is source_update, record_update, artifact_generation, or applicable external_execution, invoke $change-impact-reconciliation before handoff. If it is read_only, skip it unless a durable artifact is created. If it is prototype, check isolation only. Keep all reconciliation read-only unless I explicitly authorize a durable update.</pre><button class="copy" data-copy-id="prompt-skill-contract">Copy prompt</button></div>
+        <div class="note"><p><strong>Important:</strong> automatic means “part of the skill’s default process,” not a hidden runtime scheduler. A skill without metadata falls back to read-only behavior and reports the missing contract.</p></div>
+        <div class="links"><a class="back" href="prototyping.html#skill-contract-prototype">Test the skill contract →</a><a class="back" href="data/site-orientation.json">Open the machine-readable contract →</a></div>
+      </section>
+
+      <section class="article-section" id="layout-lab">
+        <h2>Prototyping</h2>
+        <p>Use <code>$layout-lab</code> when the information architecture is unsettled and you want to compare real structures before changing the main experience. Prototyping is the active working space: it creates a throwaway comparison surface and keeps the sample content constant. Once a direction is chosen, archive the rationale in Decisions before applying it to the Site or product surface.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Explore options</h3><span class="tag">Recommended</span></div><p>Ask for a small set of materially different structures using the same content.</p><pre id="prompt-layout-lab">Use $layout-lab to show me three ways to organize [content or workflow] before changing the main page. Keep the sample content constant and explain the tradeoffs.</pre><button class="copy" data-copy-id="prompt-layout-lab">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Apply a choice</h3><span class="tag">After selection</span></div><p>Carry the chosen direction through the live page and any related documentation.</p><pre id="prompt-layout-apply">I choose Option [A–F]. Use $layout-lab to apply it to the main page, update any related skill or Docs page, and record the decision.</pre><button class="copy" data-copy-id="prompt-layout-apply">Copy prompt</button></div>
+        </div>
+        <div class="note"><p><strong>Good labs compare structure, not decoration.</strong> Keep the lab available as an exploration, make the chosen direction obvious, and record what remains open for validation.</p></div>
+        <div class="links"><a class="back" href="prototyping.html">Open Prototyping →</a><a class="back" href="activity-views.html">Open the Layout Lab →</a><a class="back" href="skill-views.html">Open the Skill Layout Lab →</a><a class="back" href="tool.html">Open the Figma tool record →</a><a class="back" href="decisions.html">Open the decision archive →</a></div>
+      </section>
+
+      <section class="article-section" id="sources">
+        <h2>Source updates</h2>
+        <p class="lede">A persona can be strengthened over time. When you ask for another source, the current evidence is compared with the new evidence instead of being overwritten wholesale.</p>
+        <table class="mini-table"><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody><tr><td>Confirms</td><td>The new source supports an existing claim or workflow.</td></tr><tr><td>Extends</td><td>The new source adds a useful responsibility, constraint, or priority.</td></tr><tr><td>Qualifies</td><td>The new source narrows the claim or adds an important condition.</td></tr><tr><td>Contradicts</td><td>The new source conflicts with the current synthesis and may lower confidence or create an open question.</td></tr></tbody></table>
+        <div class="source-callout"><div><h3>Use this exact request</h3><p>Ask me to check a named source or find an authoritative one, explain what it contributes, and add it to the persona’s Resources section.</p></div><button class="copy" data-copy-id="prompt-source">Copy source request</button></div>
+      </section>
+
+      <section class="article-section" id="mental-model">
+        <h2>The mental model</h2>
+        <p class="lede">The site has reusable knowledge layers and separate working-record layers. Each has one job, so larger workflows can compose existing material without turning every use case into a new kind of record.</p>
+        <table class="mini-table"><thead><tr><th>Layer</th><th>What it answers</th></tr></thead><tbody><tr><td>Persona</td><td>Who is operating, in what lifecycle, context, and state?</td></tr><tr><td>Persona tool requirement</td><td>Which capability does an activity need, what is the preferred path, and what is the safe fallback?</td></tr><tr><td>Skill</td><td>What portable capability is needed, and how can quality be recognized?</td></tr><tr><td>Tool-use recipe</td><td>How is that capability performed for a specific task in a specific tool?</td></tr><tr><td>Persona workflow</td><td>How does that person perform a meaningful flow of activities?</td></tr><tr><td>Playbook</td><td>How do several personas, skills, recipes, workflows, artifacts, and gates coordinate toward an outcome?</td></tr><tr><td>Tool record</td><td>What capability, scope, access path, permission, fallback, and evidence does a tool provide?</td></tr><tr><td>Prototyping</td><td>Which structure or interaction direction should be tested before it becomes current?</td></tr><tr><td>Decision</td><td>What choice is durable, why was it made, and what does it affect?</td></tr></tbody></table>
+        <div class="note"><p><strong>Keep the distinction clear:</strong> personas are lenses, skills are portable capabilities, tool-use recipes make capabilities practical, workflows describe how a persona works, and playbooks coordinate reusable material toward an outcome.</p></div>
+      </section>
+
+      <section class="article-section" id="docs-vs-decisions">
+        <h2>Docs, Prototyping, and Decisions</h2>
+        <p class="lede">Use the three spaces together without making them duplicate each other. Prototyping is active experimentation, Decisions preserve selected choices, and Docs explain the current system.</p>
+        <table class="mini-table"><thead><tr><th>Space</th><th>Primary question</th><th>Keep here</th></tr></thead><tbody><tr><td>Docs</td><td>What is true now, and how do I use it?</td><td>Definitions, boundaries, instructions, examples, prompts, and the current information architecture.</td></tr><tr><td>Prototyping</td><td>What could this become, and which direction works best?</td><td>Alternative structures, interaction directions, sample content, and temporary comparison surfaces.</td></tr><tr><td>Decisions</td><td>Why was this direction chosen, what changed, and when should we revisit it?</td><td>Selected options, alternatives considered, tradeoffs, evidence, status, affected surfaces, and revisit conditions.</td></tr></tbody></table>
+        <div class="note"><p><strong>Working rule:</strong> Prototyping explores. Decisions archive. Docs contain the current truth. Link a prototype to its decision record, and link the decision back to the Docs section or product surface it changed.</p></div>
+        <ul class="rule-list"><li><strong>Use Docs for orientation</strong><span>Someone should be able to learn the system or complete a task without reading the entire history.</span></li><li><strong>Use Prototyping for comparison</strong><span>Keep alternatives visible while the structure is unsettled, without implying that any option is current truth.</span></li><li><strong>Use Decisions for trust</strong><span>Someone should be able to understand the tradeoff, see what was applied, and know what could cause the choice to change.</span></li><li><strong>Keep one canonical explanation</strong><span>Do not copy whole sections between spaces. Point from the current Docs rule to its decision record when context matters.</span></li></ul>
+        <div class="source-callout"><div><h3>Status flows</h3><p>Prototypes move <strong>Active → Selected → Archived</strong>. Decisions move <strong>Proposed → Decided → Applied → Superseded</strong>. Use <strong>Parked</strong> for a useful idea intentionally deferred.</p></div><a class="back" href="decisions.html">Open Decisions →</a></div>
+      </section>
+
+      <section class="article-section" id="playbooks">
+        <h2>Composed playbooks</h2>
+        <p>A playbook is larger than one persona or skill. It defines stages, participants, handoffs, decision rights, shared state, quality gates, and a learning loop. It calls existing personas and skills rather than copying them.</p>
+        <ul class="rule-list"><li><strong>Primitives</strong><span>Personas, skills, resources, tools, artifacts, and persona-owned workflows.</span></li><li><strong>Composition</strong><span>Stages, routing, handoffs, decision rights, quality gates, and flow dependencies.</span></li><li><strong>Instance</strong><span>The user’s actual goal, constraints, evidence, artifact versions, decisions, and feedback.</span></li></ul>
+        <div class="source-callout"><div><h3>Current example</h3><p><strong>Evidence-led job search</strong> coordinates role calibration, evidence mapping, ATS review, human narrative, visual communication, outreach, interviews, and learning.</p></div><a class="back" href="playbooks.html">Open Playbooks →</a></div>
+        <div class="source-callout"><div><h3>Skill formation example</h3><p><strong>Create and integrate a reusable skill</strong> coordinates a boundary-setting persona, relevant domain personas, an orchestrator, Create-skill, and reconciliation.</p></div><a class="back" href="playbooks.html#skill-formation">Open the skill formation playbook →</a></div>
+        <div class="note"><p><strong>Skill boundary:</strong> playbooks coordinate the work, while <code>Multi-perspective skill synthesis</code> captures the reusable reasoning inside the process. A broader playbooks skill can later standardize outcome framing, stage decomposition, routing, shared state, gates, handoffs, and reconciliation across multiple playbooks.</p></div>
+      </section>
+
+      <section class="article-section" id="application-context">
+        <h2>Application context and reviews</h2>
+        <p>The context brief describes one application. The Site holds reusable skills and coordination guidance. Give the brief and original sources to the agent when invoking the <a href="job-search.html#context-brief">evidence-led job-search playbook</a>.</p>
+        <ul class="rule-list">
+          <li><strong>Skills</strong><span>Preserve evidence, shape specific writing, judge density, and inspect document quality. Authored guidance is distinct from starter scaffolding and is not proof of tested outcomes.</span></li>
+          <li><strong>Personas</strong><span>Leah applies source-preserving editing and separate ATS/human reviews; Sofia applies content shaping, page judgment, and production review.</span></li>
+          <li><strong>Playbooks</strong><span>Coordinate the brief, claim ledger, small content trial, artifact versions, independent findings, disagreements, and reconciliation.</span></li>
+          <li><strong>Docs</strong><span>Explain the current process, inputs, prompts, review statuses, and tool limitations.</span></li>
+          <li><strong>Prototyping</strong><span>Keep trial content and layout comparisons isolated until a direction is selected. <a href="prototyping.html#resume-editorial-trial">The editorial trial is ready to run.</a></span></li>
+          <li><strong>Decisions</strong><span>Preserve the chosen process and its rationale. <a href="decisions.html#dec-document-evidence-quality">Read the document evidence and quality decision.</a></span></li>
+        </ul>
+        <h3>Bring the minimum useful context</h3>
+        <p>Include the reader and goal, original career sources, target description and access/completeness status, proposed positioning, deliverables, constraints, source versions, and unresolved questions. Keep candidate facts and target-specific findings in this working brief. Reference the Site’s shared methods rather than copying them into every application.</p>
+        <h3>Keep the handoff explicit</h3>
+        <p>Read brief and originals → map claims → trial the content → produce the requested document → run independent reviews → reconcile. Use the requester’s available tools and scoped workspace. If a tool or source is missing, identify the affected check early and continue useful work that does not depend on it.</p>
+        <p><strong>Verdicts:</strong> Pass means the criterion was checked on the named version; Revise identifies an observed weakness; Blocked names a missing prerequisite; Not reviewed means the check has not run. Record the source/passage or page, finding, reader consequence, action, and limitation. A checklist is not a completed review.</p>
+        <div class="prompt-card"><div class="prompt-meta"><h3>Start the small editorial trial</h3><span class="tag">Draft only</span></div><pre id="prompt-application-trial">Use the evidence-led job-search playbook with the existing job-search council and Sofia Calder. Read my attached context brief, original career sources, and target description. Build a traceable claim ledger and draft only a summary and two role entries. Review each perspective independently. Preserve disagreements and source meaning. Report version-specific findings and limitations. Do not create a full resume, update the Site, or submit anything.</pre><button class="copy" data-copy-id="prompt-application-trial">Copy prompt</button></div>
+        <p><a href="docs/application-context-and-review.md">Open the portable agent instructions</a> · <a href="job-search.html#review-records">Review-record contract</a></p>
+      </section>
+
+      <section class="article-section" id="library">
+        <h2>Personas behavior</h2>
+        <p>When a persona is added to Personas, the site keeps the browsing model simple and the detail view deep.</p>
+        <ul class="rule-list"><li><strong>Top level</strong><span>Browse and filter by role group, such as Operators, Leaders, or Specialists.</span></li><li><strong>Persona detail</strong><span>See lifecycle, operating context, operating state, activities, tools, skills, journeys, and flow hierarchy.</span></li><li><strong>Skills</strong><span>Browse reusable capabilities across personas, then open a skill to inspect triggers, observable practice, workflows, and evidence.</span></li><li><strong>Revision history</strong><span>Review the semantic record of what changed and which evidence or confidence supported the change.</span></li><li><strong>Resources</strong><span>Find the cited source trail at the end of the persona detail, after revision history and the product implication.</span></li></ul>
+        <a class="back" href="skills.html">Browse Skills →</a><br />
+        <a class="back" href="playbooks.html">Browse Playbooks →</a><br />
+        <a class="back" href="skill-views.html">Compare skill presentation options →</a><br />
+        <a class="back" href="index.html">← Back to Personas</a>
+      </section>
+    </article>
+  </div>
+  <script>
+    document.querySelectorAll('[data-copy-id]').forEach(button => button.addEventListener('click', async () => {
+      const prompt = document.querySelector('#' + button.dataset.copyId).textContent;
+      try { await navigator.clipboard.writeText(prompt); button.textContent = 'Copied'; } catch { button.textContent = 'Select the prompt above'; }
+      setTimeout(() => { button.textContent = button.dataset.copyId === 'prompt-source' ? 'Copy source request' : 'Copy prompt'; }, 1800);
+    }));
+  </script>
+</body>
+</html>
