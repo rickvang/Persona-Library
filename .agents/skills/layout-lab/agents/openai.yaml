@@ -1,0 +1,4 @@
+interface:
+  display_name: "Layout Lab"
+  short_description: "Compare isolated layouts before live changes"
+  default_prompt: "Use $layout-lab to compare materially different layouts with stable content and explicit promotion."
