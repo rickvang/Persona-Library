@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tool Record Maintenance"
+  short_description: "Maintain evidence-aware Tool records without executing them"
+  default_prompt: "Use $tool-record-maintenance to maintain this Tool record, relationships, evidence, and revision history without executing the Tool."
