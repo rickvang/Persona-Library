@@ -2,7 +2,7 @@
 
 ## Outcome
 
-The first package was reconstructed with the skill-creator initializer and staged for repository publication at .agents/skills/persona-library-orientation/. No user-level installation, live Persona Library update, issue closure, or downstream skill build was performed.
+The first package was reconstructed with the skill-creator initializer and committed at .agents/skills/persona-library-orientation/. No user-level installation, live Persona Library update, issue closure, or downstream skill build was performed.
 
 The historical source was fully paginated before this comparison. It supports the semantic requirements recorded in the golden set: compact orientation, seven spaces, bounded clarification, prototype isolation, inspection before editing, evidence/uncertainty preservation, tool-record versus actual-availability separation, and no silent updates. The original callable package and automatic-trigger traces are absent.
 
@@ -12,7 +12,7 @@ The historical source was fully paginated before this comparison. It supports th
 2. The reconstructed SKILL.md was reviewed against content/site-orientation.json and AGENTS.md.
 3. The golden set covers nine realistic prompts, including one explicit non-trigger and one missing-dependency failure case.
 4. The package’s observable contract was manually replayed against each scenario. This is a contract review, not a claim that the unregistered package was automatically invoked.
-5. The skill-creator quick validator is the next executable gate; its result must be recorded on the GitHub issue before this checkpoint is accepted.
+5. The official skill-creator quick validator passed with the temporary validation-only PyYAML dependency directory; no dependency was added to the repository or user-level skill registry.
 
 ## Scenario results
 
@@ -43,7 +43,7 @@ Unresolved unknowns:
 
 Do not proceed to change-impact reconciliation until:
 
-- quick validation passes;
+- quick validation has passed;
 - the package and this report are committed to the Persona Library repository;
 - a reviewer accepts the UNKNOWN verdicts and reconstruction boundaries;
 - no unresolved regression is found in the next controlled forward-test run.
