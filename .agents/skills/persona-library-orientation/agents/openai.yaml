@@ -1,0 +1,5 @@
+interface:
+  display_name: "Persona Library Orientation"
+  short_description: "Orient Persona Library work and set safe boundaries"
+  default_prompt: "Use $persona-library-orientation to orient this Persona Library request."
+
