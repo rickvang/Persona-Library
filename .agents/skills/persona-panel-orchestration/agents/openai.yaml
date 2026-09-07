@@ -1,0 +1,4 @@
+interface:
+  display_name: "Persona Panel Orchestration"
+  short_description: "Consult named Personas without inventing participants"
+  default_prompt: "Use $persona-panel-orchestration to compare named Persona perspectives and preserve disagreement."
