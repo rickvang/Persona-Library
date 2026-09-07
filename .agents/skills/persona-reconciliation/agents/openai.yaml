@@ -1,0 +1,4 @@
+interface:
+  display_name: "Persona Reconciliation"
+  short_description: "Review scoped Persona effects without broad rewrites"
+  default_prompt: "Use $persona-reconciliation to review this Persona change and return a bounded update set."
