@@ -1,0 +1,4 @@
+interface:
+  display_name: "Persona Research"
+  short_description: "Build evidence-backed personas without silent updates"
+  default_prompt: "Use $persona-research to research this role with explicit evidence and uncertainty."
