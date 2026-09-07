@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tool Discovery and Safe Execution"
+  short_description: "Resolve capabilities and execute only bounded authorized probes"
+  default_prompt: "Use $tool-discovery-and-safe-execution to resolve the safest available Tool and verify any authorized bounded action."
