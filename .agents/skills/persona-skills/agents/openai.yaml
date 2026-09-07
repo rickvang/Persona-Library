@@ -1,0 +1,4 @@
+interface:
+  display_name: "Persona Skills"
+  short_description: "Model reusable capabilities behind persona workflows"
+  default_prompt: "Use $persona-skills to identify or expand reusable persona capabilities with quality signals."
