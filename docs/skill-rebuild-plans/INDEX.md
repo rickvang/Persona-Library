@@ -60,7 +60,7 @@ Build each skill with progressive disclosure:
 | `$layout-lab` | Claimed created and version-controlled | Prototype pages and Guide references exist | `.agents/skills/layout-lab/` |
 | `$tool-discovery-and-safe-execution` | Claimed created for the Tools MVP | Tool pages and Guide references exist | `.agents/skills/tool-discovery-and-safe-execution/` |
 | `$tool-record-maintenance` | Claimed built and validated | Tool catalog guidance exists | `.agents/skills/tool-record-maintenance/` |
-| `Multi-perspective skill synthesis` | Claimed as a supporting skill, without an exact `$` invocation | Site-level capability record exists | Standalone package only if repeated direct use justifies it |
+| `Multi-perspective skill synthesis` | Claimed as a supporting Skill, without an exact historical `$` invocation | Site-level capability record and reconstructed standalone package exist | `.agents/skills/multi-perspective-skill-synthesis/` |
 | `playbook-composer` | Explicitly proposed but not created | Playbooks exist, but no package is referenced | Defer until a reusable need is demonstrated |
 
 ## Dependency order
@@ -74,7 +74,7 @@ persona-library-orientation
         |                                           |
         +--> persona-panel-orchestration             v
         |              |                    change-impact-reconciliation
-        |              +--> multi-perspective method
+        |              +--> multi-perspective-skill-synthesis (formation gate)
         |
         +--> layout-lab
         |

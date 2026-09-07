@@ -1,0 +1,4 @@
+interface:
+  display_name: "Multi Perspective Skill Synthesis"
+  short_description: "Identify shared skills across Persona perspectives"
+  default_prompt: "Use $multi-perspective-skill-synthesis to compare distinct Persona evidence and decide the smallest justified reusable capability."
