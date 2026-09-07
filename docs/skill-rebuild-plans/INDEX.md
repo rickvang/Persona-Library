@@ -61,7 +61,7 @@ Build each skill with progressive disclosure:
 | `$tool-discovery-and-safe-execution` | Claimed created for the Tools MVP | Tool pages and Guide references exist | `.agents/skills/tool-discovery-and-safe-execution/` |
 | `$tool-record-maintenance` | Claimed built and validated | Tool catalog guidance exists | `.agents/skills/tool-record-maintenance/` |
 | `Multi-perspective skill synthesis` | Claimed as a supporting Skill, without an exact historical `$` invocation | Site-level capability record and reconstructed standalone package exist | `.agents/skills/multi-perspective-skill-synthesis/` |
-| `playbook-composer` | Explicitly proposed but not created | Playbooks exist, but no package is referenced | Defer until a reusable need is demonstrated |
+| `playbook-composer` | Explicitly proposed but not created | Playbooks exist and a reconstructed standalone package now exists | `.agents/skills/playbook-composer/` |
 
 ## Dependency order
 
@@ -83,7 +83,7 @@ persona-library-orientation
                          v
                   tool-record-maintenance
 
-playbook-composer (deferred)
+playbook-composer (standalone composition layer)
   depends on orientation, panel orchestration, persona skills,
   tool resolution, and reconciliation
 ```
@@ -112,9 +112,9 @@ Build `$persona-panel-orchestration` and `$layout-lab`. Keep the multi-perspecti
 
 Build `$tool-discovery-and-safe-execution` first, then `$tool-record-maintenance`. Keep execution, catalog maintenance, credentials, and permissions separate.
 
-### Phase 5 — optional composition
+### Phase 5 — composition layers
 
-Reassess `Multi-perspective skill synthesis` and `playbook-composer` only after the foundational skills have real repeated usage and test evidence.
+Build and validate the approved standalone composition layers only when their boundaries are explicit; multi-perspective synthesis is the formation gate and playbook-composer is the reusable coordination layer.
 
 ## Build-and-validate checklist
 
