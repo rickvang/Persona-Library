@@ -1,0 +1,4 @@
+interface:
+  display_name: "Playbook Composer"
+  short_description: "Compose reusable staged operating models"
+  default_prompt: "Use $playbook-composer to design or revise a reusable Playbook with stages, handoffs, shared state, decision rights, and quality gates."

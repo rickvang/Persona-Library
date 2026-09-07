@@ -33,6 +33,7 @@ private Sites deployment
 - `tool-record-maintenance/` is a reusable skill for adding, updating, relating, reconciling, auditing, and retiring canonical tool records without executing tools or changing access.
 - `persona-panel-orchestration/` is a reusable reasoning skill for consultations and panels. It requires explicitly named participants, processes each persona independently, preserves material disagreement, and synthesizes a clean response without silently updating durable records.
 - `multi-perspective-skill-synthesis/` is the shared-capability formation gate: it compares distinct Persona evidence, checks Skill identity boundaries, and hands a bounded build brief to Persona Skills without silently mutating live records.
+- `playbook-composer/` is the reusable Playbook composition layer: it coordinates canonical Personas, Skills, Tools, workflows, artifacts, state, decision rights, quality gates, recovery, and learning without executing the Playbook.
 - `change-impact-reconciliation/` is the universal post-change consistency protocol. Domain workflows call it after source, record, decision, prototype, or generated-artifact changes; `persona-reconciliation/` remains the Persona-specific adapter.
 - `dist/playbooks.html` is the Playbooks space: it explains how personas, skills, workflows, artifacts, evidence, and quality gates compose around an outcome. Detailed playbooks can live behind it as deep links, such as `dist/job-search.html`.
 - Persona and skill maintenance metadata records semantic revisions alongside file-level Git history.
