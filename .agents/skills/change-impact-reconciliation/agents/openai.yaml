@@ -1,0 +1,5 @@
+interface:
+  display_name: "Change Impact Reconciliation"
+  short_description: "Review downstream effects without silent updates"
+  default_prompt: "Use $change-impact-reconciliation to review this material change without making durable updates."
+
