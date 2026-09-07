@@ -85,7 +85,7 @@
       <a href="#agent-orientation">Agent orientation</a>
       <a href="#mental-model">Mental model</a>
       <a href="#docs-vs-decisions">Docs vs Decisions</a>
-      <a href="#playbooks">Playbooks</a>
+      <a href="#playbooks">Playbooks</a><a href="#application-context">Application context and reviews</a>
       <a href="#create">Create a persona</a>
       <a href="#research-only">Research only</a>
       <a href="#update">Update a persona</a>
@@ -230,7 +230,7 @@
           <div class="prompt-card"><div class="prompt-meta"><h3>Evaluate promotion</h3><span class="tag">After testing</span></div><p>Use evidence from representative scenarios before deciding whether the prototype should become live.</p><pre id="prompt-persona-promote">Evaluate prototype persona [name] against [test scenarios]. Preserve disagreements and open questions. Recommend archive, continue testing, or promote, and if promoting list the affected Personas, Skills, Tools, Playbooks, Docs, and Decisions.</pre><button class="copy" data-copy-id="prompt-persona-promote">Copy prompt</button></div>
         </div>
         <div class="note"><p><strong>Boundary:</strong> prototype records use a <code>proto-persona-</code> ID, remain outside live counts and catalogs, and move to the live system only through an explicit Decisions record followed by reconciliation.</p></div>
-        <div class="links"><a class="back" href="prototyping.html#persona-prototypes">Open Persona prototypes →</a><a class="back" href="decisions.html">Open the decision archive →</a></div>
+        <div class="links"><a class="back" href="prototyping.html#persona-prototypes-heading">Open Persona prototypes →</a><a class="back" href="decisions.html">Open the decision archive →</a></div>
       </section>
 
       <section class="article-section" id="persona-library-guide">
@@ -240,7 +240,7 @@
         <table class="mini-table"><thead><tr><th>Guide output</th><th>What it provides</th></tr></thead><tbody><tr><td>Classification</td><td>Answer, research, plan, prototype, consult, or authorized update.</td></tr><tr><td>Routing</td><td>The smallest relevant space and record types.</td></tr><tr><td>Context packet</td><td>Goal, artifacts, constraints, capabilities, permissions, and success criteria.</td></tr><tr><td>Handoff</td><td>A precise prompt for the selected persona, skill, tool recipe, or playbook.</td></tr><tr><td>Safety boundary</td><td>What is unavailable, read-only, prototype-only, or explicitly authorized.</td></tr><tr><td>Prerequisite gate</td><td>After an output is selected, re-check required inputs. Offer a bounded choice between providing missing materials and creating a placeholder template.</td></tr></tbody></table>
         <div class="note"><p><strong>Do not bypass missing evidence:</strong> selecting “full packet” chooses the desired output, not permission to invent or imply tailored content. The guide should preserve the choice, identify blocking inputs, and offer the smallest safe next step.</p></div>
         <div class="note"><p><strong>Prototype status:</strong> the guide is being tested separately in Prototyping. It becomes a live Persona only after representative routing tests and an explicit Decisions record.</p></div>
-        <div class="links"><a class="back" href="prototyping.html#persona-prototypes">Test the Persona Library Guide →</a><a class="back" href="data/site-orientation.json">Open the orientation manifest →</a></div>
+        <div class="links"><a class="back" href="prototyping.html#persona-prototypes-heading">Test the Persona Library Guide →</a><a class="back" href="data/site-orientation.json">Open the orientation manifest →</a></div>
       </section>
 
       <section class="article-section" id="change-reconciliation">
@@ -302,6 +302,26 @@
         <div class="source-callout"><div><h3>Current example</h3><p><strong>Evidence-led job search</strong> coordinates role calibration, evidence mapping, ATS review, human narrative, visual communication, outreach, interviews, and learning.</p></div><a class="back" href="playbooks.html">Open Playbooks →</a></div>
         <div class="source-callout"><div><h3>Skill formation example</h3><p><strong>Create and integrate a reusable skill</strong> coordinates a boundary-setting persona, relevant domain personas, an orchestrator, Create-skill, and reconciliation.</p></div><a class="back" href="playbooks.html#skill-formation">Open the skill formation playbook →</a></div>
         <div class="note"><p><strong>Skill boundary:</strong> playbooks coordinate the work, while <code>Multi-perspective skill synthesis</code> captures the reusable reasoning inside the process. A broader playbooks skill can later standardize outcome framing, stage decomposition, routing, shared state, gates, handoffs, and reconciliation across multiple playbooks.</p></div>
+      </section>
+
+      <section class="article-section" id="application-context">
+        <h2>Application context and reviews</h2>
+        <p>The context brief describes one application. The Site holds reusable skills and coordination guidance. Give the brief and original sources to the agent when invoking the <a href="job-search.html#context-brief">evidence-led job-search playbook</a>.</p>
+        <ul class="rule-list">
+          <li><strong>Skills</strong><span>Preserve evidence, shape specific writing, judge density, and inspect document quality. Authored guidance is distinct from starter scaffolding and is not proof of tested outcomes.</span></li>
+          <li><strong>Personas</strong><span>Leah applies source-preserving editing and separate ATS/human reviews; Sofia applies content shaping, page judgment, and production review.</span></li>
+          <li><strong>Playbooks</strong><span>Coordinate the brief, claim ledger, small content trial, artifact versions, independent findings, disagreements, and reconciliation.</span></li>
+          <li><strong>Docs</strong><span>Explain the current process, inputs, prompts, review statuses, and tool limitations.</span></li>
+          <li><strong>Prototyping</strong><span>Keep trial content and layout comparisons isolated until a direction is selected. <a href="prototyping.html#resume-editorial-trial">The editorial trial is ready to run.</a></span></li>
+          <li><strong>Decisions</strong><span>Preserve the chosen process and its rationale. <a href="decisions.html#dec-document-evidence-quality">Read the document evidence and quality decision.</a></span></li>
+        </ul>
+        <h3>Bring the minimum useful context</h3>
+        <p>Include the reader and goal, original career sources, target description and access/completeness status, proposed positioning, deliverables, constraints, source versions, and unresolved questions. Keep candidate facts and target-specific findings in this working brief. Reference the Site’s shared methods rather than copying them into every application.</p>
+        <h3>Keep the handoff explicit</h3>
+        <p>Read brief and originals → map claims → trial the content → produce the requested document → run independent reviews → reconcile. Use the requester’s available tools and scoped workspace. If a tool or source is missing, identify the affected check early and continue useful work that does not depend on it.</p>
+        <p><strong>Verdicts:</strong> Pass means the criterion was checked on the named version; Revise identifies an observed weakness; Blocked names a missing prerequisite; Not reviewed means the check has not run. Record the source/passage or page, finding, reader consequence, action, and limitation. A checklist is not a completed review.</p>
+        <div class="prompt-card"><div class="prompt-meta"><h3>Start the small editorial trial</h3><span class="tag">Draft only</span></div><pre id="prompt-application-trial">Use the evidence-led job-search playbook with the existing job-search council and Sofia Calder. Read my attached context brief, original career sources, and target description. Build a traceable claim ledger and draft only a summary and two role entries. Review each perspective independently. Preserve disagreements and source meaning. Report version-specific findings and limitations. Do not create a full resume, update the Site, or submit anything.</pre><button class="copy" data-copy-id="prompt-application-trial">Copy prompt</button></div>
+        <p><a href="docs/application-context-and-review.md">Open the portable agent instructions</a> · <a href="job-search.html#review-records">Review-record contract</a></p>
       </section>
 
       <section class="article-section" id="library">

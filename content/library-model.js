@@ -37,7 +37,12 @@
       const operation = {...(base.operation || {}), ...(skillPractice[skill.id]?.operation || {})};
       const quality = {...(base.quality || {}), ...(skillPractice[skill.id]?.quality || {})};
       const moves = operation.moves || [primary.actions || primary.definition || 'Apply the capability through observable practice.'];
-      const checks = quality.checks || [primary.evidence || 'Review the result against the intended outcome and realistic variation.'];
+      const checks = quality.checks || ['Define a skill-specific inspection method, then compare the actual result with the intended outcome and realistic variation.'];
+      const specified = (record, fields) => fields.every(field => Array.isArray(record[field]) ? record[field].length > 0 : Boolean(record[field]));
+      skill.guidanceCoverage = {
+        operation: specified(operation, ['loop', 'inputs', 'decisions', 'outputs', 'feedback', 'boundaries']) ? 'Authored' : 'Starter or partial',
+        quality: specified(quality, ['signals', 'checks', 'watchFor']) ? 'Authored' : 'Starter or partial'
+      };
       skill.toolUseRecipes = toolUseRecipes.filter(recipe => recipe.skillId === skill.id);
       skill.guidance = {
         operation: {
@@ -159,6 +164,20 @@
         }
       ]
     };
+    const editorialSkills = ['requirement-to-evidence-mapping', 'persuasive-professional-writing', 'voice-preservation-and-ethical-editing', 'editorial-content-shaping', 'content-density-and-scanability-judgment'];
+    skillMaintenance[atsSkillId].version = '1.2';
+    skillMaintenance[atsSkillId].updated = '2026-09-07';
+    skillMaintenance[atsSkillId].revisions.push({version:'1.2',date:'2026-09-07',changeType:'review-contract-correction',summary:'Requires inspection of the actual final artifact and preserves legitimate repeat engagements. Replaces assumed automatic preflight with recorded checks and explicit unavailable results.',affectedFields:['operation','quality','actions'],evidence:'Resume builder audit and application-review contract',confidenceChange:'Instruction clarified; execution and employer-parser results require separate evidence'});
+    for (const suffix of editorialSkills) {
+      const record = skillMaintenance[`skill-${suffix}`];
+      record.version = '1.1'; record.updated = '2026-09-07';
+      record.revisions.push({version:'1.1',date:'2026-09-07',changeType:'practice-expansion',summary:'Added source-preserving editorial methods and concrete reader/document quality checks.',affectedFields:['operation','quality','actions'],evidence:'Resume audit and source-to-draft comparison; see Decisions / Document evidence and quality.',confidenceChange:'Authored working method; reader trial remains untested'});
+    }
+    for (const id of ['application-editor', 'document-designer']) {
+      const record = personaMaintenance[id];
+      record.version = '1.1'; record.updated = '2026-09-07';
+      record.revisions.push({version:'1.1',date:'2026-09-07',changeType:'capability-reconciliation',summary:'Connected evidence-led editing, small content trials, and version-specific review to existing activities.',affectedFields:['behaviors','needs','implication','workflows','skills'],evidence:'Expanded editorial skill methods and application-review contract',confidenceChange:'Remains synthesized; no reader outcome or candidate approval claimed'});
+    }
     return { personas: personaMaintenance, skills: skillMaintenance };
   }
 
