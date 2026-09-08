@@ -87,7 +87,7 @@ Use a conventional, linear section structure unless the employer instructions re
 1. Contact information
 2. `SUMMARY` (optional when the evidence is stronger without it)
 3. `SKILLS` or `TECHNICAL SKILLS` (when supported role terms need a scannable home)
-4. `EXPERIENCE` or `PROFESSIONAL EXPERIENCE`
+4. `WORK EXPERIENCE`, `EXPERIENCE`, or `PROFESSIONAL EXPERIENCE`
 5. `EDUCATION` and/or `CERTIFICATIONS`
 
 `PROJECTS`, `PORTFOLIO`, and `ADDITIONAL EXPERIENCE` are optional when they answer a real requirement or preserve relevant chronology. Prefer one clear `EXPERIENCE` section when the source supports it.
