@@ -90,11 +90,22 @@ Use a conventional, linear section structure unless the employer instructions re
 4. `WORK EXPERIENCE`, `EXPERIENCE`, or `PROFESSIONAL EXPERIENCE`
 5. `EDUCATION` and/or `CERTIFICATIONS`
 
-`PROJECTS`, `PORTFOLIO`, and `ADDITIONAL EXPERIENCE` are optional when they answer a real requirement or preserve relevant chronology. Prefer one clear `EXPERIENCE` section when the source supports it.
+`PROJECTS`, `PORTFOLIO`, and `ADDITIONAL EXPERIENCE` are optional when they answer a real requirement or preserve relevant chronology. Prefer one clear work-experience section with a conventional heading when the source supports it.
 
 `SELECTED IMPACT`, `CORE ALIGNMENT`, `TARGET`, `FIT`, and `MATCH` are not default ATS headings. Put accomplishments under the relevant role and supported capabilities under `SKILLS`. Do not create a section only to mirror the job description.
 
 There is no universal ATS heading certification. Conventional labels reduce ambiguity but do not prove a particular vendor's parser behavior. If the employer parser is not tested, record parser suitability as unknown.
+
+### Employer and client engagement hierarchy
+
+When source material identifies a consulting, staffing, or agency employer with client work beneath it, preserve both levels in the resume:
+
+- Identify the actual employer of record and the client engagements from the source or an explicit candidate confirmation.
+- Keep separate employer periods separate when the candidate left and later returned.
+- Use an explicit plain-text `Client engagements:` line or bullet under the employer, and prefix each client accomplishment with the client name when multiple clients share that employer.
+- Do not rely on visual indentation alone; the relationship must survive plain-text extraction.
+- Keep direct employers as separate entries.
+- If the employer/client relationship or employment period is uncertain, record the uncertainty and ask before regrouping.
 
 ### ATS provider and channel profiles
 
@@ -206,6 +217,7 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - The document parses into the intended sections or parser suitability is explicitly unknown.
 - Role-relevant terminology appears naturally where supported by evidence.
 - Dates, titles, employers, engagement identity, attribution, scope, and outcomes remain unambiguous.
+- Employer/client attribution is explicit: confirmed client engagements appear under the actual employer, separate employment periods remain separate, and the relationship survives plain-text extraction.
 - Roles are reverse chronological, or the chosen alternative format is explicitly documented.
 - Missing dates, month-only ambiguity, duplicate employers, and overlaps are flagged rather than silently resolved.
 - Formatting does not hide important content from extraction.
@@ -263,5 +275,6 @@ These are future opportunities, not implied capabilities of the current referenc
 - Does visual treatment support the context rather than merely signal taste?
 - Does feedback change the search model only when it is repeated or well-supported?
 - Does the heading structure make section boundaries obvious to a parser?
+- Does the resume preserve employer-of-record and client attribution without relying on visual indentation?
 - Does the resume keep target context in the Work Order while keeping the resume reusable?
 - Do any highlights or alignment sections add distinct value instead of repeating experience or skills?
