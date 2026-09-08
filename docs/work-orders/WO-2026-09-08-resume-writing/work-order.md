@@ -93,7 +93,7 @@ Known unknowns:
 - Direct usability-testing evidence is not present in the selected source.
 - WCAG 2.1 specificity is unconfirmed; the source supports only accessibility standards and compliance guidelines.
 - Agile wording, enterprise-application wording, on-site/contract availability, work authorization, and current Quva status require confirmation.
-- The source contains two STG Consulting entries and month-level overlaps; dates were preserved rather than silently normalized.
+- The source contains two STG Consulting employment periods because Rick left and later returned; client dates and any month-level overlaps were preserved rather than silently normalized.
 - No employer ATS parser, recruiter review, real-user test, or historical comparison was run.
 - No cover letter was requested.
 
@@ -167,8 +167,9 @@ The requested target context is now supplied: [Centstone Senior UX Designer](htt
 - Created privately in the authorized run folder: one shared evidence ledger, one ATS resume, one human-facing resume, and one parity/integrity review. No cover letter was requested or created.
 - Checks completed: source-to-master equality, single-column document structure, conventional semantic headings, list structure, placeholder scan, shared claim coverage, parity of material facts, and privacy/mutation boundaries.
 - Result: the packet is ready for requester review. The ATS version is canonical. The human version is retained as a reference rendering from the same evidence source and is not selected by default.
-- Structural revision after requester review: removed the target line, removed the duplicated impact and alignment sections, consolidated the supported capability list under `SKILLS`, and moved `SKILLS` before `EXPERIENCE`.
-- Open findings: direct usability-testing evidence is not present; WCAG 2.1 specificity is unconfirmed; Agile wording is not asserted; on-site/contract availability and work authorization are unknown; current Quva status/end date needs confirmation; and the source has two STG Consulting entries plus month-level overlaps that were not silently normalized.
+- Structural revision after requester review: removed the target line, removed the duplicated impact and alignment sections, consolidated the supported capability list under `SKILLS`, moved `SKILLS` before `WORK EXPERIENCE`, and grouped confirmed STG client engagements beneath their employer period.
+- Employment attribution revision: STG Consulting is the employer for the confirmed indented C.R. England, EnerBankUSA, FamilySearch, ProDataKey, and JustServe engagements; the two STG periods remain separate because Rick left and later returned; Adobe and Idaho National Lab remain separate employers.
+- Open findings: direct usability-testing evidence is not present; WCAG 2.1 specificity is unconfirmed; Agile wording is not asserted; on-site/contract availability and work authorization are unknown; current Quva status/end date needs confirmation; and month-level client overlaps remain visible rather than silently normalized.
 - No submission, employer contact, publication, external sharing, or user-level skill installation was performed. Private Drive links and resume content remain out of the public repository.
 
 ## Completion boundary
