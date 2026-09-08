@@ -166,7 +166,6 @@ Use this comparison only when OUT-HUMAN exists.
 Fail parity when either version silently adds, removes, upgrades, or changes the meaning of a material claim. If a difference is required by the channel, document it and obtain the appropriate source or candidate decision. If OUT-HUMAN is not created, do not report parity as passed or failed.
 
 ## 5. Review record
-## 5. Review record
 
 Run reviews on the actual output revision.
 
