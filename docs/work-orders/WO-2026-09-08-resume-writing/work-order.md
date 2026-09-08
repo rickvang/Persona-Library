@@ -113,7 +113,7 @@ Keep facts, researched claims, interpretations, generated writing, assumptions, 
 
 Future project artifacts should be created in the authorized private Drive run folder unless the requester names another target. The public Persona Library stores the process and Work Order index, not private resume content by default.
 
-For this ATS-first run, the resume uses conventional section labels: `SUMMARY`, `SKILLS`, `EXPERIENCE`, `ADDITIONAL EXPERIENCE`, and `EDUCATION & CERTIFICATIONS`. The target line is omitted. Accomplishments remain under the relevant roles, and supported capabilities remain in `SKILLS`; `SELECTED IMPACT` and `CORE ALIGNMENT` are not used as default sections.
+For this ATS-first run, the resume uses conventional section labels: `SUMMARY`, `SKILLS`, `WORK EXPERIENCE`, `ADDITIONAL EXPERIENCE`, and `EDUCATION & CERTIFICATIONS`. The target line is omitted. Accomplishments remain under the relevant roles, and supported capabilities remain in `SKILLS`; `SELECTED IMPACT` and `CORE ALIGNMENT` are not used as default sections.
 Provider profile: none was available for this run. Employer or portal-specific parser behavior remains unknown; any generic downstream validator must be recorded as tool compatibility evidence rather than vendor evidence.
 
 The packet must not:
