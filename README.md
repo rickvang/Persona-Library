@@ -12,6 +12,11 @@ This repository contains the source and generated output for the Persona Library
 - `JOB_SEARCH_IMPLEMENTATION.md` — the job-search workspace scope and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.
 
+## Work tracking
+
+- docs/work-orders.md — repository-wide active-work packet and progress-record convention.
+- docs/ux/ — Expert UX practice, work-order, and IA-to-UI traceability templates.
+
 ## Run locally
 
 Open `dist/index.html` directly in a browser, or serve the `dist` folder with any static web server. The Site has no package install or build dependency.
