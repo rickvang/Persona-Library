@@ -36,6 +36,10 @@ The ATS version is the canonical submission candidate. The optional human versio
 Target employer, role, location, and work-mode context remain in this Work Order and the requirement map; the resume body does not receive a target line by default.
 
 ## Existing process and routing
+### Candidate-specific standing decisions
+
+Before role alignment and drafting, read the private candidate standing-decision record when available. For this run, the record was created in the private job applications folder and the current ATS and evidence artifacts reflect its confirmed structure decisions. The record is private; no link or identifier is stored here. A missing or conflicting record is reported in the Work Order and held for Rick’s review.
+
 
 Use the repository's existing job-search contract:
 
@@ -131,6 +135,8 @@ Synthetic Personas may surface questions or design risks, but their responses re
 
 | Phase | Status | Gate or blocker | Smallest next action |
 | --- | --- | --- | --- |
+| Load candidate standing decisions | Complete | Private record located and read; confirmed candidate structure decisions applied | Continue source and evidence review |
+
 | Initialize Work Order and route request | Complete | Classification is provisional | Confirm target role and output |
 | Select 07/26 source and initialize master copy | Complete | Native copy verified; source unchanged | Review or approve the copied master |
 | Build shared evidence ledger | Complete | Shared ledger created; unsupported claims are marked partial or unknown | Review open questions before submission |

@@ -42,6 +42,26 @@ Use one shared evidence inventory or claim ledger for every output.
 | E-001 |  |  |  |  | sourced / observed / assumption / unknown |  |
 
 Keep candidate facts, researched claims, interpretations, generated writing, and unresolved questions distinct. Do not invent a metric, tool, responsibility, title, date, employer, or outcome.
+### Candidate-specific standing decisions
+
+Read the private candidate-specific standing-decision record before role alignment or drafting when one exists.
+
+- Private record name or location (do not copy private contents into this repository):
+- Discovery status: not checked / located / read / missing / stale / conflicted / not applicable
+- Scope used for this Work Order:
+- Last reviewed:
+- Evidence or source basis:
+- Candidate decisions applied:
+- Conflicts or superseded decisions:
+- Candidate review required before drafting? yes / no
+- Candidate record updated during this Work Order? yes / no
+
+| Decision ID | Candidate-confirmed decision | Evidence or source | Date | Status | Applies to |
+| --- | --- | --- | --- | --- | --- |
+| DEC-001 |  |  |  | active / superseded / disputed / unknown |  |
+
+A standing decision guides repeatable candidate-specific structure and attribution. It does not create evidence, upgrade a claim, resolve a conflict silently, or authorize upload, submission, employer contact, or external sharing.
+
 
 ### Requirement map
 
@@ -201,6 +221,8 @@ Update at phase transitions, decisions, failed gates, material assumptions, hand
 
 | Phase | Owner | Status | Output or link | Evidence status | Gate result | Smallest next action |
 | --- | --- | --- | --- | --- | --- | --- |
+| Load candidate standing decisions |  |  |  |  |  |  |
+
 | Define target and constraints |  |  |  |  |  |  |
 | Align role and evidence |  |  |  |  |  |  |
 | Build shared evidence source |  |  |  |  |  |  |
