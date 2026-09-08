@@ -23,6 +23,54 @@ For a trivial change, a short note may state that a full work order was not warr
 
 Authorization is a constraint to record, not a permission granted by this document. Do not infer repository, Site, Tool, publication, account, or external communication authorization.
 
+## Project context and reference routing
+
+Use the [Project Context and Reference Routing method](project-context-and-reference-routing.md) before non-trivial design work. It infers the smallest project profile, selects a primary lens, and routes only the relevant Personas, Skills, references, examples, and conditional gates.
+
+### Project profile
+
+- Primary project type:
+- Secondary project type:
+- Primary user or operator job:
+- Platform and environment:
+- Content density and variability:
+- Risk or consequence level:
+- Uncertainty level:
+- Audience or role:
+- Evidence available and missing:
+- Constraints and authorization boundary:
+- Success criteria:
+- Stopping condition:
+
+### Routing decision
+
+- Primary lens:
+- Secondary lens, if any:
+- Why this route fits:
+- Classification confidence:
+- Provisional assumptions:
+- Proportionality tier:
+- Selected Personas and Skills:
+- Selected reference IDs and examples:
+- Minimum gates:
+- Conditional gates:
+- Gates skipped with reason:
+- Question that would materially change the route:
+
+### Profile revisions
+
+| Revision | Date | Field or lens changed | New evidence | Impact on route | Decision or next action |
+| --- | --- | --- | --- | --- | --- |
+| R-001 |  |  |  |  |  |
+
+### Promotion disposition
+
+| Candidate | Generalizable beyond this project? | Evidence status | Proposed shared location | Decision |
+| --- | --- | --- | --- | --- |
+|  | yes / no / unknown |  |  | retain project-only / propose / reject / deferred |
+
+Routing metadata may be inferred, but it must not be presented as verified user research, product requirements, tool usage, or stakeholder agreement. Keep project-specific assumptions in this Work Order or a linked context artifact.
+
 ## 1. Scope and frame
 
 ### User or operator goal
