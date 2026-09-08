@@ -96,6 +96,22 @@ Use a conventional, linear section structure unless the employer instructions re
 
 There is no universal ATS heading certification. Conventional labels reduce ambiguity but do not prove a particular vendor's parser behavior. If the employer parser is not tested, record parser suitability as unknown.
 
+### ATS provider and channel profiles
+
+A provider profile is an evidence record, not a guess based on a portal name. Use one when the employer, application channel, or a tested downstream validator supplies actual constraints.
+
+Record:
+
+- provider or channel name and the exact application URL;
+- evidence source, research date, and any version or submission instructions;
+- accepted upload formats and document limits;
+- heading aliases, extraction behavior, or field-mapping rules that were actually documented or tested;
+- the fixture or export used for a test, the observed result, and the untested scope;
+- rules that remain unknown.
+
+Apply a provider profile only where its evidence supports it. A generic internal checker, a portal label, or advice from one vendor does not establish a universal Workday, Greenhouse, ZipRecruiter, or other ATS rule. When no provider evidence exists, use the default structure and report provider behavior as unknown.
+
+The current JobAgent implementation contains a generic text check rather than a provider matrix. Its required headings and parser warnings are useful as a tool-compatibility profile only; they are not evidence that a named ATS prefers those labels. Keep that distinction in the Work Order.
 Keep target employer, role, location, and work-mode context in the Work Order and requirement map. Do not add a target line to the resume body by default unless the requester explicitly wants a role-labeled version or the submission format requires it. A file name or Work Order can carry target context without adding it to the resume.
 
 Before review, compare the heading list against this structure, record intentional deviations, and check for duplicated material claims across summary, highlights, skills, and experience. A metric should have one canonical evidence-backed home; repeat it only when repetition materially improves the intended reading path.
@@ -197,6 +213,8 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - Target employer, role, location, and work-mode context are absent from the resume body unless explicitly requested.
 - Accomplishments live under roles and capabilities live under `SKILLS` or an approved synonym; derived alignment sections are not created by default.
 - Repeated material claims are removed or documented as intentional.
+- Provider-specific formatting rules are applied only when a documented profile or actual test supports them.
+- Generic validator results are labeled as implementation-specific compatibility evidence.
 
 ### Evidence-integrity quality
 
