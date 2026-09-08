@@ -76,6 +76,11 @@ For the ATS version, target employer, role, location, and work-mode context rema
 - Heading deviations and reason:
 - Target context included in resume body? no by default; if yes, why:
 - Duplicate material claim check across summary, highlights, skills, and experience:
+- ATS/provider/channel profile used, if any:
+- Provider evidence source, research date, and version:
+- Provider-specific rules actually documented or tested:
+- Provider-specific behavior still unknown:
+- Downstream validator compatibility and limitations:
 - Standard headings and deterministic text order:
 - Chronology and date representation:
 - Supported terminology from the requirement map:
@@ -97,6 +102,8 @@ Minimum gate:
 - Headings use conventional labels or an intentional deviation is recorded; derived `SELECTED IMPACT`, `CORE ALIGNMENT`, `TARGET`, `FIT`, and `MATCH` sections are not created by default.
 - Target employer, role, location, and work-mode context stays in Work Order metadata unless explicitly requested.
 - No duplicated impact block or keyword category repeats an existing claim without a recorded reason.
+- Provider-specific rules are used only when the profile or an actual test supports them; a portal name alone is insufficient.
+- Generic checker results are labeled implementation-specific rather than vendor certification.
 
 ### Human-facing resume version (optional)
 
