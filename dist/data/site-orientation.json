@@ -176,7 +176,7 @@
         "mutation_boundary": "artifact_generation",
         "reconciliation": "persona-reconciliation",
         "non_triggers": ["A one-Persona capability profile", "A request to merely use an existing Skill"],
-        "next_handoff": "Hand the bounded build brief to skill-creator only when a standalone package is justified."
+        "next_handoff": "Hand the bounded build brief to pl-skill-creator only when a standalone package is justified."
       },
       {
         "id": "skill-package-maintenance",
@@ -184,10 +184,10 @@
         "modes": ["plan", "update"],
         "primary_space": "skills",
         "secondary_spaces": ["docs", "decisions"],
-        "target": "skill-creator",
+        "target": "pl-skill-creator",
         "artifact_kind": "callable_skill",
-        "package_path": null,
-        "availability_source": "runtime_catalog",
+        "package_path": ".agents/skills/pl-skill-creator",
+        "availability_source": "repo_local",
         "first_reads": ["approved scope", "existing package", "skill contract", "relevant plan or issue"],
         "mutation_boundary": "authorized_update",
         "reconciliation": "change-impact-reconciliation",

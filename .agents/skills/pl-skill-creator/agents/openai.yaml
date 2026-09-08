@@ -1,0 +1,4 @@
+interface:
+  display_name: "PL Skill Creator"
+  short_description: "Create and evaluate portable Agent Skill packages"
+  default_prompt: "Use $pl-skill-creator to create or update a portable Skill package with validation and evaluation."

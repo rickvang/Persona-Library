@@ -92,6 +92,7 @@
       <a href="#update">Update a persona</a>
       <a href="#output">What you’ll get</a>
       <a href="#persona-skills">Persona skills</a>
+      <a href="#skill-authoring">Skill authoring</a>
       <a href="#persona-reconciliation">Reconciliation</a>
       <a href="#persona-panel">Persona panels</a>
       <a href="#tool-execution">Tool execution</a>
@@ -131,10 +132,20 @@
         <section class="routing-map" id="routing-map">
           <h3>System routing map</h3>
           <p>Choose the smallest route for the request. A layer identifies what kind of capability is being used; it does not grant permission and not every request needs a Skill.</p>
-          <table class="mini-table"><thead><tr><th>Need</th><th>Start with</th><th>Layer or artifact</th></tr></thead><tbody><tr><td>Research or maintain a Persona</td><td><code>$persona-research</code></td><td>Library management</td></tr><tr><td>Define Persona capabilities</td><td><code>$persona-skills</code></td><td>Library management</td></tr><tr><td>Consult multiple Personas</td><td><code>$persona-panel-orchestration</code></td><td>Orchestration</td></tr><tr><td>Create a reusable Skill</td><td><code>$skill-creator</code></td><td>Package authoring</td></tr><tr><td>Resolve or safely use a Tool</td><td><code>$tool-discovery-and-safe-execution</code></td><td>Tool safety</td></tr><tr><td>Compare a layout in isolation</td><td><code>$layout-lab</code></td><td>Persona-applied prototype</td></tr><tr><td>Review downstream effects</td><td><code>$change-impact-reconciliation</code></td><td>Governance</td></tr><tr><td>Run resume or application work</td><td>Job-search Docs and active Work Order</td><td>Workflow</td></tr></tbody></table>
+          <table class="mini-table"><thead><tr><th>Need</th><th>Start with</th><th>Layer or artifact</th></tr></thead><tbody><tr><td>Research or maintain a Persona</td><td><code>$persona-research</code></td><td>Library management</td></tr><tr><td>Define Persona capabilities</td><td><code>$persona-skills</code></td><td>Library management</td></tr><tr><td>Consult multiple Personas</td><td><code>$persona-panel-orchestration</code></td><td>Orchestration</td></tr><tr><td>Create or update a callable Skill package</td><td><code>$pl-skill-creator</code></td><td>Package authoring</td></tr><tr><td>Resolve or safely use a Tool</td><td><code>$tool-discovery-and-safe-execution</code></td><td>Tool safety</td></tr><tr><td>Compare a layout in isolation</td><td><code>$layout-lab</code></td><td>Persona-applied prototype</td></tr><tr><td>Review downstream effects</td><td><code>$change-impact-reconciliation</code></td><td>Governance</td></tr><tr><td>Run resume or application work</td><td>Job-search Docs and active Work Order</td><td>Workflow</td></tr></tbody></table>
           <div class="note"><p>Verify the current repository package or runtime catalog before invoking a named Skill. A Persona <code>skillLibrary</code> entry, plan, issue, URL, or documentation mention describes a route; it does not prove a callable package exists.</p></div>
         </section>
         <div class="source-callout"><div><h3>Machine-readable source</h3><p>The canonical manifest is generated into the Site so another agent or environment can load the same orientation contract.</p></div><a class="back" href="data/site-orientation.json">Open orientation manifest →</a></div>
+      </section>
+
+      <section class="article-section" id="skill-authoring">
+        <h2>Skill authoring</h2>
+        <p>Use <code>$pl-skill-creator</code> when an approved reusable capability needs to become a callable package for one or more agent runtimes. It provides one consolidated authoring lifecycle for framing, reuse, boundaries, contract, package design, validation, evaluation, and maintenance.</p>
+        <div class="prompt-list">
+          <div class="prompt-card"><div class="prompt-meta"><h3>Create or update a package</h3><span class="tag">Package authoring</span></div><p>Build one bounded Skill package from an approved reusable capability.</p><pre id="prompt-pl-skill-creator">Use $pl-skill-creator to create or update [skill] for [outcome]. Check existing identities and boundaries, define the contract, design the smallest package, validate structure, test triggering and behavior, report limitations, and reconcile affected surfaces. Do not install or publish without authorization.</pre><button class="copy" data-copy-id="prompt-pl-skill-creator">Copy prompt</button></div>
+          <div class="prompt-card"><div class="prompt-meta"><h3>Evaluate a Skill</h3><span class="tag">Quality</span></div><p>Check whether a Skill triggers correctly and produces the intended result under realistic variation.</p><pre id="prompt-skill-evaluation">Use $pl-skill-creator to evaluate [skill] for [runtime]. Test positive and negative triggering, realistic outputs, edge cases, fallbacks, permission boundaries, and regressions. Report evidence, limitations, and the smallest correction.</pre><button class="copy" data-copy-id="prompt-skill-evaluation">Copy prompt</button></div>
+        </div>
+        <div class="source-callout"><div><h3>Current package</h3><p><strong>PL Skill Creator</strong> uses <code>pl-skill-creator</code> as its package ID and keeps the generic Codex <code>$skill-creator</code> as an underlying helper.</p></div><a class="back" href="skills.html">Browse Skills →</a></div>
       </section>
 
       <section class="article-section" id="create">

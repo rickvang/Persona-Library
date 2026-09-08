@@ -26,7 +26,7 @@ Use `content/site-orientation.json` as the canonical request-to-system map. The 
 | Define or maintain Persona capabilities | `$persona-skills` | library management |
 | Consult multiple Personas | `$persona-panel-orchestration` | orchestration |
 | Form a reusable capability | `$multi-perspective-skill-synthesis` | orchestration |
-| Create or update a callable Skill | `$skill-creator` | package authoring |
+| Create or update a callable Skill | `$pl-skill-creator` (`$skill-creator` is the Codex package helper) | package authoring |
 | Compose a reusable multi-stage process | `$playbook-composer` | orchestration |
 | Resolve a Tool or permission | `$tool-discovery-and-safe-execution` | tool safety |
 | Maintain a Tool record | `$tool-record-maintenance` | library management |

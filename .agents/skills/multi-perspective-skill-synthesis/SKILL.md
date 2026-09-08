@@ -14,7 +14,7 @@ metadata:
 
 This is a repository-local reconstruction. The historical conversation described this method and later referred to it as a Skill, but the exact callable package and its runtime outputs were not recovered. Treat the current library, issue plan, and linked records as evidence; do not claim historical parity.
 
-This skill is the shared-capability identifier and formation gate between Persona consultation and Skill construction. It prepares a defensible capability definition and a handoff brief for `$persona-skills`; it does not silently create a live Skill or replace the system `$skill-creator` package builder.
+This skill is the shared-capability identifier and formation gate between Persona consultation and Skill construction. It prepares a defensible capability definition and a handoff brief for `$persona-skills`; it does not silently create a live Skill or replace `pl-skill-creator`, which uses the system `$skill-creator` package helper when available.
 
 ## Use this skill when
 
