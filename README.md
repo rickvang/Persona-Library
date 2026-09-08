@@ -15,6 +15,7 @@ This repository contains the source and generated output for the Persona Library
 ## Work tracking
 
 - docs/work-orders.md — repository-wide active-work packet and progress-record convention.
+- docs/work-orders/ — default repository home for non-trivial Work Order packages.
 - docs/ux/ — Expert UX practice, Work Order, IA-to-UI traceability, project-context routing, and design references.
 - docs/ux/project-context-and-reference-routing.md — project-aware routing method.
 - docs/ux/project-context-template.md — project-scoped profile and evidence packet.
