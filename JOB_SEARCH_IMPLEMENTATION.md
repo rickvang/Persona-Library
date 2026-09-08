@@ -40,7 +40,7 @@ The new records are synthetic composites. They are intentionally marked as worki
 
 The first workflow is:
 
-`Define target → Analyze role → Map evidence → Draft application → ATS review → Human review → Submit → Learn`
+`Define target → Analyze role → Map evidence → Build shared evidence source → Render ATS and human versions → Review parity → Submit → Learn`
 
 ## Data model
 
@@ -55,6 +55,54 @@ Each future job-search record should preserve:
 - Open questions and what evidence would change the search strategy
 
 Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct.
+
+## Dual-version application packet
+
+When the target channel or review context differs, create two linked resume renderings from one shared evidence source:
+
+1. ATS submission version: semantically structured, extraction-safe, naturally aligned to supported role terminology, and clear about dates, titles, employers, and outcomes.
+2. Human-facing version: optimized for a person's scan path, hierarchy, readability, context, and appropriate visual polish while preserving the same underlying facts and semantic structure.
+
+These are not two independent stories. The evidence source is authoritative; neither resume variant may add an unsupported claim. A human-facing version should remain reasonably parseable, and an ATS version should remain readable. Follow employer instructions when choosing what to submit; do not submit both versions unless requested.
+
+### Shared evidence source
+
+Before drafting either version, maintain one evidence inventory or claim ledger containing:
+
+- source ID and exact source passage or artifact;
+- action, attribution, scope, method, outcome, metric, and uncertainty;
+- target-role relevance and confidence;
+- approved wording or unresolved question;
+- destinations in the ATS version, human-facing version, cover letter, or portfolio.
+
+Material differences between versions must be explainable as layout, order, density, emphasis, or channel constraint. A difference that changes meaning requires source review and an explicit decision.
+
+### Version-specific contract
+
+| Output | Primary reader or system | Required strengths | Must not do |
+| --- | --- | --- | --- |
+| ATS resume version | Employer intake or screening system plus a time-constrained reviewer | Standard headings, deterministic text order, clear chronology, natural supported terminology, unambiguous dates and titles, accessible text | Hide content in graphics, rely on decorative layout, stuff keywords, or silently normalize ambiguous facts |
+| Human-facing resume version | Human reviewer | Clear first scan, meaningful hierarchy, readable density, context-appropriate visual system, credible narrative, accessible structure | Add claims, erase caveats, make the document less truthful, or make important content unavailable to extraction when the channel still uses an ATS |
+| Cover letter | Human reviewer and any submission channel that requires it | Adds a specific connection, motivation, or relevant context that the resume cannot carry | Repeat the resume without purpose, invent motivation, or become a second unsupported evidence source |
+
+### Review and parity gate
+
+Run ATS, human/narrative, visual/production, and integrity reviews on the actual version being considered. Then run a parity check across the ATS and human-facing versions.
+
+The parity check must compare:
+
+- employer, role, title, dates, chronology, and engagement identity;
+- contribution, attribution, scope, method, metrics, and outcomes;
+- high-priority evidence from the requirement-to-evidence map;
+- qualifications, gaps, uncertainty, and intentional omissions;
+- cover-letter claims against the same source ledger.
+
+Record each intentional difference and its reason. The packet cannot pass if a version silently introduces, removes, upgrades, or changes the meaning of a material claim.
+
+### Work Order tracking
+
+The application packet Work Order records the shared evidence source, target role, ATS version, human-facing version, cover letter, version revisions, review findings, parity result, selected submission file, and learning after submission. It is the active progress record; the evidence ledger and version-parity table remain linked specialized artifacts.
+
 
 ## Phased delivery
 
@@ -72,8 +120,8 @@ Keep candidate facts, researched claims, interpretations, and generated writing 
 
 ### Phase 2 — Application packet
 
-- Draft a resume or application using the evidence map.
-- Draft a cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry.
+- Build one shared evidence source and render an ATS submission version plus a human-facing resume version when the target channel or review context justifies two outputs.
+- Draft a separate cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry.
 - Generate portfolio or case-study emphasis for design-oriented roles.
 
 ### Application preflight — before the council
@@ -109,6 +157,15 @@ Leah owns the ATS and human-readable review of the result. Riley records the fla
 - Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.
 
 ## Quality gates
+
+### Dual-output parity quality
+
+- Both resume versions use the same approved evidence source.
+- Material facts, dates, titles, employers, attribution, scope, metrics, and outcomes are equivalent.
+- Differences in order, density, typography, or emphasis are intentional and recorded.
+- No version hides important content, changes claim meaning, or adds unsupported terminology.
+- The selected submission version follows the employer's instructions; both versions are sent only when requested.
+- Cover-letter claims trace to the same evidence source and add context rather than repeating the resume.
 
 ### ATS quality
 

@@ -16,6 +16,7 @@ This repository contains the source and generated output for the Persona Library
 
 - docs/work-orders.md — repository-wide active-work packet and progress-record convention.
 - docs/ux/ — Expert UX practice, work-order, and IA-to-UI traceability templates.
+- docs/job-search/ — Application packet Work Order and ATS/human version contract.
 
 ## Run locally
 
