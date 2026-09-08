@@ -111,7 +111,6 @@ The selected submission artifact follows employer instructions. Do not submit bo
 The Work Order records the target, shared ledger, canonical ATS version, optional human-facing version, cover letter if requested, review findings, integrity result, optional parity result, selected submission file, and learning after submission. It is the active progress record; specialized artifacts remain separate and linked.
 
 ## Phased delivery
-## Phased delivery
 
 ### Phase 0 — Define the search
 
@@ -200,7 +199,6 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - Use conditions, non-use conditions, and instantiation review are documented.
 - The template does not bypass the shared evidence ledger or the ATS default path.
 
-## Deliberately out of scope for the MVP
 ## Deliberately out of scope for the MVP
 
 - Automatic job scraping or mass application submission
