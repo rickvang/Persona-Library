@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Prototype canvas for rearranging a workflow and reading the intent behind the change." />
+  <title>Workflow canvas — Personas</title>
+  <style>
+    :root { --ink:#101827; --muted:#617083; --night:#08111f; --paper:#f5f4ef; --card:#fffefa; --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; --deep:#234f68; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); }
+    * { box-sizing:border-box; } body { margin:0; background:var(--paper); } a { color:inherit; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:18px clamp(20px,5vw,72px); color:#fff; background:var(--night); }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.03em; text-decoration:none; } .mark { width:26px; height:26px; display:grid; place-items:center; border-radius:7px; color:var(--night); background:var(--coral); font-size:11px; font-weight:900; }
+    .topnav { display:flex; gap:20px; color:#bfcbd8; font-size:13px; } .topnav a { text-decoration:none; } .topnav a[aria-current="page"] { color:#fff; }
+    .hero { padding:48px clamp(20px,8vw,120px) 40px; color:#fff; background:var(--night); } .crumbs { margin:0 0 24px; color:#9cabbc; font-size:13px; } .crumbs a { color:#cbd5df; text-underline-offset:3px; }
+    .eyebrow { margin:0 0 13px; color:var(--mint); font-size:11px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; } h1 { max-width:820px; margin:0; font-size:clamp(36px,5.4vw,62px); line-height:1; letter-spacing:-.06em; } .hero-copy { max-width:720px; margin:20px 0 0; color:#c2ccd8; font-size:16px; line-height:1.55; }
+    .page { max-width:1320px; margin:0 auto; padding:30px clamp(20px,5vw,72px) 70px; }
+    .notice { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-bottom:26px; padding:15px 17px; border:1px solid #e0d2a6; border-radius:13px; color:#5f5128; background:#fff8dc; font-size:14px; line-height:1.45; } .notice strong { color:var(--ink); } .notice a { color:var(--deep); font-weight:800; text-underline-offset:3px; }
+    .toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:18px; padding:13px 15px; border:1px solid var(--line); border-radius:13px; background:var(--card); }
+    .toolbar label { color:var(--muted); font-size:11px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+    .toolbar select, .toolbar input[type=text] { padding:8px 10px; border:1px solid var(--line); border-radius:9px; background:#fff; font:inherit; font-size:13px; }
+    .toolbar select { max-width:320px; } .toolbar input[type=text] { min-width:210px; }
+    button { border:1px solid var(--deep); border-radius:9px; padding:8px 11px; color:#fff; background:var(--deep); font:inherit; font-size:12px; font-weight:800; cursor:pointer; }
+    button.ghost { color:var(--deep); background:#fff; } button.ghost:hover { background:#eef3f6; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    .spacer { flex:1; }
+    .mode-flag { padding:6px 9px; border-radius:999px; background:#dbe9fa; color:#315474; font-size:11px; font-weight:900; }
+    .workspace { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:18px; align-items:start; }
+    .canvas-wrap { position:relative; min-width:0; padding:16px; border:1px solid var(--line); border-radius:17px; background:var(--card); }
+    .canvas-head { display:flex; justify-content:space-between; gap:14px; align-items:end; margin-bottom:14px; } .canvas-head h2 { margin:0; font-size:22px; letter-spacing:-.045em; } .canvas-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+    .canvas-stage { position:relative; }
+    .wires { position:absolute; top:0; left:0; pointer-events:none; overflow:visible; z-index:2; }
+    .lanes { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; z-index:1; }
+    .lane { min-width:0; padding:12px; border:1px dashed #cfd6cd; border-radius:14px; background:#f2f4ef; }
+    .lane.drag-over { border-color:var(--deep); background:#eaf1f5; }
+    .lane h3 { margin:0; font-size:14px; letter-spacing:-.02em; } .lane-note { margin:4px 0 11px; color:var(--muted); font-size:11px; line-height:1.4; }
+    .node { position:relative; margin-bottom:20px; padding:11px; border:1px solid var(--line); border-radius:11px; background:var(--card); cursor:grab; }
+    .node:last-child { margin-bottom:0; }
+    .node.dragging { opacity:.4; } .node.gate { border-color:#b9d9d0; background:#effaf6; }
+    .node.link-source { border-color:var(--coral); box-shadow:0 0 0 2px rgba(255,124,98,.25); }
+    .node.link-target { cursor:crosshair; border-style:dashed; }
+    .node-title { font-size:13px; font-weight:800; line-height:1.35; letter-spacing:-.01em; }
+    .node-meta { margin-top:5px; color:var(--muted); font-size:11px; line-height:1.4; }
+    .node-flow { display:inline-block; margin-top:6px; padding:3px 6px; border-radius:999px; background:#edf0eb; color:#536272; font-size:9px; font-weight:900; letter-spacing:.05em; text-transform:uppercase; }
+    .node-links { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+    .link-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 6px; border:1px solid #c6d9f2; border-radius:999px; background:#edf4ff; color:#315474; font-size:10px; font-weight:800; }
+    .link-chip button { padding:0 2px; border:0; border-radius:0; color:#315474; background:none; font-size:11px; font-weight:900; line-height:1; }
+    .node-actions { display:flex; gap:6px; margin-top:8px; }
+    .node-actions button { padding:4px 7px; font-size:10px; }
+    .lane-empty { padding:9px; border-radius:9px; color:var(--muted); background:#e9ece6; font-size:11px; line-height:1.4; }
+    .panel { display:grid; gap:14px; min-width:0; }
+    .card { min-width:0; padding:17px; border:1px solid var(--line); border-radius:17px; background:var(--card); }
+    .card.intent { border-color:#c6d9f2; background:#edf4ff; }
+    .card h2 { margin:0; font-size:19px; letter-spacing:-.04em; } .card > p { margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
+    .summary { margin-top:12px; padding:11px; border-radius:11px; background:#fff8dc; color:#5f5128; font-size:13px; line-height:1.5; }
+    .reading { margin-top:11px; padding:13px; border:1px solid #b4cde9; border-radius:13px; background:var(--card); }
+    .reading-head { display:flex; gap:8px; align-items:center; margin-bottom:7px; }
+    .confidence { padding:3px 7px; border-radius:999px; font-size:9px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+    .confidence.high { background:#d9f2eb; color:#1d5d50; } .confidence.medium { background:#fff0c4; color:#6b5716; } .confidence.low { background:#fadcd6; color:#7d3222; }
+    .reading-statement { margin:0; font-size:14px; font-weight:700; line-height:1.45; letter-spacing:-.01em; overflow-wrap:anywhere; }
+    .reading dl { margin:10px 0 0; } .reading dt { color:var(--muted); font-size:10px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+    .reading dd { margin:4px 0 9px; font-size:12px; line-height:1.5; overflow-wrap:anywhere; } .reading dd ul { margin:0; padding-left:17px; } .reading dd li + li { margin-top:4px; }
+    .reading .questions { color:#7d3222; }
+    .log { margin:12px 0 0; padding:0; list-style:none; max-height:260px; overflow-y:auto; }
+    .log li { padding:8px 0; border-top:1px solid var(--line); font-size:12px; line-height:1.45; }
+    .log li:first-child { border-top:0; } .log .layout-only { color:var(--muted); }
+    .log-kind { display:inline-block; margin-right:6px; padding:2px 6px; border-radius:999px; background:#edf0eb; color:#536272; font-size:9px; font-weight:900; letter-spacing:.05em; text-transform:uppercase; }
+    .empty-state { margin-top:12px; padding:12px; border-radius:11px; background:#e9ece6; color:var(--muted); font-size:13px; line-height:1.5; }
+    .packet { width:100%; margin-top:11px; padding:11px; border:1px solid var(--line); border-radius:11px; background:#f7f8f4; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; line-height:1.5; white-space:pre; overflow:auto; max-height:280px; }
+    .links { display:flex; flex-wrap:wrap; gap:16px; margin-top:26px; } .links a { color:var(--deep); font-size:13px; font-weight:800; text-underline-offset:3px; }
+    @media (max-width:1080px) { .workspace { grid-template-columns:1fr; } }
+    @media (max-width:760px) { .topbar { padding:16px 20px; } .topnav { gap:12px; font-size:12px; white-space:nowrap; overflow-x:auto; } .hero { padding:34px 20px 28px; } .page { padding:22px 20px 50px; } .notice { display:block; } .notice a { display:inline-block; margin-top:9px; } .lanes { grid-template-columns:1fr; } .wires { display:none; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html">Docs</a>
+      <span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span>
+      <a href="decisions.html">Decisions</a><a href="prototyping.html" aria-current="page">Prototyping</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <p class="crumbs"><a href="index.html">Personas</a> / <a href="prototyping.html">Prototyping</a> / Workflow canvas</p>
+    <p class="eyebrow">Active prototype · proto-workflow-canvas-reasoning</p>
+    <h1>Rearrange the work. Read back the intent.</h1>
+    <p class="hero-copy">Drag activities between tiers and along a sequence, then see what the change means rather than what moved. Every reading names the evidence behind it and the question the canvas cannot answer on its own.</p>
+  </section>
+
+  <main class="page">
+    <div class="notice">
+      <div><strong>This is an isolated prototype.</strong> It reads live workflow maps and never writes to them. Nothing here changes a Persona, Skill, or Playbook record.</div>
+      <a href="prototyping.html">Back to prototypes →</a>
+    </div>
+
+    <div class="toolbar">
+      <label for="persona-select">Workflow map</label>
+      <select id="persona-select" aria-label="Choose a workflow map"></select>
+      <label for="new-step">Add step</label>
+      <input type="text" id="new-step" placeholder="Name a new activity" />
+      <button type="button" id="add-step">Add to Foundational</button>
+      <span class="spacer"></span>
+      <span class="mode-flag" id="mode-flag" hidden>Link mode — choose a target</span>
+      <button type="button" class="ghost" id="reset">Reset to source</button>
+    </div>
+
+    <div class="workspace">
+      <section class="canvas-wrap" aria-labelledby="canvas-heading">
+        <div class="canvas-head">
+          <div><h2 id="canvas-heading">Canvas</h2><p id="canvas-subtitle">Loading…</p></div>
+        </div>
+        <div class="canvas-stage">
+          <svg class="wires" id="wires" aria-hidden="true"></svg>
+          <div class="lanes" id="lanes"></div>
+        </div>
+      </section>
+
+      <div class="panel">
+        <section class="card intent" aria-labelledby="intent-heading" aria-live="polite">
+          <h2 id="intent-heading">What this change reads as</h2>
+          <p>Ranked by how well the canvas itself supports the reading.</p>
+          <div id="intent-body"></div>
+        </section>
+
+        <section class="card" aria-labelledby="log-heading">
+          <h2 id="log-heading">Change log</h2>
+          <p>Semantic changes only. Moving a card without changing its order or tier is layout, and is marked as such.</p>
+          <ul class="log" id="log"></ul>
+        </section>
+
+        <section class="card" aria-labelledby="packet-heading">
+          <h2 id="packet-heading">Intent packet</h2>
+          <p>What a downstream skill would receive. It carries the open questions alongside the readings, so nothing consumes this as settled intent.</p>
+          <button type="button" class="ghost" id="copy-packet">Copy packet</button>
+          <pre class="packet" id="packet"></pre>
+        </section>
+      </div>
+    </div>
+
+    <div class="links">
+      <a href="prototyping.html">Prototype index</a>
+      <a href="playbooks.html">Playbooks space</a>
+      <a href="decisions.html">Decision archive</a>
+      <a href="guide.html">Docs</a>
+    </div>
+  </main>
+
+  <script src="data/library-data.js"></script>
+  <script src="data/library-model.js"></script>
+  <script src="js/library-ui.js"></script>
+  <script src="js/library-state.js"></script>
+  <script src="js/canvas-graph.js"></script>
+  <script src="js/canvas-intent.js"></script>
+  <script src="data/prototypes/workflow-canvas.js"></script>
+  <script>
+    (() => {
+      const { escapeHtml } = window.PersonaLibraryUI;
+      const Graph = window.WorkflowCanvasGraph;
+      const Intent = window.WorkflowCanvasIntent;
+      const graphs = window.WorkflowCanvasSeed.buildGraphs(window.PersonaLibraryData);
+
+      const select = document.getElementById('persona-select');
+      const lanesEl = document.getElementById('lanes');
+      const wiresEl = document.getElementById('wires');
+      const subtitleEl = document.getElementById('canvas-subtitle');
+      const intentBody = document.getElementById('intent-body');
+      const logEl = document.getElementById('log');
+      const packetEl = document.getElementById('packet');
+      const modeFlag = document.getElementById('mode-flag');
+      const newStepInput = document.getElementById('new-step');
+
+      // `source` is the committed starting point; `current` is what the canvas shows.
+      // Every reading is a diff of the two, so the log never depends on gesture order.
+      let source = null;
+      let current = null;
+      let log = [];
+      let linkSource = null;
+      let dragId = null;
+
+      function label(node) { return node ? node.label : 'a removed step'; }
+      const cssEscape = value => (window.CSS && CSS.escape ? CSS.escape(value) : String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&'));
+
+      function record(kind, text, layoutOnly = false) {
+        log.unshift({ kind, text, layoutOnly });
+      }
+
+      function loadGraph(graphId) {
+        const found = graphs.find(graph => graph.id === graphId) || graphs[0];
+        source = Graph.cloneGraph(found);
+        source.title = found.title;
+        source.subtitle = found.subtitle;
+        current = Graph.cloneGraph(source);
+        current.title = found.title;
+        current.subtitle = found.subtitle;
+        log = [];
+        linkSource = null;
+        render();
+      }
+
+      function apply(nextGraph) {
+        nextGraph.title = current.title;
+        nextGraph.subtitle = current.subtitle;
+        current = nextGraph;
+        render();
+      }
+
+      // --- rendering ---------------------------------------------------------
+
+      function renderLanes() {
+        lanesEl.innerHTML = Graph.LANES.map(lane => {
+          const nodes = Graph.nodesInLane(current, lane.id);
+          const cards = nodes.length
+            ? nodes.map(node => renderNode(node)).join('')
+            : '<p class="lane-empty">No activities in this tier. Drag one here to reclassify it.</p>';
+          return `<section class="lane" data-lane="${escapeHtml(lane.id)}" aria-label="${escapeHtml(lane.label)} activities"><h3>${escapeHtml(lane.label)}</h3><p class="lane-note">${escapeHtml(lane.note)}</p><div class="lane-body">${cards}</div></section>`;
+        }).join('');
+      }
+
+      function renderNode(node) {
+        const outgoing = Graph.outgoing(current, node.id);
+        const chips = outgoing.map(edge => {
+          const target = current.nodes.find(item => item.id === edge.to);
+          return `<span class="link-chip">→ ${escapeHtml(label(target))}<button type="button" data-action="unlink" data-from="${escapeHtml(edge.from)}" data-to="${escapeHtml(edge.to)}" title="Remove this connection" aria-label="Remove connection to ${escapeHtml(label(target))}">×</button></span>`;
+        }).join('');
+        const classes = ['node'];
+        if (Graph.isGateNode(node)) classes.push('gate');
+        if (linkSource === node.id) classes.push('link-source');
+        else if (linkSource) classes.push('link-target');
+        const meta = [node.cadence, node.quality].filter(Boolean).map(escapeHtml).join(' · ');
+        return `<article class="${classes.join(' ')}" draggable="true" data-node="${escapeHtml(node.id)}">
+          <div class="node-title">${escapeHtml(node.label)}</div>
+          ${meta ? `<div class="node-meta">${meta}</div>` : ''}
+          ${node.flowTitle ? `<span class="node-flow">${escapeHtml(node.flowTitle)}</span>` : ''}
+          ${chips ? `<div class="node-links">${chips}</div>` : ''}
+          <div class="node-actions">
+            <button type="button" class="ghost" data-action="link" data-node="${escapeHtml(node.id)}">${linkSource === node.id ? 'Cancel link' : 'Link →'}</button>
+            <button type="button" class="ghost" data-action="remove" data-node="${escapeHtml(node.id)}">Remove</button>
+          </div>
+        </article>`;
+      }
+
+      // Connectors are drawn after layout so they follow whatever the cards did.
+      function renderWires() {
+        const box = lanesEl.getBoundingClientRect();
+        wiresEl.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+        wiresEl.setAttribute('width', box.width);
+        wiresEl.setAttribute('height', box.height);
+
+        const paths = current.edges.map(edge => {
+          const fromEl = lanesEl.querySelector(`[data-node="${cssEscape(edge.from)}"]`);
+          const toEl = lanesEl.querySelector(`[data-node="${cssEscape(edge.to)}"]`);
+          if (!fromEl || !toEl) return '';
+          const a = fromEl.getBoundingClientRect();
+          const b = toEl.getBoundingClientRect();
+          const x1 = a.left - box.left + a.width / 2;
+          const y1 = a.bottom - box.top;
+          const x2 = b.left - box.left + b.width / 2;
+          const y2 = b.top - box.top;
+          // Cards that sit directly on top of each other only need a short stub.
+          // Anything that skips a card or crosses a lane is bowed out to the side,
+          // because those are the connections worth seeing.
+          const adjacent = Math.abs(x1 - x2) < 1 && y2 - y1 < 32 && y2 >= y1;
+          if (adjacent) {
+            return `<path d="M ${x1} ${y1} L ${x2} ${y2}" fill="none" stroke="#94b4d4" stroke-width="1.5" marker-end="url(#arrow)" />`;
+          }
+          const side = x2 >= x1 ? 1 : -1;
+          const bow = Math.min(56, Math.max(24, Math.abs(y2 - y1) / 3));
+          return `<path d="M ${x1} ${y1} C ${x1 + side * bow} ${y1 + bow}, ${x2 - side * bow} ${y2 - bow}, ${x2} ${y2}" fill="none" stroke="#94b4d4" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)" />`;
+        }).join('');
+
+        wiresEl.innerHTML = `<defs><marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 7 4 L 0 7 z" fill="#94b4d4" /></marker></defs>${paths}`;
+      }
+
+      function renderIntent() {
+        const diff = Graph.diffGraphs(source, current);
+        const result = Intent.interpret(diff, current);
+
+        if (diff.empty) {
+          intentBody.innerHTML = `<div class="empty-state">${escapeHtml(result.summary)}</div>`;
+        } else {
+          const readings = result.readings.map(item => `
+            <article class="reading">
+              <div class="reading-head"><span class="confidence ${escapeHtml(item.confidence)}">${escapeHtml(item.confidence)} confidence</span></div>
+              <p class="reading-statement">${escapeHtml(item.statement)}</p>
+              <dl>
+                <dt>Evidence</dt><dd><ul>${item.evidence.map(line => `<li>${escapeHtml(line)}</li>`).join('')}</ul></dd>
+                ${item.openQuestions.length ? `<dt>The canvas cannot answer</dt><dd class="questions"><ul>${item.openQuestions.map(line => `<li>${escapeHtml(line)}</li>`).join('')}</ul></dd>` : ''}
+                <dt>Would change</dt><dd>${escapeHtml(item.proposedChange)}</dd>
+              </dl>
+            </article>`).join('');
+          intentBody.innerHTML = `<div class="summary">${escapeHtml(result.summary)}</div>${readings}`;
+        }
+
+        packetEl.textContent = JSON.stringify(Intent.toIntentPacket(diff, result, current), null, 2);
+      }
+
+      function renderLog() {
+        logEl.innerHTML = log.length
+          ? log.map(entry => `<li class="${entry.layoutOnly ? 'layout-only' : ''}"><span class="log-kind">${escapeHtml(entry.kind)}</span>${escapeHtml(entry.text)}</li>`).join('')
+          : '<li class="layout-only">No changes yet. Drag an activity to another position or tier.</li>';
+      }
+
+      function render() {
+        subtitleEl.textContent = current.subtitle || '';
+        modeFlag.hidden = !linkSource;
+        renderLanes();
+        renderIntent();
+        renderLog();
+        requestAnimationFrame(renderWires);
+      }
+
+      // --- interaction -------------------------------------------------------
+
+      function laneLabelFor(laneId) {
+        return (Graph.LANES.find(lane => lane.id === laneId) || {}).label || laneId;
+      }
+
+      // Drop index is taken from the card the cursor is above, so the gesture reads
+      // the same way it looks.
+      function dropIndexFor(laneEl, clientY) {
+        const cards = [...laneEl.querySelectorAll('.node')].filter(card => card.dataset.node !== dragId);
+        for (let index = 0; index < cards.length; index += 1) {
+          const box = cards[index].getBoundingClientRect();
+          if (clientY < box.top + box.height / 2) return index;
+        }
+        return cards.length;
+      }
+
+      lanesEl.addEventListener('dragstart', event => {
+        const card = event.target.closest('.node');
+        if (!card) return;
+        dragId = card.dataset.node;
+        card.classList.add('dragging');
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', dragId);
+      });
+
+      lanesEl.addEventListener('dragend', event => {
+        const card = event.target.closest('.node');
+        if (card) card.classList.remove('dragging');
+        lanesEl.querySelectorAll('.lane').forEach(lane => lane.classList.remove('drag-over'));
+        dragId = null;
+      });
+
+      lanesEl.addEventListener('dragover', event => {
+        const lane = event.target.closest('.lane');
+        if (!lane || !dragId) return;
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+        lanesEl.querySelectorAll('.lane').forEach(item => item.classList.toggle('drag-over', item === lane));
+      });
+
+      lanesEl.addEventListener('drop', event => {
+        const lane = event.target.closest('.lane');
+        if (!lane || !dragId) return;
+        event.preventDefault();
+        const nodeId = dragId;
+        const targetLane = lane.dataset.lane;
+        const targetIndex = dropIndexFor(lane, event.clientY);
+        const before = Graph.positionOf(current, nodeId);
+        const node = current.nodes.find(item => item.id === nodeId);
+        const next = Graph.moveNode(current, nodeId, targetLane, targetIndex);
+        const after = Graph.positionOf(next, nodeId);
+
+        if (before.lane === after.lane && before.index === after.index) {
+          // Recorded, but explicitly not intent: this is the distinction the whole
+          // prototype is testing.
+          record('layout', `Moved “${node.label}” without changing its order or tier.`, true);
+          render();
+        } else if (before.lane !== after.lane) {
+          record('reclassify', `Moved “${node.label}” from ${laneLabelFor(before.lane)} to ${laneLabelFor(after.lane)}.`);
+          apply(next);
+        } else {
+          record('reorder', `Moved “${node.label}” from position ${before.index + 1} to ${after.index + 1} in ${laneLabelFor(after.lane)}.`);
+          apply(next);
+        }
+      });
+
+      lanesEl.addEventListener('click', event => {
+        const trigger = event.target.closest('button[data-action]');
+        if (trigger) {
+          const action = trigger.dataset.action;
+          if (action === 'remove') {
+            const node = current.nodes.find(item => item.id === trigger.dataset.node);
+            record('remove', `Removed “${node.label}” and its connections.`);
+            if (linkSource === node.id) linkSource = null;
+            apply(Graph.removeNode(current, node.id));
+          } else if (action === 'unlink') {
+            const from = current.nodes.find(item => item.id === trigger.dataset.from);
+            const to = current.nodes.find(item => item.id === trigger.dataset.to);
+            record('disconnect', `Removed the connection from “${label(from)}” to “${label(to)}”.`);
+            apply(Graph.disconnect(current, trigger.dataset.from, trigger.dataset.to));
+          } else if (action === 'link') {
+            linkSource = linkSource === trigger.dataset.node ? null : trigger.dataset.node;
+            render();
+          }
+          return;
+        }
+
+        const card = event.target.closest('.node');
+        if (!card || !linkSource || card.dataset.node === linkSource) return;
+        const from = current.nodes.find(item => item.id === linkSource);
+        const to = current.nodes.find(item => item.id === card.dataset.node);
+        record('connect', `Connected “${label(from)}” to “${label(to)}”.`);
+        linkSource = null;
+        apply(Graph.connect(current, from.id, to.id));
+      });
+
+      document.getElementById('add-step').addEventListener('click', () => {
+        const value = newStepInput.value.trim();
+        if (!value) { newStepInput.focus(); return; }
+        const id = `new-${Date.now()}`;
+        record('add', `Added “${value}” to Foundational. It has no connections yet.`);
+        newStepInput.value = '';
+        apply(Graph.addNode(current, { id, label: value, lane: 'foundational', flowTitle: 'Unassigned' }));
+      });
+
+      newStepInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') { event.preventDefault(); document.getElementById('add-step').click(); }
+      });
+
+      document.getElementById('reset').addEventListener('click', () => loadGraph(current.id));
+
+      document.getElementById('copy-packet').addEventListener('click', async event => {
+        try {
+          await navigator.clipboard.writeText(packetEl.textContent);
+          event.target.textContent = 'Copied';
+        } catch {
+          event.target.textContent = 'Copy failed — select the text instead';
+        }
+        setTimeout(() => { event.target.textContent = 'Copy packet'; }, 2200);
+      });
+
+      select.addEventListener('change', () => loadGraph(select.value));
+      window.addEventListener('resize', () => requestAnimationFrame(renderWires));
+
+      select.innerHTML = graphs.map(graph => `<option value="${escapeHtml(graph.id)}">${escapeHtml(graph.title)}</option>`).join('');
+      loadGraph(graphs[0].id);
+    })();
+  </script>
+</body>
+</html>

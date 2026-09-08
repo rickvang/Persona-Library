@@ -14,6 +14,12 @@ const uiPath = path.join(root, 'client', 'library-ui.js');
 const uiOutputPath = path.join(root, 'dist', 'js', 'library-ui.js');
 const statePath = path.join(root, 'client', 'library-state.js');
 const stateOutputPath = path.join(root, 'dist', 'js', 'library-state.js');
+const canvasModules = [
+  ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
+  ['client/canvas-intent.js', 'dist/js/canvas-intent.js'],
+  ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js']
+];
+const canvasPagePath = path.join(root, 'dist', 'workflow-canvas.html');
 const pagePath = path.join(root, 'dist', 'index.html');
 const skillsPagePath = path.join(root, 'dist', 'skills.html');
 const guidePagePath = path.join(root, 'dist', 'guide.html');
@@ -37,6 +43,7 @@ const guidePage = await readFile(guidePagePath, 'utf8');
 const jobSearchPage = await readFile(jobSearchPagePath, 'utf8');
 const playbooksPage = await readFile(playbooksPagePath, 'utf8');
 const prototypingPage = await readFile(prototypingPagePath, 'utf8');
+const canvasPage = await readFile(canvasPagePath, 'utf8');
 const orientation = JSON.parse(orientationSource);
 const generatedOrientation = JSON.parse(orientationOutput);
 const sandbox = { window: {} };
@@ -52,6 +59,11 @@ if (orientationSource !== orientationOutput) throw new Error('Generated dist/dat
 if (modelSource !== modelOutput) throw new Error('Generated dist/data/library-model.js is stale; run build-library.mjs');
 if (uiSource !== uiOutput) throw new Error('Generated dist/js/library-ui.js is stale; run build-library.mjs');
 if (stateSource !== stateOutput) throw new Error('Generated dist/js/library-state.js is stale; run build-library.mjs');
+for (const [sourcePath, outputPath] of canvasModules) {
+  const moduleSource = await readFile(path.join(root, sourcePath), 'utf8');
+  const moduleOutput = await readFile(path.join(root, outputPath), 'utf8');
+  if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
+}
 for (const [name, html] of [['library', page], ['skills', skillsPage]]) {
   for (const script of ['data/library-data.js', 'data/library-model.js', 'js/library-ui.js', 'js/library-state.js']) {
     if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);
@@ -65,6 +77,15 @@ if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.i
 }
 if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('proto-persona-library-guide') || !prototypingPage.includes('Persona Library Guide') || !prototypingPage.includes('Selected output with missing prerequisites') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate') || !prototypingPage.includes('change-reconciliation-prototype') || !prototypingPage.includes('proto-skill-change-impact-reconciliation') || !prototypingPage.includes('Generated artifact update') || !prototypingPage.includes('reconciliation report') || !prototypingPage.includes('skill-contract-prototype') || !prototypingPage.includes('proto-skill-contract-routing') || !prototypingPage.includes('Missing metadata')) {
   throw new Error('Prototyping page is missing the isolated persona prototype workspace');
+}
+for (const script of ['js/canvas-graph.js', 'js/canvas-intent.js', 'data/prototypes/workflow-canvas.js']) {
+  if (!canvasPage.includes(`<script src="${script}"></script>`)) throw new Error(`Workflow canvas page is missing ${script}`);
+}
+if (!canvasPage.includes('proto-workflow-canvas-reasoning') || !canvasPage.includes('isolated prototype') || !canvasPage.includes('What this change reads as') || !canvasPage.includes('Change log') || !canvasPage.includes('Intent packet') || !canvasPage.includes('The canvas cannot answer')) {
+  throw new Error('Workflow canvas page is missing its prototype boundary or reasoning panels');
+}
+if (!prototypingPage.includes('workflow-canvas-prototype') || !prototypingPage.includes('proto-workflow-canvas-reasoning') || !prototypingPage.includes('workflow-canvas.html') || !prototypingPage.includes('Layout-only move') || !prototypingPage.includes('Displacement')) {
+  throw new Error('Prototyping page is missing the workflow canvas prototype');
 }
 if (!guidePage.includes('persona-library-guide') || !guidePage.includes('Consult the Persona Library Guide') || !guidePage.includes('Prerequisite gate') || !guidePage.includes('change-reconciliation') || !guidePage.includes('$change-impact-reconciliation') || !guidePage.includes('skill-contract') || !guidePage.includes('Conditional skill contract') || !guidePage.includes('Copy prompt')) {
   throw new Error('Docs page is missing the Persona Library Guide handoff');
