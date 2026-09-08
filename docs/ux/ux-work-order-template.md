@@ -21,7 +21,24 @@ For a trivial change, a short note may state that a full work order was not warr
 - Explicit authorization and target:
 - Stopping condition:
 
-Authorization is a constraint to record, not a permission granted by this document. Do not infer repository, Site, Tool, publication, account, or external communication authorization.
+Authorization is a constraint to record, not a permission granted by this document.
+
+## Artifact home and index
+
+- Artifact home:
+- Default repository home when this repository is the authorized target: docs/work-orders/<work-order-id>/
+- External project home, if applicable:
+- Work Order file:
+- Current concrete deliverable:
+- Specialized artifact links:
+
+For non-trivial work in this repository, keep the active Work Order and project-specific design artifacts under the artifact home. Use only the files the project needs; the standard layout is described in [Work Orders](../work-orders.md).
+
+| Artifact ID | Type | Path or URL | Revision | Owner | Status | Evidence or authorization note |
+| --- | --- | --- | --- | --- | --- | --- |
+| ART-001 | Work Order / context / evidence / IA / design / traceability / validation / prototype link |  |  |  | draft / active / reviewed / approved / blocked / complete |  |
+
+If the target is another authorized project, record that project’s path or URL instead. If the work is trivial, record why a project artifact home was not warranted. The Work Order records the destination and constraints; it does not grant permission to create or publish files.
 
 ## Project context and reference routing
 

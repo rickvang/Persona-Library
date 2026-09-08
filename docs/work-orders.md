@@ -11,6 +11,31 @@ Use a Work Order for design, research, content, Persona, Skill, Tool, prototype,
 
 A Work Order is not a transcript. Update it at the points that change what another person or agent needs to know.
 
+## Artifact home and storage
+
+For non-trivial work whose authorized target is this repository, use the project-scoped artifact home:
+
+docs/work-orders/<work-order-id>/
+
+The directory keeps the active Work Order and its project-specific artifacts together without turning the shared library into a project dump. The Work Order remains the index and progress record; specialized artifacts remain separate files.
+
+A typical package may contain:
+
+- work-order.md — the active Work Order and current next action;
+- context.md — a project context or routing snapshot when one is warranted;
+- evidence.md — project evidence ledger or source trail when one is warranted;
+- ia.md — content and information-architecture artifact;
+- design.md — design direction, states, responsive rules, accessibility, and handoff;
+- traceability.md — the linked IA-to-UI coverage matrix;
+- validation.md — concise evaluation and QA findings;
+- prototype links — references to isolated prototype records or external design files.
+
+This is a recommended layout, not a requirement to create every file. Use only the artifacts the project needs. Keep large or specialized material in the appropriate linked system when that system is the source of truth.
+
+When the authorized target is another repository or external project, use that target’s workspace and record its path or URL in the Work Order. Do not copy project artifacts into this repository by default.
+
+Do not create a package directory for a trivial change. Record that the artifact home was not warranted and why. Do not invent a Work Order ID or target path when the destination is unclear.
+
 ## Minimum contract
 
 Every non-trivial Work Order should identify:
@@ -26,6 +51,7 @@ Every non-trivial Work Order should identify:
 - success criteria and stopping condition;
 - current phase, gate result, blocker or fallback, and one next action;
 - links to the concrete deliverable and specialized artifacts.
+- artifact home or an explicit reason a project directory is not warranted;
 
 A Work Order records authorization boundaries; it never grants permission for a repository, Site, Tool, account, publication, installation, registry, or external communication change.
 
