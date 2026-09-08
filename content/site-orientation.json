@@ -55,6 +55,19 @@
       "do_not": ["Prototype records must not affect live counts, filters, catalogs, or production workflows.", "Live records must not depend on prototype records."]
     }
   },
+  "creation_gate": {
+    "owner": "Mara Okoye",
+    "role": "Knowledge systems architect",
+    "purpose": "Check whether a proposed durable addition belongs in an existing record, relationship, workflow, recipe, space, or file before the domain skill mutates the system.",
+    "applies_to": ["Personas", "Skills", "Tools", "Playbooks", "Docs", "Decisions", "generated artifacts", "new files"],
+    "checks": [
+      "Classify the proposal as an existing-record extension, relationship, workflow method, tool-use recipe, new record, new space, or new file.",
+      "Compare the proposal with current identities, aliases, ownership, lifecycle, source-of-truth boundaries, and declared dependencies.",
+      "Confirm the exact destination and file placement, record the closest alternatives, and preserve unresolved taxonomy questions.",
+      "Hand the placement result to the smallest domain skill only after the boundary is clear; a placement review does not authorize a write."
+    ],
+    "required_before": "Any authorized creation or promotion of a durable record, space, file, or generated artifact."
+  },
   "request_modes": {
     "answer": "Explain or recommend without changing durable records.",
     "research": "Gather and synthesize evidence; keep confidence and sources visible.",
@@ -79,6 +92,7 @@
   "default_process": [
     "Classify the request and desired outcome.",
     "Identify the relevant space and read its minimum linked records.",
+    "For a new durable record, space, file, or artifact, run the Mara creation gate before domain research or mutation.",
     "Build a compact context packet: goal, artifacts, constraints, tools, permissions, and success criteria.",
     "Ask a scoped multiple-choice question only when ambiguity would materially change the work; otherwise state the default assumption.",
     "Choose answer, research, plan, prototype, consult, or authorized update.",
@@ -88,7 +102,7 @@
   ],
   "mutation_policy": {
     "default": "Read-only",
-    "live_update_requires": ["explicit user authorization", "identified target records", "scoped impact review", "validation after change"],
+    "live_update_requires": ["explicit user authorization", "identified target records", "Mara placement and boundary review for new durable additions", "scoped impact review", "validation after change"],
     "prototype_update_requires": ["prototype scope", "isolated identifier beginning with proto-persona- when applicable", "test scenarios", "no live-record dependency"],
     "decision_update_requires": ["append-only rationale", "affected surfaces", "revisit condition"]
   },

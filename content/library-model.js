@@ -178,6 +178,32 @@
       record.version = '1.1'; record.updated = '2026-09-07';
       record.revisions.push({version:'1.1',date:'2026-09-07',changeType:'capability-reconciliation',summary:'Connected evidence-led editing, small content trials, and version-specific review to existing activities.',affectedFields:['behaviors','needs','implication','workflows','skills'],evidence:'Expanded editorial skill methods and application-review contract',confidenceChange:'Remains synthesized; no reader outcome or candidate approval claimed'});
     }
+    const reusedCreativeSkills = [
+      'skill-problem-framing-and-systems-thinking',
+      'skill-multi-perspective-skill-synthesis',
+      'skill-facilitation-and-cross-functional-alignment',
+      'skill-contextual-visual-judgment-and-composition',
+      'skill-prototyping-and-interaction-craft',
+      'skill-evidence-led-validation',
+      'skill-decision-communication-and-rationale-documentation',
+      'skill-cross-functional-systems-communication'
+    ];
+    for (const id of reusedCreativeSkills) {
+      const record = skillMaintenance[id];
+      const [major, minor] = record.version.split('.').map(Number);
+      const version = `${major}.${minor + 1}`;
+      record.version = version; record.updated = '2026-09-08';
+      record.revisions.push({version,date:'2026-09-08',changeType:'persona-application',summary:'Added Mira Sol’s creative-orchestration application while preserving the existing portable Skill boundary.',affectedFields:['profiles','workflows'],evidence:'Persona Skills catalog comparison against Mira’s creative brief, panel, critique, synthesis, and handoff workflows',confidenceChange:'Portable Skill remains unchanged; Persona-specific application remains a working synthesis'});
+    }
+    for (const id of ['skill-divergent-concept-generation', 'skill-creative-critique-and-quality-calibration', 'skill-narrative-synthesis-and-concept-articulation']) {
+      const record = skillMaintenance[id];
+      record.version = '1.1'; record.updated = '2026-09-08';
+      record.revisions.push({version:'1.1',date:'2026-09-08',changeType:'capability-formation',summary:'Expanded a distinctive creative-orchestration capability with explicit operation, quality signals, failure indicators, and validation checks.',affectedFields:['operation','quality','workflows','actions','evidence'],evidence:'Mira’s differentiated workflows plus the Persona Skills duplicate and modularity review',confidenceChange:'Working synthesis; reuse boundary and independent validation remain open'});
+    }
+    const creativeOrchestrator = personaMaintenance['creative-orchestrator'];
+    creativeOrchestrator.version = '1.2'; creativeOrchestrator.updated = '2026-09-08';
+    creativeOrchestrator.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added an authoritative source trail for creative direction, multidisciplinary collaboration, and divergent/convergent exploration; clarified the working-synthesis boundary.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'U.S. Bureau of Labor Statistics Art Directors; O*NET Art Directors; Design Council Double Diamond; GOV.UK multidisciplinary service-team guidance',confidenceChange:'Working synthesis remains; source support is stronger and direct observation is still required'});
+    creativeOrchestrator.revisions.push({version:'1.2',date:'2026-09-08',changeType:'skill-reconciliation',summary:'Reused existing framing, facilitation, visual judgment, prototyping, validation, rationale, and cross-functional communication Skills; retained only differentiated creative capabilities as new profiles.',affectedFields:['skills'],evidence:'Persona Skills catalog comparison against existing normalized Skill identities and Mira’s workflows',confidenceChange:'Skill inventory deduplicated; new capabilities remain working syntheses'});
     return { personas: personaMaintenance, skills: skillMaintenance };
   }
 

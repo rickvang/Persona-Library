@@ -8,8 +8,9 @@ Use the shortest relevant path:
 2. Read only the relevant space and linked records.
 3. Treat the default mode as read-only.
 4. Keep prototype records isolated from live Personas, Skills, Tools, Playbooks, and production workflows.
-5. Append durable rationale to Decisions instead of silently rewriting history.
-6. Read the selected skill’s `change_mode`, `change_domain`, and `reconciliation` metadata. After a source, record, Decision, prototype promotion, or generated artifact changes, follow that contract and run `$change-impact-reconciliation` when required; keep it read-only unless the requested scope authorizes updates.
-7. For a multi-Persona build, create or load a named `problem-context` and use the collaboration Playbook; keep contributions attributable and require a concrete solution-quality gate before completion.
-8. Validate the result and report outcome, assumptions, evidence, limitations, and next action.
-9. Use a Work Order as the generic active-work packet and progress record for non-trivial in-progress work. Link specialized artifacts instead of duplicating them; a Work Order records authorization constraints but never grants mutation permission.
+5. Before creating a durable record, space, file, or generated artifact, route placement and boundary questions through Mara Okoye’s knowledge-systems review.
+6. Append durable rationale to Decisions instead of silently rewriting history.
+7. Read the selected skill’s `change_mode`, `change_domain`, and `reconciliation` metadata. After a source, record, Decision, prototype promotion, or generated artifact changes, follow that contract and run `$change-impact-reconciliation` when required; keep it read-only unless the requested scope authorizes updates.
+8. For a multi-Persona build, create or load a named `problem-context` and use the collaboration Playbook; keep contributions attributable and require a concrete solution-quality gate before completion.
+9. Validate the result and report outcome, assumptions, evidence, limitations, and next action.
+10. Use a Work Order as the generic active-work packet and progress record for non-trivial in-progress work. Link specialized artifacts instead of duplicating them; a Work Order records authorization constraints but never grants mutation permission.
