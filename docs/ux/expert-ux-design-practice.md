@@ -39,6 +39,23 @@ Relevant repository sources:
 - [UX work order template](ux-work-order-template.md)
 - [IA-to-UI traceability template](ia-to-ui-traceability-template.md)
 
+## Project context and reference routing
+
+Start non-trivial UX work with the [Project Context and Reference Routing method](project-context-and-reference-routing.md) and record the result in the [UX Work Order](ux-work-order-template.md).
+
+The routing layer keeps the method adaptive:
+
+1. Infer the smallest project profile from the request and available sources.
+2. Select one primary project lens and only the conditional gates that fit.
+3. Load the relevant Persona, Skill, reference, and example IDs into the Work Order.
+4. Revise the route when evidence changes the project type, risk, uncertainty, or workflow.
+
+The universal quality baseline still applies. A focused route may reduce artifact breadth, but it may not silently omit a relevant state, accessibility condition, evidence limitation, or authorization boundary.
+
+Project classification is routing metadata, not proof of a user need or product requirement. Ask one focused question when ambiguity would materially change the route or safety boundary; otherwise proceed with a reversible, visibly labeled provisional classification.
+
+The starter [Design Reference Library](design-reference-library.md) contains sourced principles and illustrative examples. Use references by ID, preserve their source scope and tradeoffs, and do not treat attractive product examples as user evidence. Keep project assumptions and synthetic participant responses project-scoped.
+
 ## When to use
 
 Use the practice for:
