@@ -33,6 +33,7 @@ For this Work Order, the canonical application output is one ATS-oriented resume
 5. A claim-to-ledger integrity review; add an ATS-to-human parity comparison only if an optional human version exists.
 
 The ATS version is the canonical submission candidate. The optional human version is a linked rendering, not an independent story. External submission, outreach, publication, and employer contact remain separate authorized actions.
+Target employer, role, location, and work-mode context remain in this Work Order and the requirement map; the resume body does not receive a target line by default.
 
 ## Existing process and routing
 
@@ -112,6 +113,9 @@ Keep facts, researched claims, interpretations, generated writing, assumptions, 
 
 Future project artifacts should be created in the authorized private Drive run folder unless the requester names another target. The public Persona Library stores the process and Work Order index, not private resume content by default.
 
+For this ATS-first run, the resume uses conventional section labels: `SUMMARY`, `SKILLS`, `WORK EXPERIENCE`, `ADDITIONAL EXPERIENCE`, and `EDUCATION & CERTIFICATIONS`. The target line is omitted. Accomplishments remain under the relevant roles, and supported capabilities remain in `SKILLS`; `SELECTED IMPACT` and `CORE ALIGNMENT` are not used as default sections.
+Provider profile: none was available for this run. Employer or portal-specific parser behavior remains unknown; any generic downstream validator must be recorded as tool compatibility evidence rather than vendor evidence.
+
 The packet must not:
 
 - invent metrics, tools, responsibilities, employers, titles, dates, outcomes, or motivation;
@@ -161,8 +165,9 @@ The requested target context is now supplied: [Centstone Senior UX Designer](htt
 - Routing: Riley Morgan coordinated Leah Okafor for role alignment/copy, Sofia Calder for document production, and Camille Ortiz for human-facing hierarchy review. These remain synthetic review lenses, not user evidence.
 - Source: the private native master copy based on Rick Vang Resume 07/26. The original source was not edited.
 - Created privately in the authorized run folder: one shared evidence ledger, one ATS resume, one human-facing resume, and one parity/integrity review. No cover letter was requested or created.
-- Checks completed: source-to-master equality, single-column document structure, semantic headings, list structure, placeholder scan, shared claim coverage, parity of material facts, and privacy/mutation boundaries.
+- Checks completed: source-to-master equality, single-column document structure, conventional semantic headings, list structure, placeholder scan, shared claim coverage, parity of material facts, and privacy/mutation boundaries.
 - Result: the packet is ready for requester review. The ATS version is canonical. The human version is retained as a reference rendering from the same evidence source and is not selected by default.
+- Structural revision after requester review: removed the target line, removed the duplicated impact and alignment sections, consolidated the supported capability list under `SKILLS`, and moved `SKILLS` before `EXPERIENCE`.
 - Open findings: direct usability-testing evidence is not present; WCAG 2.1 specificity is unconfirmed; Agile wording is not asserted; on-site/contract availability and work authorization are unknown; current Quva status/end date needs confirmation; and the source has two STG Consulting entries plus month-level overlaps that were not silently normalized.
 - No submission, employer contact, publication, external sharing, or user-level skill installation was performed. Private Drive links and resume content remain out of the public repository.
 

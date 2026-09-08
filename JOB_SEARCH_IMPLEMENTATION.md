@@ -80,6 +80,41 @@ The default ATS resume must be semantically structured, extraction-safe, readabl
 
 It must not hide content in graphics, rely on decorative layout, stuff keywords, silently normalize ambiguous facts, or claim a parser result that was not actually tested. If no employer parser is available, record parser suitability as unknown rather than implying validation.
 
+### Default ATS section structure
+
+Use a conventional, linear section structure unless the employer instructions require something else:
+
+1. Contact information
+2. `SUMMARY` (optional when the evidence is stronger without it)
+3. `SKILLS` or `TECHNICAL SKILLS` (when supported role terms need a scannable home)
+4. `WORK EXPERIENCE`, `EXPERIENCE`, or `PROFESSIONAL EXPERIENCE`
+5. `EDUCATION` and/or `CERTIFICATIONS`
+
+`PROJECTS`, `PORTFOLIO`, and `ADDITIONAL EXPERIENCE` are optional when they answer a real requirement or preserve relevant chronology. Prefer one clear `EXPERIENCE` section when the source supports it.
+
+`SELECTED IMPACT`, `CORE ALIGNMENT`, `TARGET`, `FIT`, and `MATCH` are not default ATS headings. Put accomplishments under the relevant role and supported capabilities under `SKILLS`. Do not create a section only to mirror the job description.
+
+There is no universal ATS heading certification. Conventional labels reduce ambiguity but do not prove a particular vendor's parser behavior. If the employer parser is not tested, record parser suitability as unknown.
+
+### ATS provider and channel profiles
+
+A provider profile is an evidence record, not a guess based on a portal name. Use one when the employer, application channel, or a tested downstream validator supplies actual constraints.
+
+Record:
+
+- provider or channel name and the exact application URL;
+- evidence source, research date, and any version or submission instructions;
+- accepted upload formats and document limits;
+- heading aliases, extraction behavior, or field-mapping rules that were actually documented or tested;
+- the fixture or export used for a test, the observed result, and the untested scope;
+- rules that remain unknown.
+
+Apply a provider profile only where its evidence supports it. A generic internal checker, a portal label, or advice from one vendor does not establish a universal Workday, Greenhouse, ZipRecruiter, or other ATS rule. When no provider evidence exists, use the default structure and report provider behavior as unknown.
+
+The current JobAgent implementation contains a generic text check rather than a provider matrix. Its required headings and parser warnings are useful as a tool-compatibility profile only; they are not evidence that a named ATS prefers those labels. Keep that distinction in the Work Order.
+Keep target employer, role, location, and work-mode context in the Work Order and requirement map. Do not add a target line to the resume body by default unless the requester explicitly wants a role-labeled version or the submission format requires it. A file name or Work Order can carry target context without adding it to the resume.
+
+Before review, compare the heading list against this structure, record intentional deviations, and check for duplicated material claims across summary, highlights, skills, and experience. A metric should have one canonical evidence-backed home; repeat it only when repetition materially improves the intended reading path.
 ### Optional human-facing resume
 
 A human-facing version is a second rendering of the same approved evidence source. It may improve scan path, hierarchy, density, order, voice, and context-appropriate visual communication. It must preserve the meaning of every material claim and remain reasonably parseable when the employer still uses screening software.
@@ -101,6 +136,8 @@ Every application packet runs:
 - claim-to-ledger integrity review;
 - chronology and ambiguity preflight;
 - explicit unknown and untested-scope review.
+- conventional-heading and target-context review;
+- duplicate-claim review across summary, highlights, skills, and experience.
 
 When a human-facing version exists, also run the human/visual review and a parity comparison against the ATS version. When it does not exist, do not report human parity as passed or failed; report it as not applicable and preserve the reason.
 
@@ -172,6 +209,12 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - Roles are reverse chronological, or the chosen alternative format is explicitly documented.
 - Missing dates, month-only ambiguity, duplicate employers, and overlaps are flagged rather than silently resolved.
 - Formatting does not hide important content from extraction.
+- Headings use the default structure or an intentional deviation is recorded.
+- Target employer, role, location, and work-mode context are absent from the resume body unless explicitly requested.
+- Accomplishments live under roles and capabilities live under `SKILLS` or an approved synonym; derived alignment sections are not created by default.
+- Repeated material claims are removed or documented as intentional.
+- Provider-specific formatting rules are applied only when a documented profile or actual test supports them.
+- Generic validator results are labeled as implementation-specific compatibility evidence.
 
 ### Evidence-integrity quality
 
@@ -219,3 +262,6 @@ These are future opportunities, not implied capabilities of the current referenc
 - When a human-facing output is warranted, can a reviewer identify fit, level, and contribution quickly?
 - Does visual treatment support the context rather than merely signal taste?
 - Does feedback change the search model only when it is repeated or well-supported?
+- Does the heading structure make section boundaries obvious to a parser?
+- Does the resume keep target context in the Work Order while keeping the resume reusable?
+- Do any highlights or alignment sections add distinct value instead of repeating experience or skills?
