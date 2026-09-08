@@ -2,6 +2,7 @@
 name: persona-research
 description: Research and maintain evidence-backed persona models by connecting role context, workflows, activities, skills, tools, friction, needs, sources, and validation questions.
 metadata:
+  skill_layer: library_management
   change_mode: source_update
   change_domain: personas
   reconciliation: persona-reconciliation

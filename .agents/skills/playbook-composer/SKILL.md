@@ -2,6 +2,7 @@
 name: playbook-composer
 description: Compose reusable multi-stage operating models from Personas, Skills, Tools, workflows, artifacts, handoffs, shared state, decision rights, and quality gates toward a defined outcome.
 metadata:
+  skill_layer: orchestration
   change_mode: record_update
   change_domain: playbooks
   reconciliation: change-impact-reconciliation

@@ -11,6 +11,7 @@ This repository contains the source and generated output for the Persona Library
 - `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
 - `JOB_SEARCH_IMPLEMENTATION.md` — the job-search workspace scope and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.
+- `content/site-orientation.json` — the machine-readable request, space, Skill-layer, artifact, and mutation routing map.
 
 ## Work tracking
 
@@ -21,6 +22,7 @@ This repository contains the source and generated output for the Persona Library
 - docs/ux/project-context-template.md — project-scoped profile and evidence packet.
 - docs/ux/design-reference-library.md — curated sources, examples, and failure exhibits.
 - docs/job-search/ — Application packet Work Order and ATS/human version contract.
+- `.agents/skills/` — repository-local callable Skill packages; each package declares its change contract and routing layer in `SKILL.md` frontmatter.
 
 ## Run locally
 

@@ -2,6 +2,7 @@
 name: change-impact-reconciliation
 description: Review downstream effects of a material source, record, decision, prototype promotion, generated artifact, or durable execution change without silently applying unrelated updates.
 metadata:
+  skill_layer: governance
   change_mode: reconciliation_adapter
   change_domain: cross-space
   reconciliation: skip

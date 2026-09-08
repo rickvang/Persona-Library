@@ -2,6 +2,7 @@
 name: tool-record-maintenance
 description: Add, update, relate, reconcile, audit, retire, and supersede canonical Tool records while preserving evidence, scope, permissions, fallbacks, and revision history without executing the Tool.
 metadata:
+  skill_layer: library_management
   change_mode: record_update
   change_domain: tools
   reconciliation: change-impact-reconciliation
