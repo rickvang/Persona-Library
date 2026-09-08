@@ -6,19 +6,19 @@ A project-scoped work packet for evidence-grounded resume writing. This file tra
 
 - Work Order ID: WO-2026-09-08-resume-writing
 - Title: Resume writing and dual-version application packet
-- Status: draft
+- Status: ready-for-review
 - Created: 2026-09-08
 - Last updated: 2026-09-08
 - Requester: user
 - Current owner: Codex
-- Request mode: plan
+- Request mode: artifact-generation
 - Proportionality tier: feature
 - Change mode: artifact-generation
 - Change domain: project-scoped job-search documents
 - Artifact home: docs/work-orders/WO-2026-09-08-resume-writing/
 - Authorized repository target: Persona Library Work Order documentation
 - Authorized private artifact target: Google Drive job applications / Codex / WO-2026-09-08-resume-writing
-- Stopping condition: do not tailor or overwrite resume content until the target role, posting, and requested output are confirmed
+- Stopping condition: pause before any submission or private-draft edits that depend on unresolved user-owned facts
 
 This is a non-trivial project, so the package directory is warranted. Only this Work Order is stored in the public repository. Resume content and private Drive identifiers are intentionally kept out of it.
 
@@ -58,14 +58,14 @@ These are review perspectives, not user evidence. Do not create or merge Persona
 | Field | Current value | Evidence status |
 | --- | --- | --- |
 | Project type | Document or application output | Inferred from the request; provisional |
-| Primary outcome | Resume-writing packet | Supplied request; details unknown |
+| Primary outcome | Centstone Senior UX Designer application packet (ATS + human-facing) | User request; public posting read |
 | Audiences | ATS or employer intake and human reviewer | Existing job-search contract |
 | Primary lens | Document constraints, evidence mapping, ATS and human parity | Existing project-routing guidance |
 | Proportionality | Feature: two linked versions plus integrity review | Based on the requested workflow |
 | Candidate source of truth | The requester and their authorized career evidence | A 07/26 baseline was selected for the initial master copy |
 | Working destination | Private Google Drive job applications / Codex / this Work Order ID | Folder created and verified |
 
-A private Drive structure was located with separate Codex and Claude areas. The requester selected the 07/26 resume as the basis for a new master template. A per-run folder was created under the Codex area, and a native Google Docs copy named Resume Master Template (Draft) was created there. The original source was not changed.
+A private Drive structure was located with separate Codex and Claude areas. The requester selected the 07/26 resume as the basis for a new master template. A per-run folder was created under the Codex area, and a native Google Docs copy named Rick Vang Resume — Master Template (Draft) was created there. The original source was not changed.
 
 The exact Drive URLs, IDs, and personal content are intentionally not copied into this public repository. The copy link and folder link are returned in the task handoff.
 
@@ -107,12 +107,12 @@ Keep facts, researched claims, interpretations, generated wording, assumptions, 
 | ID | Planned artifact | Status | Required relationship |
 | --- | --- | --- | --- |
 | MASTER | Native resume master template copy in the private run folder | Created as draft | Starting source for later reconciliation; not yet a final evidence ledger |
-| OUT-ATS | ATS resume version | Not created | Rendered from the shared evidence ledger |
-| OUT-HUMAN | Human-facing resume version | Not created | Rendered from the same ledger; differences are intentional and recorded |
+| OUT-ATS | ATS resume version | Created in private run folder | Rendered from the shared evidence ledger |
+| OUT-HUMAN | Human-facing resume version | Created in private run folder | Rendered from the same ledger; differences are intentional and recorded |
 | OUT-LETTER | Tailored cover letter | Not requested / unknown | Separate artifact; uses the same ledger and adds context |
-| ART-EVIDENCE | Evidence inventory or claim ledger | Not created | Source of truth for all material claims |
-| ART-PARITY | Version parity and integrity review | Not created | Compares the actual final artifacts |
-| ART-VALIDATION | Concise review and limitations | Not created | Records checks actually performed |
+| ART-EVIDENCE | Evidence inventory or claim ledger | Created in private run folder | Source of truth for all material claims |
+| ART-PARITY | Version parity and integrity review | Created in private run folder | Compares the actual final artifacts |
+| ART-VALIDATION | Concise review and limitations | Recorded in ART-PARITY | Records checks actually performed |
 
 Future project artifacts should be created in the authorized private Drive run folder unless the requester names another target. The public Persona Library stores the process and Work Order index, not private resume content by default.
 
@@ -133,11 +133,11 @@ Synthetic Personas may surface questions or design risks, but their responses re
 | --- | --- | --- | --- |
 | Initialize Work Order and route request | Complete | Classification is provisional | Confirm target role and output |
 | Select 07/26 source and initialize master copy | Complete | Native copy verified; source unchanged | Review or approve the copied master |
-| Build shared evidence ledger | Blocked | Target-specific source review has not started | Approve the source and extract claims privately |
-| Analyze target role | Blocked | Role or posting not supplied | Provide a job posting, role description, or target |
-| Render ATS version | Not started | Depends on accepted evidence and role map | Draft only after the ledger is reviewed |
-| Render human-facing version | Not started | Depends on shared ATS content | Decide whether the second rendering is warranted |
-| Review parity and integrity | Not started | No new versions exist | Compare actual final versions after edits |
+| Build shared evidence ledger | Complete | Shared ledger created; unsupported claims are marked partial or unknown | Review open questions before submission |
+| Analyze target role | Complete with open questions | Public Centstone posting read and mapped to source evidence | Resolve user-owned unknowns before submission |
+| Render ATS version | Complete | Draft rendered from the shared ledger | Review content and parser suitability before submission |
+| Render human-facing version | Complete | Draft rendered from the same ledger with a separate reading hierarchy | Review content and visual fit before submission |
+| Review parity and integrity | Complete with open questions | Actual ATS and human drafts compared; findings recorded | Resolve chronology and requirement gaps |
 | Cover letter | Not requested / unknown | No request or role context | Decide after target role is known |
 | Select or submit | Not authorized | No submission permission or channel | Keep submission separate from drafting |
 
@@ -161,6 +161,18 @@ This initialization reads the connected Drive to locate source material and crea
 
 It changes only this project-scoped Work Order in the Persona Library repository and does not change canonical Personas, Skills, Tools, Playbooks, or Site output. If a later run changes shared repository guidance or records, it must inspect affected files, document the change, and run the repository's applicable reconciliation and validation process before completion.
 
+## Current run result — Centstone Senior UX Designer
+
+The requested target context is now supplied: [Centstone Senior UX Designer](https://www.ziprecruiter.com/c/Centstone/Job/Senior-UX-Designer/-in-South-Saint-Paul%2CMN?jid=21b5bb41545ea05f), South Saint Paul, Minnesota, on-site contractor role. The public posting was read for role alignment; it is not candidate evidence.
+
+- Routing: Riley Morgan coordinated Leah Okafor for role alignment/copy, Sofia Calder for document production, and Camille Ortiz for human-facing hierarchy review. These remain synthetic review lenses, not user evidence.
+- Source: the private native master copy based on Rick Vang Resume 07/26. The original source was not edited.
+- Created privately in the authorized run folder: one shared evidence ledger, one ATS resume, one human-facing resume, and one parity/integrity review. No cover letter was requested or created.
+- Checks completed: source-to-master equality, single-column document structure, semantic headings, list structure, placeholder scan, shared claim coverage, parity of material facts, and privacy/mutation boundaries.
+- Result: the packet is ready for requester review. The ATS and human versions are linked renderings from one evidence source; the human version changes hierarchy and emphasis, not the facts.
+- Open findings: direct usability-testing evidence is not present; WCAG 2.1 specificity is unconfirmed; Agile wording is not asserted; on-site/contract availability and work authorization are unknown; current Quva status/end date needs confirmation; and the source has two STG Consulting entries plus month-level overlaps that were not silently normalized.
+- No submission, employer contact, publication, external sharing, or user-level skill installation was performed. Private Drive links and resume content remain out of the public repository.
+
 ## Completion boundary
 
-This Work Order is complete only when a concrete packet or explicit no-go outcome is linked, the shared evidence source and version relationships are inspectable, integrity and parity limitations are recorded, and the requester knows what was actually tested. At this stage it remains draft and awaits target-role context and source approval.
+This Work Order is complete only when a concrete packet or explicit no-go outcome is linked, the shared evidence source and version relationships are inspectable, integrity and parity limitations are recorded, and the requester knows what was actually tested. The packet is now ready for requester review; submission and any final factual correction remain separate authorized actions.
