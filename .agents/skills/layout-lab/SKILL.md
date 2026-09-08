@@ -2,6 +2,7 @@
 name: layout-lab
 description: Compare materially different information architectures or interface layouts in an isolated prototype before changing the main experience.
 metadata:
+  skill_layer: persona_applied
   change_mode: prototype
   change_domain: prototyping
   reconciliation: change-impact-reconciliation

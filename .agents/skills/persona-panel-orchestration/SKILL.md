@@ -2,6 +2,7 @@
 name: persona-panel-orchestration
 description: Consult one or more explicitly named Personas independently, compare their evidence and disagreements, and synthesize a concise recommendation without silently changing durable records.
 metadata:
+  skill_layer: orchestration
   change_mode: read_only
   change_domain: consultation
   reconciliation: skip

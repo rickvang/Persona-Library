@@ -2,6 +2,7 @@
 name: persona-skills
 description: Identify, define, expand, deduplicate, and validate the reusable skills behind a Persona's activities and workflows.
 metadata:
+  skill_layer: library_management
   change_mode: source_update
   change_domain: skills
   reconciliation: persona-reconciliation

@@ -2,6 +2,7 @@
 name: persona-reconciliation
 description: Review the Persona-specific effects of a changed source, claim, skill, workflow, activity, tool requirement, or capability and return a scoped update without rewriting unrelated fields.
 metadata:
+  skill_layer: governance
   change_mode: reconciliation_adapter
   change_domain: personas
   reconciliation: change-impact-reconciliation

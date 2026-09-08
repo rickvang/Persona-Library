@@ -2,6 +2,7 @@
 name: tool-discovery-and-safe-execution
 description: Resolve a required capability to the safest currently available Tool or MCP, prepare a bounded probe, verify the result, and record learnings without silently granting access or changing shared state.
 metadata:
+  skill_layer: tool_safety
   change_mode: external_execution
   change_domain: tools
   reconciliation: change-impact-reconciliation

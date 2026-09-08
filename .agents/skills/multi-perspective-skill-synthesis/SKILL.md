@@ -2,6 +2,7 @@
 name: multi-perspective-skill-synthesis
 description: Synthesize distinct Persona perspectives into a concrete reusable capability and decide whether to reuse, relate, compose, or form a new Skill without erasing evidence or role-specific context.
 metadata:
+  skill_layer: orchestration
   change_mode: artifact_generation
   change_domain: skill-formation
   reconciliation: persona-reconciliation

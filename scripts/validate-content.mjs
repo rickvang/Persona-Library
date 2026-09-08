@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +20,7 @@ const guidePagePath = path.join(root, 'dist', 'guide.html');
 const jobSearchPagePath = path.join(root, 'dist', 'job-search.html');
 const playbooksPagePath = path.join(root, 'dist', 'playbooks.html');
 const prototypingPagePath = path.join(root, 'dist', 'prototyping.html');
+const skillsRoot = path.join(root, '.agents', 'skills');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
 const orientationSource = await readFile(orientationPath, 'utf8');
@@ -71,8 +72,11 @@ if (!guidePage.includes('persona-library-guide') || !guidePage.includes('Consult
 if (!guidePage.includes('agent-orientation') || !orientation.default_entry.includes('guide.html#agent-orientation')) {
   throw new Error('Agent orientation must be linked from the Docs page and manifest');
 }
+if (!guidePage.includes('routing-map') || !guidePage.includes('Persona-applied') || !guidePage.includes('$persona-panel-orchestration') || !guidePage.includes('skillLibrary')) {
+  throw new Error('Docs page is missing the unified system routing map');
+}
 const requiredSpaces = ['personas', 'skills', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
-if (orientation.schema_version !== '1.0' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 3 || !orientation.skill_contract.routing?.source_update?.includes('$change-impact-reconciliation') || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation')) {
+if (orientation.schema_version !== '1.1' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 4 || !orientation.skill_contract.routing?.source_update?.includes('$change-impact-reconciliation') || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation') || !orientation.routing || !orientation.routing.skill_layers || !Array.isArray(orientation.routing.artifact_kinds) || !Array.isArray(orientation.routing.availability_sources) || !Array.isArray(orientation.routing.routes) || orientation.routing.routes.length < 10) {
   throw new Error('Orientation manifest is missing required bootstrap, process, mutation, or response fields');
 }
 for (const space of requiredSpaces) {
@@ -80,6 +84,40 @@ for (const space of requiredSpaces) {
   if (!record || !record.label || !record.answers || !record.read || !record.write || !record.do_not) throw new Error(`Orientation manifest has an incomplete space: ${space}`);
 }
 if (JSON.stringify(orientation) !== JSON.stringify(generatedOrientation)) throw new Error('Generated orientation manifest does not match its source');
+const allowedSkillLayers = new Set(Object.keys(orientation.routing.skill_layers));
+const allowedArtifactKinds = new Set(orientation.routing.artifact_kinds);
+const allowedAvailabilitySources = new Set(orientation.routing.availability_sources);
+const routeIds = new Set();
+const routedPackagePaths = new Set();
+for (const route of orientation.routing.routes) {
+  if (!route.id || routeIds.has(route.id) || !route.request || !Array.isArray(route.modes) || !route.modes.length || !requiredSpaces.includes(route.primary_space) || !Array.isArray(route.secondary_spaces) || !route.target || !allowedArtifactKinds.has(route.artifact_kind) || !allowedAvailabilitySources.has(route.availability_source) || !Array.isArray(route.first_reads) || !route.first_reads.length || !route.mutation_boundary || !route.reconciliation || !Array.isArray(route.non_triggers) || !route.non_triggers.length || !route.next_handoff) {
+    throw new Error(`Invalid or incomplete orientation route: ${route.id || '(missing)'}`);
+  }
+  routeIds.add(route.id);
+  if (route.artifact_kind === 'callable_skill' && route.availability_source === 'repo_local') {
+    if (!route.package_path || !route.package_path.startsWith('.agents/skills/')) throw new Error(`Repository Skill route has no package path: ${route.id}`);
+    routedPackagePaths.add(route.package_path);
+    try {
+      await readFile(path.join(root, route.package_path, 'SKILL.md'), 'utf8');
+    } catch {
+      throw new Error(`Repository Skill route package is missing: ${route.id}`);
+    }
+  }
+}
+const skillEntries = await readdir(skillsRoot, { withFileTypes: true });
+for (const entry of skillEntries.filter(item => item.isDirectory())) {
+  const skillPath = path.join(skillsRoot, entry.name, 'SKILL.md');
+  let skillSource;
+  try {
+    skillSource = await readFile(skillPath, 'utf8');
+  } catch {
+    throw new Error(`Repository Skill package is missing SKILL.md: ${entry.name}`);
+  }
+  const frontmatter = skillSource.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  const layer = frontmatter?.[1].match(/^\s*skill_layer:\s*([^\r\n]+)\s*$/m)?.[1].trim();
+  if (!frontmatter || !layer || !allowedSkillLayers.has(layer)) throw new Error(`Skill package has missing or unsupported skill_layer metadata: ${entry.name}`);
+  if (!routedPackagePaths.has(`.agents/skills/${entry.name}`)) throw new Error(`Skill package is missing from the onboarding routing map: ${entry.name}`);
+}
 for (const html of [page, skillsPage, jobSearchPage, playbooksPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
 
 const personaIds = new Set();

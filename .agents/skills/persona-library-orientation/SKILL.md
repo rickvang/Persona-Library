@@ -2,6 +2,7 @@
 name: persona-library-orientation
 description: Orient requests about the Persona Library by loading its manifest, classifying the request, selecting the smallest relevant space, and stating read-only or mutation boundaries.
 metadata:
+  skill_layer: library_management
   change_mode: read_only
   change_domain: personas-system
   reconciliation: skip
