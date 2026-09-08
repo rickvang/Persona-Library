@@ -51,21 +51,23 @@ Keep candidate facts, researched claims, interpretations, generated writing, and
 
 ## 2. Output contract
 
-Create two linked resume versions when the target channel or review context justifies it. If one semantically structured version is sufficient, record why the second rendering is not warranted.
+Start with one canonical ATS resume rendered from the shared evidence ledger. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
 
 | Output ID | Artifact | Primary reader or system | Format and revision | Source ledger revision | Status | Owner | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| OUT-ATS | ATS resume version | Employer intake and screening |  |  | draft / reviewed / selected / superseded |  |  |
-| OUT-HUMAN | Human-facing resume version | Human reviewer |  |  | draft / reviewed / selected / superseded |  |  |
-| OUT-LETTER | Cover letter | Human reviewer and required submission channel |  |  | not requested / draft / reviewed / selected |  |  |
+| OUT-ATS | ATS resume version (default) | Employer intake and screening |  |  | draft / reviewed / selected / superseded |  |  |
+| OUT-HUMAN | Human-facing resume version (optional) | Human reviewer |  |  | not warranted / draft / reviewed / selected / superseded |  |  |
+| OUT-LETTER | Cover letter (optional) | Human reviewer and required submission channel |  |  | not requested / draft / reviewed / selected |  |  |
 
-The ATS and human-facing resume are renderings of one evidence source, not independent stories. A human-facing variant may improve hierarchy, density, order, and contextual visual communication; neither variant may change the meaning of a material claim.
+Both resume versions, when both exist, are renderings of one evidence source rather than independent stories. The human-facing version may improve hierarchy, density, order, voice, and contextual visual communication; neither version may change the meaning of a material claim.
+
+If the human-facing version is not warranted, record that decision and use ATS-to-ledger integrity review. Do not create an empty ATS-versus-human parity exercise.
 
 Do not submit both resume versions unless the employer or requester explicitly asks for both.
 
 ## 3. Version-specific requirements
 
-### ATS resume version
+### ATS resume version (default)
 
 - Standard headings and deterministic text order:
 - Chronology and date representation:
@@ -78,15 +80,19 @@ Do not submit both resume versions unless the employer or requester explicitly a
 
 Minimum gate:
 
-- Intended sections and text are extractable.
-- Dates, titles, employers, role identity, and outcomes are unambiguous.
+- Intended sections and text are extractable, or parser suitability is explicitly unknown.
+- Dates, titles, employers, role identity, attribution, scope, and outcomes are unambiguous.
 - Roles are reverse chronological unless an intentional alternative is documented.
 - Missing dates, ties, overlaps, and source ambiguity remain visible.
 - Terminology is natural and supported; no keyword stuffing.
 - Important content is not hidden in graphics, columns, images, or decorative labels without a safe text equivalent.
+- Every material claim traces to the shared evidence ledger.
 
-### Human-facing resume version
+### Human-facing resume version (optional)
 
+Complete this section only when a second rendering is warranted.
+
+- Why a human-facing version is useful for this channel:
 - Reader and review context:
 - First-scan decision path:
 - Hierarchy and visual system:
@@ -94,7 +100,7 @@ Minimum gate:
 - Accessibility and readable structure:
 - Contextual visual choices:
 - Content or order differences from ATS version:
-- Human review result: pass / revise / blocked / unknown
+- Human review result: pass / revise / blocked / not warranted / unknown
 
 Minimum gate:
 
@@ -103,6 +109,21 @@ Minimum gate:
 - Content remains readable, accessible, truthful, and reasonably parseable.
 - Intentional differences from the ATS version are recorded.
 - The version does not erase uncertainty or make a claim stronger through design.
+- If this version is not created, record why it was not warranted; do not mark human review as passed.
+
+### Future human-facing template (separate artifact)
+
+- Template ID and location:
+- Intended audience and use conditions:
+- Non-use conditions:
+- Scan path and hierarchy:
+- Density, page, or responsive behavior:
+- Accessibility and safe text structure:
+- Illustrative content policy:
+- Instantiation review required:
+- Owner and revision:
+
+A reusable human-facing template is not an application output and does not replace the evidence ledger. Keep it content-free or clearly illustrative; never embed private candidate facts or employer-specific claims.
 
 ### Cover letter
 
@@ -118,11 +139,13 @@ A cover letter is separate from both resume versions. It may need a structured, 
 
 ## 4. Version parity table
 
-Compare the actual ATS and human-facing artifacts after meaningful edits.
+### ATS-only path
 
-| Claim ID | Evidence IDs | ATS version location | Human version location | Intentional difference and reason | Meaning preserved? | Parity result |
-| --- | --- | --- | --- | --- | --- | --- |
-| C-001 | E-001 |  |  |  | yes / no / unknown | pass / revise / blocked |
+When OUT-HUMAN is not warranted, use this section as an ATS-to-ledger integrity record. Mark human parity as not applicable.
+
+| Claim ID | Evidence IDs | ATS version location | Ledger wording or source location | Meaning preserved? | Integrity result |
+| --- | --- | --- | --- | --- | --- |
+| C-001 | E-001 |  |  | yes / no / unknown | pass / revise / blocked |
 
 Check at least:
 
@@ -130,10 +153,19 @@ Check at least:
 - contribution, attribution, scope, method, metrics, and outcomes;
 - high-priority evidence and known gaps;
 - uncertainty, caveats, and intentional omissions;
-- cover-letter claims against the same evidence ledger.
+- parser suitability and untested scope.
 
-Fail parity when either version silently adds, removes, upgrades, or changes the meaning of a material claim. If a difference is required by the channel, document it and obtain the appropriate source or candidate decision.
+### Optional two-version path
 
+Use this comparison only when OUT-HUMAN exists.
+
+| Claim ID | Evidence IDs | ATS version location | Human version location | Intentional difference and reason | Meaning preserved? | Parity result |
+| --- | --- | --- | --- | --- | --- | --- |
+| C-001 | E-001 |  |  |  | yes / no / unknown | pass / revise / blocked |
+
+Fail parity when either version silently adds, removes, upgrades, or changes the meaning of a material claim. If a difference is required by the channel, document it and obtain the appropriate source or candidate decision. If OUT-HUMAN is not created, do not report parity as passed or failed.
+
+## 5. Review record
 ## 5. Review record
 
 Run reviews on the actual output revision.
@@ -154,7 +186,7 @@ Update at phase transitions, decisions, failed gates, material assumptions, hand
 | Align role and evidence |  |  |  |  |  |  |
 | Build shared evidence source |  |  |  |  |  |  |
 | Render ATS version |  |  |  |  |  |  |
-| Render human-facing version |  |  |  |  |  |  |
+| Render human-facing version (optional) |  |  |  |  |  |  |
 | Draft and review cover letter |  |  |  |  |  |  |
 | Review parity and integrity |  |  |  |  |  |  |
 | Select submission artifact |  |  |  |  |  |  |
