@@ -83,6 +83,8 @@ For the ATS version, target employer, role, location, and work-mode context rema
 - Downstream validator compatibility and limitations:
 - Standard headings and deterministic text order:
 - Chronology and date representation:
+- Employer/client hierarchy and engagement attribution:
+- Separate employer periods and return-to-employer explanation:
 - Supported terminology from the requirement map:
 - Extraction or parser check used:
 - Known parser limitations:
@@ -94,6 +96,7 @@ Minimum gate:
 
 - Intended sections and text are extractable, or parser suitability is explicitly unknown.
 - Dates, titles, employers, role identity, attribution, scope, and outcomes are unambiguous.
+- Confirmed client engagements appear under the actual employer, separate employment periods remain separate, and client attribution survives plain-text extraction.
 - Roles are reverse chronological unless an intentional alternative is documented.
 - Missing dates, ties, overlaps, and source ambiguity remain visible.
 - Terminology is natural and supported; no keyword stuffing.
