@@ -16,13 +16,13 @@ Use one primary candidate persona with a coordinated set of specialist lenses:
 2. **Search strategist** — defines target roles, search boundaries, positioning, channels, and prioritization.
 3. **Hiring manager / role calibrator** — interprets the role, separates required signals from noise, and defines what success would look like.
 4. **ATS application specialist** — checks parsing, terminology alignment, structure, and truthful coverage.
-5. **Human narrative editor** — improves clarity, relevance, voice, credibility, and story.
-6. **Visual communication reviewer** — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish.
+5. **Human narrative editor (conditional)** — improves clarity, relevance, voice, credibility, and story when a human-facing output is warranted.
+6. **Visual communication reviewer (conditional)** — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.
 7. **Research and verification analyst** — researches companies, teams, role expectations, and evidence.
 8. **Outreach and interview coach** — prepares networking messages, follow-ups, interview stories, and questions.
 9. **Job-search orchestrator** — coordinates the lenses, preserves decisions, and keeps the search coherent over time.
 
-ATS and human review must remain separate gates. A document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system.
+The default path is ATS-first with a claim-to-ledger integrity gate. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
 
 ## MVP scope
 
@@ -33,14 +33,14 @@ The first build is a responsive reference surface plus actual working-draft pers
 - Reuse of Camille Ortiz for visual communication review and Riley Morgan for orchestration
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
 - The end-to-end search workflow
-- Quality gates for ATS compatibility, human readability, evidence, and visual communication
+- Quality gates for ATS compatibility and evidence integrity by default, with human readability and visual communication when those outputs are warranted
 - A clear boundary between current capabilities and later product work
 
 The new records are synthetic composites. They are intentionally marked as working drafts and should be refined with the person’s actual target, industry, constraints, employer process, and source documents.
 
 The first workflow is:
 
-`Define target → Analyze role → Map evidence → Build shared evidence source → Render ATS and human versions → Review parity → Submit → Learn`
+`Define target → Analyze role → Map evidence → Build shared evidence source → Render ATS → Review integrity → Optionally render human version and review parity → Submit → Learn`
 
 ## Data model
 
@@ -56,53 +56,59 @@ Each future job-search record should preserve:
 
 Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct.
 
-## Dual-version application packet
+## ATS-primary application packet
 
-When the target channel or review context differs, create two linked resume renderings from one shared evidence source:
+The default application path is ATS-first: maintain one shared evidence source, map the target requirements to it, render one semantically structured ATS resume, and run an evidence-integrity review. This is the smallest useful path for most applications.
 
-1. ATS submission version: semantically structured, extraction-safe, naturally aligned to supported role terminology, and clear about dates, titles, employers, and outcomes.
-2. Human-facing version: optimized for a person's scan path, hierarchy, readability, context, and appropriate visual polish while preserving the same underlying facts and semantic structure.
-
-These are not two independent stories. The evidence source is authoritative; neither resume variant may add an unsupported claim. A human-facing version should remain reasonably parseable, and an ATS version should remain readable. Follow employer instructions when choosing what to submit; do not submit both versions unless requested.
+Create a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by habit. When no human-facing version is warranted, record that decision and use ATS-to-ledger integrity rather than an empty ATS-versus-human parity exercise.
 
 ### Shared evidence source
 
-Before drafting either version, maintain one evidence inventory or claim ledger containing:
+Before drafting, maintain one evidence inventory or claim ledger containing:
 
 - source ID and exact source passage or artifact;
 - action, attribution, scope, method, outcome, metric, and uncertainty;
 - target-role relevance and confidence;
 - approved wording or unresolved question;
-- destinations in the ATS version, human-facing version, cover letter, or portfolio.
+- destination in the ATS resume, optional human-facing resume, cover letter, or portfolio.
 
-Material differences between versions must be explainable as layout, order, density, emphasis, or channel constraint. A difference that changes meaning requires source review and an explicit decision.
+The ledger is authoritative. Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain visibly distinct.
 
-### Version-specific contract
+### ATS resume contract
 
-| Output | Primary reader or system | Required strengths | Must not do |
-| --- | --- | --- | --- |
-| ATS resume version | Employer intake or screening system plus a time-constrained reviewer | Standard headings, deterministic text order, clear chronology, natural supported terminology, unambiguous dates and titles, accessible text | Hide content in graphics, rely on decorative layout, stuff keywords, or silently normalize ambiguous facts |
-| Human-facing resume version | Human reviewer | Clear first scan, meaningful hierarchy, readable density, context-appropriate visual system, credible narrative, accessible structure | Add claims, erase caveats, make the document less truthful, or make important content unavailable to extraction when the channel still uses an ATS |
-| Cover letter | Human reviewer and any submission channel that requires it | Adds a specific connection, motivation, or relevant context that the resume cannot carry | Repeat the resume without purpose, invent motivation, or become a second unsupported evidence source |
+The default ATS resume must be semantically structured, extraction-safe, readable, naturally aligned to supported role terminology, and clear about dates, titles, employers, engagement identity, attribution, scope, and outcomes.
 
-### Review and parity gate
+It must not hide content in graphics, rely on decorative layout, stuff keywords, silently normalize ambiguous facts, or claim a parser result that was not actually tested. If no employer parser is available, record parser suitability as unknown rather than implying validation.
 
-Run ATS, human/narrative, visual/production, and integrity reviews on the actual version being considered. Then run a parity check across the ATS and human-facing versions.
+### Optional human-facing resume
 
-The parity check must compare:
+A human-facing version is a second rendering of the same approved evidence source. It may improve scan path, hierarchy, density, order, voice, and context-appropriate visual communication. It must preserve the meaning of every material claim and remain reasonably parseable when the employer still uses screening software.
 
-- employer, role, title, dates, chronology, and engagement identity;
-- contribution, attribution, scope, method, metrics, and outcomes;
-- high-priority evidence from the requirement-to-evidence map;
-- qualifications, gaps, uncertainty, and intentional omissions;
-- cover-letter claims against the same source ledger.
+Run a separate human and visual review only when this version is created. Record every material content or order difference and why it helps the intended reader. If the difference changes meaning, return to source review.
 
-Record each intentional difference and its reason. The packet cannot pass if a version silently introduces, removes, upgrades, or changes the meaning of a material claim.
+### Future human-facing templates
+
+Reusable human-facing templates are separate design assets, not application outputs and not automatic application outputs. Keep them content-free or use clearly marked sample content; do not copy private candidate facts or employer-specific claims into a reusable template.
+
+A template should define its intended audience, scan path, hierarchy, density, accessibility, responsive or page behavior, safe text structure, and the conditions under which it should not be used. Build or maintain a template only when repeated human-facing work justifies it. Instantiating a template for a specific application remains an explicit, separately reviewed step.
+
+### Review and integrity gate
+
+Every application packet runs:
+
+- role-to-evidence mapping;
+- ATS structure and terminology review;
+- claim-to-ledger integrity review;
+- chronology and ambiguity preflight;
+- explicit unknown and untested-scope review.
+
+When a human-facing version exists, also run the human/visual review and a parity comparison against the ATS version. When it does not exist, do not report human parity as passed or failed; report it as not applicable and preserve the reason.
+
+The selected submission artifact follows employer instructions. Do not submit both resume versions unless the employer or requester explicitly asks for both. Cover-letter claims, when requested, trace to the same ledger and add useful context rather than becoming a second evidence source.
 
 ### Work Order tracking
 
-The application packet Work Order records the shared evidence source, target role, ATS version, human-facing version, cover letter, version revisions, review findings, parity result, selected submission file, and learning after submission. It is the active progress record; the evidence ledger and version-parity table remain linked specialized artifacts.
-
+The Work Order records the target, shared ledger, canonical ATS version, optional human-facing version, cover letter if requested, review findings, integrity result, optional parity result, selected submission file, and learning after submission. It is the active progress record; specialized artifacts remain separate and linked.
 
 ## Phased delivery
 
@@ -120,7 +126,7 @@ The application packet Work Order records the shared evidence source, target rol
 
 ### Phase 2 — Application packet
 
-- Build one shared evidence source and render an ATS submission version plus a human-facing resume version when the target channel or review context justifies two outputs.
+- Build one shared evidence source and render the canonical ATS submission version. Add a human-facing resume only when the target channel or review context justifies a second output.
 - Draft a separate cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry.
 - Generate portfolio or case-study emphasis for design-oriented roles.
 
@@ -134,14 +140,14 @@ Run a small deterministic structural check before persona review. This is a buil
 - Preserve source ambiguity. Do not invent day-level precision to make the timeline look cleaner.
 - Carry the preflight result into the ATS, human-reader, and integrity reviews so a polished draft cannot hide a basic chronology error.
 
-Leah owns the ATS and human-readable review of the result. Riley records the flags and reconciliation decision. A failed ordering check should stop the packet before council synthesis; an overlap or same-month ambiguity should remain visible until the source is confirmed or the user explicitly accepts it.
+Leah owns the ATS review and claim-to-ledger integrity result. Human-readable and visual review are conditional on a human-facing output. Riley records the flags and reconciliation decision. A failed ordering check should stop the packet before council synthesis; an overlap or same-month ambiguity should remain visible until the source is confirmed or the user explicitly accepts it.
 
 ### Phase 3 — Quality review
 
 - Start with the preflight result rather than relying on visual inspection or persona memory.
 - Run the ATS pass for parseability, terminology coverage, structure, and truthful alignment.
-- Run the human pass for clarity, credibility, narrative, specificity, and role fit.
-- Run the visual pass for hierarchy, scan path, density, typography, and context.
+- Run the claim-to-ledger integrity pass and chronology preflight.
+- Run human/narrative and visual passes only when a human-facing version exists or a human-facing template is being evaluated.
 - Record unresolved tradeoffs instead of silently flattening them.
 
 ### Phase 4 — Outreach and interview
@@ -158,51 +164,47 @@ Leah owns the ATS and human-readable review of the result. Riley records the fla
 
 ## Quality gates
 
-### Dual-output parity quality
+### ATS default quality
 
-- Both resume versions use the same approved evidence source.
-- Material facts, dates, titles, employers, attribution, scope, metrics, and outcomes are equivalent.
-- Differences in order, density, typography, or emphasis are intentional and recorded.
-- No version hides important content, changes claim meaning, or adds unsupported terminology.
-- The selected submission version follows the employer's instructions; both versions are sent only when requested.
-- Cover-letter claims trace to the same evidence source and add context rather than repeating the resume.
-
-### ATS quality
-
-- The document parses into the intended sections.
+- The document parses into the intended sections or parser suitability is explicitly unknown.
 - Role-relevant terminology appears naturally where supported by evidence.
-- Dates, titles, employers, and outcomes remain unambiguous.
+- Dates, titles, employers, engagement identity, attribution, scope, and outcomes remain unambiguous.
 - Roles are reverse chronological, or the chosen alternative format is explicitly documented.
 - Missing dates, month-only ambiguity, duplicate employers, and overlaps are flagged rather than silently resolved.
 - Formatting does not hide important content from extraction.
 
-### Human quality
+### Evidence-integrity quality
 
-- The first scan communicates role, level, and relevant value quickly.
-- Claims are specific, credible, and supported by examples.
-- The story reflects the target role without erasing the candidate’s voice.
-- The cover letter adds a useful connection rather than repeating the resume.
+- Every material claim traces to the shared evidence ledger.
+- Metrics, tools, responsibilities, titles, dates, employers, and outcomes are not invented or upgraded.
+- Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain distinct.
+- Intentional omissions and synthesized wording are recorded.
+- No parser, recruiter, human, or user response is claimed without that evidence.
+- The packet stops or returns to source review when a material claim cannot be supported.
 
-### Visual quality
+### Optional human-facing quality
 
-- Hierarchy supports the reader’s decision path.
-- Density is appropriate to the role and reading context.
-- Aesthetic choices fit the industry, seniority, and medium.
-- Portfolio visuals clarify decisions and outcomes rather than acting as decoration.
+- Use only when the channel or review context warrants a second rendering.
+- The first scan communicates role, level, relevant value, and credible contribution quickly.
+- Claims are specific, credible, and supported by the same ledger as the ATS version.
+- Visual emphasis follows target-role relevance and evidence, not decoration.
+- Content remains readable, accessible, truthful, and reasonably parseable.
+- Material differences from the ATS version are recorded and meaning is preserved.
 
-### Integrity quality
+### Optional human-template quality
 
-- No invented metrics, tools, responsibilities, or outcomes.
-- Uncertainty and gaps are visible.
-- Generated language is edited against the candidate’s actual voice.
-- Company research is dated and sourced.
+- The template is a separate, reusable artifact rather than a candidate-specific application output.
+- Audience, scan path, hierarchy, density, accessibility, page or responsive behavior, and safe text structure are explicit.
+- Sample content is clearly illustrative; private facts and employer-specific claims are not embedded.
+- Use conditions, non-use conditions, and instantiation review are documented.
+- The template does not bypass the shared evidence ledger or the ATS default path.
 
 ## Deliberately out of scope for the MVP
 
 - Automatic job scraping or mass application submission
 - Unverified salary, culture, or hiring-probability claims
 - Autonomous outreach or recruiter messaging
-- A single universal resume template
+- A single universal human-facing resume template or automatic human rendering for every application
 - An aggregate score that pretends to replace judgment
 - Persistent application tracking and reminders before the evidence model is stable
 
@@ -214,6 +216,6 @@ These are future opportunities, not implied capabilities of the current referenc
 - Can each important claim in an application be traced to evidence?
 - Does the preflight catch wrong role order even when the content and visual review look good?
 - Does the ATS pass improve retrieval without making the writing unnatural?
-- Can a human reviewer identify fit, level, and contribution quickly?
+- When a human-facing output is warranted, can a reviewer identify fit, level, and contribution quickly?
 - Does visual treatment support the context rather than merely signal taste?
 - Does feedback change the search model only when it is repeated or well-supported?
