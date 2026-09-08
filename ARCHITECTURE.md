@@ -57,6 +57,8 @@ The working rule is: **Prototyping explores; Decisions archive; Docs explain wha
 
 Docs provide the human-readable orientation page; the orientation manifest provides the compact machine-readable contract. Keep the two aligned through the build and validation checks rather than maintaining separate instructions by hand.
 
+Work Orders are the repository-wide active-work packet and progress record for non-trivial work. They capture scope, evidence, decisions, gate status, handoffs, and next action without becoming a transcript or permission grant. The specialized artifacts remain distinct: problem-context coordinates shared Persona state, traceability matrices prove coverage, Decisions preserve durable rationale, prototypes explore, and issues or pull requests track implementation. See [Work Orders](docs/work-orders.md).
+
 Use prototype status `Active → Selected → Archived`. Persona prototypes additionally use a `Testing` state and a promotion gate: representative test scenarios, observed behavior, open questions, and an explicit Decisions record before promotion. Use decision status `Proposed → Decided → Applied → Superseded`. Use `Parked` for a useful idea intentionally deferred.
 
 The working rule for persona prototypes is: **prototype records can reference live personas and skills, but live records cannot depend on prototype records.** A promotion creates a deliberate change set and reconciliation pass; an archive leaves the live system untouched.
