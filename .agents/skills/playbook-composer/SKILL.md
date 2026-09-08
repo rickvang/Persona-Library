@@ -35,6 +35,7 @@ Do not activate for:
 3. Check for an existing Playbook before creating a new one. Consult [the current job-search implementation](../../../JOB_SEARCH_IMPLEMENTATION.md) when the request is analogous; treat it as a fixture and scope reference, not proof of runtime execution.
 4. Load only explicitly named or justified Personas, Skills, workflows, Tools, recipes, artifacts, evidence, and decisions. Record unavailable items and incomplete dependency visibility.
 5. Resolve Tool capability requirements through `$tool-discovery-and-safe-execution` when needed; do not assume a connector, credential, workspace, permission, or runtime is available.
+6. When the Playbook is intended to coordinate Personas around one live request, use the [shared problem-context contract](../../../docs/collaboration/problem-context.md) as the run-level state boundary. Define who owns the context, how contributions are appended, how a handoff resumes, and which concrete deliverable closes the run. Do not assume a scheduler, concurrent runtime, authentication, or direct participant writes.
 
 ## Operating modes
 
@@ -60,7 +61,7 @@ Inspect whether the Playbook has a coherent outcome, stage contracts, ownership,
 6. **Map capabilities and Tools.** Identify which Skill, Persona application, workflow method, Tool-use recipe, or Tool requirement supports each stage. Record prerequisites, availability status, safest path, fallback, verification, and permission needs; requirements never prove availability.
 7. **Add quality gates.** Define evidence required, reviewer or decision owner, pass/fail or defer conditions, what is still unknown, and the next action. A gate must prevent an invalid stage transition, not merely repeat a status label.
 8. **Design failure and learning paths.** Specify missing-input, unavailable-participant, Tool failure, contradiction, timeout, interrupted-stage, escalation, recovery, and rollback behavior. Record what the next run should learn and when the Playbook should be revised.
-9. **Test the model.** Use one representative multi-stage case and one boundary/failure case. Check that stages, handoffs, state, decision rights, gates, and fallbacks are actionable without pretending the Playbook was executed.
+9. **Test the model.** Use one representative multi-stage case and one boundary/failure case. Check that stages, handoffs, state, decision rights, gates, and fallbacks are actionable without pretending the Playbook was executed. For Persona collaboration, also check that the run ends in one concrete solution or decision, every contribution is attributable and dispositioned, and duplicated or generic material cannot masquerade as value.
 10. **Prepare the change.** Return a bounded proposal, unchanged checked items, evidence, unknowns, and migration notes. For an explicitly authorized durable update, identify the target, apply the smallest change, then run `$change-impact-reconciliation` once. Do not execute the Playbook as part of composing it.
 
 ## Playbook contract
@@ -73,6 +74,7 @@ At minimum, a useful Playbook makes these items inspectable:
 - shared state and artifact provenance, revision/status rules, source of truth, and retention expectations;
 - linked Personas, Skills, workflow methods, Tools, requirements, recipes, and explicit fallbacks;
 - quality gates, approvals, validation checks, failure paths, escalation, recovery, and learning loop;
+- for live Persona collaboration: the `problem-context` identity, serialized state owner, contribution contract, disposition rule, solution-quality gate, and resumable handoff packet;
 - evidence status, confidence, assumptions, unresolved questions, revision context, and next action.
 
 Do not add fields merely to satisfy a checklist. The repository's existing Playbook record and validator remain the schema authority.
@@ -99,6 +101,8 @@ Keep the Playbook model separate from runtime logs or claims that a stage actual
 - Do not publish, execute, merge, grant access, install packages, or change live records without explicit authorization and a named target.
 - Keep prototypes, drafts, and proposed Playbooks separate from current truth until the required decision and reconciliation pass occur.
 - A Tool failure, missing participant, contradictory source, or interrupted stage is a visible state with a safe fallback, not a reason to continue as if it succeeded.
+- A multi-Persona run is incomplete if it produces only a transcript or collection of summaries. Require a concrete deliverable or decision tied to the outcome and record the disposition of each contribution before closing.
+- In the file-based MVP, the coordinator is the single context writer; the Playbook does not grant participant permissions or provide concurrency control.
 - If a dependency or downstream handoff is unavailable, report the exact gap and stop at the verified boundary.
 
 ## Focused validation
@@ -110,7 +114,9 @@ Before handoff, confirm:
 - shared state, artifact provenance, decision rights, gates, failure paths, and recovery are explicit;
 - referenced components are stable identities and are not copied or assumed available;
 - one representative and one boundary/failure case can be reasoned through;
+- a Persona collaboration run has a named, resumable context, distinct attributable contributions, a passing solution-quality gate, and a concrete output that addresses the success criteria;
 - authorization, target, mutation scope, and one-time reconciliation handoff are explicit;
 - no runtime execution or durable mutation was claimed without evidence.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/playbook-composer.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/playbook-composer.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
+
