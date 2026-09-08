@@ -5,7 +5,7 @@ A project-scoped work packet for evidence-grounded resume writing. This file tra
 ## Header
 
 - Work Order ID: WO-2026-09-08-resume-writing
-- Title: Resume writing and dual-version application packet
+- Title: ATS-first resume application packet with optional human-facing rendering
 - Status: ready-for-review
 - Created: 2026-09-08
 - Last updated: 2026-09-08
@@ -24,15 +24,15 @@ This is a non-trivial project, so the package directory is warranted. Only this 
 
 ## Scope and outcome
 
-When the required inputs are confirmed, produce an evidence-grounded application packet:
+For this Work Order, the canonical application output is one ATS-oriented resume rendered from a shared evidence ledger. A human-facing resume is optional and is created only when the target channel or review context justifies it. Reusable human-facing templates are separate future design assets, not automatic application outputs.
 
 1. One shared evidence inventory or claim ledger.
-2. An ATS-oriented resume rendering.
-3. A human-facing resume rendering when the target channel or review context warrants it.
+2. One ATS-oriented resume rendering as the default application artifact.
+3. An optional human-facing resume rendering only when its benefit and channel fit are recorded.
 4. A separate cover letter only when it adds useful, role-specific context or is required.
-5. A parity and integrity review showing that the linked resume versions preserve the same material facts.
+5. A claim-to-ledger integrity review; add an ATS-to-human parity comparison only if an optional human version exists.
 
-The ATS and human versions are linked renderings, not independent stories. The selected submission version must follow the employer's instructions. External submission, outreach, publication, and employer contact remain separate authorized actions.
+The ATS version is the canonical submission candidate. The optional human version is a linked rendering, not an independent story. External submission, outreach, publication, and employer contact remain separate authorized actions.
 
 ## Existing process and routing
 
@@ -47,9 +47,9 @@ Suggested review routing uses existing records only:
 
 - Avery Brooks / job-seeker: candidate goals, constraints, voice, and evidence framing. Avery is a synthetic composite and cannot stand in for the requester.
 - Leah Okafor / application-editor: requirement mapping, writing, ATS structure, human readability, and integrity.
-- Sofia Calder / document-designer: document hierarchy, production, accessibility, and export fidelity.
+- Sofia Calder / document-designer: ATS document structure, production, accessibility, and export fidelity; human-facing work is conditional.
 - Camille Ortiz / ui-expert: visual communication review when a human-facing version needs it.
-- Riley Morgan / ai-orchestrator: coordination, decisions, and version parity.
+- Riley Morgan / ai-orchestrator: coordination, decisions, and claim integrity; optional version parity when a human-facing output exists.
 
 These are review perspectives, not user evidence. Do not create or merge Personas for this Work Order.
 
@@ -58,10 +58,10 @@ These are review perspectives, not user evidence. Do not create or merge Persona
 | Field | Current value | Evidence status |
 | --- | --- | --- |
 | Project type | Document or application output | Inferred from the request; provisional |
-| Primary outcome | Centstone Senior UX Designer application packet (ATS + human-facing) | User request; public posting read |
+| Primary outcome | Centstone Senior UX Designer ATS-first application packet | User request; public posting read |
 | Audiences | ATS or employer intake and human reviewer | Existing job-search contract |
 | Primary lens | Document constraints, evidence mapping, ATS and human parity | Existing project-routing guidance |
-| Proportionality | Feature: two linked versions plus integrity review | Based on the requested workflow |
+| Proportionality | Feature: ATS version plus integrity review; human version optional | Based on the revised process decision |
 | Candidate source of truth | The requester and their authorized career evidence | A 07/26 baseline was selected for the initial master copy |
 | Working destination | Private Google Drive job applications / Codex / this Work Order ID | Folder created and verified |
 
@@ -85,34 +85,30 @@ The copied document preserves historical resume content so it can be reviewed an
 
 ## Source evidence and current gaps
 
-The master copy is not itself a structured evidence ledger. Before drafting target-specific outputs, create a separate private evidence artifact that records exact source passages or artifacts.
+The shared private evidence ledger now maps the public Centstone posting to source-backed claims and explicit gaps. It is the source of truth for the ATS resume and any later optional human-facing rendering.
 
 Known unknowns:
 
-- Target role, employer, job posting, source URL, and research date.
-- Role family, level, geography, work mode, timing, and constraints.
-- Which resume claims, dates, titles, employers, contributions, tools, metrics, and attribution remain current.
-- Desired output format and whether the private run folder is the final destination.
-- Whether a cover letter is wanted or required.
-- Employer-specific parser or submission instructions.
-- Candidate voice, preferences, and acceptable omissions.
-- Whether any previous ATS or human draft should be compared, preserved, or superseded.
-- Whether the selected source contains claims that need correction before reuse.
-- Whether the requester wants a general master resume first, a target-specific packet, or both.
+- Direct usability-testing evidence is not present in the selected source.
+- WCAG 2.1 specificity is unconfirmed; the source supports only accessibility standards and compliance guidelines.
+- Agile wording, enterprise-application wording, on-site/contract availability, work authorization, and current Quva status require confirmation.
+- The source contains two STG Consulting entries and month-level overlaps; dates were preserved rather than silently normalized.
+- No employer ATS parser, recruiter review, real-user test, or historical comparison was run.
+- No cover letter was requested.
 
-Keep facts, researched claims, interpretations, generated wording, assumptions, and unknowns distinct. Never fill an evidence gap with a plausible detail.
+Keep facts, researched claims, interpretations, generated writing, assumptions, recommendations, and unknowns distinct. Never fill an evidence gap with plausible detail.
 
 ## Planned output contract
 
 | ID | Planned artifact | Status | Required relationship |
 | --- | --- | --- | --- |
 | MASTER | Native resume master template copy in the private run folder | Created as draft | Starting source for later reconciliation; not yet a final evidence ledger |
-| OUT-ATS | ATS resume version | Created in private run folder | Rendered from the shared evidence ledger |
-| OUT-HUMAN | Human-facing resume version | Created in private run folder | Rendered from the same ledger; differences are intentional and recorded |
+| OUT-ATS | ATS resume version (canonical) | Created in private run folder | Rendered from the shared evidence ledger; default submission candidate |
+| OUT-HUMAN | Human-facing resume version (optional) | Retained as reference; not canonical | Create only when channel/review context warrants it; render from the same ledger |
 | OUT-LETTER | Tailored cover letter | Not requested / unknown | Separate artifact; uses the same ledger and adds context |
 | ART-EVIDENCE | Evidence inventory or claim ledger | Created in private run folder | Source of truth for all material claims |
-| ART-PARITY | Version parity and integrity review | Created in private run folder | Compares the actual final artifacts |
-| ART-VALIDATION | Concise review and limitations | Recorded in ART-PARITY | Records checks actually performed |
+| ART-PARITY | Claim integrity and optional version parity review | Created in private run folder | Compares ATS to ledger; includes ATS/human parity only when OUT-HUMAN exists |
+| ART-VALIDATION | Concise review and limitations | Recorded in ART-PARITY | Records checks actually performed; human review is conditional |
 
 Future project artifacts should be created in the authorized private Drive run folder unless the requester names another target. The public Persona Library stores the process and Work Order index, not private resume content by default.
 
@@ -136,8 +132,8 @@ Synthetic Personas may surface questions or design risks, but their responses re
 | Build shared evidence ledger | Complete | Shared ledger created; unsupported claims are marked partial or unknown | Review open questions before submission |
 | Analyze target role | Complete with open questions | Public Centstone posting read and mapped to source evidence | Resolve user-owned unknowns before submission |
 | Render ATS version | Complete | Draft rendered from the shared ledger | Review content and parser suitability before submission |
-| Render human-facing version | Complete | Draft rendered from the same ledger with a separate reading hierarchy | Review content and visual fit before submission |
-| Review parity and integrity | Complete with open questions | Actual ATS and human drafts compared; findings recorded | Resolve chronology and requirement gaps |
+| Render human-facing version | Complete — reference only / optional | Draft retained as a reference; not canonical | Use only if channel/review context warrants it |
+| Review integrity and optional parity | Complete with open questions | ATS-to-ledger integrity passed; ATS/human differences documented for the retained reference | Resolve chronology and requirement gaps |
 | Cover letter | Not requested / unknown | No request or role context | Decide after target role is known |
 | Select or submit | Not authorized | No submission permission or channel | Keep submission separate from drafting |
 
@@ -145,21 +141,18 @@ A failed gate returns to the smallest responsible phase. A missing source or tar
 
 ## Next inputs requested
 
-Provide, in any convenient form:
+1. Confirm the ATS resume content and resolve the open evidence questions before any submission.
+2. Confirm whether the human-facing reference should remain archived or be used for a specific channel.
+3. If repeated human-facing work justifies it, authorize a separate, content-free human template design effort.
+4. Request a cover letter separately if the application requires one.
 
-1. The target role or job posting.
-2. Confirmation that the copied 07/26 document is the approved master source, or permission to reconcile it against another private resume.
-3. Whether the first deliverable should be a general master resume, a target-specific packet, or both.
-4. Desired output format and whether the private run folder is the intended destination.
-5. Optional: deadline, preferred voice, cover-letter requirement, and employer submission rules.
-
-No re-upload is required if the connected Drive document is the intended source.
+No submission is implied by any draft, review, or Work Order status.
 
 ## Authorization and reconciliation boundary
 
-This initialization reads the connected Drive to locate source material and creates one private run folder plus one native copy because the requester authorized a new master template. It does not edit the original, share files, move files, submit applications, contact employers, or publish resume content.
+This run read the connected Drive, located the authorized private source, created the private run folder and native master copy, and created the evidence ledger and resume review artifacts inside that run folder. It did not edit the original, share files, submit applications, contact employers, or publish resume content.
 
-It changes only this project-scoped Work Order in the Persona Library repository and does not change canonical Personas, Skills, Tools, Playbooks, or Site output. If a later run changes shared repository guidance or records, it must inspect affected files, document the change, and run the repository's applicable reconciliation and validation process before completion.
+It changes only this project-scoped Work Order in the Persona Library repository and does not change canonical Personas, Skills, Tools, Playbooks, or Site output. Future human-facing templates, if authorized, should remain separate reusable design assets. If a later run changes shared repository guidance or records, it must inspect affected files, document the change, and run the repository's applicable reconciliation and validation process before completion.
 
 ## Current run result — Centstone Senior UX Designer
 
@@ -169,7 +162,7 @@ The requested target context is now supplied: [Centstone Senior UX Designer](htt
 - Source: the private native master copy based on Rick Vang Resume 07/26. The original source was not edited.
 - Created privately in the authorized run folder: one shared evidence ledger, one ATS resume, one human-facing resume, and one parity/integrity review. No cover letter was requested or created.
 - Checks completed: source-to-master equality, single-column document structure, semantic headings, list structure, placeholder scan, shared claim coverage, parity of material facts, and privacy/mutation boundaries.
-- Result: the packet is ready for requester review. The ATS and human versions are linked renderings from one evidence source; the human version changes hierarchy and emphasis, not the facts.
+- Result: the packet is ready for requester review. The ATS version is canonical. The human version is retained as a reference rendering from the same evidence source and is not selected by default.
 - Open findings: direct usability-testing evidence is not present; WCAG 2.1 specificity is unconfirmed; Agile wording is not asserted; on-site/contract availability and work authorization are unknown; current Quva status/end date needs confirmation; and the source has two STG Consulting entries plus month-level overlaps that were not silently normalized.
 - No submission, employer contact, publication, external sharing, or user-level skill installation was performed. Private Drive links and resume content remain out of the public repository.
 
