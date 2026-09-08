@@ -1,0 +1,117 @@
+# Conformance and workflow observability Work Order
+
+## Header
+
+- Work Order ID: `WO-2026-09-08-conformance-observability`
+- Title: Implement Issues #37 and #43
+- Status: active
+- Created: 2026-09-08
+- Requester: rickvang
+- Implementation owner: Codex
+- Request mode: update and artifact-generation
+- Change mode: record update plus artifact generation and generated-site update
+- Change domain: conformance evaluation, canonical Persona and workflow records, Docs, and generated Site data
+- Artifact home: `docs/work-orders/WO-2026-09-08-conformance-observability/`
+- Authorized repository target: `C:\_Projects\Persona-Library`
+- Related issues: [#37](https://github.com/rickvang/Persona-Library/issues/37), [#43](https://github.com/rickvang/Persona-Library/issues/43)
+- Problem context: [`docs/collaboration/problem-context-conformance-observability.json`](../../collaboration/problem-context-conformance-observability.json)
+- Stopping condition: the file-based conformance contract, observer Persona, observation path, validation report, limitations, and follow-up work are linked and reviewable.
+
+## Request and scope
+
+Implement a small, dependency-light conformance suite that can evaluate normalized results from different LLM or assistant surfaces. Add the conformance and workflow-observability specialist as a working-draft Persona, reuse existing Skills where appropriate, and give future runs a Work Order observation record.
+
+The first implementation is file-based. It defines comparable inputs and checks, but it does not claim that live runs against two external providers were executed in this repository session.
+
+## Placement and identity decisions
+
+Mara’s placement gate was applied before mutation:
+
+- `content/library-data.js` remains the canonical source for the Persona, its Skill applications, and its workflow map.
+- `eval/` is the smallest repository-local home for conformance fixtures, evaluator code, adapter contracts, and sanitized examples.
+- Active run evidence belongs in the existing Work Order package, beginning with `observations.md`.
+- No new top-level Persona Library space, Tool record, Playbook, database, or runtime service is created.
+
+Issue #37 names Noor Vale as a Context Access Observer. The current catalog contains Riley Morgan’s adjacent `Evaluation and observability` capability but no Noor record. This implementation uses `conformance-observer` / Noor Vale as a working-draft identity and records the possibility of later aliasing, merging, or renaming as an open question. That choice remains subject to future Persona reconciliation.
+
+## Artifacts
+
+- [`problem-context-conformance-observability.json`](../../collaboration/problem-context-conformance-observability.json) — named multi-Persona problem context and attributable handoffs.
+- [`observations.md`](observations.md) — this implementation’s observation log and reusable entry shape.
+- [`eval/cases.json`](../../../eval/cases.json) — ten concise routing and safety fixtures.
+- [`eval/contract.mjs`](../../../eval/contract.mjs) — case and normalized-result validation plus verdict checks.
+- [`eval/run.mjs`](../../../eval/run.mjs) — local validation, single-result evaluation, and result-directory scan commands.
+- [`eval/adapters/recorded-result.mjs`](../../../eval/adapters/recorded-result.mjs) — sanitized recorded-result adapter.
+- [`eval/observation-template.md`](../../../eval/observation-template.md) — compact observation template for future Work Orders.
+- `content/library-data.js` — Noor Persona, Skill applications, and workflows.
+- `content/library-model.js` — Persona maintenance and reconciliation metadata generated from the canonical source.
+- `content/site-orientation.json` — conformance route and artifact availability guidance.
+- Generated `dist/data/*` — rebuilt copies only.
+
+## Implementation progress
+
+- [x] Read orientation, architecture, Work Order, and collaboration guidance.
+- [x] Apply Mara placement review and initialize the problem context.
+- [x] Define ten concise conformance fixtures and the normalized result contract.
+- [x] Add recorded-result adapter and local evaluator commands.
+- [x] Add Noor working-draft Persona and workflow map with reused Skills.
+- [x] Add observation template and Work Order handoff path.
+- [x] Rebuild generated Site data; source and generated orientation files are equal.
+- [ ] Repository validator passes; the restored validator stops at the existing `change-impact-reconciliation` package because it requires `skill_layer` metadata that package does not declare.
+- [x] Run concise conformance checks and record findings, including a negative unsupported-claim check.
+- [x] Run Persona-specific and universal change-impact reconciliation as a bounded, read-only review.
+- [ ] Publish through a reviewable PR and update Issues #37 and #43.
+
+## Evidence and uncertainty
+
+| Item | Status | Boundary |
+| --- | --- | --- |
+| Issue requirements | `sourced` | Defines intended suite and observer behavior, not runtime results. |
+| Persona and workflow | `synthetic_assumption` | Working model for a specialist; not a claim about an observed individual. |
+| Fixture and evaluator behavior | `repository_observed` after validation | Structural and policy checks are tested locally; they do not measure model quality by themselves. |
+| Live cross-LLM comparison | `unknown` | No comparable external provider runs were authorized or executed here. |
+| Tool and permission findings | `unknown` until a recorded result supplies conditions | Missing access must remain an access gap. |
+| Repository validator | `blocked` | The restored `scripts/validate-content.mjs` stops at the existing `change-impact-reconciliation` package because it requires `skill_layer` metadata that package does not declare. This is outside the #37/#43 implementation. |
+
+## Change-impact reconciliation plan
+
+The implementation changes a canonical Persona, flow map, skill applications, orientation route, generated data, and evaluation artifacts. After editing, the read-only reconciliation pass will review:
+
+- Persona index/detail and workflow counts;
+- normalized Skill catalog and Riley’s shared capabilities;
+- orientation route and generated guide/data consumers;
+- Work Order and problem-context links;
+- evaluation fixtures and future adapter handoffs;
+- unchanged Tools, Playbooks, runtime integrations, and private data boundaries.
+
+The Persona-specific adapter runs before the universal reconciliation pass. The reconciliation report will record required, optional, unchanged, contradictory, and unknown effects without silently expanding the implementation.
+
+## Reconciliation report
+
+### Persona-specific adapter
+
+- Status: `partial` because the canonical source and declared relationships were inspectable, while live provider behavior and the final Noor/Riley identity remain unknown.
+- Change observed: a working-draft `conformance-observer` / Noor Vale record, seven Persona-specific applications of existing Skills, and six workflows were added from Issues #37 and #43.
+- Classification: `extends` the catalog with a bounded observer role; `reuses` Riley's portable evaluation and operational capabilities; `qualifies` all runtime claims as untested; no existing Persona was replaced.
+- Checked: Persona index/detail, Skill links and applications, workflow maps, resources, confidence, needs, implications, normalized maintenance records, Tool requirements, Playbook records, and generated data.
+- Required follow-up: decide whether Noor remains distinct from Riley after actual use; supply authorized comparable result records before making cross-LLM claims.
+- Unchanged: canonical Tool records, Playbooks, private data, credentials, runtime integrations, and existing Persona source claims outside the new record.
+
+### Universal change-impact pass
+
+- Status: `partial` with no unsafe mutation detected.
+- Checked: orientation route, `eval/` artifacts, Work Order and problem-context links, source/generated Persona data, validation commands, and the repository mutation boundary.
+- Required follow-up: reconcile the validator's `skill_layer` requirement with the existing `change-impact-reconciliation` package, then rerun the repository validator.
+- Unknown: provider adapter availability, runtime trace retention, and behavior across two actual LLM surfaces.
+- Handoff count: one Persona-specific review followed by one universal pass; no recursive handoff.
+
+## Completion gate
+
+Complete the repository implementation when the validator contract gap is resolved and the repository validator passes, while keeping live cross-LLM comparison as an explicitly separate follow-up. The evaluator already validates the fixture set and representative recorded-result shape, the Persona and workflows appear in generated data, and this Work Order records the limitations and next action.
+
+## Follow-up work
+
+- Run the same fixture against at least two authorized LLM surfaces and store sanitized result records in a future Work Order.
+- Decide whether Noor remains distinct from Riley after actual use.
+- Add provider-specific adapters only when their runtime, permissions, and retention boundaries are explicit.
+- Promote recurring, independently reusable observation logic to a Skill only after repeated use demonstrates that boundary.
