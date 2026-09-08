@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://persona-library.local/schemas/problem-context.json",
+  "title": "Persona Library shared problem context",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "context_id",
+    "status",
+    "created_at",
+    "updated_at",
+    "request",
+    "participants",
+    "playbook",
+    "evidence",
+    "contributions",
+    "decisions",
+    "artifacts",
+    "handoffs",
+    "gates",
+    "open_questions",
+    "blockers",
+    "next_action",
+    "solution",
+    "authorization",
+    "revisions"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "context_id": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["active", "blocked", "completed"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "request": {
+      "type": "object",
+      "required": ["requester", "problem", "desired_outcome", "scope", "non_goals", "constraints", "success_criteria", "stopping_condition"],
+      "properties": {
+        "requester": { "type": "string", "minLength": 1 },
+        "problem": { "type": "string", "minLength": 1 },
+        "desired_outcome": { "type": "string", "minLength": 1 },
+        "scope": { "type": "array", "items": { "type": "string" } },
+        "non_goals": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "success_criteria": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1 },
+        "stopping_condition": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": true
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "responsibility", "status", "write_scope"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "minLength": 1 },
+          "responsibility": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["available", "unavailable"] },
+          "loaded_records": { "type": "array", "items": { "type": "string" } },
+          "unavailable_reason": { "type": ["string", "null"] },
+          "write_scope": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "playbook": {
+      "type": "object",
+      "required": ["name", "stage", "owner", "decision_rights"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "stage": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "decision_rights": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "evidence": { "type": "array" },
+    "contributions": { "type": "array" },
+    "decisions": { "type": "array" },
+    "artifacts": { "type": "array" },
+    "handoffs": { "type": "array" },
+    "gates": { "type": "array" },
+    "open_questions": { "type": "array", "items": { "type": "string" } },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "next_action": { "type": "string", "minLength": 1 },
+    "solution": { "type": "object" },
+    "authorization": { "type": "object" },
+    "revisions": { "type": "array" }
+  },
+  "additionalProperties": true
+}
+

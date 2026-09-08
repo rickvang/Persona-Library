@@ -34,6 +34,7 @@ Do not activate for:
 3. Select only Personas whose records contribute distinct evidence. Record which records and linked workflows, Skills, Tools, applications, priorities, and sources were actually loaded; report unavailable items.
 4. Read the canonical Skill catalog, aliases, primitive units, composed Skills, relationships, and relevant Tool-use recipes before proposing a new identity. Use [the formation decision rules](references/formation-decision-rules.md).
 5. If fewer than two materially distinct evidence-bearing perspectives are available, hand the work to `$persona-skills` or return a limitation rather than manufacturing a panel.
+6. If synthesis is part of a live multi-Persona build, load the named [shared problem-context contract](../../../docs/collaboration/problem-context.md). Return a bounded, attributable contribution to that context; do not turn the context into a new Skill merely because several participants collaborated.
 
 ## Operating procedure
 
@@ -49,7 +50,7 @@ Do not activate for:
    - recommend no new Skill when the action is one-off, merely relational, or unsupported by distinct evidence.
 5. **Formalize the shared core.** For a justified candidate, state a stable name, definition, boundary, trigger, inputs, decisions, observable actions, outputs, feedback, quality signals, failure modes, evidence, confidence, and validation questions. Do not average away a difference that changes use or quality.
 6. **Preserve applications separately.** Record how each Persona uses the shared core, including local priorities, protections, proficiency, workflow reach, and context. Link to the core instead of copying Persona-specific judgment into it.
-7. **Prepare the handoff.** Return a compact build brief for `$persona-skills` containing the identity decision, core profile, role-specific applications, duplicate analysis, source trail, unknowns, validation cases, and proposed change scope. If a durable update is explicitly authorized, identify the named target and hand off to `$persona-reconciliation`; run `$change-impact-reconciliation` after the domain adapter when the initiating contract requires it.
+7. **Prepare the handoff.** Return a compact build brief for `$persona-skills` containing the identity decision, core profile, role-specific applications, duplicate analysis, source trail, unknowns, validation cases, and proposed change scope. When a problem context is active, also include `context_id`, stage, the distinct synthesis finding, evidence status, tradeoffs, recommended action, and a provisional disposition for the coordinator to record. If a durable update is explicitly authorized, identify the named target and hand off to `$persona-reconciliation`; run `$change-impact-reconciliation` after the domain adapter when the initiating contract requires it.
 8. **Validate proportionally.** Test one representative multi-Persona synthesis and one no-new-Skill or insufficient-evidence boundary. Add a case only when a distinctive risk is not covered. Do not present a draft proposal as a changed library record.
 
 ## Output contract
@@ -62,6 +63,7 @@ Return:
 - classification as existing Skill, relationship, primitive, composed Skill, Persona application, workflow method, Tool-use recipe, or new Skill candidate, with reasons;
 - the reusable core profile and validation plan when a new or revised Skill is justified;
 - a `$persona-skills` handoff brief, or an explicit recommendation not to create a Skill;
+- when a shared context is active: one attributable synthesis contribution, its disposition reason, the concrete solution/decision it supports, and the next handoff action;
 - affected scope, unchanged checked items, evidence status, confidence, blockers, and next action.
 
 Give evidence-backed reasoning summaries, not hidden chain-of-thought. Mark unknowns when the source does not establish a claim.
@@ -75,6 +77,7 @@ Give evidence-backed reasoning summaries, not hidden chain-of-thought. Mark unkn
 - Do not infer Tool availability, credentials, permission, workspace, or runtime execution from a requirement or recipe.
 - Do not edit live Personas, Skills, Tools, Playbooks, Decisions, generated files, or user-level registries without explicit authorization and a named target.
 - Preserve historical rationale and unresolved contradictions; use the reconciliation handoff for authorized durable changes.
+- Do not close a shared collaboration context from synthesis alone. The coordinator must preserve the contribution, disposition, solution-quality gate, and final deliverable separately.
 - If a dependency or selected record is unavailable, report the exact gap and continue only within verified scope.
 
 ## Focused validation
@@ -86,7 +89,9 @@ Before handoff, confirm:
 - existing identities and aliases were checked before proposing a new one;
 - role-specific context, evidence, uncertainty, and disagreements remain visible;
 - the no-new-Skill path is considered;
+- when a shared context is active, the output is attributable, distinct from other contributions, and useful toward a concrete solution rather than a generic synthesis;
 - authorization, target, mutation boundary, and reconciliation handoff are explicit;
 - no live mutation, Tool execution, or installation occurred during proposal work.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/multi-perspective-skill-synthesis.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/multi-perspective-skill-synthesis.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
+

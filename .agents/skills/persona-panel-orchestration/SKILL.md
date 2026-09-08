@@ -26,6 +26,7 @@ Do not activate by inventing participants for an ambiguous request. Do not use t
 3. Determine whether the request names one Persona, two to four Personas, or a named Playbook. Load only the selected records and relevant workflows, Skills, priorities, evidence, and boundaries.
 4. If participant mode is ambiguous and the choice materially changes the work, ask one scoped choice: `one Persona`, `a panel`, `a named Playbook`, or `Other - describe`. Do not choose participants by inference.
 5. Record unavailable records, missing context, and authorization as limitations. Do not silently fill them.
+6. If the request asks multiple Personas to build, decide, or hand off a concrete outcome, load the named `problem-context` document and the [multi-Persona collaboration contract](../../../docs/collaboration/problem-context.md). If no context exists, propose initialization before collecting contributions. A simple consultation may remain context-free.
 
 ## Operating modes
 
@@ -41,6 +42,10 @@ Process each named Persona independently before comparing them. Preserve distinc
 
 Load the named Playbook and its explicitly defined participants, stages, shared state, artifacts, quality gates, and decision rights. Report missing participants, inputs, or stage evidence instead of inventing them.
 
+### Shared collaboration
+
+For a multi-Persona build or decision run, use the context ID as the handoff key. Process contributors independently, return attributable contribution records to the coordinator, and keep the context as the run-level record. The context is not a transcript and does not replace canonical library records.
+
 ## Operating procedure
 
 1. Build a compact context packet: goal, decision/artifact, participants, relevant context, constraints, output destination, authorization, and success criteria.
@@ -49,7 +54,9 @@ Load the named Playbook and its explicitly defined participants, stages, shared 
 4. Compare agreement, disagreement, tradeoffs, risks, assumptions, missing evidence, and consequences. Name which Persona supports each material point.
 5. Synthesize a concise recommendation that explains the decision, preserves consequential disagreement, and states what would change the recommendation.
 6. Return a concrete next action and focused validation question. Do not expose hidden chain-of-thought; provide evidence-backed reasoning summaries.
-7. If the user asks to save a Draft, Doc, Proposed Decision, or Playbook Artifact, separate the read-only consultation from that artifact-generation action. Require explicit authorization, identify the target, and invoke `$change-impact-reconciliation` when the authorized artifact becomes durable.
+7. For Shared collaboration mode, append each scoped contribution to the named context with its finding, evidence status, tradeoff or risk, recommended action, confidence, and source trail. Do not synthesize until contributions are attributable; record adopted, modified, rejected, or unresolved disposition with a reason.
+8. Require a solution-quality gate before closing or handing off a build run: one concrete deliverable or decision must address the original problem and stated success criteria, and its traceability and remaining uncertainty must be visible. Participant count and generic agreement are not quality evidence.
+9. If the user asks to save a Draft, Doc, Proposed Decision, or Playbook Artifact, separate the read-only consultation from that artifact-generation action. Require explicit authorization, identify the target, and invoke `$change-impact-reconciliation` when the authorized artifact becomes durable.
 
 ## Perspective contract
 
@@ -73,6 +80,7 @@ Return:
 - Evidence, confidence, hypotheses, unknowns, and relevant source or record links.
 - Agreement, disagreement, risks, tradeoffs, and what remains unresolved.
 - Recommendation, decision conditions, validation question, and next action.
+- For Shared collaboration mode: `context_id`, current stage, one attributable contribution per selected participant, contribution disposition, concrete solution or decision, solution-quality gate result, unresolved items, and handoff next action.
 - If a durable artifact was explicitly requested: target, authorization, handoff, checks, and limitations.
 
 Keep the response concise and decision-useful. Do not fabricate a panel consensus or claim a participant contributed when its record was not loaded.
@@ -84,6 +92,8 @@ Keep the response concise and decision-useful. Do not fabricate a panel consensu
 - Do not expose hidden chain-of-thought. Summarize reasons, evidence, uncertainty, and tradeoffs.
 - Do not treat a Tool record as availability or use a consultation as permission to execute Tools.
 - Prototype content remains isolated from live truth.
+- The coordinator is the single writer of the shared context. Contributors return records; they do not directly mutate the context, canonical records, or artifacts.
+- A context run must not be marked complete when contributions are pending disposition, the solution-quality gate has not passed, or the output is only a transcript or generic summary.
 - Saving a durable artifact is a separate explicitly authorized operation; if it occurs, use the universal reconciliation protocol once as required and do not recurse.
 - If a record, Playbook, source, or downstream handoff is unavailable, state the exact limitation and continue only within the verified scope.
 
@@ -96,6 +106,8 @@ Before handoff, confirm:
 - Perspectives were processed independently and material disagreement was preserved.
 - Evidence, synthesis, hypotheses, assumptions, and unknowns remain distinct.
 - The recommendation is concise, actionable, and tied to the stated goal.
+- When Shared collaboration mode is used, the context is named and resumable, every contribution is attributable and dispositioned, and the final output is a concrete solution rather than panel noise.
 - No durable mutation or Tool execution occurred without explicit authorization.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/persona-panel-orchestration.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/persona-panel-orchestration.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
+
