@@ -65,10 +65,17 @@ If the human-facing version is not warranted, record that decision and use ATS-t
 
 Do not submit both resume versions unless the employer or requester explicitly asks for both.
 
+For the ATS version, target employer, role, location, and work-mode context remain Work Order metadata. Do not add a `Target:` line to the resume body by default; record `no` unless the requester explicitly requests it or the submission format requires it.
+
 ## 3. Version-specific requirements
 
 ### ATS resume version (default)
 
+- Section schema: `SUMMARY` (optional) → `SKILLS` or `TECHNICAL SKILLS` (optional) → `EXPERIENCE` or `PROFESSIONAL EXPERIENCE` → `EDUCATION` and/or `CERTIFICATIONS`:
+- Optional `ADDITIONAL EXPERIENCE`, `PROJECTS`, or `PORTFOLIO` section and why it is needed:
+- Heading deviations and reason:
+- Target context included in resume body? no by default; if yes, why:
+- Duplicate material claim check across summary, highlights, skills, and experience:
 - Standard headings and deterministic text order:
 - Chronology and date representation:
 - Supported terminology from the requirement map:
@@ -87,6 +94,9 @@ Minimum gate:
 - Terminology is natural and supported; no keyword stuffing.
 - Important content is not hidden in graphics, columns, images, or decorative labels without a safe text equivalent.
 - Every material claim traces to the shared evidence ledger.
+- Headings use conventional labels or an intentional deviation is recorded; derived `SELECTED IMPACT`, `CORE ALIGNMENT`, `TARGET`, `FIT`, and `MATCH` sections are not created by default.
+- Target employer, role, location, and work-mode context stays in Work Order metadata unless explicitly requested.
+- No duplicated impact block or keyword category repeats an existing claim without a recorded reason.
 
 ### Human-facing resume version (optional)
 
