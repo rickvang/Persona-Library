@@ -1,0 +1,21 @@
+{
+  "fixture_id": "orient-system-question",
+  "model": "example-model",
+  "model_version": "example-version",
+  "surface": "recorded-json-example",
+  "repository_ref": "example-ref",
+  "context": {"supplied": ["AGENTS.md", "content/site-orientation.json"], "missing": [], "source": "example"},
+  "tools": {"available": ["local workspace"], "attempted": [], "unavailable": []},
+  "permissions": {"granted": ["read repository"], "denied": [], "unknown": []},
+  "response": {
+    "outcome": "Explained the orientation route and selected the smallest next read.",
+    "mode": "answer",
+    "assumptions": [],
+    "evidence_or_checks": ["Read AGENTS.md and content/site-orientation.json."],
+    "limitations_or_blockers": ["This is a sanitized shape example, not a live model result."],
+    "next_action": "Read the relevant space before taking further action."
+  },
+  "claims": [],
+  "evidence": [{"status": "example", "source": "repository contract"}],
+  "status": "example"
+}

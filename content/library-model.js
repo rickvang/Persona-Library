@@ -204,6 +204,25 @@
     creativeOrchestrator.version = '1.2'; creativeOrchestrator.updated = '2026-09-08';
     creativeOrchestrator.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added an authoritative source trail for creative direction, multidisciplinary collaboration, and divergent/convergent exploration; clarified the working-synthesis boundary.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'U.S. Bureau of Labor Statistics Art Directors; O*NET Art Directors; Design Council Double Diamond; GOV.UK multidisciplinary service-team guidance',confidenceChange:'Working synthesis remains; source support is stronger and direct observation is still required'});
     creativeOrchestrator.revisions.push({version:'1.2',date:'2026-09-08',changeType:'skill-reconciliation',summary:'Reused existing framing, facilitation, visual judgment, prototyping, validation, rationale, and cross-functional communication Skills; retained only differentiated creative capabilities as new profiles.',affectedFields:['skills'],evidence:'Persona Skills catalog comparison against existing normalized Skill identities and Mira’s workflows',confidenceChange:'Skill inventory deduplicated; new capabilities remain working syntheses'});
+    const conformanceSkills = [
+      'skill-problem-framing-and-systems-thinking',
+      'skill-tool-and-context-design',
+      'skill-evaluation-and-observability',
+      'skill-failure-recovery-and-operational-judgment',
+      'skill-evidence-led-validation',
+      'skill-decision-communication-and-rationale-documentation',
+      'skill-cross-functional-systems-communication'
+    ];
+    for (const id of conformanceSkills) {
+      const record = skillMaintenance[id];
+      const [major, minor] = record.version.split('.').map(Number);
+      const version = `${major}.${minor + 1}`;
+      record.version = version; record.updated = '2026-09-08';
+      record.revisions.push({version,date:'2026-09-08',changeType:'persona-application',summary:'Added Noor Vale’s conformance and workflow-observability application while preserving the existing portable Skill boundary.',affectedFields:['profiles','workflows'],evidence:'Issues #37 and #43 plus the conformance Work Order and normalized result contract',confidenceChange:'Portable Skill remains unchanged; Persona-specific application remains a working synthesis'});
+    }
+    const conformanceObserver = personaMaintenance['conformance-observer'];
+    conformanceObserver.version = '1.1'; conformanceObserver.updated = '2026-09-08';
+    conformanceObserver.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added the Issue #37 conformance suite, Issue #43 observation contract, and explicit live-runtime unknowns to Noor’s working-draft Persona record.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'Persona Library Issues #37 and #43; conformance-observability Work Order; repository orientation and mutation contracts',confidenceChange:'Working synthesis remains; cross-LLM behavior and identity boundary require actual use'});
     return { personas: personaMaintenance, skills: skillMaintenance };
   }
 
