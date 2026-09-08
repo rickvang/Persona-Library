@@ -242,4 +242,3 @@ The next agent should begin by reading this Work Order, `content/site-orientatio
 5. If implementing observability or cross-LLM conformance, open a separate Work Order and define the runtime signals, expected behavior, model/provider matrix, failure classes, and evidence retention before adding Tools or Playbooks.
 
 The concrete completion boundary for this Work Order is satisfied: Mira and the Mara placement gate are in the canonical repository, the Site data is rebuilt, validation passes, and the implementation is published. Remaining items are follow-up validation and a separate observability/conformance effort.
-
