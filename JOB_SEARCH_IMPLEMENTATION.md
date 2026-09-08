@@ -58,7 +58,7 @@ Keep candidate facts, researched claims, interpretations, and generated writing 
 
 ## ATS-primary application packet
 
-The default application path is ATS-first: maintain one shared evidence source, map the target requirements to it, render one semantically structured ATS resume, and run an evidence-integrity review. This is the smallest useful path for most applications.
+The default application path is ATS-first: read any candidate standing decisions, maintain one shared evidence source, map the target requirements to it, render one semantically structured ATS resume, and run an evidence-integrity review. This is the smallest useful path for most applications.
 
 Create a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by habit. When no human-facing version is warranted, record that decision and use ATS-to-ledger integrity rather than an empty ATS-versus-human parity exercise.
 
@@ -73,6 +73,23 @@ Before drafting, maintain one evidence inventory or claim ledger containing:
 - destination in the ATS resume, optional human-facing resume, cover letter, or portfolio.
 
 The ledger is authoritative. Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain visibly distinct.
+### Candidate-specific standing decisions
+
+Before role alignment or drafting, read the private candidate-specific standing-decision record when one exists. It carries explicit, candidate-confirmed choices about employer attribution, chronology, section placement, voice, omissions, and other repeatable resume decisions.
+
+The standing record is a private input, not a public Persona Library record. Store only its existence, read status, scope, and unresolved conflicts in a public Work Order. Keep the actual resume facts and private Drive links in the authorized private candidate workspace.
+
+Apply decision precedence in this order:
+
+1. A later explicit candidate instruction.
+2. A verified correction to the candidate’s source record.
+3. The current candidate standing decision.
+4. Generic job-search guidance.
+
+The evidence ledger remains authoritative for material claims. A standing decision can guide structure or reuse a confirmed attribution; it cannot create evidence, upgrade a claim, or resolve a conflict silently. If the record is missing, stale, or conflicts with current source material, record that status and pause the affected decision for candidate review.
+
+Reading or updating the standing record never authorizes upload, submission, employer contact, or external sharing. The Work Order must end with a recommendation or review handoff unless separate submission authorization is explicitly provided.
+
 
 ### ATS resume contract
 
