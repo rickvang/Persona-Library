@@ -2,7 +2,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { evaluateResult, loadCases, summarize, validateResult } from './contract.mjs';
+import { evaluateResult, loadCases, normalizeRunBundleResult, summarize, validateResult, validateRunBundle } from './contract.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cases = await loadCases();
@@ -27,8 +27,20 @@ if (command === 'scan-results') {
   const entries = await readdir(resultsDir, { withFileTypes: true });
   const evaluations = [];
   for (const entry of entries.filter(item => item.isFile() && item.name.endsWith('.json'))) {
-    const result = JSON.parse(await readFile(path.join(resultsDir, entry.name), 'utf8'));
-    evaluations.push({ file: entry.name, ...evaluateResult(result, cases) });
+    const payload = JSON.parse(await readFile(path.join(resultsDir, entry.name), 'utf8'));
+    if (Array.isArray(payload.results)) {
+      const bundleCheck = validateRunBundle(payload);
+      if (!bundleCheck.valid) {
+        evaluations.push({ file: entry.name, bundle: true, verdict: 'UNKNOWN', errors: bundleCheck.errors });
+        continue;
+      }
+      for (const bundleEntry of payload.results) {
+        const result = normalizeRunBundleResult(payload, bundleEntry);
+        evaluations.push({ file: entry.name, fixture_id: result.fixture_id, run_id: payload.run_id, observation: result.observation, ...evaluateResult(result, cases) });
+      }
+      continue;
+    }
+    evaluations.push({ file: entry.name, fixture_id: payload.fixture_id, ...evaluateResult(payload, cases) });
   }
   console.log(JSON.stringify({ summary: summarize(evaluations), evaluations }, null, 2));
   process.exit(evaluations.some(item => item.verdict === 'REVIEW') ? 1 : 0);

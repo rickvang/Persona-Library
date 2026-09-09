@@ -21,6 +21,69 @@ export const RESPONSE_FIELDS = [
   'next_action'
 ];
 
+export const OBSERVATION_RESULT_CLASSES = [
+  'success',
+  'failure',
+  'unclear',
+  'friction',
+  'access-gap',
+  'safety-concern',
+  'untested'
+];
+
+export const OBSERVER_STATUSES = ['independent', 'same-runtime', 'unavailable', 'not-applicable'];
+
+export function validateRunBundle(bundle) {
+  const errors = [];
+  if (!bundle || bundle.schema_version !== '1.0') errors.push('Run bundle must use schema 1.0');
+  if (!bundle?.run_id) errors.push('Run bundle is missing run_id');
+  for (const field of ['model', 'model_version', 'surface', 'repository_ref']) {
+    if (!bundle?.[field]) errors.push(`Run bundle is missing ${field}`);
+  }
+  if (!bundle?.context || typeof bundle.context !== 'object') errors.push('Run bundle is missing context');
+  if (!bundle?.tools || typeof bundle.tools !== 'object') errors.push('Run bundle is missing tools');
+  if (!bundle?.permissions || typeof bundle.permissions !== 'object') errors.push('Run bundle is missing permissions');
+  if (!Array.isArray(bundle?.results) || bundle.results.length === 0) errors.push('Run bundle must contain results');
+  const ids = new Set();
+  for (const entry of bundle?.results || []) {
+    if (!entry?.fixture_id || ids.has(entry.fixture_id)) errors.push(`Run bundle has a missing or duplicate fixture_id: ${entry?.fixture_id || '(missing)'}`);
+    ids.add(entry?.fixture_id);
+    if (!entry?.mode || entry.outcome === undefined || entry.next_action === undefined) errors.push(`Run bundle result is missing response fields: ${entry?.fixture_id || '(missing)'}`);
+    if (!OBSERVATION_RESULT_CLASSES.includes(entry?.result_class)) errors.push(`Run bundle result has an invalid result_class: ${entry?.fixture_id || '(missing)'}`);
+  }
+  return { valid: errors.length === 0, errors };
+}
+
+export function normalizeRunBundleResult(bundle, entry) {
+  const response = entry.response || {
+    outcome: entry.outcome,
+    mode: entry.mode,
+    assumptions: entry.assumptions || [],
+    evidence_or_checks: entry.evidence_or_checks || [],
+    limitations_or_blockers: entry.limitations_or_blockers || [],
+    next_action: entry.next_action
+  };
+  return {
+    fixture_id: entry.fixture_id,
+    model: bundle.model,
+    model_version: bundle.model_version,
+    surface: bundle.surface,
+    repository_ref: bundle.repository_ref,
+    context: entry.context || bundle.context,
+    tools: entry.tools || bundle.tools,
+    permissions: entry.permissions || bundle.permissions,
+    response,
+    claims: entry.claims || [],
+    evidence: [...(bundle.evidence || []), ...(entry.evidence || [])],
+    observation: {
+      result_class: entry.result_class,
+      observer: bundle.observer || { persona: 'unknown', status: 'unavailable', independence: 'unknown' },
+      conformance_verdict: entry.conformance_verdict || bundle.conformance_verdict || 'UNKNOWN'
+    },
+    status: bundle.status || 'external-recorded'
+  };
+}
+
 export async function loadCases(path = new URL('./cases.json', import.meta.url)) {
   const source = await readFile(path, 'utf8');
   const payload = JSON.parse(source);
