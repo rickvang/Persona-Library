@@ -6,7 +6,7 @@
   <meta name="description" content="Prototype canvas for rearranging a workflow and reading the intent behind the change." />
   <title>Workflow canvas — Personas</title>
   <style>
-    :root { --ink:#101827; --muted:#617083; --night:#08111f; --paper:#f5f4ef; --card:#fffefa; --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; --deep:#234f68; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); }
+    :root { --ink:#101827; --muted:#617083; --night:#08111f; --paper:#f5f4ef; --card:#fffefa; --line:#d8dcd6; --coral:#ff7c62; --drop:#d2431f; --mint:#a6ead7; --yellow:#f2d47e; --deep:#234f68; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); }
     * { box-sizing:border-box; } body { margin:0; background:var(--paper); } a { color:inherit; }
     .topbar { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:18px clamp(20px,5vw,72px); color:#fff; background:var(--night); }
     .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.03em; text-decoration:none; } .mark { width:26px; height:26px; display:grid; place-items:center; border-radius:7px; color:var(--night); background:var(--coral); font-size:11px; font-weight:900; }
@@ -26,21 +26,33 @@
     .mode-flag { padding:6px 9px; border-radius:999px; background:#dbe9fa; color:#315474; font-size:11px; font-weight:900; }
     .workspace { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:18px; align-items:start; }
     .canvas-wrap { position:relative; min-width:0; padding:16px; border:1px solid var(--line); border-radius:17px; background:var(--card); }
-    .canvas-head { display:flex; justify-content:space-between; gap:14px; align-items:end; margin-bottom:14px; } .canvas-head h2 { margin:0; font-size:22px; letter-spacing:-.045em; } .canvas-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+    .canvas-head { display:flex; justify-content:space-between; gap:14px; align-items:end; margin-bottom:8px; } .canvas-head h2 { margin:0; font-size:22px; letter-spacing:-.045em; } .canvas-head p { margin:5px 0 0; color:var(--muted); font-size:13px; }
+    .canvas-hint { margin:0 0 14px; color:var(--muted); font-size:12px; line-height:1.5; } .canvas-hint kbd { padding:1px 5px; border:1px solid var(--line); border-bottom-width:2px; border-radius:4px; background:#f7f8f4; font-family:inherit; font-size:11px; font-weight:800; }
+    .sr-only { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
     .canvas-stage { position:relative; }
     .wires { position:absolute; top:0; left:0; pointer-events:none; overflow:visible; z-index:2; }
     .lanes { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; z-index:1; }
     .lane { min-width:0; padding:12px; border:1px dashed #cfd6cd; border-radius:14px; background:#f2f4ef; }
     .lane.drag-over { border-color:var(--deep); background:#eaf1f5; }
     .lane h3 { margin:0; font-size:14px; letter-spacing:-.02em; } .lane-note { margin:4px 0 11px; color:var(--muted); font-size:11px; line-height:1.4; }
+    .lane-body { position:relative; }
+    /* A column holds several independent sequences, not one list. The chain groups
+       draw that boundary instead of leaving it to a per-card label. */
+    .chain { position:relative; margin-bottom:18px; padding-left:9px; border-left:2px solid #647889; }
+    .chain:last-child { margin-bottom:0; }
+    .chain-label { margin:0 0 8px; color:#556374; font-size:9px; font-weight:900; letter-spacing:.07em; line-height:1.35; text-transform:uppercase; }
+    /* Absolutely positioned so showing it never shifts the cards being measured. */
+    .drop-line { position:absolute; left:0; right:0; height:3px; margin-top:-3px; border-radius:2px; background:var(--drop); pointer-events:none; z-index:4; }
+    .drop-line::before { content:''; position:absolute; top:-3px; left:-4px; width:9px; height:9px; border-radius:50%; background:var(--drop); }
     .node { position:relative; margin-bottom:20px; padding:11px; border:1px solid var(--line); border-radius:11px; background:var(--card); cursor:grab; }
+    .node:focus-visible { outline:2px solid var(--deep); outline-offset:2px; }
+    .node.grabbed { border-color:var(--coral); box-shadow:0 7px 18px rgba(8,17,31,.17); }
     .node:last-child { margin-bottom:0; }
     .node.dragging { opacity:.4; } .node.gate { border-color:#b9d9d0; background:#effaf6; }
     .node.link-source { border-color:var(--coral); box-shadow:0 0 0 2px rgba(255,124,98,.25); }
     .node.link-target { cursor:crosshair; border-style:dashed; }
     .node-title { font-size:13px; font-weight:800; line-height:1.35; letter-spacing:-.01em; }
     .node-meta { margin-top:5px; color:var(--muted); font-size:11px; line-height:1.4; }
-    .node-flow { display:inline-block; margin-top:6px; padding:3px 6px; border-radius:999px; background:#edf0eb; color:#536272; font-size:9px; font-weight:900; letter-spacing:.05em; text-transform:uppercase; }
     .node-links { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
     .link-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 6px; border:1px solid #c6d9f2; border-radius:999px; background:#edf4ff; color:#315474; font-size:10px; font-weight:800; }
     .link-chip button { padding:0 2px; border:0; border-radius:0; color:#315474; background:none; font-size:11px; font-weight:900; line-height:1; }
@@ -110,6 +122,8 @@
         <div class="canvas-head">
           <div><h2 id="canvas-heading">Canvas</h2><p id="canvas-subtitle">Loading…</p></div>
         </div>
+        <p class="canvas-hint">Drag a card to another position or tier. Or focus one and press <kbd>Enter</kbd> to pick it up, <kbd>↑</kbd><kbd>↓</kbd> to reorder, <kbd>←</kbd><kbd>→</kbd> to change tier, <kbd>Enter</kbd> to drop, <kbd>Esc</kbd> to cancel.</p>
+        <p class="sr-only" id="move-status" role="status" aria-live="polite"></p>
         <div class="canvas-stage">
           <svg class="wires" id="wires" aria-hidden="true"></svg>
           <div class="lanes" id="lanes"></div>
@@ -177,6 +191,11 @@
       let log = [];
       let linkSource = null;
       let dragId = null;
+      let grabbed = null;      // keyboard: { id, originLane, originIndex }
+      let pendingFocus = null; // re-focus a card after a re-render
+      let rendering = false;   // re-rendering detaches cards and fires focusout; that is not the user leaving
+      const statusEl = document.getElementById('move-status');
+      const announce = text => { statusEl.textContent = text; };
 
       function label(node) { return node ? node.label : 'a removed step'; }
       const cssEscape = value => (window.CSS && CSS.escape ? CSS.escape(value) : String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&'));
@@ -195,6 +214,7 @@
         current.subtitle = found.subtitle;
         log = [];
         linkSource = null;
+        grabbed = null;
         render();
       }
 
@@ -210,14 +230,32 @@
       function renderLanes() {
         lanesEl.innerHTML = Graph.LANES.map(lane => {
           const nodes = Graph.nodesInLane(current, lane.id);
-          const cards = nodes.length
-            ? nodes.map(node => renderNode(node)).join('')
+          const body = nodes.length
+            ? renderChains(nodes, lane)
             : '<p class="lane-empty">No activities in this tier. Drag one here to reclassify it.</p>';
-          return `<section class="lane" data-lane="${escapeHtml(lane.id)}" aria-label="${escapeHtml(lane.label)} activities"><h3>${escapeHtml(lane.label)}</h3><p class="lane-note">${escapeHtml(lane.note)}</p><div class="lane-body">${cards}</div></section>`;
+          return `<section class="lane" data-lane="${escapeHtml(lane.id)}" aria-label="${escapeHtml(lane.label)} activities"><h3>${escapeHtml(lane.label)}</h3><p class="lane-note">${escapeHtml(lane.note)}</p><div class="lane-body">${body}</div></section>`;
         }).join('');
       }
 
-      function renderNode(node) {
+      // A tier column is not one ordered list: it holds several independent sequences,
+      // and the seam between them carries no connection. Grouping contiguous runs by
+      // their source workflow draws that seam, so a card dragged across it is a visible
+      // move between sequences rather than a silent one.
+      function renderChains(nodes, lane) {
+        const runs = [];
+        nodes.forEach((node, index) => {
+          const title = node.flowTitle || 'Unassigned';
+          const last = runs[runs.length - 1];
+          if (last && last.title === title) last.nodes.push({ node, index });
+          else runs.push({ title, nodes: [{ node, index }] });
+        });
+        return runs.map(run => {
+          const cards = run.nodes.map(item => renderNode(item.node, item.index, nodes.length, lane)).join('');
+          return `<div class="chain" role="group" aria-label="Sequence: ${escapeHtml(run.title)}"><p class="chain-label">${escapeHtml(run.title)}</p>${cards}</div>`;
+        }).join('');
+      }
+
+      function renderNode(node, index, total, lane) {
         const outgoing = Graph.outgoing(current, node.id);
         const chips = outgoing.map(edge => {
           const target = current.nodes.find(item => item.id === edge.to);
@@ -225,13 +263,16 @@
         }).join('');
         const classes = ['node'];
         if (Graph.isGateNode(node)) classes.push('gate');
+        if (grabbed && grabbed.id === node.id) classes.push('grabbed');
         if (linkSource === node.id) classes.push('link-source');
         else if (linkSource) classes.push('link-target');
         const meta = [node.cadence, node.quality].filter(Boolean).map(escapeHtml).join(' · ');
-        return `<article class="${classes.join(' ')}" draggable="true" data-node="${escapeHtml(node.id)}">
+        // The label carries what sighted users read from position, since a card's
+        // place in the sequence is the thing being edited.
+        const spoken = `${node.label}. ${node.flowTitle || 'Unassigned'}. ${lane.label}, position ${index + 1} of ${total}.`;
+        return `<article class="${classes.join(' ')}" draggable="true" tabindex="0" role="button" aria-label="${escapeHtml(spoken)}" data-node="${escapeHtml(node.id)}">
           <div class="node-title">${escapeHtml(node.label)}</div>
           ${meta ? `<div class="node-meta">${meta}</div>` : ''}
-          ${node.flowTitle ? `<span class="node-flow">${escapeHtml(node.flowTitle)}</span>` : ''}
           ${chips ? `<div class="node-links">${chips}</div>` : ''}
           <div class="node-actions">
             <button type="button" class="ghost" data-action="link" data-node="${escapeHtml(node.id)}">${linkSource === node.id ? 'Cancel link' : 'Link →'}</button>
@@ -302,12 +343,48 @@
       }
 
       function render() {
+        rendering = true;
         subtitleEl.textContent = current.subtitle || '';
         modeFlag.hidden = !linkSource;
         renderLanes();
         renderIntent();
         renderLog();
+        if (pendingFocus) {
+          const card = lanesEl.querySelector(`[data-node="${cssEscape(pendingFocus)}"]`);
+          if (card) card.focus();
+          pendingFocus = null;
+        }
+        rendering = false;
         requestAnimationFrame(renderWires);
+      }
+
+      // --- drop indicator ----------------------------------------------------
+      // Positioned absolutely rather than inserted into the flow, so showing it
+      // never moves the cards whose positions decide where the drop lands.
+      function showDropLine(laneEl, index) {
+        const body = laneEl.querySelector('.lane-body');
+        if (!body) return;
+        const cards = [...laneEl.querySelectorAll('.node')].filter(card => card.dataset.node !== dragId);
+        const box = body.getBoundingClientRect();
+        let top;
+        if (!cards.length) top = 8;
+        else if (index >= cards.length) {
+          const last = cards[cards.length - 1].getBoundingClientRect();
+          top = last.bottom - box.top + 8;
+        } else {
+          top = cards[index].getBoundingClientRect().top - box.top - 8;
+        }
+        let line = body.querySelector('.drop-line');
+        if (!line) {
+          line = document.createElement('div');
+          line.className = 'drop-line';
+          body.appendChild(line);
+        }
+        line.style.top = `${Math.max(0, top)}px`;
+      }
+
+      function clearDropLine() {
+        lanesEl.querySelectorAll('.drop-line').forEach(line => line.remove());
       }
 
       // --- interaction -------------------------------------------------------
@@ -340,6 +417,7 @@
         const card = event.target.closest('.node');
         if (card) card.classList.remove('dragging');
         lanesEl.querySelectorAll('.lane').forEach(lane => lane.classList.remove('drag-over'));
+        clearDropLine();
         dragId = null;
       });
 
@@ -349,12 +427,15 @@
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
         lanesEl.querySelectorAll('.lane').forEach(item => item.classList.toggle('drag-over', item === lane));
+        clearDropLine();
+        showDropLine(lane, dropIndexFor(lane, event.clientY));
       });
 
       lanesEl.addEventListener('drop', event => {
         const lane = event.target.closest('.lane');
         if (!lane || !dragId) return;
         event.preventDefault();
+        clearDropLine();
         const nodeId = dragId;
         const targetLane = lane.dataset.lane;
         const targetIndex = dropIndexFor(lane, event.clientY);
@@ -405,6 +486,121 @@
         record('connect', `Connected “${label(from)}” to “${label(to)}”.`);
         linkSource = null;
         apply(Graph.connect(current, from.id, to.id));
+      });
+
+      // --- keyboard equivalent of the drag gesture ---------------------------
+      // Pick up with Enter, move with the arrow keys, drop with Enter, cancel with
+      // Escape. Reorder and reclassify are the two gestures the prototype exists to
+      // test, so neither can depend on a pointer.
+
+      function laneOf(nodeId) {
+        const node = current.nodes.find(item => item.id === nodeId);
+        return node ? node.lane : null;
+      }
+
+      function positionText(nodeId) {
+        const pos = Graph.positionOf(current, nodeId);
+        const total = Graph.nodesInLane(current, pos.lane).length;
+        return `${laneLabelFor(pos.lane)}, position ${pos.index + 1} of ${total}`;
+      }
+
+      function grabCard(nodeId) {
+        const pos = Graph.positionOf(current, nodeId);
+        grabbed = { id: nodeId, originLane: pos.lane, originIndex: pos.index };
+        const node = current.nodes.find(item => item.id === nodeId);
+        pendingFocus = nodeId;
+        render();
+        announce(`Picked up ${node.label}. ${positionText(nodeId)}. Arrow keys to move, Enter to drop, Escape to cancel.`);
+      }
+
+      function moveGrabbed(key) {
+        const nodeId = grabbed.id;
+        const pos = Graph.positionOf(current, nodeId);
+        const laneOrder = Graph.LANES.map(lane => lane.id);
+        const laneAt = laneOrder.indexOf(pos.lane);
+        let next = null;
+
+        if (key === 'ArrowUp' && pos.index > 0) next = Graph.moveNode(current, nodeId, pos.lane, pos.index - 1);
+        else if (key === 'ArrowDown' && pos.index < Graph.nodesInLane(current, pos.lane).length - 1) next = Graph.moveNode(current, nodeId, pos.lane, pos.index + 1);
+        else if (key === 'ArrowLeft' && laneAt > 0) next = Graph.moveNode(current, nodeId, laneOrder[laneAt - 1], pos.index);
+        else if (key === 'ArrowRight' && laneAt < laneOrder.length - 1) next = Graph.moveNode(current, nodeId, laneOrder[laneAt + 1], pos.index);
+
+        if (!next) { announce('Edge of the canvas. No move made.'); return; }
+        // The canvas updates as it moves so the reading tracks the gesture; the log
+        // entry is written once, on drop, rather than for every keypress.
+        pendingFocus = nodeId;
+        apply(next);
+        announce(positionText(nodeId));
+      }
+
+      function commitGrab() {
+        if (!grabbed) return;
+        const { id, originLane, originIndex } = grabbed;
+        const node = current.nodes.find(item => item.id === id);
+        grabbed = null;
+        if (!node) { render(); return; }
+        const pos = Graph.positionOf(current, id);
+        if (originLane !== pos.lane) {
+          record('reclassify', `Moved “${node.label}” from ${laneLabelFor(originLane)} to ${laneLabelFor(pos.lane)}.`);
+          announce(`Dropped. ${positionText(id)}.`);
+        } else if (originIndex !== pos.index) {
+          record('reorder', `Moved “${node.label}” from position ${originIndex + 1} to ${pos.index + 1} in ${laneLabelFor(pos.lane)}.`);
+          announce(`Dropped. ${positionText(id)}.`);
+        } else {
+          record('layout', `Picked up “${node.label}” and returned it to the same position.`, true);
+          announce('Dropped in the same position. No change.');
+        }
+        pendingFocus = id;
+        render();
+      }
+
+      function cancelGrab() {
+        if (!grabbed) return;
+        const { id, originLane, originIndex } = grabbed;
+        const node = current.nodes.find(item => item.id === id);
+        grabbed = null;
+        pendingFocus = id;
+        apply(Graph.moveNode(current, id, originLane, originIndex));
+        announce(`Move cancelled. ${node ? node.label : 'Card'} returned to ${laneLabelFor(originLane)}, position ${originIndex + 1}.`);
+      }
+
+      lanesEl.addEventListener('keydown', event => {
+        const card = event.target.closest('.node');
+        if (!card) return;
+        const nodeId = card.dataset.node;
+
+        if (event.key === 'Escape' && grabbed) { event.preventDefault(); cancelGrab(); return; }
+
+        if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+          event.preventDefault();
+          // Link mode wins over pick-up, so a connection can be completed by keyboard.
+          if (linkSource && linkSource !== nodeId) {
+            const from = current.nodes.find(item => item.id === linkSource);
+            const to = current.nodes.find(item => item.id === nodeId);
+            record('connect', `Connected “${label(from)}” to “${label(to)}”.`);
+            linkSource = null;
+            pendingFocus = nodeId;
+            apply(Graph.connect(current, from.id, to.id));
+            announce(`Connected ${label(from)} to ${label(to)}.`);
+          } else if (grabbed && grabbed.id === nodeId) commitGrab();
+          else if (!grabbed) grabCard(nodeId);
+          return;
+        }
+
+        if (!grabbed || grabbed.id !== nodeId) return;
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+          event.preventDefault();
+          moveGrabbed(event.key);
+        }
+      });
+
+      // Tabbing away from a held card commits it rather than leaving it half-moved.
+      lanesEl.addEventListener('focusout', event => {
+        if (!grabbed || rendering) return;
+        const card = event.target.closest('.node');
+        if (!card || !card.isConnected || card.dataset.node !== grabbed.id) return;
+        if (event.relatedTarget && event.relatedTarget.closest && event.relatedTarget.closest(`[data-node="${cssEscape(grabbed.id)}"]`)) return;
+        commitGrab();
       });
 
       document.getElementById('add-step').addEventListener('click', () => {

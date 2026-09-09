@@ -84,6 +84,12 @@ for (const script of ['js/canvas-graph.js', 'js/canvas-intent.js', 'data/prototy
 if (!canvasPage.includes('proto-workflow-canvas-reasoning') || !canvasPage.includes('isolated prototype') || !canvasPage.includes('What this change reads as') || !canvasPage.includes('Change log') || !canvasPage.includes('Intent packet') || !canvasPage.includes('The canvas cannot answer')) {
   throw new Error('Workflow canvas page is missing its prototype boundary or reasoning panels');
 }
+if (!canvasPage.includes('drop-line') || !canvasPage.includes('showDropLine') || !canvasPage.includes('renderChains') || !canvasPage.includes('chain-label')) {
+  throw new Error('Workflow canvas page is missing the drop indicator or the sequence grouping');
+}
+if (!canvasPage.includes('tabindex="0"') || !canvasPage.includes('grabCard') || !canvasPage.includes('cancelGrab') || !canvasPage.includes('id="move-status"') || !canvasPage.includes('aria-live="polite"')) {
+  throw new Error('Workflow canvas page is missing keyboard operation of the drag gesture');
+}
 if (!prototypingPage.includes('workflow-canvas-prototype') || !prototypingPage.includes('proto-workflow-canvas-reasoning') || !prototypingPage.includes('workflow-canvas.html') || !prototypingPage.includes('Layout-only move') || !prototypingPage.includes('Displacement')) {
   throw new Error('Prototyping page is missing the workflow canvas prototype');
 }
