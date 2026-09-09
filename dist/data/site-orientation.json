@@ -307,6 +307,22 @@
         "next_handoff": "Record comparison evidence and use an explicit promotion decision for any live change."
       },
       {
+        "id": "workflow-canvas-intent",
+        "request": "Interpret a direct-manipulation change to a workflow canvas as intent",
+        "modes": ["prototype"],
+        "primary_space": "prototyping",
+        "secondary_spaces": ["playbooks", "personas"],
+        "target": "workflow-canvas-reasoning",
+        "artifact_kind": "callable_skill",
+        "package_path": ".agents/skills/workflow-canvas-reasoning",
+        "availability_source": "repo_local",
+        "first_reads": ["committed source graph", "current canvas graph", "structural diff", "ranked intent readings", "open questions"],
+        "mutation_boundary": "prototype_only",
+        "reconciliation": "skip",
+        "non_triggers": ["Applying a reading to a live workflow, Persona, Skill, or Playbook record", "Treating an accepted reading as authorization to write", "Interpreting a card moved without a change of order or tier"],
+        "next_handoff": "Hand the intent packet to the person who made the change; a live update needs an explicit promotion decision."
+      },
+      {
         "id": "work-order-start",
         "request": "Start or continue substantial in-progress work",
         "modes": ["plan", "update"],
