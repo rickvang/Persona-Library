@@ -52,7 +52,9 @@
     .node.link-source { border-color:var(--coral); box-shadow:0 0 0 2px rgba(255,124,98,.25); }
     .node.link-target { cursor:crosshair; border-style:dashed; }
     .node-title { font-size:13px; font-weight:800; line-height:1.35; letter-spacing:-.01em; }
-    .node-meta { margin-top:5px; color:var(--muted); font-size:11px; line-height:1.4; }
+    /* Two lines, then an ellipsis. The full text — plus cadence and quality signal —
+       is on the card's tooltip, so nothing is lost by clamping. */
+    .node-desc { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; margin:5px 0 0; color:var(--muted); font-size:11px; line-height:1.4; }
     .node-links { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
     /* A connection to the very next step in the same sequence is already drawn as an
        arrow, so its chip is redundant. It stays reachable — hover or focus the card —
@@ -303,13 +305,17 @@
         if (grabbed && grabbed.id === node.id) classes.push('grabbed');
         if (linkSource === node.id) classes.push('link-source');
         else if (linkSource) classes.push('link-target');
-        const meta = [node.cadence, node.quality].filter(Boolean).map(escapeHtml).join(' · ');
-        // The label carries what sighted users read from position, since a card's
-        // place in the sequence is the thing being edited.
-        const spoken = `${node.label}. ${node.flowTitle || 'Unassigned'}. ${lane.label}, position ${index + 1} of ${total}.`;
-        return `<article class="${classes.join(' ')}" draggable="true" tabindex="0" role="button" aria-label="${escapeHtml(spoken)}" data-node="${escapeHtml(node.id)}">
+        // The failure mode is the only prose an activity row carries: it says what goes
+        // wrong without this step, which is what the card needs to convey at a glance.
+        const detail = node.failureMode || '';
+        const meta = [node.cadence, node.quality].filter(Boolean).join(' · ');
+        const tip = [detail, meta].filter(Boolean).join('\n\n');
+        // The label carries what sighted users read from position and from the tooltip,
+        // since a card's place in the sequence is the thing being edited.
+        const spoken = `${node.label}. ${detail ? `${detail}. ` : ''}${meta ? `${meta}. ` : ''}${node.flowTitle || 'Unassigned'}. ${lane.label}, position ${index + 1} of ${total}.`;
+        return `<article class="${classes.join(' ')}" draggable="true" tabindex="0" role="button" aria-label="${escapeHtml(spoken)}"${tip ? ` title="${escapeHtml(tip)}"` : ''} data-node="${escapeHtml(node.id)}">
           <div class="node-title">${escapeHtml(node.label)}</div>
-          ${meta ? `<div class="node-meta">${meta}</div>` : ''}
+          ${detail ? `<p class="node-desc">${escapeHtml(detail)}</p>` : ''}
           ${notable ? `<div class="node-links">${notable}</div>` : ''}
           ${inSequence ? `<div class="node-links in-sequence">${inSequence}</div>` : ''}
           <div class="node-actions">
