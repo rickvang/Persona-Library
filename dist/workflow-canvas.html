@@ -631,7 +631,10 @@
       select.addEventListener('change', () => loadGraph(select.value));
       window.addEventListener('resize', () => requestAnimationFrame(renderWires));
 
-      select.innerHTML = graphs.map(graph => `<option value="${escapeHtml(graph.id)}">${escapeHtml(graph.title)}</option>`).join('');
+      // A native <option> renders one line of plain text, so the role sits after the
+      // name rather than beneath it.
+      select.innerHTML = graphs.map(graph =>
+        `<option value="${escapeHtml(graph.id)}">${escapeHtml(graph.personaName)} — ${escapeHtml(graph.roleLabel)}</option>`).join('');
       loadGraph(graphs[0].id);
     })();
   </script>

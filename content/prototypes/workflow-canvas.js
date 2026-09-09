@@ -41,6 +41,10 @@
     return {
       id: `canvas-${personaId}`,
       personaId,
+      // Name and role stay separate fields so a picker can present them apart,
+      // while `title` remains the phrase the intent readings quote.
+      personaName,
+      roleLabel,
       title: `${personaName} — workflow map`,
       subtitle: `${roleLabel} · ${flows.length} workflows · ${nodes.length} activities`,
       nodes,
