@@ -220,6 +220,9 @@
       record.version = version; record.updated = '2026-09-08';
       record.revisions.push({version,date:'2026-09-08',changeType:'persona-application',summary:'Added Noor Vale’s conformance and workflow-observability application while preserving the existing portable Skill boundary.',affectedFields:['profiles','workflows'],evidence:'Issues #37 and #43 plus the conformance Work Order and normalized result contract',confidenceChange:'Portable Skill remains unchanged; Persona-specific application remains a working synthesis'});
     }
+    const riley = personaMaintenance['ai-orchestrator'];
+    riley.version = '1.1'; riley.updated = '2026-09-08';
+    riley.revisions.push({version:'1.1',date:'2026-09-08',changeType:'persona-routing-reconciliation',summary:'Narrowed Riley’s evaluation responsibility to orchestration coordination and made Noor’s conformance observation a required per-run handoff.',affectedFields:['skills','workflows','handoffs'],evidence:'Issue #43 role-boundary cleanup and declared Riley-to-Noor handoff in the conformance Work Order',confidenceChange:'Routing is declared in repository data; runtime enforcement remains untested'});
     const conformanceObserver = personaMaintenance['conformance-observer'];
     conformanceObserver.version = '1.1'; conformanceObserver.updated = '2026-09-08';
     conformanceObserver.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added the Issue #37 conformance suite, Issue #43 observation contract, and explicit live-runtime unknowns to Noor’s working-draft Persona record.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'Persona Library Issues #37 and #43; conformance-observability Work Order; repository orientation and mutation contracts',confidenceChange:'Working synthesis remains; cross-LLM behavior and identity boundary require actual use'});
@@ -233,8 +236,16 @@
       .map(requirement => ({ ...requirement }));
   }
 
+  function buildPersonaHandoffs({ personas, personaHandoffs = [] }) {
+    const personaIds = new Set(personas.map(persona => persona.id));
+    return personaHandoffs
+      .filter(handoff => personaIds.has(handoff.fromPersonaId) && personaIds.has(handoff.toPersonaId))
+      .map(handoff => ({ ...handoff }));
+  }
+
   data.skillCatalog = buildSkillCatalog(data);
   data.personaToolRequirements = buildPersonaToolRequirements(data);
+  data.personaHandoffs = buildPersonaHandoffs(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildPersonaToolRequirements, buildMaintenance };
+  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance };
 })();

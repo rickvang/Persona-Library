@@ -32,7 +32,7 @@ Mara’s placement gate was applied before mutation:
 - Active run evidence belongs in the existing Work Order package, beginning with `observations.md`.
 - No new top-level Persona Library space, Tool record, Playbook, database, or runtime service is created.
 
-Issue #37 names Noor Vale as a Context Access Observer. The current catalog contains Riley Morgan’s adjacent `Evaluation and observability` capability but no Noor record. This implementation uses `conformance-observer` / Noor Vale as a working-draft identity and records the possibility of later aliasing, merging, or renaming as an open question. That choice remains subject to future Persona reconciliation.
+Issue #37 names Noor Vale as a Context Access Observer. The catalog also contains Riley Morgan’s adjacent orchestration responsibilities. The role boundary is now explicit: Noor owns conformance observation and classification; Riley coordinates the evaluation, prepares comparable conditions, and invokes Noor for every evaluated run. The portable `Evaluation and observability` Skill remains a shared catalog identity, with Noor as the conformance-specific application and Riley’s role narrowed to orchestration coordination.
 
 ## Artifacts
 
@@ -56,6 +56,7 @@ Issue #37 names Noor Vale as a Context Access Observer. The current catalog cont
 - [x] Add recorded-result adapter and local evaluator commands.
 - [x] Add Noor working-draft Persona and workflow map with reused Skills.
 - [x] Add observation template and Work Order handoff path.
+- [x] Reconcile the Riley/Noor boundary and declare the required Riley-to-Noor handoff for every evaluated run.
 - [x] Rebuild generated Site data; source and generated orientation files are equal.
 - [ ] Repository validator passes; the restored validator stops at the existing `change-impact-reconciliation` package because it requires `skill_layer` metadata that package does not declare.
 - [x] Run concise conformance checks and record findings, including a negative unsupported-claim check.
@@ -91,10 +92,10 @@ The Persona-specific adapter runs before the universal reconciliation pass. The 
 ### Persona-specific adapter
 
 - Status: `partial` because the canonical source and declared relationships were inspectable, while live provider behavior and the final Noor/Riley identity remain unknown.
-- Change observed: a working-draft `conformance-observer` / Noor Vale record, seven Persona-specific applications of existing Skills, and six workflows were added from Issues #37 and #43.
-- Classification: `extends` the catalog with a bounded observer role; `reuses` Riley's portable evaluation and operational capabilities; `qualifies` all runtime claims as untested; no existing Persona was replaced.
+- Change observed: a working-draft `conformance-observer` / Noor Vale record, seven Persona-specific applications of existing Skills, six Noor workflows, and a required Riley-to-Noor per-run handoff were added from Issues #37 and #43.
+- Classification: `extends` the catalog with a bounded observer role; `qualifies` Riley’s evaluation responsibility as orchestration coordination; `reuses` the portable Skill without assigning conformance ownership to Riley; `qualifies` runtime enforcement as untested; no existing Persona was replaced.
 - Checked: Persona index/detail, Skill links and applications, workflow maps, resources, confidence, needs, implications, normalized maintenance records, Tool requirements, Playbook records, and generated data.
-- Required follow-up: decide whether Noor remains distinct from Riley after actual use; supply authorized comparable result records before making cross-LLM claims.
+- Required follow-up: exercise the declared Riley-to-Noor handoff in an authorized runtime and supply comparable result records before making cross-LLM claims.
 - Unchanged: canonical Tool records, Playbooks, private data, credentials, runtime integrations, and existing Persona source claims outside the new record.
 
 ### Universal change-impact pass
@@ -102,7 +103,7 @@ The Persona-specific adapter runs before the universal reconciliation pass. The 
 - Status: `partial` with no unsafe mutation detected.
 - Checked: orientation route, `eval/` artifacts, Work Order and problem-context links, source/generated Persona data, validation commands, and the repository mutation boundary.
 - Required follow-up: reconcile the validator's `skill_layer` requirement with the existing `change-impact-reconciliation` package, then rerun the repository validator.
-- Unknown: provider adapter availability, runtime trace retention, and behavior across two actual LLM surfaces.
+- Unknown: provider adapter availability, runtime trace retention, whether every runtime enforces the declared handoff, and behavior across two actual LLM surfaces.
 - Handoff count: one Persona-specific review followed by one universal pass; no recursive handoff.
 
 ## Completion gate
@@ -112,6 +113,6 @@ Complete the repository implementation when the validator contract gap is resolv
 ## Follow-up work
 
 - Run the same fixture against at least two authorized LLM surfaces and store sanitized result records in a future Work Order.
-- Decide whether Noor remains distinct from Riley after actual use.
+- Validate that Riley invokes Noor on every evaluated run and that an unavailable Noor result is recorded as `access-gap` or `unknown` rather than treated as conformance.
 - Add provider-specific adapters only when their runtime, permissions, and retention boundaries are explicit.
 - Promote recurring, independently reusable observation logic to a Skill only after repeated use demonstrates that boundary.

@@ -51,8 +51,8 @@ const sandbox = { window: {} };
 vm.runInNewContext(source, sandbox, { filename: contentPath });
 vm.runInNewContext(modelSource, sandbox, { filename: modelPath });
 const data = sandbox.window.PersonaLibraryData;
-if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.skillCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
-  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, skillCatalog, maintenance, and PersonaLibraryModel');
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
+  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, personaHandoffs, skillCatalog, maintenance, and PersonaLibraryModel');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
 if (orientationSource !== orientationOutput) throw new Error('Generated dist/data/site-orientation.json is stale; run build-library.mjs');
@@ -223,6 +223,15 @@ for (const requirement of data.personaToolRequirements) {
   if (!personaIds.has(requirement.personaId)) throw new Error(`Persona tool requirement references an unknown persona: ${requirement.id}`);
   const recipe = data.toolUseRecipes.find(item => item.id === requirement.recipeId);
   if (!recipe || !recipe.personaIds.includes(requirement.personaId) || recipe.title !== requirement.recipeTitle) throw new Error(`Persona tool requirement has an invalid recipe relationship: ${requirement.id}`);
+}
+
+const handoffIds = new Set();
+for (const handoff of data.personaHandoffs) {
+  if (!handoff.id || handoffIds.has(handoff.id) || !handoff.fromPersonaId || !handoff.toPersonaId || !handoff.trigger || !handoff.responsibility || !handoff.input || !handoff.output || handoff.required !== true || !handoff.onUnavailable || !handoff.status) {
+    throw new Error(`Invalid or duplicate Persona handoff: ${handoff.id || '(missing)'}`);
+  }
+  handoffIds.add(handoff.id);
+  if (!personaIds.has(handoff.fromPersonaId) || !personaIds.has(handoff.toPersonaId)) throw new Error(`Persona handoff references an unknown Persona: ${handoff.id}`);
 }
 
 const skillUnitIds = new Set();

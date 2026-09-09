@@ -16,6 +16,7 @@ Future entries should follow [`eval/observation-template.md`](../../../eval/obse
 | OBS-004 | Cross-LLM comparison | access-gap | No comparable external provider runtimes or credentials were authorized in this repository session. | Supply two authorized result records in a future Work Order. |
 | OBS-005 | Negative evaluator case | success | An unsupported update claim with unavailable access is classified `REVIEW` for mode and access honesty rather than accepted as a pass. | Keep this boundary when adapters are added. |
 | OBS-006 | Repository validation | friction | The restored validator stops at the existing `change-impact-reconciliation` package because it requires `skill_layer` metadata that package does not declare. | Reconcile the validator contract in the owning change, then rerun validation. |
+| OBS-007 | Riley-to-Noor routing | success | Canonical workflow data declares Noor as the required conformance observer for every evaluated run and records an unavailable-observer fallback. | Exercise the handoff in an authorized runtime; repository declaration alone does not prove enforcement. |
 
 ## Result classification
 
