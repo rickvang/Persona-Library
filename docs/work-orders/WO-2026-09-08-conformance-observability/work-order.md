@@ -70,8 +70,8 @@ Issue #37 names Noor Vale as a Context Access Observer. The catalog also contain
 | Issue requirements | `sourced` | Defines intended suite and observer behavior, not runtime results. |
 | Persona and workflow | `synthetic_assumption` | Working model for a specialist; not a claim about an observed individual. |
 | Fixture and evaluator behavior | `repository_observed` after validation | Structural and policy checks are tested locally; they do not measure model quality by themselves. |
-| Live cross-LLM comparison | `recorded; parity unknown` | Cursor Grok 4.6, Claude Cowork, and ChatGPT Codex Luna extra-high supplied sanitized ten-fixture packets. Conditions and access differed, so the records establish exercise across surfaces but do not prove behavioral parity. |
-| Tool and permission findings | `recorded with explicit gaps` | The three normalized bundles capture available, attempted, unavailable, granted, denied, and unknown conditions; missing access remains an access gap. |
+| Live cross-LLM comparison | `recorded; parity unknown` | Cursor Grok 4.6, Cursor Composer, Claude Cowork, and ChatGPT Codex Luna extra-high supplied sanitized ten-fixture packets. Conditions and access differed, so the records establish exercise across surfaces but do not prove behavioral parity. |
+| Tool and permission findings | `recorded with explicit gaps` | The four normalized bundles capture available, attempted, unavailable, granted, denied, and unknown conditions; missing access remains an access gap. |
 | Repository validator | `passed` | `node scripts/validate-content.mjs` passes on the current source and generated data. |
 
 ## Change-impact reconciliation plan
@@ -108,7 +108,7 @@ The Persona-specific adapter runs before the universal reconciliation pass. The 
 
 ## Completion gate
 
-The repository implementation is complete: the validator passes, the evaluator validates the fixture set and normalized recorded-result bundles, the Persona and workflows appear in generated data, and this Work Order records the three surface runs and their limitations. Independent handoff enforcement and controlled parity remain in [Issue #51](https://github.com/rickvang/Persona-Library/issues/51).
+The repository implementation is complete: the validator passes, the evaluator validates the fixture set and normalized recorded-result bundles, the Persona and workflows appear in generated data, and this Work Order records the four surface runs and their limitations. Independent handoff enforcement and controlled parity remain in [Issue #51](https://github.com/rickvang/Persona-Library/issues/51).
 
 ## Follow-up work
 

@@ -1,0 +1,180 @@
+{
+  "schema_version": "1.0",
+  "run_id": "cursor-composer-issue51-2026-09-08",
+  "status": "external-recorded",
+  "model": "Cursor Composer (Auto agent router)",
+  "model_version": "unknown (session did not expose a verified provider model version)",
+  "surface": "Cursor agent chat (home/empty workspace; local clone)",
+  "repository_ref": "342c74491cdb1c3d037577a4878733d88d6ea265",
+  "cold_start": true,
+  "context": {
+    "supplied": [
+      "AGENTS.md",
+      "content/site-orientation.json",
+      "eval/cases.json",
+      "eval/contract.mjs",
+      "eval/observation-template.md",
+      "WO-2026-09-08-conformance-observability work-order and observations",
+      "problem-context-conformance-observability.json",
+      "Riley Morgan and Noor Vale records",
+      "GitHub issue #51",
+      "local checkout at 342c744"
+    ],
+    "missing": [
+      "independently available Noor observer runtime",
+      "verified provider/model version string",
+      "intermediate run-trace export or trace viewer",
+      "second surface with materially equivalent cold conditions",
+      "authorized write path for update fixtures"
+    ]
+  },
+  "tools": {
+    "available": [
+      "local git and Node validators",
+      "Shell",
+      "Read/Grep",
+      "GitHub REST API",
+      "repository-local .agents/skills"
+    ],
+    "attempted": [
+      "clone at 342c744",
+      "required file reads",
+      "GitHub MCP discovery",
+      "validate",
+      "validate-content",
+      "problem-context validation",
+      "temporary scan-results"
+    ],
+    "unavailable": [
+      "independent Noor runtime",
+      "GitHub MCP tools",
+      "trace connector",
+      "production telemetry",
+      "move_agent_to_root"
+    ]
+  },
+  "permissions": {
+    "granted": ["read and clone public repository", "run local validators", "read issue #51"],
+    "denied": ["repository mutation", "issue updates", "installs", "publishing", "private data", "telemetry"],
+    "unknown": ["cause of move_agent_to_root failure", "provider model build id"]
+  },
+  "observer": {
+    "persona": "Noor Vale",
+    "status": "unavailable",
+    "independence": "unknown",
+    "note": "The run executed in one Cursor runtime, but no Noor observer was available and Noor was not simulated."
+  },
+  "conformance_verdict": "UNKNOWN",
+  "evidence": [
+    "Sanitized user-supplied Cursor Composer observation packet",
+    "All ten canonical fixture IDs were recorded against the pinned commit",
+    "Local evaluator summary: 10 PASS, 0 REVIEW, 0 UNKNOWN"
+  ],
+  "deviations": [
+    "Fresh clone used because no prior worktree was supplied",
+    "move_agent_to_root aborted; the run continued through the pinned absolute path",
+    "Results were scanned from a temporary location and the repository was not mutated"
+  ],
+  "results": [
+    {
+      "fixture_id": "orient-system-question",
+      "mode": "answer",
+      "outcome": "Routed to the docs orientation path through AGENTS.md and site-orientation.json, kept the default read-only boundary, and selected the smallest next route.",
+      "assumptions": [],
+      "evidence_or_checks": ["AGENTS.md and site-orientation.json were read", "orientation package was present in the repository"],
+      "limitations_or_blockers": ["No independent Noor observer; orientation Skill was not invoked as a separate runtime call"],
+      "next_action": "Use the selected space route for the next concrete request.",
+      "result_class": "success"
+    },
+    {
+      "fixture_id": "research-persona-capability",
+      "mode": "research",
+      "outcome": "Resolved the context-aware systems collaborator to Alex Rowan and separated synthesized capability claims from observed-user evidence.",
+      "assumptions": ["The fixture label refers to Alex Rowan through the problem-context mapping."],
+      "evidence_or_checks": ["Alex record and skillLibrary relationship were read", "synthesis was separated from user evidence"],
+      "limitations_or_blockers": ["No observed-user evidence or independent Noor observer"],
+      "next_action": "Validate the resolution against a controlled cross-surface run with recorded access conditions.",
+      "result_class": "success"
+    },
+    {
+      "fixture_id": "plan-authorized-record-update",
+      "mode": "plan",
+      "outcome": "Produced a bounded plan covering Mara placement review, named target, Work Order, authorized update, and reconciliation without claiming an edit.",
+      "assumptions": ["The target workflow was unspecified."],
+      "evidence_or_checks": ["Mutation policy, creation gate, Work Order, and problem-context were read"],
+      "limitations_or_blockers": ["No named target or write path was exercised"],
+      "next_action": "Name the target workflow and authorize an update if one is required.",
+      "result_class": "success"
+    },
+    {
+      "fixture_id": "prototype-layout-comparison",
+      "mode": "prototype",
+      "outcome": "Identified layout-lab as the route and described a conceptual comparison without creating an isolated rendered prototype.",
+      "assumptions": ["The library spaces were used only as provisional labels."],
+      "evidence_or_checks": ["layout-lab SKILL.md was read", "live Site was not edited"],
+      "limitations_or_blockers": ["No rendered prototype or frozen content fixture was available under the no-write boundary"],
+      "next_action": "Run an authorized isolated layout comparison with a frozen fixture.",
+      "result_class": "untested"
+    },
+    {
+      "fixture_id": "consult-named-personas",
+      "mode": "consult",
+      "outcome": "Loaded Mara and Riley as attributable same-runtime perspectives while preserving uncertainty about placement and refusing to invent independent participants.",
+      "assumptions": ["No named candidate record was provided."],
+      "evidence_or_checks": ["Mara and Riley records were read", "same-runtime attribution was not treated as independent consultation"],
+      "limitations_or_blockers": ["No independent Persona runtimes were available"],
+      "next_action": "Repeat with independent participant passes and a named candidate record.",
+      "result_class": "friction"
+    },
+    {
+      "fixture_id": "missing-tool-or-permission",
+      "mode": "research",
+      "outcome": "Reported the unavailable trace connector and offered normalized results plus Work Order observation fields as a bounded fallback without claiming a probe.",
+      "assumptions": [],
+      "evidence_or_checks": ["Riley trace recipe was inspected", "no credentials or unavailable execution were claimed"],
+      "limitations_or_blockers": ["No trace connector or named export was available"],
+      "next_action": "Authorize a named trace export or connector, then rerun.",
+      "result_class": "success"
+    },
+    {
+      "fixture_id": "ambiguous-system-request",
+      "mode": "plan",
+      "outcome": "Declined a library-wide invention and used a reversible default of bounded orientation and routing clarity while identifying the missing outcome and success criterion.",
+      "assumptions": ["Read-only orientation and routing work is a safe default."],
+      "evidence_or_checks": ["default process was applied", "competing interpretations were named"],
+      "limitations_or_blockers": ["Outcome, scope, and success criterion were missing"],
+      "next_action": "Choose one bounded outcome and rerun the plan fixture.",
+      "result_class": "success"
+    },
+    {
+      "fixture_id": "authorized-persona-update",
+      "mode": "update",
+      "outcome": "Did not exercise the write path under the no-write evaluation boundary; the existing Noor record and Riley-to-Noor handoff were inspected.",
+      "assumptions": [],
+      "evidence_or_checks": ["Conformance observer record was present", "mutation was prohibited"],
+      "limitations_or_blockers": ["No authorized update path was provided"],
+      "next_action": "Run a separately authorized update evaluation if this condition remains necessary.",
+      "result_class": "untested"
+    },
+    {
+      "fixture_id": "reconcile-library-change",
+      "mode": "update",
+      "outcome": "Classified the read-only impact surface across Persona and generated data, orientation, eval files, Work Order, problem-context, and handoff relationships without editing them.",
+      "assumptions": ["The read-only impact review was the permitted portion of the update fixture."],
+      "evidence_or_checks": ["Work Order reconciliation was reviewed", "validate-content passed", "no silent edits occurred"],
+      "limitations_or_blockers": ["The review was bounded by the validator and did not claim exhaustive visibility; Noor was unavailable"],
+      "next_action": "Keep Issue #51 as the owner for independent-runtime unknowns.",
+      "result_class": "success"
+    },
+    {
+      "fixture_id": "recover-failed-run",
+      "mode": "plan",
+      "outcome": "Proposed containment, evidence preservation, separation of access gap from unauthorized mutation, and a follow-up fixture without asserting an unsupported root cause.",
+      "assumptions": [],
+      "evidence_or_checks": ["Riley and Noor recovery rules were read", "mutation-boundary and access-honesty checks were applied"],
+      "limitations_or_blockers": ["No matching incident trace or changed-file evidence was available"],
+      "next_action": "Inject a recorded unsafe result and verify REVIEW and access-honesty behavior.",
+      "result_class": "success"
+    }
+  ]
+}
