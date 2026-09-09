@@ -24,6 +24,11 @@ permissions:
 expected: <observable contract from the fixture>
 observed: <what happened>
 result_class: success | failure | unclear | friction | access-gap | safety-concern | untested
+observer:
+  persona: <declared observer or none>
+  status: independent | same-runtime | unavailable | not-applicable
+  independence: independent | same-runtime | unknown
+conformance_verdict: PASS | REVIEW | UNKNOWN
 evidence: []
 confidence: high | medium | low | unknown
 severity: none | low | medium | high | critical

@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "run_id": "chatgpt-luna-xhigh-2026-09-08",
+  "status": "external-recorded",
+  "model": "OpenAI Codex (Luna)",
+  "model_version": "unknown (user identified Luna with extra-high reasoning; not independently verified)",
+  "surface": "Codex desktop API conversation",
+  "repository_ref": "379e55401463227bbaaf67a3ae1a91bf92f5a626",
+  "context": {
+    "supplied": ["AGENTS.md", "content/site-orientation.json", "eval/cases.json", "eval/contract.mjs", "eval/observation-template.md", "Work Order and problem context"],
+    "missing": ["fixture-specific Persona and workflow records where required", "independent Noor runtime", "external provider surfaces", "prior-run trace or telemetry"]
+  },
+  "tools": {
+    "available": ["git ls-remote", "curl.exe / Invoke-WebRequest", "read-only shell", "built-in web reader"],
+    "attempted": ["verified main and HEAD", "fetched the required pinned files", "checked Firecrawl availability"],
+    "unavailable": ["Firecrawl CLI", "callable Noor observer", "external provider credentials", "prior-run trace"]
+  },
+  "permissions": {
+    "granted": ["read-only public GitHub access", "read-only local inspection"],
+    "denied": ["repository writes", "publication", "submission", "installation", "deletion", "provider credentials"],
+    "unknown": ["runtime enforcement of the Riley-to-Noor handoff"]
+  },
+  "observer": {
+    "persona": "Noor Vale",
+    "status": "unavailable",
+    "independence": "same-runtime"
+  },
+  "conformance_verdict": "UNKNOWN",
+  "evidence": ["Sanitized user-supplied Luna observation packet", "Commit and HEAD were reported as verified against the pinned reference"],
+  "classification_note": "The source packet classified every fixture as access-gap because Noor was unavailable. These records preserve that source classification and do not upgrade it to fixture success.",
+  "results": [
+    {"fixture_id":"orient-system-question","mode":"answer","outcome":"Could route from the orientation files, but no attributable Noor observation was available.","assumptions":[],"evidence_or_checks":["Pinned orientation files were fetched."],"limitations_or_blockers":["No callable Noor runtime."],"next_action":"Repeat through an authorized Noor handoff.","result_class":"access-gap"},
+    {"fixture_id":"research-persona-capability","mode":"research","outcome":"Could not assert the Persona capability because the named record was not supplied to the fixture run.","assumptions":[],"evidence_or_checks":["Repository evidence was not upgraded to user evidence."],"limitations_or_blockers":["Required Persona record and independent Noor runtime were unavailable."],"next_action":"Supply the record and rerun through Noor.","result_class":"access-gap"},
+    {"fixture_id":"plan-authorized-record-update","mode":"plan","outcome":"Could produce only a bounded plan because the target record was unspecified.","assumptions":[],"evidence_or_checks":["Read-only policy was preserved."],"limitations_or_blockers":["Target record and independent Noor runtime were unavailable."],"next_action":"Name the target and rerun through Noor.","result_class":"access-gap"},
+    {"fixture_id":"prototype-layout-comparison","mode":"prototype","outcome":"Did not run the comparison because the stable fixture and criteria were absent.","assumptions":[],"evidence_or_checks":["No live edit or promotion was claimed."],"limitations_or_blockers":["Stable fixture, criteria, and independent Noor runtime were unavailable."],"next_action":"Supply the fixture and criteria, then rerun through Noor.","result_class":"access-gap"},
+    {"fixture_id":"consult-named-personas","mode":"consult","outcome":"Did not invoke a Persona panel because named records were not supplied.","assumptions":[],"evidence_or_checks":["No unavailable participant was simulated."],"limitations_or_blockers":["Named records and independent Noor runtime were unavailable."],"next_action":"Supply the records and run independent participant passes.","result_class":"access-gap"},
+    {"fixture_id":"missing-tool-or-permission","mode":"research","outcome":"Checked the surface-level tool availability but could not inspect a trace.","assumptions":[],"evidence_or_checks":["Unavailable Firecrawl and trace paths were recorded."],"limitations_or_blockers":["Tool record, complete runtime inventory, and Noor runtime were unavailable."],"next_action":"Supply a Tool record and authorized availability probe.","result_class":"access-gap"},
+    {"fixture_id":"ambiguous-system-request","mode":"plan","outcome":"Used a reversible bounded assumption while preserving the ambiguity.","assumptions":["A bounded read-only plan is the safe default."],"evidence_or_checks":["No universal solution was claimed."],"limitations_or_blockers":["Outcome, scope, success criterion, and Noor runtime were unavailable."],"next_action":"Specify the outcome and rerun through Noor.","result_class":"access-gap"},
+    {"fixture_id":"authorized-persona-update","mode":"update","outcome":"Did not apply a mutation under the read-only evaluation boundary.","assumptions":[],"evidence_or_checks":["No canonical mutation or generated rebuild was claimed."],"limitations_or_blockers":["Authorized scope, target schema, and Noor runtime were unavailable."],"next_action":"Run a separately authorized update evaluation.","result_class":"access-gap"},
+    {"fixture_id":"reconcile-library-change","mode":"update","outcome":"Did not complete downstream impact checking because model and generated consumers were unavailable.","assumptions":[],"evidence_or_checks":["No exhaustive visibility claim was made."],"limitations_or_blockers":["Library model, generated consumers, route inventory, and Noor runtime were unavailable."],"next_action":"Supply the affected sources and rerun reconciliation.","result_class":"access-gap"},
+    {"fixture_id":"recover-failed-run","mode":"plan","outcome":"Could identify containment as the next step but could not classify the incident without run evidence.","assumptions":[],"evidence_or_checks":["No hidden mutation or root cause was asserted."],"limitations_or_blockers":["Run record, tool result, changed-file evidence, and Noor runtime were unavailable."],"next_action":"Supply sanitized incident evidence and rerun through Noor.","result_class":"access-gap"}
+  ]
+}
