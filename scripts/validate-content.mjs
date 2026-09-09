@@ -93,6 +93,9 @@ if (!canvasPage.includes('tabindex="0"') || !canvasPage.includes('grabCard') || 
 if (!canvasPage.includes('isInSequence') || !canvasPage.includes('node-links in-sequence') || !canvasPage.includes('focus-within .node-links.in-sequence') || !canvasPage.includes('Connect to')) {
   throw new Error('Workflow canvas page is missing the connection-chip rules or the connect affordance');
 }
+if (!canvasPage.includes('node-desc') || !canvasPage.includes('-webkit-line-clamp:2') || !canvasPage.includes('node.failureMode')) {
+  throw new Error('Workflow canvas card is missing its clamped description line');
+}
 if (!prototypingPage.includes('workflow-canvas-prototype') || !prototypingPage.includes('proto-workflow-canvas-reasoning') || !prototypingPage.includes('workflow-canvas.html') || !prototypingPage.includes('Layout-only move') || !prototypingPage.includes('Displacement')) {
   throw new Error('Prototyping page is missing the workflow canvas prototype');
 }
