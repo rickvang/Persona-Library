@@ -14,6 +14,7 @@ Use the shortest relevant path:
 8. For a multi-Persona build, create or load a named `problem-context` and use the collaboration Playbook; keep contributions attributable and require a concrete solution-quality gate before completion.
 9. Validate the result and report outcome, assumptions, evidence, limitations, and next action.
 10. Use a Work Order as the generic active-work packet and progress record for non-trivial in-progress work. Link specialized artifacts instead of duplicating them; a Work Order records authorization constraints but never grants mutation permission.
+11. Create a GitHub issue for each non-trivial plan and keep the plan, scope, status, and next actions tracked there; link the issue from the related Work Order when one exists.
 
 ## Quick routing map
 
