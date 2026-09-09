@@ -8,7 +8,7 @@ A project-scoped work packet for evidence-grounded resume writing. This file tra
 - Title: ATS-first resume application packet with optional human-facing rendering
 - Status: ready-for-review
 - Created: 2026-09-08
-- Last updated: 2026-09-08
+- Last updated: 2026-09-09
 - Requester: user
 - Current owner: Codex
 - Request mode: artifact-generation
@@ -58,6 +58,8 @@ Suggested review routing uses existing records only:
 
 These are review perspectives, not user evidence. Do not create or merge Personas for this Work Order.
 
+Routing convention for future application chats: “Consult Riley Morgan” means Riley coordinates the smallest relevant Persona panel and synthesizes the independent perspectives; it does not mean Riley is the sole reviewer. For cover-letter work, use Avery, Leah, Marcus, and Riley by default, adding Sofia for production or accessibility and Samira for outreach or interview carryover. Exclude prior drafts when the requester asks for a fresh design unless they explicitly opt them in.
+
 ## Project profile and destination
 
 | Field | Current value | Evidence status |
@@ -71,6 +73,8 @@ These are review perspectives, not user evidence. Do not create or merge Persona
 | Working destination | Private Google Drive job applications / Codex / this Work Order ID | Folder created and verified |
 
 A private Drive structure was located with separate Codex and Claude areas. The requester selected the 07/26 resume as the basis for a new master template. A per-run folder was created under the Codex area, and a native Google Docs copy named Rick Vang Resume — Master Template (Draft) was created there. The original source was not changed.
+
+The refined ATS resume was subsequently promoted to the active master-template baseline and renamed Rick Vang Resume — Master Template. The earlier draft remains intact as a superseded reference; it is not the active template.
 
 The exact Drive URLs, IDs, and personal content are intentionally not copied into this public repository. The copy link and folder link are returned in the task handoff.
 
@@ -107,8 +111,8 @@ Keep facts, researched claims, interpretations, generated writing, assumptions, 
 
 | ID | Planned artifact | Status | Required relationship |
 | --- | --- | --- | --- |
-| MASTER | Native resume master template copy in the private run folder | Created as draft | Starting source for later reconciliation; not yet a final evidence ledger |
-| OUT-ATS | ATS resume version (canonical) | Created in private run folder | Rendered from the shared evidence ledger; default submission candidate |
+| MASTER | Native resume master template copy in the private run folder | Promoted — active ATS baseline | Canonical formatting and content baseline for future renderings; claims remain governed by the shared evidence ledger |
+| OUT-ATS | ATS resume version (canonical) | Promoted into MASTER | The active master is the ATS-safe, role-ready rendering; tailor from it for future applications |
 | OUT-HUMAN | Human-facing resume version (optional) | Retained as reference; not canonical | Create only when channel/review context warrants it; render from the same ledger |
 | OUT-LETTER | Tailored cover letter | Not requested / unknown | Separate artifact; uses the same ledger and adds context |
 | ART-EVIDENCE | Evidence inventory or claim ledger | Created in private run folder | Source of truth for all material claims |
@@ -117,7 +121,7 @@ Keep facts, researched claims, interpretations, generated writing, assumptions, 
 
 Future project artifacts should be created in the authorized private Drive run folder unless the requester names another target. The public Persona Library stores the process and Work Order index, not private resume content by default.
 
-For this ATS-first run, the resume uses conventional section labels: `SUMMARY`, `SKILLS`, `WORK EXPERIENCE`, `ADDITIONAL EXPERIENCE`, and `EDUCATION & CERTIFICATIONS`. The target line is omitted. Accomplishments remain under the relevant roles, and supported capabilities remain in `SKILLS`; `SELECTED IMPACT` and `CORE ALIGNMENT` are not used as default sections.
+For this ATS-first run, the resume uses conventional section labels: `SUMMARY`, `WORK EXPERIENCE`, `EDUCATION`, `CERTIFICATIONS`, and `SKILLS`. `Additional Employers / Various Roles` remains a grouped H2 entry under `WORK EXPERIENCE`; it is not a separate top-level section. The target line is omitted. Accomplishments remain under the relevant roles, and supported capabilities remain in `SKILLS`; `SELECTED IMPACT` and `CORE ALIGNMENT` are not used as default sections.
 Provider profile: none was available for this run. Employer or portal-specific parser behavior remains unknown; any generic downstream validator must be recorded as tool compatibility evidence rather than vendor evidence.
 
 The packet must not:
@@ -141,7 +145,7 @@ Synthetic Personas may surface questions or design risks, but their responses re
 | Select 07/26 source and initialize master copy | Complete | Native copy verified; source unchanged | Review or approve the copied master |
 | Build shared evidence ledger | Complete | Shared ledger created; unsupported claims are marked partial or unknown | Review open questions before submission |
 | Analyze target role | Complete with open questions | Public Centstone posting read and mapped to source evidence | Resolve user-owned unknowns before submission |
-| Render ATS version | Complete | Draft rendered from the shared ledger | Review content and parser suitability before submission |
+| Render ATS version | Complete — human reference styling, grouped Additional Employers / Various Roles, final section order, and accessibility refinements applied; promoted to MASTER | Active master rendered from the shared ledger; native readback confirms the updated color, typography, heading treatment, links, and section order | Create role-specific renderings from the master when needed |
 | Render human-facing version | Complete — reference only / optional | Draft retained as a reference; not canonical | Use only if channel/review context warrants it |
 | Review integrity and optional parity | Complete with open questions | ATS-to-ledger integrity passed; ATS/human differences documented for the retained reference | Resolve chronology and requirement gaps |
 | Cover letter | Not requested / unknown | No request or role context | Decide after target role is known |
@@ -172,8 +176,19 @@ The requested target context is now supplied: [Centstone Senior UX Designer](htt
 - Source: the private native master copy based on Rick Vang Resume 07/26. The original source was not edited.
 - Created privately in the authorized run folder: one shared evidence ledger, one ATS resume, one human-facing resume, and one parity/integrity review. No cover letter was requested or created.
 - Checks completed: source-to-master equality, single-column document structure, conventional semantic headings, list structure, placeholder scan, shared claim coverage, parity of material facts, and privacy/mutation boundaries.
-- Result: the packet is ready for requester review. The ATS version is canonical. The human version is retained as a reference rendering from the same evidence source and is not selected by default.
-- Structural revision after requester review: removed the target line, removed the duplicated impact and alignment sections, consolidated the supported capability list under `SKILLS`, moved `SKILLS` before `WORK EXPERIENCE`, and grouped confirmed STG client engagements beneath their employer period.
+- Result: the packet is ready for requester review. The refined ATS version is now the active master-template baseline and canonical ATS structure. The human version is retained as a reference rendering from the same evidence source and is not selected by default.
+- Master promotion after requester review: renamed the refined ATS document to `Rick Vang Resume — Master Template` and designated it as the active baseline for future resume work. The earlier `Rick Vang Resume — Master Template (Draft)` remains intact as a superseded reference.
+- Styling revision after requester review: applied the human reference's color and typography treatment to the canonical ATS version while preserving its text, section order, semantic headings, single-column structure, and claim set. Native Docs readback confirmed the section-heading, employer-heading, date-line, contact, and body-text styles.
+- Grouping revision after requester review: treated `Additional Employers / Various Roles` as one grouped work entry under `WORK EXPERIENCE`, analogous to STG Consulting's employer-with-engagement structure, with `July 2007 – March 2015 | Various Locations` beneath the title. Each underlying employer, title, date range, location, and bullet remains intact; the aggregate line summarizes the preserved entries and does not invent an employer. The superseding decision was recorded in the private standing-decision record and evidence ledger.
+- Structural revision after requester review: removed the target line, removed the duplicated impact and alignment sections, consolidated the supported capability list under `SKILLS`, initially moved `SKILLS` before `WORK EXPERIENCE`, and then moved `SKILLS` to the bottom beneath `EDUCATION` and `CERTIFICATIONS` at the requester's direction. Confirmed STG client engagements remain grouped beneath their employer period.
+- Post-move formatting repair: removed inherited list metadata from the moved `SKILLS` heading, skill text, and trailing paragraph. Native Docs readback confirms the block is unbulleted and unindented like the original Skills section, with no extra bullet at the end.
+- ATS heading revision after requester review: split `EDUCATION & CERTIFICATIONS` into separate `EDUCATION` and `CERTIFICATIONS` headings, keeping the degree under Education and the three credentials under Certifications.
+- Accessibility revision after requester review: converted the email, website, and LinkedIn text into native hyperlinks while preserving the visible contact line, split the inline `SKILLS` string into four unbulleted categorized paragraphs while preserving every skill term, and bolded the four category labels for visual scanning. Employment date lines are now normal italic slate paragraphs rather than semantic headings, so screen-reader heading navigation stops at the actual section and employer headings.
+- Typography refinement after requester review: set all seven employment date lines to 9.5 pt while preserving their italic slate styling and normal paragraph semantics.
+- Layout refinement after requester review: confirmed the requested type scale across the ATS document—body 10 pt, employer headings 10.5 pt, section headings 11 pt, dates 9.5 pt, name 20 pt, and subtitle 12 pt—and added 2 pt before employer headings plus 2 pt after date lines without adding spacing between bullets. The refreshed PDF remains two pages, with the page break beginning with the final two related STG bullets rather than a single isolated bullet.
+- List refinement after requester review: compacted all 37 native bullet paragraphs from 36/18 pt indentation to 24/12 pt indentation, preserving their native list IDs, standard bullet glyphs, and tagged-PDF list structure. The compacted master remains a tagged two-page PDF.
+- Tagged-PDF and screen-reader audit: the current export succeeds as a 2-page, letter-size, tagged PDF with `Lang=en`; its structure tree contains the expected H1/H2 headings, paragraph date lines, list/list-item groups, and three `Link` nodes, and the PDF annotations resolve to the email, website, and LinkedIn URLs. Rendered page review found no clipping or orphaned headings; the final STG bullet continues intact at the top of page 2.
+- Audit limitation: no live NVDA/JAWS session was run, so assistive-technology behavior beyond the exported PDF's tag tree, link annotations, extracted reading order, and rendered pages remains unverified.
 - Employment attribution revision: STG Consulting is the employer for the confirmed indented C.R. England, EnerBankUSA, FamilySearch, ProDataKey, and JustServe engagements; the two STG periods remain separate because Rick left and later returned; Adobe and Idaho National Lab remain separate employers.
 - Open findings: direct usability-testing evidence is not present; WCAG 2.1 specificity is unconfirmed; Agile wording is not asserted; on-site/contract availability and work authorization are unknown; current Quva status/end date needs confirmation; and month-level client overlaps remain visible rather than silently normalized.
 - No submission, employer contact, publication, external sharing, or user-level skill installation was performed. Private Drive links and resume content remain out of the public repository.

@@ -24,6 +24,12 @@ Use one primary candidate persona with a coordinated set of specialist lenses:
 
 The default path is ATS-first with a claim-to-ledger integrity gate. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
 
+### Consultation convention
+
+When a requester asks to “consult Riley Morgan,” interpret that as a routed panel request. Riley is the job-search orchestrator: Riley assembles the smallest relevant set of existing Personas, coordinates their independent perspectives, preserves disagreement and boundaries, and synthesizes the handoff. Riley is not automatically the sole content, writing, hiring, or visual reviewer.
+
+For cover-letter or application-writing work, the default panel is Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Riley Morgan for coordination and synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
+
 ## MVP scope
 
 The first build is a responsive reference surface plus actual working-draft persona records, not a full application tracker. It includes:
