@@ -2,9 +2,11 @@
 
 This file is the active observation log for `WO-2026-09-08-conformance-observability`. It records repository implementation evidence and the boundary for future model-surface runs. It is not a transcript and does not contain private prompts or credentials.
 
+Future surface runs use one compact sanitized bundle per run under [`eval/results/authorized-runs/`](../../../eval/results/authorized-runs/). Common conditions are recorded once; fixture results keep only the fields needed for classification and follow-up. Raw reports remain outside the public repository.
+
 ## Observation contract
 
-Future entries should follow [`eval/observation-template.md`](../../../eval/observation-template.md) and include the fixture, model, surface, repository reference, context, tools, permissions, expected behavior, observed behavior, result class, evidence, confidence, severity, repeatability, owner, next test, and follow-up.
+Future entries should follow [`eval/observation-template.md`](../../../eval/observation-template.md). The fixture ID supplies the expected contract from `eval/cases.json`; do not duplicate the full contract or run metadata in every fixture result.
 
 ## Implementation observations
 
