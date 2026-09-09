@@ -90,6 +90,9 @@ if (!canvasPage.includes('drop-line') || !canvasPage.includes('showDropLine') ||
 if (!canvasPage.includes('tabindex="0"') || !canvasPage.includes('grabCard') || !canvasPage.includes('cancelGrab') || !canvasPage.includes('id="move-status"') || !canvasPage.includes('aria-live="polite"')) {
   throw new Error('Workflow canvas page is missing keyboard operation of the drag gesture');
 }
+if (!canvasPage.includes('isInSequence') || !canvasPage.includes('node-links in-sequence') || !canvasPage.includes('focus-within .node-links.in-sequence') || !canvasPage.includes('Connect to')) {
+  throw new Error('Workflow canvas page is missing the connection-chip rules or the connect affordance');
+}
 if (!prototypingPage.includes('workflow-canvas-prototype') || !prototypingPage.includes('proto-workflow-canvas-reasoning') || !prototypingPage.includes('workflow-canvas.html') || !prototypingPage.includes('Layout-only move') || !prototypingPage.includes('Displacement')) {
   throw new Error('Prototyping page is missing the workflow canvas prototype');
 }

@@ -54,6 +54,12 @@
     .node-title { font-size:13px; font-weight:800; line-height:1.35; letter-spacing:-.01em; }
     .node-meta { margin-top:5px; color:var(--muted); font-size:11px; line-height:1.4; }
     .node-links { display:flex; flex-wrap:wrap; gap:5px; margin-top:8px; }
+    /* A connection to the very next step in the same sequence is already drawn as an
+       arrow, so its chip is redundant. It stays reachable — hover or focus the card —
+       because the chip carries the only control for removing that connection. */
+    .node-links.in-sequence { display:none; }
+    .node:hover .node-links.in-sequence, .node:focus-within .node-links.in-sequence { display:flex; }
+    .link-chip.quiet { border-color:#dfe4ea; background:#f4f6f8; color:#5b6b7c; }
     .link-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 6px; border:1px solid #c6d9f2; border-radius:999px; background:#edf4ff; color:#315474; font-size:10px; font-weight:800; }
     .link-chip button { padding:0 2px; border:0; border-radius:0; color:#315474; background:none; font-size:11px; font-weight:900; line-height:1; }
     .node-actions { display:flex; gap:6px; margin-top:8px; }
@@ -194,6 +200,7 @@
       let grabbed = null;      // keyboard: { id, originLane, originIndex }
       let pendingFocus = null; // re-focus a card after a re-render
       let rendering = false;   // re-rendering detaches cards and fires focusout; that is not the user leaving
+      let positions = new Map(); // node id -> { lane, index, run }, rebuilt on each render
       const statusEl = document.getElementById('move-status');
       const announce = text => { statusEl.textContent = text; };
 
@@ -228,6 +235,7 @@
       // --- rendering ---------------------------------------------------------
 
       function renderLanes() {
+        positions = buildPositions();
         lanesEl.innerHTML = Graph.LANES.map(lane => {
           const nodes = Graph.nodesInLane(current, lane.id);
           const body = nodes.length
@@ -241,6 +249,30 @@
       // and the seam between them carries no connection. Grouping contiguous runs by
       // their source workflow draws that seam, so a card dragged across it is a visible
       // move between sequences rather than a silent one.
+      // Where every node sits: which lane, which position, and which contiguous
+      // sequence run. A connection from one node to the next position in the same run
+      // is what the arrows already show.
+      function buildPositions() {
+        const map = new Map();
+        Graph.LANES.forEach(lane => {
+          const nodes = Graph.nodesInLane(current, lane.id);
+          let run = 0;
+          nodes.forEach((node, index) => {
+            const title = node.flowTitle || 'Unassigned';
+            const previous = index > 0 ? (nodes[index - 1].flowTitle || 'Unassigned') : title;
+            if (index > 0 && previous !== title) run += 1;
+            map.set(node.id, { lane: lane.id, index, run });
+          });
+        });
+        return map;
+      }
+
+      function isInSequence(edge) {
+        const from = positions.get(edge.from);
+        const to = positions.get(edge.to);
+        return Boolean(from && to && from.lane === to.lane && from.run === to.run && to.index === from.index + 1);
+      }
+
       function renderChains(nodes, lane) {
         const runs = [];
         nodes.forEach((node, index) => {
@@ -257,10 +289,15 @@
 
       function renderNode(node, index, total, lane) {
         const outgoing = Graph.outgoing(current, node.id);
-        const chips = outgoing.map(edge => {
+        // Split the connections: the ones the arrows already show, and the ones worth
+        // pointing at — a step skipped, a tier crossed, a path branched.
+        const chipFor = (edge, quiet) => {
           const target = current.nodes.find(item => item.id === edge.to);
-          return `<span class="link-chip">→ ${escapeHtml(label(target))}<button type="button" data-action="unlink" data-from="${escapeHtml(edge.from)}" data-to="${escapeHtml(edge.to)}" title="Remove this connection" aria-label="Remove connection to ${escapeHtml(label(target))}">×</button></span>`;
-        }).join('');
+          const name = escapeHtml(label(target));
+          return `<span class="link-chip${quiet ? ' quiet' : ''}" title="This step flows to “${name}”">→ ${name}<button type="button" data-action="unlink" data-from="${escapeHtml(edge.from)}" data-to="${escapeHtml(edge.to)}" title="Remove this connection" aria-label="Remove connection to ${name}">×</button></span>`;
+        };
+        const notable = outgoing.filter(edge => !isInSequence(edge)).map(edge => chipFor(edge, false)).join('');
+        const inSequence = outgoing.filter(isInSequence).map(edge => chipFor(edge, true)).join('');
         const classes = ['node'];
         if (Graph.isGateNode(node)) classes.push('gate');
         if (grabbed && grabbed.id === node.id) classes.push('grabbed');
@@ -273,9 +310,10 @@
         return `<article class="${classes.join(' ')}" draggable="true" tabindex="0" role="button" aria-label="${escapeHtml(spoken)}" data-node="${escapeHtml(node.id)}">
           <div class="node-title">${escapeHtml(node.label)}</div>
           ${meta ? `<div class="node-meta">${meta}</div>` : ''}
-          ${chips ? `<div class="node-links">${chips}</div>` : ''}
+          ${notable ? `<div class="node-links">${notable}</div>` : ''}
+          ${inSequence ? `<div class="node-links in-sequence">${inSequence}</div>` : ''}
           <div class="node-actions">
-            <button type="button" class="ghost" data-action="link" data-node="${escapeHtml(node.id)}">${linkSource === node.id ? 'Cancel link' : 'Link →'}</button>
+            <button type="button" class="ghost" data-action="link" data-node="${escapeHtml(node.id)}">${linkSource === node.id ? 'Cancel' : 'Connect to…'}</button>
             <button type="button" class="ghost" data-action="remove" data-node="${escapeHtml(node.id)}">Remove</button>
           </div>
         </article>`;
