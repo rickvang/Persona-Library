@@ -355,6 +355,22 @@
         "next_handoff": "Return required, optional, unchanged, and unknown impacts to the initiating workflow owner."
       },
       {
+        "id": "isolated-persona-skill-testing",
+        "request": "Run each selected Persona Skill in a fresh isolated low-reasoning task and evaluate the response",
+        "modes": ["research", "update"],
+        "primary_space": "skills",
+        "secondary_spaces": ["personas", "docs", "tools"],
+        "target": "persona-skill-conformance",
+        "artifact_kind": "callable_skill",
+        "package_path": ".agents/skills/persona-skill-conformance",
+        "availability_source": "repo_local",
+        "first_reads": ["content/library-data.js", "eval/skill-cases.json", "eval/isolated-persona-skill.mjs", "active Work Order"],
+        "mutation_boundary": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "non_triggers": ["A general multi-Persona consultation", "Testing without a defined Skill profile or expected quality signal", "Claiming independent conformance when the observer shares the runner runtime"],
+        "next_handoff": "Archive temporary tasks, store sanitized results under eval/results/isolated/, and run one bounded impact review."
+      },
+      {
         "id": "resume-application-work",
         "request": "Create or review a resume or application packet",
         "modes": ["research", "plan", "update"],

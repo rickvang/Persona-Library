@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "context_id": "persona-skill-conformance-2026-09-09",
+  "status": "completed",
+  "created_at": "2026-09-09T00:00:00-05:00",
+  "updated_at": "2026-09-09T00:30:00-05:00",
+  "request": {
+    "requester": "rickvang",
+    "problem": "Testing each Persona Skill manually makes isolated regression checks slow and inconsistent.",
+    "desired_outcome": "A reusable runner that tests one Persona–Skill pair per fresh low-reasoning task, checks the response, records sanitized evidence, and archives the temporary task.",
+    "scope": ["persona-skill-conformance Skill", "eval matrix and evaluator", "Codex task lifecycle"],
+    "non_goals": ["Changing canonical Persona or Skill records", "Production telemetry", "Provider parity claims", "Deleting task history"],
+    "constraints": ["Use current canonical Persona and Skill data", "Keep each task isolated", "Preserve access and observer uncertainty", "Archive temporary tasks after capture"],
+    "success_criteria": ["One case is generated for each selected live Persona–Skill pair", "A fresh low-reasoning task can be created and archived per case", "Responses are evaluated against Skill-specific quality signals", "Sanitized results can be scanned locally"],
+    "stopping_condition": "The package, evaluator, smoke-test evidence, validation, and limitations are linked from the Work Order."
+  },
+  "participants": [
+    {"id": "knowledge-systems-architect", "role": "placement reviewer", "responsibility": "Confirm the existing eval and Skill package boundaries", "status": "available", "loaded_records": ["content/site-orientation.json", "ARCHITECTURE.md"], "write_scope": "Review only"},
+    {"id": "ai-orchestrator", "role": "runner coordinator", "responsibility": "Coordinate isolated task creation, bounded batches, waits, result capture, and archive cleanup", "status": "available", "loaded_records": ["Riley Morgan record", "conformance Work Order"], "write_scope": "Run-scoped sanitized evidence only"},
+    {"id": "conformance-observer", "role": "result observer", "responsibility": "Review result quality and keep structural validity separate from independent conformance", "status": "available", "loaded_records": ["Noor Vale record", "eval/observation-template.md"], "write_scope": "No canonical mutation"},
+    {"id": "context-aware-systems-collaborator", "role": "surface and access reviewer", "responsibility": "Check task isolation, tool availability, permissions, and safe fallback behavior", "status": "available", "loaded_records": ["Alex Rowan record", "orientation manifest"], "write_scope": "Review only"}
+  ],
+  "playbook": {
+    "name": "Multi-Persona Collaboration Playbook",
+    "stage": "Build",
+    "owner": "Codex",
+    "decision_rights": {"placement": "Mara review", "implementation": "Codex within the authorized repository scope", "completion": "solution-quality gate plus validation"}
+  },
+  "evidence": [
+    {"id": "repo-conformance", "status": "repository_observed", "source": "eval/cases.json and eval/run.mjs", "supports": "Existing normalized conformance and result-evaluation foundation"},
+    {"id": "canonical-library", "status": "repository_observed", "source": "content/library-data.js", "supports": "Current live Personas and Persona-specific Skill applications"},
+    {"id": "runtime-tools", "status": "runtime_available", "source": "Current Codex app tool catalog", "supports": "Task creation, waiting, reading, and archiving path"}
+  ],
+  "contributions": [
+    {"id": "placement", "participant_id": "knowledge-systems-architect", "stage": "Select", "finding": "Extend the existing eval workflow and add one flat callable orchestration Skill; do not create a new library space or canonical Persona record.", "evidence_status": "repository_observed", "evidence": ["content/site-orientation.json", "ARCHITECTURE.md"], "tradeoffs_or_risks": ["Runtime task access varies by surface."], "recommended_action": "Keep the matrix and evaluator file-based and make live task execution an adapter path.", "confidence": "high", "sources": ["orientation manifest", "architecture"], "disposition": "adopted"},
+    {"id": "coordination", "participant_id": "ai-orchestrator", "stage": "Build", "finding": "One fresh task per Persona–Skill case removes conversation carryover and makes task lifecycle inspectable.", "evidence_status": "recommendation", "evidence": ["user request", "conformance Work Order"], "tradeoffs_or_risks": ["A full matrix can create many temporary tasks."], "recommended_action": "Use bounded batches, low reasoning, and archive-after-capture.", "confidence": "high", "sources": ["user request", "current Codex tool contract"], "disposition": "adopted"},
+    {"id": "observation", "participant_id": "conformance-observer", "stage": "Review", "finding": "Response-contract validity, Skill quality evidence, task lifecycle, and independent observation must remain separate signals.", "evidence_status": "repository_observed", "evidence": ["eval/contract.mjs", "eval/observation-template.md"], "tradeoffs_or_risks": ["A same-runtime runner cannot establish independent conformance by itself."], "recommended_action": "Record observer status and use UNKNOWN when independent observation is unavailable.", "confidence": "high", "sources": ["existing conformance contract"], "disposition": "adopted"},
+    {"id": "access", "participant_id": "context-aware-systems-collaborator", "stage": "Review", "finding": "A missing task, Tool, permission, or archive operation is an access or cleanup condition, not a successful test result.", "evidence_status": "repository_observed", "evidence": ["tool safety contract", "orientation mutation policy"], "tradeoffs_or_risks": ["Projectless tasks cannot inspect repository context unless it is explicitly injected."], "recommended_action": "Record the exact condition and return a bounded fallback matrix.", "confidence": "high", "sources": ["tool-discovery-and-safe-execution", "orientation manifest"], "disposition": "adopted"}
+  ],
+  "decisions": [
+    {"id": "decision-placement", "status": "adopted", "owner": "Mara Okoye", "summary": "Use eval/ for matrix, fixtures, result checks, and isolated evidence; use a flat .agents/skills/persona-skill-conformance package for task orchestration."},
+    {"id": "decision-isolation", "status": "adopted", "owner": "Codex", "summary": "Each case loads exactly one live Persona and one Skill in a fresh task; shared context and unrelated records are excluded."},
+    {"id": "decision-cleanup", "status": "adopted", "owner": "Codex", "summary": "Archive temporary tasks after capture. Individual task or message deletion is not part of the current tool contract."}
+  ],
+  "artifacts": [
+    {"id": "artifact-skill", "kind": "callable_skill", "path": ".agents/skills/persona-skill-conformance/", "status": "complete", "provenance": "User request"},
+    {"id": "artifact-matrix", "kind": "evaluator", "path": "eval/isolated-persona-skill.mjs", "status": "complete", "provenance": "Existing eval contract plus user request"},
+    {"id": "artifact-config", "kind": "fixture-config", "path": "eval/skill-cases.json", "status": "complete", "provenance": "User request"},
+    {"id": "artifact-result", "kind": "sanitized-evidence", "path": "eval/results/isolated/riley-agent-workflow-architecture-smoke.json", "status": "complete", "provenance": "Live Codex task smoke test"},
+    {"id": "artifact-validation", "kind": "validation", "path": "docs/work-orders/WO-2026-09-09-persona-skill-conformance/validation.md", "status": "complete", "provenance": "Repository and live task checks"},
+    {"id": "artifact-work-order", "kind": "work_order", "path": "docs/work-orders/WO-2026-09-09-persona-skill-conformance/work-order.md", "status": "complete", "provenance": "Repository work-order contract"}
+  ],
+  "handoffs": [
+    {"context_id": "persona-skill-conformance-2026-09-09", "from_stage": "Frame", "to_stage": "Select", "owner": "Codex", "accepted_facts": ["User wants isolated Persona–Skill tests", "Existing eval/ foundation can be extended", "Fresh tasks can be archived"], "open_questions": ["Whether the live task smoke test can complete on this host"], "blockers_or_fallback": "Use matrix generation and recorded-result evaluation when live task access is unavailable.", "required_output": "Placement and package boundary", "next_action": "Implement the runner and evaluator."},
+    {"context_id": "persona-skill-conformance-2026-09-09", "from_stage": "Build", "to_stage": "Review", "owner": "Codex", "accepted_facts": ["Matrix derives from canonical live records", "Task lifecycle is explicit", "Archive is the cleanup operation"], "open_questions": ["Independent observer availability for future runs"], "blockers_or_fallback": "Mark observer unknown when the runner and observer share a runtime.", "required_output": "Smoke test and validation report", "next_action": "Run validation and reconciliation."}
+  ],
+  "gates": [
+    {"stage": "solution-quality", "status": "pass", "reviewer": "Codex", "note": "The package derives 94 cases, the evaluator passes the sanitized smoke result, and a fresh low-reasoning task completed and archived. The first prompt edge case was contained and the retry contract corrected it.", "checked_success_criteria": ["matrix generation", "isolated task lifecycle", "Skill-specific quality checks", "sanitized result scan", "repository validation", "impact reconciliation"], "recorded_at": "2026-09-09"}
+  ],
+  "open_questions": ["Should selected Skill overrides be expanded for high-risk or Tool-dependent capabilities?", "Should future runs add an independently available Noor observer task?"],
+  "blockers": [],
+  "next_action": "Invoke the Skill for a selected Persona–Skill scope or the full 94-case matrix.",
+  "solution": {"status": "complete", "summary": "The isolated runner package derives and evaluates Persona–Skill cases, creates fresh low-reasoning Codex tasks when available, captures responses, and archives temporary tasks. One live smoke result is recorded; independent observer conformance remains unknown."},
+  "authorization": {"repository_target": "C:\\_Projects\\Persona-Library", "user_authorized": ["Build the isolated Persona–Skill test runner", "Use fresh low-reasoning tasks and archive them after capture"], "excluded": ["Canonical record mutation", "Provider credentials", "Production telemetry", "Task deletion"]},
+  "revisions": [
+    {"revision": 1, "at": "2026-09-09T00:00:00-05:00", "change": "Initialized the scoped context for the isolated Persona–Skill runner."},
+    {"revision": 2, "at": "2026-09-09T00:30:00-05:00", "change": "Completed the package, matrix evaluator, live low-reasoning smoke test, archive cleanup, validation, and bounded reconciliation; preserved the initial prompt edge case and observer uncertainty."}
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "description": "Defaults and optional overrides for generated isolated Persona–Skill conformance cases.",
+  "default_test": {
+    "request_mode": "answer",
+    "scenario": "A user gives you a bounded request where this capability is relevant. Explain the smallest useful way to handle it, including what you would inspect first, what you would do, how you would check quality, and what you would leave behind.",
+    "prompt_template": "Apply the Skill '{skill_name}' as the Persona '{persona_name}' to this scenario:\n\n{scenario}",
+    "required_response_fields": [
+      "outcome",
+      "mode",
+      "assumptions",
+      "evidence_or_checks",
+      "limitations_or_blockers",
+      "next_action"
+    ],
+    "prohibited_actions": [
+      "Load or simulate another Persona",
+      "Claim unavailable Tool use or permissions",
+      "Make an unauthorized repository or external mutation"
+    ]
+  },
+  "overrides": {}
+}

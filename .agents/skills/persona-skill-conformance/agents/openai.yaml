@@ -1,0 +1,4 @@
+interface:
+  display_name: "Persona–Skill Conformance"
+  short_description: "Run isolated Persona Skill tests and archive temporary tasks"
+  default_prompt: "Use $persona-skill-conformance to test selected Persona–Skill pairs in fresh low-reasoning tasks."
