@@ -70,8 +70,8 @@ Issue #37 names Noor Vale as a Context Access Observer. The catalog also contain
 | Issue requirements | `sourced` | Defines intended suite and observer behavior, not runtime results. |
 | Persona and workflow | `synthetic_assumption` | Working model for a specialist; not a claim about an observed individual. |
 | Fixture and evaluator behavior | `repository_observed` after validation | Structural and policy checks are tested locally; they do not measure model quality by themselves. |
-| Live cross-LLM comparison | `recorded; parity unknown` | Cursor Grok 4.6, Cursor Composer, Claude Cowork, and ChatGPT Codex Luna extra-high supplied sanitized ten-fixture packets. Conditions and access differed, so the records establish exercise across surfaces but do not prove behavioral parity. |
-| Tool and permission findings | `recorded with explicit gaps` | The four normalized bundles capture available, attempted, unavailable, granted, denied, and unknown conditions; missing access remains an access gap. |
+| Live cross-LLM comparison | `recorded; parity accepted unknown` | Cursor Grok 4.6, Cursor Composer, Claude Cowork, and ChatGPT Codex Luna supplied sanitized packets, including a Cursor run with an independently observed Noor handoff. Conditions and access differed, so behavioral parity is not claimed. |
+| Tool and permission findings | `recorded with explicit gaps` | The five normalized bundles capture available, attempted, unavailable, granted, denied, and unknown conditions; missing access remains an access gap. |
 | Repository validator | `passed` | `node scripts/validate-content.mjs` passes on the current source and generated data. |
 
 ## Change-impact reconciliation plan
@@ -91,27 +91,26 @@ The Persona-specific adapter runs before the universal reconciliation pass. The 
 
 ### Persona-specific adapter
 
-- Status: `complete for repository scope` because the canonical source and declared relationships are reconciled; live provider behavior and independent Noor enforcement remain explicitly unknown.
+- Status: `complete for repository scope` because the canonical source and declared relationships are reconciled; provider behavior and cross-surface parity remain accepted unknowns, while Cursor-level independent Noor enforcement is recorded.
 - Change observed: a working-draft `conformance-observer` / Noor Vale record, seven Persona-specific applications of existing Skills, six Noor workflows, and a required Riley-to-Noor per-run handoff were added from Issues #37 and #43.
 - Classification: `extends` the catalog with a bounded observer role; `qualifies` Riley’s evaluation responsibility as orchestration coordination; `reuses` the portable Skill without assigning conformance ownership to Riley; `qualifies` runtime enforcement as untested; no existing Persona was replaced.
 - Checked: Persona index/detail, Skill links and applications, workflow maps, resources, confidence, needs, implications, normalized maintenance records, Tool requirements, Playbook records, and generated data.
-- Required follow-up moved to [Issue #51](https://github.com/rickvang/Persona-Library/issues/51): exercise the declared Riley-to-Noor handoff in an independent runtime before making cross-LLM claims.
+- The independent handoff follow-up is recorded in `OBS-008`; no cross-LLM parity claim is made.
 - Unchanged: canonical Tool records, Playbooks, private data, credentials, runtime integrations, and existing Persona source claims outside the new record.
 
 ### Universal change-impact pass
 
 - Status: `complete for repository scope` with no unsafe mutation detected.
 - Checked: orientation route, `eval/` artifacts, Work Order and problem-context links, source/generated Persona data, validation commands, and the repository mutation boundary.
-- Required follow-up moved to [Issue #51](https://github.com/rickvang/Persona-Library/issues/51): improve independent runtime and trace coverage.
-- Unknown: provider adapter availability, runtime trace retention, whether every runtime enforces the declared handoff, and behavioral parity under materially equivalent conditions.
+- Unknown and accepted out of scope for this Work Order: provider adapter availability, runtime trace retention, whether every runtime enforces the declared handoff, and behavioral parity under materially equivalent conditions.
 - Handoff count: one Persona-specific review followed by one universal pass; no recursive handoff.
 
 ## Completion gate
 
-The repository implementation is complete: the validator passes, the evaluator validates the fixture set and normalized recorded-result bundles, the Persona and workflows appear in generated data, and this Work Order records the four surface runs and their limitations. Independent handoff enforcement and controlled parity remain in [Issue #51](https://github.com/rickvang/Persona-Library/issues/51).
+The repository implementation is complete: the validator passes, the evaluator validates the fixture set and normalized recorded-result bundles, the Persona and workflows appear in generated data, and this Work Order records five runs and their limitations. The Cursor follow-up records an independently observed handoff; provider metadata, traces, and controlled parity are accepted unknowns.
 
 ## Follow-up work
 
-- [Issue #51](https://github.com/rickvang/Persona-Library/issues/51) — independently validate the Riley-to-Noor handoff, cold-start fairness, trace access, and provider metadata.
+- [Issue #51](https://github.com/rickvang/Persona-Library/issues/51) — closed after independent Cursor handoff evidence; provider metadata, traces, and cross-surface parity were accepted out of scope.
 - Provider-specific adapters remain optional until their runtime, permissions, and retention boundaries are explicit.
 - Promote recurring, independently reusable observation logic to a Skill only after repeated use demonstrates that boundary.
