@@ -71,7 +71,7 @@ Issue #37 names Noor Vale as a Context Access Observer. The catalog also contain
 | Persona and workflow | `synthetic_assumption` | Working model for a specialist; not a claim about an observed individual. |
 | Fixture and evaluator behavior | `repository_observed` after validation | Structural and policy checks are tested locally; they do not measure model quality by themselves. |
 | Live cross-LLM comparison | `recorded; parity unknown` | Cursor Grok 4.6, Claude Cowork, and ChatGPT Codex Luna extra-high supplied sanitized ten-fixture packets. Conditions and access differed, so the records establish exercise across surfaces but do not prove behavioral parity. |
-| Tool and permission findings | `unknown` until a recorded result supplies conditions | Missing access must remain an access gap. |
+| Tool and permission findings | `recorded with explicit gaps` | The three normalized bundles capture available, attempted, unavailable, granted, denied, and unknown conditions; missing access remains an access gap. |
 | Repository validator | `passed` | `node scripts/validate-content.mjs` passes on the current source and generated data. |
 
 ## Change-impact reconciliation plan

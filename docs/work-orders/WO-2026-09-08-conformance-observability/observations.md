@@ -11,7 +11,7 @@ Future entries should follow [`eval/observation-template.md`](../../../eval/obse
 | ID | Target | Result class | Evidence | Follow-up |
 | --- | --- | --- | --- | --- |
 | OBS-001 | Fixture set | success | `eval/cases.json` contains ten cases covering orientation, research, planning, prototype, consult, access gap, ambiguity, update, reconciliation, and recovery. | Re-run after contract changes. |
-| OBS-002 | Evaluator | success | `node eval/run.mjs validate` and a representative recorded-result evaluation pass after implementation. | Add authorized provider runs later. |
+| OBS-002 | Evaluator | success | `node eval/run.mjs validate`, normalized run-bundle scanning, and representative recorded-result evaluation pass after implementation. | Repeat only after evaluator contract changes. |
 | OBS-003 | Persona identity | success | The canonical source now records Noor as the conformance observer and Riley as the coordinator with a required per-run handoff. | Validate runtime enforcement in #51. |
 | OBS-004 | Cross-LLM comparison | unclear | Three authorized surfaces supplied ten-fixture packets, but context, tools, and observer availability differed. | Normalize and preserve parity as unknown; controlled rerun is in #51. |
 | OBS-005 | Negative evaluator case | success | An unsupported update claim with unavailable access is classified `REVIEW` for mode and access honesty rather than accepted as a pass. | Keep this boundary when adapters are added. |
