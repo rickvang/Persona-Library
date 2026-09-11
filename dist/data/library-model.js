@@ -319,13 +319,8 @@
           return playbook ? { ...playbook, known: true } : { id, name: id, status: 'Unknown reference', known: false };
         });
         const relatedToolRecipes = [...new Map(relatedSkills.flatMap(skill => skill.toolUseRecipes || []).map(recipe => [recipe.id, recipe])).values()];
-        const plannedExternalSource = template.source?.kind === 'github_repository' && template.source?.availability === 'planned' && template.source?.path == null;
-        const source = plannedExternalSource
-          ? { ...template.source, repositoryDocumentationEntrypoint: template.source.entrypoint || null, entrypoint: null }
-          : template.source;
         return {
           ...template,
-          source,
           relatedSkills,
           relatedPersonas: [...new Map(applications.map(application => [application.personaId, { id: application.personaId, name: application.personaName, roleLabel: application.personaRoleLabel }])).values()],
           applications,

@@ -85,6 +85,9 @@ if (!operatingPacksPage.includes('Operating Packs keep the domain in view.') || 
 if (!templatesPage.includes('Templates give the work a useful first shape.') || !templatesPage.includes('templateCatalog') || !templatesPage.includes('category-filter') || !templatesPage.includes('status-filter') || !templatesPage.includes('source-filter') || !templatesPage.includes('availability-filter') || !templatesPage.includes('template-research') || !templatesPage.includes('relatedToolRecipes') || !templatesPage.includes("grid.addEventListener('toggle'")) {
   throw new Error('Templates page is missing its normalized catalog, filters, relationships, or lifecycle boundary');
 }
+if (!templatesPage.includes('id="${escapeHtml(template.id)}"') || !templatesPage.includes('window.location.hash.slice(1)') || !templatesPage.includes("scrollIntoView({ block: 'start' })") || templatesPage.includes('<span id="template-design-system-web-app" aria-hidden="true"></span>') || !templatesPage.includes('Entrypoint unknown')) {
+  throw new Error('Templates page is missing rendered fragment selection or planned entrypoint handling');
+}
 if (guidePage.includes('rickvang/TemplateRepo') || playbooksPage.includes('rickvang/TemplateRepo')) throw new Error('Current Site docs still present TemplateRepo as the Design System Operating Pack source');
 if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('proto-persona-library-guide') || !prototypingPage.includes('Persona Library Guide') || !prototypingPage.includes('Selected output with missing prerequisites') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate') || !prototypingPage.includes('change-reconciliation-prototype') || !prototypingPage.includes('proto-skill-change-impact-reconciliation') || !prototypingPage.includes('Generated artifact update') || !prototypingPage.includes('reconciliation report') || !prototypingPage.includes('skill-contract-prototype') || !prototypingPage.includes('proto-skill-contract-routing') || !prototypingPage.includes('Missing metadata')) {
   throw new Error('Prototyping page is missing the isolated persona prototype workspace');
@@ -340,7 +343,8 @@ const resolveLocalTemplateEntrypoint = sourceRecord => {
   const sourceRoot = path.resolve(root, sourceRecord.path);
   if (!isWithinRoot(sourceRoot)) throw new Error('Template source path escapes the repository root');
   const entrypoint = path.resolve(sourceRoot, sourceRecord.entrypoint);
-  if (!isWithinRoot(entrypoint)) throw new Error('Template entrypoint escapes the repository root');
+  const relativeToSourceRoot = path.relative(sourceRoot, entrypoint);
+  if (relativeToSourceRoot === '..' || relativeToSourceRoot.startsWith(`..${path.sep}`) || path.isAbsolute(relativeToSourceRoot)) throw new Error('Template entrypoint escapes the declared source directory');
   return entrypoint;
 };
 const assertKnownTemplateApplication = (templateId, application) => {
@@ -354,9 +358,11 @@ for (const template of data.templates) {
   }
   if (!Array.isArray(template.provides) || !template.provides.length || !Array.isArray(template.applications) || !Array.isArray(template.relatedSkills) || !Array.isArray(template.operatingPacks) || !Array.isArray(template.playbooks)) throw new Error(`${template.id} has an incomplete relationship or starting-structure model`);
   const sourceRecord = template.source;
-  if (!allowedTemplateSourceKinds.has(sourceRecord.kind) || !Object.prototype.hasOwnProperty.call(sourceRecord, 'path') || !sourceRecord.entrypoint || !sourceRecord.availability || !allowedAvailabilitySources.has(sourceRecord.availability) || !sourceRecord.verification) throw new Error(`${template.id} has incomplete source/location metadata`);
+  const plannedExternalWithoutArtifact = sourceRecord.kind === 'github_repository' && sourceRecord.availability === 'planned' && sourceRecord.path == null;
+  if (!allowedTemplateSourceKinds.has(sourceRecord.kind) || !Object.prototype.hasOwnProperty.call(sourceRecord, 'path') || (!sourceRecord.entrypoint && !plannedExternalWithoutArtifact) || !sourceRecord.availability || !allowedAvailabilitySources.has(sourceRecord.availability) || !sourceRecord.verification) throw new Error(`${template.id} has incomplete source/location metadata`);
   if (sourceRecord.kind === 'github_repository' && !/^[^/]+\/[^/]+$/.test(sourceRecord.repository || '')) throw new Error(`${template.id} has an invalid external repository reference`);
   if (sourceRecord.kind === 'github_repository' && sourceRecord.availability === 'repo_local') throw new Error(`${template.id} incorrectly claims repo-local availability for an external source`);
+  if (plannedExternalWithoutArtifact && sourceRecord.entrypoint != null) throw new Error(`${template.id} planned external artifact entrypoint must remain unknown`);
   if (sourceRecord.kind !== 'github_repository' && (!sourceRecord.path || !isWithinRoot(path.resolve(root, sourceRecord.path)))) throw new Error(`${template.id} has an invalid local source path`);
   if (sourceRecord.kind !== 'github_repository') {
     const entrypoint = resolveLocalTemplateEntrypoint(sourceRecord);
@@ -431,11 +437,19 @@ try {
 if (!duplicateTemplateFixtureRejected) throw new Error('Duplicate Template id was not rejected');
 let templateTraversalFixtureRejected = false;
 try {
-  resolveLocalTemplateEntrypoint({ path: '.', entrypoint: '../outside.md' });
+  resolveLocalTemplateEntrypoint({ path: 'docs/template-a', entrypoint: '../other.md' });
 } catch {
   templateTraversalFixtureRejected = true;
 }
-if (!templateTraversalFixtureRejected) throw new Error('Template entrypoint traversal was not rejected');
+if (!templateTraversalFixtureRejected) throw new Error('Template entrypoint escape from the declared source directory was not rejected');
+let templateNestedEntrypointFixtureAccepted = false;
+try {
+  resolveLocalTemplateEntrypoint({ path: 'docs', entrypoint: 'work-orders/WO-2026-09-11-templates/work-order.md' });
+  templateNestedEntrypointFixtureAccepted = true;
+} catch {
+  templateNestedEntrypointFixtureAccepted = false;
+}
+if (!templateNestedEntrypointFixtureAccepted) throw new Error('Valid nested Template entrypoint was rejected');
 let externalTemplateAvailabilityFixtureRejected = false;
 try {
   const externalFixture = { kind:'github_repository', repository:'rickvang/template-library', path:null, entrypoint:'README.md', availability:'repo_local', verification:'Validator fixture' };

@@ -2,14 +2,19 @@
 
 - Work Order ID: WO-2026-09-11-templates
 - Title: Add Templates as a first-class library space with a distinct ownership boundary
-- Status: complete with tracking gap
+- Status: complete; PR #61 open for review
 - Created: 2026-09-11
 - Last updated: 2026-09-11
 - Requester: repository user
 - Current owner: Codex
 - Request mode: update
-- GitHub issue: pending; the environment has no `gh` CLI or GitHub connector
+- GitHub issue: #62 — [Track Templates first-class library implementation](https://github.com/rickvang/Persona-Library/issues/62)
 - Artifact home: `docs/work-orders/WO-2026-09-11-templates/`
+
+## Tracking history
+
+- Initial implementation was recorded with issue tracking pending because the environment did not expose a GitHub issue CLI or connector.
+- Focused issue [#62](https://github.com/rickvang/Persona-Library/issues/62) now owns the implementation plan, scope, status, and next actions; PR #61 is the implementation vehicle.
 
 ## Outcome
 
@@ -35,8 +40,8 @@ Mara Okoye’s knowledge-systems placement gate is recorded in [ia.md](ia.md). T
 - Revision inspected: `f88a4011902b58b2f192305f5a731f1a71263965`
 - Observed tree: `README.md` only
 - Proposed paths checked: `templates/design-systems/resume-document`, `templates/design-systems/web-app`, and `templates/design-systems/multi-product`
-- Entrypoint result: no Template artifact entrypoint exists at any proposed path; root `README.md` is recorded as the repository documentation entrypoint only
-- Catalog state: all three seeds are `Planned external reference` with `availability: planned` and `path: null`
+- Entrypoint result: no Template artifact entrypoint exists at any proposed path; each seed keeps `entrypoint: null`, while root `README.md` is recorded separately as the repository documentation entrypoint
+- Catalog state: all three seeds are `Planned external reference` with `availability: planned`, `path: null`, and `entrypoint: null`
 
 ## Non-goals and constraints
 
@@ -48,8 +53,8 @@ Mara Okoye’s knowledge-systems placement gate is recorded in [ia.md](ia.md). T
 
 ## Validation and reconciliation
 
-The implementation was built and validated with the required commands. Focused negative fixtures cover invalid Persona–Skill–workflow relationships, unknown Operating Pack and Playbook references, duplicate Template IDs, local source traversal, external repo-local availability, and prototype identity leakage. The Template adapter and one universal change-impact review are recorded in [reconciliation.md](reconciliation.md).
+The implementation and review fixes were built and validated with the required commands. Focused checks cover invalid Persona–Skill–workflow relationships, unknown Operating Pack and Playbook references, duplicate Template IDs, local entrypoints that escape their declared source directory, valid nested local entrypoints, external repo-local availability, planned artifact entrypoint handling, prototype identity leakage, and Template fragment selection. The Template adapter and one universal change-impact review are recorded in [reconciliation.md](reconciliation.md).
 
 ## Current phase and next action
 
-Phase: implementation, validation, and reconciliation complete. Next action: create and link the required GitHub issue when a GitHub CLI or connector is available; no external Template artifact is ready for reuse until a later source verification finds a real path and entrypoint.
+Phase: implementation, review fixes, validation, and reconciliation complete. Next action: merge PR #61 after current-head checks and review state are green; no external Template artifact is ready for reuse until a later source verification finds a real path and entrypoint.
