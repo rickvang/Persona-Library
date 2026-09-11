@@ -289,6 +289,22 @@
         "next_handoff": "Reuse or adapt a suitable Template; otherwise route to template-research before composing a local starter."
       },
       {
+        "id": "template-library-stewardship",
+        "request": "Steward Template catalog identity, provenance, source verification, promotion, lifecycle, duplication, or domain routing",
+        "modes": ["research", "plan", "update"],
+        "primary_space": "templates",
+        "secondary_spaces": ["personas", "skills", "operating-packs", "playbooks", "tools", "docs", "decisions"],
+        "target": "template-librarian",
+        "artifact_kind": "workflow",
+        "package_path": "content/library-data.js",
+        "availability_source": "repo_local",
+        "first_reads": ["Template Librarian Persona", "Template catalog and candidate records", "source, provenance, revision, and availability evidence", "relevant domain specialist and Mara escalation context"],
+        "mutation_boundary": "authorized_update",
+        "reconciliation": "persona-reconciliation",
+        "non_triggers": ["Composing substantive domain-specific Template content without the relevant specialist", "Executing, installing, fetching, rendering, or syncing an external Template", "Changing Persona-Library architecture without Mara placement review"],
+        "next_handoff": "Use $template-research for discovery and evaluation, route discipline-specific research or composition to the relevant specialist, use $template-reconciliation after a lifecycle change, and escalate architecture questions to Mara."
+      },
+      {
         "id": "template-research",
         "request": "Research or evaluate a reusable starting artifact for a task or project",
         "modes": ["research", "plan", "update"],
