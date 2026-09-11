@@ -27,6 +27,7 @@ const jobSearchPagePath = path.join(root, 'dist', 'job-search.html');
 const playbooksPagePath = path.join(root, 'dist', 'playbooks.html');
 const prototypingPagePath = path.join(root, 'dist', 'prototyping.html');
 const operatingPacksPagePath = path.join(root, 'dist', 'operating-packs.html');
+const templatesPagePath = path.join(root, 'dist', 'templates.html');
 const skillsRoot = path.join(root, '.agents', 'skills');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
@@ -45,6 +46,7 @@ const jobSearchPage = await readFile(jobSearchPagePath, 'utf8');
 const playbooksPage = await readFile(playbooksPagePath, 'utf8');
 const prototypingPage = await readFile(prototypingPagePath, 'utf8');
 const operatingPacksPage = await readFile(operatingPacksPagePath, 'utf8');
+const templatesPage = await readFile(templatesPagePath, 'utf8');
 const canvasPage = await readFile(canvasPagePath, 'utf8');
 const orientation = JSON.parse(orientationSource);
 const generatedOrientation = JSON.parse(orientationOutput);
@@ -53,8 +55,8 @@ const sandbox = { window: {} };
 vm.runInNewContext(source, sandbox, { filename: contentPath });
 vm.runInNewContext(modelSource, sandbox, { filename: modelPath });
 const data = sandbox.window.PersonaLibraryData;
-if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !Array.isArray(data.playbookCatalog) || !Array.isArray(data.operatingPacks) || !Array.isArray(data.operatingPackCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
-  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, personaHandoffs, skillCatalog, playbookCatalog, operatingPacks, operatingPackCatalog, maintenance, and PersonaLibraryModel');
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !Array.isArray(data.playbookCatalog) || !Array.isArray(data.operatingPacks) || !Array.isArray(data.operatingPackCatalog) || !Array.isArray(data.templates) || !Array.isArray(data.templateCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
+  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, personaHandoffs, skillCatalog, playbookCatalog, operatingPacks, operatingPackCatalog, templates, templateCatalog, maintenance, and PersonaLibraryModel');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
 if (orientationSource !== orientationOutput) throw new Error('Generated dist/data/site-orientation.json is stale; run build-library.mjs');
@@ -79,6 +81,12 @@ if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.i
 }
 if (!operatingPacksPage.includes('Operating Packs keep the domain in view.') || !operatingPacksPage.includes('operatingPackCatalog') || !operatingPacksPage.includes('planned') || !operatingPacksPage.includes('AGENTS.md') || !operatingPacksPage.includes("grid.addEventListener('toggle'") || !operatingPacksPage.includes('}, true);') || !operatingPacksPage.includes("state.set({ selected: '' })")) {
   throw new Error('Operating Packs page is missing its catalog, source boundary, or planned example');
+}
+if (!templatesPage.includes('Templates give the work a useful first shape.') || !templatesPage.includes('templateCatalog') || !templatesPage.includes('category-filter') || !templatesPage.includes('status-filter') || !templatesPage.includes('source-filter') || !templatesPage.includes('availability-filter') || !templatesPage.includes('template-research') || !templatesPage.includes('relatedToolRecipes') || !templatesPage.includes("grid.addEventListener('toggle'")) {
+  throw new Error('Templates page is missing its normalized catalog, filters, relationships, or lifecycle boundary');
+}
+if (!templatesPage.includes('id="${escapeHtml(template.id)}"') || !templatesPage.includes('window.location.hash.slice(1)') || !templatesPage.includes("scrollIntoView({ block: 'start' })") || templatesPage.includes('<span id="template-design-system-web-app" aria-hidden="true"></span>') || !templatesPage.includes('Entrypoint unknown')) {
+  throw new Error('Templates page is missing rendered fragment selection or planned entrypoint handling');
 }
 if (guidePage.includes('rickvang/TemplateRepo') || playbooksPage.includes('rickvang/TemplateRepo')) throw new Error('Current Site docs still present TemplateRepo as the Design System Operating Pack source');
 if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('proto-persona-library-guide') || !prototypingPage.includes('Persona Library Guide') || !prototypingPage.includes('Selected output with missing prerequisites') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate') || !prototypingPage.includes('change-reconciliation-prototype') || !prototypingPage.includes('proto-skill-change-impact-reconciliation') || !prototypingPage.includes('Generated artifact update') || !prototypingPage.includes('reconciliation report') || !prototypingPage.includes('skill-contract-prototype') || !prototypingPage.includes('proto-skill-contract-routing') || !prototypingPage.includes('Missing metadata')) {
@@ -114,7 +122,7 @@ if (!guidePage.includes('agent-orientation') || !orientation.default_entry.inclu
 if (!guidePage.includes('routing-map') || !guidePage.includes('Persona-applied') || !guidePage.includes('$persona-panel-orchestration') || !guidePage.includes('skillLibrary') || !guidePage.includes('skill-authoring') || !guidePage.includes('$pl-skill-creator') || !guidePage.includes('PL Skill Creator')) {
   throw new Error('Docs page is missing the unified system routing map');
 }
-const requiredSpaces = ['personas', 'skills', 'operating-packs', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
+const requiredSpaces = ['personas', 'skills', 'operating-packs', 'templates', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
 if (orientation.schema_version !== '1.1' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 4 || !orientation.skill_contract.routing?.source_update?.includes('$change-impact-reconciliation') || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation') || !orientation.routing || !orientation.routing.skill_layers || !Array.isArray(orientation.routing.artifact_kinds) || !Array.isArray(orientation.routing.availability_sources) || !Array.isArray(orientation.routing.routes) || orientation.routing.routes.length < 10) {
   throw new Error('Orientation manifest is missing required bootstrap, process, mutation, or response fields');
 }
@@ -149,6 +157,11 @@ for (const routeId of operatingPackDependentRoutes) {
   if (!routeById.get(routeId)?.secondary_spaces.includes('operating-packs')) throw new Error(`Operating Pack dependency is missing from route: ${routeId}`);
 }
 if (!routeById.get('cross-space-reconciliation')?.first_reads.some(read => /Operating Pack/i.test(read))) throw new Error('Universal reconciliation route does not declare Operating Pack inspection');
+const templateDependentRoutes = ['persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-reconciliation', 'playbook-composition', 'docs-and-onboarding', 'cross-space-reconciliation'];
+for (const routeId of templateDependentRoutes) {
+  if (!routeById.get(routeId)?.secondary_spaces.includes('templates')) throw new Error(`Template dependency is missing from route: ${routeId}`);
+}
+if (!routeById.get('cross-space-reconciliation')?.first_reads.some(read => /Template/i.test(read))) throw new Error('Universal reconciliation route does not declare Template inspection');
 const skillEntries = await readdir(skillsRoot, { withFileTypes: true });
 for (const entry of skillEntries.filter(item => item.isDirectory())) {
   const skillPath = path.join(skillsRoot, entry.name, 'SKILL.md');
@@ -166,8 +179,9 @@ for (const entry of skillEntries.filter(item => item.isDirectory())) {
   }
   if (!routedPackagePaths.has(`.agents/skills/${entry.name}`)) throw new Error(`Skill package is missing from the onboarding routing map: ${entry.name}`);
 }
-for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
-for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage]) if (!html.includes('operating-packs.html')) throw new Error('Primary pages must link to the Operating Packs space');
+for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage, templatesPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
+for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage, templatesPage]) if (!html.includes('operating-packs.html')) throw new Error('Primary pages must link to the Operating Packs space');
+for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage, templatesPage]) if (!html.includes('templates.html')) throw new Error('Primary pages must link to the Templates space');
 
 const personaIds = new Set();
 const allowedRoles = new Set(['operator', 'leader', 'specialist']);
@@ -323,6 +337,135 @@ for (const pack of data.operatingPackCatalog) {
   if (pack.relatedSkills.some(skill => !skill.known) || pack.playbooks.some(playbook => !playbook.known)) throw new Error(`Normalized Operating Pack relationship is unresolved: ${pack.id}`);
   for (const application of pack.applications) assertKnownOperatingPackApplication(pack.id, application);
 }
+const templateIds = new Set();
+const allowedTemplateSourceKinds = new Set(['repository_local', 'project_local', 'github_repository']);
+const resolveLocalTemplateEntrypoint = sourceRecord => {
+  const sourceRoot = path.resolve(root, sourceRecord.path);
+  if (!isWithinRoot(sourceRoot)) throw new Error('Template source path escapes the repository root');
+  const entrypoint = path.resolve(sourceRoot, sourceRecord.entrypoint);
+  const relativeToSourceRoot = path.relative(sourceRoot, entrypoint);
+  if (relativeToSourceRoot === '..' || relativeToSourceRoot.startsWith(`..${path.sep}`) || path.isAbsolute(relativeToSourceRoot)) throw new Error('Template entrypoint escapes the declared source directory');
+  return entrypoint;
+};
+const assertKnownTemplateApplication = (templateId, application) => {
+  if (!application.known) throw new Error(`${templateId} has an unresolved Persona-Skill-workflow relationship`);
+};
+for (const template of data.templates) {
+  if (!template.id || templateIds.has(template.id)) throw new Error(`Duplicate or missing Template id: ${template.id || '(missing)'}`);
+  templateIds.add(template.id);
+  for (const field of ['name', 'purpose', 'category', 'useWhen', 'status', 'source', 'evidence', 'revision']) {
+    if (template[field] === undefined || template[field] === null || template[field] === '') throw new Error(`${template.id} is missing ${field}`);
+  }
+  if (!Array.isArray(template.provides) || !template.provides.length || !Array.isArray(template.applications) || !Array.isArray(template.relatedSkills) || !Array.isArray(template.operatingPacks) || !Array.isArray(template.playbooks)) throw new Error(`${template.id} has an incomplete relationship or starting-structure model`);
+  const sourceRecord = template.source;
+  const plannedExternalWithoutArtifact = sourceRecord.kind === 'github_repository' && sourceRecord.availability === 'planned' && sourceRecord.path == null;
+  if (!allowedTemplateSourceKinds.has(sourceRecord.kind) || !Object.prototype.hasOwnProperty.call(sourceRecord, 'path') || (!sourceRecord.entrypoint && !plannedExternalWithoutArtifact) || !sourceRecord.availability || !allowedAvailabilitySources.has(sourceRecord.availability) || !sourceRecord.verification) throw new Error(`${template.id} has incomplete source/location metadata`);
+  if (sourceRecord.kind === 'github_repository' && !/^[^/]+\/[^/]+$/.test(sourceRecord.repository || '')) throw new Error(`${template.id} has an invalid external repository reference`);
+  if (sourceRecord.kind === 'github_repository' && sourceRecord.availability === 'repo_local') throw new Error(`${template.id} incorrectly claims repo-local availability for an external source`);
+  if (plannedExternalWithoutArtifact && sourceRecord.entrypoint != null) throw new Error(`${template.id} planned external artifact entrypoint must remain unknown`);
+  if (sourceRecord.kind !== 'github_repository' && (!sourceRecord.path || !isWithinRoot(path.resolve(root, sourceRecord.path)))) throw new Error(`${template.id} has an invalid local source path`);
+  if (sourceRecord.kind !== 'github_repository') {
+    const entrypoint = resolveLocalTemplateEntrypoint(sourceRecord);
+    try {
+      await readFile(entrypoint, 'utf8');
+    } catch {
+      throw new Error(`${template.id} local entrypoint does not resolve: ${sourceRecord.entrypoint}`);
+    }
+  }
+  if (!/^\d+\.\d+$/.test(template.revision.version) || !template.revision.date || !template.revision.changeType || !template.revision.summary || !Array.isArray(template.revision.affectedFields) || !template.revision.confidence) throw new Error(`${template.id} has incomplete revision context`);
+  for (const skillId of template.relatedSkills) if (!catalogIds.has(skillId)) throw new Error(`${template.id} references an unknown Skill: ${skillId}`);
+  for (const application of template.applications) {
+    if (!application.personaId || !application.skillId || !application.workflow || !application.reason || !personaIds.has(application.personaId) || !catalogIds.has(application.skillId)) throw new Error(`${template.id} has an invalid scoped application`);
+    if (!(data.flowLibrary[application.personaId] || []).some(flow => flow.title === application.workflow)) throw new Error(`${template.id} references an unknown workflow: ${application.workflow}`);
+  }
+  for (const operatingPackId of template.operatingPacks) if (!operatingPackIds.has(operatingPackId)) throw new Error(`${template.id} references an unknown Operating Pack identity: ${operatingPackId}`);
+  for (const playbookId of template.playbooks) if (!playbookIds.has(playbookId)) throw new Error(`${template.id} references an unknown Playbook identity: ${playbookId}`);
+  if (template.id.startsWith('proto-') || template.relatedSkills.some(id => id.startsWith('proto-')) || template.operatingPacks.some(id => id.startsWith('proto-')) || template.playbooks.some(id => id.startsWith('proto-')) || template.applications.some(application => application.personaId.startsWith('proto-') || application.skillId.startsWith('proto-'))) throw new Error(`Prototype identity leaked into live Template: ${template.id}`);
+  if (/(?:\bTBD\b|\bTODO\b|REPLACE_ME|\[\[)/i.test(JSON.stringify(template))) throw new Error(`Unresolved canonical placeholder in Template: ${template.id}`);
+}
+const rebuiltTemplateCatalog = sandbox.window.PersonaLibraryModel.buildTemplateCatalog(data);
+if (JSON.stringify(data.templateCatalog) !== JSON.stringify(rebuiltTemplateCatalog)) throw new Error('Template catalog is not fresh from the canonical source model');
+for (const template of data.templateCatalog) {
+  if (!templateIds.has(template.id) || !Array.isArray(template.relatedPersonas) || !Array.isArray(template.relatedSkills) || !Array.isArray(template.applications) || !Array.isArray(template.operatingPacks) || !Array.isArray(template.playbooks) || !Array.isArray(template.relatedToolRecipes)) throw new Error(`Normalized Template catalog entry is incomplete: ${template.id || '(missing)'}`);
+  if (template.relatedSkills.some(skill => !skill.known) || template.operatingPacks.some(pack => !pack.known) || template.playbooks.some(playbook => !playbook.known)) throw new Error(`Normalized Template relationship is unresolved: ${template.id}`);
+  for (const application of template.applications) assertKnownTemplateApplication(template.id, application);
+}
+const negativeTemplatePersona = data.personas.find(persona => persona.id === 'ui-expert') || data.personas[0];
+const negativeTemplateWorkflow = (data.flowLibrary[negativeTemplatePersona?.id] || [])[0];
+const negativeTemplateSkill = data.skillCatalog.find(skill => skill.profiles?.some(profile => profile.personaId === negativeTemplatePersona?.id) && !skill.workflows?.some(workflow => workflow.personaId === negativeTemplatePersona?.id && workflow.title === negativeTemplateWorkflow?.title));
+if (!negativeTemplatePersona || !negativeTemplateWorkflow || !negativeTemplateSkill) throw new Error('Could not construct the invalid Template relationship fixture');
+const negativeTemplateCatalog = sandbox.window.PersonaLibraryModel.buildTemplateCatalog({
+  templates: [{ id:'negative-template-relationship-fixture', applications:[{ personaId:negativeTemplatePersona.id, skillId:negativeTemplateSkill.id, workflow:negativeTemplateWorkflow.title, reason:'Validator fixture' }] }],
+  personas: data.personas,
+  skillCatalog: data.skillCatalog,
+  flowLibrary: data.flowLibrary,
+  operatingPackCatalog: data.operatingPackCatalog,
+  playbookCatalog: data.playbookCatalog
+});
+if (negativeTemplateCatalog[0]?.applications[0]?.known) throw new Error('Invalid Template Persona-Skill-workflow relationship was normalized as known');
+let templateRelationshipFixtureRejected = false;
+try {
+  assertKnownTemplateApplication('negative-template-relationship-fixture', negativeTemplateCatalog[0].applications[0]);
+} catch {
+  templateRelationshipFixtureRejected = true;
+}
+if (!templateRelationshipFixtureRejected) throw new Error('Invalid Template Persona-Skill-workflow relationship was not rejected');
+let unknownTemplateOperatingPackRejected = false;
+try {
+  if (!operatingPackIds.has('operating-pack-missing-fixture')) throw new Error('unknown Operating Pack');
+} catch {
+  unknownTemplateOperatingPackRejected = true;
+}
+if (!unknownTemplateOperatingPackRejected) throw new Error('Unknown Template Operating Pack reference was not rejected');
+let unknownTemplatePlaybookRejected = false;
+try {
+  if (!playbookIds.has('playbook-missing-fixture')) throw new Error('unknown Playbook');
+} catch {
+  unknownTemplatePlaybookRejected = true;
+}
+if (!unknownTemplatePlaybookRejected) throw new Error('Unknown Template Playbook reference was not rejected');
+let duplicateTemplateFixtureRejected = false;
+try {
+  const duplicateFixtureIds = new Set();
+  for (const template of [{ id:'duplicate-template-fixture' }, { id:'duplicate-template-fixture' }]) {
+    if (duplicateFixtureIds.has(template.id)) throw new Error('duplicate Template');
+    duplicateFixtureIds.add(template.id);
+  }
+} catch {
+  duplicateTemplateFixtureRejected = true;
+}
+if (!duplicateTemplateFixtureRejected) throw new Error('Duplicate Template id was not rejected');
+let templateTraversalFixtureRejected = false;
+try {
+  resolveLocalTemplateEntrypoint({ path: 'docs/template-a', entrypoint: '../other.md' });
+} catch {
+  templateTraversalFixtureRejected = true;
+}
+if (!templateTraversalFixtureRejected) throw new Error('Template entrypoint escape from the declared source directory was not rejected');
+let templateNestedEntrypointFixtureAccepted = false;
+try {
+  resolveLocalTemplateEntrypoint({ path: 'docs', entrypoint: 'work-orders/WO-2026-09-11-templates/work-order.md' });
+  templateNestedEntrypointFixtureAccepted = true;
+} catch {
+  templateNestedEntrypointFixtureAccepted = false;
+}
+if (!templateNestedEntrypointFixtureAccepted) throw new Error('Valid nested Template entrypoint was rejected');
+let externalTemplateAvailabilityFixtureRejected = false;
+try {
+  const externalFixture = { kind:'github_repository', repository:'rickvang/template-library', path:null, entrypoint:'README.md', availability:'repo_local', verification:'Validator fixture' };
+  if (externalFixture.kind === 'github_repository' && externalFixture.availability === 'repo_local') throw new Error('external Template claims repo-local availability');
+} catch {
+  externalTemplateAvailabilityFixtureRejected = true;
+}
+if (!externalTemplateAvailabilityFixtureRejected) throw new Error('External Template repo-local availability was not rejected');
+let prototypeTemplateFixtureRejected = false;
+try {
+  const prototypeFixture = { id:'template-live-fixture', relatedSkills:['proto-skill-fixture'], operatingPacks:[], playbooks:[], applications:[] };
+  if (prototypeFixture.relatedSkills.some(id => id.startsWith('proto-'))) throw new Error('prototype Template relationship');
+} catch {
+  prototypeTemplateFixtureRejected = true;
+}
+if (!prototypeTemplateFixtureRejected) throw new Error('Prototype identity entering live Template catalog was not rejected');
 const negativeRelationshipPersona = data.personas.find(persona => persona.id === 'ui-expert') || data.personas[0];
 const negativeRelationshipWorkflow = (data.flowLibrary[negativeRelationshipPersona?.id] || [])[0];
 const negativeRelationshipSkill = data.skillCatalog.find(skill => skill.profiles?.some(profile => profile.personaId === negativeRelationshipPersona?.id) && !skill.workflows?.some(workflow => workflow.personaId === negativeRelationshipPersona?.id && workflow.title === negativeRelationshipWorkflow?.title));

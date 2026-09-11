@@ -277,6 +277,61 @@
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  function buildTemplateCatalog({ templates = [], personas = [], skillCatalog = [], flowLibrary = {}, operatingPackCatalog = [], playbookCatalog = [] }) {
+    const personaById = new Map(personas.map(persona => [persona.id, persona]));
+    const skillById = new Map(skillCatalog.map(skill => [skill.id, skill]));
+    const operatingPackById = new Map(operatingPackCatalog.map(pack => [pack.id, pack]));
+    const playbookById = new Map(playbookCatalog.map(playbook => [playbook.id, playbook]));
+    return templates
+      .map(template => {
+        const relatedSkills = (template.relatedSkills || []).map(id => {
+          const skill = skillById.get(id);
+          return skill
+            ? { id: skill.id, name: skill.name, definition: skill.profiles[0]?.definition || '', known: true, toolUseRecipes: skill.toolUseRecipes || [] }
+            : { id, name: id, definition: '', known: false, toolUseRecipes: [] };
+        });
+        const applications = (template.applications || []).map(application => {
+          const persona = personaById.get(application.personaId);
+          const skill = skillById.get(application.skillId);
+          const workflow = persona ? (flowLibrary[persona.id] || []).find(item => item.title === application.workflow) : null;
+          const skillProfile = skill?.profiles?.find(profile => profile.personaId === application.personaId);
+          const profileWorkflows = (skillProfile?.workflows || '').split(' · ').map(workflowTitle => workflowTitle.trim()).filter(Boolean);
+          const skillOwnsWorkflow = Boolean(
+            skillProfile
+            && profileWorkflows.includes(application.workflow)
+            && skill.workflows?.some(item => item.personaId === application.personaId && item.title === application.workflow)
+          );
+          return {
+            ...application,
+            personaName: persona?.name || application.personaId,
+            personaRoleLabel: persona?.roleLabel || '',
+            skillName: skill?.name || application.skillId,
+            workflowType: workflow?.type || '',
+            known: Boolean(persona && skill && workflow && skillProfile && skillOwnsWorkflow)
+          };
+        });
+        const operatingPacks = (template.operatingPacks || []).map(id => {
+          const pack = operatingPackById.get(id);
+          return pack ? { id: pack.id, name: pack.name, purpose: pack.purpose, known: true } : { id, name: id, purpose: '', known: false };
+        });
+        const playbooks = (template.playbooks || []).map(id => {
+          const playbook = playbookById.get(id);
+          return playbook ? { ...playbook, known: true } : { id, name: id, status: 'Unknown reference', known: false };
+        });
+        const relatedToolRecipes = [...new Map(relatedSkills.flatMap(skill => skill.toolUseRecipes || []).map(recipe => [recipe.id, recipe])).values()];
+        return {
+          ...template,
+          relatedSkills,
+          relatedPersonas: [...new Map(applications.map(application => [application.personaId, { id: application.personaId, name: application.personaName, roleLabel: application.personaRoleLabel }])).values()],
+          applications,
+          operatingPacks,
+          playbooks,
+          relatedToolRecipes
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   function buildPersonaToolRequirements({ personas, personaToolRequirements = [] }) {
     const personaIds = new Set(personas.map(persona => persona.id));
     return personaToolRequirements
@@ -293,8 +348,9 @@
 
   data.skillCatalog = buildSkillCatalog(data);
   data.operatingPackCatalog = buildOperatingPackCatalog(data);
+  data.templateCatalog = buildTemplateCatalog(data);
   data.personaToolRequirements = buildPersonaToolRequirements(data);
   data.personaHandoffs = buildPersonaHandoffs(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance };
+  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance };
 })();
