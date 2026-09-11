@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1",
   "site": "Personas",
-  "purpose": "A structured library of personas, reusable skills, tools, playbooks, documentation, decisions, and safe prototypes.",
+  "purpose": "A structured library of personas, reusable skills, operating packs, tools, playbooks, documentation, decisions, and safe prototypes.",
   "default_entry": "guide.html#agent-orientation",
   "bootstrap_rule": "Load this manifest before interpreting a request about the Personas system. Classify the request, select the smallest relevant space, and state whether the work is read-only, prototype-only, or a live update.",
   "spaces": {
@@ -18,6 +18,13 @@
       "read": ["skill definition", "operating model", "quality signals", "workflow reach", "persona applications"],
       "write": "Check for an existing skill first; create or change one only when the capability is reusable and the request authorizes it.",
       "do_not": ["Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."]
+    },
+    "operating-packs": {
+      "label": "Operating Packs",
+      "answers": "What operating context, standards, conventions, procedures, references, and validation guidance apply when working in this domain or project?",
+      "read": ["pack purpose and applicability", "source/location and entrypoint", "availability/status", "provided context types", "scoped Persona, Skill, workflow, Playbook, and Tool-use relationships", "evidence and revision context"],
+      "write": "Reuse an existing relevant pack when possible; research and compile a new pack only when no suitable pack exists, keeping project-specific rules local unless evidence supports a reusable pack.",
+      "do_not": ["Do not treat an external reference as available without verified source evidence.", "Do not move reusable Skill judgment or Playbook orchestration into a pack.", "Do not promote project-specific conventions into universal best practice without review.", "Reconcile material pack changes against affected Skills, Personas, Playbooks, Tool-use recipes, Docs, and dependent packs."]
     },
     "tools": {
       "label": "Tools",
@@ -79,7 +86,7 @@
         "answers": "Which capability resolves and safely exercises tools, connectors, permissions, and fallbacks?"
       }
     },
-    "artifact_kinds": ["callable_skill", "workflow", "playbook", "template", "reference", "decision", "work_order", "prototype"],
+    "artifact_kinds": ["callable_skill", "workflow", "playbook", "operating_pack", "template", "reference", "decision", "work_order", "prototype"],
     "availability_sources": ["repo_local", "runtime_catalog", "bundled_system", "documentation_only", "planned", "historical", "unavailable"],
     "routes": [
       {
@@ -87,7 +94,7 @@
         "request": "Question or task about the Persona Library system",
         "modes": ["answer", "research", "plan", "prototype", "consult", "update"],
         "primary_space": "docs",
-        "secondary_spaces": ["personas", "skills", "tools", "playbooks", "decisions", "prototyping"],
+        "secondary_spaces": ["personas", "skills", "operating-packs", "tools", "playbooks", "decisions", "prototyping"],
         "target": "persona-library-orientation",
         "artifact_kind": "callable_skill",
         "package_path": ".agents/skills/persona-library-orientation",
@@ -103,7 +110,7 @@
         "request": "Research, create, or evidence-update a Persona",
         "modes": ["research", "plan", "update"],
         "primary_space": "personas",
-        "secondary_spaces": ["docs", "skills"],
+        "secondary_spaces": ["docs", "skills", "operating-packs"],
         "target": "persona-research",
         "artifact_kind": "callable_skill",
         "package_path": ".agents/skills/persona-research",
@@ -119,7 +126,7 @@
         "request": "Identify, define, deduplicate, or maintain capabilities behind a Persona",
         "modes": ["research", "plan", "update"],
         "primary_space": "skills",
-        "secondary_spaces": ["personas"],
+        "secondary_spaces": ["personas", "operating-packs"],
         "target": "persona-skills",
         "artifact_kind": "callable_skill",
         "package_path": ".agents/skills/persona-skills",
@@ -193,6 +200,70 @@
         "reconciliation": "change-impact-reconciliation",
         "non_triggers": ["One-off issue, document, workflow, or Persona application work", "A documented mention without an approved reusable capability"],
         "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces."
+      },
+      {
+        "id": "operating-pack-catalog",
+        "request": "Use or inspect an existing Operating Pack for a domain or project",
+        "modes": ["answer", "research", "plan", "update"],
+        "primary_space": "operating-packs",
+        "secondary_spaces": ["personas", "skills", "playbooks", "tools", "docs"],
+        "target": "Operating Pack catalog and relevant pack record",
+        "artifact_kind": "operating_pack",
+        "package_path": "dist/operating-packs.html",
+        "availability_source": "repo_local",
+        "first_reads": ["Operating Pack record", "source/location and entrypoint", "applicable Persona, Skill, workflow, and Playbook", "project/repository instructions"],
+        "mutation_boundary": "read_only",
+        "reconciliation": "skip",
+        "non_triggers": ["Executing, installing, fetching, or syncing a pack", "Treating a pack reference as proof that its source is available", "Adding project rules to a universal pack without research"],
+        "next_handoff": "Reuse the pack when its scope fits; otherwise route to operating-pack-research or operating-pack-composer."
+      },
+      {
+        "id": "operating-pack-research",
+        "request": "Research operating context, conventions, standards, procedures, references, or validation guidance for a domain or project",
+        "modes": ["research", "plan", "update"],
+        "primary_space": "operating-packs",
+        "secondary_spaces": ["docs", "personas", "skills", "playbooks", "tools"],
+        "target": "operating-pack-research",
+        "artifact_kind": "callable_skill",
+        "package_path": ".agents/skills/operating-pack-research",
+        "availability_source": "repo_local",
+        "first_reads": ["project/repository instructions", "architecture and local conventions", "existing Operating Pack catalog", "relevant Persona, Skill, Playbook, and Tool records"],
+        "mutation_boundary": "authorized_update",
+        "reconciliation": "operating-pack-reconciliation",
+        "non_triggers": ["Composing files before the evidence and boundary are clear", "Treating inferred or generic best practice as verified project instruction", "Fetching or installing an external pack"],
+        "next_handoff": "Return a proposal with verified, reusable, project-specific, inferred, and unresolved guidance; compose only after the scope is accepted."
+      },
+      {
+        "id": "operating-pack-composition",
+        "request": "Create or compile a reusable or project-specific Operating Pack from instructions, architecture, conventions, constraints, and relevant Skill needs",
+        "modes": ["plan", "update"],
+        "primary_space": "operating-packs",
+        "secondary_spaces": ["docs", "personas", "skills", "playbooks", "tools"],
+        "target": "operating-pack-composer",
+        "artifact_kind": "callable_skill",
+        "package_path": ".agents/skills/operating-pack-composer",
+        "availability_source": "repo_local",
+        "first_reads": ["accepted research proposal", "existing pack candidates", "repository instructions and architecture", "relevant Persona, Skill, workflow, Playbook, and Tool context"],
+        "mutation_boundary": "authorized_update",
+        "reconciliation": "operating-pack-reconciliation",
+        "non_triggers": ["Copying a Skill or Playbook into a pack", "Inventing a complete document template without a domain need", "Publishing, installing, or transporting the compiled files"],
+        "next_handoff": "Prefer the minimum justified Markdown files and AGENTS.md entrypoint, validate them, then run operating-pack-reconciliation."
+      },
+      {
+        "id": "operating-pack-reconciliation",
+        "request": "Review downstream effects after an Operating Pack materially changes",
+        "modes": ["research", "update"],
+        "primary_space": "operating-packs",
+        "secondary_spaces": ["skills", "personas", "playbooks", "tools", "docs", "decisions"],
+        "target": "operating-pack-reconciliation",
+        "artifact_kind": "callable_skill",
+        "package_path": ".agents/skills/operating-pack-reconciliation",
+        "availability_source": "repo_local",
+        "first_reads": ["changed pack source or record", "scoped applications", "related Skills, Personas, workflows, Playbooks, Tool-use recipes, and dependent packs", "generated Site output"],
+        "mutation_boundary": "read_only",
+        "reconciliation": "change-impact-reconciliation",
+        "non_triggers": ["A pack lookup with no material change", "Automatically mutating a Skill because a pack rule repeats", "Recursive invocation of universal reconciliation"],
+        "next_handoff": "Classify confirms, extends, qualifies, contradicts, invalidates, or unrelated impacts and hand required Skill or record review to its owning workflow."
       },
       {
         "id": "playbook-composition",

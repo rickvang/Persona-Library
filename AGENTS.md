@@ -25,6 +25,9 @@ Use `content/site-orientation.json` as the canonical request-to-system map. The 
 | Orient to this library | `$persona-library-orientation` | library management |
 | Research a Persona | `$persona-research` | library management |
 | Define or maintain Persona capabilities | `$persona-skills` | library management |
+| Research operating context for a domain or project | `$operating-pack-research` | library management |
+| Compose a Markdown-based Operating Pack | `$operating-pack-composer` | library management |
+| Reconcile an Operating Pack change | `$operating-pack-reconciliation` | governance |
 | Consult multiple Personas | `$persona-panel-orchestration` | orchestration |
 | Form a reusable capability | `$multi-perspective-skill-synthesis` | orchestration |
 | Create or update a callable Skill | `$pl-skill-creator` (`$skill-creator` is the Codex package helper) | package authoring |

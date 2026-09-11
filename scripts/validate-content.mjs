@@ -26,6 +26,7 @@ const guidePagePath = path.join(root, 'dist', 'guide.html');
 const jobSearchPagePath = path.join(root, 'dist', 'job-search.html');
 const playbooksPagePath = path.join(root, 'dist', 'playbooks.html');
 const prototypingPagePath = path.join(root, 'dist', 'prototyping.html');
+const operatingPacksPagePath = path.join(root, 'dist', 'operating-packs.html');
 const skillsRoot = path.join(root, '.agents', 'skills');
 const source = await readFile(contentPath, 'utf8');
 const output = await readFile(outputPath, 'utf8');
@@ -43,6 +44,7 @@ const guidePage = await readFile(guidePagePath, 'utf8');
 const jobSearchPage = await readFile(jobSearchPagePath, 'utf8');
 const playbooksPage = await readFile(playbooksPagePath, 'utf8');
 const prototypingPage = await readFile(prototypingPagePath, 'utf8');
+const operatingPacksPage = await readFile(operatingPacksPagePath, 'utf8');
 const canvasPage = await readFile(canvasPagePath, 'utf8');
 const orientation = JSON.parse(orientationSource);
 const generatedOrientation = JSON.parse(orientationOutput);
@@ -51,8 +53,8 @@ const sandbox = { window: {} };
 vm.runInNewContext(source, sandbox, { filename: contentPath });
 vm.runInNewContext(modelSource, sandbox, { filename: modelPath });
 const data = sandbox.window.PersonaLibraryData;
-if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
-  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, personaHandoffs, skillCatalog, maintenance, and PersonaLibraryModel');
+if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !Array.isArray(data.playbookCatalog) || !Array.isArray(data.operatingPacks) || !Array.isArray(data.operatingPackCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
+  throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, personaHandoffs, skillCatalog, playbookCatalog, operatingPacks, operatingPackCatalog, maintenance, and PersonaLibraryModel');
 }
 if (source !== output) throw new Error('Generated dist/data/library-data.js is stale; run build-library.mjs');
 if (orientationSource !== orientationOutput) throw new Error('Generated dist/data/site-orientation.json is stale; run build-library.mjs');
@@ -74,6 +76,9 @@ if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchP
 }
 if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Shared state keeps the playbook coherent') || !playbooksPage.includes('Change control') || !playbooksPage.includes('conditional reconciliation gate')) {
   throw new Error('Playbooks page is missing its mental model or current playbook');
+}
+if (!operatingPacksPage.includes('Operating Packs keep the domain in view.') || !operatingPacksPage.includes('operatingPackCatalog') || !operatingPacksPage.includes('planned') || !operatingPacksPage.includes('AGENTS.md')) {
+  throw new Error('Operating Packs page is missing its catalog, source boundary, or planned example');
 }
 if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('proto-persona-library-guide') || !prototypingPage.includes('Persona Library Guide') || !prototypingPage.includes('Selected output with missing prerequisites') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate') || !prototypingPage.includes('change-reconciliation-prototype') || !prototypingPage.includes('proto-skill-change-impact-reconciliation') || !prototypingPage.includes('Generated artifact update') || !prototypingPage.includes('reconciliation report') || !prototypingPage.includes('skill-contract-prototype') || !prototypingPage.includes('proto-skill-contract-routing') || !prototypingPage.includes('Missing metadata')) {
   throw new Error('Prototyping page is missing the isolated persona prototype workspace');
@@ -108,7 +113,7 @@ if (!guidePage.includes('agent-orientation') || !orientation.default_entry.inclu
 if (!guidePage.includes('routing-map') || !guidePage.includes('Persona-applied') || !guidePage.includes('$persona-panel-orchestration') || !guidePage.includes('skillLibrary') || !guidePage.includes('skill-authoring') || !guidePage.includes('$pl-skill-creator') || !guidePage.includes('PL Skill Creator')) {
   throw new Error('Docs page is missing the unified system routing map');
 }
-const requiredSpaces = ['personas', 'skills', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
+const requiredSpaces = ['personas', 'skills', 'operating-packs', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
 if (orientation.schema_version !== '1.1' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 4 || !orientation.skill_contract.routing?.source_update?.includes('$change-impact-reconciliation') || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation') || !orientation.routing || !orientation.routing.skill_layers || !Array.isArray(orientation.routing.artifact_kinds) || !Array.isArray(orientation.routing.availability_sources) || !Array.isArray(orientation.routing.routes) || orientation.routing.routes.length < 10) {
   throw new Error('Orientation manifest is missing required bootstrap, process, mutation, or response fields');
 }
@@ -149,9 +154,13 @@ for (const entry of skillEntries.filter(item => item.isDirectory())) {
   const frontmatter = skillSource.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   const layer = frontmatter?.[1].match(/^\s*skill_layer:\s*([^\r\n]+)\s*$/m)?.[1].trim();
   if (!frontmatter || !layer || !allowedSkillLayers.has(layer)) throw new Error(`Skill package has missing or unsupported skill_layer metadata: ${entry.name}`);
+  for (const field of orientation.skill_contract.required_metadata) {
+    if (!frontmatter[1].match(new RegExp(`^\\s*${field}:\\s*[^\\r\\n]+$`, 'm'))) throw new Error(`Skill package has missing required metadata ${field}: ${entry.name}`);
+  }
   if (!routedPackagePaths.has(`.agents/skills/${entry.name}`)) throw new Error(`Skill package is missing from the onboarding routing map: ${entry.name}`);
 }
-for (const html of [page, skillsPage, jobSearchPage, playbooksPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
+for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
+for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage]) if (!html.includes('operating-packs.html')) throw new Error('Primary pages must link to the Operating Packs space');
 
 const personaIds = new Set();
 const allowedRoles = new Set(['operator', 'leader', 'specialist']);
@@ -248,6 +257,52 @@ for (const relation of data.skillRelations) {
   if (!relation.from || !relation.to || !relationshipTypes.has(relation.type) || !entityIds.has(relation.from) || !entityIds.has(relation.to)) {
     throw new Error(`Invalid skill relationship: ${relation.from || '(missing)'} -> ${relation.to || '(missing)'}`);
   }
+}
+
+const rebuiltOperatingPackCatalog = sandbox.window.PersonaLibraryModel.buildOperatingPackCatalog(data);
+if (JSON.stringify(data.operatingPackCatalog) !== JSON.stringify(rebuiltOperatingPackCatalog)) throw new Error('Operating Pack catalog is not fresh from the canonical source model');
+const playbookIds = new Set();
+for (const playbook of data.playbookCatalog) {
+  if (!playbook.id || playbookIds.has(playbook.id) || !playbook.name || !playbook.status) throw new Error(`Invalid or duplicate Playbook catalog identity: ${playbook.id || '(missing)'}`);
+  playbookIds.add(playbook.id);
+}
+const operatingPackIds = new Set();
+const allowedPackSourceKinds = new Set(['repository_local', 'project_local', 'github_repository']);
+const isWithinRoot = target => {
+  const relative = path.relative(root, target);
+  return relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+};
+for (const pack of data.operatingPacks) {
+  if (!pack.id || operatingPackIds.has(pack.id)) throw new Error(`Duplicate or missing Operating Pack id: ${pack.id || '(missing)'}`);
+  operatingPackIds.add(pack.id);
+  for (const field of ['name', 'purpose', 'domain', 'useWhen', 'status', 'source', 'evidence', 'revision']) {
+    if (pack[field] === undefined || pack[field] === null || pack[field] === '') throw new Error(`${pack.id} is missing ${field}`);
+  }
+  if (!Array.isArray(pack.provides) || !pack.provides.length || !Array.isArray(pack.relatedSkills) || !Array.isArray(pack.applications) || !Array.isArray(pack.playbooks)) throw new Error(`${pack.id} has an incomplete relationship or context model`);
+  const sourceRecord = pack.source;
+  if (!allowedPackSourceKinds.has(sourceRecord.kind) || !Object.prototype.hasOwnProperty.call(sourceRecord, 'path') || !sourceRecord.entrypoint || !sourceRecord.availability || !allowedAvailabilitySources.has(sourceRecord.availability) || !sourceRecord.verification) throw new Error(`${pack.id} has incomplete source/location metadata`);
+  if (sourceRecord.kind === 'github_repository' && !/^[^/]+\/[^/]+$/.test(sourceRecord.repository || '')) throw new Error(`${pack.id} has an invalid external repository reference`);
+  if (sourceRecord.kind !== 'github_repository' && (!sourceRecord.path || !isWithinRoot(path.resolve(root, sourceRecord.path)))) throw new Error(`${pack.id} has an invalid local source path`);
+  if (sourceRecord.kind !== 'github_repository') {
+    const entrypoint = path.resolve(root, sourceRecord.path, sourceRecord.entrypoint);
+    try {
+      await readFile(entrypoint, 'utf8');
+    } catch {
+      throw new Error(`${pack.id} local entrypoint does not resolve: ${sourceRecord.entrypoint}`);
+    }
+  }
+  if (!/^\d+\.\d+$/.test(pack.revision.version) || !pack.revision.date || !pack.revision.changeType || !pack.revision.summary || !Array.isArray(pack.revision.affectedFields) || !pack.revision.confidence) throw new Error(`${pack.id} has incomplete revision context`);
+  for (const skillId of pack.relatedSkills) if (!catalogIds.has(skillId)) throw new Error(`${pack.id} references an unknown Skill: ${skillId}`);
+  for (const application of pack.applications) {
+    if (!application.personaId || !application.skillId || !application.workflow || !application.reason || !personaIds.has(application.personaId) || !catalogIds.has(application.skillId)) throw new Error(`${pack.id} has an invalid scoped application`);
+    if (!(data.flowLibrary[application.personaId] || []).some(flow => flow.title === application.workflow)) throw new Error(`${pack.id} references an unknown workflow: ${application.workflow}`);
+  }
+  for (const playbookId of pack.playbooks) if (!playbookIds.has(playbookId)) throw new Error(`${pack.id} references an unknown Playbook identity: ${playbookId}`);
+  if (pack.id.startsWith('proto-') || pack.relatedSkills.some(id => id.startsWith('proto-')) || pack.playbooks.some(id => id.startsWith('proto-'))) throw new Error(`Prototype identity leaked into live Operating Pack: ${pack.id}`);
+}
+for (const pack of data.operatingPackCatalog) {
+  if (!operatingPackIds.has(pack.id) || !Array.isArray(pack.relatedPersonas) || !Array.isArray(pack.relatedToolRecipes)) throw new Error(`Normalized Operating Pack catalog entry is incomplete: ${pack.id || '(missing)'}`);
+  if (pack.relatedSkills.some(skill => !skill.known) || pack.applications.some(application => !application.known) || pack.playbooks.some(playbook => !playbook.known)) throw new Error(`Normalized Operating Pack relationship is unresolved: ${pack.id}`);
 }
 const hierarchyPilot = data.skillCatalog.find(skill => skill.id === 'skill-interface-hierarchy-and-visual-communication');
 if (!hierarchyPilot || hierarchyPilot.buildingBlocks.length < 3) throw new Error('The modular skill pilot must have at least three building blocks');

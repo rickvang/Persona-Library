@@ -229,6 +229,47 @@
     return { personas: personaMaintenance, skills: skillMaintenance };
   }
 
+  function buildOperatingPackCatalog({ operatingPacks = [], personas = [], skillCatalog = [], flowLibrary = {}, playbookCatalog = [] }) {
+    const personaById = new Map(personas.map(persona => [persona.id, persona]));
+    const skillById = new Map(skillCatalog.map(skill => [skill.id, skill]));
+    const playbookById = new Map(playbookCatalog.map(playbook => [playbook.id, playbook]));
+    return operatingPacks
+      .map(pack => {
+        const relatedSkills = (pack.relatedSkills || []).map(id => {
+          const skill = skillById.get(id);
+          return skill
+            ? { id: skill.id, name: skill.name, definition: skill.profiles[0]?.definition || '', known: true, toolUseRecipes: skill.toolUseRecipes || [] }
+            : { id, name: id, definition: '', known: false, toolUseRecipes: [] };
+        });
+        const applications = (pack.applications || []).map(application => {
+          const persona = personaById.get(application.personaId);
+          const skill = skillById.get(application.skillId);
+          const workflow = persona ? (flowLibrary[persona.id] || []).find(item => item.title === application.workflow) : null;
+          return {
+            ...application,
+            personaName: persona?.name || application.personaId,
+            personaRoleLabel: persona?.roleLabel || '',
+            skillName: skill?.name || application.skillId,
+            workflowType: workflow?.type || '',
+            known: Boolean(persona && skill && workflow)
+          };
+        });
+        const relatedToolRecipes = [...new Map(relatedSkills.flatMap(skill => skill.toolUseRecipes || []).map(recipe => [recipe.id, recipe])).values()];
+        return {
+          ...pack,
+          relatedSkills,
+          relatedPersonas: [...new Map(applications.map(application => [application.personaId, { id: application.personaId, name: application.personaName, roleLabel: application.personaRoleLabel }])).values()],
+          applications,
+          playbooks: (pack.playbooks || []).map(id => {
+            const playbook = playbookById.get(id);
+            return playbook ? { ...playbook, known: true } : { id, name: id, status: 'Unknown reference', known: false };
+          }),
+          relatedToolRecipes
+        };
+      })
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   function buildPersonaToolRequirements({ personas, personaToolRequirements = [] }) {
     const personaIds = new Set(personas.map(persona => persona.id));
     return personaToolRequirements
@@ -244,8 +285,9 @@
   }
 
   data.skillCatalog = buildSkillCatalog(data);
+  data.operatingPackCatalog = buildOperatingPackCatalog(data);
   data.personaToolRequirements = buildPersonaToolRequirements(data);
   data.personaHandoffs = buildPersonaHandoffs(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance };
+  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance };
 })();

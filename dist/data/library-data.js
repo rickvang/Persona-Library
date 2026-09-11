@@ -350,8 +350,29 @@ window.PersonaLibraryData = {
          {type:'supporting',title:'Route a friction or conformance finding',cadence:'Per actionable finding',summary:'Send a finding to the smallest responsible Persona, Skill, Tool, Docs, Decision, fixture, or Work Order owner.',activities:[['Separate cause categories','Per finding','Correct ownership','A runtime access gap becomes a prompt rewrite','Finding classification + evidence'],['Choose disposition and owner','Per finding','Actionability','Observations accumulate without a next action','Issue, Decision, or Work Order link'],['Define the next test or review','Per finding','Learning loop','A fix is made without a way to check it','Follow-up fixture + revisit condition']]},
          {type:'edge',title:'Recover a failed or unsafe run',cadence:'As needed',summary:'Contain side effects, preserve evidence, reconstruct the run, and choose a safe correction or fallback.',activities:[['Stop or contain further effects','As needed','Safety','The system continues while the diagnosis is uncertain','Permission boundary + last reliable state'],['Reconstruct behavior and conditions','As needed','Accuracy','The first plausible cause becomes the diagnosis','Trace, context, and Tool record'],['Record correction and prevention','As needed','Learning','A private workaround becomes the new process','Recovery note + new fixture or issue']]}
        ]
-     },
-   personaToolRequirements: [
+    },
+  playbookCatalog: [
+    {id:'playbook-evidence-led-job-search',name:'Evidence-led job search',status:'Working model'},
+    {id:'playbook-create-and-integrate-reusable-skill',name:'Create and integrate a reusable skill',status:'Working model'}
+  ],
+  operatingPacks: [
+    {
+      id:'operating-pack-design-system',
+      name:'Design System',
+      purpose:'A reusable Markdown-based context package for teams that design, build, and maintain shared interface patterns.',
+      domain:'Product teams with a shared component or design system',
+      useWhen:'A task changes a shared component, token, pattern, accessibility rule, naming convention, package boundary, or system-level validation path.',
+      status:'Planned external reference',
+      source:{kind:'github_repository',repository:'rickvang/TemplateRepo',path:null,entrypoint:'AGENTS.md',availability:'planned',verification:'The repository reference is recorded for future research; this checkout does not verify an Operating Pack path, file layout, or migrated naming.'},
+      provides:['Token and component conventions','Accessibility and responsive requirements','Naming and package architecture guidance','SOPs for adding or changing a component','Validation and release checks'],
+      relatedSkills:['skill-component-and-design-system-thinking','skill-design-system-stewardship','skill-accessibility-and-inclusive-design','skill-interface-hierarchy-and-visual-communication'],
+      applications:[{personaId:'ui-expert',skillId:'skill-component-and-design-system-thinking',workflow:'Extend and govern the design system',reason:'Camille uses the pack when a shared pattern or guideline must travel beyond a local interface decision.'}],
+      playbooks:['playbook-create-and-integrate-reusable-skill'],
+      evidence:'Catalog-level synthesis from the Persona Library design-system Skill profiles, Camille Ortiz’s system-stewardship workflow, and the user-specified future TemplateRepo reference. Actual external pack contents remain unverified.',
+      revision:{version:'0.1',date:'2026-09-10',changeType:'initial-catalog-entry',summary:'Added a planned Design System Operating Pack reference with scoped Skill and workflow applicability.',affectedFields:['purpose','source','provides','applications','playbooks'],confidence:'Proposed catalog context; external source path and contents are unknown'}
+    }
+  ],
+  personaToolRequirements: [
     {
       id:'requirement-mara-concept-model',
       personaId:'knowledge-systems-architect',

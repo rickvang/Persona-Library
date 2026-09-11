@@ -1,0 +1,4 @@
+interface:
+  display_name: "Operating Pack Composer"
+  short_description: "Compose minimal Markdown operating context"
+  default_prompt: "Use $operating-pack-composer to compile a minimal AGENTS.md-led Operating Pack from verified context and constraints."
