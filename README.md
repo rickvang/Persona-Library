@@ -7,7 +7,7 @@ This repository contains the source and generated output for the Persona Library
 - `content/` — the authored persona, skill, operating pack, Template, tool, playbook, and orientation data.
 - `client/` — shared browser state and rendering helpers.
 - `scripts/` — the build and content-validation scripts.
-- `dist/` — the generated, dependency-free Site, including all public pages, the Operating Packs and Templates catalogs, and the onboarding guidance.
+- `dist/` — the generated, dependency-free Site, including all public pages, the Operating Packs and Templates catalogs, the focused Template viewer, and the onboarding guidance.
 - `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
 - `JOB_SEARCH_IMPLEMENTATION.md` — the job-search workspace scope and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.

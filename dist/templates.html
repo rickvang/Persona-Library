@@ -16,6 +16,7 @@
     @media (max-width:1050px) { .toolbar { grid-template-columns:1fr 1fr; } .search { grid-column:1/-1; } }
     @media (max-width:900px) { .layout { grid-template-columns:1fr; gap:18px; } .sidebar { position:static; display:flex; gap:5px; overflow-x:auto; border-right:0; border-bottom:1px solid var(--line); padding:0 0 12px; white-space:nowrap; } .sidebar-label { display:none; } .sidebar a { padding:8px 11px; border-radius:8px; background:#e9ece6; } .template-grid { grid-template-columns:1fr; } .status-grid,.flow { grid-template-columns:repeat(2,1fr); } }
     @media (max-width:650px) { .topbar { padding:16px 20px; } .topnav { gap:10px; font-size:12px; white-space:nowrap; } .hero { padding:36px 20px 40px; } .layout { padding:28px 20px 60px; } .catalog-head { display:block; } .catalog-count { display:block; margin-top:8px; } .toolbar { display:block; } .search,.select { width:100%; margin-bottom:8px; } .detail-grid,.status-grid,.flow { grid-template-columns:1fr; } .detail-cell.full { grid-column:auto; } }
+    .viewer-link { display:inline-block; margin-top:18px; color:#234f68; font-size:13px; font-weight:900; text-underline-offset:3px; }
   </style>
 </head>
 <body>
@@ -59,6 +60,10 @@
     function render() { const term = controls.query.value.trim().toLowerCase(); const visible = templateCatalog.filter(template => { const source = template.source || {}; return (!term || JSON.stringify(template).toLowerCase().includes(term)) && (controls.category.value === 'all' || template.category === controls.category.value) && (controls.status.value === 'all' || template.status === controls.status.value) && (controls.source.value === 'all' || source.kind === controls.source.value) && (controls.availability.value === 'all' || source.availability === controls.availability.value); }); count.textContent = `${visible.length} ${visible.length === 1 ? 'Template' : 'Templates'}`; grid.innerHTML = visible.length ? visible.map(card).join('') : '<div class="empty"><strong>No Templates match that search.</strong><br>Try a broader term or clear a filter.</div>'; const selected = state.get('selected'); if (selected) { const detail = document.querySelector(`[data-template-detail="${CSS.escape(selected)}"]`); const cardElement = document.getElementById(selected); if (detail) { detail.open = true; cardElement?.scrollIntoView({ block: 'start' }); } else state.set({ selected: '' }); } }
     Object.entries(controls).forEach(([key, control]) => control.addEventListener(key === 'query' ? 'input' : 'change', () => { state.set({ [key]: control.value }); render(); }));
     grid.addEventListener('toggle', event => { const detail = event.target.closest('[data-template-detail]'); if (!detail) return; if (detail.open) state.set({ selected: detail.dataset.templateDetail }); else if (state.get('selected') === detail.dataset.templateDetail) state.set({ selected: '' }); }, true);
+    function addViewerLinks() { grid.querySelectorAll('.template-card').forEach(card => { if (card.querySelector('.viewer-link')) return; const link = document.createElement('a'); link.className = 'viewer-link'; link.href = `template.html?template=${encodeURIComponent(card.id)}`; link.textContent = 'Open viewer →'; link.setAttribute('aria-label', `Open viewer for ${card.querySelector('h3')?.textContent || 'Template'}`); card.insertBefore(link, card.querySelector('.template-detail')); }); }
+    const viewerObserver = new MutationObserver(addViewerLinks);
+    viewerObserver.observe(grid, { childList: true });
+    addViewerLinks();
     render();
   </script>
 </body>
