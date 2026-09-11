@@ -7,7 +7,7 @@
 ## Checks passed
 
 - `node scripts/build-library.mjs` refreshed generated data copies from the authored content.
-- `node scripts/validate-content.mjs` passed: 20 personas, 2 operators, 2 leaders, 16 specialists, and 20 workflow maps validated.
+- `node scripts/validate-content.mjs` passed on the clean merge target: 19 personas, 2 operators, 2 leaders, 15 specialists, and 19 workflow maps validated.
 - `node --check dist/data/library-data.js` passed.
 - `node --check dist/data/library-model.js` passed.
 - Inline JavaScript in `dist/templates.html` and `dist/template.html` parsed successfully with `new Function`.
