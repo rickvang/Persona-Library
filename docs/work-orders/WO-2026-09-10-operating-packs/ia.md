@@ -27,9 +27,11 @@ Use scoped pack applications with `personaId`, `skillId`, and `workflow` so a Pe
 
 Support repository-local, project-local, external GitHub, planned, and unavailable source states through a compact `source` object. Local sources require a repository-relative path and entrypoint that the validator can resolve. External planned sources require repository identity, entrypoint intent, and an explicit availability state; a URL or repository name never proves that files are present.
 
-## Example placement
+## Example placement (historical at 2026-09-10)
 
 The Design System pack is a planned external reference to `rickvang/TemplateRepo` with an unverified path and `AGENTS.md` as the intended entrypoint. It is scoped to Camille Ortiz’s `Component and design-system thinking` Skill in the `Extend and govern the design system` workflow. It may be referenced by the reusable Skill-formation Playbook, while the Figma Tool-use recipe remains a separate Tool relationship reached through related Skill context.
+
+This example records the source assumption at the time of the placement review. The TemplateRepo assumption is superseded by the follow-up verification recorded in the related source-migration Work Order.
 
 ## Revisit conditions
 

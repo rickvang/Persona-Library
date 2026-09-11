@@ -40,7 +40,7 @@ Mara Okoye’s knowledge-systems review is recorded in [ia.md](ia.md). The propo
 
 - `content/site-orientation.json`, `ARCHITECTURE.md`, `content/library-data.js`, and `content/library-model.js` establish the current static-first and normalization boundaries. Status: observed.
 - Existing repository-local Skill contracts require frontmatter metadata and route validation. Status: observed.
-- `rickvang/TemplateRepo` is a user-specified future source reference. Its Operating Pack path and migrated naming are not verified in this checkout. Status: unknown; represent as planned.
+- Historical at 2026-09-10: `rickvang/TemplateRepo` was a user-specified future source reference. Its Operating Pack path and migrated naming were not verified in that checkout. Status at the time: unknown; represent as planned. This assumption is superseded by the dated source verification below.
 - Existing Playbook pages are static Site records rather than a typed canonical Playbook array. A minimal identity index is introduced only so pack references can resolve without copying Playbook definitions. Status: design assumption.
 
 ## Success criteria
@@ -58,4 +58,17 @@ Phase: implementation and validation complete after orientation and placement re
 
 ## Completion boundary
 
-Complete when the linked implementation files, generated output, validation evidence, reconciliation report, and issue link are inspectable. Any remote TemplateRepo inspection or transport remains a separate future request.
+Complete when the linked implementation files, generated output, validation evidence, reconciliation report, and issue link are inspectable. Any remote TemplateRepo inspection or transport was outside this historical Work Order; the follow-up source verification below records the current canonical source.
+
+## Follow-up source supersession (2026-09-11)
+
+The initial Design System source assumption pointed to `rickvang/TemplateRepo` as a planned, unverified future source. That assumption was accurate for this Work Order’s 2026-09-10 state and is now superseded for current catalog truth.
+
+Verified canonical source for the existing `operating-pack-design-system` record:
+
+- Repository: `rickvang/operating-packs`
+- Path: `packs/design-system`
+- Entrypoint: `AGENTS.md`
+- Verification revision: `569c326f6f9df4077ee77352fe691bda6ec37b92`
+
+The source remains an external documentation reference; runtime access is capability-dependent.

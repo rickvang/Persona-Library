@@ -362,14 +362,14 @@ window.PersonaLibraryData = {
       purpose:'A reusable Markdown-based context package for teams that design, build, and maintain shared interface patterns.',
       domain:'Product teams with a shared component or design system',
       useWhen:'A task changes a shared component, token, pattern, accessibility rule, naming convention, package boundary, or system-level validation path.',
-      status:'Planned external reference',
-      source:{kind:'github_repository',repository:'rickvang/TemplateRepo',path:null,entrypoint:'AGENTS.md',availability:'planned',verification:'The repository reference is recorded for future research; this checkout does not verify an Operating Pack path, file layout, or migrated naming.'},
+      status:'Canonical external reference',
+      source:{kind:'github_repository',repository:'rickvang/operating-packs',path:'packs/design-system',entrypoint:'AGENTS.md',availability:'documentation_only',verification:'Verified on 2026-09-11 against main at commit 569c326f6f9df4077ee77352fe691bda6ec37b92; packs/design-system and AGENTS.md resolve, and the external README identifies this repository/path/entrypoint as Persona-Library’s stable contract. Runtime access remains capability-dependent.'},
       provides:['Token and component conventions','Accessibility and responsive requirements','Naming and package architecture guidance','SOPs for adding or changing a component','Validation and release checks'],
       relatedSkills:['skill-component-and-design-system-thinking','skill-design-system-stewardship','skill-accessibility-and-inclusive-design','skill-interface-hierarchy-and-visual-communication'],
       applications:[{personaId:'ui-expert',skillId:'skill-component-and-design-system-thinking',workflow:'Extend and govern the design system',reason:'Camille uses the pack when a shared pattern or guideline must travel beyond a local interface decision.'}],
       playbooks:['playbook-create-and-integrate-reusable-skill'],
-      evidence:'Catalog-level synthesis from the Persona Library design-system Skill profiles, Camille Ortiz’s system-stewardship workflow, and the user-specified future TemplateRepo reference. Actual external pack contents remain unverified.',
-      revision:{version:'0.1',date:'2026-09-10',changeType:'initial-catalog-entry',summary:'Added a planned Design System Operating Pack reference with scoped Skill and workflow applicability.',affectedFields:['purpose','source','provides','applications','playbooks'],confidence:'Proposed catalog context; external source path and contents are unknown'}
+      evidence:'Verified external source evidence: rickvang/operating-packs/packs/design-system/AGENTS.md identifies the Design System Operating Pack, routes to the pack’s local Markdown guidance and workflows, and matches the repository README stable Persona-Library contract. Persona-Library relationship evidence: Camille Ortiz (ui-expert) applies the Component and design-system thinking Skill in the Extend and govern the design system workflow; the four related design-system Skills, the Playbook identity, and the derived Figma Tool-use context remain unchanged.',
+      revision:{version:'0.2',date:'2026-09-11',changeType:'source-verification',summary:'Replaced the planned TemplateRepo source with the verified canonical operating-packs repository and Design System pack entrypoint.',affectedFields:['status','source','evidence'],confidence:'Verified source location and entrypoint at main revision 569c326f6f9df4077ee77352fe691bda6ec37b92; existing applicability relationships unchanged after reconciliation'}
     }
   ],
   personaToolRequirements: [
