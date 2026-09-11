@@ -245,13 +245,20 @@
           const persona = personaById.get(application.personaId);
           const skill = skillById.get(application.skillId);
           const workflow = persona ? (flowLibrary[persona.id] || []).find(item => item.title === application.workflow) : null;
+          const skillProfile = skill?.profiles?.find(profile => profile.personaId === application.personaId);
+          const profileWorkflows = (skillProfile?.workflows || '').split(' · ').map(workflowTitle => workflowTitle.trim()).filter(Boolean);
+          const skillOwnsWorkflow = Boolean(
+            skillProfile
+            && profileWorkflows.includes(application.workflow)
+            && skill.workflows?.some(item => item.personaId === application.personaId && item.title === application.workflow)
+          );
           return {
             ...application,
             personaName: persona?.name || application.personaId,
             personaRoleLabel: persona?.roleLabel || '',
             skillName: skill?.name || application.skillId,
             workflowType: workflow?.type || '',
-            known: Boolean(persona && skill && workflow)
+            known: Boolean(persona && skill && workflow && skillProfile && skillOwnsWorkflow)
           };
         });
         const relatedToolRecipes = [...new Map(relatedSkills.flatMap(skill => skill.toolUseRecipes || []).map(recipe => [recipe.id, recipe])).values()];

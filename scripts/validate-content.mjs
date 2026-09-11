@@ -77,7 +77,7 @@ if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchP
 if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Shared state keeps the playbook coherent') || !playbooksPage.includes('Change control') || !playbooksPage.includes('conditional reconciliation gate')) {
   throw new Error('Playbooks page is missing its mental model or current playbook');
 }
-if (!operatingPacksPage.includes('Operating Packs keep the domain in view.') || !operatingPacksPage.includes('operatingPackCatalog') || !operatingPacksPage.includes('planned') || !operatingPacksPage.includes('AGENTS.md')) {
+if (!operatingPacksPage.includes('Operating Packs keep the domain in view.') || !operatingPacksPage.includes('operatingPackCatalog') || !operatingPacksPage.includes('planned') || !operatingPacksPage.includes('AGENTS.md') || !operatingPacksPage.includes("grid.addEventListener('toggle'") || !operatingPacksPage.includes('}, true);') || !operatingPacksPage.includes("state.set({ selected: '' })")) {
   throw new Error('Operating Packs page is missing its catalog, source boundary, or planned example');
 }
 if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('proto-persona-library-guide') || !prototypingPage.includes('Persona Library Guide') || !prototypingPage.includes('Selected output with missing prerequisites') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate') || !prototypingPage.includes('change-reconciliation-prototype') || !prototypingPage.includes('proto-skill-change-impact-reconciliation') || !prototypingPage.includes('Generated artifact update') || !prototypingPage.includes('reconciliation report') || !prototypingPage.includes('skill-contract-prototype') || !prototypingPage.includes('proto-skill-contract-routing') || !prototypingPage.includes('Missing metadata')) {
@@ -142,6 +142,12 @@ for (const route of orientation.routing.routes) {
     }
   }
 }
+const routeById = new Map(orientation.routing.routes.map(route => [route.id, route]));
+const operatingPackDependentRoutes = ['persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'tool-resolution', 'tool-record-maintenance', 'cross-space-reconciliation'];
+for (const routeId of operatingPackDependentRoutes) {
+  if (!routeById.get(routeId)?.secondary_spaces.includes('operating-packs')) throw new Error(`Operating Pack dependency is missing from route: ${routeId}`);
+}
+if (!routeById.get('cross-space-reconciliation')?.first_reads.some(read => /Operating Pack/i.test(read))) throw new Error('Universal reconciliation route does not declare Operating Pack inspection');
 const skillEntries = await readdir(skillsRoot, { withFileTypes: true });
 for (const entry of skillEntries.filter(item => item.isDirectory())) {
   const skillPath = path.join(skillsRoot, entry.name, 'SKILL.md');
@@ -272,6 +278,16 @@ const isWithinRoot = target => {
   const relative = path.relative(root, target);
   return relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
 };
+const resolveLocalPackEntrypoint = sourceRecord => {
+  const sourceRoot = path.resolve(root, sourceRecord.path);
+  if (!isWithinRoot(sourceRoot)) throw new Error('Operating Pack source path escapes the repository root');
+  const entrypoint = path.resolve(sourceRoot, sourceRecord.entrypoint);
+  if (!isWithinRoot(entrypoint)) throw new Error('Operating Pack entrypoint escapes the repository root');
+  return entrypoint;
+};
+const assertKnownOperatingPackApplication = (packId, application) => {
+  if (!application.known) throw new Error(`${packId} has an unresolved Persona-Skill-workflow relationship`);
+};
 for (const pack of data.operatingPacks) {
   if (!pack.id || operatingPackIds.has(pack.id)) throw new Error(`Duplicate or missing Operating Pack id: ${pack.id || '(missing)'}`);
   operatingPackIds.add(pack.id);
@@ -284,7 +300,7 @@ for (const pack of data.operatingPacks) {
   if (sourceRecord.kind === 'github_repository' && !/^[^/]+\/[^/]+$/.test(sourceRecord.repository || '')) throw new Error(`${pack.id} has an invalid external repository reference`);
   if (sourceRecord.kind !== 'github_repository' && (!sourceRecord.path || !isWithinRoot(path.resolve(root, sourceRecord.path)))) throw new Error(`${pack.id} has an invalid local source path`);
   if (sourceRecord.kind !== 'github_repository') {
-    const entrypoint = path.resolve(root, sourceRecord.path, sourceRecord.entrypoint);
+    const entrypoint = resolveLocalPackEntrypoint(sourceRecord);
     try {
       await readFile(entrypoint, 'utf8');
     } catch {
@@ -302,8 +318,39 @@ for (const pack of data.operatingPacks) {
 }
 for (const pack of data.operatingPackCatalog) {
   if (!operatingPackIds.has(pack.id) || !Array.isArray(pack.relatedPersonas) || !Array.isArray(pack.relatedToolRecipes)) throw new Error(`Normalized Operating Pack catalog entry is incomplete: ${pack.id || '(missing)'}`);
-  if (pack.relatedSkills.some(skill => !skill.known) || pack.applications.some(application => !application.known) || pack.playbooks.some(playbook => !playbook.known)) throw new Error(`Normalized Operating Pack relationship is unresolved: ${pack.id}`);
+  if (pack.relatedSkills.some(skill => !skill.known) || pack.playbooks.some(playbook => !playbook.known)) throw new Error(`Normalized Operating Pack relationship is unresolved: ${pack.id}`);
+  for (const application of pack.applications) assertKnownOperatingPackApplication(pack.id, application);
 }
+const negativeRelationshipPersona = data.personas.find(persona => persona.id === 'ui-expert') || data.personas[0];
+const negativeRelationshipWorkflow = (data.flowLibrary[negativeRelationshipPersona?.id] || [])[0];
+const negativeRelationshipSkill = data.skillCatalog.find(skill => skill.profiles?.some(profile => profile.personaId === negativeRelationshipPersona?.id) && !skill.workflows?.some(workflow => workflow.personaId === negativeRelationshipPersona?.id && workflow.title === negativeRelationshipWorkflow?.title));
+if (!negativeRelationshipPersona || !negativeRelationshipWorkflow || !negativeRelationshipSkill) throw new Error('Could not construct the invalid Operating Pack relationship fixture');
+const negativeRelationshipCatalog = sandbox.window.PersonaLibraryModel.buildOperatingPackCatalog({
+  operatingPacks: [{
+    id: 'negative-relationship-fixture',
+    name: 'Negative relationship fixture',
+    applications: [{ personaId: negativeRelationshipPersona.id, skillId: negativeRelationshipSkill.id, workflow: negativeRelationshipWorkflow.title, reason: 'Validator fixture' }]
+  }],
+  personas: data.personas,
+  skillCatalog: data.skillCatalog,
+  flowLibrary: data.flowLibrary,
+  playbookCatalog: data.playbookCatalog
+});
+if (negativeRelationshipCatalog[0]?.applications[0]?.known) throw new Error('Invalid Operating Pack Persona-Skill-workflow relationship was normalized as known');
+let relationshipFixtureRejected = false;
+try {
+  assertKnownOperatingPackApplication('negative-relationship-fixture', negativeRelationshipCatalog[0].applications[0]);
+} catch {
+  relationshipFixtureRejected = true;
+}
+if (!relationshipFixtureRejected) throw new Error('Invalid Operating Pack Persona-Skill-workflow relationship was not rejected');
+let traversalFixtureRejected = false;
+try {
+  resolveLocalPackEntrypoint({ path: '.', entrypoint: '../outside.md' });
+} catch {
+  traversalFixtureRejected = true;
+}
+if (!traversalFixtureRejected) throw new Error('Operating Pack entrypoint traversal was not rejected');
 const hierarchyPilot = data.skillCatalog.find(skill => skill.id === 'skill-interface-hierarchy-and-visual-communication');
 if (!hierarchyPilot || hierarchyPilot.buildingBlocks.length < 3) throw new Error('The modular skill pilot must have at least three building blocks');
 

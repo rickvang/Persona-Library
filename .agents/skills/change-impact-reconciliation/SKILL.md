@@ -35,6 +35,7 @@ Use declared, inspectable sources of dependency:
 
 - Explicit typed relationships and canonical records in content/library-data.js.
 - Normalized relationships and workflow reach produced by content/library-model.js.
+- Operating Pack applications are first-class dependent relationships: when a Persona, Skill or workflow, Playbook, Tool, or Tool-use recipe changes, inspect the related Operating Pack applications; when an Operating Pack changes, inspect those source relationships symmetrically.
 - Decision records and their affected surfaces, source prototypes, and revisit conditions.
 - Declared source-to-output provenance for generated modules and pages.
 - Named references in the initiating change and relevant repository guidance.
