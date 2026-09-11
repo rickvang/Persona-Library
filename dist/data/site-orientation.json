@@ -355,6 +355,22 @@
         "next_handoff": "Return required, optional, unchanged, and unknown impacts to the initiating workflow owner."
       },
       {
+        "id": "conformance-evaluation",
+        "request": "Evaluate how Personas, Skills, Tools, or workflows behave across model or assistant surfaces",
+        "modes": ["research", "plan", "update"],
+        "primary_space": "docs",
+        "secondary_spaces": ["personas", "skills", "tools", "playbooks", "decisions"],
+        "target": "eval/ file-based conformance suite and conformance-observer Persona",
+        "artifact_kind": "workflow",
+        "package_path": "eval/",
+        "availability_source": "repo_local",
+        "first_reads": ["content/site-orientation.json", "eval/cases.json", "active Work Order", "relevant Persona, Skill, and Tool records"],
+        "mutation_boundary": "authorized_update",
+        "reconciliation": "change-impact-reconciliation",
+        "non_triggers": ["A general model comparison without a defined fixture or expected contract", "Claiming provider behavior from one unrecorded run", "Adding production telemetry or credentials without a separate authorization"],
+        "next_handoff": "Use the conformance contract, record conditions and evidence, then route findings to the smallest responsible record or issue."
+      },
+      {
         "id": "isolated-persona-skill-testing",
         "request": "Run each selected Persona Skill in a fresh isolated low-reasoning task and evaluate the response",
         "modes": ["research", "update"],
@@ -387,23 +403,6 @@
         "next_handoff": "Use provider recommendation status and candidate review requirements before selecting an export."
       }
     ]
-  },
-  "routes": {
-    "conformance-evaluation": {
-      "request": "Evaluate how Personas, Skills, Tools, or workflows behave across model or assistant surfaces",
-      "modes": ["research", "plan", "update"],
-      "primary_space": "docs",
-      "secondary_spaces": ["personas", "skills", "tools", "playbooks", "decisions"],
-      "target": "eval/ file-based conformance suite and conformance-observer Persona",
-      "artifact_kind": "workflow",
-      "package_path": "eval/",
-      "availability_source": "repo_local",
-      "first_reads": ["content/site-orientation.json", "eval/cases.json", "active Work Order", "relevant Persona, Skill, and Tool records"],
-      "mutation_boundary": "authorized_update",
-      "reconciliation": "change-impact-reconciliation",
-      "non_triggers": ["A general model comparison without a defined fixture or expected contract", "Claiming provider behavior from one unrecorded run", "Adding production telemetry or credentials without a separate authorization"],
-      "next_handoff": "Use the conformance contract, record conditions and evidence, then route findings to the smallest responsible record or issue."
-    }
   },
   "creation_gate": {
     "owner": "Mara Okoye",
