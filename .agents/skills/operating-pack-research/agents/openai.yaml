@@ -1,0 +1,4 @@
+interface:
+  display_name: "Operating Pack Research"
+  short_description: "Research domain context before proposing a pack"
+  default_prompt: "Use $operating-pack-research to research the verified, reusable, project-specific, inferred, and unresolved operating guidance for this domain."

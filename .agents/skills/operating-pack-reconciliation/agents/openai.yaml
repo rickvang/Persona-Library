@@ -1,0 +1,4 @@
+interface:
+  display_name: "Operating Pack Reconciliation"
+  short_description: "Review downstream effects of pack changes"
+  default_prompt: "Use $operating-pack-reconciliation to classify the downstream effects of this Operating Pack change without applying updates."

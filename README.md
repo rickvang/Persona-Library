@@ -4,10 +4,10 @@ This repository contains the source and generated output for the Persona Library
 
 ## What is included
 
-- `content/` — the authored persona, skill, tool, playbook, and orientation data.
+- `content/` — the authored persona, skill, operating pack, tool, playbook, and orientation data.
 - `client/` — shared browser state and rendering helpers.
 - `scripts/` — the build and content-validation scripts.
-- `dist/` — the generated, dependency-free Site, including all public pages and the onboarding guidance.
+- `dist/` — the generated, dependency-free Site, including all public pages, the Operating Packs catalog, and the onboarding guidance.
 - `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
 - `JOB_SEARCH_IMPLEMENTATION.md` — the job-search workspace scope and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.
