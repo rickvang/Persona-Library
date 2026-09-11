@@ -17,7 +17,7 @@ This is the required read-only Operating Pack adapter pass followed by the unive
 - `operating-pack-design-system` **confirms and extends** the existing design-system Skill and Camille Ortiz’s design-system workflow at a scoped application. The existing Persona and Skill records remain unchanged.
 - The pack’s `playbook-create-and-integrate-reusable-skill` reference **extends** the Playbook identity index. The Playbook page remains the owner of outcome orchestration; the pack is context only.
 - The related Figma Tool-use recipe is **unchanged** and is derived through the related Skill relationship. The pack grants no Tool access.
-- `rickvang/TemplateRepo` is **planned and unverified**. The catalog records repository, unverified path, intended `AGENTS.md` entrypoint, and availability without treating the external source as present.
+- At the time of the 2026-09-10 validation, `rickvang/TemplateRepo` was **planned and unverified**. The catalog then recorded its repository, unverified path, intended `AGENTS.md` entrypoint, and availability without treating the external source as present. This source assumption is superseded by the 2026-09-11 verification of `rickvang/operating-packs/packs/design-system/AGENTS.md`.
 - Docs, orientation routing, Site navigation, the catalog page, generated data/model/orientation, and validator are **required dependents** and are present and fresh.
 - Prototype records are **checked unchanged and isolated**; no prototype identity can enter the live Operating Pack catalog.
 - Repeated contextual rules remain candidates for `persona-skills` review only. No Skill was mutated automatically.
