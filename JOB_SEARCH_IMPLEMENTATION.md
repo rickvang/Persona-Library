@@ -22,7 +22,7 @@ Use one primary candidate persona with a coordinated set of specialist lenses:
 8. **Outreach and interview coach** — prepares networking messages, follow-ups, interview stories, and questions.
 9. **Job-search orchestrator** — coordinates the lenses, preserves decisions, and keeps the search coherent over time.
 
-The default path is ATS-first with a claim-to-ledger integrity gate. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
+The default path is ATS-first with a material-claim integrity gate. Cover letters pass through a positioning layer before review so the evidence ledger informs the writing without dictating every sentence. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
 
 ### Consultation convention
 
@@ -56,6 +56,7 @@ Each future job-search record should preserve:
 - Job description, source URL, company context, and research date
 - Requirement-to-evidence mappings with confidence and gaps
 - Resume, cover letter, portfolio, outreach, and interview artifacts
+- Reusable cover-letter master guidance kept separate from role-specific cover-letter copies
 - ATS review findings and human review findings as separate records
 - Version history, decisions, submitted date, outcome, and learning
 - Open questions and what evidence would change the search strategy
@@ -79,6 +80,26 @@ Before drafting, maintain one evidence inventory or claim ledger containing:
 - destination in the ATS resume, optional human-facing resume, cover letter, or portfolio.
 
 The ledger is authoritative. Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain visibly distinct.
+
+### Positioning layer and artifact-specific evidence rigor
+
+Do not send the evidence ledger directly into prose. Create a short positioning brief between the ledger and the application artifact. It names the role-relevant themes, candidate-approved abstractions, voice cues, useful omissions, and uncertain areas that need careful handling. The positioning brief is an interpretive bridge, not a second evidence source.
+
+Apply evidence rigor according to the artifact:
+
+- ATS resume: use high exactness for dates, titles, employers, metrics, tools, credentials, ownership, scope, and outcomes. Plain-text extraction and material-claim integrity remain strict.
+- Cover letter: keep material facts, scope, ownership, metrics, tools, credentials, and known gaps truthful, while allowing sentence-level synthesis, broader descriptors, and candidate-owned voice when they faithfully summarize related evidence.
+- Portfolio, outreach, and interview materials: keep material facts stable and choose the lightest review that fits the format and consequence of the claim.
+
+Classify candidate revisions before routing them back through evidence review:
+
+- Voice-only change: accept when it improves clarity or recognizability without changing meaning.
+- Positioning abstraction: accept when the candidate recognizes it as accurate and it does not materially upgrade scope, ownership, or expertise. Keep it in the positioning brief when it is useful across applications.
+- New material fact: confirm or add it to the evidence ledger when it introduces a new metric, tool, credential, employer, date, responsibility, outcome, or scope claim.
+- Omission: check role coverage and reader flow, but do not force a sentence back into the artifact solely to preserve one-to-one traceability.
+
+The cover-letter quality gate is candidate-recognizable voice, clear role relevance, useful flow, and no material misrepresentation. A cover-letter sentence does not need a one-to-one source citation when it is a truthful synthesis of supported evidence. The source path must remain recoverable in the private positioning brief or Work Order when a reviewer needs to inspect the underlying claim.
+
 ### Candidate-specific standing decisions
 
 Before role alignment or drafting, read the private candidate-specific standing-decision record when one exists. It carries explicit, candidate-confirmed choices about employer attribution, chronology, section placement, voice, omissions, and other repeatable resume decisions.
@@ -102,6 +123,20 @@ Reading or updating the standing record never authorizes upload, submission, emp
 The default ATS resume must be semantically structured, extraction-safe, readable, naturally aligned to supported role terminology, and clear about dates, titles, employers, engagement identity, attribution, scope, and outcomes.
 
 It must not hide content in graphics, rely on decorative layout, stuff keywords, silently normalize ambiguous facts, or claim a parser result that was not actually tested. If no employer parser is available, record parser suitability as unknown rather than implying validation.
+
+### Accessible document production and export verification
+
+ATS-safe and human-readable are compatible when visual treatment preserves semantic structure. Use native hyperlinks for email, portfolio, and LinkedIn; native list structures for bullets; semantic heading levels for the title, sections, and employers; and styled normal paragraphs for dates so heading navigation stops at meaningful content boundaries. Break long skills content into short categorized lines with visible labels. Use restrained color, typography, indentation, and spacing only when contrast, extraction, and reading order remain intact. Do not replace list structures with bullet-looking special characters.
+
+When a document is exported, record separate checks for:
+
+- tagged output and document language metadata;
+- heading, paragraph, list/list-item, and link structures;
+- reading order and link destinations;
+- page count, page breaks, clipped content, and orphaned headings or bullets; and
+- live screen-reader behavior when it is actually tested.
+
+A successful tagged-PDF export is evidence about the exported structure, not proof of NVDA, JAWS, or other assistive-technology behavior. If live testing is not available, record that limitation explicitly.
 
 ### Default ATS section structure
 
@@ -129,6 +164,8 @@ When source material identifies a consulting, staffing, or agency employer with 
 - Do not rely on visual indentation alone; the relationship must survive plain-text extraction.
 - Keep direct employers as separate entries.
 - If the employer/client relationship or employment period is uncertain, record the uncertainty and ask before regrouping.
+
+When several short historical roles need a grouped presentation, use an explicit umbrella label only as a presentation device. Preserve every underlying employer, title, date range, location, and accomplishment in extractable text; mark any aggregate date or location as a summary; and do not let the label imply an employer, title, or period that the source does not support.
 
 ### ATS provider and channel profiles
 
@@ -172,10 +209,17 @@ Every application packet runs:
 - explicit unknown and untested-scope review.
 - conventional-heading and target-context review;
 - duplicate-claim review across summary, highlights, skills, and experience.
+- semantic document and export review when a file is rendered;
+- page-flow review for clipped content, orphaned headings or bullets, and unintended whitespace;
+- explicit separation between verified exported structure and untested live screen-reader behavior.
 
 When a human-facing version exists, also run the human/visual review and a parity comparison against the ATS version. When it does not exist, do not report human parity as passed or failed; report it as not applicable and preserve the reason.
 
 The selected submission artifact follows employer instructions. Do not submit both resume versions unless the employer or requester explicitly asks for both. Cover-letter claims, when requested, trace to the same ledger and add useful context rather than becoming a second evidence source.
+
+A reusable cover-letter master is a separate private design asset, not a role-specific application artifact or a second evidence source. It contains an internal tailoring brief and a clean sendable structure; each application creates a new tailored copy from the master and the shared evidence ledger. Keep prior drafts out of a fresh design unless the requester explicitly includes them.
+
+For cover letters, the internal tailoring brief is the positioning layer. It may translate several related evidence items into a candidate-approved theme or descriptor so the sendable letter can read naturally. The final review protects material truth and role coverage without turning the letter into a line-by-line evidence audit.
 
 ### Work Order tracking
 
@@ -193,12 +237,12 @@ The Work Order records the target, shared ledger, canonical ATS version, optiona
 
 - Parse a job description into responsibilities, capabilities, outcomes, and signals.
 - Map each requirement to evidence, confidence, and a gap or follow-up question.
-- Produce a truthful positioning statement and role-specific evidence shortlist.
+- Produce a candidate-approved positioning brief and role-specific evidence shortlist.
 
 ### Phase 2 — Application packet
 
 - Build one shared evidence source and render the canonical ATS submission version. Add a human-facing resume only when the target channel or review context justifies a second output.
-- Draft a separate cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry.
+- Draft a separate cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry. Draft from the positioning brief, then review material claims and voice as separate questions.
 - Generate portfolio or case-study emphasis for design-oriented roles.
 
 ### Application preflight — before the council
@@ -218,6 +262,7 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - Start with the preflight result rather than relying on visual inspection or persona memory.
 - Run the ATS pass for parseability, terminology coverage, structure, and truthful alignment.
 - Run the claim-to-ledger integrity pass and chronology preflight.
+- For a cover letter, run the positioning and voice pass before the material-claim pass. Accept candidate-owned abstractions that preserve meaning; escalate only new material facts or changes to scope, ownership, metrics, tools, credentials, dates, or gaps.
 - Run human/narrative and visual passes only when a human-facing version exists or a human-facing template is being evaluated.
 - Record unresolved tradeoffs instead of silently flattening them.
 
@@ -253,12 +298,21 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 
 ### Evidence-integrity quality
 
-- Every material claim traces to the shared evidence ledger.
+- Every material claim traces to the shared evidence ledger, while synthesized wording may summarize multiple ledger items without a one-to-one sentence mapping.
 - Metrics, tools, responsibilities, titles, dates, employers, and outcomes are not invented or upgraded.
 - Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain distinct.
 - Intentional omissions and synthesized wording are recorded.
 - No parser, recruiter, human, or user response is claimed without that evidence.
 - The packet stops or returns to source review when a material claim cannot be supported.
+
+### Cover-letter quality
+
+- A positioning brief precedes the draft and identifies the reader decision path, role-relevant themes, candidate-approved abstractions, and material gaps.
+- The letter sounds recognizable to the candidate and uses flow, specificity, and emphasis appropriate to a human reader.
+- Candidate edits are classified as voice, positioning abstraction, new material fact, or omission before any evidence escalation.
+- New material facts and material changes to scope, ownership, metrics, tools, credentials, dates, or gaps return to the evidence ledger.
+- Truthful bridge language may acknowledge a gap without repeating internal audit language in the sendable letter.
+- The final letter adds context or motivation rather than copying the resume.
 
 ### Optional human-facing quality
 
@@ -294,6 +348,8 @@ These are future opportunities, not implied capabilities of the current referenc
 - Can each important claim in an application be traced to evidence?
 - Does the preflight catch wrong role order even when the content and visual review look good?
 - Does the ATS pass improve retrieval without making the writing unnatural?
+- Does the positioning layer preserve candidate voice while keeping material facts and role coverage stable?
+- Are candidate edits routed by consequence instead of receiving the same sentence-level evidence scrutiny?
 - When a human-facing output is warranted, can a reviewer identify fit, level, and contribution quickly?
 - Does visual treatment support the context rather than merely signal taste?
 - Does feedback change the search model only when it is repeated or well-supported?
@@ -301,3 +357,6 @@ These are future opportunities, not implied capabilities of the current referenc
 - Does the resume preserve employer-of-record and client attribution without relying on visual indentation?
 - Does the resume keep target context in the Work Order while keeping the resume reusable?
 - Do any highlights or alignment sections add distinct value instead of repeating experience or skills?
+- Do native links, lists, headings, dates, and categorized skills survive extraction and assistive-technology review?
+- Does the rendered file preserve page flow without clipping, orphaned content, or a stray list item?
+- Are exact candidate-specific typography, color, and spacing settings kept in the private artifact or document spec rather than treated as universal rules?
