@@ -16,6 +16,7 @@ A project-scoped work packet for evidence-grounded resume writing. This file tra
 - Change mode: artifact-generation
 - Change domain: project-scoped job-search documents
 - Artifact home: docs/work-orders/WO-2026-09-08-resume-writing/
+- Tracking issue: [#53 Extend job-search workflow with accessible document and export QA](https://github.com/rickvang/Persona-Library/issues/53)
 - Authorized repository target: Persona Library Work Order documentation
 - Authorized private artifact target: Google Drive job applications / Codex / WO-2026-09-08-resume-writing
 - Stopping condition: pause before any submission or private-draft edits that depend on unresolved user-owned facts
@@ -29,7 +30,7 @@ For this Work Order, the canonical application output is one ATS-oriented resume
 1. One shared evidence inventory or claim ledger.
 2. One ATS-oriented resume rendering as the default application artifact.
 3. An optional human-facing resume rendering only when its benefit and channel fit are recorded.
-4. A separate cover letter only when it adds useful, role-specific context or is required.
+4. A separate role-specific cover letter only when it adds useful context or is required; a reusable cover-letter master is tracked separately as a private design asset.
 5. A claim-to-ledger integrity review; add an ATS-to-human parity comparison only if an optional human version exists.
 
 The ATS version is the canonical submission candidate. The optional human version is a linked rendering, not an independent story. External submission, outreach, publication, and employer contact remain separate authorized actions.
@@ -158,7 +159,7 @@ A failed gate returns to the smallest responsible phase. A missing source or tar
 1. Confirm the ATS resume content and resolve the open evidence questions before any submission.
 2. Confirm whether the human-facing reference should remain archived or be used for a specific channel.
 3. If repeated human-facing work justifies it, authorize a separate, content-free human template design effort.
-4. Request a cover letter separately if the application requires one.
+4. Request a role-specific cover letter separately if the application requires one; the reusable cover-letter master is now available as a starting structure.
 
 No submission is implied by any draft, review, or Work Order status.
 
@@ -174,7 +175,8 @@ The requested target context is now supplied: [Centstone Senior UX Designer](htt
 
 - Routing: Riley Morgan coordinated Leah Okafor for role alignment/copy, Sofia Calder for document production, and Camille Ortiz for human-facing hierarchy review. These remain synthetic review lenses, not user evidence.
 - Source: the private native master copy based on Rick Vang Resume 07/26. The original source was not edited.
-- Created privately in the authorized run folder: one shared evidence ledger, one ATS resume, one human-facing resume, and one parity/integrity review. No cover letter was requested or created.
+- Created privately in the authorized run folder: one shared evidence ledger, one ATS resume, one human-facing resume, and one parity/integrity review. No role-specific cover letter was requested or created.
+- Reusable cover-letter master created separately in the private Codex job-search workspace: `Rick Vang — Cover Letter Master Template`. It contains a fresh two-layer structure—internal tailoring brief plus clean sendable letter—and does not use prior cover-letter drafts as references or evidence. It is not a Centstone-tailored cover letter.
 - Checks completed: source-to-master equality, single-column document structure, conventional semantic headings, list structure, placeholder scan, shared claim coverage, parity of material facts, and privacy/mutation boundaries.
 - Result: the packet is ready for requester review. The refined ATS version is now the active master-template baseline and canonical ATS structure. The human version is retained as a reference rendering from the same evidence source and is not selected by default.
 - Master promotion after requester review: renamed the refined ATS document to `Rick Vang Resume — Master Template` and designated it as the active baseline for future resume work. The earlier `Rick Vang Resume — Master Template (Draft)` remains intact as a superseded reference.
