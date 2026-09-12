@@ -402,6 +402,22 @@ window.PersonaLibraryData = {
       revision:{version:'0.3',date:'2026-09-12',changeType:'source-update',summary:'Tightened the Resume Document Design System spacing tokens and documented a print-first compact baseline.',affectedFields:['source','evidence','revision'],confidence:'Path, entrypoint, and starter boundary resolve at main revision 0a5c3fc143b5e1fcda3a5868f4c73482ad74d629; spacing recommendations are updated, while repeated reuse evidence remains unavailable'}
     },
     {
+      id:'template-resume-classic-single-column',
+      name:'Classic Single-Column Resume',
+      purpose:'Provide a reusable content and layout starting structure for a restrained, experience-led resume.',
+      category:'resume',
+      useWhen:'Creating a single-column resume with clear typographic hierarchy, compact role blocks, and print-first review.',
+      status:'Candidate external reference',
+      source:{kind:'github_repository',repository:'rickvang/template-library',path:'templates/resumes/classic-single-column',entrypoint:'README.md',repositoryDocumentationEntrypoint:'README.md',availability:'documentation_only',verification:'Verified on 2026-09-12 against main at commit a275a48; templates/resumes/classic-single-column and its README.md entrypoint resolve, and the starter copy boundary is present. The artifact was adapted from a user-supplied private HTML resume reference without publishing that source or its personal content. Runtime access remains capability-dependent.'},
+      provides:['single-column resume content structure','display and body typography pairing','contact, summary, role, achievement, skills, education, and certification patterns','compact print-oriented spacing and review notes'],
+      applications:[],
+      relatedSkills:['skill-document-information-architecture-and-reading-paths','skill-cross-format-production-and-fidelity-qa','skill-accessible-document-structure-and-export'],
+      operatingPacks:[],
+      playbooks:[],
+      evidence:'Verified external source evidence: templates/resumes/classic-single-column and its README.md entrypoint resolve in rickvang/template-library at main revision a275a48, with starter/ as the documented copy boundary. The Template captures a source-inspired single-column reading order, typography pairing, ruled section boundaries, role syntax, achievement lists, inline skills, and an education / certification ending. Its personal source content remains outside the public artifact. Related document Skills cover reading paths, output fidelity, and accessible export; resume-writing judgment, candidate evidence, and submission workflow remain outside the Template. Repeated reuse evidence is not yet established, so the Template remains a candidate.',
+      revision:{version:'0.1',date:'2026-09-12',changeType:'source-publication',summary:'Published a second resume Template adapted from a user-supplied private HTML reference and verified its canonical path, README entrypoint, and starter copy boundary.',affectedFields:['identity','source','status','evidence','revision'],confidence:'Path, entrypoint, and starter boundary resolve at main revision a275a48; the source shape is documented and reusable, while repeated adoption evidence remains unavailable'}
+    },
+    {
       id:'template-design-system-web-app',
       name:'Web App Design System',
       purpose:'Provide a reusable starting structure for a web application design system.',
