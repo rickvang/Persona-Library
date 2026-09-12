@@ -62,3 +62,5 @@ Phase: implementation, review fixes, validation, and reconciliation complete. Ne
 ## Post-completion source publication addendum — 2026-09-11
 
 The Web App Design System Template was subsequently published to `rickvang/template-library` at `c01e9e605d2d7dfd8f12d189cfbce8c6f9237927`. Its canonical path is `templates/design-systems/web-app`, its entrypoint is `README.md`, and its copy boundary is `starter/`. The corresponding Persona-Library record now points to that revision and remains a candidate external reference until repeated reuse evidence supports promotion. The resume-document and multi-product paths remain unverified and planned.
+
+The Resume Document Design System Template was subsequently published to `rickvang/template-library` at `f8cd3e4d3cf7894bdf28d21dbcee7af4b6bfa5ff`. Its canonical path is `templates/design-systems/resume-document`, its entrypoint is `README.md`, and its copy boundary is `starter/`. The corresponding Persona-Library record now points to that revision and remains a candidate external reference until repeated reuse evidence supports promotion. The multi-product path remains unverified and planned.

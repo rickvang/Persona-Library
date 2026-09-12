@@ -391,15 +391,15 @@ window.PersonaLibraryData = {
       purpose:'Provide a reusable starting structure for a visual system used in resumes and structured documents.',
       category:'design-system',
       useWhen:'Creating a repeatable visual system for resumes or structured documents.',
-      status:'Planned external reference',
-      source:{kind:'github_repository',repository:'rickvang/template-library',path:null,entrypoint:null,repositoryDocumentationEntrypoint:'README.md',availability:'planned',verification:'The repository main revision f88a4011902b58b2f192305f5a731f1a71263965 was inspected on 2026-09-11 and contains only README.md. The proposed templates/design-systems/resume-document path and reusable artifact entrypoint are not present.'},
+      status:'Candidate external reference',
+      source:{kind:'github_repository',repository:'rickvang/template-library',path:'templates/design-systems/resume-document',entrypoint:'README.md',repositoryDocumentationEntrypoint:'README.md',availability:'documentation_only',verification:'Verified on 2026-09-12 against main at commit f8cd3e4d3cf7894bdf28d21dbcee7af4b6bfa5ff; templates/design-systems/resume-document and its README.md entrypoint resolve, and the starter copy boundary is present. Runtime access remains capability-dependent.'},
       provides:['semantic token starter structure','document component organization','hierarchy and spacing conventions','repeatable page patterns','example states'],
       applications:[],
       relatedSkills:['skill-interface-hierarchy-and-visual-communication','skill-component-and-design-system-thinking','skill-accessibility-and-inclusive-design'],
       operatingPacks:['operating-pack-design-system'],
       playbooks:[],
-      evidence:'External source evidence is limited to the inspected repository tree: the canonical host exists, but this Template artifact is not yet present. The related Skills describe visual hierarchy, reusable patterns, and inclusive structure; the Template does not own resume-writing expertise or document content strategy.',
-      revision:{version:'0.1',date:'2026-09-11',changeType:'initial-catalog-entry',summary:'Added a planned Template identity while preserving the unverified external artifact boundary.',affectedFields:['identity','source','relationships','status'],confidence:'Planned identity; external artifact path and entrypoint are not verified'}
+      evidence:'Verified external source evidence: templates/design-systems/resume-document and its README.md entrypoint resolve in rickvang/template-library at main revision f8cd3e4d3cf7894bdf28d21dbcee7af4b6bfa5ff, with starter/ as the documented copy boundary. The related Skills and Sofia Calder’s document-design routing support hierarchy, reusable patterns, accessible structure, and export fidelity; the Template does not own resume-writing expertise, candidate evidence, or submission workflow. Repeated reuse evidence is not yet established, so the Template remains a candidate.',
+      revision:{version:'0.2',date:'2026-09-12',changeType:'source-publication',summary:'Published the Resume Document Design System Template and verified its canonical path, README entrypoint, and starter copy boundary.',affectedFields:['source','status','evidence','revision'],confidence:'Path, entrypoint, and starter boundary resolve at main revision f8cd3e4d3cf7894bdf28d21dbcee7af4b6bfa5ff; repeated reuse evidence is not yet established'}
     },
     {
       id:'template-design-system-web-app',

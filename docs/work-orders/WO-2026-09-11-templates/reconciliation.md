@@ -54,3 +54,5 @@ Repository owner: merge PR #61 when current-head checks and review state are gre
 ## Post-completion source publication update — 2026-09-11
 
 The Web App Design System source boundary changed after this reconciliation: `rickvang/template-library@c01e9e605d2d7dfd8f12d189cfbce8c6f9237927` now contains `templates/design-systems/web-app/README.md` with `starter/` as the documented copy boundary. A follow-up Template reconciliation updated the scoped source metadata and kept the lifecycle at candidate. The other two design-system seeds remain planned.
+
+The Resume Document Design System source boundary changed after this reconciliation: `rickvang/template-library@f8cd3e4d3cf7894bdf28d21dbcee7af4b6bfa5ff` now contains `templates/design-systems/resume-document/README.md` with `starter/` as the documented copy boundary. A follow-up Template reconciliation updated the scoped source metadata and kept the lifecycle at candidate. The multi-product seed remains planned.
