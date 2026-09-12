@@ -217,19 +217,13 @@ Before the rebase, the local checkout contained an untracked `docs/skill-rebuild
 .codex-tmp/skill-rebuild-plans-before-rebase/skill-rebuild-plans/
 ```
 
-The remote-tracked skill-plan files are now present in `docs/skill-rebuild-plans/`. The user’s local changes to [`docs/skill-rebuild-plans/INDEX.md`](../../../docs/skill-rebuild-plans/INDEX.md) were restored and remain uncommitted. The temporary backup also remains uncommitted because cleanup would risk deleting locally untracked content whose ownership and differences still need review. No skill-plan file was intentionally included in the Mira implementation commit.
+The remote-tracked skill-plan files are now present in `docs/skill-rebuild-plans/`. A follow-up audit on 2026-09-11 compared all 12 files in the temporary snapshot with their tracked counterparts. Eleven files matched after normalizing line endings and the final newline. The snapshot `INDEX.md` matched the pre-reconciliation local index, but those package claims conflicted with the current `.agents/skills` inventory; the tracked `INDEX.md` was restored as the source of truth and the local edits were not retained. No skill-plan file was included in the Mira implementation commit.
 
 ## Current repository state
 
-At handoff, the expected working-tree state is:
+The preserved skill-plan state is reconciled. The temporary snapshot was redundant and removed, and the tracked `docs/skill-rebuild-plans/` files remain the source of truth. Any remaining local changes are outside this Work Order and require their own scope review.
 
-```text
-## main...origin/main
- M docs/skill-rebuild-plans/INDEX.md
-?? .codex-tmp/
-```
-
-Preserve both entries until the next agent determines whether the local `INDEX.md` edits and the backup are still needed. Do not stage them as part of unrelated follow-up work, and do not delete the backup without first comparing it with the tracked remote files and confirming ownership.
+The previous `M docs/skill-rebuild-plans/INDEX.md` and `?? .codex-tmp/` entries are resolved by the comparison recorded above. Do not resurrect or stage the redundant snapshot as part of unrelated follow-up work.
 
 ## Handoff to the next agent
 
@@ -237,7 +231,7 @@ The next agent should begin by reading this Work Order, `content/site-orientatio
 
 1. Confirm `git status --short --branch`, `git log -2 --oneline`, and `git remote -v` from `C:\_Projects\Persona-Library`.
 2. Inspect Mira in the rendered Site or local preview, especially the Persona detail, six flows, reused Skills, and three new capabilities.
-3. Preserve the modified `docs/skill-rebuild-plans/INDEX.md` and `.codex-tmp/` until their ownership and contents are explicitly reconciled.
+3. Treat the tracked `docs/skill-rebuild-plans/` files as the source of truth; the temporary snapshot and conflicting local index edits have been reconciled and removed.
 4. If changing Mira or its relationships, run `node scripts/build-library.mjs`, `node scripts/validate-content.mjs`, and the applicable change-impact reconciliation before committing.
 5. If implementing observability or cross-LLM conformance, open a separate Work Order and define the runtime signals, expected behavior, model/provider matrix, failure classes, and evidence retention before adding Tools or Playbooks.
 
