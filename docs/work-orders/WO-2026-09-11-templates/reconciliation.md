@@ -50,3 +50,7 @@ The review is bounded by explicit canonical relationships and declared generated
 ## Next action
 
 Repository owner: merge PR #61 when current-head checks and review state are green, then reverify external Template artifacts before changing any seed from planned.
+
+## Post-completion source publication update — 2026-09-11
+
+The Web App Design System source boundary changed after this reconciliation: `rickvang/template-library@c01e9e605d2d7dfd8f12d189cfbce8c6f9237927` now contains `templates/design-systems/web-app/README.md` with `starter/` as the documented copy boundary. A follow-up Template reconciliation updated the scoped source metadata and kept the lifecycle at candidate. The other two design-system seeds remain planned.

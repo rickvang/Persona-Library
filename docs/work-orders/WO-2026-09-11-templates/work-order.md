@@ -58,3 +58,7 @@ The implementation and review fixes were built and validated with the required c
 ## Current phase and next action
 
 Phase: implementation, review fixes, validation, and reconciliation complete. Next action: merge PR #61 after current-head checks and review state are green; no external Template artifact is ready for reuse until a later source verification finds a real path and entrypoint.
+
+## Post-completion source publication addendum — 2026-09-11
+
+The Web App Design System Template was subsequently published to `rickvang/template-library` at `c01e9e605d2d7dfd8f12d189cfbce8c6f9237927`. Its canonical path is `templates/design-systems/web-app`, its entrypoint is `README.md`, and its copy boundary is `starter/`. The corresponding Persona-Library record now points to that revision and remains a candidate external reference until repeated reuse evidence supports promotion. The resume-document and multi-product paths remain unverified and planned.

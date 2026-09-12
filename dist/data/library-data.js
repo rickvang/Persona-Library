@@ -407,15 +407,15 @@ window.PersonaLibraryData = {
       purpose:'Provide a reusable starting structure for a web application design system.',
       category:'design-system',
       useWhen:'Starting or restructuring a shared UI system for a web application.',
-      status:'Planned external reference',
-      source:{kind:'github_repository',repository:'rickvang/template-library',path:null,entrypoint:null,repositoryDocumentationEntrypoint:'README.md',availability:'planned',verification:'The repository main revision f88a4011902b58b2f192305f5a731f1a71263965 was inspected on 2026-09-11 and contains only README.md. The proposed templates/design-systems/web-app path and reusable artifact entrypoint are not present.'},
+      status:'Candidate external reference',
+      source:{kind:'github_repository',repository:'rickvang/template-library',path:'templates/design-systems/web-app',entrypoint:'README.md',repositoryDocumentationEntrypoint:'README.md',availability:'documentation_only',verification:'Verified on 2026-09-11 against main at commit c01e9e605d2d7dfd8f12d189cfbce8c6f9237927; templates/design-systems/web-app and its README.md entrypoint resolve, and the starter copy boundary is present. Runtime access remains capability-dependent.'},
       provides:['semantic token starter structure','component organization','shared patterns','layout conventions','example states'],
       applications:[{personaId:'ui-expert',skillId:'skill-component-and-design-system-thinking',workflow:'Extend and govern the design system',reason:'Camille uses this starting structure when establishing a new implementation or restructuring a shared web application system rather than modifying an existing mature system.'}],
       relatedSkills:['skill-component-and-design-system-thinking','skill-interaction-states-and-behavior-design','skill-responsive-and-adaptive-layout','skill-accessibility-and-inclusive-design'],
       operatingPacks:['operating-pack-design-system'],
       playbooks:[],
-      evidence:'External source evidence is limited to the inspected repository tree: the canonical host exists, but this Template artifact is not yet present. Persona-Library relationship evidence: Camille Ortiz applies the Component and design-system thinking Skill in the Extend and govern the design system workflow; the Design System Operating Pack provides related context without owning the starting artifact.',
-      revision:{version:'0.1',date:'2026-09-11',changeType:'initial-catalog-entry',summary:'Added the strongest scoped Template relationship as a planned external reference.',affectedFields:['identity','source','applications','relationships','status'],confidence:'Persona–Skill–workflow and Operating Pack relationships resolve; external artifact path and entrypoint are not verified'}
+      evidence:'Verified external source evidence: templates/design-systems/web-app and its README.md entrypoint resolve in rickvang/template-library at main revision c01e9e605d2d7dfd8f12d189cfbce8c6f9237927, with starter/ as the documented copy boundary. Persona-Library relationship evidence: Camille Ortiz applies the Component and design-system thinking Skill in the Extend and govern the design system workflow; the Design System Operating Pack provides related context without owning the starting artifact. Repeated reuse evidence is not yet established, so the Template remains a candidate.',
+      revision:{version:'0.2',date:'2026-09-11',changeType:'source-publication',summary:'Published the Web App Design System Template and verified its canonical path, README entrypoint, and starter copy boundary.',affectedFields:['source','status','evidence','revision'],confidence:'Path, entrypoint, and starter boundary resolve at main revision c01e9e605d2d7dfd8f12d189cfbce8c6f9237927; repeated reuse evidence is not yet established'}
     },
     {
       id:'template-design-system-multi-product',
