@@ -31,6 +31,7 @@ Use `content/site-orientation.json` as the canonical request-to-system map. The 
 | Discover or evaluate a reusable starting artifact | `$template-research` | library management |
 | Create or adapt a reusable starting artifact | `$template-composer` | library management |
 | Reconcile a Template change | `$template-reconciliation` | governance |
+| Steward Template catalog identity, provenance, lifecycle, or routing | Template Librarian Persona + `$template-research` / `$template-reconciliation` | library management / governance |
 | Consult multiple Personas | `$persona-panel-orchestration` | orchestration |
 | Form a reusable capability | `$multi-perspective-skill-synthesis` | orchestration |
 | Create or update a callable Skill | `$pl-skill-creator` (`$skill-creator` is the Codex package helper) | package authoring |
