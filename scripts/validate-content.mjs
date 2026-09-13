@@ -102,6 +102,9 @@ if (!templatesPage.includes("id=\"' + escapeHtml(template.id)") || !templatesPag
 if (!templateViewerPage.includes('decision-panel') || !templateViewerPage.includes('decision-state-grid') || !templateViewerPage.includes('evidenceState') || !templateViewerPage.includes('sourceState') || !templateViewerPage.includes('runtimeAccessState') || !templateViewerPage.includes('previewState') || !templateViewerPage.includes('previewRenderers') || !templateViewerPage.includes('No local view') || !templateViewerPage.includes('pinned ')) {
   throw new Error('Template viewer is missing its explicit evidence states or preview registry');
 }
+if (templateViewerPage.includes('</header><hr class="resume-classic-rule">')) {
+  throw new Error('Classic resume mockup duplicates the header separator');
+}
 const countFunctionDefinitions = (html, name) => (html.match(new RegExp(`function\\s+${name}\\s*\\(`, 'g')) || []).length;
 if (countFunctionDefinitions(templatesPage, 'card') !== 1 || countFunctionDefinitions(templatesPage, 'render') !== 1 || countFunctionDefinitions(templateViewerPage, 'renderTemplate') !== 1) {
   throw new Error('Template catalog or viewer contains superseded duplicate rendering implementations');

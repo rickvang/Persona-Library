@@ -19,6 +19,7 @@
 | Content validation | pass | `node scripts/validate-content.mjs` passed: 20 Personas, 2 Operators, 2 Leaders, 16 Specialists, and 20 workflow maps. |
 | JavaScript syntax | pass | Inline scripts in both affected pages parsed with `new Function`. |
 | Superseded rendering paths | pass | The catalog contains one `card` and one `render` implementation; the viewer contains one `renderTemplate` implementation. |
+| Classic resume separator | pass | The illustrative Alex Morgan header uses its single bottom border without an immediately duplicated rule. |
 | Browser smoke check | pass | A loopback static server served the pages; source filtering, planned and illustrative viewers, missing-query recovery, decision-state counts, pinned links, and console warnings were checked in the browser. |
 | Responsive and accessibility contract | pass | Narrow-layout CSS stacks the catalog, viewer decision grid, mockups, and metadata; semantic headings, labeled controls, live regions, links, and recovery actions remain present in the inspected DOM. |
 | Whitespace | pass | `git diff --check` passed. Git emitted only its normal LF-to-CRLF normalization notices for edited files. |
