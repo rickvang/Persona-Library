@@ -1,6 +1,30 @@
 (() => {
   const data = window.PersonaLibraryData;
   const slugify = value => `skill-${value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
+  const templateStateCatalog = {
+    lifecycle: {
+      candidate: { label: 'Candidate', detail: 'A reusable starting structure is cataloged, but broader reuse evidence is still developing.' },
+      planned: { label: 'Planned', detail: 'The Template identity is recorded, but its reusable artifact path is not verified yet.' },
+      deprecated: { label: 'Deprecated', detail: 'The Template should not be selected for new work unless its lifecycle note says otherwise.' }
+    },
+    source: {
+      verified: { label: 'Source path verified', detail: 'The declared path and entrypoint were checked at the recorded source revision.' },
+      planned: { label: 'Source path not verified', detail: 'No reusable artifact path and entrypoint are currently verified.' },
+      unknown: { label: 'Source evidence incomplete', detail: 'The source record does not yet establish a complete path and entrypoint.' }
+    },
+    runtime: {
+      available: { label: 'Runtime access available', detail: 'The current runtime records access to the declared source.' },
+      unavailable: { label: 'Runtime access unavailable', detail: 'The source may be documented, but the current runtime cannot access it.' },
+      unknown: { label: 'Runtime access unknown', detail: 'Source verification does not establish access in the current runtime.' }
+    },
+    preview: {
+      external: { label: 'External artifact', detail: 'The declared source is the artifact authority; this viewer does not fetch or execute it.' },
+      illustrative: { label: 'Illustrative concept', detail: 'A local synthetic composition demonstrates the starting structure; it is not the external artifact.' },
+      none: { label: 'No local view', detail: 'This viewer has no local illustrative composition for the Template yet.' }
+    }
+  };
+
+  const templateState = (group, id, fallback) => ({ id, ...(templateStateCatalog[group][id] || fallback) });
 
   function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [] }) {
     const catalog = new Map();
@@ -284,6 +308,15 @@
     const playbookById = new Map(playbookCatalog.map(playbook => [playbook.id, playbook]));
     return templates
       .map(template => {
+        const source = template.source || {};
+        const lifecycleId = template.lifecycle || (String(template.status || '').toLowerCase().includes('planned') ? 'planned' : 'candidate');
+        const sourceStateId = source.path && source.entrypoint && source.revision ? 'verified' : source.availability === 'planned' ? 'planned' : 'unknown';
+        const runtimeAccessId = source.runtimeAccess || 'unknown';
+        const previewKind = template.viewerPreview?.kind || 'none';
+        const lifecycleState = templateState('lifecycle', lifecycleId, { label: lifecycleId, detail: 'Lifecycle state is not fully described.' });
+        const sourceState = templateState('source', sourceStateId, { label: sourceStateId, detail: 'Source evidence is not fully described.' });
+        const runtimeAccessState = templateState('runtime', runtimeAccessId, { label: runtimeAccessId, detail: 'Runtime access state is not fully described.' });
+        const previewState = templateState('preview', previewKind, { label: previewKind, detail: 'Viewer representation is not fully described.' });
         const relatedSkills = (template.relatedSkills || []).map(id => {
           const skill = skillById.get(id);
           return skill
@@ -321,6 +354,10 @@
         const relatedToolRecipes = [...new Map(relatedSkills.flatMap(skill => skill.toolUseRecipes || []).map(recipe => [recipe.id, recipe])).values()];
         return {
           ...template,
+          lifecycleState,
+          sourceState,
+          runtimeAccessState,
+          previewState,
           relatedSkills,
           relatedPersonas: [...new Map(applications.map(application => [application.personaId, { id: application.personaId, name: application.personaName, roleLabel: application.personaRoleLabel }])).values()],
           applications,
@@ -352,5 +389,5 @@
   data.personaToolRequirements = buildPersonaToolRequirements(data);
   data.personaHandoffs = buildPersonaHandoffs(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance };
+  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance, templateStateCatalog };
 })();
