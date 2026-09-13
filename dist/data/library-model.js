@@ -15,6 +15,7 @@
     runtime: {
       available: { label: 'Runtime access available', detail: 'The current runtime records access to the declared source.' },
       unavailable: { label: 'Runtime access unavailable', detail: 'The source may be documented, but the current runtime cannot access it.' },
+      'capability-dependent': { label: 'Capability-dependent', detail: 'The source is documented, but access depends on the current runtime and permissions.' },
       unknown: { label: 'Runtime access unknown', detail: 'Source verification does not establish access in the current runtime.' }
     },
     preview: {
@@ -24,6 +25,17 @@
     }
   };
 
+  const templateRuntimeStateByAvailability = {
+    repo_local: 'available',
+    project_local: 'available',
+    runtime_catalog: 'available',
+    bundled_system: 'available',
+    documentation_only: 'capability-dependent',
+    planned: 'unknown',
+    historical: 'unavailable',
+    unavailable: 'unavailable'
+  };
+  const templatePreviewConfig = () => window.PersonaLibraryTemplatePreviewConfig?.previewRenderers || {};
   const templateState = (group, id, fallback) => ({ id, ...(templateStateCatalog[group][id] || fallback) });
 
   function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [] }) {
@@ -311,8 +323,8 @@
         const source = template.source || {};
         const lifecycleId = template.lifecycle || (String(template.status || '').toLowerCase().includes('planned') ? 'planned' : 'candidate');
         const sourceStateId = source.path && source.entrypoint && source.revision ? 'verified' : source.availability === 'planned' ? 'planned' : 'unknown';
-        const runtimeAccessId = source.runtimeAccess || 'unknown';
-        const previewKind = template.viewerPreview?.kind || 'none';
+        const runtimeAccessId = templateRuntimeStateByAvailability[source.availability] || 'unknown';
+        const previewKind = Object.prototype.hasOwnProperty.call(templatePreviewConfig(), template.id) ? 'illustrative' : 'none';
         const lifecycleState = templateState('lifecycle', lifecycleId, { label: lifecycleId, detail: 'Lifecycle state is not fully described.' });
         const sourceState = templateState('source', sourceStateId, { label: sourceStateId, detail: 'Source evidence is not fully described.' });
         const runtimeAccessState = templateState('runtime', runtimeAccessId, { label: runtimeAccessId, detail: 'Runtime access state is not fully described.' });
@@ -389,5 +401,5 @@
   data.personaToolRequirements = buildPersonaToolRequirements(data);
   data.personaHandoffs = buildPersonaHandoffs(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance, templateStateCatalog };
+  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance, templateStateCatalog, templateRuntimeStateByAvailability };
 })();

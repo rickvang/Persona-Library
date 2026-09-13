@@ -1,7 +1,7 @@
 # Template catalog and viewer states reconciliation
 
 - Status: complete
-- Change observed: Template record metadata, normalized catalog states, catalog/viewer Site surfaces, validator coverage, and directly affected Docs changed for issue #68.
+- Change observed: redundant derived Template record fields were removed; normalized display states, Site-local preview configuration, catalog/viewer Site surfaces, validator coverage, and directly affected Docs were updated for issue #68.
 - Initiating contract: repository update authorized by the user; `change_mode: update`; `change_domain: templates`; domain reconciliation: `template-reconciliation`; universal `change-impact-reconciliation` run once afterward.
 - Scope checked: four canonical Template records, normalized Template catalog, related Persona–Skill–workflow applications, Operating Pack and Playbook relationships, related Tool-use context, catalog and viewer pages, generated data, Template guidance, architecture wording, validator, and explicit Template Work Orders.
 
@@ -9,11 +9,11 @@
 
 | Dependent | Relationship | Class | Evidence | Confidence | Action |
 | --- | --- | --- | --- | --- | --- |
-| Four canonical Template records | New explicit lifecycle, source, runtime, and viewer fields | extends | Each record retains its existing ID, purpose, applicability, relationships, evidence, and revision while declaring the four separate state dimensions. | high | none required |
-| External `rickvang/template-library` source | Revision-pinned provenance | qualifies | Catalog and viewer links now target the recorded revision and path; source verification still does not establish current runtime access. | high | retain runtime access as `unknown` |
+| Four canonical Template records | Canonical source and lifecycle metadata | qualifies | Each record retains its existing ID, purpose, applicability, relationships, evidence, and revision while removing derived runtime and viewer fields. | high | none required |
+| External `rickvang/template-library` source | Revision-pinned provenance and availability | qualifies | Catalog and viewer links still target the recorded revision and path; runtime display now derives from source availability and does not claim external access. | high | retain availability and source evidence |
 | Related Skills, workflows, Operating Pack, Playbook, and Tool-use relationships | Template applicability and boundary | confirms | The normalizer still resolves the declared relationships; no domain judgment, permission, orchestration, or workflow ownership moved into the Template. | high | none required |
 | Catalog cards and filters | Starting-point discovery | extends | Cards expose task fit, lifecycle, source evidence, viewer representation, and inspection before expanded metadata. | high | none required |
-| Focused viewer | Decision record for one Template | extends | The viewer separates lifecycle, source verification, runtime access, and local illustrative content through the decision panel and preview registry. | high | none required |
+| Focused viewer | Decision record for one Template | extends | The viewer derives illustrative state from the local renderer map and separates lifecycle, source verification, runtime access, and local content through the decision panel. | high | none required |
 
 ### Required updates
 
@@ -35,7 +35,7 @@ The universal pass followed the Template adapter and checked the orientation man
 
 | Dependent area | Relationship | Class | Evidence | Confidence | Action |
 | --- | --- | --- | --- | --- | --- |
-| `dist/data/library-data.js` and `dist/data/library-model.js` | Generated source-to-output provenance | extends | The build refreshed both generated copies and content validation confirmed the normalized catalog matches the canonical model. | high | none required |
+| `dist/data/library-data.js`, `dist/data/library-model.js`, and `dist/js/template-preview.js` | Generated source-to-output provenance | extends | The build refreshed generated data and the Site-local preview configuration; content validation confirmed derived states match the canonical model and config. | high | none required |
 | `dist/templates.html` | Catalog browse surface | extends | New human-readable filters, summary counts, stateful cards, pinned links, and focused-viewer actions are live and browser-checked. | high | none required |
 | `dist/template.html` | Focused Template viewer | extends | Four decision states, a data-driven preview registry, planned/no-view recovery, illustrative compositions, and pinned source evidence are live and browser-checked. | high | none required |
 | `dist/guide.html` and `ARCHITECTURE.md` | Human-facing contract and navigation | extends | Template guidance now names lifecycle, source evidence, runtime access, and viewer representation as separate review concerns. | high | none required |
@@ -48,7 +48,7 @@ None.
 
 ### Generated outputs and checks
 
-Generated data was refreshed with `node scripts/build-library.mjs`. `node scripts/validate-content.mjs`, inline script parsing, loopback browser smoke checks, and `git diff --check` passed.
+Generated data was refreshed with `node scripts/build-library.mjs`. `node scripts/validate-content.mjs` also confirms the superseded duplicate `card`, `render`, and `renderTemplate` paths are removed. Inline script parsing, loopback browser smoke checks, and `git diff --check` passed.
 
 ### Blockers and incomplete visibility
 

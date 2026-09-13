@@ -17,7 +17,8 @@ Make the Templates catalog and focused viewer answer whether a Template fits the
 
 ## Scope
 
-- Extend the normalized Template model with lifecycle, source-path evidence, runtime-access, and viewer-representation states.
+- Keep canonical Template records limited to lifecycle, source evidence, availability, relationships, and provenance; derive display states in the normalized model and Site.
+- Derive runtime display from source availability and local viewer display from the Site preview configuration.
 - Add revision-pinned source links and human-readable state labels.
 - Refine `dist/templates.html` as a starting-point finder.
 - Refine `dist/template.html` as a focused decision record while preserving existing illustrative compositions.
@@ -47,19 +48,22 @@ The existing Templates placement review remains authoritative: Persona-Library o
 
 ## Implementation completed
 
-- Added explicit lifecycle, source revision, runtime access, and viewer representation metadata to all four Template records.
-- Added normalized human-readable state objects to the canonical Template catalog model.
+- Kept canonical Template records free of `runtimeAccess` and `viewerPreview` fields.
+- Added normalized human-readable runtime state derivation from source availability.
+- Added `client/template-preview.js` as the Site-local preview configuration used to derive illustrative versus no-view states.
 - Refined the catalog with fit-first cards, source/lifecycle/viewer filters, catalog counts, revision-pinned source links, and a clear `Inspect Template →` action.
 - Refined the focused viewer with a four-signal decision panel and a data-driven `previewRenderers` registry while preserving the existing local illustrative compositions.
 - Updated Template guidance in the Site Docs and architecture contract.
-- Refreshed generated data and expanded validator coverage for the new metadata and page contracts.
+- Refreshed generated data and updated validator coverage for derived state mappings, page contracts, and the Site-local preview configuration.
 
 ## Validation
 
 - `node scripts/build-library.mjs` passed.
-- `node scripts/validate-content.mjs@@ passed: 20 Personas, 2 Operators, 2 Leaders, 16 Specialists, and 20 workflow maps.
+- `node scripts/validate-content.mjs` passed: 20 Personas, 2 Operators, 2 Leaders, 16 Specialists, and 20 workflow maps.
 - Inline JavaScript in `dist/templates.html` and `dist/template.html` parsed with `new Function`.
+- Validator coverage confirms the catalog has one `card` and `render` implementation and the viewer has one `renderTemplate` implementation.
 - Loopback browser smoke checks passed for source-state filtering, planned-record recovery, missing-query recovery, illustrative preview rendering, four decision states, pinned revision links, and console warnings.
+- Derived-state checks passed: documentation-only sources display `Capability-dependent`, planned sources display `Unknown`, and local renderer configuration determines `Illustrative concept` versus `No local view`.
 - `git diff --check` passed.
 
 ## Current phase and next action

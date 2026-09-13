@@ -14,6 +14,8 @@ const uiPath = path.join(root, 'client', 'library-ui.js');
 const uiOutputPath = path.join(root, 'dist', 'js', 'library-ui.js');
 const statePath = path.join(root, 'client', 'library-state.js');
 const stateOutputPath = path.join(root, 'dist', 'js', 'library-state.js');
+const templatePreviewPath = path.join(root, 'client', 'template-preview.js');
+const templatePreviewOutputPath = path.join(root, 'dist', 'js', 'template-preview.js');
 const canvasModules = [
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
   ['client/canvas-intent.js', 'dist/js/canvas-intent.js'],
@@ -40,6 +42,8 @@ const uiSource = await readFile(uiPath, 'utf8');
 const uiOutput = await readFile(uiOutputPath, 'utf8');
 const stateSource = await readFile(statePath, 'utf8');
 const stateOutput = await readFile(stateOutputPath, 'utf8');
+const templatePreviewSource = await readFile(templatePreviewPath, 'utf8');
+const templatePreviewOutput = await readFile(templatePreviewOutputPath, 'utf8');
 const page = await readFile(pagePath, 'utf8');
 const skillsPage = await readFile(skillsPagePath, 'utf8');
 const guidePage = await readFile(guidePagePath, 'utf8');
@@ -55,6 +59,7 @@ const generatedOrientation = JSON.parse(orientationOutput);
 const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
+vm.runInNewContext(templatePreviewSource, sandbox, { filename: templatePreviewPath });
 vm.runInNewContext(modelSource, sandbox, { filename: modelPath });
 const data = sandbox.window.PersonaLibraryData;
 if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !Array.isArray(data.playbookCatalog) || !Array.isArray(data.operatingPacks) || !Array.isArray(data.operatingPackCatalog) || !Array.isArray(data.templates) || !Array.isArray(data.templateCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
@@ -65,6 +70,7 @@ if (orientationSource !== orientationOutput) throw new Error('Generated dist/dat
 if (modelSource !== modelOutput) throw new Error('Generated dist/data/library-model.js is stale; run build-library.mjs');
 if (uiSource !== uiOutput) throw new Error('Generated dist/js/library-ui.js is stale; run build-library.mjs');
 if (stateSource !== stateOutput) throw new Error('Generated dist/js/library-state.js is stale; run build-library.mjs');
+if (templatePreviewSource !== templatePreviewOutput) throw new Error('Generated dist/js/template-preview.js is stale; run build-library.mjs');
 for (const [sourcePath, outputPath] of canvasModules) {
   const moduleSource = await readFile(path.join(root, sourcePath), 'utf8');
   const moduleOutput = await readFile(path.join(root, outputPath), 'utf8');
@@ -74,6 +80,9 @@ for (const [name, html] of [['library', page], ['skills', skillsPage]]) {
   for (const script of ['data/library-data.js', 'data/library-model.js', 'js/library-ui.js', 'js/library-state.js']) {
     if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);
   }
+}
+for (const [name, html] of [['templates', templatesPage], ['template-viewer', templateViewerPage]]) {
+  if (!html.includes('<script src="js/template-preview.js"></script>')) throw new Error(`${name} page is missing js/template-preview.js`);
 }
 if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchPage.includes('Define target') || !jobSearchPage.includes('ATS quality') || !jobSearchPage.includes('Integrity quality') || !jobSearchPage.includes('Preflight before the council') || !jobSearchPage.includes('reverse chronological') || !jobSearchPage.includes('date consistency')) {
   throw new Error('Job search page is missing its system summary or quality gates');
@@ -87,11 +96,15 @@ if (!operatingPacksPage.includes('Operating Packs keep the domain in view.') || 
 if (!templatesPage.includes('Find the right starting shape.') || !templatesPage.includes('templateCatalog') || !templatesPage.includes('category-filter') || !templatesPage.includes('status-filter') || !templatesPage.includes('source-filter') || !templatesPage.includes('preview-filter') || !templatesPage.includes('catalog-summary') || !templatesPage.includes('template-research') || !templatesPage.includes('relatedToolRecipes') || !templatesPage.includes("grid.addEventListener('toggle'")) {
   throw new Error('Templates page is missing its normalized catalog, filters, relationships, or lifecycle boundary');
 }
-if (!templatesPage.includes('id="${escapeHtml(template.id)}"') || !templatesPage.includes('window.location.hash.slice(1)') || !templatesPage.includes("scrollIntoView({ block: 'start' })") || templatesPage.includes('<span id="template-design-system-web-app" aria-hidden="true"></span>') || !templatesPage.includes('Entrypoint unknown') || !templatesPage.includes('sourceState') || !templatesPage.includes('previewState') || !templatesPage.includes('data-source-state') || !templatesPage.includes('data-preview-state') || !templatesPage.includes('Inspect Template →') || !templatesPage.includes('pinned ')) {
+if (!templatesPage.includes("id=\"' + escapeHtml(template.id)") || !templatesPage.includes('window.location.hash.slice(1)') || !templatesPage.includes("scrollIntoView({ block: 'start' })") || templatesPage.includes('<span id="template-design-system-web-app" aria-hidden="true"></span>') || !templatesPage.includes('Entrypoint unknown') || !templatesPage.includes('sourceState') || !templatesPage.includes('previewState') || !templatesPage.includes('data-source-state') || !templatesPage.includes('data-preview-state') || !templatesPage.includes('Inspect Template →') || !templatesPage.includes('pinned ')) {
   throw new Error('Templates page is missing rendered fragment selection or planned entrypoint handling');
 }
 if (!templateViewerPage.includes('decision-panel') || !templateViewerPage.includes('decision-state-grid') || !templateViewerPage.includes('evidenceState') || !templateViewerPage.includes('sourceState') || !templateViewerPage.includes('runtimeAccessState') || !templateViewerPage.includes('previewState') || !templateViewerPage.includes('previewRenderers') || !templateViewerPage.includes('No local view') || !templateViewerPage.includes('pinned ')) {
   throw new Error('Template viewer is missing its explicit evidence states or preview registry');
+}
+const countFunctionDefinitions = (html, name) => (html.match(new RegExp(`function\\s+${name}\\s*\\(`, 'g')) || []).length;
+if (countFunctionDefinitions(templatesPage, 'card') !== 1 || countFunctionDefinitions(templatesPage, 'render') !== 1 || countFunctionDefinitions(templateViewerPage, 'renderTemplate') !== 1) {
+  throw new Error('Template catalog or viewer contains superseded duplicate rendering implementations');
 }
 if (guidePage.includes('rickvang/TemplateRepo') || playbooksPage.includes('rickvang/TemplateRepo')) throw new Error('Current Site docs still present TemplateRepo as the Design System Operating Pack source');
 if (!prototypingPage.includes('Persona prototypes') || !prototypingPage.includes('proto-persona-surface-aware-partner') || !prototypingPage.includes('proto-persona-library-guide') || !prototypingPage.includes('Persona Library Guide') || !prototypingPage.includes('Selected output with missing prerequisites') || !prototypingPage.includes('Nothing is added to Personas by testing this') || !prototypingPage.includes('Promotion gate') || !prototypingPage.includes('change-reconciliation-prototype') || !prototypingPage.includes('proto-skill-change-impact-reconciliation') || !prototypingPage.includes('Generated artifact update') || !prototypingPage.includes('reconciliation report') || !prototypingPage.includes('skill-contract-prototype') || !prototypingPage.includes('proto-skill-contract-routing') || !prototypingPage.includes('Missing metadata')) {
@@ -345,8 +358,6 @@ for (const pack of data.operatingPackCatalog) {
 const templateIds = new Set();
 const allowedTemplateSourceKinds = new Set(['repository_local', 'project_local', 'github_repository']);
 const allowedTemplateLifecycles = new Set(['candidate', 'planned', 'deprecated']);
-const allowedTemplateRuntimeAccess = new Set(['available', 'unavailable', 'unknown']);
-const allowedTemplatePreviewKinds = new Set(['external', 'illustrative', 'none']);
 const resolveLocalTemplateEntrypoint = sourceRecord => {
   const sourceRoot = path.resolve(root, sourceRecord.path);
   if (!isWithinRoot(sourceRoot)) throw new Error('Template source path escapes the repository root');
@@ -361,16 +372,14 @@ const assertKnownTemplateApplication = (templateId, application) => {
 for (const template of data.templates) {
   if (!template.id || templateIds.has(template.id)) throw new Error(`Duplicate or missing Template id: ${template.id || '(missing)'}`);
   templateIds.add(template.id);
-  for (const field of ['name', 'purpose', 'category', 'useWhen', 'lifecycle', 'status', 'source', 'evidence', 'revision', 'viewerPreview']) {
+  for (const field of ['name', 'purpose', 'category', 'useWhen', 'lifecycle', 'status', 'source', 'evidence', 'revision']) {
     if (template[field] === undefined || template[field] === null || template[field] === '') throw new Error(`${template.id} is missing ${field}`);
   }
   if (!allowedTemplateLifecycles.has(template.lifecycle)) throw new Error(`${template.id} has an unsupported lifecycle: ${template.lifecycle}`);
   if (!Array.isArray(template.provides) || !template.provides.length || !Array.isArray(template.applications) || !Array.isArray(template.relatedSkills) || !Array.isArray(template.operatingPacks) || !Array.isArray(template.playbooks)) throw new Error(`${template.id} has an incomplete relationship or starting-structure model`);
   const sourceRecord = template.source;
   const plannedExternalWithoutArtifact = sourceRecord.kind === 'github_repository' && sourceRecord.availability === 'planned' && sourceRecord.path == null;
-  if (!allowedTemplateSourceKinds.has(sourceRecord.kind) || !Object.prototype.hasOwnProperty.call(sourceRecord, 'path') || (!sourceRecord.entrypoint && !plannedExternalWithoutArtifact) || !sourceRecord.availability || !allowedAvailabilitySources.has(sourceRecord.availability) || !sourceRecord.verification || !sourceRecord.revision || !allowedTemplateRuntimeAccess.has(sourceRecord.runtimeAccess)) throw new Error(`${template.id} has incomplete source/location metadata`);
-  if (!template.viewerPreview || !allowedTemplatePreviewKinds.has(template.viewerPreview.kind) || !template.viewerPreview.label || !template.viewerPreview.summary) throw new Error(`${template.id} has incomplete viewer preview metadata`);
-  if (template.viewerPreview.kind === 'illustrative' && !template.viewerPreview.id) throw new Error(`${template.id} illustrative preview is missing its registry id`);
+  if (!allowedTemplateSourceKinds.has(sourceRecord.kind) || !Object.prototype.hasOwnProperty.call(sourceRecord, 'path') || (!sourceRecord.entrypoint && !plannedExternalWithoutArtifact) || !sourceRecord.availability || !allowedAvailabilitySources.has(sourceRecord.availability) || !sourceRecord.verification || !sourceRecord.revision) throw new Error(`${template.id} has incomplete source/location metadata`);
   if (sourceRecord.kind === 'github_repository' && !/^[^/]+\/[^/]+$/.test(sourceRecord.repository || '')) throw new Error(`${template.id} has an invalid external repository reference`);
   if (sourceRecord.kind === 'github_repository' && sourceRecord.availability === 'repo_local') throw new Error(`${template.id} incorrectly claims repo-local availability for an external source`);
   if (plannedExternalWithoutArtifact && sourceRecord.entrypoint != null) throw new Error(`${template.id} planned external artifact entrypoint must remain unknown`);
@@ -397,6 +406,10 @@ for (const template of data.templates) {
 const rebuiltTemplateCatalog = sandbox.window.PersonaLibraryModel.buildTemplateCatalog(data);
 if (JSON.stringify(data.templateCatalog) !== JSON.stringify(rebuiltTemplateCatalog)) throw new Error('Template catalog is not fresh from the canonical source model');
 for (const template of data.templateCatalog) {
+  const expectedRuntimeState = sandbox.window.PersonaLibraryModel.templateRuntimeStateByAvailability[template.source?.availability] || 'unknown';
+  const previewRendererConfig = sandbox.window.PersonaLibraryTemplatePreviewConfig?.previewRenderers || {};
+  const expectedPreviewState = Object.prototype.hasOwnProperty.call(previewRendererConfig, template.id) ? 'illustrative' : 'none';
+  if (template.runtimeAccessState.id !== expectedRuntimeState || template.previewState.id !== expectedPreviewState) throw new Error('Template display states are not derived from availability and Site preview configuration: ' + template.id);
   if (!templateIds.has(template.id) || !Array.isArray(template.relatedPersonas) || !Array.isArray(template.relatedSkills) || !Array.isArray(template.applications) || !Array.isArray(template.operatingPacks) || !Array.isArray(template.playbooks) || !Array.isArray(template.relatedToolRecipes) || !template.lifecycleState?.id || !template.sourceState?.id || !template.runtimeAccessState?.id || !template.previewState?.id) throw new Error(`Normalized Template catalog entry is incomplete: ${template.id || '(missing)'}`);
   if (template.relatedSkills.some(skill => !skill.known) || template.operatingPacks.some(pack => !pack.known) || template.playbooks.some(playbook => !playbook.known)) throw new Error(`Normalized Template relationship is unresolved: ${template.id}`);
   for (const application of template.applications) assertKnownTemplateApplication(template.id, application);

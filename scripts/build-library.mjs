@@ -9,6 +9,7 @@ const files = [
   ['content/site-orientation.json', 'dist/data/site-orientation.json'],
   ['client/library-ui.js', 'dist/js/library-ui.js'],
   ['client/library-state.js', 'dist/js/library-state.js'],
+  ['client/template-preview.js', 'dist/js/template-preview.js'],
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
   ['client/canvas-intent.js', 'dist/js/canvas-intent.js'],
   ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js']
