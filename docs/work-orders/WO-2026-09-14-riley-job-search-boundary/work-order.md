@@ -50,6 +50,17 @@ Performed from Mara’s knowledge-systems placement gate and existing Docs/Playb
 - Rejected alternative: host private opportunity history in Persona-Library. Privacy and architecture require a contract-only boundary.
 - Boundary result: placement is clear; Riley identity remains AI orchestrator.
 
+## Source-grounding and bounded handoff
+
+- Base: `main` at `4be9eae`; PR #92 was inspected at `eff423b` before dispatch.
+- Preserve the implemented three-layer architecture — **confirmed** by the issue, current PR diff, and canonical job-search surfaces.
+- Append the search-sequencing maintenance revision — **confirmed**; `content/library-model.js` owns `buildMaintenance`, and the existing record is now the mutation target.
+- Reconcile the applied-decision summary — **confirmed**; DEC-011 is present and the current branch summary must be 7.
+- Track durable private runtime proof separately — **qualified**; Persona-Library has the reusable contract only, so issue [#96](https://github.com/rickvang/Persona-Library/issues/96) owns the private-workspace implementation and evidence.
+- Rebase — **qualified**; the branch already targets the current `main` head, so no synthetic rebase is warranted while `main` remains unchanged.
+- Editability — **qualified and serialized**; Lane A owns the maintenance model, generated mirror, decision summary, and this Work Order. Lane B remains isolated; the shared decision-summary surface is reconciled once per lane rather than treated as concurrent ownership.
+- Contradicted candidates: none. No private runtime storage is dispatched to Persona-Library.
+
 ## Source audit summary
 
 | Surface | Classification | Action |
