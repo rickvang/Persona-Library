@@ -9,7 +9,7 @@
 - Current owner: Cursor cloud agent
 - Request mode: update
 - GitHub issue: [#71 — Catalog Multi-Persona Collaboration as a canonical Playbook](https://github.com/rickvang/Persona-Library/issues/71)
-- GitHub pull request: recorded after creation
+- GitHub pull request: [#91 — Catalog Multi-Persona Collaboration as a canonical Playbook](https://github.com/rickvang/Persona-Library/pull/91)
 - Artifact home: `docs/work-orders/WO-2026-09-14-multi-persona-collaboration-playbook-catalog/`
 - Concrete deliverable: `content/library-data.js` `playbookCatalog` entry `playbook-multi-persona-collaboration`
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
@@ -55,7 +55,7 @@ Rejected alternatives:
 
 ## Current phase and gate
 
-Phase: reviewable PR against `origin/main`. Gate: repository validation must pass; PR stays open (not merged) per explicit instruction.
+Phase: reviewable PR [#91](https://github.com/rickvang/Persona-Library/pull/91) against `origin/main`. Gate: repository validation must pass; PR stays open (not merged) per explicit instruction.
 
 ## Success criteria and stopping condition
 
@@ -64,4 +64,4 @@ Phase: reviewable PR against `origin/main`. Gate: repository validation must pas
 - Existing `multi-persona-collaboration` orientation route, `problem-context` contract, and collaboration Playbook markdown are unchanged.
 - Site Playbooks/Docs surfaces show the identity; Decisions records the reconciliation note.
 
-Stopping condition: draft PR opened against `origin/main` for issue #71; explicitly not merged from this run.
+Stopping condition: draft PR [#91](https://github.com/rickvang/Persona-Library/pull/91) opened against `origin/main` for issue #71; explicitly not merged from this run.
