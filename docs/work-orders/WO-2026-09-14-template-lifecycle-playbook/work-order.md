@@ -50,6 +50,16 @@ Performed from Mara’s knowledge-systems placement gate, Templates architecture
 - Rejected alternative: create a Template runtime/registry. Rejected by #60/#70 boundary rules.
 - Boundary result: placement is clear; Template Librarian and Template Skills remain the procedural owners inside stages.
 
+## Source-grounding and bounded handoff
+
+- Base: `main` at `4be9eae`; PR #93 was inspected at `a223df0` before dispatch and currently descends from PR #91’s head.
+- Preserve the Template lifecycle architecture — **confirmed** by the issue, current PR diff, and `docs/template-lifecycle-playbook.md`.
+- Include Multi-Persona Collaboration in the Existing Playbook check — **confirmed** on the current branch; the catalog has 5 identities including the #91 addition.
+- Rename the Template decision reference to DEC-012 — **confirmed**; DEC-012 is the branch’s Template decision and DEC-011 belongs to the separate #92 change.
+- Final DEC-011 + DEC-012 coexistence and decision count — **qualified and blocked**; #91 and #92 are open, so the current branch cannot claim the final landed base. Reconcile to 8 after both dependencies land.
+- Editability — **qualified and serialized**; Lane B owns the Template Work Order, current decision summary, and PR metadata. Lane A remains isolated; the shared decision-summary surface is reconciled once per lane and finalized only after the dependency rebase.
+- Contradicted candidates: none. No synthetic rebase or merge was dispatched.
+
 ## Existing Playbook check
 
 Checked the current PR branch `playbookCatalog`:
