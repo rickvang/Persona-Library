@@ -13,9 +13,9 @@ This Playbook coordinates existing repository, GitHub, Work Order, and review pr
 
 Produce a small set of independent, reviewable implementation results—normally one branch and one pull request per workstream—with compact handoffs, independent review against current repository state, scoped correction only when needed, and merge only under separate authorization.
 
-Success is a reviewable PR or a bounded blocker for each dispatched workstream, plus a compact coordinator packet that a reviewer can use to rehydrate from GitHub. Success is not merge, transcript completeness, or nested-agent activity.
+Implementer success is a reviewable PR or a bounded blocker for the assigned workstream. Run success is every dispatched workstream accepted after independent review or explicitly blocked or deferred, plus a compact coordinator packet that a reviewer can use to rehydrate from GitHub. Success is not merge, transcript completeness, nested-agent activity, or a recorded correction list that has not been applied and re-reviewed.
 
-The run stops when every dispatched workstream is reviewable or blocked, the compact handoffs are collected, independent review has passed or recorded scoped corrections, and merge is either separately authorized and completed or explicitly left unmerged.
+The run stops when every dispatched workstream is accepted after independent review or explicitly blocked or deferred, the compact handoffs are collected, and merge is either separately authorized and completed or explicitly left unmerged. Recording scoped corrections is not terminal: stages 4–5 require the named defects to be applied and the updated PR to be re-reviewed before that workstream can stop.
 
 ## When to use
 
@@ -42,7 +42,7 @@ If named Personas must argue a shared problem before implementation, use the [Mu
 
 Multi-Persona Collaboration owns named Persona lenses, attributable contributions, synthesis, and one concrete solution for a bounded user problem.
 
-This Playbook owns bounded parallel *implementation*: Coordinator / Implementer / Reviewer roles, one-level delegation, compact GitHub-reference handoffs, independent PR review, and separately authorized merge.
+This Playbook owns bounded parallel *implementation*: Coordinator, Implementer, Reviewer, and Authorizer roles, one-level delegation, compact GitHub-reference handoffs, independent PR review, and separately authorized merge.
 
 Issue [#71](https://github.com/rickvang/Persona-Library/issues/71) still tracks canonical catalog identity for Multi-Persona Collaboration. That open question does not make this workflow an extension of collaboration. Extending collaboration here would mix solution synthesis with repository mutation gates.
 
@@ -152,8 +152,8 @@ blockers / unresolved questions
 - **Actions:** Re-fetch GitHub state; separate blockers from suggestions; do not treat the handoff as current truth.
 - **Outputs:** Pass, fail, or defer, with a scoped correction list when needed.
 - **Evidence:** Named PR revision, check results, and review findings.
-- **Exit:** Each workstream is accepted, blocked, or returned for scoped correction.
-- **Handoff:** Authorizer for merge, or Implementer for a named correction.
+- **Exit:** Each workstream is accepted, blocked, or returned for scoped correction. A correction list continues the run at stage 5; it does not stop the workstream.
+- **Handoff:** Authorizer for merge, Implementer for a named correction, or an explicit blocked/deferred remainder.
 
 ### 5. Scoped correction
 
@@ -164,7 +164,7 @@ blockers / unresolved questions
 - **Actions:** Stay inside the named defects; do not reopen unrelated scope; do not spawn sub-agents; do not merge.
 - **Outputs:** Updated PR or a blocker.
 - **Evidence:** New commits and re-run required validation.
-- **Exit:** Correction is reviewable or blocked.
+- **Exit:** Correction is reviewable or blocked. The workstream does not stop until independent review accepts it or it is explicitly blocked or deferred.
 - **Handoff:** Return to independent review with an updated compact handoff.
 
 ### 6. Authorized merge and stop
@@ -239,7 +239,11 @@ Cursor, Codex, or other implementation agents may fill the Implementer role. Tha
 
 **Handoff gate.** Pass only when the packet uses the compact schema and does not include child transcripts or large repository copies. Fail if GitHub identities are missing without being marked unknown.
 
-**Review gate.** Pass only when the reviewer re-fetched current GitHub state and separated blockers from suggestions. Fail if the handoff was treated as proof of current PR/diff/check state.
+**Review gate.** Pass only when the reviewer re-fetched current GitHub state and separated blockers from suggestions. Fail if the handoff was treated as proof of current PR/diff/check state. A fail with scoped corrections is an entry to stage 5, not a run-stop.
+
+**Correction-loop gate.** Recording scoped corrections is not terminal. Pass only after the named defects are applied and the updated PR is re-reviewed to accept, or the workstream is explicitly blocked or deferred.
+
+**Run-stop gate.** Pass only when every dispatched workstream is accepted after review or explicitly blocked or deferred, compact handoffs exist, and merge is either separately authorized and completed or explicitly left unmerged. Fail if the run closes with a known failed review that still needs apply and re-review.
 
 **Merge gate.** Pass only with explicit authorization and fresh preflight. Implementation completion, a compact callback, or a passing review does not pass this gate by itself.
 
