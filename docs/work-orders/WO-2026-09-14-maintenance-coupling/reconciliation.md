@@ -29,4 +29,4 @@ The maintenance measurement is repository evidence from the refactor shape, not 
 
 ## Next action
 
-Repository reviewer: inspect the focused module ownership and run the documented checks before merge.
+Implementation merged to `main` via PR #76 at `fc3af861ec5fd9b20e605e713f647d3249580e26`; close-out of this packet is bookkeeping only. Post-merge validator correction is owned by [#78](https://github.com/rickvang/Persona-Library/issues/78) and is outside this Work Order.
