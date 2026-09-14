@@ -2,7 +2,7 @@
 
 - Work Order ID: WO-2026-09-14-restore-validator-checks
 - Title: Restore validator checks lost in #70 extraction
-- Status: active
+- Status: ready-for-review
 - Created: 2026-09-14
 - Last updated: 2026-09-14
 - Requester: Rick Vang
@@ -10,6 +10,7 @@
 - Explicit collaborator: Mara Okoye, knowledge systems architect
 - Request mode: update
 - GitHub issue: [#78 — Restore validator checks lost in #70 extraction](https://github.com/rickvang/Persona-Library/issues/78)
+- Pull request: [#80 — Restore validator checks lost in #70 extraction](https://github.com/rickvang/Persona-Library/pull/80)
 - Artifact home: `docs/work-orders/WO-2026-09-14-restore-validator-checks/`
 - Concrete deliverable: restored Tool-use recipe `steps` check in [`scripts/validation/relationships.mjs`](../../../scripts/validation/relationships.mjs) and Playbook identity check in [`scripts/validation/context.mjs`](../../../scripts/validation/context.mjs)
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
@@ -50,9 +51,9 @@ Mara’s canonical Persona record, the `docs` `work-order-start` route, `docs/wo
 
 ## Current phase and gate
 
-Phase: implementation in progress on `cursor/restore-validator-checks-a1a9`; focused tests and full validation not yet recorded.
+Phase: implementation, focused tests, full validation, and reconciliation complete on `cursor/restore-validator-checks-a1a9`; PR #80 is open against `main`.
 
-Gate: both restored contracts must fail closed, focused regression tests must cover them, and current canonical data must still pass the top-level validator.
+Gate: ready for review. Tool-use recipes without steps fail closed, incomplete or duplicate Playbook identities fail closed, focused regression tests cover both defects, and current canonical data still passes the top-level validator. #70's focused-module architecture remains intact.
 
 ## Evidence and uncertainty
 
@@ -63,4 +64,4 @@ Gate: both restored contracts must fail closed, focused regression tests must co
 
 ## Completion boundary and next action
 
-The Work Order is complete when the restored checks, focused tests, full validation, `git diff --check`, and reconciliation report are inspectable on an open pull request. Next action: record validation evidence and open the PR against `main`. Do not merge.
+The Work Order is complete when the restored checks, focused tests, full validation, `git diff --check`, and reconciliation report are inspectable on an open pull request. Next action: reviewer inspects PR #80 and merges only after review. Do not merge from this packet.
