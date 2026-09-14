@@ -10,23 +10,43 @@ This is a playbook, not a new persona category. It composes existing Personas, S
 
 ## Recommended operating model
 
-Use one primary candidate persona with a coordinated set of specialist lenses:
+The durable front door for the full outcome is the **Evidence-led Job Search Playbook**. Use one primary candidate persona with a coordinated set of specialist lenses:
 
 1. **Job seeker** — source of truth for goals, constraints, experience, preferences, voice, and evidence.
-2. **Search strategist** — defines target roles, search boundaries, positioning, channels, and prioritization.
-3. **Hiring manager / role calibrator** — interprets the role, separates required signals from noise, and defines what success would look like.
-4. **ATS application specialist** — checks parsing, terminology alignment, structure, and truthful coverage.
+2. **Search strategist (Elena Marin)** — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity disposition against the job ledger.
+3. **Hiring manager / role calibrator (Marcus Chen)** — interprets the role, separates required signals from noise, and defines what success would look like.
+4. **ATS application specialist / application narrative editor (Leah Okafor)** — checks parsing, terminology alignment, structure, and truthful coverage.
 5. **Human narrative editor (conditional)** — improves clarity, relevance, voice, credibility, and story when a human-facing output is warranted.
-6. **Visual communication reviewer (conditional)** — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.
+6. **Visual communication reviewer (conditional, Camille Ortiz)** — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.
 7. **Research and verification analyst** — researches companies, teams, role expectations, and evidence.
-8. **Outreach and interview coach** — prepares networking messages, follow-ups, interview stories, and questions.
-9. **Job-search orchestrator** — coordinates the lenses, preserves decisions, and keeps the search coherent over time.
+8. **Outreach and interview coach (Samira Nguyen)** — prepares networking messages, follow-ups, interview stories, and questions.
+9. **Document designer (conditional, Sofia Calder)** — document structure, production, accessibility, and fidelity when a rendered packet is in scope.
+10. **AI orchestrator (Riley Morgan)** — coordinates the Playbook run: selects the smallest relevant specialist set, preserves decisions and boundaries, and synthesizes the handoff. Riley does not own job-search domain expertise.
+
+Three-layer ownership:
+
+```text
+Evidence-led Job Search Playbook → owns the outcome / stages / handoffs
+Riley Morgan · AI orchestrator → assembles and coordinates contributors
+Job-search specialists → own domain judgment and artifact-specific expertise
+```
+
+Preferred presentation:
+
+```text
+Evidence-led Job Search
+→ coordinated by Riley Morgan · AI Orchestrator
+```
+
+Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or the job ledger.
 
 The default path is ATS-first with a material-claim integrity gate. Cover letters pass through a positioning layer before review so the evidence ledger informs the writing without dictating every sentence. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
 
-### Consultation convention
+### Consultation and routing convention
 
-When a requester asks to “consult Riley Morgan,” interpret that as a routed panel request. Riley is the job-search orchestrator: Riley assembles the smallest relevant set of existing Personas, coordinates their independent perspectives, preserves disagreement and boundaries, and synthesizes the handoff. Riley is not automatically the sole content, writing, hiring, or visual reviewer.
+- Full-outcome job-search requests → Evidence-led Job Search Playbook, coordinated by Riley when multiple specialists are needed.
+- Narrow domain questions → the matching specialist directly (Elena for search strategy/targeting, Marcus for hiring calibration, Leah for application narrative/ATS, Samira for outreach/interviews, Camille for visual communication, Sofia for document production). Do not default those questions to Riley.
+- When a requester asks to “consult Riley Morgan” for job-search work, interpret that as a routed Playbook/panel request: Riley assembles the smallest relevant set of existing Personas, coordinates their independent perspectives, preserves disagreement and boundaries, and synthesizes the handoff. Riley is not automatically the sole content, writing, hiring, search-strategy, visual, or document reviewer.
 
 For cover-letter or application-writing work, the default panel is Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Riley Morgan for coordination and synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
 
@@ -36,9 +56,10 @@ The first build is a responsive reference surface plus actual working-draft pers
 
 - The persona and responsibilities of each supporting role
 - Five new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), and Samira Nguyen (outreach and interview coach)
-- Reuse of Camille Ortiz for visual communication review and Riley Morgan for orchestration
+- Reuse of Camille Ortiz for visual communication review, Sofia Calder for document production when needed, and Riley Morgan as AI orchestrator for Playbook coordination
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
-- The end-to-end search workflow
+- The end-to-end search workflow owned by the Evidence-led Job Search Playbook
+- A reusable [job opportunity ledger contract](docs/job-search/job-ledger-contract.md) for durable private search-state deduplication
 - Quality gates for ATS compatibility and evidence integrity by default, with human readability and visual communication when those outputs are warranted
 - A clear boundary between current capabilities and later product work
 
@@ -60,8 +81,13 @@ Each future job-search record should preserve:
 - ATS review findings and human review findings as separate records
 - Version history, decisions, submitted date, outcome, and learning
 - Open questions and what evidence would change the search strategy
+- Durable opportunity ledger entries for discovered roles (see [job ledger contract](docs/job-search/job-ledger-contract.md))
 
-Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct.
+Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct. Keep private opportunity history in the candidate workspace; Persona-Library owns only the reusable ledger contract.
+
+### Job opportunity ledger
+
+Repeated searches must not present previously seen jobs as new by default. After discovery, normalize the posting, check the durable ledger, update `last_seen` / status for known jobs, and add only new or materially changed postings for evaluation. Deduplicate by source + source job ID first, then canonical URL, then a conservative `company + title + location` fingerprint. Elena / the search specialist owns discovery and disposition; Riley coordinates and does not own the ledger.
 
 ## ATS-primary application packet
 
@@ -274,7 +300,8 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 
 ### Phase 5 — Search learning loop
 
-- Track submissions, responses, interviews, and rejection signals.
+- Read and update the durable job opportunity ledger so repeated searches do not resurface known roles as new.
+- Track submissions, responses, interviews, and rejection signals against ledger dispositions where relevant.
 - Separate market feedback from noise and small-sample assumptions.
 - Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.
 
@@ -338,12 +365,18 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - Autonomous outreach or recruiter messaging
 - A single universal human-facing resume template or automatic human rendering for every application
 - An aggregate score that pretends to replace judgment
-- Persistent application tracking and reminders before the evidence model is stable
+- Hosting private candidate job history inside Persona-Library
+- Full CRM-style application reminders and campaign automation beyond the ledger contract
 
-These are future opportunities, not implied capabilities of the current reference page.
+The durable [job opportunity ledger contract](docs/job-search/job-ledger-contract.md) is in scope as reusable shared-state guidance for private workspaces. A hosted Persona-Library job database is not.
+
+These other items remain future opportunities, not implied capabilities of the current reference page.
 
 ## Validation questions
 
+- Is the Playbook presented as the front door for the whole job-search outcome, with Riley as AI orchestrator rather than domain owner?
+- Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?
+- Do repeated searches avoid presenting previously seen jobs as new by default, using the job ledger contract?
 - Can a candidate explain why a role is in or out of scope?
 - Can each important claim in an application be traced to evidence?
 - Does the preflight catch wrong role order even when the content and visual review look good?

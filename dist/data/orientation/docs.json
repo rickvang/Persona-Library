@@ -205,23 +205,27 @@
         "tools",
         "playbooks"
       ],
-      "target": "job-search documentation and active Work Order",
+      "target": "Evidence-led Job Search Playbook and active Work Order",
       "artifact_kind": "workflow",
       "package_path": "JOB_SEARCH_IMPLEMENTATION.md",
       "availability_source": "documentation_only",
       "first_reads": [
-        "JOB_SEARCH_IMPLEMENTATION.md",
+        "Evidence-led Job Search Playbook / JOB_SEARCH_IMPLEMENTATION.md",
+        "docs/job-search/job-ledger-contract.md when opportunity search or deduplication is in scope",
         "active application Work Order",
         "candidate standing decisions",
-        "evidence ledger"
+        "evidence ledger",
+        "named specialist Persona when the request is narrow rather than full-outcome"
       ],
       "mutation_boundary": "authorized_update",
       "reconciliation": "change-impact-reconciliation",
       "non_triggers": [
         "Uploading, submitting, contacting an employer, or externally sharing without a separate explicit request",
-        "Claiming provider-specific rules without current evidence"
+        "Claiming provider-specific rules without current evidence",
+        "Treating Riley Morgan as the Job Search Persona or sole domain expert",
+        "Storing private job-search history inside Persona-Library"
       ],
-      "next_handoff": "Use provider recommendation status and candidate review requirements before selecting an export."
+      "next_handoff": "Route full-outcome job-search work through the Evidence-led Job Search Playbook coordinated by Riley Morgan · AI orchestrator. Route narrow strategy, hiring, writing, outreach, visual, or document questions to Elena, Marcus, Leah, Samira, Camille, or Sofia directly. Use provider recommendation status and candidate review requirements before selecting an export."
     }
   ]
 }
