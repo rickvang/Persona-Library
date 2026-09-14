@@ -9,7 +9,7 @@
 
 This Playbook coordinates existing repository, GitHub, Work Order, and review practices. It is not a runtime executor and does not create an Agent, Coordinator, Runtime, Budget, Scheduler, or Orchestration entity.
 
-Persona-Library may select, catalog, and explain this Playbook. After selection, the repository being changed owns implementation truth. Execution does not require loading Persona-Library records.
+Persona-Library may select, catalog, and explain this Playbook. After selection, the repository being changed owns implementation truth. For an external target repository, execution does not require loading Persona-Library records. If Persona-Library itself is the target repository, or target-repository local instructions require Persona-Library records, follow those local routing requirements.
 
 ## Core principle
 
@@ -201,7 +201,7 @@ The implementer must re-open current repository state itself.
 - **Purpose:** Produce a reviewable result or a bounded blocker for one workstream.
 - **Owner:** The assigned Implementer.
 - **Entry:** A single dispatch packet and a fresh inspect of the target repository.
-- **Inputs:** Current repository instructions, Tool contracts, issue scope, required validation. Persona-Library records are not required after Playbook selection.
+- **Inputs:** Current repository instructions, Tool contracts, issue scope, required validation. For an external target repository, Persona-Library records are not required after Playbook selection; if Persona-Library itself is the target repository, or target-repository local instructions require Persona-Library records, follow those local routing requirements.
 - **Actions:** Inspect fresh state; stay in the grounded scope; run only required validation; open one PR or stop with a blocker; do not spawn sub-agents; do not merge.
 - **Outputs:** Branch + PR, or a blocker that names the missing input, permission, or conflict.
 - **Evidence:** GitHub references plus the validation actually run.
