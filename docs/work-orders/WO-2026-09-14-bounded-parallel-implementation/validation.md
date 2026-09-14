@@ -15,12 +15,12 @@ Behavior-focused checks for issue #82. Fill results after the repository validat
 | Runtime/model examples are not canonical identity | Runtime mapping examples plus fallback | Present |
 | Multi-Persona Collaboration methodology is referenced, not copied | Distinct-Playbook section; collaboration stages not duplicated | Present |
 
-## Checks to run
+## Checks run
 
-- `node scripts/build-library.mjs`
-- `node scripts/validate-content.mjs`
-- `node --test scripts/validation/validation.test.mjs`
-- `git diff --check`
+- `node scripts/build-library.mjs` — copied catalog and orientation sources into `dist/data/`.
+- `node scripts/validate-content.mjs` — pass: 20 Personas, 2 operators, 2 leaders, 16 specialists, and 20 workflow maps.
+- `node --test scripts/validation/validation.test.mjs` — pass: 4 tests.
+- `git diff --check` — pass for the staged Playbook change set.
 
 ## Coverage and limits
 

@@ -2,13 +2,14 @@
 
 - Work Order ID: WO-2026-09-14-bounded-parallel-implementation
 - Title: Add a bounded parallel implementation Playbook for usage-conscious agent orchestration
-- Status: in progress
+- Status: ready for review
 - Created: 2026-09-14
 - Last updated: 2026-09-14
 - Requester: repository user
 - Current owner: Cursor cloud agent
 - Request mode: update
 - GitHub issue: [#82 — Add a bounded parallel implementation Playbook for usage-conscious agent orchestration](https://github.com/rickvang/Persona-Library/issues/82)
+- GitHub pull request: [#83 — Add bounded parallel implementation Playbook](https://github.com/rickvang/Persona-Library/pull/83)
 - Artifact home: `docs/work-orders/WO-2026-09-14-bounded-parallel-implementation/`
 - Concrete deliverable: [`docs/bounded-parallel-implementation-playbook.md`](../../bounded-parallel-implementation-playbook.md)
 - Specialized evidence: [`proof.md`](proof.md), [`validation.md`](validation.md), and [`reconciliation.md`](reconciliation.md)
@@ -59,7 +60,7 @@ Rejected alternatives:
 
 ## Current phase and gate
 
-Phase: authorized implementation. Gate: reviewable PR after validation and bounded reconciliation. Merge remains a later authorized step.
+Phase: reviewable PR #83. Gate: independent review, then separately authorized merge. Do not merge from this Work Order.
 
 ## Success criteria and stopping condition
 
