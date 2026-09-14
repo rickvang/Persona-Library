@@ -15,6 +15,8 @@
 | `docs/collaboration/problem-context.md` and schema | Run-level shared state | Confirms | Unchanged; remains run-level, not part of the catalog identity | None |
 | Issue #22 | Historical implementation evidence | Confirms | Preserved as-is; original scope not reopened | None |
 | `dist/playbooks.html` | Authored Site presentation | Qualifies | New catalog card, sidebar link, and compact `#collaboration` overview with a direct canonical-source link; duplicate contract summary removed after review | Retain |
+| PR #91 review finding | Site contract-drift risk | Qualifies | Original inline finding identified duplicated stages, roles, shared state, and gate text; current head replaces that copy with a compact overview and direct canonical link | Review thread is outdated; retain the correction |
+| Issue #71 | Scope and acceptance owner | Confirms | Remains open and still defines the canonical identity, preserved route/contract, and no-runtime boundary | Keep open until separately authorized integration |
 | `dist/guide.html` | Authored Docs presentation | Extends | One example callout added, matching the existing per-Playbook pattern | Retain |
 | `dist/decisions.html` DEC-010 | Durable rationale | Extends (append-only) | Correction line records that #71 now catalogs the identity; original decision and prior corrections unchanged | Retain |
 | Design System Operating Pack `playbooks` field | Existing Playbook identity reference | Unrelated | Still lists only `playbook-create-and-integrate-reusable-skill` | None |
@@ -47,4 +49,4 @@ Repository search cannot prove exhaustive external consumers of the Playbook cat
 
 ## Next action
 
-Repository reviewer: inspect the pull request, confirm the identity resolves cleanly to the existing route and the Site overview links to the canonical contract without duplication, and merge only after independent review and separate authorization. Do not merge from this Work Order.
+Repository reviewer: confirm the identity resolves cleanly to the existing route and the Site overview links to the canonical contract without duplication. The current review correction is applied and re-inspected; merge only after separate authorization. Do not merge from this Work Order.

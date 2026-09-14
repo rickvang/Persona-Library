@@ -53,6 +53,20 @@ Rejected alternatives:
 - Adding a `catalog_id` cross-reference field to the orientation schema: rejected as inventing a field solely for symmetry; no other Playbook route uses one, and the naming convention already resolves the identity to the route.
 - Rewriting or restructuring `docs/collaboration/*`: rejected; the issue requires reuse, not a rewrite, and no defect was found.
 
+## Source-grounding and correction classification
+
+- **Confirmed:** Issue #71 still requires one canonical `playbook-multi-persona-collaboration` identity, preservation of the existing route and collaboration contract, and no runtime or framework expansion.
+- **Confirmed:** The current review finding identified contract duplication in `dist/playbooks.html#collaboration` and omission of required handoff details from that copy.
+- **Qualified:** The correction is limited to the authored Site overview and its evidence text: retain the catalog card, route, canonical collaboration document, generated data, Docs callout, and append-only Decision record while linking directly to the canonical contract.
+- **Contradicted:** None of the proposed corrections were contradicted by current issue, source, or GitHub state.
+
+## Independent reinspection
+
+- Current GitHub state: PR [#91](https://github.com/rickvang/Persona-Library/pull/91) is open and non-draft against `main` at `4be9eae`; the pushed head is `4c43abf35b06052b83ace3cbcaade547627b1228`.
+- The original review thread on `dist/playbooks.html` is outdated after the compact overview and direct canonical-source link landed.
+- Vercel reports success for the current head; GitHub's generic PR endpoint reports `mergeable: true` with transient `unstable` recalculation state.
+- Issue [#71](https://github.com/rickvang/Persona-Library/issues/71) remains open. No merge or issue close was performed.
+
 ## Current phase and gate
 
 Phase: reviewable PR [#91](https://github.com/rickvang/Persona-Library/pull/91) against `origin/main`. Gate: repository validation must pass; PR stays open (not merged) per explicit instruction.
