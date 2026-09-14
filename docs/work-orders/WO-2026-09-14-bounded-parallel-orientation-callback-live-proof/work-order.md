@@ -12,6 +12,8 @@
 - Proof/reconciliation issues: #82 and #86
 - External runtime issue: #96
 - Persona-Library branch: `bounded/orientation-callback-89-94`
+- Pull request: [#98 — Add orientation preflight and bounded completion callback contract](https://github.com/rickvang/Persona-Library/pull/98)
+- Review baseline head: `94354e2858a9eaac2c786dc911859969274569f6`
 - External target: `rickvang/ai-job-search` branch `bounded/job-ledger-96`
 
 ## Placement review
@@ -145,5 +147,5 @@ blockers / unresolved questions
 
 ## Next action
 
-Independent reviewer: refresh current `main`, branch, PR, diff, review threads, checks, and authoritative Playbook source after the PR is opened. Review #89/#94 against the current source, request only scoped corrections if needed, and keep merge separately authorized. The coordinator should record callback delivery or the compact fallback in the integrated run evidence.
+Independent reviewer: review [PR #98](https://github.com/rickvang/Persona-Library/pull/98) from fresh `main`, branch, diff, review threads, checks, and authoritative Playbook source. Review #89/#94 against the current source, request only scoped corrections if needed, and keep merge separately authorized. The coordinator should record callback delivery or the compact fallback in the integrated run evidence.
 
