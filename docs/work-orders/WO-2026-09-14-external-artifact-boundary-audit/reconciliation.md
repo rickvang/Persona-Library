@@ -43,4 +43,4 @@ The review is bounded by declared repository relationships, local files, and the
 
 ## Next action
 
-Commit and push the audit package, close issue #60, and route any implementation follow-up to #70 or a separately scoped issue.
+Audit package is committed and pushed to `main`; close issue #60 and route any implementation follow-up to #70 or a separately scoped issue.

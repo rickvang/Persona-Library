@@ -66,7 +66,7 @@ Mara Okoye’s placement review was performed from her canonical Persona record,
 
 Phase: current-state inspection, live candidate-repository inspection, Mara placement review, audit, validation, and reconciliation complete.
 
-Next action: commit and push the audit package, close #60, and hand any justified implementation follow-up to #70 or a new focused issue.
+Next action: audit package is committed and pushed to `main`; close #60 and hand any justified implementation follow-up to #70 or a new focused issue.
 
 ## Evidence and limitations
 
