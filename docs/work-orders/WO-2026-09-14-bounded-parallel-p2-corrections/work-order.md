@@ -72,4 +72,4 @@ Stopping condition: reviewable PR for these three P2s, or a bounded blocker. Do 
 
 ## Next action
 
-Independent review of the follow-up PR. Merge only after separate authorization. Leave issue #82 open.
+Independent review of [#85](https://github.com/rickvang/Persona-Library/pull/85), including the Codex P2 that scoped the role-count assertion to the bounded-parallel catalog card. Merge only after separate authorization. Leave issue #82 open.

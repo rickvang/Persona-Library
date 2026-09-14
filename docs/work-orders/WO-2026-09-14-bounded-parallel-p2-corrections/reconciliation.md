@@ -12,9 +12,9 @@
 | `docs/bounded-parallel-implementation-playbook.md` | Durable Playbook contract | Qualifies | Run-stop no longer treats recorded corrections as terminal; Authorizer stays a named role | Retain |
 | `content/orientation/playbooks.json` | Playbooks route activation | Extends | `next_handoff` now carries thin-coordinator, one-PR-then-STOP, correction-loop, and merge-separation rules | Retain |
 | Root `AGENTS.md` | Universal activation | Qualifies | Rule 13 removed so route-specific Playbook instructions are not always-on | Retain |
-| `dist/playbooks.html` catalog card | Authored Site presentation | Qualifies | `3 roles` → `4 roles`; Authorizer remains in the detailed participant list | Retain |
+| `dist/playbooks.html` catalog card | Authored Site presentation | Qualifies | `3 roles` → `4 roles`; stable `data-playbook-id="playbook-bounded-parallel-implementation"`; Authorizer remains in the detailed participant list | Retain |
 | `dist/decisions.html` DEC-010 | Durable rationale | Extends | Summary names four roles; Correction line appended; distinct-Playbook conclusion unchanged | Retain |
-| `scripts/validation/generated.mjs` | Site contract | Extends | Locks `<span>4 roles</span>` and forbids `<span>3 roles</span>` | Retain |
+| `scripts/validation/generated.mjs` | Site contract | Extends | Selects `data-playbook-id="playbook-bounded-parallel-implementation"` and asserts that card shows `4 roles` | Retain |
 | Generated `dist/data/orientation/playbooks.json` | Build provenance | Extends | Rebuild required after route-group source change | Ran `build-library.mjs` |
 | `content/site-orientation.json` | Bootstrap | Unrelated | `route_count` remains 3; no bootstrap Playbook-specific rule added | None |
 | `content/library-data.js` `playbookCatalog` | Canonical identity | Unrelated | Identity and status unchanged | None |

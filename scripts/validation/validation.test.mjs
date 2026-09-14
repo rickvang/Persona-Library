@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { buildValidationIndexes } from './context.mjs';
+import { playbookCatalogCard } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -73,6 +74,14 @@ test('Relationship validation keeps cross-domain references explicit', () => {
   const recipeWithoutSteps = { ...recipe };
   delete recipeWithoutSteps.steps;
   assert.throws(() => validateRelationships({ data: { ...context.data, toolUseRecipes: [recipeWithoutSteps] } }, indexes), /Tool-use recipe has no steps: recipe-test/);
+});
+
+test('Bounded parallel role count is scoped to its catalog card', () => {
+  const html = '<article class="catalog-card" data-playbook-card data-playbook-id="playbook-other"><div class="catalog-meta"><span>3 roles</span></div></article><article class="catalog-card" data-playbook-card data-playbook-id="playbook-bounded-parallel-implementation"><div class="catalog-meta"><span>4 roles</span></div></article>';
+  const boundedCard = playbookCatalogCard(html, 'playbook-bounded-parallel-implementation');
+  assert.equal(boundedCard.includes('<span>4 roles</span>'), true);
+  assert.equal(playbookCatalogCard(html, 'playbook-other').includes('<span>3 roles</span>'), true);
+  assert.equal(playbookCatalogCard(html, 'playbook-missing'), '');
 });
 
 test('Playbook identity is validated before the shared Playbook ID index is trusted', () => {
