@@ -44,4 +44,4 @@ No generated output refresh is expected because canonical content, client module
 
 ## Next action
 
-Inspect the fresh branch diff and current PR/branch state, then complete the authorized push and normal merge path. No generated rebuild is required unless the final staged validation reveals an unexpected generated dependency.
+Implementation merged to `main` via PR #77 at `1e65ca6bc0795f3e487e2449744e45448bbdb587`; close-out of this packet is bookkeeping only. No generated rebuild is required.

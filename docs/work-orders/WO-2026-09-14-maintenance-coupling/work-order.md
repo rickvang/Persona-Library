@@ -2,14 +2,17 @@
 
 - Work Order ID: WO-2026-09-14-maintenance-coupling
 - Title: Reduce maintenance coupling with focused validation ownership
-- Status: ready-for-review
+- Status: complete
 - Created: 2026-09-13
-- Last updated: 2026-09-13
+- Last updated: 2026-09-14
 - Requester: repository user
 - Current owner: Codex
 - Explicit collaborator: Mara Okoye, knowledge systems architect
 - Request mode: update
 - GitHub issue: [#70 — Reduce Persona-Library maintenance coupling with domain-owned contracts and focused validators](https://github.com/rickvang/Persona-Library/issues/70)
+- GitHub pull request: [#76 — Reduce Persona-Library maintenance coupling](https://github.com/rickvang/Persona-Library/pull/76) (merged)
+- Merge commit: `fc3af861ec5fd9b20e605e713f647d3249580e26`
+- Follow-up: [#78 — Restore validator checks lost in #70 extraction](https://github.com/rickvang/Persona-Library/issues/78) owns two post-merge validator regressions; this packet does not implement that correction
 - Artifact home: `docs/work-orders/WO-2026-09-14-maintenance-coupling/`
 - Concrete deliverable: [`scripts/validation/`](../../../scripts/validation/) and the thin [`scripts/validate-content.mjs`](../../../scripts/validate-content.mjs)
 - Specialized evidence: [`ownership.md`](ownership.md), [`validation.md`](validation.md), and [`reconciliation.md`](reconciliation.md)
@@ -51,9 +54,9 @@ Mara’s canonical Persona record, the `docs` `work-order-start` route, `docs/wo
 
 ## Current phase and gate
 
-Phase: ownership audit and behavior-preserving validator extraction complete; focused regression coverage and full validation complete; universal reconciliation recorded.
+Phase: implementation merged to `main` through PR #76 at `fc3af861ec5fd9b20e605e713f647d3249580e26`; issue #70 is closed.
 
-Gate: ready for review. The top-level command remains runnable, focused modules are independently importable, representative failures are covered, and no canonical authored data was duplicated or moved.
+Gate: complete for the authorized #70 extraction. The top-level command remains runnable, focused modules are independently importable, representative failures recorded during implementation are covered, and no canonical authored data was duplicated or moved. This gate does not claim that every pre-extraction validator assertion survived; two later regressions are tracked in #78.
 
 ## Evidence and uncertainty
 
@@ -65,4 +68,8 @@ Gate: ready for review. The top-level command remains runnable, focused modules 
 
 ## Completion boundary and next action
 
-The Work Order is complete when the linked implementation, focused tests, full validation, `git diff --check`, and reconciliation report are inspectable. Next action: reviewer inspects the focused module boundaries and validation evidence, then merges or requests a scoped correction.
+Status changed to complete because PR #76 merged the authorized #70 implementation and closed the issue. The linked implementation, focused tests, historical local validation in [`validation.md`](validation.md), `git diff --check`, and reconciliation report remain inspectable.
+
+Those recorded commands are implementation-worktree evidence; they are not restated as CI evidence.
+
+Completion boundary: no further action on this packet. Follow-up #78 owns the two validator regressions discovered after merge and must not be folded into this Work Order.

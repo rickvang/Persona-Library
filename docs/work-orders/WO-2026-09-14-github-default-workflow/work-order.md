@@ -2,7 +2,7 @@
 
 - Work Order ID: WO-2026-09-14-github-default-workflow
 - Title: Make GitHub the default repository workflow for Persona-Library work
-- Status: ready-for-review
+- Status: complete
 - Created: 2026-09-14
 - Last updated: 2026-09-14
 - Requester: repository user
@@ -10,6 +10,8 @@
 - Explicit collaborators: driver task 01a09e06-1a61-78e3-8c62-6da56142cb20; SkillRepo follow-up agent after this change lands
 - Request mode: update
 - GitHub issue: [#75 — Make GitHub the default repository workflow for Persona-Library work](https://github.com/rickvang/Persona-Library/issues/75)
+- GitHub pull request: [#77 — Make GitHub the default repository workflow](https://github.com/rickvang/Persona-Library/pull/77) (merged)
+- Merge commit: `1e65ca6bc0795f3e487e2449744e45448bbdb587`
 - Artifact home: `docs/work-orders/WO-2026-09-14-github-default-workflow/`
 - Concrete deliverable: root [`AGENTS.md`](../../../AGENTS.md) rule pointing to the pinned external GitHub operating contract
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
@@ -35,7 +37,7 @@ Give fresh Persona-Library sessions a small always-on repository rule that ident
 
 ## Authorization and boundary
 
-The repository user authorized the coordinated implementation sequence, including the new Persona-Library integration, push, pull request, and normal merge path. The authorized mutation targets are this repository's root guidance and the scoped Work Order evidence. GitHub inspection is read-only until the branch, pull request, checks, review state, and merge authorization are separately handled.
+The repository user authorized the coordinated implementation sequence, including the new Persona-Library integration, push, pull request, and normal merge path. The authorized mutation targets were this repository's root guidance and the scoped Work Order evidence. That merge path completed through PR #77; later GitHub inspection still does not by itself authorize comments, edits, or further mutation.
 
 ## Mara placement and boundary review
 
@@ -49,16 +51,17 @@ Rejected alternatives:
 
 ## Current phase and gate
 
-Phase: root rule implemented; validation and reconciliation complete; pull request publication and normal integration pending.
+Phase: implementation merged to `main` through PR #77 at `1e65ca6bc0795f3e487e2449744e45448bbdb587`; issue #75 is closed.
 
-Gate: implementation must be based on Persona-Library `main` at `fc3af861ec5fd9b20e605e713f647d3249580e26` (merged #70) and must reference `tool-repo` commit `94acc6082e941439d2ee532f1b1b091cd42eb923` (merged #1 through PR #2).
+Gate: complete. The landed rule is based on Persona-Library `main` at `fc3af861ec5fd9b20e605e713f647d3249580e26` (merged #70) and references `tool-repo` commit `94acc6082e941439d2ee532f1b1b091cd42eb923` (merged #1 through PR #2).
 
 ## Evidence and uncertainty
 
-- Observed: issue #75 is open and defines the minimal `AGENTS.md` integration boundary.
-- Observed: Persona-Library PR #76 merged #70 at `fc3af861ec5fd9b20e605e713f647d3249580e26`.
+- Observed (implementation): issue #75 defined the minimal `AGENTS.md` integration boundary.
+- Observed (implementation): Persona-Library PR #76 merged #70 at `fc3af861ec5fd9b20e605e713f647d3249580e26`.
+- Observed (post-merge, 2026-09-14): PR #77 merged into `main` at `1e65ca6bc0795f3e487e2449744e45448bbdb587` and closed #75.
 - Observed: `tool-repo` PR #2 merged #1 at `94acc6082e941439d2ee532f1b1b091cd42eb923`, and `tools/github/AGENTS.md` resolves at that exact revision.
-- Observed: the current runtime exposes the GitHub plugin and successfully supports read-only repository, issue, branch, file, and pull request inspection.
+- Observed: the implementing runtime exposed the GitHub plugin and successfully supported read-only repository, issue, branch, file, and pull request inspection.
 - Observed: current Persona-Library data has Tool-use recipes and Persona Tool requirements but no standalone canonical Tool-source array.
 - Unknown: connector availability, account permissions, and mutation approval in a future session remain runtime-specific and are not supplied by this repository rule.
 
@@ -70,6 +73,8 @@ Gate: implementation must be based on Persona-Library `main` at `fc3af861ec5fd9b
 - The detailed contract is referenced at an explicit verified revision.
 - Full validation, focused tests, diff checks, fresh PR review, and normal integration complete without unrelated changes.
 
-## Current next action
+## Completion boundary and next action
 
-Inspect the exact diff and current GitHub state, then commit, push, open the PR, and merge only after fresh review and checks pass.
+Status changed to complete because PR #77 merged the authorized #75 implementation and closed the issue. Historical local checks remain in [`validation.md`](validation.md) and are not restated as CI evidence.
+
+Completion boundary: no further action on this packet. Connector availability in a later session remains unknown and is not supplied by this rule.
