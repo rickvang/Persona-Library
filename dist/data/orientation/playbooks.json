@@ -86,6 +86,37 @@
         "A request that does not need shared state, attribution, or handoffs"
       ],
       "next_handoff": "Keep contributions attributable and require a concrete solution-quality gate."
+    },
+    {
+      "id": "bounded-parallel-implementation",
+      "request": "Coordinate bounded parallel implementation workstreams",
+      "modes": [
+        "plan",
+        "update"
+      ],
+      "primary_space": "playbooks",
+      "secondary_spaces": [
+        "docs",
+        "tools",
+        "operating-packs"
+      ],
+      "target": "bounded-parallel-implementation-playbook",
+      "artifact_kind": "playbook",
+      "package_path": "docs/bounded-parallel-implementation-playbook.md",
+      "availability_source": "documentation_only",
+      "first_reads": [
+        "docs/bounded-parallel-implementation-playbook.md",
+        "docs/collaboration/multi-persona-collaboration-playbook.md",
+        "active Work Order or GitHub issue"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A Multi-Persona Collaboration run that synthesizes one solution from named Personas",
+        "A single-workstream implementation that does not need parallel dispatch",
+        "Runtime execution, merge, or nested agent spawning as if this Playbook were an executor"
+      ],
+      "next_handoff": "Keep workstreams independent, handoffs compact, review independent of implementer transcripts, and merge separately authorized."
     }
   ]
 }

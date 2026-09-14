@@ -47,7 +47,7 @@
       "label": "Playbooks",
       "answers": "How do multiple personas, skills, tools, workflows, artifacts, and quality gates coordinate toward an outcome?",
       "route_file": "orientation/playbooks.json",
-      "route_count": 2
+      "route_count": 3
     },
     "docs": {
       "label": "Docs",
