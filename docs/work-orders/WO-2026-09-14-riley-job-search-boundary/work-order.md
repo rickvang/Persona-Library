@@ -77,6 +77,12 @@ Phase: reviewable implementation. Gate: independent review, then separately auth
 
 Stopping condition: reviewable PR pushed for #90, or a bounded blocker.
 
+## Scope decision on the job ledger
+
+In scope for #90 / this PR: the reusable private ledger **contract**, ownership boundary (search specialist / Playbook shared state; not Riley; not Persona-Library storage), and Site/docs alignment.
+
+Out of scope / follow-up: implement and prove durable private-workspace ledger persistence across repeated searches. Keep that as a focused follow-up rather than implying runtime proof from this PR.
+
 ## Next action
 
 Independent review of the PR for #90. Merge only after separate authorization if required by repository practice.

@@ -103,3 +103,7 @@ Recognize the same role when it appears repeatedly or across providers without t
 - Does deduplication prefer source IDs, then URLs, then a conservative fingerprint?
 - Is the ledger durable across runs in private workspace state?
 - Does Riley remain orchestration-only for this state?
+
+## Runtime proof status
+
+This document is the reusable contract only. Persona-Library does not host private job history. A consuming workspace/runtime must implement persistence and prove repeated-search deduplication separately; contract presence here is not that proof.

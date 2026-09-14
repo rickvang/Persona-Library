@@ -28,5 +28,9 @@ node scripts/validate-content.mjs
 
 ## Limitations
 
-- No live repeated-search runtime was executed; ledger behavior is contract-level.
+- No live repeated-search runtime was executed in this PR. Durable private ledger persistence and repeated-search deduplication are **contract-complete here** and explicitly deferred as a focused follow-up for runtime proof.
 - Historical Work Order packets retain older “consult Riley” phrasing where they document past runs; live contracts were updated instead of rewriting history.
+
+## Follow-up (out of scope for this PR)
+
+Track a separate issue/Work Order to implement and prove private-workspace ledger persistence across repeated searches (normalize → dedupe → update `last_seen` / disposition → avoid resurfacing known jobs as new). Do not treat this PR as that runtime proof.

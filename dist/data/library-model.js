@@ -257,9 +257,40 @@
       record.revisions.push({version,date:'2026-09-08',changeType:'persona-application',summary:'Added Noor Vale’s conformance and workflow-observability application while preserving the existing portable Skill boundary.',affectedFields:['profiles','workflows'],evidence:'Issues #37 and #43 plus the conformance Work Order and normalized result contract',confidenceChange:'Portable Skill remains unchanged; Persona-specific application remains a working synthesis'});
     }
     const riley = personaMaintenance['ai-orchestrator'];
-    riley.version = '1.1'; riley.updated = '2026-09-08';
     riley.revisions.push({version:'1.1',date:'2026-09-08',changeType:'persona-routing-reconciliation',summary:'Narrowed Riley’s evaluation responsibility to orchestration coordination and made Noor’s conformance observation a required per-run handoff.',affectedFields:['skills','workflows','handoffs'],evidence:'Issue #43 role-boundary cleanup and declared Riley-to-Noor handoff in the conformance Work Order',confidenceChange:'Routing is declared in repository data; runtime enforcement remains untested'});
     riley.revisions.push({version:'1.2',date:'2026-09-14',changeType:'persona-routing-reconciliation',summary:'Confirmed Riley remains an AI orchestrator; Evidence-led Job Search is a Playbook-front-door contextual coordination role, not a Job Search Persona identity.',affectedFields:['roleLabel','implication'],evidence:'Issue #90 ownership correction; no domain expertise added to Riley',confidenceChange:'Identity remains general orchestration; job-search wording corrected on Playbook and docs surfaces'});
+    riley.version = '1.2'; riley.updated = '2026-09-14';
+
+    const elena = personaMaintenance['career-strategist'];
+    elena.revisions.push({version:'1.1',date:'2026-09-14',changeType:'capability-extension',summary:'Attached durable job-ledger disposition to Elena’s search sequencing workflow so repeated discovery updates known opportunities instead of resurfacing them as new.',affectedFields:['skills','workflows'],evidence:'Issue #90 job ledger contract; search specialist owns disposition, Riley does not',confidenceChange:'Ledger ownership is declared; private runtime persistence remains outside Persona-Library'});
+    elena.version = '1.1'; elena.updated = '2026-09-14';
+
+    const searchSequencingSkillId = 'skill-search-sequencing-and-prioritization';
+    skillMaintenance[searchSequencingSkillId] = {
+      version: '1.1',
+      updated: '2026-09-14',
+      revisions: [
+        {
+          version: '1.0',
+          date: '2026-09-04',
+          changeType: 'initial-profile',
+          summary: 'Initial capability profile added to the Skills Library.',
+          affectedFields: ['definition', 'triggers', 'workflows', 'actions', 'evidence'],
+          evidence: 'Synthesized from career-development practice · Validate through follow-up outcomes',
+          confidenceChange: 'Synthesized unless otherwise noted'
+        },
+        {
+          version: '1.1',
+          date: '2026-09-14',
+          changeType: 'source-update',
+          summary: 'Extended search sequencing to check and update the durable private job ledger before treating a posting as new.',
+          affectedFields: ['definition', 'triggers', 'workflows', 'actions', 'evidence'],
+          evidence: 'Issue #90 job ledger contract and Evidence-led Job Search shared-state boundary',
+          confidenceChange: 'Contract-level ledger behavior added; repeated-search runtime proof deferred'
+        }
+      ]
+    };
+
     const conformanceObserver = personaMaintenance['conformance-observer'];
     conformanceObserver.version = '1.1'; conformanceObserver.updated = '2026-09-08';
     conformanceObserver.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added the Issue #37 conformance suite, Issue #43 observation contract, and explicit live-runtime unknowns to Noor’s working-draft Persona record.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'Persona Library Issues #37 and #43; conformance-observability Work Order; repository orientation and mutation contracts',confidenceChange:'Working synthesis remains; cross-LLM behavior and identity boundary require actual use'});
