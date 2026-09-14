@@ -37,4 +37,4 @@ The review covers repository-local consumers found by the implementation audit. 
 
 ## Next action
 
-Commit and push the reviewed implementation, then close issue #69 with the validation and reconciliation links.
+Implementation is committed and pushed to `main`; close issue #69 with the validation and reconciliation links.

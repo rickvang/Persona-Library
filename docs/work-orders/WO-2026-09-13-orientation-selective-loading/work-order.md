@@ -2,7 +2,7 @@
 
 - Work Order ID: WO-2026-09-13-orientation-selective-loading
 - Title: Split Persona-Library orientation into a minimal bootstrap and selective route groups
-- Status: active
+- Status: complete
 - Created: 2026-09-13
 - Last updated: 2026-09-13
 - Requester: repository user
@@ -67,7 +67,7 @@ Mara Okoye’s placement review was performed from her canonical Persona record,
 
 Phase: implementation, validation, and reconciliation complete; integration pending.
 
-Next action: commit the reviewed source and generated changes, push `main`, and close the linked implementation issue.
+Next action: implementation is committed and pushed to `main`; close the linked implementation issue.
 
 ## Evidence and limitations
 
