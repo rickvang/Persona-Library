@@ -116,7 +116,7 @@
         "A single-workstream implementation that does not need parallel dispatch",
         "Runtime execution, merge, or nested agent spawning as if this Playbook were an executor"
       ],
-      "next_handoff": "Keep workstreams independent, handoffs compact, review independent of implementer transcripts, and merge separately authorized."
+      "next_handoff": "Keep the coordinator thin. Give each implementer one workstream, one branch, and one PR, then STOP. Pass compact GitHub-reference handoffs. Review from current GitHub state. Apply scoped corrections and re-review; recording corrections is not terminal. Treat merge as a separately authorized mutation. Do not nest implementer agents or copy child transcripts into the coordinator."
     }
   ]
 }
