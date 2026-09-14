@@ -38,6 +38,10 @@ Template Librarian Persona identity, Template Skill packages, Template catalog r
 
 Repository search cannot prove every future Template request will choose the Playbook over a bounded Skill route; non-triggers are documented to keep that choice intentional.
 
+## Rebase note
+
+Rebased onto PR #91 so the current Playbook catalog includes Multi-Persona Collaboration plus this Template lifecycle Playbook (5 catalog identities). Durable decision ID is **DEC-012** to avoid colliding with DEC-011 on PR #92.
+
 ## Next action
 
-Repository reviewer: inspect the PR for [#72](https://github.com/rickvang/Persona-Library/issues/72) and merge only after separate authorization if required.
+Repository reviewer: inspect the PR for [#72](https://github.com/rickvang/Persona-Library/issues/72). Keep draft until #91 lands if required, then merge only after separate authorization.
