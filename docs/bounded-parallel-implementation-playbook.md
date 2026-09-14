@@ -448,4 +448,3 @@ Do not add a Work/Codex-specific Tool package unless later evidence shows substa
 - Assumptions: GitHub remains the default repository workflow; implementers can inspect fresh repository state; merge stays a separate authorization; Persona-Library stays catalog/discovery rather than an execution dependency
 - Unresolved: whether later cases need a second live parallel-run proof across two repositories; whether #71 later catalogs Multi-Persona Collaboration beside this identity; whether substantial Playbook artifacts should later move to an independent library
 - Next action after an authorized update: bounded `$change-impact-reconciliation`, then reviewable PR, then separately authorized merge
-
