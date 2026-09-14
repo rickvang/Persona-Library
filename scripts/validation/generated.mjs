@@ -74,4 +74,3 @@ export async function validateGeneratedOutputs(context) {
   if (!guidePage.includes('agent-orientation') || !context.orientation.default_entry.includes('guide.html#agent-orientation')) throw new Error('Agent orientation must be linked from the Docs page and manifest');
   if (!guidePage.includes('routing-map') || !guidePage.includes('Persona-applied') || !guidePage.includes('$persona-panel-orchestration') || !guidePage.includes('skillLibrary') || !guidePage.includes('skill-authoring') || !guidePage.includes('$pl-skill-creator') || !guidePage.includes('PL Skill Creator') || !guidePage.includes('Bounded Parallel Implementation Playbook')) throw new Error('Docs page is missing the unified system routing map');
 }
-
