@@ -49,4 +49,4 @@ Repository search cannot prove every downstream mention of the two Work Orders. 
 
 ## Next action
 
-Reviewer inspects the documentation close-out pull request for issue #79. Do not merge from this packet. Do not implement #78 here.
+Reviewer inspects [#81](https://github.com/rickvang/Persona-Library/pull/81) for issue #79. Do not merge from this packet. Do not implement #78 here.

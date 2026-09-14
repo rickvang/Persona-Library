@@ -10,6 +10,7 @@
 - Explicit collaborator: Mara Okoye, knowledge systems architect
 - Request mode: update
 - GitHub issue: [#79 — Reconcile completed Work Order status after #70 and #75 merges](https://github.com/rickvang/Persona-Library/issues/79)
+- GitHub pull request: [#81 — Reconcile completed Work Order status after #70 and #75 merges](https://github.com/rickvang/Persona-Library/pull/81)
 - Artifact home: `docs/work-orders/WO-2026-09-14-completed-work-order-status/`
 - Concrete deliverable: status close-out of [`WO-2026-09-14-maintenance-coupling`](../WO-2026-09-14-maintenance-coupling/work-order.md) and [`WO-2026-09-14-github-default-workflow`](../WO-2026-09-14-github-default-workflow/work-order.md)
 - Specialized evidence: [`reconciliation.md`](reconciliation.md)
@@ -66,7 +67,6 @@ Gate: both target Work Orders show merged implementation, with no stale `ready-f
 - Observed: both named Work Orders still said `ready-for-review` on `main` and retained review-time next actions.
 - Observed: issue #78 separately owns two validator regressions found after #70 merged; this task does not implement it.
 - Assumption: historical `validation.md` command logs should remain local/implementation evidence.
-- Unknown: whether later sessions will close #79 automatically from the pull request text.
 
 ## Success criteria and stopping condition
 
@@ -78,4 +78,4 @@ Gate: both target Work Orders show merged implementation, with no stale `ready-f
 
 ## Current next action
 
-Reviewer inspects the documentation close-out against issue #79, then merges or requests a scoped correction. Do not implement #78 in this change.
+Reviewer inspects the documentation close-out in [#81](https://github.com/rickvang/Persona-Library/pull/81) against issue #79, then merges or requests a scoped correction. Do not implement #78 in this change.
