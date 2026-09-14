@@ -88,12 +88,17 @@ export function buildValidationIndexes(data) {
   const personaIds = new Set(data.personas.map(persona => persona.id));
   const catalogIds = new Set(data.skillCatalog.map(skill => skill.id));
   const skillUnitIds = new Set(data.skillUnits.map(unit => unit.id));
+  const playbookIds = new Set();
+  for (const playbook of data.playbookCatalog) {
+    if (!playbook.id || playbookIds.has(playbook.id) || !playbook.name || !playbook.status) throw new Error(`Invalid or duplicate Playbook catalog identity: ${playbook.id || '(missing)'}`);
+    playbookIds.add(playbook.id);
+  }
   return {
     personaIds,
     catalogIds,
     skillUnitIds,
     entityIds: new Set([...catalogIds, ...skillUnitIds]),
-    playbookIds: new Set(data.playbookCatalog.map(playbook => playbook.id)),
+    playbookIds,
     operatingPackIds: new Set(data.operatingPacks.map(pack => pack.id)),
     templateIds: new Set(data.templates.map(template => template.id))
   };

@@ -7,6 +7,7 @@ export function validateRelationships({ data }, indexes) {
     recipeIds.add(recipe.id);
     if (!indexes.catalogIds.has(recipe.skillId)) throw new Error(`Tool-use recipe references an unknown skill: ${recipe.skillId}`);
     if (!Array.isArray(recipe.personaIds) || !recipe.personaIds.length || recipe.personaIds.some(id => !indexes.personaIds.has(id))) throw new Error(`Tool-use recipe references an unknown persona: ${recipe.id}`);
+    if (!Array.isArray(recipe.steps) || !recipe.steps.length) throw new Error(`Tool-use recipe has no steps: ${recipe.id}`);
     if (!data.skillCatalog.find(skill => skill.id === recipe.skillId)?.toolUseRecipes.some(item => item.id === recipe.id)) throw new Error(`Tool-use recipe was not attached to its skill: ${recipe.id}`);
   }
 
