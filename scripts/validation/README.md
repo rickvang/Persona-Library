@@ -4,7 +4,7 @@
 
 | Module | Owns |
 | --- | --- |
-| `context.mjs` | Shared source loading and validation indexes |
+| `context.mjs` | Shared source loading, validation indexes, and canonical Playbook identity |
 | `orientation.mjs` | Bootstrap, route groups, route dependencies, and Skill package metadata |
 | `generated.mjs` | Generated freshness and Site/page contracts |
 | `personas.mjs` | Persona identity, Persona Skill applications, and workflow maps |

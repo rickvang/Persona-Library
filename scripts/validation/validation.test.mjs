@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { buildValidationIndexes } from './context.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -68,4 +69,24 @@ test('Relationship validation keeps cross-domain references explicit', () => {
   validateRelationships(context, indexes);
   assert.deepEqual([...indexes.recipeIds], ['recipe-test']);
   assert.throws(() => validateRelationships({ data: { ...context.data, skillRelations: [{ from: 'skill-test', to: 'missing', type: 'supports' }] } }, indexes), /Invalid skill relationship/);
+  assert.throws(() => validateRelationships({ data: { ...context.data, toolUseRecipes: [{ ...recipe, steps: [] }] } }, indexes), /Tool-use recipe has no steps: recipe-test/);
+  const recipeWithoutSteps = { ...recipe };
+  delete recipeWithoutSteps.steps;
+  assert.throws(() => validateRelationships({ data: { ...context.data, toolUseRecipes: [recipeWithoutSteps] } }, indexes), /Tool-use recipe has no steps: recipe-test/);
+});
+
+test('Playbook identity is validated before the shared Playbook ID index is trusted', () => {
+  const valid = {
+    personas: [],
+    skillCatalog: [],
+    skillUnits: [],
+    playbookCatalog: [{ id: 'playbook-test', name: 'Test playbook', status: 'Working model' }],
+    operatingPacks: [],
+    templates: []
+  };
+  assert.deepEqual([...buildValidationIndexes(valid).playbookIds], ['playbook-test']);
+  assert.throws(() => buildValidationIndexes({ ...valid, playbookCatalog: [{ id: 'playbook-test', name: 'First', status: 'Working model' }, { id: 'playbook-test', name: 'Second', status: 'Working model' }] }), /Invalid or duplicate Playbook catalog identity: playbook-test/);
+  assert.throws(() => buildValidationIndexes({ ...valid, playbookCatalog: [{ name: 'Missing id', status: 'Working model' }] }), /Invalid or duplicate Playbook catalog identity: \(missing\)/);
+  assert.throws(() => buildValidationIndexes({ ...valid, playbookCatalog: [{ id: 'playbook-test', status: 'Working model' }] }), /Invalid or duplicate Playbook catalog identity: playbook-test/);
+  assert.throws(() => buildValidationIndexes({ ...valid, playbookCatalog: [{ id: 'playbook-test', name: 'Missing status' }] }), /Invalid or duplicate Playbook catalog identity: playbook-test/);
 });
