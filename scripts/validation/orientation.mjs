@@ -2,7 +2,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 
 const UNIVERSAL_ORIENTATION_FIELDS = ['site', 'purpose', 'default_entry', 'bootstrap_rule', 'request_modes', 'creation_gate', 'skill_contract', 'default_process', 'mutation_policy', 'response_contract', 'activation'];
-const EXPECTED_ROUTE_IDS = ['system-orientation', 'persona-research', 'persona-capability-maintenance', 'persona-consultation', 'persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-catalog', 'operating-pack-research', 'operating-pack-composition', 'operating-pack-reconciliation', 'template-catalog', 'template-library-stewardship', 'template-research', 'template-composition', 'template-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'tool-resolution', 'tool-record-maintenance', 'docs-and-onboarding', 'decision-record', 'prototype-comparison', 'workflow-canvas-intent', 'work-order-start', 'cross-space-reconciliation', 'conformance-evaluation', 'isolated-persona-skill-testing', 'resume-application-work'];
+const EXPECTED_ROUTE_IDS = ['system-orientation', 'persona-research', 'persona-capability-maintenance', 'persona-consultation', 'persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-catalog', 'operating-pack-research', 'operating-pack-composition', 'operating-pack-reconciliation', 'template-catalog', 'template-library-stewardship', 'template-research', 'template-composition', 'template-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'bounded-parallel-implementation', 'tool-resolution', 'tool-record-maintenance', 'docs-and-onboarding', 'decision-record', 'prototype-comparison', 'workflow-canvas-intent', 'work-order-start', 'cross-space-reconciliation', 'conformance-evaluation', 'isolated-persona-skill-testing', 'resume-application-work'];
 
 export async function validateOrientation(context) {
   const { orientation, routeGroups, requiredSpaces, root } = context;
@@ -38,11 +38,18 @@ export async function validateOrientation(context) {
         throw new Error(`Repository Skill route package is missing: ${route.id}`);
       }
     }
+    if (route.package_path && route.package_path.endsWith('.md') && !route.package_path.includes(' ')) {
+      try {
+        await readFile(path.join(root, route.package_path), 'utf8');
+      } catch {
+        throw new Error(`Orientation route package file is missing: ${route.id}`);
+      }
+    }
   }
   if (routeIds.size !== EXPECTED_ROUTE_IDS.length || EXPECTED_ROUTE_IDS.some(routeId => !routeIds.has(routeId))) throw new Error('Orientation route migration lost or duplicated a route ID');
 
   const routeById = new Map(routes.map(route => [route.id, route]));
-  const operatingPackDependentRoutes = ['persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'tool-resolution', 'tool-record-maintenance', 'cross-space-reconciliation'];
+  const operatingPackDependentRoutes = ['persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'bounded-parallel-implementation', 'tool-resolution', 'tool-record-maintenance', 'cross-space-reconciliation'];
   for (const routeId of operatingPackDependentRoutes) if (!routeById.get(routeId)?.secondary_spaces.includes('operating-packs')) throw new Error(`Operating Pack dependency is missing from route: ${routeId}`);
   if (!routeById.get('cross-space-reconciliation')?.first_reads.some(read => /Operating Pack/i.test(read))) throw new Error('Universal reconciliation route does not declare Operating Pack inspection');
   const templateDependentRoutes = ['persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-reconciliation', 'playbook-composition', 'docs-and-onboarding', 'cross-space-reconciliation'];
