@@ -2,6 +2,13 @@
 
 Use with the evidence-led job-search playbook. These are portable instructions for the requester’s available runtime, not an execution service in the Site.
 
+## Ownership
+
+- The Evidence-led Job Search Playbook owns the full-outcome stages and handoffs.
+- Riley Morgan · AI orchestrator coordinates contributors when multiple specialists are needed; Riley is not the Job Search Persona or sole domain expert.
+- Route narrow strategy, hiring, writing, outreach, visual, or document questions to Elena, Marcus, Leah, Samira, Camille, or Sofia directly.
+- Opportunity discovery uses the [job ledger contract](job-ledger-contract.md) in private workspace state. Do not store private job-search history in Persona-Library.
+
 ## Load only the relevant context
 
 - Read the requester’s context brief, original career sources, target description, and the actual artifact being reviewed.
@@ -9,6 +16,7 @@ Use with the evidence-led job-search playbook. These are portable instructions f
 - Distinguish source-supported claims, editorial synthesis, hypotheses, and missing information. A generated draft cannot establish career facts.
 - Keep source URLs/headings and modification dates, target completeness, audience, deliverables, constraints, proposed positioning, and unresolved questions visible.
 - Check access to required tools and scoped workspaces before depending on them. Record an affected check as Blocked if its prerequisite is unavailable; continue unrelated useful work.
+- When opportunity search is in scope, check the durable job ledger before presenting roles as new.
 
 ## Preserve a claim ledger
 
