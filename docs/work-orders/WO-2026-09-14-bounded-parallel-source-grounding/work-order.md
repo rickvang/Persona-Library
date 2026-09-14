@@ -9,6 +9,7 @@
 - Current owner: Cursor cloud agent
 - Request mode: update
 - GitHub issue: [#86 — Make bounded parallel implementation target-repository-first and source-grounded](https://github.com/rickvang/Persona-Library/issues/86)
+- GitHub pull request: [#87 — Make bounded parallel implementation source-grounded](https://github.com/rickvang/Persona-Library/pull/87)
 - Predecessor: [`WO-2026-09-14-bounded-parallel-p2-corrections`](../WO-2026-09-14-bounded-parallel-p2-corrections/work-order.md) / merged [PR #85](https://github.com/rickvang/Persona-Library/pull/85)
 - Artifact home: `docs/work-orders/WO-2026-09-14-bounded-parallel-source-grounding/`
 - Concrete deliverable: amended [`docs/bounded-parallel-implementation-playbook.md`](../../bounded-parallel-implementation-playbook.md)
@@ -82,4 +83,4 @@ Stopping condition: reviewable PR for #86, or a bounded blocker. Do not merge.
 
 ## Next action
 
-Independent review of the pull request that implements #86. Merge only after separate authorization.
+Independent review of [#87](https://github.com/rickvang/Persona-Library/pull/87). Merge only after separate authorization.

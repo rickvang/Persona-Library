@@ -26,9 +26,9 @@ See [`proof.md`](proof.md). `template-library` #1 first PR as written is **contr
 ## Checks run
 
 - `node scripts/build-library.mjs` — copied catalog and orientation sources into `dist/data/`.
-- `node scripts/validate-content.mjs` — pass expected after build.
-- `node --test scripts/validation/validation.test.mjs` — pass expected; bounded-parallel card still scoped, now also asserts `7 stages` in the fixture.
-- `git diff --check` — pass expected for the staged change set.
+- `node scripts/validate-content.mjs` — pass: 20 Personas, 2 operators, 2 leaders, 16 specialists, and 20 workflow maps.
+- `node --test scripts/validation/validation.test.mjs` — pass: 5 tests; bounded-parallel card still scoped, fixture now also asserts `7 stages`.
+- `git diff --check` — pass for the committed change set.
 - Root `AGENTS.md` inspected: no bounded-parallel always-on rule.
 
 ## Coverage and limits

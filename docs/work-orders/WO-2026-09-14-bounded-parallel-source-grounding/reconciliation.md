@@ -50,4 +50,4 @@ Repository search cannot prove exhaustive external consumers of the prior dispat
 
 ## Next action
 
-Repository reviewer: inspect the pull request for #86 and merge only after separate authorization. Do not merge from this Work Order.
+Repository reviewer: inspect [#87](https://github.com/rickvang/Persona-Library/pull/87) and merge only after separate authorization. Do not merge from this Work Order.
