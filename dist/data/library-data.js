@@ -366,6 +366,7 @@ window.PersonaLibraryData = {
   playbookCatalog: [
     {id:'playbook-evidence-led-job-search',name:'Evidence-led job search',status:'Working model'},
     {id:'playbook-create-and-integrate-reusable-skill',name:'Create and integrate a reusable skill',status:'Working model'},
+    {id:'playbook-multi-persona-collaboration',name:'Multi-Persona Collaboration',status:'Working model'},
     {id:'playbook-bounded-parallel-implementation',name:'Bounded parallel implementation',status:'Working model'}
   ],
   operatingPacks: [
