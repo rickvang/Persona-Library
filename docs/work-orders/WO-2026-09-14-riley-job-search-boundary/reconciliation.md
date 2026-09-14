@@ -1,6 +1,6 @@
 # Reconciliation report
 
-- Status: complete
+- Status: ready for review
 - Change observed: Playbook-first Riley/job-search ownership correction, DEC-011, job ledger contract, Docs route handoff, Elena search ledger activity/skill wording, Riley revision note, Site wording, focused validators, and this Work Order
 - Initiating contract: authorized issue #90 update across Docs/Playbooks/Personas surfaces; `$change-impact-reconciliation` after durable record/docs/decision changes
 - Scope checked: Riley Persona, Elena search workflow/skill, Evidence-led Job Search Playbook Site surfaces, `JOB_SEARCH_IMPLEMENTATION.md`, Docs orientation `resume-application-work`, Decisions, job ledger contract, application Work Order template, focused generated validator, generated orientation/data copies
@@ -13,6 +13,7 @@
 | Evidence-led Job Search Playbook | Outcome owner | Qualifies | Front-door wording and three-layer ownership made explicit | Retain |
 | Elena Marin search workflow/skill | Domain search ownership | Extends | Ledger check activity + sequencing skill mentions durable deduplication | Retain |
 | `docs/job-search/job-ledger-contract.md` | Shared-state contract | Extends | New reusable private-state schema and ownership boundary | Retain |
+| Issue [#96](https://github.com/rickvang/Persona-Library/issues/96) | Runtime/persistence proof follow-up | Qualifies | Contract is present, but repeated-search runtime persistence remains unproved in Persona-Library | Keep #90 open until the private-workspace implementation and evidence land |
 | Docs route `resume-application-work` | Routing handoff | Qualifies | Playbook-first; specialist direct routes; no Riley-as-domain-owner | Retain |
 | `dist/job-search.html` / `dist/playbooks.html` | Current-facing Site | Qualifies | Removed Job-search orchestrator identity; added ledger shared-state card | Retain |
 | `dist/decisions.html` DEC-011 | Durable rationale | Extends | Records Playbook/Riley/specialist ownership choice | Retain |
@@ -30,10 +31,11 @@
 
 Apply the ownership wording, DEC-011, ledger contract, Docs route, Elena/Riley record notes, validators, and Work Order package in this change set. Do not invent a Job Search Persona. Do not store private job history in this repository.
 
-## Optional follow-ups
+## Tracked follow-up
 
-- Authorize a callable job-search Skill package only if runtime evidence needs more than the ledger contract.
-- Implement private-workspace ledger storage in the consuming job-search runtime (outside Persona-Library).
+- [#96 — Implement and prove durable private job-ledger persistence](https://github.com/rickvang/Persona-Library/issues/96) owns the private-workspace runtime implementation and proof. Persona-Library retains only the reusable contract and must not store private job history.
+
+Optional: authorize a callable job-search Skill package only if runtime evidence needs more than the ledger contract.
 
 ## Unchanged checked
 
@@ -41,8 +43,8 @@ Marcus, Leah, Samira, Camille, and Sofia Persona identities; bounded-parallel Pl
 
 ## Limitations and incomplete visibility
 
-Repository search cannot prove every external chat prompt still uses “ask Riley to do the job search.” Current-facing repository contracts and Site surfaces were the authorized correction scope.
+Repository search cannot prove every external chat prompt still uses “ask Riley to do the job search.” Current-facing repository contracts and Site surfaces were the authorized correction scope. The contract does not prove durable private runtime behavior; that evidence is explicitly deferred to [#96](https://github.com/rickvang/Persona-Library/issues/96).
 
 ## Next action
 
-Repository reviewer: inspect the PR for [#90](https://github.com/rickvang/Persona-Library/issues/90), confirm acceptance criteria, and merge only after separate authorization if required.
+Repository reviewer: inspect the PR for [#90](https://github.com/rickvang/Persona-Library/issues/90), verify the #96 follow-up is linked and remains open, confirm the contract-level acceptance criteria, and merge only after separate authorization if required. Keep #90 open pending #96 evidence.

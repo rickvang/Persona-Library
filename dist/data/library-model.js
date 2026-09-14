@@ -266,30 +266,18 @@
     elena.version = '1.1'; elena.updated = '2026-09-14';
 
     const searchSequencingSkillId = 'skill-search-sequencing-and-prioritization';
-    skillMaintenance[searchSequencingSkillId] = {
+    const searchSequencingRecord = skillMaintenance[searchSequencingSkillId];
+    searchSequencingRecord.version = '1.1';
+    searchSequencingRecord.updated = '2026-09-14';
+    searchSequencingRecord.revisions.push({
       version: '1.1',
-      updated: '2026-09-14',
-      revisions: [
-        {
-          version: '1.0',
-          date: '2026-09-04',
-          changeType: 'initial-profile',
-          summary: 'Initial capability profile added to the Skills Library.',
-          affectedFields: ['definition', 'triggers', 'workflows', 'actions', 'evidence'],
-          evidence: 'Synthesized from career-development practice · Validate through follow-up outcomes',
-          confidenceChange: 'Synthesized unless otherwise noted'
-        },
-        {
-          version: '1.1',
-          date: '2026-09-14',
-          changeType: 'source-update',
-          summary: 'Extended search sequencing to check and update the durable private job ledger before treating a posting as new.',
-          affectedFields: ['definition', 'triggers', 'workflows', 'actions', 'evidence'],
-          evidence: 'Issue #90 job ledger contract and Evidence-led Job Search shared-state boundary',
-          confidenceChange: 'Contract-level ledger behavior added; repeated-search runtime proof deferred'
-        }
-      ]
-    };
+      date: '2026-09-14',
+      changeType: 'source-update',
+      summary: 'Extended search sequencing to check and update the durable private job ledger before treating a posting as new.',
+      affectedFields: ['definition', 'triggers', 'workflows', 'actions', 'evidence'],
+      evidence: 'Issue #90 job ledger contract and Evidence-led Job Search shared-state boundary',
+      confidenceChange: 'Contract-level ledger behavior added; repeated-search runtime proof deferred'
+    });
 
     const conformanceObserver = personaMaintenance['conformance-observer'];
     conformanceObserver.version = '1.1'; conformanceObserver.updated = '2026-09-08';

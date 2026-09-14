@@ -79,10 +79,10 @@ Stopping condition: reviewable PR pushed for #90, or a bounded blocker.
 
 ## Scope decision on the job ledger
 
-In scope for #90 / this PR: the reusable private ledger **contract**, ownership boundary (search specialist / Playbook shared state; not Riley; not Persona-Library storage), and Site/docs alignment.
+In scope for #90 / this PR: the reusable private ledger **contract**, ownership boundary (search specialist / Playbook shared state; not Riley; not Persona-Library storage), Site/docs alignment, and explicit tracking of the runtime proof dependency.
 
-Out of scope / follow-up: implement and prove durable private-workspace ledger persistence across repeated searches. Keep that as a focused follow-up rather than implying runtime proof from this PR.
+Out of scope / follow-up: implement and prove durable private-workspace ledger persistence across repeated searches. This is now tracked in [#96 — Implement and prove durable private job-ledger persistence](https://github.com/rickvang/Persona-Library/issues/96). Keep #90 open until #96 supplies the runtime evidence; do not implement private runtime storage in Persona-Library.
 
 ## Next action
 
-Independent review of the PR for #90. Merge only after separate authorization if required by repository practice.
+Independent review of the PR for #90, with [#96](https://github.com/rickvang/Persona-Library/issues/96) as the explicit runtime/persistence follow-up. Do not treat #90 as complete or close it until #96 provides acceptance evidence. Merge only after separate authorization if required by repository practice.
