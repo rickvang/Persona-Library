@@ -47,7 +47,7 @@
       "label": "Playbooks",
       "answers": "How do multiple personas, skills, tools, workflows, artifacts, and quality gates coordinate toward an outcome?",
       "route_file": "orientation/playbooks.json",
-      "route_count": 3
+      "route_count": 4
     },
     "docs": {
       "label": "Docs",
@@ -197,6 +197,6 @@
   "activation": {
     "explicit_prompt": "Use $persona-library-orientation before working with the Personas system.",
     "repository_instruction": "Before modifying this project, read content/site-orientation.json and follow its routing and mutation rules.",
-    "site_instruction": "Open Docs → Agent orientation before working with the Site; use the manifest as the system map."
+    "site_instruction": "Open Docs \u2192 Agent orientation before working with the Site; use the manifest as the system map."
   }
 }

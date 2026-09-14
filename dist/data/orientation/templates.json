@@ -93,7 +93,7 @@
         "Executing, installing, fetching, rendering, or syncing an external Template",
         "Changing Persona-Library architecture without Mara placement review"
       ],
-      "next_handoff": "Use $template-research for discovery and evaluation, route discipline-specific research or composition to the relevant specialist, use $template-reconciliation after a lifecycle change, and escalate architecture questions to Mara."
+      "next_handoff": "For a bounded stewardship action, use $template-research for discovery and evaluation, route discipline-specific research or composition to the relevant specialist, use $template-reconciliation after a lifecycle change, and escalate architecture questions to Mara. When the outcome needs repeated cross-owner stages from need through promotion and reconciliation, use the Research, promote, and maintain a reusable Template Playbook (`playbook-template-lifecycle`)."
     },
     {
       "id": "template-research",
