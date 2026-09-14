@@ -9,8 +9,9 @@ Behavior-focused checks for issue #71.
 | `playbookCatalog` contains one canonical Multi-Persona Collaboration identity | `content/library-data.js` `playbookCatalog` | Present |
 | Identity resolves cleanly to the existing route without copying its full definition | `content/orientation/playbooks.json` route `multi-persona-collaboration` unchanged; catalog id links by the `playbook-` prefix convention | Present |
 | Existing `multi-persona-collaboration` routing remains intact | `git diff content/orientation/playbooks.json` is empty | Present |
-| Playbook Site/catalog and generated data show the identity | `dist/playbooks.html` catalog card + `#collaboration` section, `dist/guide.html` example callout, `dist/data/library-data.js` refreshed | Present |
+| Playbook Site/catalog and generated data show the identity | `dist/playbooks.html` catalog card + compact `#collaboration` section with a direct canonical-contract link, `dist/guide.html` example callout, `dist/data/library-data.js` refreshed | Present |
 | Validation catches a missing/duplicate identity | `scripts/validation/context.mjs` duplicate/missing id-name-status check (unchanged, exercised by existing test) | Present |
+| No collaboration contract is duplicated in the Site overview | `dist/playbooks.html#collaboration` is a compact summary with a direct link to `docs/collaboration/multi-persona-collaboration-playbook.md`; the canonical contract is unchanged | Present |
 | No Persona, Skill, Tool, Template, Operating Pack, or `problem-context` semantics changed | `git diff --stat` shows no changes to those files | Present |
 | Reconciliation records dependent Docs/routes/Skills/relationships | See [`reconciliation.md`](reconciliation.md) | Present |
 

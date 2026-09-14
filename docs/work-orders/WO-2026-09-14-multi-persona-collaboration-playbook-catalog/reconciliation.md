@@ -11,10 +11,10 @@
 | --- | --- | --- | --- | --- |
 | `content/library-data.js` `playbookCatalog` | Canonical Playbook identity | Extends | Third identity `playbook-multi-persona-collaboration` added | Retain |
 | `content/orientation/playbooks.json` route `multi-persona-collaboration` | Playbooks route group | Confirms | Unchanged; catalog id resolves to it by naming convention | None |
-| `docs/collaboration/multi-persona-collaboration-playbook.md` | Existing reusable Playbook contract | Confirms | Referenced, not rewritten; stages and gate text not duplicated | None |
+| `docs/collaboration/multi-persona-collaboration-playbook.md` | Existing reusable Playbook contract | Confirms | Referenced by a direct canonical-source link; stages, roles, shared state, handoffs, and gate text are not duplicated | None |
 | `docs/collaboration/problem-context.md` and schema | Run-level shared state | Confirms | Unchanged; remains run-level, not part of the catalog identity | None |
 | Issue #22 | Historical implementation evidence | Confirms | Preserved as-is; original scope not reopened | None |
-| `dist/playbooks.html` | Authored Site presentation | Extends | New catalog card, sidebar link, and `#collaboration` overview section | Retain |
+| `dist/playbooks.html` | Authored Site presentation | Qualifies | New catalog card, sidebar link, and compact `#collaboration` overview with a direct canonical-source link; duplicate contract summary removed after review | Retain |
 | `dist/guide.html` | Authored Docs presentation | Extends | One example callout added, matching the existing per-Playbook pattern | Retain |
 | `dist/decisions.html` DEC-010 | Durable rationale | Extends (append-only) | Correction line records that #71 now catalogs the identity; original decision and prior corrections unchanged | Retain |
 | Design System Operating Pack `playbooks` field | Existing Playbook identity reference | Unrelated | Still lists only `playbook-create-and-integrate-reusable-skill` | None |
@@ -30,7 +30,7 @@
 
 ## Required updates
 
-Apply the catalog identity, Site presentation, and Decision correction in this change set. Rebuild generated library data. Do not rewrite the collaboration Playbook, its `problem-context` contract, or the orientation route.
+Apply the catalog identity, compact Site presentation, and Decision correction in this change set. Keep the Site overview linked to the canonical collaboration contract rather than copying its stages or gate. Rebuild generated library data. Do not rewrite the collaboration Playbook, its `problem-context` contract, or the orientation route.
 
 ## Optional follow-ups
 
@@ -47,4 +47,4 @@ Repository search cannot prove exhaustive external consumers of the Playbook cat
 
 ## Next action
 
-Repository reviewer: inspect the pull request, confirm the identity resolves cleanly to the existing route/doc without duplication, and merge only after independent review and separate authorization. Do not merge from this Work Order.
+Repository reviewer: inspect the pull request, confirm the identity resolves cleanly to the existing route and the Site overview links to the canonical contract without duplication, and merge only after independent review and separate authorization. Do not merge from this Work Order.

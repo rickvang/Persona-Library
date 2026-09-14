@@ -21,7 +21,7 @@ Give the already-implemented Multi-Persona Collaboration Playbook the same first
 ## Scope
 
 - Add `{id:'playbook-multi-persona-collaboration', name:'Multi-Persona Collaboration', status:'Working model'}` to `content/library-data.js` `playbookCatalog`.
-- Add a catalog card and a condensed detail overview for the identity on the Site Playbooks page, referencing (not copying) `docs/collaboration/multi-persona-collaboration-playbook.md`.
+- Add a catalog card and a compact detail overview for the identity on the Site Playbooks page, with a direct link to `docs/collaboration/multi-persona-collaboration-playbook.md` rather than a copied contract.
 - Add one Docs (`guide.html`) example callout, matching the existing per-Playbook pattern.
 - Append a Correction to Decision DEC-010, which explicitly named "#71 catalogs collaboration identity" as a revisit condition.
 - Rebuild generated `dist/data/**` and run repository validation.
@@ -43,7 +43,7 @@ The requester authorized implementation of issue #71 as a new PR against current
 
 - Canonical identity: `content/library-data.js` `playbookCatalog` — the same array that already holds the other two Playbook identities; no new array or schema field needed.
 - Route linkage: existing `content/orientation/playbooks.json` route `multi-persona-collaboration` — unchanged; the `playbook-` prefix convention already links catalog id to route id for `playbook-bounded-parallel-implementation`.
-- Site presentation: authored `dist/playbooks.html` (new catalog card + `#collaboration` detail section) and `dist/guide.html` (one example callout), following the exact structure used for the other three Playbooks.
+- Site presentation: authored `dist/playbooks.html` (new catalog card + compact `#collaboration` detail section with a direct canonical-source link) and `dist/guide.html` (one example callout). The collaboration stages, roles, shared state, handoffs, and gate remain owned by the canonical contract.
 - Durable rationale: append-only Correction on existing `dist/decisions.html` DEC-010, which already names this as a revisit condition; no new Decision record required.
 - Run evidence: this Work Order.
 
@@ -62,6 +62,6 @@ Phase: reviewable PR [#91](https://github.com/rickvang/Persona-Library/pull/91) 
 - `playbookCatalog` contains one canonical `playbook-multi-persona-collaboration` identity with no duplicate or missing fields.
 - `node scripts/validate-content.mjs` and `node --test scripts/validation/validation.test.mjs` pass.
 - Existing `multi-persona-collaboration` orientation route, `problem-context` contract, and collaboration Playbook markdown are unchanged.
-- Site Playbooks/Docs surfaces show the identity; Decisions records the reconciliation note.
+- Site Playbooks/Docs surfaces show the identity, and the Site overview links directly to the canonical collaboration contract without duplicating it; Decisions records the reconciliation note.
 
-Stopping condition: draft PR [#91](https://github.com/rickvang/Persona-Library/pull/91) opened against `origin/main` for issue #71; explicitly not merged from this run.
+Stopping condition: open PR [#91](https://github.com/rickvang/Persona-Library/pull/91) against `origin/main` for issue #71; explicitly not merged from this run.
