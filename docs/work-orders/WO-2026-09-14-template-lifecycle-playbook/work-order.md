@@ -2,7 +2,7 @@
 
 - Work Order ID: WO-2026-09-14-template-lifecycle-playbook
 - Title: Compose a reusable Template lifecycle Playbook
-- Status: ready for review
+- Status: blocked
 - Created: 2026-09-14
 - Last updated: 2026-09-14
 - Requester: Rick Vang
@@ -52,17 +52,21 @@ Performed from Mara’s knowledge-systems placement gate, Templates architecture
 
 ## Existing Playbook check
 
-Checked current `playbookCatalog`:
+Checked the current PR branch `playbookCatalog`:
 
 - Evidence-led job search — outcome Playbook for candidate search
 - Create and integrate a reusable skill — skill formation
+- Multi-Persona Collaboration — shared problem synthesis through named Persona perspectives
 - Bounded parallel implementation — repository implementation dispatch
+- Research, promote, and maintain a reusable Template — this Work Order’s outcome
 
 None owns Template catalog stewardship, external starter provenance, promotion evidence, or Template reconciliation. Distinct Playbook is justified.
 
+The branch includes the catalog change from [#91](https://github.com/rickvang/Persona-Library/issues/71), but #91 is still open and `main` remains at `4be9eae`. The final dependency state also requires [#92](https://github.com/rickvang/Persona-Library/pull/92) to land before this PR can be rebased and finalized.
+
 ## Current phase and gate
 
-Phase: reviewable implementation. Gate: independent review, then separately authorized merge.
+Phase: correction commit ready on the existing draft branch; dependency-blocked. Gate: after #91 and #92 land, rebase onto current `main`, regenerate the affected outputs, rerun validation, and obtain independent review before any separately authorized merge.
 
 ## Success criteria and stopping condition
 
@@ -72,8 +76,8 @@ Phase: reviewable implementation. Gate: independent review, then separately auth
 - Content validation passes.
 - No new Persona/Skill/runtime introduced.
 
-Stopping condition: reviewable PR for #72, or a bounded blocker.
+Stopping condition: bounded blocker until #91 and #92 are actually landed; keep PR #93 draft and do not fabricate the final rebase or decision count.
 
 ## Next action
 
-Independent review of the PR for #72. Merge only after separate authorization if required.
+Wait for [#91](https://github.com/rickvang/Persona-Library/pull/91) and [#92](https://github.com/rickvang/Persona-Library/pull/92) to land. Then rebase this existing branch onto current `main`, regenerate Site/data outputs, reconcile the final decision summary to 8 applied decisions, rerun validation, and request independent review. Keep the PR draft and do not merge while the dependencies remain open.

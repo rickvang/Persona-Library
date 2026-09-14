@@ -30,11 +30,13 @@
 | Criterion | Result | Evidence |
 | --- | --- | --- |
 | Distinct Playbook justified | pass | Existing catalog lacks Template lifecycle outcome; DEC-012 records alternatives |
+| Existing Playbook check includes Multi-Persona Collaboration | pass on current branch | Current branch catalog contains `playbook-multi-persona-collaboration` from #91; #91 remains unmerged |
 | References existing owners/Skills | pass | Contract names Elena, Template Skills, specialists, Mara |
 | No new Persona/Skill/runtime | pass | No new packages beyond Playbook/docs/route/Site/DEC |
 | External ownership unchanged | pass | Canonical starters remain in template-library |
 | Bounded Skill actions remain non-triggers | pass | Playbooks route + Templates stewardship handoff |
-| Repository validation | pass | `node scripts/build-library.mjs` and `node scripts/validate-content.mjs` |
+| Current-branch repository validation | pass | `node scripts/build-library.mjs` and `node scripts/validate-content.mjs` |
+| Final dependency rebase and DEC-011 + DEC-012 reconciliation | blocked | #91 and #92 are open; after both land, rebase and reconcile the applied-decision summary from 7 to 8 |
 
 ## Commands
 
@@ -47,3 +49,4 @@ node scripts/validate-content.mjs
 
 - Cases are reasoned against the contract; no live promotion into template-library was performed.
 - Specialist quality remains dependent on naming the correct domain Persona for each artifact type.
+- Current-branch checks do not establish the final post-#91/post-#92 base; the draft remains blocked until that rebase is real.
