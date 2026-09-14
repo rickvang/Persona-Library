@@ -41,6 +41,16 @@ export async function validateGeneratedOutputs(context) {
   const jobSearchImpl = await context.readFile('JOB_SEARCH_IMPLEMENTATION.md');
   if (jobSearchImpl.includes('Riley is the job-search orchestrator') || jobSearchImpl.includes('**Job-search orchestrator**')) throw new Error('JOB_SEARCH_IMPLEMENTATION.md must not frame Riley as the Job-search orchestrator identity');
   if (!jobSearchImpl.includes('Evidence-led Job Search Playbook') || !jobSearchImpl.includes('AI orchestrator (Riley Morgan)') || !jobSearchImpl.includes('job ledger contract')) throw new Error('JOB_SEARCH_IMPLEMENTATION.md must be Playbook-first with Riley as AI orchestrator and a job ledger contract');
+  const templateLifecycleCard = playbookCatalogCard(playbooksPage, 'playbook-template-lifecycle');
+  if (!templateLifecycleCard || !templateLifecycleCard.includes('<span>7 stages</span>') || !templateLifecycleCard.includes('Elena Park · Template Librarian')) throw new Error('Template lifecycle catalog card must show 7 stages and Elena Park as coordinator');
+  if (!playbooksPage.includes('id="template-lifecycle"') || !playbooksPage.includes('Research, promote, and maintain a reusable Template') || !playbooksPage.includes('Promote only with reuse evidence')) throw new Error('Playbooks page must present the Template lifecycle overview');
+  if (!guidePage.includes('Template lifecycle example') || !guidePage.includes('playbooks.html#template-lifecycle')) throw new Error('Docs page must link the Template lifecycle Playbook example');
+  if (!decisionsPage.includes('DEC-012') || !decisionsPage.includes('Template lifecycle is a distinct Playbook') || !decisionsPage.includes('playbook-template-lifecycle')) throw new Error('Decisions page must record DEC-012 Template lifecycle Playbook boundary');
+  const templateLifecyclePlaybook = await context.readFile('docs/template-lifecycle-playbook.md');
+  if (!templateLifecyclePlaybook.includes('playbook-template-lifecycle') || !templateLifecyclePlaybook.includes('$template-research') || !templateLifecyclePlaybook.includes('Promotion requires reuse evidence') || !templateLifecyclePlaybook.includes('Do not use this Playbook when')) throw new Error('Template lifecycle Playbook contract is missing required ownership or non-trigger boundaries');
+  if (context.orientation.spaces.playbooks.route_count !== 4) throw new Error('Playbooks bootstrap route_count must include template-lifecycle');
+  if (!context.routeGroups.get('playbooks').routes.some((route) => route.id === 'template-lifecycle')) throw new Error('Playbooks route group must include template-lifecycle');
+  if (!context.routeGroups.get('templates').routes.find((route) => route.id === 'template-library-stewardship')?.next_handoff.includes('playbook-template-lifecycle')) throw new Error('Templates stewardship handoff must point full lifecycle runs to the Playbook');
   const boundedParallelCard = playbookCatalogCard(playbooksPage, 'playbook-bounded-parallel-implementation');
   if (!boundedParallelCard || !boundedParallelCard.includes('<span>4 roles</span>')) throw new Error('Bounded parallel catalog card must show 4 roles');
   if (!boundedParallelCard.includes('<span>7 stages</span>')) throw new Error('Bounded parallel catalog card must show 7 stages');

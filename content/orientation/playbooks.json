@@ -117,6 +117,43 @@
         "Runtime execution, merge, or nested agent spawning as if this Playbook were an executor"
       ],
       "next_handoff": "After Playbook selection, continue from the target repository's current instructions and source. Ground each candidate workstream there and classify it confirmed, qualified, or contradicted before dispatch. Dispatch only confirmed or qualified workstreams. Keep the coordinator thin. Give each implementer one workstream, one branch, and one PR, then STOP. Pass compact GitHub-reference handoffs. Review from current GitHub state, including problem correctness against current owner/source. Apply scoped corrections and re-review; recording corrections is not terminal. Treat merge as a separately authorized mutation. Do not nest implementer agents or copy child transcripts into the coordinator. After Playbook selection, execution is grounded in the target repository. For external target repositories, Persona-Library is not an additional execution dependency. If Persona-Library itself is the target repository, or target-repository local instructions require Persona-Library records, follow those local routing requirements."
+    },
+    {
+      "id": "template-lifecycle",
+      "request": "Research, promote, maintain, or reconcile a reusable Template across stewardship and domain owners",
+      "modes": [
+        "plan",
+        "update"
+      ],
+      "primary_space": "playbooks",
+      "secondary_spaces": [
+        "templates",
+        "personas",
+        "skills",
+        "docs",
+        "decisions",
+        "operating-packs",
+        "tools"
+      ],
+      "target": "template-lifecycle-playbook",
+      "artifact_kind": "playbook",
+      "package_path": "docs/template-lifecycle-playbook.md",
+      "availability_source": "documentation_only",
+      "first_reads": [
+        "docs/template-lifecycle-playbook.md",
+        "Template Librarian Persona",
+        "Template catalog and source evidence",
+        "$template-research / $template-composer / $template-reconciliation",
+        "active Work Order or GitHub issue"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A bounded catalog lookup, research brief, local compose, or read-only reconciliation that does not need cross-owner stages",
+        "Copying Template Skills, domain methods, or external starter trees into the Playbook",
+        "Treating catalog presence as proof of runtime access, fetch, install, or automatic promotion"
+      ],
+      "next_handoff": "Use Elena Park for stewardship coordination. Search the Template catalog before creating. Route substantive quality to the relevant domain specialist. Keep canonical starters in the verified external source such as rickvang/template-library. Promote only with reuse evidence and authorization. After a material lifecycle change, run $template-reconciliation, then one universal $change-impact-reconciliation pass. Escalate architecture or placement questions to Mara Okoye. Do not run this Playbook when a single Template Skill route is sufficient."
     }
   ]
 }
