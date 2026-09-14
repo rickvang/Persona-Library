@@ -27,7 +27,7 @@ Do not use it for a general multi-Persona consultation, a live Persona update, p
 
 ## Required preflight
 
-1. Read `content/site-orientation.json`, `AGENTS.md`, `ARCHITECTURE.md`, `eval/skill-cases.json`, and `eval/isolated-persona-skill.mjs`.
+1. Read `content/site-orientation.json`, `AGENTS.md`, the relevant `skills` and `docs` route groups, `ARCHITECTURE.md`, `eval/skill-cases.json`, and `eval/isolated-persona-skill.mjs`.
 2. Resolve the scope explicitly. The default is all live Personas and all Skills in their canonical `skillLibrary`; prototype records are excluded.
 3. Confirm the requested model and reasoning level. The default reasoning level is `low`; keep the model at the requester’s configured default unless the user specifies one.
 4. Prepare the matrix with:

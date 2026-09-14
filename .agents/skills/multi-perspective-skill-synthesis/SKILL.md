@@ -30,7 +30,7 @@ Do not activate for:
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the relevant `skills`, `personas`, or `playbooks` route group.
 2. State the proposed capability, the decision it should support, desired destination, authorization, constraints, and success measure.
 3. Select only Personas whose records contribute distinct evidence. Record which records and linked workflows, Skills, Tools, applications, priorities, and sources were actually loaded; report unavailable items.
 4. Read the canonical Skill catalog, aliases, primitive units, composed Skills, relationships, and relevant Tool-use recipes before proposing a new identity. Use [the formation decision rules](references/formation-decision-rules.md).

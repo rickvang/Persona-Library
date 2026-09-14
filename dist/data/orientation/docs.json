@@ -1,0 +1,227 @@
+{
+  "schema_version": "2.0",
+  "primary_space": "docs",
+  "space": {
+    "label": "Docs",
+    "answers": "What is currently true, how should the system be used, and what are the boundaries?",
+    "read": [
+      "agent orientation",
+      "mental model",
+      "current instructions",
+      "prompts",
+      "space boundaries"
+    ],
+    "write": "Update Docs when a current definition or instruction changes; keep durable rationale in Decisions.",
+    "do_not": [
+      "Do not use Docs to hide unresolved alternatives or decision history."
+    ]
+  },
+  "routes": [
+    {
+      "id": "system-orientation",
+      "request": "Question or task about the Persona Library system",
+      "modes": [
+        "answer",
+        "research",
+        "plan",
+        "prototype",
+        "consult",
+        "update"
+      ],
+      "primary_space": "docs",
+      "secondary_spaces": [
+        "personas",
+        "skills",
+        "operating-packs",
+        "templates",
+        "tools",
+        "playbooks",
+        "decisions",
+        "prototyping"
+      ],
+      "target": "persona-library-orientation",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/persona-library-orientation",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "AGENTS.md",
+        "content/site-orientation.json"
+      ],
+      "mutation_boundary": "read_only",
+      "reconciliation": "skip",
+      "non_triggers": [
+        "Unrelated coding, writing, research, or general questions"
+      ],
+      "next_handoff": "Select the smallest space and downstream capability after orientation."
+    },
+    {
+      "id": "docs-and-onboarding",
+      "request": "Explain current system rules, onboarding, templates, or boundaries",
+      "modes": [
+        "answer",
+        "research",
+        "plan"
+      ],
+      "primary_space": "docs",
+      "secondary_spaces": [
+        "templates",
+        "decisions"
+      ],
+      "target": "current documentation",
+      "artifact_kind": "reference",
+      "package_path": "AGENTS.md and content/site-orientation.json",
+      "availability_source": "documentation_only",
+      "first_reads": [
+        "AGENTS.md",
+        "content/site-orientation.json",
+        "ARCHITECTURE.md",
+        "relevant current guide"
+      ],
+      "mutation_boundary": "read_only",
+      "reconciliation": "skip",
+      "non_triggers": [
+        "Changing a durable definition or instruction without an authorized update"
+      ],
+      "next_handoff": "Use the relevant domain route if the request becomes an implementation or record change."
+    },
+    {
+      "id": "work-order-start",
+      "request": "Start or continue substantial in-progress work",
+      "modes": [
+        "plan",
+        "update"
+      ],
+      "primary_space": "docs",
+      "secondary_spaces": [
+        "personas",
+        "skills",
+        "tools",
+        "playbooks",
+        "prototyping"
+      ],
+      "target": "active Work Order",
+      "artifact_kind": "work_order",
+      "package_path": "docs/work-orders/<work-order-id>/",
+      "availability_source": "documentation_only",
+      "first_reads": [
+        "docs/work-orders.md",
+        "docs/work-orders/README.md",
+        "active Work Order",
+        "project-specific template"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A trivial change that does not need a persistent packet",
+        "Using a Work Order as permission to mutate a target"
+      ],
+      "next_handoff": "Link specialized artifacts and record progress, decisions, findings, and next action."
+    },
+    {
+      "id": "cross-space-reconciliation",
+      "request": "Check downstream effects of a durable source, record, decision, prototype promotion, or artifact change",
+      "modes": [
+        "research",
+        "update"
+      ],
+      "primary_space": "docs",
+      "secondary_spaces": [
+        "personas",
+        "skills",
+        "tools",
+        "playbooks",
+        "operating-packs",
+        "templates",
+        "decisions",
+        "prototyping"
+      ],
+      "target": "change-impact-reconciliation",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/change-impact-reconciliation",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "content/site-orientation.json",
+        "content/library-model.js",
+        "content/library-data.js",
+        "ARCHITECTURE.md",
+        "scripts/validate-content.mjs",
+        "Operating Pack and Template catalogs with scoped applications"
+      ],
+      "mutation_boundary": "read_only",
+      "reconciliation": "skip",
+      "non_triggers": [
+        "An ordinary read-only question with no impact review",
+        "Recursive invocation of this protocol"
+      ],
+      "next_handoff": "Return required, optional, unchanged, and unknown impacts to the initiating workflow owner."
+    },
+    {
+      "id": "conformance-evaluation",
+      "request": "Evaluate how Personas, Skills, Tools, or workflows behave across model or assistant surfaces",
+      "modes": [
+        "research",
+        "plan",
+        "update"
+      ],
+      "primary_space": "docs",
+      "secondary_spaces": [
+        "personas",
+        "skills",
+        "tools",
+        "playbooks",
+        "decisions"
+      ],
+      "target": "eval/ file-based conformance suite and conformance-observer Persona",
+      "artifact_kind": "workflow",
+      "package_path": "eval/",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "content/site-orientation.json",
+        "eval/cases.json",
+        "active Work Order",
+        "relevant Persona, Skill, and Tool records"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A general model comparison without a defined fixture or expected contract",
+        "Claiming provider behavior from one unrecorded run",
+        "Adding production telemetry or credentials without a separate authorization"
+      ],
+      "next_handoff": "Use the conformance contract, record conditions and evidence, then route findings to the smallest responsible record or issue."
+    },
+    {
+      "id": "resume-application-work",
+      "request": "Create or review a resume or application packet",
+      "modes": [
+        "research",
+        "plan",
+        "update"
+      ],
+      "primary_space": "docs",
+      "secondary_spaces": [
+        "personas",
+        "skills",
+        "tools",
+        "playbooks"
+      ],
+      "target": "job-search documentation and active Work Order",
+      "artifact_kind": "workflow",
+      "package_path": "JOB_SEARCH_IMPLEMENTATION.md",
+      "availability_source": "documentation_only",
+      "first_reads": [
+        "JOB_SEARCH_IMPLEMENTATION.md",
+        "active application Work Order",
+        "candidate standing decisions",
+        "evidence ledger"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "Uploading, submitting, contacting an employer, or externally sharing without a separate explicit request",
+        "Claiming provider-specific rules without current evidence"
+      ],
+      "next_handoff": "Use provider recommendation status and candidate review requirements before selecting an export."
+    }
+  ]
+}

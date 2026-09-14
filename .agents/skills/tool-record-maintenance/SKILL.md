@@ -22,7 +22,7 @@ Do not activate for connector execution, credential configuration, access grants
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `tools` route group.
 2. Identify the Tool or MCP identity, requested operation, target record, evidence, authorization, output destination, and success criteria.
 3. Load the current Tool catalog, related Tool-use recipes, Persona requirements, Skill relationships, Playbooks, resources, and revision history that are in scope. Read [the current data](../../../content/library-data.js) and [normalizer](../../../content/library-model.js) when relationship resolution is involved.
 4. Establish whether the request is a proposal/audit or an explicitly authorized live record update. Missing target, authorization, or metadata means read-only reporting, not a guessed write.

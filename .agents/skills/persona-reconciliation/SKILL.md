@@ -22,7 +22,7 @@ Do not activate for a general repository-wide impact review, a pure research bri
 
 ## Adapter preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `personas` route group and any additional affected group.
 2. Read the initiating contract and record its `change_mode`, `change_domain`, and `reconciliation`. Missing metadata means safest read-only behavior and an explicit contract gap; it is never permission.
 3. Identify the actual changed input, source authority, revision, changed fields, named Persona or Personas, requested scope, authorization, and destination. Do not infer a change from a URL, a mention, or a historical claim.
 4. Load only the affected Persona records and their workflows, activities, Skills, Tool requirements, resources, priorities, needs, implications, confidence, open questions, and revision history. Read [the current data](../../../content/library-data.js) and [normalizer](../../../content/library-model.js) when relationships or normalized reach are involved.

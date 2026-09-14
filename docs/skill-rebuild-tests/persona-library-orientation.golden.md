@@ -158,6 +158,42 @@ Forbidden behavior:
 
 Checkpoint verdict: UNKNOWN — reconstructed; failure handling is an explicit reconstruction requirement, not recoverable historical package behavior.
 
+## Selective-loading regression cases
+
+These cases supplement the historical scenarios with the current repository contract introduced by issue #69. They test the source layout and generated-output boundary; they do not claim that the reconstructed Skill has historical runtime parity.
+
+### S-01 — Bootstrap and route-group handoff
+
+Expected observable behavior:
+
+- Read `content/site-orientation.json` first.
+- Use its request modes and primary-space declarations to select exactly one relevant `route_file` before reading route-specific contracts.
+- Load only the selected group under `content/orientation/`, then follow the selected route's `first_reads` and linked records.
+- Preserve universal mutation, availability, response, and reconciliation policy in the bootstrap.
+
+Forbidden behavior:
+
+- Treat the bootstrap as the full route catalog.
+- Load unrelated route groups as part of orientation.
+- Duplicate universal policy in individual route groups or infer a route from deterministic keyword matching.
+
+Checkpoint verdict: PASS for repository structure when `node scripts/validate-content.mjs` passes; runtime Skill activation remains UNKNOWN under the reconstructed-package limitation.
+
+### S-02 — Route-set and generated-copy integrity
+
+Expected observable behavior:
+
+- Every pre-split route ID occurs exactly once across the nine route groups.
+- Each group declares its primary space, preserves its space-level read/write/do-not contract, and has a fresh generated copy under `dist/data/orientation/`.
+- Missing, duplicate, malformed, stale, or silently dropped routes fail validation.
+
+Forbidden behavior:
+
+- Restore a second monolithic route list as an authored compatibility source.
+- Accept a generated Site copy that differs from its source group.
+
+Checkpoint verdict: PASS for repository structure when the validator's route parity and generated-copy checks pass.
+
 ### O-09 — Compact bootstrap for a lower-reasoning agent
 
 Historical prompt pattern: “What’s the best way to orient a lower reasoning LLM?”

@@ -46,4 +46,4 @@ Return the mode, target, authorization, pack identity, file manifest with a reas
 - A repeated contextual rule may be handed to `persona-skills` for possible generalization, but this Skill never mutates a Skill automatically.
 - After a durable pack change, hand off to `operating-pack-reconciliation`, then run `$change-impact-reconciliation` once.
 
-See `docs/work-orders/` for the active packet and the orientation manifest for placement and mutation boundaries.
+See `docs/work-orders/` for the active packet and the orientation bootstrap plus the selected `operating-packs` route group for placement and mutation boundaries.

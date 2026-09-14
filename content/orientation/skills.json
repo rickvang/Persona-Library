@@ -1,0 +1,150 @@
+{
+  "schema_version": "2.0",
+  "primary_space": "skills",
+  "space": {
+    "label": "Skills",
+    "answers": "What reusable capability is needed, how does it operate, and how can quality be recognized?",
+    "read": [
+      "skill definition",
+      "operating model",
+      "quality signals",
+      "workflow reach",
+      "persona applications"
+    ],
+    "write": "Check for an existing skill first; create or change one only when the capability is reusable and the request authorizes it.",
+    "do_not": [
+      "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+    ]
+  },
+  "routes": [
+    {
+      "id": "persona-capability-maintenance",
+      "request": "Identify, define, deduplicate, or maintain capabilities behind a Persona",
+      "modes": [
+        "research",
+        "plan",
+        "update"
+      ],
+      "primary_space": "skills",
+      "secondary_spaces": [
+        "personas",
+        "operating-packs"
+      ],
+      "target": "persona-skills",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/persona-skills",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "Persona skillLibrary relationship",
+        "canonical Skill profile",
+        "activities and workflows",
+        "skill relationships"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "persona-reconciliation",
+      "non_triggers": [
+        "Applying an existing capability to a one-off project without changing the library"
+      ],
+      "next_handoff": "Use the Persona-specific adapter, then the universal impact pass when required."
+    },
+    {
+      "id": "skill-formation",
+      "request": "Form a reusable capability from distinct Persona perspectives",
+      "modes": [
+        "consult",
+        "plan",
+        "update"
+      ],
+      "primary_space": "skills",
+      "secondary_spaces": [
+        "personas",
+        "playbooks",
+        "operating-packs",
+        "templates"
+      ],
+      "target": "multi-perspective-skill-synthesis",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/multi-perspective-skill-synthesis",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "named Persona records",
+        "existing Skill catalog",
+        "skill relationships",
+        "quality signals",
+        "related Templates when the capability supplies a starting artifact"
+      ],
+      "mutation_boundary": "artifact_generation",
+      "reconciliation": "persona-reconciliation",
+      "non_triggers": [
+        "A one-Persona capability profile",
+        "A request to merely use an existing Skill"
+      ],
+      "next_handoff": "Hand the bounded build brief to pl-skill-creator only when a standalone package is justified."
+    },
+    {
+      "id": "skill-package-maintenance",
+      "request": "Create or update a reusable callable Skill package",
+      "modes": [
+        "plan",
+        "update"
+      ],
+      "primary_space": "skills",
+      "secondary_spaces": [
+        "docs",
+        "decisions",
+        "operating-packs",
+        "templates"
+      ],
+      "target": "pl-skill-creator",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/pl-skill-creator",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "approved scope",
+        "existing package",
+        "skill contract",
+        "relevant plan or issue",
+        "related Template records"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "One-off issue, document, workflow, or Persona application work",
+        "A documented mention without an approved reusable capability"
+      ],
+      "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces."
+    },
+    {
+      "id": "isolated-persona-skill-testing",
+      "request": "Run each selected Persona Skill in a fresh isolated low-reasoning task and evaluate the response",
+      "modes": [
+        "research",
+        "update"
+      ],
+      "primary_space": "skills",
+      "secondary_spaces": [
+        "personas",
+        "docs",
+        "tools"
+      ],
+      "target": "persona-skill-conformance",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/persona-skill-conformance",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "content/library-data.js",
+        "eval/skill-cases.json",
+        "eval/isolated-persona-skill.mjs",
+        "active Work Order"
+      ],
+      "mutation_boundary": "external_execution",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A general multi-Persona consultation",
+        "Testing without a defined Skill profile or expected quality signal",
+        "Claiming independent conformance when the observer shares the runner runtime"
+      ],
+      "next_handoff": "Archive temporary tasks, store sanitized results under eval/results/isolated/, and run one bounded impact review."
+    }
+  ]
+}

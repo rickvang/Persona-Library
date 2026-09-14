@@ -26,7 +26,7 @@ Do not use it for discovering Persona capabilities (`persona-skills`), forming a
 
 ## Required preflight
 
-1. Read the orientation manifest and repository contract. Identify the request mode, target package, authorization, success criteria, and affected surfaces.
+1. Read the orientation bootstrap and repository contract, then load the relevant `skills` route group. Identify the request mode, target package, authorization, success criteria, and affected surfaces.
 2. Check the existing package, routes, aliases, capability catalog, related workflows, Tool-use recipes, and current runtime requirements before proposing a new identity.
 3. Separate the canonical reusable capability from Persona-specific applications, workflow methods, and Tool recipes.
 4. For a new durable package, file, or reference, run the Mara placement and boundary gate before mutation. The gate chooses the destination; it does not grant write authority.

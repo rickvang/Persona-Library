@@ -22,7 +22,7 @@ Do not activate for a direct live-page edit when no comparison is requested, cos
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the relevant route group under `content/orientation/`.
 2. Identify the layout decision, audience, current surface, content/workflow boundary, constraints, success criteria, and requested output.
 3. Select stable representative content and the same content contract for every option. If one option uses different content, mark the comparison invalid rather than attributing the difference to layout.
 4. Establish prototype scope and an isolated identifier. Record whether the user merely wants exploration, has selected a direction, or explicitly authorizes promotion.

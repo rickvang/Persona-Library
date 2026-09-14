@@ -22,7 +22,7 @@ Do not activate by inventing participants for an ambiguous request. Do not use t
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the relevant `personas` route group and any named Playbook group.
 2. Identify the user's goal, decision or artifact under review, constraints, requested output, and whether the destination is read-only advice or an explicitly authorized durable artifact.
 3. Determine whether the request names one Persona, two to four Personas, or a named Playbook. Load only the selected records and relevant workflows, Skills, priorities, evidence, and boundaries.
 4. If participant mode is ambiguous and the choice materially changes the work, ask one scoped choice: `one Persona`, `a panel`, `a named Playbook`, or `Other - describe`. Do not choose participants by inference.

@@ -22,7 +22,7 @@ Do not activate for canonical Tool catalog maintenance, credential configuration
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `tools` route group.
 2. Express the required capability, goal, artifact, scope, risk, and success criteria before selecting a vendor or connector.
 3. Inspect the Tools, connectors, MCPs, workspaces, and permissions actually exposed by the current requester runtime. Do not infer availability, credentials, or approval from repository documentation.
 4. Identify the intended mode: catalog/planning (read-only), bounded read-only probe, authorized side-effecting action, or durable usage/lesson/artifact recording.

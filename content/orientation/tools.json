@@ -1,0 +1,88 @@
+{
+  "schema_version": "2.0",
+  "primary_space": "tools",
+  "space": {
+    "label": "Tools",
+    "answers": "What capability, scope, permission, fallback, and evidence does a tool or MCP provide?",
+    "read": [
+      "tool record",
+      "availability status",
+      "scope and approval boundary",
+      "tool-use recipe"
+    ],
+    "write": "Maintain a tool record only when explicitly requested; execution and record maintenance are separate concerns.",
+    "do_not": [
+      "Never infer that a documented tool is available in the current runtime.",
+      "Never imply credentials or permissions are configured."
+    ]
+  },
+  "routes": [
+    {
+      "id": "tool-resolution",
+      "request": "Find a capability, connector, permission, or safe fallback",
+      "modes": [
+        "research",
+        "plan",
+        "external_execution"
+      ],
+      "primary_space": "tools",
+      "secondary_spaces": [
+        "docs",
+        "skills",
+        "operating-packs"
+      ],
+      "target": "tool-discovery-and-safe-execution",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/tool-discovery-and-safe-execution",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "Tool record",
+        "availability signal",
+        "scope and approval boundary",
+        "tool-use recipe"
+      ],
+      "mutation_boundary": "external_execution",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A catalog-only Tool record edit",
+        "Assuming a documented Tool is configured or available"
+      ],
+      "next_handoff": "Run the smallest safe probe and separate usage evidence from shared guidance."
+    },
+    {
+      "id": "tool-record-maintenance",
+      "request": "Add, change, relate, audit, retire, or supersede a canonical Tool record",
+      "modes": [
+        "research",
+        "plan",
+        "update"
+      ],
+      "primary_space": "tools",
+      "secondary_spaces": [
+        "skills",
+        "personas",
+        "playbooks",
+        "operating-packs"
+      ],
+      "target": "tool-record-maintenance",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/tool-record-maintenance",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "Tool record",
+        "capabilities",
+        "scope",
+        "permissions",
+        "fallbacks",
+        "revision history"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "Executing a Tool or changing access",
+        "A one-run usage note with no catalog change"
+      ],
+      "next_handoff": "Validate relationships and preserve evidence, lifecycle, and revision history."
+    }
+  ]
+}

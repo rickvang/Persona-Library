@@ -1,0 +1,58 @@
+{
+  "schema_version": "2.0",
+  "primary_space": "decisions",
+  "space": {
+    "label": "Decisions",
+    "answers": "What durable choice was made, why, what alternatives were considered, and what could cause revision?",
+    "read": [
+      "question",
+      "options",
+      "rationale",
+      "tradeoffs",
+      "evidence",
+      "affected surfaces",
+      "revisit condition"
+    ],
+    "write": "Append a new decision record when a choice becomes durable; supersede rather than erase prior rationale.",
+    "do_not": [
+      "Do not silently convert a prototype selection into current truth."
+    ]
+  },
+  "routes": [
+    {
+      "id": "decision-record",
+      "request": "Record a durable choice, rationale, tradeoff, or revisit condition",
+      "modes": [
+        "plan",
+        "update"
+      ],
+      "primary_space": "decisions",
+      "secondary_spaces": [
+        "docs",
+        "personas",
+        "skills",
+        "tools",
+        "playbooks"
+      ],
+      "target": "canonical Decisions surface",
+      "artifact_kind": "decision",
+      "package_path": null,
+      "availability_source": "documentation_only",
+      "first_reads": [
+        "question",
+        "options",
+        "rationale",
+        "evidence",
+        "affected surfaces",
+        "revisit condition"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "An unresolved alternative that has not become a durable choice",
+        "A silent rewrite of prior rationale"
+      ],
+      "next_handoff": "Append or supersede the decision, then reconcile affected surfaces."
+    }
+  ]
+}

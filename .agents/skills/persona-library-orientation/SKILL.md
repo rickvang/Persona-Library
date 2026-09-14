@@ -1,6 +1,6 @@
 ---
 name: persona-library-orientation
-description: Orient requests about the Persona Library by loading its manifest, classifying the request, selecting the smallest relevant space, and stating read-only or mutation boundaries.
+description: Orient requests about the Persona Library by loading its bootstrap and the smallest relevant route group, classifying the request, and stating read-only or mutation boundaries.
 metadata:
   skill_layer: library_management
   change_mode: read_only
@@ -22,9 +22,10 @@ Do not activate implicitly for unrelated coding, writing, research, or general q
 
 ## Source-of-truth preflight
 
-1. Read [the site orientation manifest](../../../content/site-orientation.json) and [the repository operating contract](../../../AGENTS.md) before making a routing decision. Follow links from those files only when the request needs them.
-2. Use the current repository files and available tool catalog to establish what is actually available. Do not infer tool, connector, skill, credential, or permission availability from a record, a historical claim, or a URL.
-3. If the manifest or repository context is unavailable, say exactly what could not be checked and fall back to the safest read-only response. Do not invent the missing taxonomy or silently continue as if the preflight passed.
+1. Read [the site orientation bootstrap](../../../content/site-orientation.json) and [the repository operating contract](../../../AGENTS.md) before making a routing decision. The bootstrap contains universal policy and the route-group index; it does not contain the full route catalog.
+2. Classify the request and choose the smallest primary space from the bootstrap. Read only that space's declared `route_file` under `content/orientation/`, then follow its selected route's `first_reads` and linked records.
+3. Use the current repository files and available tool catalog to establish what is actually available. Do not infer tool, connector, skill, credential, or permission availability from a record, a historical claim, or a URL.
+4. If the bootstrap, selected route group, or repository context is unavailable, say exactly what could not be checked and fall back to the safest read-only response. Do not invent the missing taxonomy or silently continue as if the preflight passed.
 
 ## Classify the request
 
@@ -37,7 +38,7 @@ Choose the smallest applicable mode. Use more than one only when the user's requ
 - **Update:** change a live persona, source, skill, record, guide, or other durable artifact.
 - **Consult:** help choose among perspectives, options, or next actions when a decision is needed.
 
-Then select the smallest relevant space from the manifest: personas, skills, tools, playbooks, docs, decisions, or prototyping. Keep lifecycle, operating context, and operating state inside a persona unless the current manifest explicitly says otherwise. Record the primary space and any necessary secondary space in the context packet.
+Then select the smallest relevant primary space from the bootstrap: personas, skills, operating-packs, templates, tools, playbooks, docs, decisions, or prototyping. Load that space's route group before selecting a route. Keep lifecycle, operating context, and operating state inside a persona unless the current bootstrap and selected route group explicitly say otherwise. Record the primary space and any necessary secondary space in the context packet.
 
 ## Build the orientation packet
 
@@ -81,7 +82,7 @@ The previous conversation visibly described a compact bootstrap for lower-reason
 
 Before handing off, confirm:
 
-- The manifest and repository contract were checked or their absence was reported.
+- The bootstrap, repository contract, and selected route group were checked or their absence was reported.
 - The mode and smallest relevant space are explicit.
 - The context packet contains scope, boundary, success criteria, and next action.
 - Any clarification is materially necessary and bounded.

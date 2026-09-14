@@ -1,0 +1,91 @@
+{
+  "schema_version": "2.0",
+  "primary_space": "playbooks",
+  "space": {
+    "label": "Playbooks",
+    "answers": "How do multiple personas, skills, tools, workflows, artifacts, and quality gates coordinate toward an outcome?",
+    "read": [
+      "outcome",
+      "stages",
+      "participants",
+      "shared state",
+      "quality gates",
+      "learning loop"
+    ],
+    "write": "Add or change a playbook only when the work is a reusable multi-stage operating model, not a one-off task.",
+    "do_not": [
+      "Do not copy persona or skill definitions into a playbook when a reference is enough."
+    ]
+  },
+  "routes": [
+    {
+      "id": "playbook-composition",
+      "request": "Compose a reusable multi-stage operating model",
+      "modes": [
+        "plan",
+        "update"
+      ],
+      "primary_space": "playbooks",
+      "secondary_spaces": [
+        "personas",
+        "skills",
+        "tools",
+        "operating-packs",
+        "templates",
+        "docs"
+      ],
+      "target": "playbook-composer",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/playbook-composer",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "outcome",
+        "participants",
+        "stages",
+        "shared state",
+        "decision rights",
+        "quality gates",
+        "Template references when the outcome starts from a reusable artifact"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A one-off task with no reusable stages or handoffs",
+        "Duplicating Persona or Skill definitions"
+      ],
+      "next_handoff": "Validate linked records, gates, recovery, and learning loop before handoff."
+    },
+    {
+      "id": "multi-persona-collaboration",
+      "request": "Coordinate a shared problem across multiple Personas",
+      "modes": [
+        "consult",
+        "plan",
+        "update"
+      ],
+      "primary_space": "playbooks",
+      "secondary_spaces": [
+        "docs",
+        "personas",
+        "skills",
+        "operating-packs"
+      ],
+      "target": "problem-context and persona-panel-orchestration",
+      "artifact_kind": "work_order",
+      "package_path": "docs/collaboration/problem-context.md",
+      "availability_source": "documentation_only",
+      "first_reads": [
+        "docs/collaboration/problem-context.schema.json",
+        "docs/collaboration/multi-persona-collaboration-playbook.md",
+        "active Work Order"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A single-Persona consultation",
+        "A request that does not need shared state, attribution, or handoffs"
+      ],
+      "next_handoff": "Keep contributions attributable and require a concrete solution-quality gate."
+    }
+  ]
+}

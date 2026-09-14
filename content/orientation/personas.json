@@ -1,0 +1,116 @@
+{
+  "schema_version": "2.0",
+  "primary_space": "personas",
+  "space": {
+    "label": "Personas",
+    "answers": "Who is operating, in what lifecycle, context, and state, and how do they work?",
+    "read": [
+      "persona record",
+      "relevant workflow maps",
+      "skills needed",
+      "resources",
+      "revision history"
+    ],
+    "write": "Only when explicitly asked to add or update a live persona.",
+    "do_not": [
+      "Do not use a prototype persona as live evidence.",
+      "Do not rewrite unrelated persona fields."
+    ]
+  },
+  "routes": [
+    {
+      "id": "persona-research",
+      "request": "Research, create, or evidence-update a Persona",
+      "modes": [
+        "research",
+        "plan",
+        "update"
+      ],
+      "primary_space": "personas",
+      "secondary_spaces": [
+        "docs",
+        "skills",
+        "operating-packs"
+      ],
+      "target": "persona-research",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/persona-research",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "persona record",
+        "relevant workflow maps",
+        "resources",
+        "revision history"
+      ],
+      "mutation_boundary": "authorized_update",
+      "reconciliation": "persona-reconciliation",
+      "non_triggers": [
+        "A general role question that does not request Persona research or maintenance"
+      ],
+      "next_handoff": "Use persona-reconciliation before the universal impact pass when durable Persona content changes."
+    },
+    {
+      "id": "persona-consultation",
+      "request": "Ask one or more named Personas for independent perspectives",
+      "modes": [
+        "consult"
+      ],
+      "primary_space": "personas",
+      "secondary_spaces": [
+        "playbooks",
+        "docs"
+      ],
+      "target": "persona-panel-orchestration",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/persona-panel-orchestration",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "named Persona records",
+        "relevant workflows and Skills",
+        "problem-context when shared work is in scope"
+      ],
+      "mutation_boundary": "read_only",
+      "reconciliation": "skip",
+      "non_triggers": [
+        "A single direct answer that does not require Persona perspectives",
+        "Inventing an unnamed meta-Persona"
+      ],
+      "next_handoff": "Synthesize the perspectives or hand the result to a named workflow owner."
+    },
+    {
+      "id": "persona-reconciliation",
+      "request": "Review Persona-specific effects of a changed source, claim, Skill, workflow, activity, Tool requirement, or capability",
+      "modes": [
+        "research",
+        "update"
+      ],
+      "primary_space": "personas",
+      "secondary_spaces": [
+        "skills",
+        "tools",
+        "playbooks",
+        "operating-packs",
+        "templates",
+        "docs"
+      ],
+      "target": "persona-reconciliation",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/persona-reconciliation",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "changed source or record",
+        "affected Persona",
+        "workflows and activities",
+        "Persona skill and Tool relationships",
+        "related Operating Pack and Template applications"
+      ],
+      "mutation_boundary": "read_only",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "A change with no Persona-specific effect",
+        "The universal pass after this adapter has already run"
+      ],
+      "next_handoff": "Return the scoped Persona update to the initiating workflow, then run one universal reconciliation pass when required."
+    }
+  ]
+}

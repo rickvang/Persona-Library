@@ -53,4 +53,4 @@ Return the mode, scope, authorization, candidate pack or reuse result, evidence 
 
 For an authorized durable source or record change, hand the result to `operating-pack-reconciliation`, then to `$change-impact-reconciliation` once. Do not recurse.
 
-See the repository Work Order and orientation manifest for placement, issue, and mutation rules.
+See the repository Work Order and orientation bootstrap plus the selected `operating-packs` route group for placement, issue, and mutation rules.

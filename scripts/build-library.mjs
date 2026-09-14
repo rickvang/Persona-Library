@@ -1,8 +1,13 @@
-import { copyFile, mkdir } from 'node:fs/promises';
+import { copyFile, mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const orientation = JSON.parse(await readFile(path.join(root, 'content/site-orientation.json'), 'utf8'));
+const routeFiles = Object.values(orientation.spaces)
+  .map((space) => space.route_file)
+  .filter(Boolean);
+
 const files = [
   ['content/library-data.js', 'dist/data/library-data.js'],
   ['content/library-model.js', 'dist/data/library-model.js'],
@@ -12,7 +17,8 @@ const files = [
   ['client/template-preview.js', 'dist/js/template-preview.js'],
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
   ['client/canvas-intent.js', 'dist/js/canvas-intent.js'],
-  ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js']
+  ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js'],
+  ...routeFiles.map((routeFile) => [`content/${routeFile}`, `dist/data/${routeFile}`])
 ];
 
 for (const [sourcePath, outputPath] of files) {

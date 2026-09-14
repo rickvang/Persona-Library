@@ -22,7 +22,7 @@ Do not activate for Tool execution, credential or access work, canonical Tool ca
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `skills` route group and the relevant Persona route.
 2. Load the target Persona's workflows, activities, existing skill applications, and relevant evidence. Read [the canonical data](../../../content/library-data.js) and [the normalizer](../../../content/library-model.js) when identity, relationships, or normalized reach is involved.
 3. Check the canonical skill catalog, aliases, primitive units, composed skills, and related recipes before proposing a new identity.
 4. Establish the mode, requested scope, output destination, authorization, and success criteria. Default to a proposal; metadata never grants write authority.

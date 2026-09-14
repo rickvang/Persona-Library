@@ -11,7 +11,8 @@ This repository contains the source and generated output for the Persona Library
 - `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
 - `JOB_SEARCH_IMPLEMENTATION.md` — the job-search workspace scope and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.
-- `content/site-orientation.json` — the machine-readable request, space, Skill-layer, artifact, and mutation routing map.
+- `content/site-orientation.json` — the machine-readable bootstrap for request, space, Skill-layer, artifact, and mutation routing.
+- `content/orientation/` — selectively loaded route groups keyed by the existing primary spaces.
 
 ## Work tracking
 

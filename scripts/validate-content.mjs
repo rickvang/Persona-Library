@@ -56,6 +56,20 @@ const templateViewerPage = await readFile(templateViewerPagePath, 'utf8');
 const canvasPage = await readFile(canvasPagePath, 'utf8');
 const orientation = JSON.parse(orientationSource);
 const generatedOrientation = JSON.parse(orientationOutput);
+const requiredSpaces = ['personas', 'skills', 'operating-packs', 'templates', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
+const universalOrientationFields = ['site', 'purpose', 'default_entry', 'bootstrap_rule', 'request_modes', 'creation_gate', 'skill_contract', 'default_process', 'mutation_policy', 'response_contract', 'activation'];
+const routeGroups = new Map();
+for (const space of requiredSpaces) {
+  const record = orientation.spaces?.[space];
+  if (!record || record.route_file !== `orientation/${space}.json` || !Number.isInteger(record.route_count)) throw new Error(`Orientation bootstrap has an invalid route group declaration: ${space}`);
+  const sourcePath = path.join(root, 'content', record.route_file);
+  const outputPath = path.join(root, 'dist', 'data', record.route_file);
+  const groupSource = await readFile(sourcePath, 'utf8');
+  const groupOutput = await readFile(outputPath, 'utf8');
+  if (groupSource !== groupOutput) throw new Error(`Generated ${path.relative(root, outputPath)} is stale; run build-library.mjs`);
+  const group = JSON.parse(groupSource);
+  routeGroups.set(space, group);
+}
 const sandbox = { window: {} };
 
 vm.runInNewContext(source, sandbox, { filename: contentPath });
@@ -143,21 +157,25 @@ if (!guidePage.includes('agent-orientation') || !orientation.default_entry.inclu
 if (!guidePage.includes('routing-map') || !guidePage.includes('Persona-applied') || !guidePage.includes('$persona-panel-orchestration') || !guidePage.includes('skillLibrary') || !guidePage.includes('skill-authoring') || !guidePage.includes('$pl-skill-creator') || !guidePage.includes('PL Skill Creator')) {
   throw new Error('Docs page is missing the unified system routing map');
 }
-const requiredSpaces = ['personas', 'skills', 'operating-packs', 'templates', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
-if (orientation.schema_version !== '1.1' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 4 || !orientation.skill_contract.routing?.source_update?.includes('$change-impact-reconciliation') || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation') || !orientation.routing || !orientation.routing.skill_layers || !Array.isArray(orientation.routing.artifact_kinds) || !Array.isArray(orientation.routing.availability_sources) || !Array.isArray(orientation.routing.routes) || orientation.routing.routes.length < 10) {
-  throw new Error('Orientation manifest is missing required bootstrap, process, mutation, or response fields');
+if (orientation.schema_version !== '2.0' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 4 || !orientation.skill_contract.routing?.source_update?.includes('$change-impact-reconciliation') || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation') || !orientation.routing || !orientation.routing.skill_layers || !Array.isArray(orientation.routing.artifact_kinds) || !Array.isArray(orientation.routing.availability_sources) || Object.hasOwn(orientation.routing, 'routes') || !orientation.routing.route_group_rule) {
+  throw new Error('Orientation bootstrap is missing required universal policy or route-group fields');
 }
 for (const space of requiredSpaces) {
   const record = orientation.spaces[space];
-  if (!record || !record.label || !record.answers || !record.read || !record.write || !record.do_not) throw new Error(`Orientation manifest has an incomplete space: ${space}`);
+  if (!record || !record.label || !record.answers || !record.route_file || !Number.isInteger(record.route_count) || Object.hasOwn(record, 'read') || Object.hasOwn(record, 'write') || Object.hasOwn(record, 'do_not')) throw new Error(`Orientation bootstrap has an incomplete space: ${space}`);
+  const group = routeGroups.get(space);
+  if (!group || group.schema_version !== '2.0' || group.primary_space !== space || !group.space || !group.space.label || !group.space.answers || !group.space.read || !group.space.write || !group.space.do_not || !Array.isArray(group.routes) || group.routes.length !== record.route_count) throw new Error(`Orientation route group is incomplete: ${space}`);
+  for (const field of universalOrientationFields) if (Object.hasOwn(group, field)) throw new Error(`Universal orientation field is duplicated in route group: ${space}.${field}`);
 }
-if (JSON.stringify(orientation) !== JSON.stringify(generatedOrientation)) throw new Error('Generated orientation manifest does not match its source');
+if (JSON.stringify(orientation) !== JSON.stringify(generatedOrientation)) throw new Error('Generated orientation bootstrap does not match its source');
 const allowedSkillLayers = new Set(Object.keys(orientation.routing.skill_layers));
 const allowedArtifactKinds = new Set(orientation.routing.artifact_kinds);
 const allowedAvailabilitySources = new Set(orientation.routing.availability_sources);
 const routeIds = new Set();
 const routedPackagePaths = new Set();
-for (const route of orientation.routing.routes) {
+const routes = requiredSpaces.flatMap(space => routeGroups.get(space).routes);
+const expectedRouteIds = ['system-orientation', 'persona-research', 'persona-capability-maintenance', 'persona-consultation', 'persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-catalog', 'operating-pack-research', 'operating-pack-composition', 'operating-pack-reconciliation', 'template-catalog', 'template-library-stewardship', 'template-research', 'template-composition', 'template-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'tool-resolution', 'tool-record-maintenance', 'docs-and-onboarding', 'decision-record', 'prototype-comparison', 'workflow-canvas-intent', 'work-order-start', 'cross-space-reconciliation', 'conformance-evaluation', 'isolated-persona-skill-testing', 'resume-application-work'];
+for (const route of routes) {
   if (!route.id || routeIds.has(route.id) || !route.request || !Array.isArray(route.modes) || !route.modes.length || !requiredSpaces.includes(route.primary_space) || !Array.isArray(route.secondary_spaces) || !route.target || !allowedArtifactKinds.has(route.artifact_kind) || !allowedAvailabilitySources.has(route.availability_source) || !Array.isArray(route.first_reads) || !route.first_reads.length || !route.mutation_boundary || !route.reconciliation || !Array.isArray(route.non_triggers) || !route.non_triggers.length || !route.next_handoff) {
     throw new Error(`Invalid or incomplete orientation route: ${route.id || '(missing)'}`);
   }
@@ -172,7 +190,8 @@ for (const route of orientation.routing.routes) {
     }
   }
 }
-const routeById = new Map(orientation.routing.routes.map(route => [route.id, route]));
+if (routeIds.size !== expectedRouteIds.length || expectedRouteIds.some(routeId => !routeIds.has(routeId))) throw new Error('Orientation route migration lost or duplicated a route ID');
+const routeById = new Map(routes.map(route => [route.id, route]));
 const operatingPackDependentRoutes = ['persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'tool-resolution', 'tool-record-maintenance', 'cross-space-reconciliation'];
 for (const routeId of operatingPackDependentRoutes) {
   if (!routeById.get(routeId)?.secondary_spaces.includes('operating-packs')) throw new Error(`Operating Pack dependency is missing from route: ${routeId}`);

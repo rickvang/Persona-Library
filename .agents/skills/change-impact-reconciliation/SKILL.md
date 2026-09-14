@@ -27,7 +27,7 @@ This universal pass must never invoke itself recursively.
 1. Read the initiating skill or workflow contract, including change_mode, change_domain, and reconciliation. If any required metadata is missing, use the safest read-only behavior and report the contract gap.
 2. Identify the actual change event, source authority, changed fields, revision, and requested scope. Do not infer a change from a URL, a record mention, or a historical claim alone.
 3. Record authorization and target information as constraints. Do not decide that incomplete authorization is sufficient; report it as a blocker.
-4. Read the smallest relevant current sources: [the orientation manifest](../../../content/site-orientation.json), [the canonical model](../../../content/library-model.js), [the architecture contract](../../../ARCHITECTURE.md), and [the content validator](../../../scripts/validate-content.mjs) when the change touches them.
+4. Read the smallest relevant current sources: [the orientation bootstrap](../../../content/site-orientation.json), the selected affected route group under `content/orientation/`, [the canonical model](../../../content/library-model.js), [the architecture contract](../../../ARCHITECTURE.md), and [the content validator](../../../scripts/validate-content.mjs) when the change touches them.
 
 ## Dependency sources and visibility
 

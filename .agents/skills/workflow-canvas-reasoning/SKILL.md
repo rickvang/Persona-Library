@@ -24,7 +24,7 @@ Do not activate for: rendering or styling the canvas; applying a reading to a li
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `prototyping` route group.
 2. Establish the committed source graph and the current graph. A reading is always a diff of two states, never a replay of gestures — gesture order is not intent.
 3. Confirm the prototype boundary: the canvas may read `flowLibrary` content, and may not write to it.
 

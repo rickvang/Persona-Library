@@ -31,7 +31,7 @@ Do not activate for:
 
 ## Required preflight
 
-1. Read [the orientation manifest](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md).
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `playbooks` route group and any explicitly affected groups.
 2. Define the outcome, users, constraints, risk, success measure, stopping condition, requested destination, and authorization.
 3. Check for an existing Playbook before creating a new one. Consult [the current job-search implementation](../../../JOB_SEARCH_IMPLEMENTATION.md) when the request is analogous; treat it as a fixture and scope reference, not proof of runtime execution.
 4. Load only explicitly named or justified Personas, Skills, workflows, Tools, recipes, artifacts, evidence, and decisions. Record unavailable items and incomplete dependency visibility.
