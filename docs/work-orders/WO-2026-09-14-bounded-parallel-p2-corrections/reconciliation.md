@@ -45,4 +45,4 @@ Repository search cannot prove exhaustive external consumers of former `AGENTS.m
 
 ## Next action
 
-Repository reviewer: inspect the follow-up PR, confirm the three P2s, and merge only after separate authorization. Do not merge from this Work Order. Leave #82 open.
+Repository reviewer: inspect [#85](https://github.com/rickvang/Persona-Library/pull/85), confirm the three P2s, and merge only after separate authorization. Do not merge from this Work Order. Leave #82 open.

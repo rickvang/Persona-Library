@@ -9,6 +9,7 @@
 - Current owner: Cursor cloud agent
 - Request mode: update
 - GitHub issue: [#82 — Add a bounded parallel implementation Playbook for usage-conscious agent orchestration](https://github.com/rickvang/Persona-Library/issues/82)
+- GitHub pull request: [#85 — Fix bounded-parallel Playbook P2s from PR #83](https://github.com/rickvang/Persona-Library/pull/85)
 - Predecessor: [`WO-2026-09-14-bounded-parallel-implementation`](../WO-2026-09-14-bounded-parallel-implementation/work-order.md) / merged [PR #83](https://github.com/rickvang/Persona-Library/pull/83)
 - Artifact home: `docs/work-orders/WO-2026-09-14-bounded-parallel-p2-corrections/`
 - Concrete deliverable: corrected stop condition, four-role catalog metadata, and Playbooks-route activation
