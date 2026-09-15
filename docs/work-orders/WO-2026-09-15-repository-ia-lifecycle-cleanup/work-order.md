@@ -89,3 +89,7 @@ This Work Order is complete for the PR 1 IA/lifecycle cleanup when the focused P
 - PR [#105](https://github.com/rickvang/Persona-Library/pull/105) is open and mergeable against main.
 - Fresh GitHub review found one commit, the intended bookkeeping/path changes, a ready Vercel preview, and no exposed GitHub Actions workflow run or review thread.
 - Node build, content validator, and focused test execution remain an explicit validation limitation of this GitHub-only session; they must be run by the repository's normal CI/review environment before merge.
+
+## Follow-up
+
+The separate authored-data modularization boundary is tracked in [issue #106](https://github.com/rickvang/Persona-Library/issues/106). It starts only after this PR is established on the current base and preserves the compatibility entrypoint and normalized data contract.
