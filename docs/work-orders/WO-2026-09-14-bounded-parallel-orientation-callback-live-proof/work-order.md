@@ -13,7 +13,7 @@
 - External runtime issue: #96
 - Persona-Library branch: `bounded/orientation-callback-89-94`
 - Pull request: [#98 — Add orientation preflight and bounded completion callback contract](https://github.com/rickvang/Persona-Library/pull/98)
-- Review baseline head: `94354e2858a9eaac2c786dc911859969274569f6`
+- Review baseline head: `2b46677c6f975c1128016871125925f1e7dc845a`
 - External target: `rickvang/ai-job-search` branch `bounded/job-ledger-96`
 
 ## Placement review
@@ -91,9 +91,25 @@ Not authorized by this Work Order alone:
 - Orientation and grounding states were kept separate: `unknown → fresh` context handling; `confirmed` workstream grounding. No contradicted work was dispatched.
 - Changed canonical surfaces: `docs/bounded-parallel-implementation-playbook.md`, `content/orientation/playbooks.json`, the authored bounded-parallel Site/Docs/Decision summaries, focused generated-output validation, and this Work Order. `AGENTS.md`, the Playbook catalog identity, and the collaboration Playbook remain unchanged.
 - Callback contract: terminal states are bounded to `review_ready`, `blocked`, and `deferred`; callback payloads are reference-based and non-authoritative; unsupported transport uses the same compact coordinator fallback. The implementer returned a compact terminal handoff to the coordinator context.
-- Callback limitation: parent/originating-Chat callback delivery was not independently observable from this implementer context. The contract records the supported adapter and honest fallback; the originating coordinator/reviewer must record whether its runtime delivered the callback and independently refresh GitHub afterward.
+- Callback evidence: the originating Chat received one compact completion callback for the integrated two-lane run and resumed independent review. The callback carried GitHub references and terminal statuses only; GitHub remained the source of current PR, diff, review, and check truth.
 - Nested delegation: none.
 - Merge: not performed and not authorized by this Work Order.
+
+## Lane B implementation evidence
+
+- Repository: `rickvang/ai-job-search`
+- Workstream: Persona-Library #96, branch `bounded/job-ledger-96`
+- Pull request: [#1 — feat(job-ledger): add durable identity and observation tracking](https://github.com/rickvang/ai-job-search/pull/1)
+- Terminal status at coordinator handoff: `review_ready`
+- Validation: `python -m unittest discover -s tests -t .` — 140 tests passed, 3 expected skips; `python -m unittest tests.test_job_ledger -v` — 8 focused tests passed; helper/test syntax compilation passed; security guards, framework-version check, and `git diff --check` passed; private ledger/tracker files remained Gitignored and untracked.
+- Validation limitation: `tools/lint_skills.py` was not run locally because PyYAML was unavailable; the PR records that CI installs PyYAML before this check.
+- Evidence remains reference-based: current branch, PR, issue #96, and the validation commands above are the review entry points; no child transcript or copied diff is included.
+
+## Integrated callback evidence
+
+- Per-workstream terminal statuses: Lane A `review_ready` → [PR #98](https://github.com/rickvang/Persona-Library/pull/98); Lane B `review_ready` → [PR #1](https://github.com/rickvang/ai-job-search/pull/1).
+- Aggregate run status: `review_ready`, because every dispatched workstream reached `review_ready`.
+- Callback delivery: the originating Chat received the compact callback and returned to independent GitHub review. The callback did not imply review approval or merge authorization.
 
 ## Dispatch packet contract
 
@@ -116,9 +132,10 @@ stop condition
 ## Validation and reconciliation evidence
 
 - `node scripts/build-library.mjs` — refreshed generated orientation route copies.
-- `node scripts/validation/validation.test.mjs` — focused regression tests, including bounded-parallel card isolation and the eight-stage contract fixture.
+- `node scripts/validation/validation.test.mjs` — 6 passing focused regression tests, including bounded-parallel card isolation, the eight-stage contract fixture, per-workstream callback statuses, the aggregate rule, and the deferred transition.
 - `node scripts/validate-content.mjs` — full content, route, generated-output, Site, relationship, and maintenance validation.
 - `git diff --check` — whitespace validation.
+- Lane B validation is recorded above from PR #1; the only local limitation is the missing PyYAML dependency for `tools/lint_skills.py`.
 - Bounded reconciliation: checked the bootstrap, Playbooks route, canonical model/data boundaries, architecture, validator, generated route output, Site Playbooks/Docs/Decisions surfaces, root activation boundary, predecessor Work Orders, and the unchanged collaboration contract. Direct dependents are extended where the new stage and callback are presented; catalog identity, root `AGENTS.md`, Persona/Skill/Tool records, and external repositories are unchanged.
 
 ## Stop conditions
@@ -147,5 +164,4 @@ blockers / unresolved questions
 
 ## Next action
 
-Independent reviewer: review [PR #98](https://github.com/rickvang/Persona-Library/pull/98) from fresh `main`, branch, diff, review threads, checks, and authoritative Playbook source. Review #89/#94 against the current source, request only scoped corrections if needed, and keep merge separately authorized. The coordinator should record callback delivery or the compact fallback in the integrated run evidence.
-
+Independent reviewer: review [PR #98](https://github.com/rickvang/Persona-Library/pull/98) and [Lane B PR #1](https://github.com/rickvang/ai-job-search/pull/1) from fresh base, branch, diff, review threads, checks, and authoritative source. Review #89/#94 against the current source, request only scoped corrections if needed, and keep merge separately authorized. Callback delivery is recorded above.
