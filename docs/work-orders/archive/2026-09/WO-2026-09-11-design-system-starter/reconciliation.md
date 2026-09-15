@@ -3,7 +3,7 @@
 - Status: complete
 - Change observed: project-local Template artifact published to `rickvang/template-library` and catalog source metadata updated to the published path and revision
 - Initiating contract: `template-composer`, `change_mode: artifact_generation`, `change_domain: templates`, reconciliation: `template-reconciliation`
-- Scope: `docs/ux/design-system-starter.md`, its Work Order package, `content/library-data.js`, and generated library data; the changed canonical record is limited to the Web App Design System Template source metadata.
+- Scope: `docs/design-system-starter.md`, its Work Order package, `content/library-data.js`, and generated library data; the changed canonical record is limited to the Web App Design System Template source metadata.
 
 ## Template adapter pass
 

@@ -10,7 +10,7 @@
 - Explicit collaborator: Mara Okoye, knowledge systems architect
 - Request mode: update
 - GitHub issue: [#69 — Split Persona-Library orientation into a minimal bootstrap and selectively loaded routes](https://github.com/rickvang/Persona-Library/issues/69)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-13-orientation-selective-loading/`
+- Artifact home: `docs/work-orders/WO-2026-09-13-orientation-selective-loading/`
 
 ## Goal
 

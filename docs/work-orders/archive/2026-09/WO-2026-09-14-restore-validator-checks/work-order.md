@@ -11,8 +11,8 @@
 - Request mode: update
 - GitHub issue: [#78 — Restore validator checks lost in #70 extraction](https://github.com/rickvang/Persona-Library/issues/78)
 - Pull request: [#80 — Restore validator checks lost in #70 extraction](https://github.com/rickvang/Persona-Library/pull/80)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-restore-validator-checks/`
-- Concrete deliverable: restored Tool-use recipe `steps` check in [`scripts/validation/relationships.mjs`](../../../../../scripts/validation/relationships.mjs) and Playbook identity check in [`scripts/validation/context.mjs`](../../../../../scripts/validation/context.mjs)
+- Artifact home: `docs/work-orders/WO-2026-09-14-restore-validator-checks/`
+- Concrete deliverable: restored Tool-use recipe `steps` check in [`scripts/validation/relationships.mjs`](../../../scripts/validation/relationships.mjs) and Playbook identity check in [`scripts/validation/context.mjs`](../../../scripts/validation/context.mjs)
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
 
 ## Goal

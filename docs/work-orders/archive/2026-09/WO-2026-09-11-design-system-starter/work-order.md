@@ -9,14 +9,14 @@
 - Current owner: Codex
 - Request mode: update
 - Change mode and domain: `artifact_generation` / `templates`
-- Initiating Skill: [`template-composer`](../../../../../.agents/skills/template-composer/SKILL.md)
-- Reconciliation: [`template-reconciliation`](../../../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../../../.agents/skills/change-impact-reconciliation/SKILL.md)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-11-design-system-starter/`
+- Initiating Skill: [`template-composer`](../../../.agents/skills/template-composer/SKILL.md)
+- Reconciliation: [`template-reconciliation`](../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../.agents/skills/change-impact-reconciliation/SKILL.md)
+- Artifact home: `docs/work-orders/WO-2026-09-11-design-system-starter/`
 - Published target: `rickvang/template-library@c01e9e605d2d7dfd8f12d189cfbce8c6f9237927`
 
 ## Request and outcome
 
-Create the first useful local starter file from the cataloged Web App Design System Template, then publish its reusable adaptation to `rickvang/template-library`. The local seed is [the Web App Design System Starter](../../../../ux/design-system-starter.md); the published entrypoint is `templates/design-systems/web-app/README.md` with the copyable artifact under `starter/`.
+Create the first useful local starter file from the cataloged Web App Design System Template, then publish its reusable adaptation to `rickvang/template-library`. The local seed is [the Web App Design System Starter](../../design-system-starter.md); the published entrypoint is `templates/design-systems/web-app/README.md` with the copyable artifact under `starter/`.
 
 ## Scope
 
@@ -38,7 +38,7 @@ Create the first useful local starter file from the cataloged Web App Design Sys
 
 ## Placement review
 
-Mara Okoye’s creation gate places the concrete starter at `docs/ux/design-system-starter.md` as a project-local generated artifact. The closest alternatives were the canonical Template catalog, which owns identity and provenance but not project output; `dist/`, which is generated Site output and not an authoring location; and this Work Order directory, which is the right home for the progress record but would bury the starter as a secondary artifact. The chosen placement keeps the reusable catalog boundary and the project deliverable distinct.
+Mara Okoye’s creation gate places the concrete starter at `docs/design-system-starter.md` as a project-local generated artifact. The closest alternatives were the canonical Template catalog, which owns identity and provenance but not project output; `dist/`, which is generated Site output and not an authoring location; and this Work Order directory, which is the right home for the progress record but would bury the starter as a secondary artifact. The chosen placement keeps the reusable catalog boundary and the project deliverable distinct.
 
 ## Evidence and assumptions
 

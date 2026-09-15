@@ -12,8 +12,8 @@
 - GitHub issue: [#75 — Make GitHub the default repository workflow for Persona-Library work](https://github.com/rickvang/Persona-Library/issues/75)
 - GitHub pull request: [#77 — Make GitHub the default repository workflow](https://github.com/rickvang/Persona-Library/pull/77) (merged)
 - Merge commit: `1e65ca6bc0795f3e487e2449744e45448bbdb587`
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-github-default-workflow/`
-- Concrete deliverable: root [`AGENTS.md`](../../../../../AGENTS.md) rule pointing to the pinned external GitHub operating contract
+- Artifact home: `docs/work-orders/WO-2026-09-14-github-default-workflow/`
+- Concrete deliverable: root [`AGENTS.md`](../../../AGENTS.md) rule pointing to the pinned external GitHub operating contract
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
 
 ## Goal

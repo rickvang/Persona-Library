@@ -10,8 +10,8 @@
 - Request mode: update
 - GitHub issue: [#82 — Add a bounded parallel implementation Playbook for usage-conscious agent orchestration](https://github.com/rickvang/Persona-Library/issues/82)
 - GitHub pull request: [#83 — Add bounded parallel implementation Playbook](https://github.com/rickvang/Persona-Library/pull/83)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-bounded-parallel-implementation/`
-- Concrete deliverable: [`docs/playbooks/bounded-parallel-implementation.md`](../../../../playbooks/bounded-parallel-implementation.md)
+- Artifact home: `docs/work-orders/WO-2026-09-14-bounded-parallel-implementation/`
+- Concrete deliverable: [`docs/bounded-parallel-implementation-playbook.md`](../../bounded-parallel-implementation-playbook.md)
 - Specialized evidence: [`proof.md`](proof.md), [`validation.md`](validation.md), and [`reconciliation.md`](reconciliation.md)
 
 ## Goal
@@ -44,7 +44,7 @@ The repository user authorized implementation of #82 with “please build #82.�
 
 Placement follows Mara Okoye’s knowledge-systems boundary:
 
-- Durable reusable contract: `docs/playbooks/bounded-parallel-implementation.md` beside other Playbook docs, not under `docs/collaboration/` and not a new `docs/playbooks/` folder for one file.
+- Durable reusable contract: `docs/bounded-parallel-implementation-playbook.md` beside other Playbook docs, not under `docs/collaboration/` and not a new `docs/playbooks/` folder for one file.
 - Catalog identity: `content/library-data.js` `playbookCatalog`.
 - Agent route: `content/orientation/playbooks.json` with bootstrap `route_count` 3.
 - Site presentation: authored `dist/playbooks.html` and current-truth `dist/guide.html`.

@@ -13,8 +13,8 @@
 - GitHub pull request: [#76 — Reduce Persona-Library maintenance coupling](https://github.com/rickvang/Persona-Library/pull/76) (merged)
 - Merge commit: `fc3af861ec5fd9b20e605e713f647d3249580e26`
 - Follow-up: [#78 — Restore validator checks lost in #70 extraction](https://github.com/rickvang/Persona-Library/issues/78) owns two post-merge validator regressions; this packet does not implement that correction
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-maintenance-coupling/`
-- Concrete deliverable: [`scripts/validation/`](../../../../../scripts/validation) and the thin [`scripts/validate-content.mjs`](../../../../../scripts/validate-content.mjs)
+- Artifact home: `docs/work-orders/WO-2026-09-14-maintenance-coupling/`
+- Concrete deliverable: [`scripts/validation/`](../../../scripts/validation/) and the thin [`scripts/validate-content.mjs`](../../../scripts/validate-content.mjs)
 - Specialized evidence: [`ownership.md`](ownership.md), [`validation.md`](validation.md), and [`reconciliation.md`](reconciliation.md)
 
 ## Goal

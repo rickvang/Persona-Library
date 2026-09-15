@@ -9,7 +9,7 @@
 
 | Dependent | Relationship | Class | Evidence | Action |
 | --- | --- | --- | --- | --- |
-| `docs/playbooks/bounded-parallel-implementation.md` | Durable Playbook contract | Extends | Stage 0, source-grounding gate, precedence, execution path, dispatch packet | Retain |
+| `docs/bounded-parallel-implementation-playbook.md` | Durable Playbook contract | Extends | Stage 0, source-grounding gate, precedence, execution path, dispatch packet | Retain |
 | `content/orientation/playbooks.json` | Playbooks route activation | Extends | `next_handoff` now requires source-grounding and forbids Persona-Library as post-selection execution dependency | Retain |
 | Root `AGENTS.md` | Universal activation | Unrelated | No bounded-parallel procedure restored | None |
 | `content/site-orientation.json` | Bootstrap | Unrelated | `route_count` remains 3; no bootstrap Playbook-specific rule added | None |

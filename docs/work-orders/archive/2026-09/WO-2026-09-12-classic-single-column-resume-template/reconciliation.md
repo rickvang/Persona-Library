@@ -4,7 +4,7 @@
 - Checked: 2026-09-12
 - Change domain: `templates`
 - Changed source: new `template-resume-classic-single-column` artifact and catalog record
-- Universal pass: [`change-impact-reconciliation`](../../../../../.agents/skills/change-impact-reconciliation/SKILL.md)
+- Universal pass: [`change-impact-reconciliation`](../../../.agents/skills/change-impact-reconciliation/SKILL.md)
 
 ## Template-specific pass
 

@@ -13,7 +13,7 @@
 - Request mode: update and artifact-generation
 - Change mode: record update plus generated-site update
 - Change domain: canonical Persona, Skill, workflow, repository-routing, and generated Site records
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-08-mira-creative-orchestration/`
+- Artifact home: `docs/work-orders/WO-2026-09-08-mira-creative-orchestration/`
 - Authorized repository target: `C:\_Projects\Persona-Library`
 - Stopping condition: Mira is present in the canonical library, the Mara placement gate is documented, generated output is rebuilt, validation passes, the implementation is published to `origin/main`, and a resumable handoff is recorded.
 
@@ -66,8 +66,8 @@ The gate is a routing and boundary check. It does not grant permission to mutate
 
 ### Canonical library source
 
-- [`content/library-data.js`](../../../../../content/library-data.js) — added Mira Sol (`creative-orchestrator`), six orchestration flows, eleven skill profiles, and practice records for three new creative capabilities.
-- [`content/library-model.js`](../../../../../content/library-model.js) — recorded the maintenance or formation revisions for Mira’s reused and new Skills and added Mira’s Persona maintenance and reconciliation metadata.
+- [`content/library-data.js`](../../../content/library-data.js) — added Mira Sol (`creative-orchestrator`), six orchestration flows, eleven skill profiles, and practice records for three new creative capabilities.
+- [`content/library-model.js`](../../../content/library-model.js) — recorded the maintenance or formation revisions for Mira’s reused and new Skills and added Mira’s Persona maintenance and reconciliation metadata.
 
 Mira’s six flows are:
 
@@ -99,15 +99,15 @@ The new capability records include operating loops, inputs, decisions, outputs, 
 
 ### Repository routing and architecture
 
-- [`content/site-orientation.json`](../../../../../content/site-orientation.json) — added the `creation_gate` owned by Mara Okoye and connected it to the default process and live-update rules.
-- [`AGENTS.md`](../../../../../AGENTS.md) — added the instruction to route durable placement and boundary questions through Mara while preserving the repository’s existing multi-Persona and Work Order rules.
-- [`ARCHITECTURE.md`](../../../../../ARCHITECTURE.md) — documented the durable creation placement gate and preserved the existing architecture content.
+- [`content/site-orientation.json`](../../../content/site-orientation.json) — added the `creation_gate` owned by Mara Okoye and connected it to the default process and live-update rules.
+- [`AGENTS.md`](../../../AGENTS.md) — added the instruction to route durable placement and boundary questions through Mara while preserving the repository’s existing multi-Persona and Work Order rules.
+- [`ARCHITECTURE.md`](../../../ARCHITECTURE.md) — documented the durable creation placement gate and preserved the existing architecture content.
 
 ### Generated output
 
-- [`dist/data/library-data.js`](../../../../../dist/data/library-data.js)
-- [`dist/data/library-model.js`](../../../../../dist/data/library-model.js)
-- [`dist/data/site-orientation.json`](../../../../../dist/data/site-orientation.json)
+- [`dist/data/library-data.js`](../../../dist/data/library-data.js)
+- [`dist/data/library-model.js`](../../../dist/data/library-model.js)
+- [`dist/data/site-orientation.json`](../../../dist/data/site-orientation.json)
 
 These generated files were rebuilt from the canonical content source. They are outputs, not independent source records.
 
@@ -211,19 +211,19 @@ The local branch was behind the current `origin/main`, so the implementation was
 
 ### Local skill-plan files
 
-Before the rebase, the local checkout contained an untracked `docs/internal/skill-rebuild/plans/` directory while the current remote history already tracked that path. To avoid overwriting local files during the rebase, the directory was temporarily moved to:
+Before the rebase, the local checkout contained an untracked `docs/skill-rebuild-plans/` directory while the current remote history already tracked that path. To avoid overwriting local files during the rebase, the directory was temporarily moved to:
 
 ```text
 .codex-tmp/skill-rebuild-plans-before-rebase/skill-rebuild-plans/
 ```
 
-The remote-tracked skill-plan files are now present in `docs/internal/skill-rebuild/plans/`. A follow-up audit on 2026-09-11 compared all 12 files in the temporary snapshot with their tracked counterparts. Eleven files matched after normalizing line endings and the final newline. The snapshot `INDEX.md` matched the pre-reconciliation local index, but those package claims conflicted with the current `.agents/skills` inventory; the tracked `INDEX.md` was restored as the source of truth and the local edits were not retained. No skill-plan file was included in the Mira implementation commit.
+The remote-tracked skill-plan files are now present in `docs/skill-rebuild-plans/`. A follow-up audit on 2026-09-11 compared all 12 files in the temporary snapshot with their tracked counterparts. Eleven files matched after normalizing line endings and the final newline. The snapshot `INDEX.md` matched the pre-reconciliation local index, but those package claims conflicted with the current `.agents/skills` inventory; the tracked `INDEX.md` was restored as the source of truth and the local edits were not retained. No skill-plan file was included in the Mira implementation commit.
 
 ## Current repository state
 
-The preserved skill-plan state is reconciled. The temporary snapshot was redundant and removed, and the tracked `docs/internal/skill-rebuild/plans/` files remain the source of truth. Any remaining local changes are outside this Work Order and require their own scope review.
+The preserved skill-plan state is reconciled. The temporary snapshot was redundant and removed, and the tracked `docs/skill-rebuild-plans/` files remain the source of truth. Any remaining local changes are outside this Work Order and require their own scope review.
 
-The previous `M docs/internal/skill-rebuild/plans/INDEX.md` and `?? .codex-tmp/` entries are resolved by the comparison recorded above. Do not resurrect or stage the redundant snapshot as part of unrelated follow-up work.
+The previous `M docs/skill-rebuild-plans/INDEX.md` and `?? .codex-tmp/` entries are resolved by the comparison recorded above. Do not resurrect or stage the redundant snapshot as part of unrelated follow-up work.
 
 ## Handoff to the next agent
 
@@ -231,7 +231,7 @@ The next agent should begin by reading this Work Order, `content/site-orientatio
 
 1. Confirm `git status --short --branch`, `git log -2 --oneline`, and `git remote -v` from `C:\_Projects\Persona-Library`.
 2. Inspect Mira in the rendered Site or local preview, especially the Persona detail, six flows, reused Skills, and three new capabilities.
-3. Treat the tracked `docs/internal/skill-rebuild/plans/` files as the source of truth; the temporary snapshot and conflicting local index edits have been reconciled and removed.
+3. Treat the tracked `docs/skill-rebuild-plans/` files as the source of truth; the temporary snapshot and conflicting local index edits have been reconciled and removed.
 4. If changing Mira or its relationships, run `node scripts/build-library.mjs`, `node scripts/validate-content.mjs`, and the applicable change-impact reconciliation before committing.
 5. If implementing observability or cross-LLM conformance, open a separate Work Order and define the runtime signals, expected behavior, model/provider matrix, failure classes, and evidence retention before adding Tools or Playbooks.
 

@@ -1,7 +1,7 @@
 # Design System Starter Validation
 
 - Status: complete
-- Artifact: [docs/ux/design-system-starter.md](../../../../ux/design-system-starter.md)
+- Artifact: [docs/design-system-starter.md](../../design-system-starter.md)
 - Work Order: [work-order.md](work-order.md)
 - Checked: 2026-09-11
 

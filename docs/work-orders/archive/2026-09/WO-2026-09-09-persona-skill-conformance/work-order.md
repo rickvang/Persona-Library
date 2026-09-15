@@ -11,7 +11,7 @@
 - Request mode: update
 - Change mode: external execution plus artifact generation
 - Change domain: conformance evaluation and repository-local Skill packaging
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-09-persona-skill-conformance/`
+- Artifact home: `docs/work-orders/WO-2026-09-09-persona-skill-conformance/`
 - Authorized repository target: `C:\_Projects\Persona-Library`
 - Related issue: GitHub issue creation is pending because the current environment does not expose the `gh` CLI or a GitHub connector.
 - Stopping condition: the callable Skill, generated Persona–Skill matrix, result contract, task lifecycle instructions, validation evidence, and boundaries are reviewable.

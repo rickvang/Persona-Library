@@ -9,8 +9,8 @@
 - Current owner: Cursor cloud agent
 - Request mode: update
 - GitHub issue: [#72 — Compose a reusable Template lifecycle Playbook](https://github.com/rickvang/Persona-Library/issues/72)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-template-lifecycle-playbook/`
-- Concrete deliverable: `docs/playbooks/template-lifecycle.md` plus catalog, route, Site, and DEC-012 surfaces
+- Artifact home: `docs/work-orders/WO-2026-09-14-template-lifecycle-playbook/`
+- Concrete deliverable: `docs/template-lifecycle-playbook.md` plus catalog, route, Site, and DEC-012 surfaces
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
 
 ## Goal
@@ -44,7 +44,7 @@ Rick Vang authorized building issue #72 and pushing to GitHub. Authorized mutati
 Performed from Mara’s knowledge-systems placement gate, Templates architecture boundary, DEC-008/009, and Playbooks space write rule.
 
 - Finding: this is a justified new Playbook identity for a repeated cross-owner Template lifecycle outcome, not a new space, Persona, Skill, or external repository.
-- Selected placement: durable contract at `docs/playbooks/template-lifecycle.md`; catalog id `playbook-template-lifecycle`; activation on Playbooks route group; stewardship pointer from Templates route `template-library-stewardship`.
+- Selected placement: durable contract at `docs/template-lifecycle-playbook.md`; catalog id `playbook-template-lifecycle`; activation on Playbooks route group; stewardship pointer from Templates route `template-library-stewardship`.
 - Rejected alternative: leave only Skill sequence documentation. Rejected because promotion, specialist routing, and reconciliation already cross owners.
 - Rejected alternative: fold into Skill formation Playbook. Rejected because Template ownership and external artifact boundaries are distinct.
 - Rejected alternative: create a Template runtime/registry. Rejected by #60/#70 boundary rules.
@@ -53,7 +53,7 @@ Performed from Mara’s knowledge-systems placement gate, Templates architecture
 ## Source-grounding and bounded handoff
 
 - Base: current `main` at `b3b51ab`, after PR #91 and PR #92 landed; PR #93 was rebased onto that exact dependency base.
-- Preserve the Template lifecycle architecture — **confirmed** by the issue, current PR diff, and `docs/playbooks/template-lifecycle.md`.
+- Preserve the Template lifecycle architecture — **confirmed** by the issue, current PR diff, and `docs/template-lifecycle-playbook.md`.
 - Include Multi-Persona Collaboration in the Existing Playbook check — **confirmed** on the current branch; the catalog has 5 identities including the #91 addition.
 - Rename the Template decision reference to DEC-012 — **confirmed**; DEC-012 is the branch’s Template decision and DEC-011 belongs to the separate #92 change.
 - Final DEC-011 + DEC-012 coexistence and decision count — **confirmed**; both records are present and the Decisions summary is reconciled to 8 applied decisions after the dependency rebase.

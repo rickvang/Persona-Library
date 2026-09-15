@@ -9,11 +9,11 @@
 - Current owner: Codex
 - Request mode: update
 - Change mode and domain: `artifact_generation` / `templates`
-- Initiating Skill: [`template-composer`](../../../../../.agents/skills/template-composer/SKILL.md)
-- Reconciliation: [`template-reconciliation`](../../../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../../../.agents/skills/change-impact-reconciliation/SKILL.md)
+- Initiating Skill: [`template-composer`](../../../.agents/skills/template-composer/SKILL.md)
+- Reconciliation: [`template-reconciliation`](../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../.agents/skills/change-impact-reconciliation/SKILL.md)
 - External source: [`template-library/templates/design-systems/resume-document`](https://github.com/rickvang/template-library/tree/0a5c3fc143b5e1fcda3a5868f4c73482ad74d629/templates/design-systems/resume-document)
 - Published revision: `0a5c3fc143b5e1fcda3a5868f4c73482ad74d629`
-- Local viewer: [`dist/template.html`](../../../../../dist/template.html)
+- Local viewer: [`dist/template.html`](../../../dist/template.html)
 
 ## Request and outcome
 

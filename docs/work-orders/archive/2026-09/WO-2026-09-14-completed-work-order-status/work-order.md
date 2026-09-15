@@ -13,7 +13,7 @@
 - GitHub pull request: [#81 — Reconcile completed Work Order status after #70 and #75 merges](https://github.com/rickvang/Persona-Library/pull/81) (merged)
 - Merge commit: `c46677dcce1d2e5a06ad14223661319cd8abe45c`
 - Follow-up disposition: [#78 — Restore validator checks lost in #70 extraction](https://github.com/rickvang/Persona-Library/issues/78) is complete; implemented by [#80](https://github.com/rickvang/Persona-Library/pull/80) at `6efae051222b323ef0649dd86c690fb9f3461a66`
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-completed-work-order-status/`
+- Artifact home: `docs/work-orders/WO-2026-09-14-completed-work-order-status/`
 - Concrete deliverable: status close-out of [`WO-2026-09-14-maintenance-coupling`](../WO-2026-09-14-maintenance-coupling/work-order.md) and [`WO-2026-09-14-github-default-workflow`](../WO-2026-09-14-github-default-workflow/work-order.md)
 - Specialized evidence: [`reconciliation.md`](reconciliation.md)
 
@@ -25,8 +25,8 @@ Bring the durable Work Order records for Persona-Library #70 and #75 into agreem
 
 Inspect current `main`, then update only stale completion/status fields in:
 
-- `docs/work-orders/archive/2026-09/WO-2026-09-14-maintenance-coupling/`
-- `docs/work-orders/archive/2026-09/WO-2026-09-14-github-default-workflow/`
+- `docs/work-orders/WO-2026-09-14-maintenance-coupling/`
+- `docs/work-orders/WO-2026-09-14-github-default-workflow/`
 
 As needed, reconcile Work Order status to complete, current phase/gate language, next action/completion boundary, merge/implementation revision references, and reconciliation wording that still said merge or publication was pending.
 
@@ -50,7 +50,7 @@ Rick Vang authorized implementation of issue #79. The authorized mutation target
 Mara Okoye’s knowledge-systems gate was applied from her canonical Persona record, the `docs` `work-order-start` route, `docs/work-orders.md`, and the `creation_gate` in `content/site-orientation.json`.
 
 - Classification: existing-record extension for the two stale packets; a new progress packet for #79 because this is non-trivial, interruptible repository work.
-- Selected placement: keep the close-out edits inside the existing Work Order packages; place this issue's coordination record at `docs/work-orders/archive/2026-09/WO-2026-09-14-completed-work-order-status/`.
+- Selected placement: keep the close-out edits inside the existing Work Order packages; place this issue's coordination record at `docs/work-orders/WO-2026-09-14-completed-work-order-status/`.
 - Rejected alternative: skip a #79 Work Order because the edits are small. `AGENTS.md` requires a Work Order plus a GitHub-linked progress record for non-trivial in-progress work.
 - Rejected alternative: record this as a Decision. Status bookkeeping is not a durable architectural choice.
 - Rejected alternative: fold the close-out into only one of the two target packets. Each packet owns its own completion state; #79 needs an inspectable progress index of its own.

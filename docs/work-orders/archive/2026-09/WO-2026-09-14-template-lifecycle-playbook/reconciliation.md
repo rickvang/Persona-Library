@@ -9,7 +9,7 @@
 
 | Dependent | Relationship | Class | Evidence | Action |
 | --- | --- | --- | --- | --- |
-| `docs/playbooks/template-lifecycle.md` | Durable Playbook contract | Extends | New seven-stage Template lifecycle coordination model | Retain |
+| `docs/template-lifecycle-playbook.md` | Durable Playbook contract | Extends | New seven-stage Template lifecycle coordination model | Retain |
 | `content/library-data.js` `playbookCatalog` | Canonical identity | Extends | Added `playbook-template-lifecycle` | Retain |
 | `content/orientation/playbooks.json` | Route activation | Extends | New `template-lifecycle` route; bootstrap `route_count` 3→4 | Retain |
 | `content/orientation/templates.json` | Stewardship handoff | Qualifies | Points full cross-owner runs to the Playbook; keeps bounded Skill actions | Retain |

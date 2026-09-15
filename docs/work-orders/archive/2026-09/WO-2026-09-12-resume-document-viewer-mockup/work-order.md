@@ -9,9 +9,9 @@
 - Current owner: Codex
 - Request mode: update
 - Change mode and domain: `artifact_generation` / `templates`
-- Initiating Skill: [`template-composer`](../../../../../.agents/skills/template-composer/SKILL.md)
-- Reconciliation: [`template-reconciliation`](../../../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../../../.agents/skills/change-impact-reconciliation/SKILL.md)
-- Artifact home: [`dist/template.html`](../../../../../dist/template.html)
+- Initiating Skill: [`template-composer`](../../../.agents/skills/template-composer/SKILL.md)
+- Reconciliation: [`template-reconciliation`](../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../.agents/skills/change-impact-reconciliation/SKILL.md)
+- Artifact home: [`dist/template.html`](../../../dist/template.html)
 - Template identity: `template-design-system-resume-document`
 
 ## Request and outcome

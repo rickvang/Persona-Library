@@ -4,7 +4,7 @@
 - Checked: 2026-09-12
 - Change domain: `templates`
 - Changed artifact: local focused viewer mockup for `template-design-system-web-app`
-- Universal pass: [`change-impact-reconciliation`](../../../../../.agents/skills/change-impact-reconciliation/SKILL.md)
+- Universal pass: [`change-impact-reconciliation`](../../../.agents/skills/change-impact-reconciliation/SKILL.md)
 
 ## Template-specific pass
 

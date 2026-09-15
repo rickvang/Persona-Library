@@ -3,7 +3,7 @@
 - Status: complete
 - Change observed: Playbook-first Riley/job-search ownership correction, DEC-011, job ledger contract, Docs route handoff, Elena search ledger activity/skill wording, Riley revision note, Site wording, focused validators, and this Work Order
 - Initiating contract: authorized issue #90 update across Docs/Playbooks/Personas surfaces; `$change-impact-reconciliation` after durable record/docs/decision changes
-- Scope checked: Riley Persona, Elena search workflow/skill, Evidence-led Job Search Playbook Site surfaces, `docs/job-search/implementation.md`, Docs orientation `resume-application-work`, Decisions, job ledger contract, application Work Order template, focused generated validator, generated orientation/data copies
+- Scope checked: Riley Persona, Elena search workflow/skill, Evidence-led Job Search Playbook Site surfaces, `JOB_SEARCH_IMPLEMENTATION.md`, Docs orientation `resume-application-work`, Decisions, job ledger contract, application Work Order template, focused generated validator, generated orientation/data copies
 
 ## Impact map
 

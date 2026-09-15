@@ -2,7 +2,7 @@
 
 - Work Order ID: WO-2026-09-14-bounded-parallel-orientation-callback-live-proof
 - Title: Implement orientation preflight + completion callback and prove them in a two-repository bounded-parallel run
-- Status: complete
+- Status: blocked
 - Created: 2026-09-14
 - Last updated: 2026-09-15
 - Requester: repository user
@@ -11,10 +11,15 @@
 - Primary issues: #89 and #94
 - Proof/reconciliation issues: #82 and #86
 - External runtime issue: #96
+- Integrated proof issue: #97
 - Persona-Library branch: `bounded/orientation-callback-89-94`
 - Pull request: [#98 — Add orientation preflight and bounded completion callback contract](https://github.com/rickvang/Persona-Library/pull/98)
 - Review baseline head: `2b46677c6f975c1128016871125925f1e7dc845a`
 - External target: `rickvang/ai-job-search` branch `bounded/job-ledger-96`
+
+## Current state correction — 2026-09-15
+
+This Work Order was previously marked complete, but current GitHub truth reopened #96 and #97 after the Lane B runtime implementation was invalidated and reverted. The package is therefore active again with status `blocked`. Historical execution evidence below is preserved as originally recorded; it is not treated as current acceptance evidence for #96 or #97.
 
 ## Placement review
 
@@ -68,7 +73,7 @@ Not authorized by this Work Order alone:
 - Prepared branch: `bounded/orientation-callback-89-94` at `ee2727c8a66d4e3ccd837410f68956e27d7654ad`
 - Issues: #89, #94
 - Agent context at dispatch: `unknown`; this Implementer treated that conservatively as `fresh` for the orientation gate
-- Orientation entrypoint followed: `AGENTS.md` → `content/site-orientation.json` → `content/orientation/playbooks.json` → bounded-parallel route → `docs/playbooks/bounded-parallel-implementation.md` → active Work Order and issues #89/#94
+- Orientation entrypoint followed: `AGENTS.md` → `content/site-orientation.json` → `content/orientation/playbooks.json` → bounded-parallel route → `docs/bounded-parallel-implementation-playbook.md` → active Work Order and issues #89/#94
 - Source-grounding result: `confirmed`
 - Reason combined: #89 and #94 modify the same bounded-parallel Playbook/route surfaces; separate sibling PRs would create avoidable overlap and reconciliation risk.
 
@@ -89,7 +94,7 @@ Not authorized by this Work Order alone:
 - Orientation gate: passed. The local `AGENTS.md`, bootstrap, selected Playbooks route, canonical Playbook, collaboration reference, active Work Order, and live issues #89/#94 were inspected before source-grounding.
 - Source-grounding gate: `confirmed`. Current `main` at the named base and the prepared branch’s single Work Order commit were compared; the requested owner is the existing Playbook and route, and the two issues are intentionally serialized into this one Lane A workstream.
 - Orientation and grounding states were kept separate: `unknown → fresh` context handling; `confirmed` workstream grounding. No contradicted work was dispatched.
-- Changed canonical surfaces: `docs/playbooks/bounded-parallel-implementation.md`, `content/orientation/playbooks.json`, the authored bounded-parallel Site/Docs/Decision summaries, focused generated-output validation, and this Work Order. `AGENTS.md`, the Playbook catalog identity, and the collaboration Playbook remain unchanged.
+- Changed canonical surfaces: `docs/bounded-parallel-implementation-playbook.md`, `content/orientation/playbooks.json`, the authored bounded-parallel Site/Docs/Decision summaries, focused generated-output validation, and this Work Order. `AGENTS.md`, the Playbook catalog identity, and the collaboration Playbook remain unchanged.
 - Callback contract: terminal states are bounded to `review_ready`, `blocked`, and `deferred`; callback payloads are reference-based and non-authoritative; unsupported transport uses the same compact coordinator fallback. The implementer returned a compact terminal handoff to the coordinator context.
 - Callback evidence: the originating Chat received one compact completion callback for the integrated two-lane run and resumed independent review. The callback carried GitHub references and terminal statuses only; GitHub remained the source of current PR, diff, review, and check truth.
 - Nested delegation: none.
@@ -171,7 +176,7 @@ blockers / unresolved questions
 
 ## Next action
 
-No further action for this Work Order. The integrated run, review/correction loop, and authorized merges are complete; issue closure is handled by the backlog reconciliation.
+Keep this Work Order active and blocked. Resume the integrated proof in #97 only after #96 has valid acceptance evidence from an explicitly authorized private runtime/workspace; then refresh GitHub state and record a replacement proof without treating the reverted Lane B implementation as acceptance evidence.
 
 ## Repository-boundary correction — 2026-09-15
 
@@ -183,4 +188,3 @@ The historical Lane B selection was invalid. Persona-Library #96 was sent to `ri
 - Lane A’s orientation/callback implementation and the actual completion callback to the originating Chat remain valid. The review/correction loop and separately authorized merge sequence remain historical facts, but the integrated run no longer proves #82, #86, or #96.
 
 Current follow-up: #96 remains open for valid private-runtime implementation and evidence; #82 remains open for the invalidated two-lane implementation proof; #86 remains complete from its independent `template-library` source-grounding case; and #97 is reopened as an incomplete integrated proof. No replacement runtime is introduced here.
-

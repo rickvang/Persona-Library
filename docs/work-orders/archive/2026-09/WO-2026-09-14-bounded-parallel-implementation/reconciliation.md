@@ -9,7 +9,7 @@
 
 | Dependent | Relationship | Class | Evidence | Action |
 | --- | --- | --- | --- | --- |
-| `docs/playbooks/bounded-parallel-implementation.md` | New durable Playbook contract | Extends | New reusable outcome/stage/gate model for bounded parallel implementation | Retain |
+| `docs/bounded-parallel-implementation-playbook.md` | New durable Playbook contract | Extends | New reusable outcome/stage/gate model for bounded parallel implementation | Retain |
 | `content/library-data.js` `playbookCatalog` | Canonical Playbook identity | Extends | Third identity `playbook-bounded-parallel-implementation` | Retain |
 | `content/orientation/playbooks.json` | Playbooks route group | Extends | New `bounded-parallel-implementation` route; collaboration route unchanged | Retain |
 | `content/site-orientation.json` | Bootstrap space index | Extends | `spaces.playbooks.route_count` 2 → 3 | Retain |

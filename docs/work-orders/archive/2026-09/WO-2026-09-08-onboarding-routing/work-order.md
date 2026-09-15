@@ -2,7 +2,7 @@
 
 - **Work Order ID:** WO-2026-09-08-onboarding-routing
 - **GitHub issue:** [#41](https://github.com/rickvang/Persona-Library/issues/41)
-- **Status:** complete
+- **Status:** Complete pending merge
 - **Scope:** Add a unified request-to-system map and distinguish Persona-applied, library-management, orchestration, governance, and tool-safety Skill layers.
 
 ## Authorization and boundaries
@@ -38,7 +38,7 @@ The repository owner authorized implementation of Issue #41. This Work Order cov
 - [x] Add concise validator checks and refresh generated orientation data.
 - [x] Run the repository build and content validator.
 - [x] Complete the universal reconciliation report and final review.
-- [x] Open the implementation pull request, merge it, and close Issue #41 after review.
+- [ ] Open the implementation pull request, merge it, and close Issue #41 after review.
 
 ## Validation and limitations
 
@@ -67,7 +67,3 @@ The repository owner authorized implementation of Issue #41. This Work Order cov
 ## Next action
 
 Run the change-impact reconciliation pass over the manifest, local packages, onboarding docs, generated orientation data, and validator; then review the diff and prepare the Issue #41 pull request.
-
-## Archive reconciliation — 2026-09-15
-
-Issue [#41](https://github.com/rickvang/Persona-Library/issues/41) is closed as completed. The implementation landed in PR [#42](https://github.com/rickvang/Persona-Library/pull/42), merged as `fa3029a9f1608fac83bd28ba2a413a181f87c56f`; this package is now archived as terminal historical evidence.

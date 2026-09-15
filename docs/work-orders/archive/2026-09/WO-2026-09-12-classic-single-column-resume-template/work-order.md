@@ -9,12 +9,12 @@
 - Current owner: Codex
 - Request mode: update
 - Change mode and domain: `artifact_generation` / `templates`
-- Initiating Skills: [`template-research`](../../../../../.agents/skills/template-research/SKILL.md), [`template-composer`](../../../../../.agents/skills/template-composer/SKILL.md)
-- Reconciliation: [`template-reconciliation`](../../../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../../../.agents/skills/change-impact-reconciliation/SKILL.md)
+- Initiating Skills: [`template-research`](../../../.agents/skills/template-research/SKILL.md), [`template-composer`](../../../.agents/skills/template-composer/SKILL.md)
+- Reconciliation: [`template-reconciliation`](../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../.agents/skills/change-impact-reconciliation/SKILL.md)
 - Source reference: user-supplied private HTML resume reference `RickVangResume0726.html`, fetched from Google Drive on 2026-09-12
 - Published target: [`template-library/templates/resumes/classic-single-column`](https://github.com/rickvang/template-library/tree/a275a48/templates/resumes/classic-single-column)
 - Published revision: `a275a48`
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-12-classic-single-column-resume-template/`
+- Artifact home: `docs/work-orders/WO-2026-09-12-classic-single-column-resume-template/`
 
 ## Request and outcome
 

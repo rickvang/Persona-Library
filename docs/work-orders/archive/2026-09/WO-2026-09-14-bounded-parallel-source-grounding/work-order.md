@@ -11,8 +11,8 @@
 - GitHub issue: [#86 — Make bounded parallel implementation target-repository-first and source-grounded](https://github.com/rickvang/Persona-Library/issues/86)
 - GitHub pull request: [#87 — Make bounded parallel implementation source-grounded](https://github.com/rickvang/Persona-Library/pull/87)
 - Predecessor: [`WO-2026-09-14-bounded-parallel-p2-corrections`](../WO-2026-09-14-bounded-parallel-p2-corrections/work-order.md) / merged [PR #85](https://github.com/rickvang/Persona-Library/pull/85)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-bounded-parallel-source-grounding/`
-- Concrete deliverable: amended [`docs/playbooks/bounded-parallel-implementation.md`](../../../../playbooks/bounded-parallel-implementation.md)
+- Artifact home: `docs/work-orders/WO-2026-09-14-bounded-parallel-source-grounding/`
+- Concrete deliverable: amended [`docs/bounded-parallel-implementation-playbook.md`](../../bounded-parallel-implementation-playbook.md)
 - Specialized evidence: [`proof.md`](proof.md), [`validation.md`](validation.md), and [`reconciliation.md`](reconciliation.md)
 
 ## Goal
@@ -47,7 +47,7 @@ Rick Vang authorized implementation of #86. Authorized mutation targets are this
 
 This is an existing-record extension, not a new Playbook, space, or file type.
 
-- Durable contract: existing `docs/playbooks/bounded-parallel-implementation.md`.
+- Durable contract: existing `docs/bounded-parallel-implementation-playbook.md`.
 - Catalog identity: keep `playbook-bounded-parallel-implementation`. No second identity.
 - Activation: existing `content/orientation/playbooks.json` route `bounded-parallel-implementation`, not root `AGENTS.md`.
 - Current-facing Site summaries: existing `dist/playbooks.html` and `dist/guide.html` only where the prior dispatch-first wording would mislead.

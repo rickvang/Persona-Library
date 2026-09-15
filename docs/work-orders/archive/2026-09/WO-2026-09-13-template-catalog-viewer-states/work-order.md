@@ -9,7 +9,7 @@
 - Current owner: Codex
 - Request mode: update
 - GitHub issue: [#68 — Make Template catalog and viewer evidence states explicit](https://github.com/rickvang/Persona-Library/issues/68)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-13-template-catalog-viewer-states/`
+- Artifact home: `docs/work-orders/WO-2026-09-13-template-catalog-viewer-states/`
 
 ## Goal
 

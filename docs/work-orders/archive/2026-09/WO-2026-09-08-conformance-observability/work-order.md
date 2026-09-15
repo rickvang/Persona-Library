@@ -11,11 +11,11 @@
 - Request mode: update and artifact-generation
 - Change mode: record update plus artifact generation and generated-site update
 - Change domain: conformance evaluation, canonical Persona and workflow records, Docs, and generated Site data
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-08-conformance-observability/`
+- Artifact home: `docs/work-orders/WO-2026-09-08-conformance-observability/`
 - Authorized repository target: `C:\_Projects\Persona-Library`
 - Related issues: [#37](https://github.com/rickvang/Persona-Library/issues/37), [#43](https://github.com/rickvang/Persona-Library/issues/43)
 - Reassessment issue: [#74 — Reassess whether conformance/evaluation needs a Playbook](https://github.com/rickvang/Persona-Library/issues/74)
-- Problem context: [`docs/collaboration/problem-context-conformance-observability.json`](../../../../collaboration/problem-context-conformance-observability.json)
+- Problem context: [`docs/collaboration/problem-context-conformance-observability.json`](../../collaboration/problem-context-conformance-observability.json)
 - Stopping condition: the file-based conformance contract, observer Persona, observation path, validation report, limitations, and follow-up work are linked and reviewable.
 
 ## Request and scope
@@ -37,13 +37,13 @@ Issue #37 names Noor Vale as a Context Access Observer. The catalog also contain
 
 ## Artifacts
 
-- [`problem-context-conformance-observability.json`](../../../../collaboration/problem-context-conformance-observability.json) — named multi-Persona problem context and attributable handoffs.
+- [`problem-context-conformance-observability.json`](../../collaboration/problem-context-conformance-observability.json) — named multi-Persona problem context and attributable handoffs.
 - [`observations.md`](observations.md) — this implementation’s observation log and reusable entry shape.
-- [`eval/cases.json`](../../../../../eval/cases.json) — ten concise routing and safety fixtures.
-- [`eval/contract.mjs`](../../../../../eval/contract.mjs) — case and normalized-result validation plus verdict checks.
-- [`eval/run.mjs`](../../../../../eval/run.mjs) — local validation, single-result evaluation, and result-directory scan commands.
-- [`eval/adapters/recorded-result.mjs`](../../../../../eval/adapters/recorded-result.mjs) — sanitized recorded-result adapter.
-- [`eval/observation-template.md`](../../../../../eval/observation-template.md) — compact observation template for future Work Orders.
+- [`eval/cases.json`](../../../eval/cases.json) — ten concise routing and safety fixtures.
+- [`eval/contract.mjs`](../../../eval/contract.mjs) — case and normalized-result validation plus verdict checks.
+- [`eval/run.mjs`](../../../eval/run.mjs) — local validation, single-result evaluation, and result-directory scan commands.
+- [`eval/adapters/recorded-result.mjs`](../../../eval/adapters/recorded-result.mjs) — sanitized recorded-result adapter.
+- [`eval/observation-template.md`](../../../eval/observation-template.md) — compact observation template for future Work Orders.
 - `content/library-data.js` — Noor Persona, Skill applications, and workflows.
 - `content/library-model.js` — Persona maintenance and reconciliation metadata generated from the canonical source.
 - `content/site-orientation.json` — conformance route and artifact availability guidance.

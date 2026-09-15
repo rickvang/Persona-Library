@@ -9,9 +9,9 @@
 - Current owner: Codex
 - Request mode: update
 - Change mode and domain: `artifact_generation` / `templates`
-- Initiating Skill: [`template-composer`](../../../../../.agents/skills/template-composer/SKILL.md)
-- Reconciliation: [`template-reconciliation`](../../../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../../../.agents/skills/change-impact-reconciliation/SKILL.md)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-12-resume-document-design-system/`
+- Initiating Skill: [`template-composer`](../../../.agents/skills/template-composer/SKILL.md)
+- Reconciliation: [`template-reconciliation`](../../../.agents/skills/template-reconciliation/SKILL.md), then [`change-impact-reconciliation`](../../../.agents/skills/change-impact-reconciliation/SKILL.md)
+- Artifact home: `docs/work-orders/WO-2026-09-12-resume-document-design-system/`
 - Published target: [`template-library/templates/design-systems/resume-document`](https://github.com/rickvang/template-library/tree/f8cd3e4d3cf7894bdf28d21dbcee7af4b6bfa5ff/templates/design-systems/resume-document)
 - Published revision: `f8cd3e4d3cf7894bdf28d21dbcee7af4b6bfa5ff`
 

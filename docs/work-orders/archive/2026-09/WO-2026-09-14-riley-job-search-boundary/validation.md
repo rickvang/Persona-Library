@@ -9,7 +9,7 @@
 | Criterion | Result | Evidence |
 | --- | --- | --- |
 | Riley canonical identity remains AI orchestrator | pass | `content/library-data.js` `roleLabel:'AI orchestrator'`; revision `1.2` confirms contextual job-search coordination only |
-| Playbook is the front door for the full outcome | pass | `dist/playbooks.html` current-playbook lede; `docs/job-search/implementation.md` three-layer model |
+| Playbook is the front door for the full outcome | pass | `dist/playbooks.html` current-playbook lede; `JOB_SEARCH_IMPLEMENTATION.md` three-layer model |
 | Riley described as coordinator, not domain owner | pass | job-search persona card + Playbooks participant label; no “Job-search orchestrator” identity |
 | Elena retains search strategy / targeting | pass | Elena remains career search strategist; ledger disposition attached to her search workflow/skill |
 | Marcus, Leah, Samira, Camille, Sofia retain specialist roles | pass | unchanged specialist cards and Playbooks participant list |

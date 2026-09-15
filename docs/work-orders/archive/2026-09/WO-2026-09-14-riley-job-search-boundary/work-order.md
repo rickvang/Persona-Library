@@ -9,7 +9,7 @@
 - Current owner: Cursor cloud agent
 - Request mode: update
 - GitHub issue: [#90 — Separate Riley orchestration from job-search domain ownership](https://github.com/rickvang/Persona-Library/issues/90)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-riley-job-search-boundary/`
+- Artifact home: `docs/work-orders/WO-2026-09-14-riley-job-search-boundary/`
 - Concrete deliverable: Playbook-first ownership wording, DEC-011, job ledger contract, and bounded Site/docs reconciliation
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
 
@@ -44,7 +44,7 @@ Rick Vang authorized building issue #90 and pushing to GitHub. Authorized mutati
 Performed from Mara’s knowledge-systems placement gate and existing Docs/Playbooks/Decisions homes.
 
 - Finding: this is an ownership correction and contract addition for an existing Playbook outcome, not a new Persona, Skill package, space, or runtime.
-- Selected placement: extend `docs/job-search/implementation.md`, Playbooks/job-search Site surfaces, Docs orientation route, Decisions (`DEC-011`), and `docs/job-search/job-ledger-contract.md`.
+- Selected placement: extend `JOB_SEARCH_IMPLEMENTATION.md`, Playbooks/job-search Site surfaces, Docs orientation route, Decisions (`DEC-011`), and `docs/job-search/job-ledger-contract.md`.
 - Rejected alternative: create a Job Search Persona. No uncovered responsibility justified one.
 - Rejected alternative: rename Riley to Job Search Orchestrator. That would harden identity drift.
 - Rejected alternative: host private opportunity history in Persona-Library. Privacy and architecture require a contract-only boundary.
@@ -67,7 +67,7 @@ Performed from Mara’s knowledge-systems placement gate and existing Docs/Playb
 | --- | --- | --- |
 | Riley canonical `roleLabel: AI orchestrator` | correct | preserve |
 | Playbooks catalog “Coordinator · Riley Morgan · AI orchestrator” | correct | preserve; strengthen Playbook-front-door copy |
-| `docs/job-search/implementation.md` “Riley is the job-search orchestrator” | ambiguous / incorrect | replace with Playbook-first / AI orchestrator wording |
+| `JOB_SEARCH_IMPLEMENTATION.md` “Riley is the job-search orchestrator” | ambiguous / incorrect | replace with Playbook-first / AI orchestrator wording |
 | `dist/job-search.html` “Job-search orchestrator” card and “Job-search orchestration” link | incorrect identity drift | rename to Riley Morgan · AI orchestrator / Playbook coordinator |
 | Guide Evidence-led job search Playbook example | correct | preserve |
 | Resume Work Order routing notes | mostly correct orchestration | leave historical packets; update live templates/contracts |

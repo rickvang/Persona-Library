@@ -9,7 +9,7 @@
 - Current owner: Codex
 - Request mode: update
 - GitHub issue: #62 — [Track Templates first-class library implementation](https://github.com/rickvang/Persona-Library/issues/62)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-11-templates/`
+- Artifact home: `docs/work-orders/WO-2026-09-11-templates/`
 
 ## Tracking history
 

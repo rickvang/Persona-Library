@@ -10,7 +10,7 @@
 - Explicit collaborator: Mara Okoye, knowledge systems architect
 - Request mode: research
 - GitHub issue: [#60 — Audit Persona-Library boundaries for external artifact libraries](https://github.com/rickvang/Persona-Library/issues/60)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-external-artifact-boundary-audit/`
+- Artifact home: `docs/work-orders/WO-2026-09-14-external-artifact-boundary-audit/`
 
 ## Goal
 

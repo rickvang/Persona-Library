@@ -12,7 +12,7 @@
 - GitHub issue: [#63 — Add and integrate a Template Librarian Persona](https://github.com/rickvang/Persona-Library/issues/63)
 - Related architecture audit: [#60](https://github.com/rickvang/Persona-Library/issues/60), out of scope for this work
 - Branch: `codex/template-librarian-persona`
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-11-template-librarian/`
+- Artifact home: `docs/work-orders/WO-2026-09-11-template-librarian/`
 
 ## Request and outcome
 

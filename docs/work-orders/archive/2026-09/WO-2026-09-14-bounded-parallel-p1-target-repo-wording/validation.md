@@ -16,14 +16,14 @@ Behavior-focused checks for the PR #87 post-merge P1 (round 1) and the follow-up
 
 | Required behavior | Where it is inspectable | Result |
 | --- | --- | --- |
-| Codex claim verified against the PR branch | `docs/playbooks/bounded-parallel-implementation.md` lines 12 and 204 read on branch `cursor/bounded-parallel-p1-target-repo-wording-581c` | Confirmed correct: both lines stated the no-Persona-Library-records rule with no external-repo qualifier |
+| Codex claim verified against the PR branch | `docs/bounded-parallel-implementation-playbook.md` lines 12 and 204 read on branch `cursor/bounded-parallel-p1-target-repo-wording-581c` | Confirmed correct: both lines stated the no-Persona-Library-records rule with no external-repo qualifier |
 | Line 12 narrowed to match the route exception | "For an external target repository, execution does not require loading Persona-Library records. If Persona-Library itself is the target repository, or target-repository local instructions require Persona-Library records, follow those local routing requirements." | Present |
 | Line 204 (Stage 2 Inputs) narrowed to match the route exception | "For an external target repository, Persona-Library records are not required after Playbook selection; if Persona-Library itself is the target repository, or target-repository local instructions require Persona-Library records, follow those local routing requirements." | Present |
 | Already-correctly-scoped lines left unchanged | Line 49 ("work in another repository"), line 330 ("agent that starts inside the target repository skips Persona-Library loading") | Unchanged (confirmed via `git diff`) |
 | Historical case statement left unchanged (factual, not a rule) | Line ~385 `template-library` case | Unchanged |
 | Issue #86 not closed | This Work Order and PR do not use a closing keyword for #86 | Present |
 | PR #87 not reopened, PR #88 not merged | No GitHub mutation performed against #87; no merge performed on #88 | Present |
-| Only the intended file changed in round 2 | `git status --porcelain` | Present (1 file: `docs/playbooks/bounded-parallel-implementation.md`) |
+| Only the intended file changed in round 2 | `git status --porcelain` | Present (1 file: `docs/bounded-parallel-implementation-playbook.md`) |
 
 ## Checks run
 
@@ -33,7 +33,7 @@ Round 1:
 - `node scripts/build-library.mjs` — refreshed `dist/data/orientation/playbooks.json` and all other generated copies.
 
 Round 2:
-- `grep -n "Persona-Library" docs/playbooks/bounded-parallel-implementation.md` — enumerated every mention before and after editing, confirming lines 12 and 204 were the only unconditional statements and lines 49/330/385 already scope correctly or are historical fact.
+- `grep -n "Persona-Library" docs/bounded-parallel-implementation-playbook.md` — enumerated every mention before and after editing, confirming lines 12 and 204 were the only unconditional statements and lines 49/330/385 already scope correctly or are historical fact.
 - `node scripts/build-library.mjs` — re-run; confirms `docs/` is not part of the generated-output copy list, so no dist mirror needed refreshing for this edit.
 
 Both rounds:

@@ -9,7 +9,7 @@
 
 | Dependent | Relationship | Class | Evidence | Action |
 | --- | --- | --- | --- | --- |
-| `docs/playbooks/bounded-parallel-implementation.md` | Durable Playbook contract | Qualifies | Run-stop no longer treats recorded corrections as terminal; Authorizer stays a named role | Retain |
+| `docs/bounded-parallel-implementation-playbook.md` | Durable Playbook contract | Qualifies | Run-stop no longer treats recorded corrections as terminal; Authorizer stays a named role | Retain |
 | `content/orientation/playbooks.json` | Playbooks route activation | Extends | `next_handoff` now carries thin-coordinator, one-PR-then-STOP, correction-loop, and merge-separation rules | Retain |
 | Root `AGENTS.md` | Universal activation | Qualifies | Rule 13 removed so route-specific Playbook instructions are not always-on | Retain |
 | `dist/playbooks.html` catalog card | Authored Site presentation | Qualifies | `3 roles` → `4 roles`; stable `data-playbook-id="playbook-bounded-parallel-implementation"`; Authorizer remains in the detailed participant list | Retain |

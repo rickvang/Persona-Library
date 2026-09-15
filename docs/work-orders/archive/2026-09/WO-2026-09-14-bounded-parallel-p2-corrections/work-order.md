@@ -11,7 +11,7 @@
 - GitHub issue: [#82 — Add a bounded parallel implementation Playbook for usage-conscious agent orchestration](https://github.com/rickvang/Persona-Library/issues/82)
 - GitHub pull request: [#85 — Fix bounded-parallel Playbook P2s from PR #83](https://github.com/rickvang/Persona-Library/pull/85)
 - Predecessor: [`WO-2026-09-14-bounded-parallel-implementation`](../WO-2026-09-14-bounded-parallel-implementation/work-order.md) / merged [PR #83](https://github.com/rickvang/Persona-Library/pull/83)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-bounded-parallel-p2-corrections/`
+- Artifact home: `docs/work-orders/WO-2026-09-14-bounded-parallel-p2-corrections/`
 - Concrete deliverable: corrected stop condition, four-role catalog metadata, and Playbooks-route activation
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
 
@@ -44,7 +44,7 @@ Rick Vang authorized fixing the three P2s on already-merged PR #83. Authorized m
 
 This is an existing-record extension, not a new Playbook, space, or file type.
 
-- Durable contract: existing `docs/playbooks/bounded-parallel-implementation.md`.
+- Durable contract: existing `docs/bounded-parallel-implementation-playbook.md`.
 - Activation: existing `content/orientation/playbooks.json` route `bounded-parallel-implementation`, not a new always-on root rule.
 - Current-facing Site metadata: existing `dist/playbooks.html` catalog card.
 - Durable rationale: append a correction on DEC-010 rather than superseding the distinct-Playbook conclusion.

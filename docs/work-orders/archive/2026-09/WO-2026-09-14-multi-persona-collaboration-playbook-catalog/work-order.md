@@ -10,7 +10,7 @@
 - Request mode: update
 - GitHub issue: [#71 — Catalog Multi-Persona Collaboration as a canonical Playbook](https://github.com/rickvang/Persona-Library/issues/71)
 - GitHub pull request: [#91 — Catalog Multi-Persona Collaboration as a canonical Playbook](https://github.com/rickvang/Persona-Library/pull/91)
-- Artifact home: `docs/work-orders/archive/2026-09/WO-2026-09-14-multi-persona-collaboration-playbook-catalog/`
+- Artifact home: `docs/work-orders/WO-2026-09-14-multi-persona-collaboration-playbook-catalog/`
 - Concrete deliverable: `content/library-data.js` `playbookCatalog` entry `playbook-multi-persona-collaboration`
 - Specialized evidence: [`validation.md`](validation.md) and [`reconciliation.md`](reconciliation.md)
 
