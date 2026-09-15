@@ -47,8 +47,8 @@
     {"id": "artifact-matrix", "kind": "evaluator", "path": "eval/isolated-persona-skill.mjs", "status": "complete", "provenance": "Existing eval contract plus user request"},
     {"id": "artifact-config", "kind": "fixture-config", "path": "eval/skill-cases.json", "status": "complete", "provenance": "User request"},
     {"id": "artifact-result", "kind": "sanitized-evidence", "path": "eval/results/isolated/riley-agent-workflow-architecture-smoke.json", "status": "complete", "provenance": "Live Codex task smoke test"},
-    {"id": "artifact-validation", "kind": "validation", "path": "docs/work-orders/WO-2026-09-09-persona-skill-conformance/validation.md", "status": "complete", "provenance": "Repository and live task checks"},
-    {"id": "artifact-work-order", "kind": "work_order", "path": "docs/work-orders/WO-2026-09-09-persona-skill-conformance/work-order.md", "status": "complete", "provenance": "Repository work-order contract"}
+    {"id": "artifact-validation", "kind": "validation", "path": "docs/work-orders/archive/2026-09/WO-2026-09-09-persona-skill-conformance/validation.md", "status": "complete", "provenance": "Repository and live task checks"},
+    {"id": "artifact-work-order", "kind": "work_order", "path": "docs/work-orders/archive/2026-09/WO-2026-09-09-persona-skill-conformance/work-order.md", "status": "complete", "provenance": "Repository work-order contract"}
   ],
   "handoffs": [
     {"context_id": "persona-skill-conformance-2026-09-09", "from_stage": "Frame", "to_stage": "Select", "owner": "Codex", "accepted_facts": ["User wants isolated Persona–Skill tests", "Existing eval/ foundation can be extended", "Fresh tasks can be archived"], "open_questions": ["Whether the live task smoke test can complete on this host"], "blockers_or_fallback": "Use matrix generation and recorded-result evaluation when live task access is unavailable.", "required_output": "Placement and package boundary", "next_action": "Implement the runner and evaluator."},

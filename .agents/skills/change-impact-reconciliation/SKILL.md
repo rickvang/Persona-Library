@@ -122,5 +122,5 @@ Before handoff, confirm:
 - Prototype, decision-history, tool-availability, permission, and recursion boundaries were preserved.
 - The report names blockers, incomplete visibility, and the smallest next action.
 
-See the concise golden scenarios and checkpoint comparison at ../../../docs/skill-rebuild-tests/change-impact-reconciliation.golden.md.
+See the concise golden scenarios and checkpoint comparison at ../../../docs/internal/skill-rebuild/tests/change-impact-reconciliation.golden.md.
 

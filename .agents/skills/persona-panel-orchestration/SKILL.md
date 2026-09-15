@@ -110,5 +110,5 @@ Before handoff, confirm:
 - When Shared collaboration mode is used, the context is named and resumable, every contribution is attributable and dispositioned, and the final output is a concrete solution rather than panel noise.
 - No durable mutation or Tool execution occurred without explicit authorization.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/persona-panel-orchestration.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
+See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/persona-panel-orchestration.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
 

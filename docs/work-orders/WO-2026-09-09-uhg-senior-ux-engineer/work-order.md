@@ -98,7 +98,7 @@ Open candidate review items: confirm current Quva BrightStream status and end da
 - Status: complete, bounded and read-only.
 - Change observed: generated private application artifacts and added this repository Work Order.
 - Initiating contract: artifact-generation in the project-scoped job-search workflow. The Google Drive and Google Docs skill metadata does not declare the repository’s required change fields, so the review used the safest read-only interpretation and recorded the gap.
-- Scope checked: the orientation route for resume/application work, `JOB_SEARCH_IMPLEMENTATION.md`, Work Order conventions, `ARCHITECTURE.md`, canonical content/model references, the new Work Order path, and repository search for direct references to the new role and Work Order ID.
+- Scope checked: the orientation route for resume/application work, `docs/job-search/implementation.md`, Work Order conventions, `ARCHITECTURE.md`, canonical content/model references, the new Work Order path, and repository search for direct references to the new role and Work Order ID.
 - Impacts: the existing resume-application route and job-search contract are confirmed; the new Work Order extends the existing Work Order documentation path; canonical Personas, Skills, Tools, Playbooks, Site data, and generated `dist/` output have no identified dependency on this application-specific artifact; the prior master and prior application Work Orders remain unchanged.
 - Required updates: none identified in the bounded repository scope.
 - Optional follow-up: candidate review of the private packet and later Work Order update only if facts change or submission is separately authorized.
