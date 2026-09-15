@@ -101,7 +101,7 @@ Not authorized by this Work Order alone:
 - Workstream: Persona-Library #96, branch `bounded/job-ledger-96`
 - Pull request: [#1 — feat(job-ledger): add durable identity and observation tracking](https://github.com/rickvang/ai-job-search/pull/1)
 - Terminal status at coordinator handoff: `review_ready`
-- Validation: `python -m unittest discover -s tests -t .` — 140 tests passed, 3 expected skips; `python -m unittest tests.test_job_ledger -v` — 8 focused tests passed; helper/test syntax compilation passed; security guards, framework-version check, and `git diff --check` passed; private ledger/tracker files remained Gitignored and untracked.
+- Validation: `python -m unittest discover -s tests -t .` — 142 tests passed, 3 expected skips; `python -m unittest tests.test_job_ledger -v` — 10 focused ledger tests passed; helper/test syntax compilation passed; security guards, framework-version check, and `git diff --check` passed; private ledger/tracker files remained Gitignored and untracked.
 - Validation limitation: `tools/lint_skills.py` was not run locally because PyYAML was unavailable; the PR records that CI installs PyYAML before this check.
 - Evidence remains reference-based: current branch, PR, issue #96, and the validation commands above are the review entry points; no child transcript or copied diff is included.
 
