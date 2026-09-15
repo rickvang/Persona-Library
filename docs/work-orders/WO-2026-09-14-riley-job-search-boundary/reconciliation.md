@@ -1,6 +1,6 @@
 # Reconciliation report
 
-- Status: ready for review
+- Status: complete
 - Change observed: Playbook-first Riley/job-search ownership correction, DEC-011, job ledger contract, Docs route handoff, Elena search ledger activity/skill wording, Riley revision note, Site wording, focused validators, and this Work Order
 - Initiating contract: authorized issue #90 update across Docs/Playbooks/Personas surfaces; `$change-impact-reconciliation` after durable record/docs/decision changes
 - Scope checked: Riley Persona, Elena search workflow/skill, Evidence-led Job Search Playbook Site surfaces, `JOB_SEARCH_IMPLEMENTATION.md`, Docs orientation `resume-application-work`, Decisions, job ledger contract, application Work Order template, focused generated validator, generated orientation/data copies
@@ -13,7 +13,7 @@
 | Evidence-led Job Search Playbook | Outcome owner | Qualifies | Front-door wording and three-layer ownership made explicit | Retain |
 | Elena Marin search workflow/skill | Domain search ownership | Extends | Ledger check activity + sequencing skill mentions durable deduplication | Retain |
 | `docs/job-search/job-ledger-contract.md` | Shared-state contract | Extends | New reusable private-state schema and ownership boundary | Retain |
-| Issue [#96](https://github.com/rickvang/Persona-Library/issues/96) | Runtime/persistence proof follow-up | Qualifies | Contract is present, but repeated-search runtime persistence remains unproved in Persona-Library | Keep #90 open until the private-workspace implementation and evidence land |
+| Issue [#96](https://github.com/rickvang/Persona-Library/issues/96) | Runtime/persistence proof follow-up | Confirms | Consuming repository PR #1 supplies the merged implementation and focused validation outside Persona-Library | Close #90 and #96 after final GitHub verification |
 | Docs route `resume-application-work` | Routing handoff | Qualifies | Playbook-first; specialist direct routes; no Riley-as-domain-owner | Retain |
 | `dist/job-search.html` / `dist/playbooks.html` | Current-facing Site | Qualifies | Removed Job-search orchestrator identity; added ledger shared-state card | Retain |
 | `dist/decisions.html` DEC-011 | Durable rationale | Extends | Records Playbook/Riley/specialist ownership choice | Retain |
@@ -33,7 +33,7 @@ Apply the ownership wording, DEC-011, ledger contract, Docs route, Elena/Riley r
 
 ## Tracked follow-up
 
-- [#96 — Implement and prove durable private job-ledger persistence](https://github.com/rickvang/Persona-Library/issues/96) owns the private-workspace runtime implementation and proof. Persona-Library retains only the reusable contract and must not store private job history.
+- [#96 — Implement and prove durable private job-ledger persistence](https://github.com/rickvang/Persona-Library/issues/96) owned the private-workspace runtime implementation and proof. That follow-up is now satisfied by merged ai-job-search PR #1; Persona-Library retains only the reusable contract and does not store private job history.
 
 Optional: authorize a callable job-search Skill package only if runtime evidence needs more than the ledger contract.
 
@@ -43,12 +43,16 @@ Marcus, Leah, Samira, Camille, and Sofia Persona identities; bounded-parallel Pl
 
 ## Limitations and incomplete visibility
 
-Repository search cannot prove every external chat prompt still uses “ask Riley to do the job search.” Current-facing repository contracts and Site surfaces were the authorized correction scope. The contract does not prove durable private runtime behavior; that evidence is explicitly deferred to [#96](https://github.com/rickvang/Persona-Library/issues/96).
+Repository search cannot prove every external chat prompt still uses “ask Riley to do the job search.” Current-facing repository contracts and Site surfaces were the authorized correction scope. Persona-Library does not itself prove durable private runtime behavior; the external proof is recorded in merged ai-job-search PR #1.
+
+## Final merge reconciliation
+
+PR [#92](https://github.com/rickvang/Persona-Library/pull/92) merged as `b3b51abd8e70cfb67e2e3870c8ff6e9ad991111e`. The dependent `rickvang/ai-job-search` PR [#1](https://github.com/rickvang/ai-job-search/pull/1) merged as `f12b1df3e1d5471c1c896e2b052165452d329314` and supplies the deferred runtime proof.
 
 ## Next action
 
-Repository reviewer: inspect the PR for [#90](https://github.com/rickvang/Persona-Library/issues/90), verify the #96 follow-up is linked and remains open, confirm the contract-level acceptance criteria, and merge only after separate authorization if required. Keep #90 open pending #96 evidence.
+No further repository action. Close issues #90 and #96 after the final GitHub state refresh.
 
 ## Independent reinspection
 
-Current GitHub reinspection after commit `ad1f4f6` found PR #92 open and unmerged, targeting `main` at `4be9eae`, with Vercel status successful. The maintenance record retains its `2026-09-04` revision and appends the `2026-09-14` revision; issue #90 remains open and its runtime proof dependency is visibly tracked in issue #96. No additional correction was identified; independent review remains required before merge.
+Current GitHub reinspection after completion found PR #92 merged as `b3b51abd8e70cfb67e2e3870c8ff6e9ad991111e`; the maintenance record retains its historical revision and appended correction, and the runtime proof dependency is now satisfied by ai-job-search PR #1.

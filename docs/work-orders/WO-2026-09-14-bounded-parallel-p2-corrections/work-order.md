@@ -2,9 +2,9 @@
 
 - Work Order ID: WO-2026-09-14-bounded-parallel-p2-corrections
 - Title: Fix three P2s on the merged bounded parallel implementation Playbook
-- Status: ready for review
+- Status: complete
 - Created: 2026-09-14
-- Last updated: 2026-09-14
+- Last updated: 2026-09-15
 - Requester: Rick Vang
 - Current owner: Cursor cloud agent
 - Request mode: update
@@ -58,7 +58,7 @@ Rejected alternatives:
 
 ## Current phase and gate
 
-Phase: reviewable PR. Gate: independent review, then separately authorized merge. Do not merge from this Work Order. Do not close #82.
+Phase: complete. PR #85 was independently reviewed and merged; the later PR #98 run supplied the proof that this correction Work Order intentionally left open.
 
 ## Success criteria and stopping condition
 
@@ -66,10 +66,16 @@ Phase: reviewable PR. Gate: independent review, then separately authorized merge
 - Catalog card and DEC-010 name four roles, including Authorizer.
 - Root `AGENTS.md` no longer carries a bounded-parallel always-on rule; the Playbooks route group does.
 - Validation and bounded reconciliation pass.
-- Issue #82 remains open.
+- At this correction stage, issue #82 remained open for the distinct live-run proof; that proof is now recorded by PR #98.
 
-Stopping condition: reviewable PR for these three P2s, or a bounded blocker. Do not merge. Do not close #82.
+Stopping condition: PR [#85](https://github.com/rickvang/Persona-Library/pull/85) merged and all three corrections are present on `main`; this Work Order is complete.
+
+## Completion reconciliation
+
+- Final correction PR: [#85](https://github.com/rickvang/Persona-Library/pull/85), merged as `e4894dfd47f70e3d9bec17a922dd6ef2f669d6b5`.
+- Validation: build, content validation, 5 focused tests, and diff check passed for the correction set.
+- The integrated run in PR [#98](https://github.com/rickvang/Persona-Library/pull/98), merged as `73c9f6fbbf0b1aa70895a6e39434d335498de6ce`, now satisfies the live proof that this Work Order correctly left open at implementation time.
 
 ## Next action
 
-Independent review of [#85](https://github.com/rickvang/Persona-Library/pull/85), including the Codex P2 that scoped the role-count assertion to the bounded-parallel catalog card. Merge only after separate authorization. Leave issue #82 open.
+No further action for this Work Order. Issue #82 is closed after the integrated proof is recorded.

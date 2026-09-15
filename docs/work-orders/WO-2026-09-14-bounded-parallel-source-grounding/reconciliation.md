@@ -19,8 +19,8 @@
 | `dist/decisions.html` DEC-010 | Durable rationale | Extends | Correction appended; distinct-Playbook conclusion unchanged | Retain |
 | `scripts/validation/generated.mjs` | Site contract | Extends | Asserts `7 stages` and `01 / GROUND` | Retain |
 | Generated `dist/data/orientation/playbooks.json` | Build provenance | Extends | Rebuild required after route-group source change | Ran `build-library.mjs` |
-| Multi-Persona Collaboration Playbook | Adjacent contract | Unrelated | Not rewritten; #71 still open | Leave #71 open |
-| Issue #82 | Live parallel-run proof still outstanding | Confirms | This amendment does not invent that proof | Leave #82 open |
+| Multi-Persona Collaboration Playbook | Adjacent contract | Unrelated | Not rewritten in this Work Order; PR #91 later completed #71 | Record later completion in backlog reconciliation |
+| Issue #82 | Live parallel-run proof | Confirms | This amendment did not invent that proof; integrated PR #98 later supplied it | Record later completion in backlog reconciliation |
 | Issue #75 / GitHub Tool pin | Freshness and authorization | Confirms | Playbook reuses rather than duplicates Tool instructions | None |
 | Issue #60 | External artifact boundary | Confirms | No `playbook-library` repository introduced | None |
 | `template-library` | External proof target | Unrelated | Inspected only; no mutation | None |
@@ -37,8 +37,8 @@ Apply the Playbook source-grounding contract, route-group handoff, Site/Docs/DEC
 ## Optional follow-ups
 
 - Re-scope `template-library` #1 against current source if Rick authorizes work in that repository.
-- Use the next real parallel run to prove compact handoffs, Chat→Work callback, independent review, correction loop, and separately authorized merge (#82).
-- Catalog Multi-Persona Collaboration when #71 is authorized.
+- The later integrated run in PR #98 supplies the compact handoff, Chat callback, independent review, correction loop, and separately authorized merge evidence for #82.
+- PR #91 later cataloged Multi-Persona Collaboration and completed #71.
 
 ## Unchanged checked
 
@@ -50,4 +50,4 @@ Repository search cannot prove exhaustive external consumers of the prior dispat
 
 ## Next action
 
-Repository reviewer: inspect [#87](https://github.com/rickvang/Persona-Library/pull/87) and merge only after separate authorization. Do not merge from this Work Order.
+No further action for this Work Order. The later integrated run supplies the remaining bounded-parallel proof, and issue #86 is closed after the final GitHub state refresh.

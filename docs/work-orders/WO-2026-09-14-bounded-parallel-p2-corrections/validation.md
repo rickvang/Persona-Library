@@ -1,6 +1,6 @@
 # Validation evidence
 
-Behavior-focused checks for the three PR #83 P2s. Issue #82 stays open.
+Behavior-focused checks for the three PR #83 P2s. The correction-stage validation intentionally left issue #82 open until a live proof existed.
 
 ## Contract checks
 
@@ -22,4 +22,4 @@ Behavior-focused checks for the three PR #83 P2s. Issue #82 stays open.
 
 ## Coverage and limits
 
-Validators prove the bounded-parallel catalog card, selected by `data-playbook-id="playbook-bounded-parallel-implementation"`, shows `4 roles`. The assertion is card-scoped, so another playbook may legitimately show `3 roles`. Generated orientation copies are fresh, and existing Site/route contracts still hold. They do not execute the Playbook. No live parallel-run proof was added. Issue #82 remains open.
+Validators prove the bounded-parallel catalog card, selected by `data-playbook-id="playbook-bounded-parallel-implementation"`, shows `4 roles`. The assertion is card-scoped, so another playbook may legitimately show `3 roles`. Generated orientation copies are fresh, and existing Site/route contracts still hold. They do not execute the Playbook. The later integrated run in PR #98 supplies the previously missing live proof for issue #82.

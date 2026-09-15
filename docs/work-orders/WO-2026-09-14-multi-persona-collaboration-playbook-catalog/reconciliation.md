@@ -16,7 +16,7 @@
 | Issue #22 | Historical implementation evidence | Confirms | Preserved as-is; original scope not reopened | None |
 | `dist/playbooks.html` | Authored Site presentation | Qualifies | New catalog card, sidebar link, and compact `#collaboration` overview with a direct canonical-source link; duplicate contract summary removed after review | Retain |
 | PR #91 review finding | Site contract-drift risk | Qualifies | Original inline finding identified duplicated stages, roles, shared state, and gate text; current head replaces that copy with a compact overview and direct canonical link | Review thread is outdated; retain the correction |
-| Issue #71 | Scope and acceptance owner | Confirms | Remains open and still defines the canonical identity, preserved route/contract, and no-runtime boundary | Keep open until separately authorized integration |
+| Issue #71 | Scope and acceptance owner | Confirms | PR #91 landed the canonical identity, preserved route/contract, and no-runtime boundary | Close after this post-merge verification |
 | `dist/guide.html` | Authored Docs presentation | Extends | One example callout added, matching the existing per-Playbook pattern | Retain |
 | `dist/decisions.html` DEC-010 | Durable rationale | Extends (append-only) | Correction line records that #71 now catalogs the identity; original decision and prior corrections unchanged | Retain |
 | Design System Operating Pack `playbooks` field | Existing Playbook identity reference | Unrelated | Still lists only `playbook-create-and-integrate-reusable-skill` | None |
@@ -47,6 +47,10 @@ Apply the catalog identity, compact Site presentation, and Decision correction i
 
 Repository search cannot prove exhaustive external consumers of the Playbook catalog. This change does not verify a live multi-Persona run; it catalogs an already-implemented capability.
 
+## Final merge reconciliation
+
+PR [#91](https://github.com/rickvang/Persona-Library/pull/91) is merged as `9b6293e5d0ee1051b0eb02bfa1493f806cd7c7ee`. Current `main` retains the canonical identity, existing route, direct canonical-contract link, generated output, and append-only DEC-010 correction.
+
 ## Next action
 
-Repository reviewer: confirm the identity resolves cleanly to the existing route and the Site overview links to the canonical contract without duplication. The current review correction is applied and re-inspected; merge only after separate authorization. Do not merge from this Work Order.
+No further repository action. Close issue #71 after the final GitHub state refresh.

@@ -2,9 +2,9 @@
 
 - Work Order ID: WO-2026-09-14-bounded-parallel-source-grounding
 - Title: Make bounded parallel implementation target-repository-first and source-grounded
-- Status: ready for review
+- Status: complete
 - Created: 2026-09-14
-- Last updated: 2026-09-14
+- Last updated: 2026-09-15
 - Requester: Rick Vang
 - Current owner: Cursor cloud agent
 - Request mode: update
@@ -64,7 +64,7 @@ Rejected alternatives:
 
 ## Current phase and gate
 
-Phase: reviewable PR. Gate: independent review, then separately authorized merge. Do not merge from this Work Order.
+Phase: complete. PR #87 and its scoped PR #88 follow-up are merged; the later ai-job-search lane provides a live external-repository proof of the contract.
 
 ## Success criteria and stopping condition
 
@@ -79,8 +79,15 @@ Phase: reviewable PR. Gate: independent review, then separately authorized merge
 - One external-repository case is recorded.
 - Validation and bounded reconciliation pass.
 
-Stopping condition: reviewable PR for #86, or a bounded blocker. Do not merge.
+Stopping condition: PRs #87 and #88 merged, with the target-repository-first contract and external proof preserved; this Work Order is complete.
+
+## Completion reconciliation
+
+- Source-grounding implementation: PR [#87](https://github.com/rickvang/Persona-Library/pull/87), merged as `281f73631e6db2eeadce3171d8bfba82aaf308e3`.
+- Scoped target-repository wording correction: PR [#88](https://github.com/rickvang/Persona-Library/pull/88), merged as `eb574fad93014aa452ed79eb03f55eb0bb8099b7`.
+- Live external proof: the ai-job-search lane in integrated PR [#98](https://github.com/rickvang/Persona-Library/pull/98) recorded fresh target-repository orientation, source-grounding, implementation truth, compact handoff, independent review, and merge after authorization.
+- Validation: build, content validation, focused tests, diff check, and root-instruction inspection passed for the source-grounding contract; the integrated lane added the external runtime evidence.
 
 ## Next action
 
-Independent review of [#87](https://github.com/rickvang/Persona-Library/pull/87). Merge only after separate authorization.
+No further action for this Work Order. Issue #86 is closed after the final GitHub state refresh.

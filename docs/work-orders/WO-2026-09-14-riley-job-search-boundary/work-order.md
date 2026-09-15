@@ -2,9 +2,9 @@
 
 - Work Order ID: WO-2026-09-14-riley-job-search-boundary
 - Title: Separate Riley orchestration from job-search domain ownership
-- Status: ready for review
+- Status: complete
 - Created: 2026-09-14
-- Last updated: 2026-09-14
+- Last updated: 2026-09-15
 - Requester: Rick Vang
 - Current owner: Cursor cloud agent
 - Request mode: update
@@ -75,7 +75,14 @@ Performed from Mara’s knowledge-systems placement gate and existing Docs/Playb
 
 ## Current phase and gate
 
-Phase: reviewable implementation. Gate: independent review, then separately authorized merge. Issue #90 may close when acceptance criteria are confirmed on merge.
+Phase: complete. PR #92 and the dependent private-workspace PR #1 are merged, and the acceptance criteria are confirmed.
+
+## Completion evidence
+
+- Persona-Library implementation: PR [#92](https://github.com/rickvang/Persona-Library/pull/92), merged as `b3b51abd8e70cfb67e2e3870c8ff6e9ad991111e`.
+- Deferred runtime dependency: `rickvang/ai-job-search` PR [#1](https://github.com/rickvang/ai-job-search/pull/1), merged as `f12b1df3e1d5471c1c896e2b052165452d329314`.
+- Runtime evidence: 142 tests passed, 3 expected skips, and 10 focused ledger tests passed; syntax, security, framework, diff, and private-data boundary checks passed.
+- Acceptance evidence: the Playbook owns the job-search outcome, Riley remains the AI orchestrator, specialist ownership is preserved, the private ledger contract remains outside Persona-Library, and durable runtime proof is now supplied by the consuming repository.
 
 ## Success criteria and stopping condition
 
@@ -86,7 +93,7 @@ Phase: reviewable implementation. Gate: independent review, then separately auth
 - No new Job Search Persona.
 - Validation and bounded reconciliation pass.
 
-Stopping condition: reviewable PR pushed for #90, or a bounded blocker.
+Stopping condition: PR #92 and its #96 runtime dependency are merged with acceptance evidence; this Work Order is complete.
 
 ## Scope decision on the job ledger
 
@@ -96,4 +103,4 @@ Out of scope / follow-up: implement and prove durable private-workspace ledger p
 
 ## Next action
 
-Independent review of the PR for #90, with [#96](https://github.com/rickvang/Persona-Library/issues/96) as the explicit runtime/persistence follow-up. Do not treat #90 as complete or close it until #96 provides acceptance evidence. Merge only after separate authorization if required by repository practice.
+No further action for this Work Order. Issue closure is handled by the post-merge backlog reconciliation.
