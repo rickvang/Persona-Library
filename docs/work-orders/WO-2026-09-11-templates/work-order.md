@@ -2,9 +2,9 @@
 
 - Work Order ID: WO-2026-09-11-templates
 - Title: Add Templates as a first-class library space with a distinct ownership boundary
-- Status: complete; PR #61 open for review
+- Status: complete
 - Created: 2026-09-11
-- Last updated: 2026-09-11
+- Last updated: 2026-09-15
 - Requester: repository user
 - Current owner: Codex
 - Request mode: update
@@ -57,7 +57,17 @@ The implementation and review fixes were built and validated with the required c
 
 ## Current phase and next action
 
-Phase: implementation, review fixes, validation, and reconciliation complete. Next action: merge PR #61 after current-head checks and review state are green; no external Template artifact is ready for reuse until a later source verification finds a real path and entrypoint.
+Phase: complete. PR [#61](https://github.com/rickvang/Persona-Library/pull/61) is merged as `5cbed831e99b0a21243d90d9291cd97f6016ba04`, and issue [#62](https://github.com/rickvang/Persona-Library/issues/62) is closed. No external Template artifact is ready for reuse until a later source verification finds a real path and entrypoint.
+
+## Completion reconciliation
+
+- Final implementation: PR [#61](https://github.com/rickvang/Persona-Library/pull/61), merged as `5cbed831e99b0a21243d90d9291cd97f6016ba04`.
+- Acceptance evidence: the Templates space, ownership boundary, catalog/source metadata, lifecycle Skills, generated Site surface, validation, and reconciliation are present on current `main`.
+- Remaining external-source verification is an explicit lifecycle follow-up for the planned/candidate seeds, not an open implementation or merge action for this Work Order.
+
+## Next action
+
+No further repository action for this Work Order.
 
 ## Post-completion source publication addendum — 2026-09-11
 

@@ -49,7 +49,7 @@ The review is bounded by explicit canonical relationships and declared generated
 
 ## Next action
 
-Repository owner: merge PR #61 when current-head checks and review state are green, then reverify external Template artifacts before changing any seed from planned.
+No further repository action. Reverify external Template artifacts only when a later authorized source update makes that lifecycle follow-up appropriate.
 
 ## Post-completion source publication update — 2026-09-11
 
