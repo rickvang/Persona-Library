@@ -8,7 +8,7 @@ A project-scoped work packet for evidence-grounded resume writing. This file tra
 - Title: ATS-first resume application packet with optional human-facing rendering
 - Status: ready-for-review
 - Created: 2026-09-08
-- Last updated: 2026-09-09
+- Last updated: 2026-09-15
 - Requester: user
 - Current owner: Codex
 - Request mode: artifact-generation
@@ -194,6 +194,24 @@ The requested target context is now supplied: [Centstone Senior UX Designer](htt
 - Employment attribution revision: STG Consulting is the employer for the confirmed indented C.R. England, EnerBankUSA, FamilySearch, ProDataKey, and JustServe engagements; the two STG periods remain separate because Rick left and later returned; Adobe and Idaho National Lab remain separate employers.
 - Open findings: direct usability-testing evidence is not present; WCAG 2.1 specificity is unconfirmed; Agile wording is not asserted; on-site/contract availability and work authorization are unknown; current Quva status/end date needs confirmation; and month-level client overlaps remain visible rather than silently normalized.
 - No submission, employer contact, publication, external sharing, or user-level skill installation was performed. Private Drive links and resume content remain out of the public repository.
+
+## Issue #39 provider-path recommendation
+
+This section records the recommendation-only result for the current Centstone Senior UX Designer run. It does not authorize upload or submission.
+
+| Field | Result | Evidence or limitation |
+| --- | --- | --- |
+| Provider/channel | ZipRecruiter listing with Quick Apply; receiving ATS/provider unknown | [Public Centstone listing](https://www.ziprecruiter.com/c/Centstone/Job/Senior-UX-Designer/-in-South-Saint-Paul%2CMN?jid=21b5bb41545ea05f) identifies the posting and ZipRecruiter source; the downstream application form was not entered |
+| Exact application path | Listing URL above; redirect path unknown | The public page does not expose the receiving ATS, upload constraints, or parser behavior in the read-only inspection |
+| Accepted formats and limits | Unknown | No provider-specific format, size, or page-limit guidance was visible |
+| Selected version | `OUT-ATS` / active `MASTER` | The repository contract makes the ATS-oriented rendering the canonical submission candidate; the human-facing version remains optional reference material |
+| Recommended export | DOCX first when accepted; tagged single-column PDF fallback | Generic ATS-first recommendation because provider behavior is unverified; follow any format instruction shown by the actual application form |
+| Confidence | Moderate for version; low for provider-specific format behavior | Version follows the current evidence-led job-search contract; no live provider test was run |
+| Fallback | If DOCX is unavailable or rejected, use the canonical tagged PDF if accepted; if only one format is offered, use that accepted format | No claim is made about parser preference |
+| Fields to review after upload | Employer, role, dates, location/work mode, contact links, and any work-authorization or availability fields | Review only; no upload or submission occurred |
+| Untested scope | Receiving ATS, redirect behavior, accepted formats/limits, parser extraction, and live form fields | Remains explicitly unknown |
+
+Issue #39 acceptance is satisfied through this explicit provider profile, evidence-backed version/format recommendation, fallback, confidence, and untested-scope record. The recommendation ends before upload and does not change the private standing-decision record.
 
 ## Completion boundary
 

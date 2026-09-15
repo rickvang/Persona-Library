@@ -14,6 +14,7 @@
 - Artifact home: `docs/work-orders/WO-2026-09-08-conformance-observability/`
 - Authorized repository target: `C:\_Projects\Persona-Library`
 - Related issues: [#37](https://github.com/rickvang/Persona-Library/issues/37), [#43](https://github.com/rickvang/Persona-Library/issues/43)
+- Reassessment issue: [#74 — Reassess whether conformance/evaluation needs a Playbook](https://github.com/rickvang/Persona-Library/issues/74)
 - Problem context: [`docs/collaboration/problem-context-conformance-observability.json`](../../collaboration/problem-context-conformance-observability.json)
 - Stopping condition: the file-based conformance contract, observer Persona, observation path, validation report, limitations, and follow-up work are linked and reviewable.
 
@@ -108,6 +109,14 @@ The Persona-specific adapter runs before the universal reconciliation pass. The 
 ## Completion gate
 
 The repository implementation is complete: the validator passes, the evaluator validates the fixture set and normalized recorded-result bundles, the Persona and workflows appear in generated data, and this Work Order records five runs and their limitations. The Cursor follow-up records an independently observed handoff; provider metadata, traces, and controlled parity are accepted unknowns.
+
+## Issue #74 reassessment
+
+- Evidence reviewed: `eval/cases.json` with ten fixtures, five sanitized authorized-run bundles covering 50 fixture records, `OBS-001` through `OBS-008`, the evaluator results, and the existing Persona–Skill conformance and observer contracts.
+- Decision: **no new conformance/evaluation Playbook is needed at this time**. The existing `$persona-skill-conformance` Skill, `eval/` fixtures/results, Noor’s observer boundary, Riley’s conditional coordination, Work Orders, and reconciliation model remain sufficient for the observed lifecycle.
+- Boundary finding: the evidence includes one independently observed Riley-to-Noor handoff, but it does not yet demonstrate a repeated stable lifecycle in which distinct owners routinely perform correction, controlled retest, and release/acceptance decisions across runs. Cross-surface parity and provider metadata remain unknown.
+- Re-entry condition: reassess if repeated authorized runs show recurring cross-owner correction and retest handoffs, durable shared state across those stages, or a release gate that the existing Skill/eval/Work Order model cannot express.
+- Acceptance result: the required evidence-backed decision for #74 is recorded without adding a Playbook or changing the conformance architecture.
 
 ## Follow-up work
 
