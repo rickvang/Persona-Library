@@ -102,10 +102,10 @@
       ],
       "target": "bounded-parallel-implementation-playbook",
       "artifact_kind": "playbook",
-      "package_path": "docs/bounded-parallel-implementation-playbook.md",
+      "package_path": "docs/playbooks/bounded-parallel-implementation.md",
       "availability_source": "documentation_only",
       "first_reads": [
-        "docs/bounded-parallel-implementation-playbook.md",
+        "docs/playbooks/bounded-parallel-implementation.md",
         "docs/collaboration/multi-persona-collaboration-playbook.md",
         "active Work Order or GitHub issue"
       ],
@@ -137,10 +137,10 @@
       ],
       "target": "template-lifecycle-playbook",
       "artifact_kind": "playbook",
-      "package_path": "docs/template-lifecycle-playbook.md",
+      "package_path": "docs/playbooks/template-lifecycle.md",
       "availability_source": "documentation_only",
       "first_reads": [
-        "docs/template-lifecycle-playbook.md",
+        "docs/playbooks/template-lifecycle.md",
         "Template Librarian Persona",
         "Template catalog and source evidence",
         "$template-research / $template-composer / $template-reconciliation",

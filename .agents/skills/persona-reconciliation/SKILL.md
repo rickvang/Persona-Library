@@ -105,4 +105,4 @@ Before handoff, confirm:
 - No mutation, Tool execution, access change, or recursive handoff occurred.
 - The universal pass is named as zero or one invocation, never repeated.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/persona-reconciliation.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/persona-reconciliation.golden.md).

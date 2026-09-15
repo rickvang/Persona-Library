@@ -130,3 +130,7 @@ A Work Order is complete only when:
 - the next action or explicit completion boundary is recorded.
 
 A polished artifact, a handoff, or a full-looking checklist is not completion by itself.
+
+## Archive lifecycle
+
+Active packages stay directly under `docs/work-orders/<work-order-id>/`. When a Work Order reaches a terminal status — `complete`, `no-go`, or `cancelled` — move the package to `docs/work-orders/archive/YYYY-MM/<work-order-id>/` using the month of the reliable terminal update. Archival is lifecycle classification, not deletion; archived packages are read-only historical evidence unless a later issue explicitly reopens or corrects them. Do not archive draft, active, blocked, or ready-for-review work.

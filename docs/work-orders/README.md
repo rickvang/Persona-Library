@@ -34,3 +34,6 @@ Do not create every file automatically. Use the smallest package that supports t
 - Do not invent a Work Order ID or destination when the target is unclear.
 
 See [Work Orders](../work-orders.md) for the full contract.
+## Archive
+
+Terminal Work Orders live under `archive/YYYY-MM/<work-order-id>/`. The archive preserves history and is not an active queue. Keep active, blocked, draft, and review packages directly under this directory. See [the full lifecycle contract](../work-orders.md).

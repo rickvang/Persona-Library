@@ -91,7 +91,7 @@ test('Bounded parallel role count is scoped to its catalog card', () => {
 });
 
 test('Bounded parallel orientation, grounding, and callback gates remain separate', () => {
-  const playbook = readFileSync(path.join(root, 'docs/bounded-parallel-implementation-playbook.md'), 'utf8');
+  const playbook = readFileSync(path.join(root, 'docs/playbooks/bounded-parallel-implementation.md'), 'utf8');
   const route = JSON.parse(readFileSync(path.join(root, 'content/orientation/playbooks.json'), 'utf8')).routes.find((candidate) => candidate.id === 'bounded-parallel-implementation');
   const rootInstructions = readFileSync(path.join(root, 'AGENTS.md'), 'utf8');
   const orientationIndex = playbook.indexOf('### 0. Orientation preflight');

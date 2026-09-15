@@ -207,10 +207,10 @@
       ],
       "target": "Evidence-led Job Search Playbook and active Work Order",
       "artifact_kind": "workflow",
-      "package_path": "JOB_SEARCH_IMPLEMENTATION.md",
+      "package_path": "docs/job-search/implementation.md",
       "availability_source": "documentation_only",
       "first_reads": [
-        "Evidence-led Job Search Playbook / JOB_SEARCH_IMPLEMENTATION.md",
+        "Evidence-led Job Search Playbook / docs/job-search/implementation.md",
         "docs/job-search/job-ledger-contract.md when opportunity search or deduplication is in scope",
         "active application Work Order",
         "candidate standing decisions",

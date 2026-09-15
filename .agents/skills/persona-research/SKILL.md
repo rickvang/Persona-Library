@@ -125,4 +125,4 @@ Before handoff, confirm:
 - Research-only output did not mutate durable records.
 - An authorized update names its target, affected scope, reconciliation handoff, checks, limitations, and next action.
 
-See the [concise golden scenarios and checkpoint comparison](../../../docs/skill-rebuild-tests/persona-research.golden.md).
+See the [concise golden scenarios and checkpoint comparison](../../../docs/internal/skill-rebuild/tests/persona-research.golden.md).

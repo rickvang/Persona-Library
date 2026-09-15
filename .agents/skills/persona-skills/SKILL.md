@@ -133,5 +133,5 @@ Before handoff, confirm:
 - Evidence, uncertainty, target, authorization, affected scope, and reconciliation are explicit.
 - No live mutation occurred in proposal or research-only mode.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/persona-skills.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/persona-skills.golden.md).
 

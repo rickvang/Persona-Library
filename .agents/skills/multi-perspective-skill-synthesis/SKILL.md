@@ -94,5 +94,5 @@ Before handoff, confirm:
 - authorization, target, mutation boundary, and reconciliation handoff are explicit;
 - no live mutation, Tool execution, or installation occurred during proposal work.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/multi-perspective-skill-synthesis.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
+See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/multi-perspective-skill-synthesis.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
 

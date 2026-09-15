@@ -9,10 +9,17 @@ This repository contains the source and generated output for the Persona Library
 - `scripts/` — the build and content-validation scripts.
 - `dist/` — the generated, dependency-free Site, including all public pages, the Operating Packs and Templates catalogs, the focused Template viewer, and the onboarding guidance.
 - `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
-- `JOB_SEARCH_IMPLEMENTATION.md` — the job-search workspace scope and sequencing plan.
+- `docs/job-search/implementation.md` — the job-search workspace scope and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.
 - `content/site-orientation.json` — the machine-readable bootstrap for request, space, Skill-layer, artifact, and mutation routing.
 - `content/orientation/` — selectively loaded route groups keyed by the existing primary spaces.
+
+## Documentation and placement
+
+- docs/README.md — concise placement, lifecycle, and generated-output guidance.
+- docs/playbooks/ — current reusable Playbook guidance.
+- docs/internal/skill-rebuild/ — historical rebuild plans and comparison evidence.
+- docs/work-orders/ — active Work Order packages; terminal packages are archived below docs/work-orders/archive/YYYY-MM/.
 
 ## Work tracking
 
@@ -44,4 +51,4 @@ node eval/isolated-persona-skill.mjs validate
 node eval/isolated-persona-skill.mjs matrix --personas all --skills all
 ```
 
-The `dist` directory is the publishable Site output configured in `.openai/hosting.json`.
+The `dist` directory is generated publishable Site output configured in `.openai/hosting.json`; never hand-edit it. Rebuild from authored `content/` and `client/` with `node scripts/build-library.mjs`.

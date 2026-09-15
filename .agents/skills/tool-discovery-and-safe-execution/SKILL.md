@@ -119,4 +119,4 @@ Before handoff, confirm:
 - Usage note, lesson, recipe, and validated guidance are not conflated.
 - Catalog and reconciliation handoffs are named only when required and actually available.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/tool-discovery-and-safe-execution.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/tool-discovery-and-safe-execution.golden.md).
