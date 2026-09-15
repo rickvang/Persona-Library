@@ -51,7 +51,7 @@ private Sites deployment
 - `dist/guide.html` is the wiki for using the system, including the mental model and playbook composition rules. `dist/decisions.html` is the private archive of individually addressable decision records with status filters, prototype evidence, affected surfaces, and revisit conditions; `dist/job-search.html` is the first detailed playbook surface.
 - The `Persona Library Guide` is currently an isolated prototype. It is an onboarding and routing interface for newly connected LLMs; it prepares context and handoffs but does not become a live dependency until promoted through Decisions.
 - `AGENTS.md` is the repository activation entry point. It points agents to the orientation bootstrap before they modify the project, then to the selected route group; the generated bootstrap and route groups under `dist/data/` serve the Site and other read-only consumers.
-- `JOB_SEARCH_IMPLEMENTATION.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
+- `docs/job-search/implementation.md` is the scope and sequencing document for that future workspace. The current Site exposes its responsive MVP reference page without implying scraping, autonomous outreach, mass submission, or persistent tracking.
 
 ## Docs, prototyping, and decisions boundary
 
@@ -92,6 +92,10 @@ Every maintained skill declares a small change contract in its frontmatter: `ski
 Project context and reference routing is a Docs-owned method layered over the Work Order and UX practice. It selects tagged project lenses and reference IDs without duplicating canonical Personas, Skills, Tools, Playbooks, or project evidence. Project-specific assumptions stay in the Work Order or linked context artifact; only reviewed, generalizable lessons may be promoted to shared Docs.
 
 For non-trivial work authorized against this repository, the default project artifact home is docs/work-orders/<work-order-id>/. The Work Order indexes that package and records paths or URLs for specialized artifacts. External project work stays in the external target; trivial changes may record why a package was not warranted.
+
+## Repository placement and lifecycle
+
+Current reusable guidance is grouped under docs by subject. Active non-trivial work stays in docs/work-orders/<work-order-id>/; terminal Work Orders move to docs/work-orders/archive/YYYY-MM/<work-order-id>/ without deleting history. The repository-local Skill namespace remains flat, content/ and client/ remain authored sources, and dist/ remains generated output that must be rebuilt rather than hand-edited. See docs/README.md for the placement gate and lifecycle table.
 
 ## Invariants
 

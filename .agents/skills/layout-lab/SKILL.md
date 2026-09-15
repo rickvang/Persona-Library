@@ -106,4 +106,4 @@ Before handoff, confirm:
 - Responsive, accessibility, realistic-content, tradeoff, and limitation checks are reported.
 - No live record or generated truth changed during exploration.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/layout-lab.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/layout-lab.golden.md).

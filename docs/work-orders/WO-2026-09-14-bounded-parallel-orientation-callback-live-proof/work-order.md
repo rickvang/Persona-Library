@@ -2,7 +2,7 @@
 
 - Work Order ID: WO-2026-09-14-bounded-parallel-orientation-callback-live-proof
 - Title: Implement orientation preflight + completion callback and prove them in a two-repository bounded-parallel run
-- Status: complete
+- Status: blocked
 - Created: 2026-09-14
 - Last updated: 2026-09-15
 - Requester: repository user
@@ -11,10 +11,15 @@
 - Primary issues: #89 and #94
 - Proof/reconciliation issues: #82 and #86
 - External runtime issue: #96
+- Integrated proof issue: #97
 - Persona-Library branch: `bounded/orientation-callback-89-94`
 - Pull request: [#98 — Add orientation preflight and bounded completion callback contract](https://github.com/rickvang/Persona-Library/pull/98)
 - Review baseline head: `2b46677c6f975c1128016871125925f1e7dc845a`
 - External target: `rickvang/ai-job-search` branch `bounded/job-ledger-96`
+
+## Current state correction — 2026-09-15
+
+This Work Order was previously marked complete, but current GitHub truth reopened #96 and #97 after the Lane B runtime implementation was invalidated and reverted. The package is therefore active again with status `blocked`. Historical execution evidence below is preserved as originally recorded; it is not treated as current acceptance evidence for #96 or #97.
 
 ## Placement review
 
@@ -171,7 +176,7 @@ blockers / unresolved questions
 
 ## Next action
 
-No further action for this Work Order. The integrated run, review/correction loop, and authorized merges are complete; issue closure is handled by the backlog reconciliation.
+Keep this Work Order active and blocked. Resume the integrated proof in #97 only after #96 has valid acceptance evidence from an explicitly authorized private runtime/workspace; then refresh GitHub state and record a replacement proof without treating the reverted Lane B implementation as acceptance evidence.
 
 ## Repository-boundary correction — 2026-09-15
 
@@ -183,4 +188,3 @@ The historical Lane B selection was invalid. Persona-Library #96 was sent to `ri
 - Lane A’s orientation/callback implementation and the actual completion callback to the originating Chat remain valid. The review/correction loop and separately authorized merge sequence remain historical facts, but the integrated run no longer proves #82, #86, or #96.
 
 Current follow-up: #96 remains open for valid private-runtime implementation and evidence; #82 remains open for the invalidated two-lane implementation proof; #86 remains complete from its independent `template-library` source-grounding case; and #97 is reopened as an incomplete integrated proof. No replacement runtime is introduced here.
-

@@ -2,7 +2,7 @@
 
 These are compact observable-behavior checks, not a claim that the historical callable package was recovered. They distill the prior Persona Library conversation and issue #6 into the smallest useful comparison set.
 
-Historical source: `Branch · Build Persona Library`, conversation `6a9e8dfb-9c18-83e9-b606-7bd0a530f604`, fully paginated to EOF during the recovery pass. Repository specification: [issue #6](https://github.com/rickvang/Persona-Library/issues/6) and [the rebuild plan](https://github.com/rickvang/Persona-Library/blob/main/docs/skill-rebuild-plans/03-persona-research.md).
+Historical source: `Branch · Build Persona Library`, conversation `6a9e8dfb-9c18-83e9-b606-7bd0a530f604`, fully paginated to EOF during the recovery pass. Repository specification: [issue #6](https://github.com/rickvang/Persona-Library/issues/6) and [the rebuild plan](https://github.com/rickvang/Persona-Library/blob/main/docs/internal/skill-rebuild/plans/03-persona-research.md).
 
 ## PR-1 — clear research request
 

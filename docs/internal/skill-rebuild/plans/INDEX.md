@@ -135,14 +135,14 @@ Build and validate the approved standalone composition layers only when their bo
 ## Source evidence
 
 - Historical source: `chatgpt-conversation://6a9e8dfb-9c18-83e9-b606-7bd0a530f604`
-- Current orientation: [`content/site-orientation.json`](../../content/site-orientation.json)
-- Repository activation: [`AGENTS.md`](../../AGENTS.md)
-- Architecture and invariants: [`ARCHITECTURE.md`](../../ARCHITECTURE.md)
-- Authored content and skill relationships: [`content/library-data.js`](../../content/library-data.js)
-- Content validation: [`scripts/validate-content.mjs`](../../scripts/validate-content.mjs)
+- Current orientation: [`content/site-orientation.json`](../../../../content/site-orientation.json)
+- Repository activation: [`AGENTS.md`](../../../../AGENTS.md)
+- Architecture and invariants: [`ARCHITECTURE.md`](../../../../ARCHITECTURE.md)
+- Authored content and skill relationships: [`content/library-data.js`](../../../../content/library-data.js)
+- Content validation: [`scripts/validate-content.mjs`](../../../../scripts/validate-content.mjs)
 
 
 
 ## Current-use collaboration layer
 
-Issue #22 adds a run-level shared `problem-context` artifact, a multi-Persona collaboration Playbook, and a dependency-free file helper. This is coordination state rather than a new Persona Skill. See [the context contract](../collaboration/problem-context.md), [the Playbook](../collaboration/multi-persona-collaboration-playbook.md), and [the comparison](../skill-rebuild-tests/shared-collaboration-context.comparison.md).
+Issue #22 adds a run-level shared `problem-context` artifact, a multi-Persona collaboration Playbook, and a dependency-free file helper. This is coordination state rather than a new Persona Skill. See [the context contract](../../../collaboration/problem-context.md), [the Playbook](../../../collaboration/multi-persona-collaboration-playbook.md), and [the comparison](../tests/shared-collaboration-context.comparison.md).

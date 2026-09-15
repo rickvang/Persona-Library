@@ -127,4 +127,4 @@ Before handoff, confirm:
 - No Tool, credential, or permission operation was executed.
 - The proposed/applied scope, authorization, validation, limitations, and reconciliation handoff are clear.
 
-See the [concise golden scenarios and comparison](../../../docs/skill-rebuild-tests/tool-record-maintenance.golden.md).
+See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/tool-record-maintenance.golden.md).

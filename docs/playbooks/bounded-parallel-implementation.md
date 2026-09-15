@@ -5,7 +5,7 @@
 - Audience: a coordinator dispatching a small number of independent repository implementation workstreams, plus the implementers and reviewers of those workstreams
 - Canonical catalog identity: `content/library-data.js` `playbookCatalog`
 - Orientation route: `bounded-parallel-implementation`
-- Related collaboration contract: [`docs/collaboration/multi-persona-collaboration-playbook.md`](collaboration/multi-persona-collaboration-playbook.md)
+- Related collaboration contract: [`docs/collaboration/multi-persona-collaboration-playbook.md`](../collaboration/multi-persona-collaboration-playbook.md)
 
 This Playbook coordinates existing repository, GitHub, Work Order, and review practices. It is not a runtime executor and does not create an Agent, Coordinator, Runtime, Budget, Scheduler, or Orchestration entity.
 
@@ -76,7 +76,7 @@ Do not use this Playbook when:
 - merge, publication, or access changes are being treated as implied by implementation completion;
 - the work is still a one-off that does not need a reusable stage contract.
 
-If named Personas must argue a shared problem before implementation, use the [Multi-Persona Collaboration Playbook](collaboration/multi-persona-collaboration-playbook.md) first. Do not copy its stages, solution-quality gate, or `problem-context` contract into this Playbook.
+If named Personas must argue a shared problem before implementation, use the [Multi-Persona Collaboration Playbook](../collaboration/multi-persona-collaboration-playbook.md) first. Do not copy its stages, solution-quality gate, or `problem-context` contract into this Playbook.
 
 ## Why this is a distinct Playbook
 

@@ -89,5 +89,5 @@ Before handing off, confirm:
 - No documentation, record, URL, or historical claim was treated as proof of callable availability.
 - No mutation or installation was performed.
 
-See the [orientation golden tests and checkpoint comparison](../../../docs/skill-rebuild-tests/persona-library-orientation.golden.md).
+See the [orientation golden tests and checkpoint comparison](../../../docs/internal/skill-rebuild/tests/persona-library-orientation.golden.md).
 

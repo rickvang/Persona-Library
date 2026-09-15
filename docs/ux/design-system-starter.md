@@ -4,7 +4,7 @@
 - Revision: 0.1.0
 - Target product: TBD
 - Owner: TBD
-- Template basis: [Web App Design System](../dist/template.html?template=template-design-system-web-app)
+- Template basis: [Web App Design System](../../dist/template.html?template=template-design-system-web-app)
 - Operating context: `operating-pack-design-system` (Design System)
 - Evidence boundary: this file is the project-local seed that was adapted into [template-library](https://github.com/rickvang/template-library/tree/c01e9e605d2d7dfd8f12d189cfbce8c6f9237927/templates/design-systems/web-app); the target repository now owns the reusable artifact.
 
