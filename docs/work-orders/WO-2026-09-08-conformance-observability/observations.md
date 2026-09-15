@@ -20,6 +20,7 @@ Future entries should follow [`eval/observation-template.md`](../../../eval/obse
 | OBS-006 | Repository validation | success | `node scripts/validate-content.mjs` passes on the current source and generated data. | None for this Work Order. |
 | OBS-007 | Riley-to-Noor routing | success | Canonical workflow data declares Noor as the required conformance observer for every evaluated run and records an unavailable-observer fallback. | OBS-008 supplies the independent Cursor handoff evidence; enforcement in other runtimes remains an accepted unknown. |
 | OBS-008 | Independent Riley-to-Noor handoff | success | Cursor Composer supplied a sanitized follow-up showing Riley prepared the packet and Noor classified it in a separate Task session; the handoff was not simulated. | Provider metadata, traces, and cross-surface parity are accepted out of scope for this Work Order. |
+| OBS-009 | Issue #74 reassessment | no-change | Five sanitized surface bundles cover the ten-fixture contract, and OBS-008 supplies one independently observed handoff; existing Skills, eval artifacts, Work Orders, and Noor’s observer boundary remain sufficient. | Reassess after repeated runs demonstrate a stable multi-owner correction, retest, and release lifecycle. |
 
 ## Authorized surface runs
 
