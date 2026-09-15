@@ -4,6 +4,8 @@
 - Issue: https://github.com/rickvang/Persona-Library/issues/103
 - Base: 09ded617e7fbec4ae15f5aa45d468e07314fc4d3
 - Branch: reconcile/issue-103-ia-lifecycle
+- PR: [#105 — Reorganize repository docs and Work Order lifecycle](https://github.com/rickvang/Persona-Library/pull/105)
+- Branch head after PR creation: `6754c1aedac50b31dde704b36f67e8dadac27792`
 - Request mode: update
 - Authorized target: rickvang/Persona-Library GitHub repository
 - Scope: PR 1 repository IA, Work Order lifecycle hygiene, current Docs placement, generated-output cues, and future-agent placement rules.
@@ -82,3 +84,8 @@ The remote baseline was observed as Vercel-successful, but this connector expose
 ## Completion boundary
 
 This Work Order is complete for the PR 1 IA/lifecycle cleanup when the focused PR is merged after review. The separate library-data.js modularization remains outside this Work Order's implementation scope.
+## PR handoff — 2026-09-15
+
+- PR [#105](https://github.com/rickvang/Persona-Library/pull/105) is open and mergeable against main.
+- Fresh GitHub review found one commit, the intended bookkeeping/path changes, a ready Vercel preview, and no exposed GitHub Actions workflow run or review thread.
+- Node build, content validator, and focused test execution remain an explicit validation limitation of this GitHub-only session; they must be run by the repository's normal CI/review environment before merge.
