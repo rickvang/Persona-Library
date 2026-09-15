@@ -23,3 +23,8 @@ Behavior-focused checks for the three PR #83 P2s. The correction-stage validatio
 ## Coverage and limits
 
 Validators prove the bounded-parallel catalog card, selected by `data-playbook-id="playbook-bounded-parallel-implementation"`, shows `4 roles`. The assertion is card-scoped, so another playbook may legitimately show `3 roles`. Generated orientation copies are fresh, and existing Site/route contracts still hold. They do not execute the Playbook. The later integrated run in PR #98 supplies the previously missing live proof for issue #82.
+
+## Repository-boundary correction — 2026-09-15
+
+The validation above proves the Playbook correction set only. The `ai-job-search` lane in PR #98 cannot supply the missing #82 proof because its #96 implementation was a wrong-repository change and was reverted by [ai-job-search PR #2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`. #82 remains open for a valid real two-lane case.
+

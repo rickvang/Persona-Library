@@ -34,3 +34,8 @@ See [`proof.md`](proof.md). `template-library` #1 first PR as written is **contr
 ## Coverage and limits
 
 Validators lock the bounded-parallel catalog card to `4 roles` and `7 stages`, and require the Playbooks page to present `01 / GROUND`. They do not execute the Playbook. The `template-library` case remains source-grounding plus stop/re-scope; the later ai-job-search lane supplies the real external implementation proof and PR #98 records it for #86/#82.
+
+## Repository-boundary correction — 2026-09-15
+
+The `template-library` case is the accepted external source-grounding evidence because it correctly classified the requested first PR as contradicted and stopped before mutation. The ai-job-search implementation lane is excluded: its #96 changes were reverted by [PR #2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`. The contract validation remains passing, while #82’s separate two-lane proof remains open.
+

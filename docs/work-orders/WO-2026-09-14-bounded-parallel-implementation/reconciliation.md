@@ -55,3 +55,10 @@ PR [#83](https://github.com/rickvang/Persona-Library/pull/83) merged as `1d48730
 ## Next action
 
 No further repository action. The later integrated run satisfies the proof gap that was intentionally left open by this initial Work Order.
+
+## Repository-boundary correction — 2026-09-15
+
+The integrated PR [#98](https://github.com/rickvang/Persona-Library/pull/98) remains valid for the Persona-Library orientation/callback implementation, but its `ai-job-search` Lane B evidence is invalid for #82. The implementation was removed by `ai-job-search` corrective PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`, because #96 was assigned to the wrong repository.
+
+Impact: the bounded-parallel Playbook, its one-repository `tool-repo` proof, and all implementation validations remain retained; the integrated two-lane acceptance gap is open again under #82. The prior completion statement is historical and no longer sufficient evidence for closure.
+

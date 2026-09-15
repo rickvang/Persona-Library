@@ -51,3 +51,10 @@ Repository search cannot prove exhaustive external consumers of the prior dispat
 ## Next action
 
 No further action for this Work Order. The later integrated run supplies the remaining bounded-parallel proof, and issue #86 is closed after the final GitHub state refresh.
+
+## Repository-boundary correction — 2026-09-15
+
+The source-grounding amendment remains supported by the `template-library` contradicted-and-stopped case in [`proof.md`](proof.md). The later `ai-job-search` Lane B was an invalid #96 target and was removed by corrective PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+
+Reconciled impact: retain #86 as complete from its independent source-grounding acceptance evidence; remove the ai-job-search lane from its proof basis. The two-lane implementation gap belongs to #82.
+

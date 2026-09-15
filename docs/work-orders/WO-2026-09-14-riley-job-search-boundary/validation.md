@@ -35,3 +35,10 @@ node scripts/validate-content.mjs
 ## Follow-up (resolved after this PR)
 
 The private-workspace persistence follow-up in [#96](https://github.com/rickvang/Persona-Library/issues/96) is complete in `rickvang/ai-job-search` PR #1; Persona-Library retains the reusable contract and does not store private history.
+
+## Repository-boundary correction — 2026-09-15
+
+The ownership and routing checks above remain passing. The `Durable private runtime/persistence proof is complete` row and the follow-up paragraph are invalidated as runtime evidence: `ai-job-search` PR [#1](https://github.com/rickvang/ai-job-search/pull/1) was a mistaken target for #96 and was reverted by PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+
+Reconciled result: #96 is open for valid private-workspace implementation and repeated-search evidence. Persona-Library still stores only the reusable contract and its records.
+

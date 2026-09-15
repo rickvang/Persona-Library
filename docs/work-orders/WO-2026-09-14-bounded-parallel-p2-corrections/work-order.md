@@ -79,3 +79,10 @@ Stopping condition: PR [#85](https://github.com/rickvang/Persona-Library/pull/85
 ## Next action
 
 No further action for this Work Order. Issue #82 is closed after the integrated proof is recorded.
+
+## Repository-boundary correction — 2026-09-15
+
+PR [#85](https://github.com/rickvang/Persona-Library/pull/85) and the three Playbook corrections remain complete. The later `ai-job-search` Lane B cited as proof was a mistaken target for #96 and was removed by corrective PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+
+The live two-lane proof is therefore outstanding again. #82 is reopened for that acceptance criterion; this Work Order does not require any rollback of the Playbook or its correction set.
+

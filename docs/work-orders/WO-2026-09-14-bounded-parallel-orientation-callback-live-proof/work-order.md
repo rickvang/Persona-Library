@@ -172,3 +172,15 @@ blockers / unresolved questions
 ## Next action
 
 No further action for this Work Order. The integrated run, review/correction loop, and authorized merges are complete; issue closure is handled by the backlog reconciliation.
+
+## Repository-boundary correction — 2026-09-15
+
+The historical Lane B selection was invalid. Persona-Library #96 was sent to `rickvang/ai-job-search`, although this repository owns the reusable ledger contract and real durable job-search history belongs only in an explicitly authorized private runtime/workspace.
+
+- The original `ai-job-search` PR [#1](https://github.com/rickvang/ai-job-search/pull/1), merged as `f12b1df3e1d5471c1c896e2b052165452d329314`, was reverted by corrective PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+- The revert was safe because current `master` had no later commits depending on the two ledger commits; it restored the pre-PR tree and removed the helper, focused tests, and related documentation changes.
+- The former Lane B implementation and its `142 tests`, `3 expected skips`, and `10 focused ledger tests` are retained as historical execution facts, but they are invalid as Persona-Library #96 runtime acceptance evidence.
+- Lane A’s orientation/callback implementation and the actual completion callback to the originating Chat remain valid. The review/correction loop and separately authorized merge sequence remain historical facts, but the integrated run no longer proves #82, #86, or #96.
+
+Current follow-up: #96 remains open for valid private-runtime implementation and evidence; #82 remains open for the invalidated two-lane implementation proof; #86 remains complete from its independent `template-library` source-grounding case; and #97 is reopened as an incomplete integrated proof. No replacement runtime is introduced here.
+
