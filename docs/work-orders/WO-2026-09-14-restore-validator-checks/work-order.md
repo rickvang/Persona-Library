@@ -2,9 +2,9 @@
 
 - Work Order ID: WO-2026-09-14-restore-validator-checks
 - Title: Restore validator checks lost in #70 extraction
-- Status: ready-for-review
+- Status: complete
 - Created: 2026-09-14
-- Last updated: 2026-09-14
+- Last updated: 2026-09-15
 - Requester: Rick Vang
 - Current owner: Cursor cloud agent
 - Explicit collaborator: Mara Okoye, knowledge systems architect
@@ -51,9 +51,9 @@ Mara’s canonical Persona record, the `docs` `work-order-start` route, `docs/wo
 
 ## Current phase and gate
 
-Phase: implementation, focused tests, full validation, and reconciliation complete on `cursor/restore-validator-checks-a1a9`; PR #80 is open against `main`.
+Phase: complete. Implementation, focused tests, full validation, reconciliation, and the merge of PR #80 are complete on current `main`.
 
-Gate: ready for review. Tool-use recipes without steps fail closed, incomplete or duplicate Playbook identities fail closed, focused regression tests cover both defects, and current canonical data still passes the top-level validator. #70's focused-module architecture remains intact.
+Gate: complete. Tool-use recipes without steps fail closed, incomplete or duplicate Playbook identities fail closed, focused regression tests cover both defects, and current canonical data passes the top-level validator. #70's focused-module architecture remains intact.
 
 ## Evidence and uncertainty
 
@@ -64,4 +64,14 @@ Gate: ready for review. Tool-use recipes without steps fail closed, incomplete o
 
 ## Completion boundary and next action
 
-The Work Order is complete when the restored checks, focused tests, full validation, `git diff --check`, and reconciliation report are inspectable on an open pull request. Next action: reviewer inspects PR #80 and merges only after review. Do not merge from this packet.
+The Work Order is complete: the restored checks, focused tests, full validation, `git diff --check`, and reconciliation report are inspectable on current `main` after PR [#80](https://github.com/rickvang/Persona-Library/pull/80) merged as `6efae051222b323ef0649dd86c690fb9f3461a66`. Issue [#78](https://github.com/rickvang/Persona-Library/issues/78) is closed as completed. No further action remains in this packet.
+
+## Completion reconciliation
+
+- Implementation PR [#80](https://github.com/rickvang/Persona-Library/pull/80) merged as `6efae051222b323ef0649dd86c690fb9f3461a66`.
+- Validation remains recorded in [validation.md](validation.md): full content validation, four focused restoration tests, syntax checks, and diff check passed.
+- The separate #79 track remains outside this Work Order; no scope was expanded.
+
+## Next action
+
+No further repository action for this Work Order.
