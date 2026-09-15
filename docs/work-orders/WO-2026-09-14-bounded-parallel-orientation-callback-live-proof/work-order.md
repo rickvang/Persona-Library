@@ -136,7 +136,7 @@ stop condition
 - `node scripts/validate-content.mjs` — full content, route, generated-output, Site, relationship, and maintenance validation.
 - `git diff --check` — whitespace validation.
 - Lane B validation is recorded above from PR #1; the only local limitation is the missing PyYAML dependency for `tools/lint_skills.py`.
-- Bounded reconciliation: checked the bootstrap, Playbooks route, canonical model/data boundaries, architecture, validator, generated route output, Site Playbooks/Docs/Decisions surfaces, root activation boundary, predecessor Work Orders, and the unchanged collaboration contract. Direct dependents are extended where the new stage and callback are presented; catalog identity, root `AGENTS.md`, Persona/Skill/Tool records, and external repositories are unchanged.
+- Bounded reconciliation: rechecked the bootstrap, Playbooks route, canonical model/data boundaries, architecture, validator, generated route output, Site Playbooks/Docs/Decisions surfaces, root activation boundary, predecessor Work Orders, and the unchanged collaboration contract. The per-workstream callback status, aggregate rule, and deferred stop gate remain within the existing Playbook and route; catalog identity, root `AGENTS.md`, Persona/Skill/Tool records, and external repositories are unchanged.
 
 ## Stop conditions
 
