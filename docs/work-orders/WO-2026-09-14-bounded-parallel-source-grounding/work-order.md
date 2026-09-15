@@ -91,3 +91,10 @@ Stopping condition: PRs #87 and #88 merged, with the target-repository-first con
 ## Next action
 
 No further action for this Work Order. Issue #86 is closed after the final GitHub state refresh.
+
+## Repository-boundary correction — 2026-09-15
+
+The target-repository-first/source-grounding implementation remains complete. The integrated `ai-job-search` lane later cited as external implementation evidence was a wrong-repository assignment for #96 and was reverted by [ai-job-search PR #2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+
+This does not invalidate #86’s independent external source-grounding proof: [`proof.md`](proof.md) records the `template-library` case being classified as contradicted and stopped before mutation, which directly demonstrates the acceptance gate. #86 remains complete on that evidence; the invalid ai-job-search claim is removed from the current evidence basis.
+

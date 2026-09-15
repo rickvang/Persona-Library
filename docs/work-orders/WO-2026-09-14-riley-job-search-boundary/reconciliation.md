@@ -56,3 +56,10 @@ No further repository action. Close issues #90 and #96 after the final GitHub st
 ## Independent reinspection
 
 Current GitHub reinspection after completion found PR #92 merged as `b3b51abd8e70cfb67e2e3870c8ff6e9ad991111e`; the maintenance record retains its historical revision and appended correction, and the runtime proof dependency is now satisfied by ai-job-search PR #1.
+
+## Repository-boundary correction — 2026-09-15
+
+The final sentence above is superseded for runtime-proof purposes by current GitHub state. `rickvang/ai-job-search` PR [#1](https://github.com/rickvang/ai-job-search/pull/1) was the wrong target for Persona-Library #96 and was removed by corrective PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`. Its tests and implementation therefore cannot satisfy #96’s private-runtime acceptance criterion.
+
+Impact: the #90 ownership and routing changes remain confirmed by PR #92; the linked #96 runtime follow-up is open again and must be proven in an explicitly authorized private workspace. No Persona-Library storage change is required.
+

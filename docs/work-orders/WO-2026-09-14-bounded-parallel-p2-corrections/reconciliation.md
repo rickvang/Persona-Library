@@ -50,3 +50,10 @@ PR [#85](https://github.com/rickvang/Persona-Library/pull/85) merged as `e4894df
 ## Next action
 
 No further repository action. Close issue #82 after the final GitHub state refresh.
+
+## Repository-boundary correction — 2026-09-15
+
+The correction-stage implementation remains confirmed by PR #85. The later integrated proof cited in the final reconciliation used `ai-job-search` as the #96 implementation target; that target was invalid and the implementation was removed by corrective PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+
+The impact is limited to the separate real two-lane proof: #82 is reopened. No Playbook source rollback is required.
+

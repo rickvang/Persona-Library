@@ -104,3 +104,10 @@ Out of scope / follow-up: implement and prove durable private-workspace ledger p
 ## Next action
 
 No further action for this Work Order. Issue closure is handled by the post-merge backlog reconciliation.
+
+## Repository-boundary correction — 2026-09-15
+
+PR [#92](https://github.com/rickvang/Persona-Library/pull/92) still satisfies this Work Order’s ownership correction: the Evidence-led Job Search Playbook owns the outcome, Riley remains the AI orchestrator, and specialists retain domain judgment. The later `ai-job-search` PR [#1](https://github.com/rickvang/ai-job-search/pull/1) was an invalid implementation target for the separately deferred runtime proof and was reverted by [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+
+The reusable contract in `docs/job-search/job-ledger-contract.md` remains valid, while #96 is again the open owner of valid private-workspace persistence evidence. This correction does not reopen #90’s completed ownership architecture or move private history into Persona-Library.
+

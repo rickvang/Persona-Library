@@ -83,3 +83,10 @@ Stopping condition: the Playbook, its correction loop, and the integrated live p
 ## Next action
 
 No further action for this Work Order. Issue #82 is closed after the integrated proof is recorded.
+
+## Repository-boundary correction — 2026-09-15
+
+The reusable Playbook implementation and its correction pass remain complete. The later integrated proof cited above is qualified: its Lane B implementation was incorrectly placed in `rickvang/ai-job-search` for Persona-Library #96 and was removed by corrective PR [#2](https://github.com/rickvang/ai-job-search/pull/2), merged as `dfd04ba95f073fce77fd93de699bca488c5963e6`.
+
+That lane therefore does not satisfy the real two-lane proof required by #82. The existing `tool-repo` retrospective in [`proof.md`](proof.md) remains valid as historical same-repository evidence with its documented limitations; #82 is reopened for a valid two-lane implementation proof. No change to the Playbook architecture or contract is required.
+
