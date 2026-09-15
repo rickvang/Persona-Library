@@ -108,6 +108,12 @@ test('Bounded parallel orientation, grounding, and callback gates remain separat
   assert.match(playbook, /originating Chat must refresh GitHub independently/);
   assert.match(playbook, /callback transport is unsupported/);
   assert.match(playbook, /compact packet in the coordinator context/);
+  assert.match(playbook, /one terminal status for each workstream/);
+  assert.match(playbook, /aggregate is `review_ready` only when every workstream is `review_ready`/);
+  assert.match(playbook, /`review_ready \+ blocked` is `blocked`/);
+  assert.match(playbook, /Implementer transitions to `deferred` when an explicit, scoped dependency/);
+  assert.match(playbook, /dependency, owner\/reference, reason, and re-entry condition/);
+  assert.match(playbook, /deferred.*dependency.*re-entry condition/s);
   assert.ok(playbook.indexOf('### 5. Independent review') < playbook.indexOf('### 6. Scoped correction'));
   assert.ok(playbook.indexOf('### 6. Scoped correction') < playbook.indexOf('### 7. Authorized merge and stop'));
   assert.match(playbook, /Pass only with explicit authorization/);
