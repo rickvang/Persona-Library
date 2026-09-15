@@ -105,7 +105,7 @@ These are role names, not new library entities.
 | Role | Owns | Does not own |
 | --- | --- | --- |
 | Coordinator | Determine and verify Implementer orientation state, source-ground candidate workstreams, dispatch only confirmed or qualified packets, collect compact handoffs, stop. | Reimplementing a workstream, nested agents, polling as a substitute for handoff, implementation-code review during dispatch, silently rewriting a contradicted request. |
-| Implementer | Exactly one workstream in one repository: follow the target repository's orientation path from the packet's references, re-open current source, produce one branch and one PR or a bounded blocker, then stop. | Other workstreams, sub-agents, merge, treating a missing capability as success, treating the dispatch packet as copied repository history. |
+| Implementer | Exactly one workstream in one repository: follow the target repository's orientation path from the packet's references, re-open current source, produce one branch and one PR or a bounded blocker/defer outcome, then stop. | Other workstreams, sub-agents, merge, treating a missing capability as success, treating the dispatch packet as copied repository history. |
 | Reviewer | Independent reinspection of current PR, diff, review threads, and checks; problem-correctness against current repository owner and source; separate blockers from suggestions; send only scoped correction. | Treating the implementer handoff as GitHub truth; expanding scope; merging. |
 | Authorizer | Merge and other consequential mutations after fresh preflight. | Implied by a green implementer stop or a compact callback. |
 
@@ -226,11 +226,11 @@ The implementer must re-open current repository state itself.
 - **Owner:** The assigned Implementer.
 - **Entry:** A single dispatch packet and a fresh inspect of the target repository.
 - **Inputs:** Current repository orientation/instructions, Tool contracts, issue scope, required validation. For an external target repository, Persona-Library records are not required after Playbook selection unless the target repository requires them; if Persona-Library itself is the target repository, follow its local bootstrap and selected route requirements.
-- **Actions:** Inspect fresh state; stay in the grounded scope; run only required validation; open one PR or stop with a blocker; do not spawn sub-agents; do not merge.
-- **Outputs:** Branch + PR, or a blocker that names the missing input, permission, or conflict.
+- **Actions:** Inspect fresh state; stay in the grounded scope; run only required validation; open one PR, or transition to `blocked` or `deferred` when the bounded stop condition applies; do not spawn sub-agents; do not merge.
+- **Outputs:** Branch + PR, or a compact blocker/defer handoff that names the missing input, permission, conflict, or scoped dependency.
 - **Evidence:** GitHub references plus the validation actually run.
-- **Exit:** Reviewable or blocked. The implementer stops.
-- **Handoff:** Compact handoff only. Do not return the child transcript.
+- **Exit:** `review_ready`, `blocked`, or `deferred`. The Implementer transitions to `deferred` when an explicit, scoped dependency makes continued work inappropriate for this run but gives a concrete re-entry condition—for example, a named upstream PR/base revision, required user decision, or unavailable approved capability. A current contradiction or an unresolved permission/source conflict is `blocked`; a correctable in-scope defect remains implementation work. The Implementer records the dependency, owner/reference, reason, and re-entry condition, then stops.
+- **Handoff:** Compact handoff only. For `deferred`, include the dependency and re-entry condition; the same packet is used for a supported callback or coordinator fallback. Do not return the child transcript.
 
 Normal implementer bounds:
 
@@ -242,7 +242,7 @@ one PR
 required validation only
 no merge
 no sub-agents
-stop when reviewable or blocked
+stop when reviewable, blocked, or deferred
 ```
 
 ### 4. Compact handoff
@@ -260,15 +260,16 @@ stop when reviewable or blocked
 Default handoff schema:
 
 ```text
+workstream status: review_ready | blocked | deferred
 repository
 issue/workstream
 branch
 PR
 validation performed
-blockers / unresolved questions
+blocker / dependency / re-entry condition
 ```
 
-When the runtime supports returning to the originating conversation, the Coordinator sends one callback after all workstreams reach a bounded terminal state: `review_ready`, `blocked`, or `deferred`. The callback uses the compact handoff fields above and may include one concise coordinator note. It is notification and routing only; it does not assert current GitHub PR, diff, review, check, or merge state.
+When the runtime supports returning to the originating conversation, the Coordinator sends one callback after all workstreams reach a bounded terminal state: `review_ready`, `blocked`, or `deferred`. The callback includes one terminal status for each workstream plus an aggregate `run status`. For one or more dispatched workstreams, the aggregate is `review_ready` only when every workstream is `review_ready`; it is `blocked` when any workstream is `blocked`; otherwise it is `deferred` when at least one workstream is `deferred`. Thus `review_ready + blocked` is `blocked`, `review_ready + deferred` is `deferred`, and `blocked + deferred` is `blocked`. The callback uses the compact handoff fields above and may include one concise coordinator note. It is notification and routing only; it does not assert current GitHub PR, diff, review, check, or merge state.
 
 If callback transport is unavailable, surface the same compact packet in the coordinator context, record the transport limitation, and stop. Do not simulate callback delivery or keep the originating conversation in an indefinite polling loop.
 
@@ -358,12 +359,13 @@ Default callback packet:
 ```text
 run status: review_ready | blocked | deferred
 workstreams:
-  - repository
-  - issue / workstream
-  - branch
-  - PR
-  - validation summary
-  - blocker / unresolved question, if any
+  - status: review_ready | blocked | deferred
+    repository
+    issue / workstream
+    branch
+    PR
+    validation summary
+    blocker / dependency / re-entry condition, if any
 coordinator note: optional one concise sentence
 ```
 
@@ -394,9 +396,9 @@ An agent that starts inside an external target repository does not load Persona-
 
 **Dispatch gate.** Pass only when each implementer has one recorded orientation state, one confirmed or qualified workstream, one repository, one stop condition, and no instruction to spawn sub-agents. Fail if a contradicted workstream is dispatched, the coordinator plans to reimplement, poll instead of awaiting handoff, or review code before the review stage.
 
-**Implementer stop gate.** Pass only when the workstream has a reviewable PR or a bounded blocker, required validation was run or explicitly skipped with reason, and the implementer did not merge. Fail if nested agents were used or scope expanded.
+**Implementer stop gate.** Pass only when the workstream has a reviewable PR, a bounded blocker, or a bounded defer with a named dependency and re-entry condition; required validation was run or explicitly skipped with reason; and the Implementer did not merge. Fail if nested agents were used, scope expanded, or `deferred` is used without an explicit scoped dependency and re-entry condition.
 
-**Handoff gate.** Pass only when the packet uses the compact schema and does not include child transcripts or large repository copies. A supported callback has one terminal state from `review_ready`, `blocked`, or `deferred`; an unsupported callback is surfaced as the same compact coordinator fallback. Fail if GitHub identities are missing without being marked unknown or if callback transport is simulated.
+**Handoff gate.** Pass only when the packet uses the compact schema, includes one terminal status per workstream and the aggregate status rule, and does not include child transcripts or large repository copies. A supported callback has an aggregate terminal state from `review_ready`, `blocked`, or `deferred` plus each workstream's terminal state; an unsupported callback is surfaced as the same compact coordinator fallback. Fail if GitHub identities are missing without being marked unknown, a defer lacks its dependency/re-entry condition, or callback transport is simulated.
 
 **Review gate.** Pass only when the reviewer re-fetched current GitHub state, checked problem correctness against current repository source and owner, and separated blockers from suggestions. Fail if the handoff or callback was treated as proof of current PR/diff/check state. A fail with scoped corrections is an entry to stage 6, not a run-stop.
 
