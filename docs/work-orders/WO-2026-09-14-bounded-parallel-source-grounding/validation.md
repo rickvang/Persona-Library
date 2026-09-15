@@ -1,6 +1,6 @@
 # Validation evidence
 
-Behavior-focused checks for issue #86. Merge is not authorized from this Work Order.
+Behavior-focused checks for issue #86. The implementation-stage record stopped before merge; post-merge reconciliation records the final merge and live proof.
 
 ## Contract checks
 
@@ -33,4 +33,4 @@ See [`proof.md`](proof.md). `template-library` #1 first PR as written is **contr
 
 ## Coverage and limits
 
-Validators lock the bounded-parallel catalog card to `4 roles` and `7 stages`, and require the Playbooks page to present `01 / GROUND`. They do not execute the Playbook. The `template-library` proof is source-grounding plus stop/re-scope, not a live parallel run. Issue #82 remains open for that distinctive live-run proof.
+Validators lock the bounded-parallel catalog card to `4 roles` and `7 stages`, and require the Playbooks page to present `01 / GROUND`. They do not execute the Playbook. The `template-library` case remains source-grounding plus stop/re-scope; the later ai-job-search lane supplies the real external implementation proof and PR #98 records it for #86/#82.

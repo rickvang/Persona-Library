@@ -1,6 +1,6 @@
 # Reconciliation report
 
-- Status: ready for merge
+- Status: complete
 - Change observed: new Template lifecycle Playbook contract, catalog identity, Playbooks route, Templates stewardship handoff, Site Playbooks/Docs/Decisions surfaces, DEC-012, focused validators, and this Work Order
 - Initiating contract: `$playbook-composer` `change_mode: record_update`, `change_domain: playbooks`, `reconciliation: change-impact-reconciliation`; authorized issue #72 update
 - Scope checked: playbookCatalog, Playbooks/Templates orientation, site-orientation route_count, Template Librarian workflows/Skills (reference-only), Site playbooks/guide/decisions pages, DEC-008/009 adjacency, generated dist/data copies, issue #72
@@ -47,10 +47,14 @@ Repository search cannot prove every future Template request will choose the Pla
 
 The current branch is rebased onto the merged PR #92 head, so its catalog includes Multi-Persona Collaboration plus this Template lifecycle Playbook (5 catalog identities and 4 orientation routes). Durable decision ID is **DEC-012**, coexisting with DEC-011 on PR #92. The Decisions summary is reconciled to 8 applied decisions.
 
+## Final merge reconciliation
+
+PR [#93](https://github.com/rickvang/Persona-Library/pull/93) is merged as `7f7babbe8fca189a9e06e5355c56165d8cc2092f`. Current `main` retains the five-entry Playbook catalog, four Playbooks routes, DEC-011 + DEC-012, and the validated Template lifecycle contract.
+
 ## Next action
 
-Repository reviewer: inspect the current PR #93 scope and current GitHub checks for [#72](https://github.com/rickvang/Persona-Library/issues/72), then complete the authorized merge.
+No further repository action. Close issue #72 after the final GitHub state refresh.
 
 ## Independent reinspection
 
-Current GitHub reinspection after the dependency rebase found PR #93 open and draft, targeting `main` at the merged PR #92 head `b3b51ab`, with the five-entry Playbook catalog, DEC-011 + DEC-012, and the reconciled 8-decision summary. The Template lifecycle problem remains correctly bounded; final repository validation and current GitHub checks are the remaining merge gates.
+Current GitHub reinspection after completion found PR #93 merged as `7f7babbe8fca189a9e06e5355c56165d8cc2092f`; the five-entry Playbook catalog, DEC-011 + DEC-012, and the reconciled 8-decision summary remain on `main`.

@@ -21,7 +21,7 @@ Behavior-focused checks for issue #71.
 - `node scripts/validate-content.mjs` — pass: 20 Personas, 2 operators, 2 leaders, 16 specialists, 20 workflow maps.
 - `node --test scripts/validation/validation.test.mjs` — pass: 5 tests, including the existing Playbook-identity duplicate/missing-field test.
 - `git diff content/orientation/playbooks.json content/site-orientation.json docs/collaboration/` — pass: no changes, confirming the existing route and collaboration contract are untouched.
-- Current GitHub reinspection — pass: PR #91 remains open and non-draft on `main` at `4be9eae`, current head `4c43abf`, Vercel successful, and the original duplication thread is outdated.
+- Current GitHub reinspection — pass: PR #91 merged as `9b6293e5d0ee1051b0eb02bfa1493f806cd7c7ee`; the original duplication thread was outdated after the compact overview correction.
 
 ## Coverage and limits
 

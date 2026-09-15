@@ -14,7 +14,7 @@
 | `content/orientation/playbooks.json` | Playbooks route group | Extends | New `bounded-parallel-implementation` route; collaboration route unchanged | Retain |
 | `content/site-orientation.json` | Bootstrap space index | Extends | `spaces.playbooks.route_count` 2 → 3 | Retain |
 | Multi-Persona Collaboration Playbook | Adjacent coordination contract | Confirms | Referenced, not rewritten; stages and `problem-context` remain collaboration-owned | None |
-| Issue #71 | Canonical collaboration catalog identity | Unrelated | Still open; this change does not catalog collaboration | Leave #71 open |
+| Issue #71 | Canonical collaboration catalog identity | Unrelated | Historically out of scope here; it was completed separately by merged PR #91 | None |
 | Design System Operating Pack `playbooks` field | Existing Playbook identity reference | Unrelated | Still lists only `playbook-create-and-integrate-reusable-skill` | None |
 | `dist/playbooks.html` and `dist/guide.html` | Authored Site presentation | Extends | Catalog card, stage overview, Docs example, routing-map row | Retain |
 | `dist/decisions.html` DEC-010 | Durable rationale | Extends | Distinct Playbook vs collaboration-extension decision | Retain |
@@ -48,6 +48,10 @@ Collaboration Playbook stages, `problem-context` schema, job-search and skill-fo
 
 Repository search cannot prove exhaustive external consumers. The two-lane proof is same-repository and does not verify the ChatGPT callback. Connector availability in a later session remains unknown.
 
+## Final merge reconciliation
+
+PR [#83](https://github.com/rickvang/Persona-Library/pull/83) merged as `1d48730bc1f31da899e4c3b63bba401d7af878ec`; correction PR [#85](https://github.com/rickvang/Persona-Library/pull/85) merged as `e4894dfd47f70e3d9bec17a922dd6ef2f669d6b5`; integrated proof PR [#98](https://github.com/rickvang/Persona-Library/pull/98) merged as `73c9f6fbbf0b1aa70895a6e39434d335498de6ce`.
+
 ## Next action
 
-Repository reviewer: inspect [PR #83](https://github.com/rickvang/Persona-Library/pull/83), confirm the distinct-Playbook boundary and compact-handoff contract, and merge only after review. Do not merge from this Work Order.
+No further repository action. The later integrated run satisfies the proof gap that was intentionally left open by this initial Work Order.

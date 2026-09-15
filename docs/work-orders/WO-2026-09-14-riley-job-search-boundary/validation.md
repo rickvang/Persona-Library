@@ -17,7 +17,7 @@
 | Multi-specialist runs still use Riley/Playbook | pass | consultation convention preserved as routed panel/Playbook coordination |
 | No new Job Search Persona | pass | no new Persona record; DEC-011 rejects that alternative |
 | Job ledger contract present without private PL storage | pass | `docs/job-search/job-ledger-contract.md` + Site copy; privacy boundary explicit |
-| Durable private runtime/persistence proof is complete | deferred | Contract-level behavior is documented; [#96](https://github.com/rickvang/Persona-Library/issues/96) tracks implementation and proof outside Persona-Library |
+| Durable private runtime/persistence proof is complete | pass | `rickvang/ai-job-search` PR [#1](https://github.com/rickvang/ai-job-search/pull/1), merged as `f12b1df3e1d5471c1c896e2b052165452d329314`, records 142 tests, 3 expected skips, and 10 focused ledger tests |
 | Repository validation | pass | `node scripts/build-library.mjs` and `node scripts/validate-content.mjs` |
 
 ## Commands
@@ -29,9 +29,9 @@ node scripts/validate-content.mjs
 
 ## Limitations
 
-- No live repeated-search runtime was executed in this PR. Durable private ledger persistence and repeated-search deduplication are **contract-complete here but runtime-unproved**; [#96](https://github.com/rickvang/Persona-Library/issues/96) is the focused follow-up for implementation and proof.
+- No live repeated-search runtime was executed inside Persona-Library PR #92. The subsequent consuming-repository PR #1 supplies the focused synthetic runtime proof and is the authoritative implementation location.
 - Historical Work Order packets retain older “consult Riley” phrasing where they document past runs; live contracts were updated instead of rewriting history.
 
-## Follow-up (out of scope for this PR)
+## Follow-up (resolved after this PR)
 
-Track and complete [#96](https://github.com/rickvang/Persona-Library/issues/96) to implement and prove private-workspace ledger persistence across repeated searches (normalize → dedupe → update `last_seen` / disposition → avoid resurfacing known jobs as new). Do not treat this PR as that runtime proof or close #90 before #96 has acceptance evidence.
+The private-workspace persistence follow-up in [#96](https://github.com/rickvang/Persona-Library/issues/96) is complete in `rickvang/ai-job-search` PR #1; Persona-Library retains the reusable contract and does not store private history.

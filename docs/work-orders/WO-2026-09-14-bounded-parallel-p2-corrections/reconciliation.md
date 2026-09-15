@@ -18,8 +18,8 @@
 | Generated `dist/data/orientation/playbooks.json` | Build provenance | Extends | Rebuild required after route-group source change | Ran `build-library.mjs` |
 | `content/site-orientation.json` | Bootstrap | Unrelated | `route_count` remains 3; no bootstrap Playbook-specific rule added | None |
 | `content/library-data.js` `playbookCatalog` | Canonical identity | Unrelated | Identity and status unchanged | None |
-| Multi-Persona Collaboration Playbook | Adjacent contract | Unrelated | Not rewritten; #71 still open | Leave #71 open |
-| Issue #82 | Real-case proof still outstanding | Confirms | These P2s do not invent a live parallel-run proof | Leave #82 open |
+| Multi-Persona Collaboration Playbook | Adjacent contract | Unrelated | Not rewritten here; #71 was completed separately by PR #91 | None |
+| Issue #82 | Real-case proof still outstanding at correction time | Confirms | These P2s did not invent a live proof; PR #98 later supplied it | None after integrated proof |
 | Docs routing map | Current-truth pointer | Confirms | Guide already names the Bounded Parallel Implementation Playbook | None |
 
 ## Generated outputs
@@ -43,6 +43,10 @@ Collaboration Playbook stages, `problem-context` schema, job-search and skill-fo
 
 Repository search cannot prove exhaustive external consumers of former `AGENTS.md` rule 13. The distinctive live-run proof remains an open #82 acceptance item.
 
+## Final merge reconciliation
+
+PR [#85](https://github.com/rickvang/Persona-Library/pull/85) merged as `e4894dfd47f70e3d9bec17a922dd6ef2f669d6b5`. The integrated two-lane proof in PR [#98](https://github.com/rickvang/Persona-Library/pull/98), merged as `73c9f6fbbf0b1aa70895a6e39434d335498de6ce`, satisfies the remaining #82 acceptance criterion.
+
 ## Next action
 
-Repository reviewer: inspect [#85](https://github.com/rickvang/Persona-Library/pull/85), confirm the three P2s, and merge only after separate authorization. Do not merge from this Work Order. Leave #82 open.
+No further repository action. Close issue #82 after the final GitHub state refresh.
