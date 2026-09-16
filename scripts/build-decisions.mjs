@@ -26,17 +26,15 @@ const renderHistoricalRecordLines = record => {
   const renderedHistory = historicalLines
     .map(line => renderLine(line.label, line.value))
     .join('');
-  const historicalCorrections = new Set(
-    historicalLines
-      .filter(line => String(line.label).toLowerCase() === 'correction')
-      .map(line => line.value)
-  );
+  const historicalCorrectionCount = historicalLines
+    .filter(line => String(line.label).toLowerCase() === 'correction')
+    .length;
   const laterMetadata = [
     ['Status note', record.status_note],
     ['Qualifies', Array.isArray(record.qualifies) ? record.qualifies.join(', ') : record.qualifies]
   ].map(([label, value]) => renderLine(label, value)).join('');
   const laterCorrections = currentCorrectionLines(record)
-    .filter(correction => !historicalCorrections.has(correction))
+    .slice(historicalCorrectionCount)
     .map(correction => renderLine('Correction', correction))
     .join('');
   return `${renderedHistory}${laterMetadata}${laterCorrections}`;
