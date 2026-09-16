@@ -1,0 +1,61 @@
+name: Rerender issue 117 decisions
+
+on:
+  push:
+    branches:
+      - fix/issue-117-decision-history-fidelity
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/issue-117-decision-history-fidelity
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Rebuild and validate
+        shell: bash
+        run: |
+          node scripts/build-library.mjs
+          node scripts/validate-content.mjs
+          node --test scripts/validation/validation.test.mjs
+          node eval/isolated-persona-skill.mjs validate
+          node --check scripts/build-decisions.mjs
+          git diff --check
+          python3 - <<'PY'
+          from pathlib import Path
+          html = Path('dist/decisions.html').read_text(encoding='utf-8')
+          marker = 'The Playbook models four roles—Coordinator, Implementer, Reviewer, and Authorizer.'
+          if html.count(marker) != 1:
+              raise SystemExit(f'DEC-010 first correction rendered {html.count(marker)} times; expected once')
+          required = [
+              '<strong>Why parked</strong>',
+              '<strong>Notes</strong>',
+              'A scoped Persona–Skill–workflow application keeps applicability contextual.',
+              'architecture, taxonomy, and concept-boundary questions.',
+              'Template Skills and Librarian identity remain unchanged. Numbered DEC-012 after DEC-011 on the Riley/job-search ownership boundary.',
+              'Riley is the default routing front door',
+              'Personas operate Playbooks; job search gets a domain orchestrator',
+          ]
+          missing = [item for item in required if item not in html]
+          if missing:
+              raise SystemExit(f'Missing generated Decision fidelity markers: {missing}')
+          PY
+      - name: Commit regenerated output and remove temporary workflow
+        shell: bash
+        run: |
+          rm -f .github/workflows/issue-117-rerender.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Regenerate Decision archive after fidelity fix (#117)"
+          git push origin HEAD:fix/issue-117-decision-history-fidelity
