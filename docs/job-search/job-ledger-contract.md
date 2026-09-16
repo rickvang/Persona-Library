@@ -1,110 +1,95 @@
-# Job opportunity ledger contract
+# Seen-job deduplication contract
 
-Reusable contract for durable job-search opportunity state. Use with the **Evidence-led Job Search Playbook**. This is a schema and behavior contract, not a Persona-Library data store.
+Reusable contract for avoiding duplicate job results across repeated job-search checks. This is intentionally small: it remembers which openings have already been presented so a later “what’s new?” search can suppress the same jobs by default.
+
+The file name is retained for compatibility with existing references. This contract does **not** define a full job-opportunity ledger or application tracker.
 
 ## Ownership boundary
 
 ```text
-Evidence-led Job Search Playbook
-→ treats the ledger as shared durable search state
+Creative Job Search / job-discovery capability
+→ finds current openings
+→ derives a stable identity for each result
+→ checks the private seen-job set
+→ presents only results not already shown by default
+→ records newly presented results after they are shown
 
-Elena Marin / career search strategist (and the search capability)
-→ discovers and evaluates opportunities; decides disposition
-
-Job-search Skill / search capability
-→ normalizes, deduplicates, reads/writes the ledger
+Elena Marin / career search strategist
+→ owns search strategy, targeting, fit judgment, and opportunity evaluation when those judgments are requested
 
 Priya Desai · Job search orchestrator
-→ uses ledger state to operate the Evidence-led Job Search Playbook
-→ coordinates progression and specialist handoffs
-→ does not own discovery, disposition, the ledger, or private job-search domain data
+→ may use search results inside a full-outcome Playbook run
+→ does not own the seen-job store
+
+Persona-Library
+→ owns this reusable behavior contract only
+→ does not store the user’s seen-job history
 ```
 
-Private job-search history belongs in the candidate’s private workspace or runtime state. Persona-Library must not become the storage location for real opportunity history. Store only the contract, relationships, and Work Order pointers here.
+The actual seen-job set belongs to the consuming private Skill/runtime state.
 
 ## Required behavior
 
 ```text
 search
-→ normalize discovered job
-→ check durable job ledger
-→ already seen?
-   ├─ yes → update last_seen / status; normally do not resurface as new
-   └─ no  → add to ledger → evaluate → present
+→ normalize each returned job enough to derive identity
+→ check private seen-job set
+→ already presented?
+   ├─ yes → suppress from default new-results output
+   └─ no  → present → add identity to seen-job set
 ```
 
-Do not treat a repost or materially changed posting as an ordinary duplicate. Update `last_seen` and surface it as changed/reposted when useful.
+The goal is simple: repeated searches should surface genuinely new openings instead of repeatedly showing the same ones.
 
-## Status vocabulary
-
-Distinguish at least:
-
-```text
-discovered
-reviewed
-shortlisted
-rejected
-applied
-expired
-reposted / refreshed
-```
-
-Rejected, applied, and expired jobs remain queryable. They must not silently reappear as new discoveries.
-
-## Minimum record shape
-
-Start small. A private structured file or SQLite store is sufficient for v1. Do not introduce a database service unless evidence requires one.
-
-| Field | Purpose |
-| --- | --- |
-| `job_id` | Stable local identity |
-| `source` | Provider or channel name |
-| `source_job_id` | Provider’s stable job ID when available |
-| `canonical_url` | Normalized posting URL |
-| `company` | Employer name |
-| `title` | Role title |
-| `location` | Location or work-mode label |
-| `first_seen` | First discovery timestamp |
-| `last_seen` | Most recent observation |
-| `status` | Disposition from the vocabulary above |
-| `fit_score` / `fit_notes` | Specialist evaluation notes |
-| `rejection_reason` | Why the role was declined, when known |
-| `application_reference` | Link to application Work Order or packet when applied |
-
-## Deduplication order
+## Identity order
 
 Use the strongest available identity first:
 
-1. provider/source + stable source job ID;
-2. normalized canonical URL;
-3. fallback fingerprint such as normalized `company + title + location`.
+1. provider/source + stable provider job ID;
+2. normalized canonical posting URL;
+3. conservative normalized `company + title + location` fingerprint.
 
-Recognize the same role when it appears repeatedly or across providers without treating every result as new.
+Tracking-only URL parameters should not make the same posting look new. The fallback fingerprint should be conservative so distinct roles are not collapsed merely because they are similar.
 
-## Playbook and specialist use
+## Minimum private record
 
-- Full-outcome search runs load the ledger as Playbook shared state.
-- Elena (or the active search specialist) owns discovery, fit judgment, and status disposition.
-- Application packets may link an `application_reference`; they do not replace the ledger.
-- Priya may require the ledger check before progression; Priya does not write opportunity records as discovery/disposition owner.
+Keep the stored state as small as practical. A record may contain only:
 
-## Non-goals
+| Field | Purpose |
+| --- | --- |
+| `key` | Stable identity used for deduplication |
+| `company` | Human-readable reference |
+| `title` | Human-readable reference |
+| `first_shown` | When the job was first presented |
 
-- No Persona-Library-hosted private candidate job history.
-- No mass scraping or autonomous apply loop implied by this contract.
-- No new generic Job Search Persona.
-- No transfer of discovery/disposition ownership from Elena/search capability to the Job Search Orchestrator.
+A simple private structured file, Skill state, or equivalent lightweight store is sufficient. Do not add a database service merely for this behavior.
+
+## Explicit non-goals
+
+This contract does not require:
+
+- application lifecycle tracking;
+- rejected / applied / expired status management;
+- `last_seen` observation history;
+- repost/material-change state machines;
+- campaign analytics or campaign-health persistence;
+- application references;
+- a remote database, scheduler, queue, daemon, or sync service;
+- importing or integrating JobAgent;
+- storing private job-search history inside Persona-Library.
+
+JobAgent remains reference evidence only. The retained concept here is repeated-result deduplication, not JobAgent’s broader state model.
 
 ## Validation questions
 
-- Do repeated searches avoid presenting previously seen jobs as new by default?
-- Can previously seen jobs update `last_seen` without creating duplicates?
-- Can reposted or materially changed jobs be surfaced deliberately?
-- Do rejected, applied, and expired jobs remain queryable?
-- Does deduplication prefer source IDs, then URLs, then a conservative fingerprint?
-- Is the ledger durable across runs in private workspace state?
-- Does Priya use the state for orchestration without taking discovery/disposition ownership?
+- Does the first search present a matching job?
+- Does a later equivalent search suppress that same job by default?
+- Do tracking-only URL differences avoid creating duplicates?
+- Are stable provider job IDs preferred when available?
+- Does the fallback fingerprint avoid obvious duplicates without collapsing clearly different roles?
+- Do genuinely new jobs continue to appear normally?
+- Is the implementation still a small private seen-results mechanism rather than a general job-tracking system?
 
 ## Runtime proof status
 
-This document is the reusable contract only. Persona-Library does not host private job history. A consuming workspace/runtime must implement persistence and prove repeated-search deduplication separately; contract presence here is not that proof.
+Persona-Library defines the contract only. The consuming Skill/runtime must provide the small persistent seen-job set if repeated-run memory is required. If that runtime cannot persist state across runs, record the limitation instead of adding unrelated infrastructure.

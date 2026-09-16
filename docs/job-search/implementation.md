@@ -13,7 +13,7 @@ This is a Persona-operated Playbook surface. The Playbook composes Personas, Ski
 Riley Morgan · AI orchestrator remains the default system entry and routing point for unqualified requests. For a full-outcome job-search request, Riley routes to **Priya Desai · Job search orchestrator**, who operates the **Evidence-led Job Search Playbook** as the durable process surface. Use one primary candidate persona with a coordinated set of specialist lenses:
 
 1. **Job seeker** — source of truth for goals, constraints, experience, preferences, voice, and evidence.
-2. **Search strategist (Elena Marin)** — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity disposition against the job ledger.
+2. **Search strategist (Elena Marin)** — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity evaluation, with lightweight seen-job deduplication for repeated discovery checks.
 3. **Hiring manager / role calibrator (Marcus Chen)** — interprets the role, separates required signals from noise, and defines what success would look like.
 4. **ATS application specialist / application narrative editor (Leah Okafor)** — checks parsing, terminology alignment, structure, and truthful coverage.
 5. **Human narrative editor (conditional)** — improves clarity, relevance, voice, credibility, and story when a human-facing output is warranted.
@@ -42,7 +42,7 @@ Riley Morgan · AI Orchestrator
 → Priya uses Evidence-led Job Search Playbook
 ```
 
-Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or the job ledger.
+Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or private seen-job state.
 
 The default path is ATS-first with a material-claim integrity gate. Cover letters pass through a positioning layer before review so the evidence ledger informs the writing without dictating every sentence. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
 
@@ -64,7 +64,7 @@ The first build is a responsive reference surface plus actual working-draft pers
 - Reuse of Camille Ortiz for visual communication review and Sofia Calder for document production when needed; Riley Morgan remains the general AI orchestrator outside the default job-search operator role
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
 - The end-to-end search workflow defined by the Evidence-led Job Search Playbook and operated by the Job Search Orchestrator
-- A reusable [job opportunity ledger contract](job-ledger-contract.md) for durable private search-state deduplication
+- A reusable [seen-job deduplication contract](job-ledger-contract.md) so repeated job searches can suppress openings already presented
 - Quality gates for ATS compatibility and evidence integrity by default, with human readability and visual communication when those outputs are warranted
 - A clear boundary between current capabilities and later product work
 
@@ -86,13 +86,12 @@ Each future job-search record should preserve:
 - ATS review findings and human review findings as separate records
 - Version history, decisions, submitted date, outcome, and learning
 - Open questions and what evidence would change the search strategy
-- Durable opportunity ledger entries for discovered roles (see [job ledger contract](job-ledger-contract.md))
 
-Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct. Keep private opportunity history in the candidate workspace; Persona-Library owns only the reusable ledger contract.
+Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct. Keep the private seen-job set in the consuming Skill/runtime; Persona-Library owns only the reusable deduplication contract.
 
-### Job opportunity ledger
+### Repeated-search deduplication
 
-Repeated searches must not present previously seen jobs as new by default. After discovery, normalize the posting, check the durable ledger, update `last_seen` / status for known jobs, and add only new or materially changed postings for evaluation. Deduplicate by source + source job ID first, then canonical URL, then a conservative `company + title + location` fingerprint. Elena / the search specialist owns discovery and disposition; Priya uses ledger state to operate the Playbook but does not own discovery, disposition, or private job-search data.
+Repeated searches must not present previously shown jobs as new by default. After discovery, derive the strongest stable identity available—source + stable job ID first, then canonical URL, then a conservative `company + title + location` fingerprint—compare it with the private seen-job set, suppress matches, and record newly presented jobs after they are shown. No rejected/applied/expired lifecycle state, `last_seen` history, repost state machine, or application tracker is required for this behavior.
 
 ## ATS-primary application packet
 
@@ -237,7 +236,7 @@ Every application packet runs:
 - ATS structure and terminology review;
 - claim-to-ledger integrity review;
 - chronology and ambiguity preflight;
-- explicit unknown and untested-scope review.
+- explicit unknown and untested-scope review;
 - conventional-heading and target-context review;
 - duplicate-claim review across summary, highlights, skills, and experience.
 - semantic document and export review when a file is rendered;
@@ -305,8 +304,8 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 
 ### Phase 5 — Search learning loop
 
-- Read and update the durable job opportunity ledger so repeated searches do not resurface known roles as new.
-- Track submissions, responses, interviews, and rejection signals against ledger dispositions where relevant.
+- Use the private seen-job set so repeated discovery checks do not resurface openings already presented as new.
+- Track submissions, responses, interviews, and rejection signals in the active Work Order or appropriate private workspace when the run requires them; do not make those lifecycle records part of the seen-job deduplication contract.
 - Separate market feedback from noise and small-sample assumptions.
 - Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.
 
@@ -371,17 +370,17 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - A single universal human-facing resume template or automatic human rendering for every application
 - An aggregate score that pretends to replace judgment
 - Hosting private candidate job history inside Persona-Library
-- Full CRM-style application reminders and campaign automation beyond the ledger contract
+- Full CRM-style application reminders or campaign automation
 
-The durable [job opportunity ledger contract](job-ledger-contract.md) is in scope as reusable shared-state guidance for private workspaces. A hosted Persona-Library job database is not.
+The [seen-job deduplication contract](job-ledger-contract.md) is in scope as reusable guidance for suppressing openings already presented in repeated searches. A hosted Persona-Library job database is not.
 
 These other items remain future opportunities, not implied capabilities of the current reference page.
 
 ## Validation questions
 
-- Is the Playbook presented as the front door for the whole job-search outcome, with Riley as AI orchestrator rather than domain owner?
+- Is Riley presented as the default routing front door for unqualified requests, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?
 - Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?
-- Do repeated searches avoid presenting previously seen jobs as new by default, using the job ledger contract?
+- Do repeated searches avoid presenting previously shown jobs as new by default, using the seen-job deduplication contract?
 - Can a candidate explain why a role is in or out of scope?
 - Can each important claim in an application be traced to evidence?
 - Does the preflight catch wrong role order even when the content and visual review look good?
