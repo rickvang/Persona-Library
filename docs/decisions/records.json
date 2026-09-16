@@ -157,7 +157,7 @@
     {
       "id": "DEC-011",
       "status": "Applied",
-      "status_note": "The front-door conclusion is qualified by DEC-013; the remaining role and privacy boundaries remain applied.",
+      "status_note": "The front-door conclusion is qualified by DEC-013; the actor-like Playbook outcome-ownership conclusion is further qualified by DEC-014. The remaining Riley identity, specialist ownership, and privacy boundaries remain applied.",
       "category": "Role boundary",
       "date": "2026-09-14",
       "title": "Riley orchestrates job search; the Playbook owns the outcome",
@@ -199,8 +199,29 @@
       "tradeoffs": "Riley must choose among routes without absorbing their expertise. The route contract needs explicit tests and should be revisited if observed requests consistently choose a larger or less capable path than the smallest useful route.",
       "affects": "docs/job-search/implementation.md; content/orientation/docs.json; Riley’s authored record and maintenance history; routing validators/tests; generated library and Decisions output; issue #111.",
       "evidence": "Issue #111, PR #112, the Riley Persona/workflow sources, the four explicit routing tests, and Mara’s placement review recorded in the issue-111 Work Order.",
-      "qualifies": ["DEC-011"],
+      "qualifies": [
+        "DEC-011"
+      ],
       "revisit": "Observed requests show that Riley’s route selection consistently chooses a larger or less capable path than the smallest useful route, or a later Decision establishes a different universal entry contract."
+    },
+    {
+      "id": "DEC-014",
+      "status": "Applied",
+      "category": "Persona / Playbook boundary",
+      "date": "2026-09-16",
+      "title": "Personas operate Playbooks; job search gets a domain orchestrator",
+      "summary": "Keep Riley Morgan as the default routing front door for unqualified requests, then use Priya Desai · Job search orchestrator as the operating Persona for full-outcome Evidence-led Job Search. Treat Playbooks as process surfaces rather than autonomous actors.",
+      "question": "After Riley routes an unqualified request, who exercises judgment and remains responsible for a full Playbook run when the Playbook itself is a process surface rather than an actor?",
+      "decision": "Riley remains the default system entry and routing point for unqualified requests. A Persona operates a Playbook. For full-outcome job search, Riley routes to job-search-orchestrator / Priya Desai; Priya operates playbook-evidence-led-job-search. The Playbook defines stages, shared state, handoffs, quality gates, recovery, and learning but does not independently exercise judgment or own the outcome. Explicit requests for Priya, a specialist, a Skill, or the Playbook may route directly.",
+      "rationale": "DEC-013 restored Riley as the default routing front door. Issue #113 addresses a separate layer: DEC-011 also gave the Playbook actor-like outcome ownership. A dedicated domain orchestrator fills that operating role without transferring specialist expertise into Riley or into the Playbook.",
+      "alternatives": "Keep the Playbook as actor/owner; make Riley the job-search domain operator; stretch Elena into end-to-end orchestration. Rejected because each option blurs an existing responsibility boundary.",
+      "tradeoffs": "The architecture gains one additional Persona and routing hop for unqualified full-outcome job-search work. In return, entry/routing, process operation, process structure, and specialist judgment remain explicit and independently testable.",
+      "affects": "Architecture; Playbook composition guidance; Riley/Priya job-search routing; Evidence-led Job Search docs and Site surfaces; Docs orientation; job ledger orchestration wording; application Work Order fields; generated validation; issue #113.",
+      "evidence": "Issue #113, PR #114, canonical Priya Persona/workflows/Skill applications, the Riley-first routing contract from DEC-013, and focused validation.",
+      "qualifies": [
+        "DEC-011"
+      ],
+      "revisit": "Real job-search runs show Priya is redundant with Riley or Elena, Persona-operated Playbooks reduce clarity or completeness, or a later Decision establishes a different durable operator boundary."
     }
   ]
 }

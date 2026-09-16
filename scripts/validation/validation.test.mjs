@@ -118,7 +118,7 @@ test('Job-search routing preserves Riley identity, Playbook procedure, and speci
   const route = {
     next_handoff: 'For an unqualified request, begin with Riley Morgan as the default entry and routing point; Riley selects the smallest specialist or Skill for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns stages, shared state, quality gates, recovery, and the learning loop.'
   };
-  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. The Playbook owns the reusable outcome procedure, shared state, quality gates, recovery, and learning loop. Explicit requests may route directly.';
+  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. Riley routes full-outcome work to Priya Desai, who operates the Evidence-led Job Search Playbook as the process surface. The Playbook supplies shared state, quality gates, recovery, and the learning loop. Explicit requests may route directly.';
   const riley = { roleLabel: 'AI orchestrator' };
   const rileyFlows = [{ title: 'Frame the system goal and boundary', summary: 'Turn an unqualified opportunity into a bounded outcome.' }];
   const playbook = { id: 'playbook-evidence-led-job-search' };

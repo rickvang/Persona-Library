@@ -205,11 +205,13 @@
         "tools",
         "playbooks"
       ],
-      "target": "Riley Morgan · AI orchestrator, then the Evidence-led Job Search Playbook for full outcomes, with the active Work Order",
+      "target": "Riley Morgan · AI orchestrator → Priya Desai · Job search orchestrator → Evidence-led Job Search Playbook",
       "artifact_kind": "workflow",
       "package_path": "docs/job-search/implementation.md",
       "availability_source": "documentation_only",
       "first_reads": [
+        "Riley Morgan default routing contract",
+        "Job Search Orchestrator Persona",
         "Riley Morgan · AI orchestrator routing contract",
         "Evidence-led Job Search Playbook / docs/job-search/implementation.md",
         "docs/job-search/job-ledger-contract.md when opportunity search or deduplication is in scope",
@@ -224,9 +226,10 @@
         "Uploading, submitting, contacting an employer, or externally sharing without a separate explicit request",
         "Claiming provider-specific rules without current evidence",
         "Treating Riley Morgan as the Job Search Persona or sole domain expert",
-        "Storing private job-search history inside Persona-Library"
+        "Storing private job-search history inside Persona-Library",
+        "Treating the Playbook itself as the actor or domain owner"
       ],
-      "next_handoff": "For an unqualified job-search request, begin with Riley Morgan · AI orchestrator as the default entry and routing point; Riley selects the smallest specialist or Skill route for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns the reusable stages, shared state, handoffs, decision rights, quality gates, recovery, and learning loop; specialists retain domain judgment. Use provider recommendation status and candidate review requirements before selecting an export."
+      "next_handoff": "For unqualified job-search requests, route first through Riley Morgan · AI orchestrator. For unqualified narrow work, Riley routes to the smallest relevant specialist or Skill. For unqualified full-outcome work, Riley routes to Priya Desai · Job search orchestrator, who operates the Evidence-led Job Search Playbook. The Playbook supplies the reusable stages, shared state, handoffs, quality gates, recovery, and learning loop; Priya operates the process and specialists own domain judgment. Explicit specialist or Skill requests route directly to the named target. Explicit Playbook requests route directly to the named Playbook, with Priya as the operating Persona for Evidence-led Job Search. Riley is the default front door, not an unavoidable hop for explicit direct invocation. Use provider recommendation status and candidate review requirements before selecting an export."
     }
   ]
 }

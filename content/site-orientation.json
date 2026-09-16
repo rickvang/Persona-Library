@@ -45,7 +45,7 @@
     },
     "playbooks": {
       "label": "Playbooks",
-      "answers": "How do multiple personas, skills, tools, workflows, artifacts, and quality gates coordinate toward an outcome?",
+      "answers": "What operating surface should a Persona use to coordinate stages, participants, shared state, handoffs, quality gates, recovery, and learning toward an outcome?",
       "route_file": "orientation/playbooks.json",
       "route_count": 4
     },
