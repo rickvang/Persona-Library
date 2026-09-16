@@ -12,6 +12,16 @@ This Work Order extends the repository-wide [Work Order convention](../work-orde
 - Last updated:
 - Requester:
 - Current owner:
+- Operating Persona:
+- Playbook / process surface:
+- Current Playbook stage:
+- Current stage owner:
+- Supporting Persona(s):
+- Opportunity state:
+- Work/process state:
+- Artifact state:
+- Current gate:
+- Next valid action:
 - Request mode:
 - Proportionality tier:
 - Explicit authorization and target:
@@ -220,19 +230,19 @@ Record what was not checked. Do not claim a specific employer parser, human resp
 
 Update at phase transitions, decisions, failed gates, material assumptions, handoffs, version changes, and validation events.
 
-| Phase | Owner | Status | Output or link | Evidence status | Gate result | Smallest next action |
-| --- | --- | --- | --- | --- | --- | --- |
-| Load candidate standing decisions |  |  |  |  |  |  |
+| Phase | Operating Persona | Stage owner | Supporting Persona(s) | Status | Output or link | Evidence status | Gate result | Smallest next action |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Load candidate standing decisions |  |  |  |  |  |  |  |  |
 
-| Define target and constraints |  |  |  |  |  |  |
-| Align role and evidence |  |  |  |  |  |  |
-| Build shared evidence source |  |  |  |  |  |  |
-| Render ATS version |  |  |  |  |  |  |
-| Render human-facing version (optional) |  |  |  |  |  |  |
-| Draft and review cover letter |  |  |  |  |  |  |
-| Review parity and integrity |  |  |  |  |  |  |
-| Select submission artifact |  |  |  |  |  |  |
-| Learn after submission |  |  |  |  |  |  |
+| Define target and constraints |  |  |  |  |  |  |  |  |
+| Align role and evidence |  |  |  |  |  |  |  |  |
+| Build shared evidence source |  |  |  |  |  |  |  |  |
+| Render ATS version |  |  |  |  |  |  |  |  |
+| Render human-facing version (optional) |  |  |  |  |  |  |  |  |
+| Draft and review cover letter |  |  |  |  |  |  |  |  |
+| Review parity and integrity |  |  |  |  |  |  |  |  |
+| Select submission artifact |  |  |  |  |  |  |  |  |
+| Learn after submission |  |  |  |  |  |  |  |  |
 
 Gate values are pass, revise, skipped with reason, blocked, no-go, or unknown.
 

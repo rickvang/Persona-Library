@@ -14,7 +14,7 @@ metadata:
 
 This is a repository-local reconstruction. `playbook-composer` was explicitly proposed in the historical material, but the historical package was not created or recovered. The current Playbooks space, job-search playbook, skill-formation workflow, Guide, and architecture define the behavior to reconstruct. Do not claim exact historical parity.
 
-This skill designs and maintains a reusable coordination model. A Playbook coordinates existing Personas, Skills, Tools, workflows, artifacts, evidence, shared state, owners, and quality gates toward an outcome; it is not a runtime executor and does not redefine the components it references.
+This skill designs and maintains a reusable coordination model. A Playbook is an operating surface/process contract used by a Persona. It coordinates existing Personas, Skills, Tools, workflows, artifacts, evidence, shared state, owners, and quality gates toward an outcome; it does not exercise judgment, execute the work, or independently own the outcome. The operating Persona remains the actor responsible for applying judgment, invoking the right specialists, recognizing exceptions, and carrying the run to its declared stopping condition without redefining the components the Playbook references.
 
 ## Use this skill when
 

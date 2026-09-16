@@ -3,7 +3,7 @@
   "primary_space": "playbooks",
   "space": {
     "label": "Playbooks",
-    "answers": "How do multiple personas, skills, tools, workflows, artifacts, and quality gates coordinate toward an outcome?",
+    "answers": "What operating surface should a Persona use to coordinate multiple stages, participants, skills, tools, artifacts, handoffs, gates, recovery, and learning toward an outcome?",
     "read": [
       "outcome",
       "stages",
@@ -14,7 +14,8 @@
     ],
     "write": "Add or change a playbook only when the work is a reusable multi-stage operating model, not a one-off task.",
     "do_not": [
-      "Do not copy persona or skill definitions into a playbook when a reference is enough."
+      "Do not copy persona or skill definitions into a playbook when a reference is enough.",
+      "Do not treat a Playbook as the actor, domain expert, or autonomous owner of an outcome."
     ]
   },
   "routes": [
@@ -39,6 +40,7 @@
       "package_path": ".agents/skills/playbook-composer",
       "availability_source": "repo_local",
       "first_reads": [
+        "operating Persona / actor",
         "outcome",
         "participants",
         "stages",
@@ -53,7 +55,7 @@
         "A one-off task with no reusable stages or handoffs",
         "Duplicating Persona or Skill definitions"
       ],
-      "next_handoff": "Validate linked records, gates, recovery, and learning loop before handoff."
+      "next_handoff": "Confirm the operating Persona, then validate linked records, decision rights, gates, recovery, and learning loop before handoff. The Playbook is the process surface; it does not execute or own the work."
     },
     {
       "id": "multi-persona-collaboration",

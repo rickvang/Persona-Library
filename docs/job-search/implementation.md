@@ -6,11 +6,11 @@ Build a research-backed job-search workspace that helps a person define a target
 
 The system should optimize for truthful fit and useful clarity—not keyword stuffing, generic personal branding, or visual polish detached from the role.
 
-This is a playbook, not a new persona category. It composes existing Personas, Skills, persona-owned workflows, shared evidence, artifacts, decision rights, quality gates, and a learning loop around one outcome.
+This is a Persona-operated Playbook surface. The Playbook composes Personas, Skills, persona-owned workflows, shared evidence, artifacts, decision rights, quality gates, recovery, and a learning loop around one outcome; Priya Desai · Job search orchestrator operates that surface for full-outcome job-search work.
 
 ## Recommended operating model
 
-The durable front door for the full outcome is the **Evidence-led Job Search Playbook**. Use one primary candidate persona with a coordinated set of specialist lenses:
+The durable process surface for the full outcome is the **Evidence-led Job Search Playbook**. **Priya Desai · Job search orchestrator** is the default operating Persona for a complete run. Use one primary candidate persona with a coordinated set of specialist lenses:
 
 1. **Job seeker** — source of truth for goals, constraints, experience, preferences, voice, and evidence.
 2. **Search strategist (Elena Marin)** — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity disposition against the job ledger.
@@ -21,21 +21,23 @@ The durable front door for the full outcome is the **Evidence-led Job Search Pla
 7. **Research and verification analyst** — researches companies, teams, role expectations, and evidence.
 8. **Outreach and interview coach (Samira Nguyen)** — prepares networking messages, follow-ups, interview stories, and questions.
 9. **Document designer (conditional, Sofia Calder)** — document structure, production, accessibility, and fidelity when a rendered packet is in scope.
-10. **AI orchestrator (Riley Morgan)** — coordinates the Playbook run: selects the smallest relevant specialist set, preserves decisions and boundaries, and synthesizes the handoff. Riley does not own job-search domain expertise.
+10. **Job search orchestrator (Priya Desai)** — operates the Playbook run: maintains stage and gate state, selects the smallest relevant specialist set, coordinates concurrent opportunities, preserves decisions and boundaries, handles recovery, and synthesizes the next handoff. Priya does not absorb specialist domain expertise.
+
+**Riley Morgan · AI orchestrator** remains the general-purpose orchestration Persona for cross-domain work, orchestration architecture, or coordination problems that do not belong cleanly to the job-search domain. Riley is not the default operator of this Playbook.
 
 Three-layer ownership:
 
 ```text
-Evidence-led Job Search Playbook → owns the outcome / stages / handoffs
-Riley Morgan · AI orchestrator → assembles and coordinates contributors
+Priya Desai · Job search orchestrator → operates the full outcome and remains responsible for process completion
+Evidence-led Job Search Playbook → supplies stages / state / handoffs / gates / recovery / learning
 Job-search specialists → own domain judgment and artifact-specific expertise
 ```
 
 Preferred presentation:
 
 ```text
-Evidence-led Job Search
-→ coordinated by Riley Morgan · AI Orchestrator
+Priya Desai · Job Search Orchestrator
+→ uses Evidence-led Job Search Playbook
 ```
 
 Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or the job ledger.
@@ -44,19 +46,19 @@ The default path is ATS-first with a material-claim integrity gate. Cover letter
 
 ### Consultation and routing convention
 
-- Full-outcome job-search requests → Evidence-led Job Search Playbook, coordinated by Riley when multiple specialists are needed.
-- Narrow domain questions → the matching specialist directly (Elena for search strategy/targeting, Marcus for hiring calibration, Leah for application narrative/ATS, Samira for outreach/interviews, Camille for visual communication, Sofia for document production). Do not default those questions to Riley.
-- When a requester asks to “consult Riley Morgan” for job-search work, interpret that as a routed Playbook/panel request: Riley assembles the smallest relevant set of existing Personas, coordinates their independent perspectives, preserves disagreement and boundaries, and synthesizes the handoff. Riley is not automatically the sole content, writing, hiring, search-strategy, visual, or document reviewer.
+- Full-outcome job-search requests → Priya Desai · Job search orchestrator, who uses the Evidence-led Job Search Playbook and invokes only the specialists required by the active stage.
+- Narrow domain questions → the matching specialist directly (Elena for search strategy/targeting, Marcus for hiring calibration, Leah for application narrative/ATS, Samira for outreach/interviews, Camille for visual communication, Sofia for document production). Do not force narrow questions through Priya.
+- When a requester explicitly asks to “consult Riley Morgan” for job-search work, use Riley for the requested general orchestration perspective or cross-domain coordination. Do not silently substitute Riley for Priya as the default job-search operator, and do not make Riley the sole content, writing, hiring, search-strategy, visual, or document reviewer.
 
-For cover-letter or application-writing work, the default panel is Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Riley Morgan for coordination and synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
+For a full application-packet run, use Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Priya Desai for orchestration and stage/gate synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. A narrow cover-letter request may route directly to Avery, Leah, and Marcus without invoking Priya. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
 
 ## MVP scope
 
 The first build is a responsive reference surface plus actual working-draft persona records, not a full application tracker. It includes:
 
 - The persona and responsibilities of each supporting role
-- Five new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), and Samira Nguyen (outreach and interview coach)
-- Reuse of Camille Ortiz for visual communication review, Sofia Calder for document production when needed, and Riley Morgan as AI orchestrator for Playbook coordination
+- Six new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), Samira Nguyen (outreach and interview coach), and Priya Desai (job search orchestrator)
+- Reuse of Camille Ortiz for visual communication review and Sofia Calder for document production when needed; Riley Morgan remains the general AI orchestrator outside the default job-search operator role
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
 - The end-to-end search workflow owned by the Evidence-led Job Search Playbook
 - A reusable [job opportunity ledger contract](job-ledger-contract.md) for durable private search-state deduplication
@@ -87,7 +89,7 @@ Keep candidate facts, researched claims, interpretations, and generated writing 
 
 ### Job opportunity ledger
 
-Repeated searches must not present previously seen jobs as new by default. After discovery, normalize the posting, check the durable ledger, update `last_seen` / status for known jobs, and add only new or materially changed postings for evaluation. Deduplicate by source + source job ID first, then canonical URL, then a conservative `company + title + location` fingerprint. Elena / the search specialist owns discovery and disposition; Riley coordinates and does not own the ledger.
+Repeated searches must not present previously seen jobs as new by default. After discovery, normalize the posting, check the durable ledger, update `last_seen` / status for known jobs, and add only new or materially changed postings for evaluation. Deduplicate by source + source job ID first, then canonical URL, then a conservative `company + title + location` fingerprint. Elena / the search specialist owns discovery and disposition; Priya uses ledger state to operate the Playbook but does not own discovery, disposition, or private job-search data.
 
 ## ATS-primary application packet
 
