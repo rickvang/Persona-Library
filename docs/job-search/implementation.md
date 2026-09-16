@@ -10,7 +10,7 @@ This is a playbook, not a new persona category. It composes existing Personas, S
 
 ## Recommended operating model
 
-The durable front door for the full outcome is the **Evidence-led Job Search Playbook**. Use one primary candidate persona with a coordinated set of specialist lenses:
+Riley Morgan · AI orchestrator is the default system entry and routing point for unqualified requests. Riley interprets the intent, then selects the smallest useful specialist or Skill route for narrow work, or the **Evidence-led Job Search Playbook** when the request is a full outcome. Use one primary candidate persona with a coordinated set of specialist lenses:
 
 1. **Job seeker** — source of truth for goals, constraints, experience, preferences, voice, and evidence.
 2. **Search strategist (Elena Marin)** — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity disposition against the job ledger.
@@ -21,13 +21,13 @@ The durable front door for the full outcome is the **Evidence-led Job Search Pla
 7. **Research and verification analyst** — researches companies, teams, role expectations, and evidence.
 8. **Outreach and interview coach (Samira Nguyen)** — prepares networking messages, follow-ups, interview stories, and questions.
 9. **Document designer (conditional, Sofia Calder)** — document structure, production, accessibility, and fidelity when a rendered packet is in scope.
-10. **AI orchestrator (Riley Morgan)** — coordinates the Playbook run: selects the smallest relevant specialist set, preserves decisions and boundaries, and synthesizes the handoff. Riley does not own job-search domain expertise.
+10. **AI orchestrator (Riley Morgan)** — receives unqualified requests, selects the smallest relevant specialist or Playbook route, and coordinates the run: preserves decisions and boundaries, then synthesizes the handoff. Riley does not own job-search domain expertise.
 
 Three-layer ownership:
 
 ```text
-Evidence-led Job Search Playbook → owns the outcome / stages / handoffs
-Riley Morgan · AI orchestrator → assembles and coordinates contributors
+Riley Morgan · AI orchestrator → default entry, intent interpretation, routing, and coordination
+Evidence-led Job Search Playbook → owns the reusable outcome procedure / stages / shared state / handoffs
 Job-search specialists → own domain judgment and artifact-specific expertise
 ```
 
@@ -35,17 +35,18 @@ Preferred presentation:
 
 ```text
 Evidence-led Job Search
-→ coordinated by Riley Morgan · AI Orchestrator
+→ active Playbook run coordinated by Riley Morgan · AI Orchestrator
 ```
 
-Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or the job ledger.
+Explicit requests for a named specialist, Skill, or Playbook may route directly without an unnecessary Riley hop. Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or the job ledger.
 
 The default path is ATS-first with a material-claim integrity gate. Cover letters pass through a positioning layer before review so the evidence ledger informs the writing without dictating every sentence. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
 
 ### Consultation and routing convention
 
-- Full-outcome job-search requests → Evidence-led Job Search Playbook, coordinated by Riley when multiple specialists are needed.
-- Narrow domain questions → the matching specialist directly (Elena for search strategy/targeting, Marcus for hiring calibration, Leah for application narrative/ATS, Samira for outreach/interviews, Camille for visual communication, Sofia for document production). Do not default those questions to Riley.
+- Unqualified job-search requests → Riley Morgan · AI orchestrator first. Riley routes narrow work to the matching specialist or Skill, and full-outcome work to the Evidence-led Job Search Playbook.
+- Explicit specialist, Skill, or Playbook requests → the named target directly; the requester does not need to pass through Riley first.
+- Narrow domain questions → the matching specialist (Elena for search strategy/targeting, Marcus for hiring calibration, Leah for application narrative/ATS, Samira for outreach/interviews, Camille for visual communication, Sofia for document production). Riley coordinates only when the request is unqualified or explicitly asks for orchestration.
 - When a requester asks to “consult Riley Morgan” for job-search work, interpret that as a routed Playbook/panel request: Riley assembles the smallest relevant set of existing Personas, coordinates their independent perspectives, preserves disagreement and boundaries, and synthesizes the handoff. Riley is not automatically the sole content, writing, hiring, search-strategy, visual, or document reviewer.
 
 For cover-letter or application-writing work, the default panel is Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Riley Morgan for coordination and synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
@@ -374,8 +375,9 @@ These other items remain future opportunities, not implied capabilities of the c
 
 ## Validation questions
 
-- Is the Playbook presented as the front door for the whole job-search outcome, with Riley as AI orchestrator rather than domain owner?
-- Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?
+- Is Riley presented as the default entry and routing point for unqualified requests, while the Playbook owns the full-outcome procedure rather than the universal front door?
+- Do unqualified narrow requests route through Riley to Elena, Marcus, Leah, Samira, Camille, Sofia, or the smallest relevant Skill?
+- Can an explicitly named specialist, Skill, or Playbook be invoked directly without an artificial Riley hop?
 - Do repeated searches avoid presenting previously seen jobs as new by default, using the job ledger contract?
 - Can a candidate explain why a role is in or out of scope?
 - Can each important claim in an application be traced to evidence?

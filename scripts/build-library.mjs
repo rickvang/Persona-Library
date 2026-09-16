@@ -1,6 +1,7 @@
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildDecisionsPage } from './build-decisions.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const orientation = JSON.parse(await readFile(path.join(root, 'content/site-orientation.json'), 'utf8'));
@@ -56,3 +57,5 @@ for (const [sourcePath, outputPath] of files) {
   await copyFile(source, output);
   console.log(`Copied ${sourcePath} -> ${outputPath}`);
 }
+
+await buildDecisionsPage(root);
