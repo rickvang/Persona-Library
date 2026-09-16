@@ -15,6 +15,33 @@ const renderLine = (label, value) => value
   ? `<div class="record-line"><strong>${escapeHtml(label)}</strong><span>${renderInline(value)}</span></div>`
   : '';
 
+const currentCorrectionLines = record => Array.isArray(record.corrections)
+  ? record.corrections
+  : record.corrections
+    ? [record.corrections]
+    : [];
+
+const renderHistoricalRecordLines = record => {
+  const historicalLines = record.historical.lines;
+  const renderedHistory = historicalLines
+    .map(line => renderLine(line.label, line.value))
+    .join('');
+  const historicalCorrections = new Set(
+    historicalLines
+      .filter(line => String(line.label).toLowerCase() === 'correction')
+      .map(line => line.value)
+  );
+  const laterMetadata = [
+    ['Status note', record.status_note],
+    ['Qualifies', Array.isArray(record.qualifies) ? record.qualifies.join(', ') : record.qualifies]
+  ].map(([label, value]) => renderLine(label, value)).join('');
+  const laterCorrections = currentCorrectionLines(record)
+    .filter(correction => !historicalCorrections.has(correction))
+    .map(correction => renderLine('Correction', correction))
+    .join('');
+  return `${renderedHistory}${laterMetadata}${laterCorrections}`;
+};
+
 const renderRecord = record => {
   const status = String(record.status || '').toLowerCase();
   const id = String(record.id || '').toLowerCase();
@@ -22,22 +49,24 @@ const renderRecord = record => {
     .filter(Boolean)
     .map((value, index) => `<span class="label${index === 1 && status === 'applied' ? ' applied' : index === 1 && status === 'parked' ? ' parked' : ''}">${renderInline(value)}</span>`)
     .join('');
-  const lines = [
-    ['Question', record.question],
-    ['Decision', record.decision],
-    ['Rationale', record.rationale],
-    ['Alternatives', record.alternatives],
-    ['Tradeoffs', record.tradeoffs],
-    ['Affects', record.affects],
-    ['Evidence', record.evidence],
-    ['Status note', record.status_note],
-    ['Qualifies', Array.isArray(record.qualifies) ? record.qualifies.join(', ') : record.qualifies],
-    ['Revisit when', record.revisit]
-  ].map(([label, value]) => renderLine(label, value)).join('');
-  const corrections = Array.isArray(record.corrections)
-    ? record.corrections.map(correction => renderLine('Correction', correction)).join('')
-    : renderLine('Correction', record.corrections);
-  return `        <article class="decision-record" id="${escapeHtml(id)}" data-status="${escapeHtml(status)}"><div class="record-meta">${meta}</div><h3>${renderInline(record.title)}</h3><p class="record-summary">${renderInline(record.summary)}</p><div class="record-lines">${lines}${corrections}</div></article>`;
+  const historical = record.historical;
+  const title = historical?.title || record.title;
+  const summary = historical?.summary || record.summary;
+  const lines = historical?.lines
+    ? renderHistoricalRecordLines(record)
+    : [
+      ['Question', record.question],
+      ['Decision', record.decision],
+      ['Rationale', record.rationale],
+      ['Alternatives', record.alternatives],
+      ['Tradeoffs', record.tradeoffs],
+      ['Affects', record.affects],
+      ['Evidence', record.evidence],
+      ['Status note', record.status_note],
+      ['Qualifies', Array.isArray(record.qualifies) ? record.qualifies.join(', ') : record.qualifies],
+      ['Revisit when', record.revisit]
+    ].map(([label, value]) => renderLine(label, value)).join('') + currentCorrectionLines(record).map(correction => renderLine('Correction', correction)).join('');
+  return `        <article class="decision-record" id="${escapeHtml(id)}" data-status="${escapeHtml(status)}"><div class="record-meta">${meta}</div><h3>${renderInline(title)}</h3><p class="record-summary">${renderInline(summary)}</p><div class="record-lines">${lines}</div></article>`;
 };
 
 const renderSummary = records => {
@@ -67,6 +96,12 @@ export async function buildDecisionsPage(root) {
   if (!Array.isArray(records) || records.length === 0) throw new Error('Decision source must contain at least one record');
   for (const record of records) {
     if (!record?.id || ids.has(record.id) || !record.status || !record.title || !record.summary) throw new Error(`Decision source has an invalid or duplicate record: ${record?.id || '(missing)'}`);
+    if (record.historical) {
+      if (!record.historical.source_ref || !record.historical.title || !record.historical.summary || !Array.isArray(record.historical.lines) || record.historical.lines.length === 0) throw new Error(`Decision historical snapshot is invalid: ${record.id}`);
+      for (const line of record.historical.lines) {
+        if (!line?.label || !line?.value) throw new Error(`Decision historical line is invalid: ${record.id}`);
+      }
+    }
     ids.add(record.id);
   }
   const outputPath = path.join(root, 'dist/decisions.html');
