@@ -5,6 +5,8 @@ This Work Order extends the repository-wide [Work Order convention](../work-orde
 
 A full application packet is a role-specific foldered artifact set, not one combined document. Keep the resume, cover letter, and application notes/answers as separate files in the authorized private application workspace.
 
+Reusable starting artifacts come from `rickvang/template-library`. Persona-Library catalogs Template identity and applicability; `template-library` owns the canonical starter files. Do not silently treat a private Drive master or prior role-specific artifact as the reusable Template source.
+
 ## Header
 
 - Work Order ID:
@@ -30,6 +32,7 @@ A full application packet is a role-specific foldered artifact set, not one comb
 - Stopping condition:
 - Private application root:
 - Role-specific application folder:
+- Template-source status: verified / missing / stale / conflicted / not applicable
 
 A Work Order records authorization constraints but never grants permission to submit an application, contact an employer, publish a document, or send an external message.
 
@@ -87,6 +90,28 @@ A standing decision guides repeatable candidate-specific structure and attributi
 
 Start with one canonical ATS resume rendered from the shared evidence ledger. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
 
+### Template source gate
+
+Before drafting or rendering an application artifact, resolve its reusable starting Template through the Persona-Library Template catalog and verify the external `rickvang/template-library` source path, `README.md` entrypoint, and Git revision.
+
+Expected full-packet Template identities and source paths:
+
+| Artifact | Template identity | Canonical source path | Status |
+| --- | --- | --- | --- |
+| ATS resume | `template-resume-classic-single-column` | `templates/resumes/classic-single-column` | verify before use |
+| Cover letter | `template-cover-letter-evidence-led` | `templates/cover-letters/evidence-led` | verify before use |
+| Application Notes & Answers | `template-job-application-notes` | `templates/job-applications/application-notes` | verify before use |
+
+For each required Template record:
+
+- verify that the path and entrypoint resolve at the cited revision;
+- inspect the documented `starter/` copy boundary;
+- copy/adapt the starter into the role-specific private application folder;
+- record the Template ID, source path, and revision in this Work Order or the private notes artifact;
+- keep candidate facts and project-specific content in the instantiated private artifact, not in the reusable Template.
+
+If a required Template is missing, unavailable, stale, or cannot be verified, do **not** silently substitute a private Google Drive master, previous application, or ad hoc document as the canonical reusable Template. Route to Template research/composition and create or repair the reusable Template in `rickvang/template-library`; treat the application artifact as blocked on Template resolution until the canonical source can be verified. A one-off private artifact may be used only when the requester explicitly chooses a non-reusable exception and the Work Order records that exception.
+
 ### Role-specific application folder
 
 For a full application-packet run, create one role-specific folder in the authorized private application workspace before the packet can be marked ready for review. Use the candidate-configured application root; do not hardcode private Drive IDs, private links, or candidate-specific storage identifiers in Persona-Library.
@@ -107,6 +132,7 @@ For a **full application-packet request**, create the standalone cover letter by
 
 Before `ready-for-review`, verify:
 
+- every reusable application artifact has a verified `template-library` Template source and recorded revision, or an explicit requester-approved one-off exception;
 - the role-specific application folder exists in the configured private workspace;
 - each required artifact is independently openable;
 - file names identify the company and role without relying on folder context alone;
@@ -133,6 +159,7 @@ For the ATS version, target employer, role, location, and work-mode context rema
 
 ### ATS resume version (default)
 
+- Template ID, source path, and verified revision:
 - Section schema: `SUMMARY` (optional) → `SKILLS` or `TECHNICAL SKILLS` (optional) → `WORK EXPERIENCE`, `EXPERIENCE`, or `PROFESSIONAL EXPERIENCE` → `EDUCATION` and/or `CERTIFICATIONS`:
 - Optional `ADDITIONAL EXPERIENCE`, `PROJECTS`, or `PORTFOLIO` section and why it is needed:
 - Heading deviations and reason:
@@ -174,6 +201,7 @@ Minimum gate:
 
 Complete this section only when a second rendering is warranted.
 
+- Template ID, source path, and verified revision when a reusable Template is used:
 - Why a human-facing version is useful for this channel:
 - Reader and review context:
 - First-scan decision path:
@@ -209,6 +237,7 @@ A reusable human-facing template is not an application output and does not repla
 
 ### Cover letter
 
+- Template ID, source path, and verified revision:
 - Why a letter is useful for this application:
 - Specific connection or motivation it adds:
 - Evidence IDs used:
@@ -222,6 +251,7 @@ For a full application packet, the cover letter is a standalone artifact by defa
 
 ### Application Notes & Answers
 
+- Template ID, source path, and verified revision:
 - Role-fit summary:
 - Eligibility, location, timing, or compensation constraints:
 - Portfolio or work-sample plan:
@@ -267,7 +297,7 @@ Run reviews on the actual output revision.
 
 | Review ID | Version | Lens | Criterion | Source IDs or exact location | Finding | Reader or system consequence | Status | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| REV-001 | OUT-ATS / OUT-HUMAN / OUT-LETTER / OUT-NOTES | ATS / human / visual / integrity / parity / artifact-packaging |  |  |  |  | pass / revise / blocked / unknown |  |
+| REV-001 | OUT-ATS / OUT-HUMAN / OUT-LETTER / OUT-NOTES | ATS / human / visual / integrity / parity / artifact-packaging / template-source |  |  |  |  | pass / revise / blocked / unknown |  |
 
 Record what was not checked. Do not claim a specific employer parser, human response, preference, or outcome unless that evidence exists.
 
@@ -281,12 +311,13 @@ Update at phase transitions, decisions, failed gates, material assumptions, hand
 | Define target and constraints |  |  |  |  |  |  |  |  |
 | Align role and evidence |  |  |  |  |  |  |  |  |
 | Build shared evidence source |  |  |  |  |  |  |  |  |
+| Resolve and verify reusable Templates |  |  |  |  |  |  |  |  |
 | Create or verify role-specific application folder |  |  |  |  |  |  |  |  |
 | Render ATS version |  |  |  |  |  |  |  |  |
 | Render human-facing version (optional) |  |  |  |  |  |  |  |  |
 | Draft and review standalone cover letter |  |  |  |  |  |  |  |  |
 | Build and review Application Notes & Answers |  |  |  |  |  |  |  |  |
-| Review parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
+| Review Template source, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
 | Select submission artifact |  |  |  |  |  |  |  |  |
 | Learn after submission |  |  |  |  |  |  |  |  |
 
@@ -309,6 +340,7 @@ Do not infer that a version was submitted because it was drafted or reviewed. Su
 ## 8. Close and learning
 
 - Role-specific application folder:
+- Template-source result and revisions used:
 - Concrete packet or decision:
 - Success criterion addressed:
 - ATS result and limitations:
