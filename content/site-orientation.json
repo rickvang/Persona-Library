@@ -117,7 +117,7 @@
   "creation_gate": {
     "owner": "Mara Okoye",
     "role": "Knowledge systems architect",
-    "purpose": "Check whether a proposed durable addition belongs in an existing record, relationship, workflow, recipe, space, or file before the domain skill mutates the system.",
+    "purpose": "Check whether a proposed durable addition belongs in an existing record, relationship, workflow, recipe, space, or file, and resolve the current canonical source owner before the domain skill mutates the system.",
     "applies_to": [
       "Personas",
       "Skills",
@@ -130,9 +130,9 @@
     ],
     "checks": [
       "Classify the proposal as an existing-record extension, relationship, workflow method, tool-use recipe, new record, new space, or new file.",
-      "Compare the proposal with current identities, aliases, ownership, lifecycle, source-of-truth boundaries, and declared dependencies.",
+      "Compare the proposal with current identities, aliases, ownership, lifecycle, source-of-truth boundaries, and declared dependencies. When canonical library records are involved, inspect the owning authored module under content/library-data/ rather than treating content/library-data.js as the authored source.",
       "Confirm the exact destination and file placement, record the closest alternatives, and preserve unresolved taxonomy questions.",
-      "Hand the placement result to the smallest domain skill only after the boundary is clear; a placement review does not authorize a write."
+      "Hand the placement result to the smallest domain skill only after the boundary is clear; a placement review does not authorize a write. After an authorized durable source or structural change, follow the selected change contract and run $change-impact-reconciliation when required."
     ],
     "required_before": "Any authorized creation or promotion of a durable record, space, file, or generated artifact."
   },
@@ -197,6 +197,6 @@
   "activation": {
     "explicit_prompt": "Use $persona-library-orientation before working with the Personas system.",
     "repository_instruction": "Before modifying this project, read content/site-orientation.json and follow its routing and mutation rules.",
-    "site_instruction": "Open Docs \u2192 Agent orientation before working with the Site; use the manifest as the system map."
+    "site_instruction": "Open Docs → Agent orientation before working with the Site; use the manifest as the system map."
   }
 }
