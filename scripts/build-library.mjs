@@ -29,9 +29,12 @@ const libraryDataSources = [
 const libraryDataOutput = path.join(root, 'dist/data/library-data.js');
 await mkdir(path.dirname(libraryDataOutput), { recursive: true });
 const libraryDataBundle = (
-  await Promise.all(libraryDataSources.map(sourcePath => readFile(path.join(root, sourcePath), 'utf8')))
+  await Promise.all(libraryDataSources.map(async sourcePath => {
+    const source = await readFile(path.join(root, sourcePath), 'utf8');
+    return source.replace(/\r\n?/g, '\n');
+  }))
 ).join('\n\n');
-await writeFile(libraryDataOutput, `${libraryDataBundle}\n`, 'utf8');
+await writeFile(libraryDataOutput, `${libraryDataBundle.replace(/\n+$/, '')}\n`, 'utf8');
 console.log(`Built ${libraryDataSources.length} authored library data sources -> dist/data/library-data.js`);
 
 const files = [

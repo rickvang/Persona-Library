@@ -55,14 +55,15 @@ const CANVAS_MODULES = [
 ];
 
 const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const normalizeLineEndings = source => source.replace(/\r\n?/g, '\n');
 
 export async function loadValidationContext(root = defaultRoot) {
   const read = relativePath => readFile(path.join(root, relativePath), 'utf8');
   const entries = Object.entries(FILES);
   const contents = Object.fromEntries(await Promise.all(entries.map(async ([key, relativePath]) => [key, await read(relativePath)])));
   contents.librarySource = `${(
-    await Promise.all(LIBRARY_DATA_SOURCES.map(sourcePath => read(sourcePath)))
-  ).join('\n\n')}\n`;
+    await Promise.all(LIBRARY_DATA_SOURCES.map(async sourcePath => normalizeLineEndings(await read(sourcePath))))
+  ).join('\n\n').replace(/\n+$/, '')}\n`;
 
   const orientation = JSON.parse(contents.orientationSource);
   const generatedOrientation = JSON.parse(contents.orientationOutput);
