@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,8 +8,33 @@ const routeFiles = Object.values(orientation.spaces)
   .map((space) => space.route_file)
   .filter(Boolean);
 
+const libraryDataSources = [
+  'content/library-data/personas-core.js',
+  'content/library-data/personas-career.js',
+  'content/library-data/personas-systems.js',
+  'content/library-data/skills-core.js',
+  'content/library-data/skills-specialists.js',
+  'content/library-data/workflows-core.js',
+  'content/library-data/workflows-operations.js',
+  'content/library-data/workflows-career.js',
+  'content/library-data/workflows-systems.js',
+  'content/library-data/catalogs.js',
+  'content/library-data/tool-integration.js',
+  'content/library-data/skill-guidance.js',
+  'content/library-data/skill-practice.js',
+  'content/library-data/skill-anatomy.js',
+  'content/library-data.js'
+];
+
+const libraryDataOutput = path.join(root, 'dist/data/library-data.js');
+await mkdir(path.dirname(libraryDataOutput), { recursive: true });
+const libraryDataBundle = (
+  await Promise.all(libraryDataSources.map(sourcePath => readFile(path.join(root, sourcePath), 'utf8')))
+).join('\n\n');
+await writeFile(libraryDataOutput, `${libraryDataBundle}\n`, 'utf8');
+console.log(`Built ${libraryDataSources.length} authored library data sources -> dist/data/library-data.js`);
+
 const files = [
-  ['content/library-data.js', 'dist/data/library-data.js'],
   ['content/library-model.js', 'dist/data/library-model.js'],
   ['content/site-orientation.json', 'dist/data/site-orientation.json'],
   ['client/library-ui.js', 'dist/js/library-ui.js'],
