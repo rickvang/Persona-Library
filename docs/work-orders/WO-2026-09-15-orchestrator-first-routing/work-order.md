@@ -1,7 +1,7 @@
 # Work Order — Restore orchestrator-first default routing
 
 - Work Order ID: `WO-2026-09-15-orchestrator-first-routing`
-- Status: active
+- Status: ready-for-review
 - Created: 2026-09-15
 - Last updated: 2026-09-15
 - Issue: https://github.com/rickvang/Persona-Library/issues/111
@@ -39,12 +39,12 @@ Canonical sources in scope after the library-data refactor:
 - `content/library-model.js` — append-only Riley semantic maintenance revision.
 - `docs/job-search/implementation.md` — current job-search operating guidance.
 - `scripts/validation/generated.mjs` and `scripts/validation/validation.test.mjs` — behavior-level routing invariants.
-- `docs/decisions/` — intended append-only Decision destination if a canonical authored Decision owner is confirmed.
+- `docs/decisions/DEC-013-orchestrator-first-routing.md` — canonical append-only Decision source for the revised routing conclusion.
 - `dist/data/**` — generated outputs only, refreshed by `node scripts/build-library.mjs`.
 
 ## Decision and history boundary
 
-Preserve DEC-011 and its historical rationale. Append the next available routing Decision with KEEP / CHANGE / EXCEPTION content only after confirming the repository's canonical Decision source. The current `main` audit found DEC-011 and DEC-012 only in `dist/decisions.html`; no authored Decision source or page generator is present. Because the repository contract forbids hand-editing `dist/`, the Decision source location remains an explicit blocker until resolved. Do not rewrite archived #90 Work Order content.
+Preserve DEC-011 and its historical rationale. The repository's canonical authored Decision destination is now `docs/decisions/<id>.md`, declared by the Decisions route. DEC-013 records the KEEP / CHANGE / EXCEPTION routing conclusion without hand-editing the historical generated Decisions page or rewriting archived #90 Work Order content.
 
 ## Owners and non-goals
 
@@ -63,9 +63,9 @@ Run one Persona-specific reconciliation review for Riley and one universal `$cha
 
 ## Current phase and next action
 
-Phase: source correction and validation.
+Phase: source correction, reconciliation, and validation complete; ready for fresh review.
 
-Next action: resolve the canonical Decision-source gap, append the new Decision without editing generated output, complete validation/reconciliation, and open one focused PR. The PR may be reviewed but must not be merged without separate authorization.
+Next action: fresh review of PR #112's current head. Do not merge without separate authorization.
 
 ## Completion boundary
 

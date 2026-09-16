@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateJobSearchRoutingContract } from './generated.mjs';
+import { playbookCatalogCard, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -90,7 +90,31 @@ test('Bounded parallel role count is scoped to its catalog card', () => {
   assert.equal(playbookCatalogCard(html, 'playbook-missing'), '');
 });
 
-test('Job-search routing separates Riley default entry, Playbook procedure, and direct targets', () => {
+test('Routing case: unqualified narrow request routes Riley to a specialist or Skill', () => {
+  const route = { next_handoff: 'For an unqualified request, begin with Riley Morgan; Riley selects the smallest narrow specialist or Skill route.' };
+  assert.doesNotThrow(() => validateJobSearchRoutingCase(route, 'unqualifiedNarrow'));
+  assert.throws(() => validateJobSearchRoutingCase({ next_handoff: route.next_handoff.replace('narrow', 'broad') }, 'unqualifiedNarrow'), /unqualified narrow/i);
+});
+
+test('Routing case: unqualified full-outcome request routes Riley to the Playbook', () => {
+  const route = { next_handoff: 'For an unqualified request, begin with Riley Morgan; Riley selects the Evidence-led Job Search Playbook for full-outcome work.' };
+  assert.doesNotThrow(() => validateJobSearchRoutingCase(route, 'unqualifiedFullOutcome'));
+  assert.throws(() => validateJobSearchRoutingCase({ next_handoff: route.next_handoff.replace('full-outcome', 'narrow') }, 'unqualifiedFullOutcome'), /full-outcome/);
+});
+
+test('Routing case: explicit specialist request supports direct invocation', () => {
+  const route = { next_handoff: 'Explicit requests for a named specialist may route directly.' };
+  assert.doesNotThrow(() => validateJobSearchRoutingCase(route, 'explicitSpecialist'));
+  assert.throws(() => validateJobSearchRoutingCase({ next_handoff: route.next_handoff.replace('directly', 'through Riley') }, 'explicitSpecialist'), /direct invocation/);
+});
+
+test('Routing case: explicit Playbook request supports direct invocation', () => {
+  const route = { next_handoff: 'Explicit requests for a named Playbook may route directly.' };
+  assert.doesNotThrow(() => validateJobSearchRoutingCase(route, 'explicitPlaybook'));
+  assert.throws(() => validateJobSearchRoutingCase({ next_handoff: route.next_handoff.replace('directly', 'through Riley') }, 'explicitPlaybook'), /direct invocation/);
+});
+
+test('Job-search routing preserves Riley identity, Playbook procedure, and specialist boundaries', () => {
   const route = {
     next_handoff: 'For an unqualified request, begin with Riley Morgan as the default entry and routing point; Riley selects the smallest specialist or Skill for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns stages, shared state, quality gates, recovery, and the learning loop.'
   };

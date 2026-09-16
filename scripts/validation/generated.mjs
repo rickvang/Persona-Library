@@ -8,11 +8,37 @@ export function playbookCatalogCard(html, playbookId) {
 const normalized = value => String(value || '').toLowerCase();
 const includesAll = (value, terms) => terms.every(term => normalized(value).includes(term));
 
+const routingCaseRequirements = {
+  unqualifiedNarrow: {
+    terms: ['unqualified', 'riley morgan', 'narrow', 'specialist', 'skill'],
+    message: 'Unqualified narrow requests must route from Riley to a specialist or Skill'
+  },
+  unqualifiedFullOutcome: {
+    terms: ['unqualified', 'riley morgan', 'full-outcome', 'playbook'],
+    message: 'Unqualified full-outcome requests must route from Riley to a Playbook'
+  },
+  explicitSpecialist: {
+    terms: ['explicit', 'specialist', 'directly'],
+    message: 'Explicit specialist requests must support direct invocation'
+  },
+  explicitPlaybook: {
+    terms: ['explicit', 'playbook', 'directly'],
+    message: 'Explicit Playbook requests must support direct invocation'
+  }
+};
+
+export function validateJobSearchRoutingCase(route, caseId) {
+  const requirement = routingCaseRequirements[caseId];
+  if (!requirement) throw new Error(`Unknown job-search routing case: ${caseId}`);
+  if (!includesAll(route?.next_handoff, requirement.terms)) throw new Error(requirement.message);
+}
+
 export function validateJobSearchRoutingContract({ route, implementation, riley, rileyFlows, playbook, specialistIds }) {
   if (!riley || riley.roleLabel !== 'AI orchestrator') throw new Error('Riley must retain the canonical AI orchestrator identity');
   if (!rileyFlows?.some(flow => includesAll(`${flow.summary || ''} ${flow.title || ''}`, ['unqualified', 'bounded']))) throw new Error('Riley workflow must describe default handling of unqualified requests');
   if (!playbook || playbook.id !== 'playbook-evidence-led-job-search') throw new Error('Evidence-led Job Search must remain the canonical job-search Playbook');
-  if (!includesAll(route?.next_handoff, ['unqualified', 'riley morgan', 'narrow', 'specialist', 'skill', 'full-outcome', 'playbook', 'explicit', 'directly', 'stages', 'shared state', 'quality gates', 'recovery', 'learning loop'])) throw new Error('Docs job-search route must distinguish Riley default routing, Playbook procedure, and direct invocation');
+  for (const caseId of Object.keys(routingCaseRequirements)) validateJobSearchRoutingCase(route, caseId);
+  if (!includesAll(route?.next_handoff, ['stages', 'shared state', 'quality gates', 'recovery', 'learning loop'])) throw new Error('Docs job-search route must describe Playbook procedure ownership');
   if (!includesAll(implementation, ['default system entry', 'unqualified requests', 'shared state', 'quality gates', 'learning loop', 'explicit requests', 'route directly']) || !/playbooks?\b.{0,80}\bown/i.test(implementation)) throw new Error('Job-search guidance must express orchestrator-first routing and Playbook outcome ownership');
   const requiredSpecialists = ['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'ui-expert', 'document-designer'];
   for (const id of requiredSpecialists) if (!specialistIds?.has(id)) throw new Error(`Job-search specialist boundary is missing: ${id}`);
@@ -50,6 +76,8 @@ export async function validateGeneratedOutputs(context) {
   if (!guidePage.includes('Evidence-led job search')) throw new Error('Docs page must keep Evidence-led job search as a Playbook example');
   const decisionsPage = await context.readFile('dist/decisions.html');
   if (!decisionsPage.includes('DEC-011') || !decisionsPage.includes('Riley orchestrates job search; the Playbook owns the outcome')) throw new Error('Decisions page must record DEC-011 Riley/job-search ownership boundary');
+  const decisionSource = await context.readFile('docs/decisions/DEC-013-orchestrator-first-routing.md');
+  if (!decisionSource.includes('DEC-013') || !decisionSource.includes('Status: Applied') || !decisionSource.includes('Riley Morgan is the default interaction and routing front door') || !decisionSource.includes('Playbooks own reusable outcome procedures') || !decisionSource.includes('Explicit direct invocation')) throw new Error('Canonical DEC-013 source must record the revised routing conclusion');
   const jobLedgerContract = await context.readFile('docs/job-search/job-ledger-contract.md');
   if (!jobLedgerContract.includes('Riley Morgan · AI orchestrator') || !jobLedgerContract.includes('does not own the ledger') || !jobLedgerContract.includes('Persona-Library must not become the storage location')) throw new Error('Job ledger contract is missing ownership or privacy boundary');
   const jobSearchImpl = await context.readFile('docs/job-search/implementation.md');
