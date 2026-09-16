@@ -4,7 +4,7 @@
 
 - Work Order ID: `WO-2026-09-16-decision-history-fidelity`
 - Issue: #117
-- Status: active
+- Status: ready-for-review
 - Created: 2026-09-16
 - Last updated: 2026-09-16
 - Requester: repository owner
@@ -62,8 +62,24 @@ Make the canonical Decision migration lossless for pre-#112 Decision history whi
 
 ## Current phase
 
-Implementation.
+Ready for review.
+
+## Validation
+
+Passed on GitHub Actions:
+
+- `node scripts/build-library.mjs`
+- `node scripts/validate-content.mjs`
+- `node --test scripts/validation/validation.test.mjs`
+- `node eval/isolated-persona-skill.mjs validate`
+- `node --check scripts/build-decisions.mjs`
+- `git diff --check`
+- focused generated-output checks for parked labels, DEC-008/009/012 restored wording, DEC-011 historical wording, and DEC-013/014 preservation
+
+## Reconciliation
+
+Required: canonical Decision source, Decisions renderer, generated Decisions output, and this Work Order. Unchanged: Riley/Priya routing, Playbook/operator semantics, Persona/Skill records, job-search contracts, and later Decision conclusions.
 
 ## Next action
 
-Add lossless historical-display metadata to migrated Decision records, update the renderer and validation, rebuild generated output, then open a focused PR for review.
+Open one focused PR for independent review. Merge remains separately authorized.

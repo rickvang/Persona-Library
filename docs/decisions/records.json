@@ -16,7 +16,38 @@
       "tradeoffs": "Claim tracking and concrete findings take more care. Focus them on consequential claims and affected checks; do not add a general approval ritual to every edit.",
       "affects": "Skills, Leah, Sofia, job-search handoffs, Docs, and the isolated resume editorial trial.",
       "evidence": "Resume audit and source-to-draft comparison.",
-      "revisit": "A real trial still produces generic or misleading content, the reviewer cannot find evidence, or the process creates effort without improving the reader’s understanding."
+      "revisit": "A real trial still produces generic or misleading content, the reviewer cannot find evidence, or the process creates effort without improving the reader’s understanding.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Make document quality review evidence-backed",
+        "summary": "Use the Site for reusable methods and a source-grounded brief for each application. Treat integrity, chronology, and extraction as prerequisites to judging reader and document quality.",
+        "lines": [
+          {
+            "label": "Decision",
+            "value": "Expand the existing editorial skills, reconcile Leah and Sofia, use a small content trial, and require version-specific independent findings before a review can pass."
+          },
+          {
+            "label": "Evidence",
+            "value": "A resume audit found changed attribution and action verbs, weakened context, cosmetic variations, and approval labels without inspectable review evidence. The process is adopted; its effect on the next resume remains untested."
+          },
+          {
+            "label": "Alternatives",
+            "value": "Another full visual redesign; a universal resume score; additional personas; an app-managed runtime. Start with existing capabilities and a bounded trial."
+          },
+          {
+            "label": "Tradeoffs",
+            "value": "Claim tracking and concrete findings take more care. Focus them on consequential claims and affected checks; do not add a general approval ritual to every edit."
+          },
+          {
+            "label": "Affects",
+            "value": "Skills, Leah, Sofia, job-search handoffs, and Docs. Trial procedure remains isolated."
+          },
+          {
+            "label": "Revisit when",
+            "value": "A real trial still produces generic or misleading content, the reviewer cannot find evidence, or the process creates effort without improving the reader’s understanding."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-001",
@@ -30,7 +61,38 @@
       "rationale": "This keeps cadence, tools, priorities, friction, and recovery work attached to the context where they matter.",
       "affects": "Persona cards, Persona detail views, and the persona-research guidance.",
       "evidence": "Layout Lab prototype and current Docs guidance.",
-      "revisit": "Real Persona research shows that users need a different first-order way to compare work."
+      "revisit": "Real Persona research shows that users need a different first-order way to compare work.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Flow hierarchy for persona work",
+        "summary": "Organize each person’s work into foundational, supporting, and edge-case flows, with the activity inventory embedded inside each flow.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Should the persona page follow a day, a list of activities, or the outcomes the person is trying to produce?"
+          },
+          {
+            "label": "Decision",
+            "value": "Use flow hierarchy as the primary structure. Each tier can contain multiple workflows."
+          },
+          {
+            "label": "Rationale",
+            "value": "This keeps cadence, tools, priorities, friction, and recovery work attached to the context where they matter."
+          },
+          {
+            "label": "Affects",
+            "value": "Persona cards, persona detail views, and the persona-research guidance."
+          },
+          {
+            "label": "Evidence",
+            "value": "Layout Lab prototype · Current Docs guidance"
+          },
+          {
+            "label": "Revisit when",
+            "value": "Real persona research shows that users need a different first-order way to compare work."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-002",
@@ -44,7 +106,38 @@
       "rationale": "The index supports orientation; depth belongs in the selected Skill instead of a wall of content.",
       "affects": "Persona detail pages, the Skills space, and persona-skills guidance.",
       "evidence": "Skill Layout Lab prototype and current Docs guidance.",
-      "revisit": "Skill reuse or relationship density makes the index difficult to scan or the panel too shallow."
+      "revisit": "Skill reuse or relationship density makes the index difficult to scan or the panel too shallow.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Skill index plus deep dive",
+        "summary": "Keep the complete capability set visible, then select one skill to inspect its triggers, operating model, quality signals, workflows, and evidence.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Can someone see all the capabilities and still understand one skill deeply?"
+          },
+          {
+            "label": "Decision",
+            "value": "Use a scan-friendly skill index with a focused deep-dive panel."
+          },
+          {
+            "label": "Rationale",
+            "value": "The index supports orientation; depth belongs in the selected skill instead of a wall of content."
+          },
+          {
+            "label": "Affects",
+            "value": "Persona detail pages, the Skills space, and the `$persona-skills` guidance."
+          },
+          {
+            "label": "Evidence",
+            "value": "Skill Layout Lab prototype · Current Docs guidance"
+          },
+          {
+            "label": "Revisit when",
+            "value": "Skill reuse or relationship density makes the index difficult to scan or the panel too shallow."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-003",
@@ -55,7 +148,26 @@
       "decision": "Park until the focused Skill map needs a global relationship view.",
       "rationale": "A global graph needs filtering, navigation, and accessible list-view rules before it becomes useful.",
       "affects": "Future Skills navigation and relationship views.",
-      "revisit": "A global relationship view becomes necessary for real reuse and remains usable with filtering and accessible alternatives."
+      "revisit": "A global relationship view becomes necessary for real reuse and remains usable with filtering and accessible alternatives.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Full skill network map",
+        "summary": "Show multi-hop relationships between primitive capabilities, composed skills, workflows, and personas.",
+        "lines": [
+          {
+            "label": "Decision",
+            "value": "Park until the focused skill map needs a global relationship view."
+          },
+          {
+            "label": "Why parked",
+            "value": "A global graph needs filtering, navigation, and accessible list-view rules before it becomes useful."
+          },
+          {
+            "label": "Notes",
+            "value": "Consider neighborhood depth, relationship filters, and keyboard-friendly alternatives."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-004",
@@ -66,7 +178,26 @@
       "decision": "Park until relationship editing has stronger validation, permissions, and versioning.",
       "rationale": "Editing shared relationships safely has a larger integrity and governance surface than the static library needs today.",
       "affects": "Future Skill authoring and relationship editing.",
-      "revisit": "Start with reuse suggestions, duplicate and cycle checks, and an explicit rationale for every new connection."
+      "revisit": "Start with reuse suggestions, duplicate and cycle checks, and an explicit rationale for every new connection.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Skill composition editor",
+        "summary": "Let a maintainer assemble composed skills from existing primitives and connect them with typed relationships.",
+        "lines": [
+          {
+            "label": "Decision",
+            "value": "Park until relationship editing has stronger validation, permissions, and versioning."
+          },
+          {
+            "label": "Why parked",
+            "value": "Editing shared relationships safely has a larger integrity and governance surface than the static library needs today."
+          },
+          {
+            "label": "Notes",
+            "value": "Start with reuse suggestions, duplicate and cycle checks, and an explicit rationale for every new connection."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-005",
@@ -77,7 +208,26 @@
       "decision": "Park until more Personas and Skill applications have been researched consistently.",
       "rationale": "Coverage metrics would create false precision before the evidence model is mature enough.",
       "affects": "Future evidence and coverage views.",
-      "revisit": "Potential views include evidence confidence, workflow coverage, proficiency signals, and validation gaps."
+      "revisit": "Potential views include evidence confidence, workflow coverage, proficiency signals, and validation gaps.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Skill coverage and assessment",
+        "summary": "Show which skills are well evidenced, thinly evidenced, or missing across personas and workflows.",
+        "lines": [
+          {
+            "label": "Decision",
+            "value": "Park until more personas and skill applications have been researched consistently."
+          },
+          {
+            "label": "Why parked",
+            "value": "Coverage metrics would create false precision before the evidence model is mature enough."
+          },
+          {
+            "label": "Notes",
+            "value": "Potential views include evidence confidence, workflow coverage, proficiency signals, and validation gaps."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-006",
@@ -88,7 +238,26 @@
       "decision": "Park until the relationship graph has enough real reuse to create meaningful change impact.",
       "rationale": "Impact views are most useful when a change can affect several real dependents.",
       "affects": "Future relationship diffs and reconciliation prompts.",
-      "revisit": "Pair relationship diffs with reconciliation prompts and a review queue before changes propagate."
+      "revisit": "Pair relationship diffs with reconciliation prompts and a review queue before changes propagate.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Dependency-aware version history",
+        "summary": "Show what downstream personas, workflows, and composed skills are affected when a reusable capability changes.",
+        "lines": [
+          {
+            "label": "Decision",
+            "value": "Park until the relationship graph has enough real reuse to create meaningful change impact."
+          },
+          {
+            "label": "Why parked",
+            "value": "Impact views are most useful when a change can affect several real dependents."
+          },
+          {
+            "label": "Notes",
+            "value": "Pair relationship diffs with reconciliation prompts and a review queue before changes propagate."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-007",
@@ -102,7 +271,38 @@
       "rationale": "Contextual rules need a durable home that does not turn Skills into project instruction or Playbooks into duplicated policy. Scoped applications keep a pack relevant to the work where it applies.",
       "tradeoffs": "The catalog does not transport or execute packs, and external references may remain planned or unavailable until verified. Project conventions remain local unless later evidence supports broader reuse.",
       "affects": "Orientation routing, Docs, Site navigation, the Operating Pack catalog, lifecycle Skills, and reconciliation guidance.",
-      "revisit": "A pack needs executable runtime behavior, repeated rules reveal a generalizable Skill, a Playbook duplicates pack content, or external source transport becomes a separately authorized product need."
+      "revisit": "A pack needs executable runtime behavior, repeated rules reveal a generalizable Skill, a Playbook duplicates pack content, or external source transport becomes a separately authorized product need.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Operating Packs are contextual library space",
+        "summary": "Catalog reusable, file-based operating context alongside the existing library spaces while keeping actual Markdown source outside the catalog when appropriate.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Where should domain or project instructions, standards, conventions, procedures, references, and validation guidance live when they are reusable but not executable capabilities?"
+          },
+          {
+            "label": "Decision",
+            "value": "Add Operating Packs as a first-class space with a small source/location record, explicit availability, and scoped Persona, Skill, workflow, Playbook, and Tool-use relationships."
+          },
+          {
+            "label": "Rationale",
+            "value": "Contextual rules need a durable home that does not turn Skills into project instruction or Playbooks into duplicated policy. Scoped applications keep a pack relevant to the work where it applies."
+          },
+          {
+            "label": "Tradeoffs",
+            "value": "The catalog does not transport or execute packs, and external references may remain planned or unavailable until verified. Project conventions remain local unless later evidence supports broader reuse."
+          },
+          {
+            "label": "Affects",
+            "value": "Orientation routing, Docs, Site navigation, the Operating Pack catalog, lifecycle Skills, and reconciliation guidance. Existing Persona, Skill, Tool, and Playbook definitions remain separate."
+          },
+          {
+            "label": "Revisit when",
+            "value": "A pack needs executable runtime behavior, repeated rules reveal a generalizable Skill, a Playbook duplicates pack content, or external source transport becomes a separately authorized product need."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-008",
@@ -117,7 +317,42 @@
       "tradeoffs": "The static catalog can describe a planned external artifact without making it available. The system does not fetch, clone, render, execute, publish, or upgrade Template artifacts yet.",
       "affects": "Orientation routing, Template normalization, lifecycle Skills, validation, Docs, Site navigation, generated data, and reconciliation guidance.",
       "evidence": "Templates catalog, Docs boundary, and inspected template-library main revision f88a4011902b58b2f192305f5a731f1a71263965.",
-      "revisit": "External Template paths become real, a project starter demonstrates broader reuse, Template relationships need new dimensions, or artifact transport/execution becomes separately authorized."
+      "revisit": "External Template paths become real, a project starter demonstrates broader reuse, Template relationships need new dimensions, or artifact transport/execution becomes separately authorized.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Templates are reusable starting artifacts",
+        "summary": "Add Templates as a first-class library space beside Operating Packs while preserving a distinct ownership boundary for reusable starting structure.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Where should reusable starting structures and scaffolds live when they accelerate work but do not define how the work should be performed?"
+          },
+          {
+            "label": "Decision",
+            "value": "Catalog Template identity, purpose, applicability, source metadata, evidence, lifecycle, revision context, and relationships in Persona-Library. Keep actual reusable artifacts in their canonical external or project source."
+          },
+          {
+            "label": "Rationale",
+            "value": "Templates answer what to start from. Operating Packs answer how to work within context; Skills own reusable judgment; Tools own execution and permissions; Playbooks own coordination and outcomes. A scoped Persona–Skill–workflow application keeps applicability contextual."
+          },
+          {
+            "label": "Tradeoffs",
+            "value": "The static catalog can describe a planned external artifact without making it available. The system does not fetch, clone, render, execute, publish, or upgrade Template artifacts yet; project-specific starters remain local until evidence supports promotion."
+          },
+          {
+            "label": "Affects",
+            "value": "Orientation routing, Template source/model normalization, lifecycle Skills, validation, Docs, Site navigation, generated data, and reconciliation guidance. The three initial design-system identities remain planned because the inspected external repository contains only README.md."
+          },
+          {
+            "label": "Evidence",
+            "value": "Templates catalog · Docs boundary · inspected `rickvang/template-library` main revision `f88a4011902b58b2f192305f5a731f1a71263965`"
+          },
+          {
+            "label": "Revisit when",
+            "value": "External Template paths become real, a project starter demonstrates broader reuse, Template relationships need new dimensions, or artifact transport/execution becomes a separately authorized Tool or workflow capability."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-009",
@@ -131,7 +366,38 @@
       "rationale": "Library stewardship and domain judgment are different kinds of work. Keeping them separate preserves the Template boundary and lets the collection grow without turning one Persona into a polymath.",
       "affects": "Template routing, Persona workflows and handoffs, Template lifecycle Skills, Docs, generated Persona output, and reconciliation. Mara Okoye remains the escalation point for architecture and concept-boundary questions.",
       "evidence": "Template Librarian Persona, Templates catalog, Templates guidance, and issue #63.",
-      "revisit": "Observed Template work shows that stewardship and domain composition cannot remain separate, a dedicated reusable capability is justified, or external artifact ownership changes."
+      "revisit": "Observed Template work shows that stewardship and domain composition cannot remain separate, a dedicated reusable capability is justified, or external artifact ownership changes.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Template Librarian stewards the collection",
+        "summary": "Add a library-stewardship Persona for Template discoverability, provenance, lifecycle, and routing while keeping substantive Template quality with domain specialists.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Who keeps the Template collection organized and trustworthy without becoming the domain expert for every artifact?"
+          },
+          {
+            "label": "Decision",
+            "value": "Use the Template Librarian to maintain catalog identity, source verification, duplication control, promotion, deprecation, relocation, and reconciliation. Route discipline-specific research and composition to the relevant specialist."
+          },
+          {
+            "label": "Rationale",
+            "value": "Library stewardship and domain judgment are different kinds of work. Keeping them separate preserves the Template boundary and lets the collection grow without turning one Persona into a polymath."
+          },
+          {
+            "label": "Affects",
+            "value": "Template routing, Persona workflows and handoffs, Template lifecycle Skills, Docs, generated Persona output, and reconciliation. Mara Okoye remains the escalation point for architecture, taxonomy, and concept-boundary questions."
+          },
+          {
+            "label": "Evidence",
+            "value": "Template Librarian Persona · Templates catalog · Templates guidance · Issue #63"
+          },
+          {
+            "label": "Revisit when",
+            "value": "Observed Template work shows that stewardship and domain composition cannot remain separate, a dedicated reusable capability is justified, or the external artifact ownership boundary changes."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-010",
@@ -152,7 +418,54 @@
         "2026-09-14: Source-grounding is a required stage of the same Playbook identity, not a second Playbook. The target repository owns implementation truth after selection; Persona-Library remains catalog and discovery. Contradicted work stops for re-scope. Root AGENTS.md still does not carry bounded-parallel procedure. See issue #86.",
         "2026-09-14: Issue #71 catalogs playbook-multi-persona-collaboration as its own first-class identity, resolving to the existing docs/collaboration/multi-persona-collaboration-playbook.md contract without copying its stages or gate. The two Playbooks remain distinct as decided above.",
         "2026-09-14: The live-proof extension adds an orientation preflight before source-grounding and a bounded completion callback adapter. Implementer context remains fresh, previously_oriented, or unknown; grounding remains confirmed, qualified, or contradicted. Callback packets are notification-only, GitHub remains review truth, unsupported transport uses a compact coordinator fallback, and independent review, scoped correction/re-review, and separately authorized merge remain unchanged. See issues #89 and #94."
-      ]
+      ],
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Bounded parallel implementation is a distinct Playbook",
+        "summary": "Keep Multi-Persona Collaboration as named-Persona synthesis through a shared problem-context. Catalog bounded parallel repository implementation as its own Playbook with Coordinator, Implementer, Reviewer, and Authorizer roles.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Should usage-conscious parallel implementation be a new Playbook or a profile of Multi-Persona Collaboration, especially while #71 is still open?"
+          },
+          {
+            "label": "Decision",
+            "value": "Add `playbook-bounded-parallel-implementation` as a distinct Playbook. Reference collaboration instead of copying its stages, solution-quality gate, or problem-context contract. Do not create an Agent, Coordinator, Runtime, Budget, or Scheduler entity."
+          },
+          {
+            "label": "Rationale",
+            "value": "Collaboration produces one inspectable solution from Persona lenses. Bounded parallel implementation produces independent reviewable PRs with one-level delegation, compact GitHub-reference handoffs, independent review, and separately authorized merge. Those outcomes and gates are materially different."
+          },
+          {
+            "label": "Alternatives",
+            "value": "Extend Multi-Persona Collaboration with an implementation profile; wait for #71 before adding identity; encode ChatGPT Work or Codex as canonical meaning. Rejected because they mix synthesis with mutation gates or bind the contract to a runtime."
+          },
+          {
+            "label": "Affects",
+            "value": "Playbook catalog, Playbooks orientation route, Site Playbooks and Docs surfaces, root `AGENTS.md` activation, and Work Order evidence for issue #82. Collaboration methodology is unchanged."
+          },
+          {
+            "label": "Revisit when",
+            "value": "#71 catalogs collaboration identity, a two-repository proof is needed, or runtime-specific procedure becomes substantial enough for a Tool package."
+          },
+          {
+            "label": "Correction",
+            "value": "2026-09-14: The Playbook models four roles—Coordinator, Implementer, Reviewer, and Authorizer. Authorizer remains a role. Bounded-parallel activation lives on the Playbooks route group, not as an always-on root `AGENTS.md` rule."
+          },
+          {
+            "label": "Correction",
+            "value": "2026-09-14: Source-grounding is a required stage of the same Playbook identity, not a second Playbook. The target repository owns implementation truth after selection; Persona-Library remains catalog and discovery. Contradicted work stops for re-scope. Root `AGENTS.md` still does not carry bounded-parallel procedure. See issue #86."
+          },
+          {
+            "label": "Correction",
+            "value": "2026-09-14: Issue #71 catalogs `playbook-multi-persona-collaboration` as its own first-class identity, resolving to the existing `docs/collaboration/multi-persona-collaboration-playbook.md` contract without copying its stages or gate. The two Playbooks remain distinct as decided above."
+          },
+          {
+            "label": "Correction",
+            "value": "2026-09-14: The live-proof extension adds an orientation preflight before source-grounding and a bounded completion callback adapter. Implementer context remains fresh, previously_oriented, or unknown; grounding remains confirmed, qualified, or contradicted. Callback packets are notification-only, GitHub remains review truth, unsupported transport uses a compact coordinator fallback, and independent review, scoped correction/re-review, and separately authorized merge remain unchanged. See issue #89 and issue #94."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-011",
@@ -168,7 +481,38 @@
       "alternatives": "Create a new Job Search Persona; rename Riley to Job Search Orchestrator; leave “job-search orchestrator” labels as-is. Rejected because no uncovered responsibility justified a new Persona, and identity drift would damage reuse.",
       "affects": "Job-search implementation guidance, Playbooks and job-search Site surfaces, Docs orientation route resume-application-work, Elena’s search workflow/skill wording, job ledger contract, and Work Order evidence for issue #90. Riley’s canonical roleLabel remains AI orchestrator.",
       "evidence": "Issue #90 ownership correction and the job-ledger contract.",
-      "revisit": "Implementation evidence shows a real uncovered job-search responsibility not owned by Elena, Marcus, Leah, Samira, Camille, Sofia, Riley, or the Playbook; or when a callable job-search Skill package is authorized beyond the ledger contract."
+      "revisit": "Implementation evidence shows a real uncovered job-search responsibility not owned by Elena, Marcus, Leah, Samira, Camille, Sofia, Riley, or the Playbook; or when a callable job-search Skill package is authorized beyond the ledger contract.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Riley orchestrates job search; the Playbook owns the outcome",
+        "summary": "Keep Riley Morgan’s identity as AI orchestrator. Make the Evidence-led Job Search Playbook the front door for the full outcome. Specialists own domain judgment. Do not create a generic Job Search Persona or store private job history in Persona-Library.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Should Riley Morgan become the domain-owning Job Search Persona, or remain a reusable orchestrator for the Evidence-led Job Search Playbook?"
+          },
+          {
+            "label": "Decision",
+            "value": "Playbook owns the outcome. Riley Morgan · AI orchestrator coordinates contributors. Elena, Marcus, Leah, Samira, Camille, and Sofia retain specialist ownership. Private opportunity history uses the job ledger contract in candidate workspace state. No new Job Search Persona."
+          },
+          {
+            "label": "Rationale",
+            "value": "Collapsing job-search expertise into Riley would make the reusable AI orchestrator identity accumulate domain methods and blur specialist quality criteria. Playbook-first wording preserves reusable orchestration across domains while keeping search strategy, hiring calibration, narrative, outreach, visual, and document judgment with the existing specialists."
+          },
+          {
+            "label": "Alternatives",
+            "value": "Create a new Job Search Persona; rename Riley to Job Search Orchestrator; leave “job-search orchestrator” labels as-is. Rejected because no uncovered responsibility justified a new Persona, and identity drift would damage reuse."
+          },
+          {
+            "label": "Affects",
+            "value": "Job-search implementation guidance, Playbooks and job-search Site surfaces, Docs orientation route `resume-application-work`, Elena’s search workflow/skill wording, job ledger contract, and Work Order evidence for issue #90. Riley’s canonical roleLabel remains AI orchestrator."
+          },
+          {
+            "label": "Revisit when",
+            "value": "Implementation evidence shows a real uncovered job-search responsibility not owned by Elena, Marcus, Leah, Samira, Camille, Sofia, Riley, or the Playbook; or when a callable job-search Skill package is authorized beyond the ledger contract."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-012",
@@ -183,7 +527,38 @@
       "alternatives": "Leave the outcome undocumented; fold it into Skill formation; invent a Template runtime or registry. Rejected because the owners and gates are distinct from Skill formation or execution infrastructure.",
       "affects": "Playbook catalog, Playbooks orientation route, Templates stewardship handoff, Site Playbooks/Docs/Decisions surfaces, and issue #72 evidence.",
       "evidence": "Template lifecycle Work Order, catalog, route, and Docs example.",
-      "revisit": "Repeated runs show a missing stage or gate, a callable Template package is authorized, or bounded Skill actions prove the Playbook is unnecessary overhead."
+      "revisit": "Repeated runs show a missing stage or gate, a callable Template package is authorized, or bounded Skill actions prove the Playbook is unnecessary overhead.",
+      "historical": {
+        "source_ref": "8f77c24ec63f063a801943fc6d5d4f3009b666c7",
+        "title": "Template lifecycle is a distinct Playbook",
+        "summary": "Catalog playbook-template-lifecycle as the reusable coordination model for researching, composing, promoting, maintaining, and reconciling Templates. Keep Elena Park as steward, domain specialists as quality owners, Mara as architecture escalation, and Template Skills as stage procedures.",
+        "lines": [
+          {
+            "label": "Question",
+            "value": "Should the Template lifecycle remain only a sequence of Skills and Librarian workflows, or become a canonical Playbook?"
+          },
+          {
+            "label": "Decision",
+            "value": "Add `playbook-template-lifecycle` / Research, promote, and maintain a reusable Template. Reference existing Template Librarian workflows, Template Skills, domain specialists, DEC-008/009, and external template-library ownership instead of copying them. Do not create a new Persona, Skill, registry, or runtime."
+          },
+          {
+            "label": "Rationale",
+            "value": "The Template system already crosses stewardship, domain quality, external artifact ownership, promotion evidence, and reconciliation. That repeated cross-owner outcome needs an inspectable stage/gate contract without turning every bounded Template Skill action into a mandatory Playbook run."
+          },
+          {
+            "label": "Alternatives",
+            "value": "Leave the outcome undocumented; fold it into Skill formation; invent a Template runtime/registry. Rejected because the owners and gates are already Template-specific and distinct from skill formation or execution infrastructure."
+          },
+          {
+            "label": "Affects",
+            "value": "Playbook catalog, Playbooks orientation route, Templates stewardship handoff, Site Playbooks/Docs/Decisions surfaces, and Work Order evidence for issue #72. Template Skills and Librarian identity remain unchanged. Numbered DEC-012 after DEC-011 on the Riley/job-search ownership boundary."
+          },
+          {
+            "label": "Revisit when",
+            "value": "Repeated runs show a missing stage/gate, a callable Template package outside Persona-Library is authorized, or bounded Skill actions prove the Playbook is unnecessary overhead."
+          }
+        ]
+      }
     },
     {
       "id": "DEC-013",
