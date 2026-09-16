@@ -29,7 +29,7 @@ Correct the ontology so Personas are actors and Playbooks are operating surfaces
 - Codify the Persona-operated Playbook invariant in architecture and Playbook composition guidance.
 - Re-route full-outcome job-search work to the new Persona while keeping narrow specialist routes direct.
 - Update job-search implementation, ledger orchestration wording, and application Work Order fields.
-- Append DEC-013 and mark DEC-011 partially superseded without rewriting DEC-011 rationale.
+- Append DEC-014 and mark DEC-011 partially superseded without rewriting DEC-011 rationale.
 - Update current Site surfaces and focused validators.
 - Rebuild generated data and run repository validation.
 
@@ -48,7 +48,7 @@ Correct the ontology so Personas are actors and Playbooks are operating surfaces
 - New Persona identity and workflows belong in the existing career Persona/workflow authored modules.
 - Persona-specific Skill applications reuse existing capability names in the existing Skill application catalog; no new portable Skill is formed.
 - The Playbook identity remains unchanged; this update corrects the actor/surface relationship.
-- DEC-013 belongs on the existing durable Decisions surface and supersedes only the actor-like ownership portion of DEC-011.
+- DEC-014 belongs on the existing durable Decisions surface and supersedes only the actor-like ownership portion of DEC-011.
 - Job-search private state remains external; only reusable contracts and relationships live here.
 
 ## Current phase / next action

@@ -205,12 +205,14 @@
         "tools",
         "playbooks"
       ],
-      "target": "Job Search Orchestrator using the Evidence-led Job Search Playbook and active Work Order",
+      "target": "Riley Morgan · AI orchestrator → Priya Desai · Job search orchestrator → Evidence-led Job Search Playbook",
       "artifact_kind": "workflow",
       "package_path": "docs/job-search/implementation.md",
       "availability_source": "documentation_only",
       "first_reads": [
+        "Riley Morgan default routing contract",
         "Job Search Orchestrator Persona",
+        "Riley Morgan · AI orchestrator routing contract",
         "Evidence-led Job Search Playbook / docs/job-search/implementation.md",
         "docs/job-search/job-ledger-contract.md when opportunity search or deduplication is in scope",
         "active application Work Order",
@@ -227,7 +229,7 @@
         "Storing private job-search history inside Persona-Library",
         "Treating the Playbook itself as the actor or domain owner"
       ],
-      "next_handoff": "Route full-outcome job-search work to Priya Desai · Job search orchestrator, who uses the Evidence-led Job Search Playbook and routes only the needed specialists. Route narrow strategy, hiring, writing, outreach, visual, or document questions to Elena, Marcus, Leah, Samira, Camille, or Sofia directly. Riley Morgan remains the general AI orchestrator for cross-domain or orchestration-architecture work, not the default job-search operator. Use provider recommendation status and candidate review requirements before selecting an export."
+      "next_handoff": "For unqualified job-search requests, route first through Riley Morgan · AI orchestrator. For unqualified narrow work, Riley routes to the smallest relevant specialist or Skill. For unqualified full-outcome work, Riley routes to Priya Desai · Job search orchestrator, who operates the Evidence-led Job Search Playbook. The Playbook supplies the reusable stages, shared state, handoffs, quality gates, recovery, and learning loop; Priya operates the process and specialists own domain judgment. Explicit specialist or Skill requests route directly to the named target. Explicit Playbook requests route directly to the named Playbook, with Priya as the operating Persona for Evidence-led Job Search. Riley is the default front door, not an unavoidable hop for explicit direct invocation. Use provider recommendation status and candidate review requirements before selecting an export."
     }
   ]
 }

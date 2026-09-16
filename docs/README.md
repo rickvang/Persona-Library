@@ -9,6 +9,7 @@ This directory contains current, reusable guidance and project-scoped work recor
 | Canonical Persona, Skill, Tool, Playbook, Template, or Operating Pack data | content/ or its existing canonical owner | Extend the existing owner before creating parallel truth. |
 | Callable repository Skill package | .agents/skills/<skill>/ | Keep the package namespace flat until loader support changes. |
 | Current reusable system or domain guidance | docs/<subject>/ | Keep current truth here; put rationale in Decisions. |
+| Durable Decision records | docs/decisions/records.json | Append the rationale, alternatives, affected surfaces, status, and revisit condition; `content/decisions-page.html` plus `scripts/build-decisions.mjs` generate the Decisions page from this single source. |
 | Active non-trivial project state | docs/work-orders/<id>/ | Keep one Work Order as the progress record and link specialized artifacts. |
 | Terminal Work Order package | docs/work-orders/archive/YYYY-MM/<id>/ | Preserve history; archive only after a terminal status is recorded. |
 | Evaluation fixtures and results | eval/ | Record conditions and evidence without implying live provider capability. |

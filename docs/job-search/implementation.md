@@ -10,7 +10,7 @@ This is a Persona-operated Playbook surface. The Playbook composes Personas, Ski
 
 ## Recommended operating model
 
-The durable process surface for the full outcome is the **Evidence-led Job Search Playbook**. **Priya Desai · Job search orchestrator** is the default operating Persona for a complete run. Use one primary candidate persona with a coordinated set of specialist lenses:
+Riley Morgan · AI orchestrator remains the default system entry and routing point for unqualified requests. For a full-outcome job-search request, Riley routes to **Priya Desai · Job search orchestrator**, who operates the **Evidence-led Job Search Playbook** as the durable process surface. Use one primary candidate persona with a coordinated set of specialist lenses:
 
 1. **Job seeker** — source of truth for goals, constraints, experience, preferences, voice, and evidence.
 2. **Search strategist (Elena Marin)** — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity disposition against the job ledger.
@@ -23,21 +23,23 @@ The durable process surface for the full outcome is the **Evidence-led Job Searc
 9. **Document designer (conditional, Sofia Calder)** — document structure, production, accessibility, and fidelity when a rendered packet is in scope.
 10. **Job search orchestrator (Priya Desai)** — operates the Playbook run: maintains stage and gate state, selects the smallest relevant specialist set, coordinates concurrent opportunities, preserves decisions and boundaries, handles recovery, and synthesizes the next handoff. Priya does not absorb specialist domain expertise.
 
-**Riley Morgan · AI orchestrator** remains the general-purpose orchestration Persona for cross-domain work, orchestration architecture, or coordination problems that do not belong cleanly to the job-search domain. Riley is not the default operator of this Playbook.
+**Riley Morgan · AI orchestrator** remains the default front door for unqualified requests and the general-purpose orchestration Persona across domains. Riley does not operate the job-search methodology as a domain expert: once Riley identifies a full-outcome job-search route, Priya becomes the operating Persona. Explicit requests naming Priya, a specialist, a Skill, or the Playbook may route directly without an unnecessary Riley hop.
 
 Three-layer ownership:
 
 ```text
-Priya Desai · Job search orchestrator → operates the full outcome and remains responsible for process completion
-Evidence-led Job Search Playbook → supplies stages / state / handoffs / gates / recovery / learning
+Riley Morgan · AI orchestrator → default entry, intent interpretation, and routing for unqualified requests
+Priya Desai · Job search orchestrator → operates the full job-search outcome after routing and remains responsible for process completion
+Evidence-led Job Search Playbook → supplies stages / shared state / handoffs / quality gates / recovery / learning loop
 Job-search specialists → own domain judgment and artifact-specific expertise
 ```
 
 Preferred presentation:
 
 ```text
-Priya Desai · Job Search Orchestrator
-→ uses Evidence-led Job Search Playbook
+Riley Morgan · AI Orchestrator
+→ routes unqualified full-outcome job-search work to Priya Desai · Job Search Orchestrator
+→ Priya uses Evidence-led Job Search Playbook
 ```
 
 Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or the job ledger.
@@ -46,9 +48,10 @@ The default path is ATS-first with a material-claim integrity gate. Cover letter
 
 ### Consultation and routing convention
 
-- Full-outcome job-search requests → Priya Desai · Job search orchestrator, who uses the Evidence-led Job Search Playbook and invokes only the specialists required by the active stage.
-- Narrow domain questions → the matching specialist directly (Elena for search strategy/targeting, Marcus for hiring calibration, Leah for application narrative/ATS, Samira for outreach/interviews, Camille for visual communication, Sofia for document production). Do not force narrow questions through Priya.
-- When a requester explicitly asks to “consult Riley Morgan” for job-search work, use Riley for the requested general orchestration perspective or cross-domain coordination. Do not silently substitute Riley for Priya as the default job-search operator, and do not make Riley the sole content, writing, hiring, search-strategy, visual, or document reviewer.
+- Unqualified job-search requests → Riley Morgan · AI orchestrator first. Riley routes narrow work to the matching specialist or Skill and full-outcome work to Priya Desai · Job search orchestrator.
+- Priya operates the Evidence-led Job Search Playbook for full-outcome work and invokes only the specialists required by the active stage.
+- Explicit specialist, Skill, Priya, or Playbook requests → the named target directly; explicit direct invocation does not require an extra Riley hop. An explicit Evidence-led Job Search Playbook request resolves to that Playbook with Priya as its operating Persona.
+- When a requester explicitly asks to “consult Riley Morgan” for job-search work, use Riley for the requested general orchestration perspective or cross-domain coordination. Do not silently substitute Riley for Priya as the job-search operator, and do not make Riley the sole content, writing, hiring, search-strategy, visual, or document reviewer.
 
 For a full application-packet run, use Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Priya Desai for orchestration and stage/gate synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. A narrow cover-letter request may route directly to Avery, Leah, and Marcus without invoking Priya. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
 
