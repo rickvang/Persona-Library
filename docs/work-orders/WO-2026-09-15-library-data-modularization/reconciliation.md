@@ -2,59 +2,77 @@
 
 ## Initiating change
 
-Issue #106 replaces the authored `content/library-data.js` monolith with owned source modules under `content/library-data/` while preserving the existing normalized model and generated browser contract.
+Issue #106 replaced the authored `content/library-data.js` monolith with owned source modules under `content/library-data/` while preserving the existing normalized model and generated browser contract. PR #109 merged that implementation into `main` at `968b5db8823e3de2a61cd5d4036409d85c87dd2f`.
 
-## Direct dependents checked
+The post-merge follow-up on `followup/mara-modular-source-guidance` aligns Mara Okoye’s architecture workflow and the relevant Persona/reconciliation Skills with the modular source boundary. It does not add a new Skill or change Mara’s substantive IA capability set.
+
+## Original executable evidence
+
+Before PR #109 merged, the repository owner reported a fresh-checkout validation run on the final branch state with these results:
+
+- build: PASS;
+- content validation: PASS;
+- validation tests: PASS — 6/6;
+- isolated Persona/Skill validation: PASS — 97 cases;
+- syntax checks: PASS;
+- module syntax loop: PASS;
+- `git diff --check`: PASS;
+- exact runtime data parity with baseline: PASS;
+- all 13 required `PersonaLibraryData` domains present: PASS;
+- no runtime loader introduced: PASS;
+- no unrelated files changed: PASS.
+
+That was user-reported local execution evidence, not a GitHub Actions run.
+
+## Follow-up Persona adapter review
+
+The changed Persona scope is Mara Okoye’s `knowledge-systems-architect` workflow. Her existing Skill applications remain sufficient and unchanged: information architecture/concept modeling, boundary design, taxonomy/navigation, dependency/change impact, rationale documentation, facilitation, and multi-perspective synthesis.
+
+The workflow now makes three repository-operating expectations explicit:
+
+1. begin architecture work from the current orientation and authored source owner;
+2. treat the relevant `content/library-data/*.js` module as the record owner and `content/library-data.js` as the compatibility assembler;
+3. invoke `$change-impact-reconciliation` after authorized durable source or structural changes when the change contract requires it.
+
+No unrelated Persona fields, Skills, Tool requirements, resources, evidence claims, or role responsibilities were changed.
+
+## Universal impact review
 
 | Surface | Result |
 | --- | --- |
-| `content/library-model.js` | Unchanged contract: continues to consume `window.PersonaLibraryData` after the compatibility assembler runs. |
-| `scripts/build-library.mjs` | Updated to compose the ordered authored module set plus assembler into one generated `dist/data/library-data.js`. |
-| `scripts/validation/context.mjs` | Updated to load the same ordered authored source sequence before the assembler so existing validators continue to inspect the canonical source shape. |
-| `eval/isolated-persona-skill.mjs` | Updated to load the modular authored sequence by default while retaining explicit single-file fixture input support. |
-| `dist/data/library-data.js` | Remains generated output. It was not hand-edited; regeneration is part of the executable pre-merge gate. |
-| `ARCHITECTURE.md` | Updated to make `content/library-data/*.js` the authored record owners and `content/library-data.js` the compatibility assembler. |
-| Persona Skills package | Current preflight/profile guidance updated so maintainers read the modular authored sources rather than treating the assembler as the record owner. |
-| Template lifecycle Playbook | Canonical catalog identity updated to `content/library-data/catalogs.js`; assembler role remains explicit. |
-| Skill-rebuild internal index | Current source-evidence pointer updated to the modular source directory plus assembler. |
+| `content/site-orientation.json` | Mara-owned creation gate now resolves the current canonical source owner and explicitly points canonical library work at `content/library-data/`. |
+| `content/library-data/workflows-career.js` | Mara’s workflow now starts from orientation/source ownership and names the universal reconciliation handoff. |
+| `.agents/skills/persona-research/SKILL.md` | Preflight now reads owning authored modules and treats `content/library-data.js` only as the compatibility assembler. |
+| `.agents/skills/persona-reconciliation/SKILL.md` | Persona adapter now reads owning authored modules before normalized relationship review. |
+| `.agents/skills/change-impact-reconciliation/SKILL.md` | Universal dependency source and repository-dependency guidance now use `content/library-data/` as authored source and the assembler only as compatibility contract. |
+| `content/library-model.js` | Unchanged; continues to consume the assembled `window.PersonaLibraryData` contract. |
+| `ARCHITECTURE.md` | Already states the modular authored-source boundary from #106; no follow-up edit required. |
+| historical Work Orders | Unchanged as historical evidence. |
 
-## Source-boundary check
+A bounded repository search found current modular-source guidance already correct in the Persona Skills profile contract, architecture contract, build/validation loaders, and current #106 records. Historical records that describe the old monolith remain historical evidence and are not rewritten merely to chase current paths.
 
-The original top-level `PersonaLibraryData` contract had 13 keys. The compatibility assembler requires those same keys and reconstructs them in the same order:
+## Generated-output boundary
 
-1. `personas`
-2. `skillLibrary`
-3. `flowLibrary`
-4. `playbookCatalog`
-5. `operatingPacks`
-6. `templates`
-7. `personaToolRequirements`
-8. `personaHandoffs`
-9. `toolUseRecipes`
-10. `skillGuidance`
-11. `skillPractice`
-12. `skillUnits`
-13. `skillRelations`
+This follow-up changes authored source that feeds generated output:
 
-The module directory contains actual authored records for each domain; it is not a set of reference documents or redirect stubs.
+- `content/library-data/workflows-career.js` → `dist/data/library-data.js`;
+- `content/site-orientation.json` → `dist/data/site-orientation.json`.
 
-## Historical evidence boundary
+Those generated files must be refreshed by `node scripts/build-library.mjs`. They must not be hand-edited.
 
-Archived Work Orders and historical issue/PR text were not rewritten merely to chase the new source paths. Their recorded paths remain evidence of the repository state in which those runs occurred.
+## Follow-up executable validation gate
 
-## Executable validation boundary
-
-The connected GitHub surface does not expose a repository command runner for this repository. Therefore this reconciliation does **not** claim that the following commands ran:
+The connected GitHub surface does not expose a repository command runner, so this reconciliation does not claim the follow-up build or tests have run. Before the follow-up PR is merge-ready, run:
 
 - `node scripts/build-library.mjs`
 - `node scripts/validate-content.mjs`
 - `node --test scripts/validation/validation.test.mjs`
 - `node eval/isolated-persona-skill.mjs validate`
-- syntax checks for the changed JavaScript sources
+- syntax check for `content/library-data/workflows-career.js`
 - `git diff --check`
 
-Those checks remain required before merge. In particular, the build must regenerate `dist/data/library-data.js` from the modular sources and the generated-parity validator must pass before the branch can be treated as behavior-preserving.
+The build should refresh only the generated outputs attributable to the changed sources, and generated parity must pass.
 
 ## Reconciliation result
 
-No new first-class library concept, runtime, registry, Tool permission model, or Site contract was introduced. The affected source/build/validation/evaluation/current-documentation surfaces have been reconciled. Historical evidence remains untouched. Remaining risk is concentrated in executable syntax, semantic parity, generated-output parity, and repository tests, all of which remain an explicit pre-merge gate.
+The follow-up is a narrow **extension** of the #106 operating contract: Mara keeps her existing capability set, but her repository workflow and the Skills she routes through now resolve the real authored module owner instead of the compatibility assembler. No new first-class concept, runtime, registry, schema, Tool permission model, or Site contract is introduced. Remaining risk is limited to executable validation and generated-output freshness before merge.
