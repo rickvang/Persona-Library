@@ -33,7 +33,7 @@ This universal pass must never invoke itself recursively.
 
 Use declared, inspectable sources of dependency:
 
-- Explicit typed relationships and canonical records in content/library-data.js.
+- Explicit typed relationships, provenance, and canonical records in the owning authored modules under `content/library-data/`. `content/library-data.js` is the compatibility assembler, not the authored source.
 - Normalized relationships and workflow reach produced by content/library-model.js.
 - Operating Pack applications are first-class dependent relationships: when a Persona, Skill or workflow, Playbook, Tool, or Tool-use recipe changes, inspect the related Operating Pack applications; when an Operating Pack changes, inspect those source relationships symmetrically.
 - Decision records and their affected surfaces, source prototypes, and revisit conditions.
@@ -58,7 +58,7 @@ If evidence cannot distinguish the classes, say so and mark the classification u
 ## Operating procedure
 
 1. Capture the change event, initiating contract, authority, scope, and evidence.
-2. Load explicit relationships and declared provenance from the canonical data and relevant records.
+2. Load explicit relationships and declared provenance from the relevant authored modules under `content/library-data/` and the affected records.
 3. Enumerate direct dependents, then known indirect dependents within the bounded scope.
 4. For each dependent, record its relationship, impact class, evidence, confidence, and whether an action is required.
 5. Inspect affected fields for stale placeholders, unsupported assumptions, duplicate sections, contradictions, invalid statuses, broken links, and mismatched revision notes.
@@ -104,7 +104,8 @@ The required current sources are:
 
 - content/site-orientation.json for routing and mutation policy.
 - content/library-model.js for normalized skill and relationship behavior.
-- content/library-data.js for authored relationships, provenance, and maintenance records.
+- content/library-data/ for authored relationships, provenance, maintenance records, and source ownership.
+- content/library-data.js for the compatibility assembly contract only; it is not the authored record source.
 - ARCHITECTURE.md for source-of-truth, prototype, decision, tool, and generated-output boundaries.
 - scripts/validate-content.mjs for read-only content and generated-output validation when applicable.
 
@@ -123,4 +124,3 @@ Before handoff, confirm:
 - The report names blockers, incomplete visibility, and the smallest next action.
 
 See the concise golden scenarios and checkpoint comparison at ../../../docs/internal/skill-rebuild/tests/change-impact-reconciliation.golden.md.
-
