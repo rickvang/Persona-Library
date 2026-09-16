@@ -101,7 +101,7 @@
       "decision": "Add Operating Packs as a first-class space with a small source/location record, explicit availability, and scoped Persona, Skill, workflow, Playbook, and Tool-use relationships.",
       "rationale": "Contextual rules need a durable home that does not turn Skills into project instruction or Playbooks into duplicated policy. Scoped applications keep a pack relevant to the work where it applies.",
       "tradeoffs": "The catalog does not transport or execute packs, and external references may remain planned or unavailable until verified. Project conventions remain local unless later evidence supports broader reuse.",
-      "affects": "Orientation routing, Docs, Site navigation, the Operating Pack catalog, lifecycle Skills, and reconciliation guidance.",
+      "affects": "Orientation routing, Docs, Site navigation, the Operating Pack catalog, lifecycle Skills, and reconciliation guidance. Existing Persona, Skill, Tool, and Playbook definitions remain separate.",
       "revisit": "A pack needs executable runtime behavior, repeated rules reveal a generalizable Skill, a Playbook duplicates pack content, or external source transport becomes a separately authorized product need."
     },
     {
@@ -113,11 +113,11 @@
       "summary": "Add Templates as a first-class library space beside Operating Packs while preserving a distinct ownership boundary for reusable starting structure.",
       "question": "Where should reusable starting structures and scaffolds live when they accelerate work but do not define how the work should be performed?",
       "decision": "Catalog Template identity, purpose, applicability, source metadata, evidence, lifecycle, revision context, and relationships in Persona-Library. Keep actual reusable artifacts in their canonical external or project source.",
-      "rationale": "Templates answer what to start from. Operating Packs answer how to work within context; Skills own reusable judgment; Tools own execution and permissions; Playbooks own coordination and outcomes.",
-      "tradeoffs": "The static catalog can describe a planned external artifact without making it available. The system does not fetch, clone, render, execute, publish, or upgrade Template artifacts yet.",
-      "affects": "Orientation routing, Template normalization, lifecycle Skills, validation, Docs, Site navigation, generated data, and reconciliation guidance.",
+      "rationale": "Templates answer what to start from. Operating Packs answer how to work within context; Skills own reusable judgment; Tools own execution and permissions; Playbooks own coordination and outcomes. A scoped Persona–Skill–workflow application keeps applicability contextual.",
+      "tradeoffs": "The static catalog can describe a planned external artifact without making it available. The system does not fetch, clone, render, execute, publish, or upgrade Template artifacts yet; project-specific starters remain local until evidence supports promotion.",
+      "affects": "Orientation routing, Template source/model normalization, lifecycle Skills, validation, Docs, Site navigation, generated data, and reconciliation guidance. The three initial design-system identities remain planned because the inspected external repository contains only README.md.",
       "evidence": "Templates catalog, Docs boundary, and inspected template-library main revision f88a4011902b58b2f192305f5a731f1a71263965.",
-      "revisit": "External Template paths become real, a project starter demonstrates broader reuse, Template relationships need new dimensions, or artifact transport/execution becomes separately authorized."
+      "revisit": "External Template paths become real, a project starter demonstrates broader reuse, Template relationships need new dimensions, or artifact transport/execution becomes a separately authorized Tool or workflow capability."
     },
     {
       "id": "DEC-009",
@@ -129,9 +129,9 @@
       "question": "Who keeps the Template collection organized and trustworthy without becoming the domain expert for every artifact?",
       "decision": "Use the Template Librarian to maintain catalog identity, source verification, duplication control, promotion, deprecation, relocation, and reconciliation. Route discipline-specific research and composition to the relevant specialist.",
       "rationale": "Library stewardship and domain judgment are different kinds of work. Keeping them separate preserves the Template boundary and lets the collection grow without turning one Persona into a polymath.",
-      "affects": "Template routing, Persona workflows and handoffs, Template lifecycle Skills, Docs, generated Persona output, and reconciliation. Mara Okoye remains the escalation point for architecture and concept-boundary questions.",
+      "affects": "Template routing, Persona workflows and handoffs, Template lifecycle Skills, Docs, generated Persona output, and reconciliation. Mara Okoye remains the escalation point for architecture, taxonomy, and concept-boundary questions.",
       "evidence": "Template Librarian Persona, Templates catalog, Templates guidance, and issue #63.",
-      "revisit": "Observed Template work shows that stewardship and domain composition cannot remain separate, a dedicated reusable capability is justified, or external artifact ownership changes."
+      "revisit": "Observed Template work shows that stewardship and domain composition cannot remain separate, a dedicated reusable capability is justified, or the external artifact ownership boundary changes."
     },
     {
       "id": "DEC-010",
@@ -176,14 +176,14 @@
       "category": "Playbook boundary",
       "date": "2026-09-14",
       "title": "Template lifecycle is a distinct Playbook",
-      "summary": "Catalog playbook-template-lifecycle as the reusable coordination model for researching, composing, promoting, maintaining, and reconciling Templates.",
+      "summary": "Catalog playbook-template-lifecycle as the reusable coordination model for researching, composing, promoting, maintaining, and reconciling Templates. Keep Elena Park as steward, domain specialists as quality owners, Mara as architecture escalation, and Template Skills as stage procedures.",
       "question": "Should the Template lifecycle remain only a sequence of Skills and Librarian workflows, or become a canonical Playbook?",
-      "decision": "Add playbook-template-lifecycle. Reference existing Template Librarian workflows, Template Skills, domain specialists, DEC-008/009, and external template-library ownership instead of copying them. Do not create a new Persona, Skill, registry, or runtime.",
-      "rationale": "The Template system crosses stewardship, domain quality, external artifact ownership, promotion evidence, and reconciliation. That repeated cross-owner outcome needs an inspectable stage and gate contract without making every bounded Skill action a mandatory Playbook run.",
-      "alternatives": "Leave the outcome undocumented; fold it into Skill formation; invent a Template runtime or registry. Rejected because the owners and gates are distinct from Skill formation or execution infrastructure.",
-      "affects": "Playbook catalog, Playbooks orientation route, Templates stewardship handoff, Site Playbooks/Docs/Decisions surfaces, and issue #72 evidence.",
+      "decision": "Add playbook-template-lifecycle / Research, promote, and maintain a reusable Template. Reference existing Template Librarian workflows, Template Skills, domain specialists, DEC-008/009, and external template-library ownership instead of copying them. Do not create a new Persona, Skill, registry, or runtime.",
+      "rationale": "The Template system already crosses stewardship, domain quality, external artifact ownership, promotion evidence, and reconciliation. That repeated cross-owner outcome needs an inspectable stage/gate contract without turning every bounded Template Skill action into a mandatory Playbook run.",
+      "alternatives": "Leave the outcome undocumented; fold it into Skill formation; invent a Template runtime/registry. Rejected because the owners and gates are already Template-specific and distinct from skill formation or execution infrastructure.",
+      "affects": "Playbook catalog, Playbooks orientation route, Templates stewardship handoff, Site Playbooks/Docs/Decisions surfaces, and Work Order evidence for issue #72. Template Skills and Librarian identity remain unchanged. Numbered DEC-012 after DEC-011 on the Riley/job-search ownership boundary.",
       "evidence": "Template lifecycle Work Order, catalog, route, and Docs example.",
-      "revisit": "Repeated runs show a missing stage or gate, a callable Template package is authorized, or bounded Skill actions prove the Playbook is unnecessary overhead."
+      "revisit": "Repeated runs show a missing stage/gate, a callable Template package outside Persona-Library is authorized, or bounded Skill actions prove the Playbook is unnecessary overhead."
     },
     {
       "id": "DEC-013",
