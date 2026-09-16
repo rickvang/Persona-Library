@@ -6,6 +6,24 @@ import { fileURLToPath } from 'node:url';
 const evalRoot = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(evalRoot, '..');
 
+const LIBRARY_DATA_SOURCES = [
+  'content/library-data/personas-core.js',
+  'content/library-data/personas-career.js',
+  'content/library-data/personas-systems.js',
+  'content/library-data/skills-core.js',
+  'content/library-data/skills-specialists.js',
+  'content/library-data/workflows-core.js',
+  'content/library-data/workflows-operations.js',
+  'content/library-data/workflows-career.js',
+  'content/library-data/workflows-systems.js',
+  'content/library-data/catalogs.js',
+  'content/library-data/tool-integration.js',
+  'content/library-data/skill-guidance.js',
+  'content/library-data/skill-practice.js',
+  'content/library-data/skill-anatomy.js',
+  'content/library-data.js'
+];
+
 export const RESPONSE_FIELDS = [
   'outcome',
   'mode',
@@ -33,11 +51,14 @@ export function slugify(value) {
   return `skill-${String(value).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 }
 
-export async function loadLibraryData(dataPath = resolvePath('content/library-data.js')) {
-  const source = await readFile(dataPath, 'utf8');
+export async function loadLibraryData(dataPath) {
+  const sourcePaths = dataPath
+    ? [path.resolve(dataPath)]
+    : LIBRARY_DATA_SOURCES.map(sourcePath => resolvePath(sourcePath));
+  const sources = await Promise.all(sourcePaths.map(sourcePath => readFile(sourcePath, 'utf8')));
   const sandbox = { window: {} };
-  vm.runInNewContext(source, sandbox, { filename: dataPath });
-  if (!sandbox.window.PersonaLibraryData) throw new Error('content/library-data.js did not define PersonaLibraryData');
+  sources.forEach((source, index) => vm.runInNewContext(source, sandbox, { filename: sourcePaths[index] }));
+  if (!sandbox.window.PersonaLibraryData) throw new Error('Authored library data sources did not define PersonaLibraryData');
   return sandbox.window.PersonaLibraryData;
 }
 
@@ -297,7 +318,7 @@ async function main() {
   }
 
   if (command === 'matrix') {
-    console.log(JSON.stringify({ schema_version: '1.0', generated_from: ['content/library-data.js', 'eval/skill-cases.json'], cases }, null, 2));
+    console.log(JSON.stringify({ schema_version: '1.0', generated_from: ['content/library-data/', 'content/library-data.js', 'eval/skill-cases.json'], cases }, null, 2));
     return;
   }
 

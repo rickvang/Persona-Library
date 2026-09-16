@@ -1,6 +1,6 @@
 # Skill profile contract
 
-The current `content/library-data.js` record and validator define exact property names and required values. This reference defines the behavior that must remain visible while a profile is researched or proposed.
+The authored Skill records under `content/library-data/` and the validator define exact property names and required values. `content/library-data.js` is the compatibility assembler for those modules, not the record owner. This reference defines the behavior that must remain visible while a profile is researched or proposed.
 
 ## Required distinctions
 

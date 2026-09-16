@@ -138,7 +138,7 @@ Build and validate the approved standalone composition layers only when their bo
 - Current orientation: [`content/site-orientation.json`](../../../../content/site-orientation.json)
 - Repository activation: [`AGENTS.md`](../../../../AGENTS.md)
 - Architecture and invariants: [`ARCHITECTURE.md`](../../../../ARCHITECTURE.md)
-- Authored content and skill relationships: [`content/library-data.js`](../../../../content/library-data.js)
+- Authored content and skill relationships: [`content/library-data/`](../../../../content/library-data/) with compatibility assembly in [`content/library-data.js`](../../../../content/library-data.js)
 - Content validation: [`scripts/validate-content.mjs`](../../../../scripts/validate-content.mjs)
 
 
