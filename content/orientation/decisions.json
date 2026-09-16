@@ -13,7 +13,7 @@
       "affected surfaces",
       "revisit condition"
     ],
-    "write": "Append a new decision record under docs/decisions/ when a choice becomes durable; supersede rather than erase prior rationale.",
+    "write": "Append a new decision record to docs/decisions/records.json when a choice becomes durable; supersede rather than erase prior rationale.",
     "do_not": [
       "Do not silently convert a prototype selection into current truth."
     ]
@@ -36,10 +36,10 @@
       ],
       "target": "canonical Decisions surface",
       "artifact_kind": "decision",
-      "package_path": "docs/decisions/",
+      "package_path": "docs/decisions/records.json",
       "availability_source": "repo_local",
       "first_reads": [
-        "docs/decisions/ current authored records",
+        "docs/decisions/records.json",
         "question",
         "options",
         "rationale",
@@ -53,7 +53,7 @@
         "An unresolved alternative that has not become a durable choice",
         "A silent rewrite of prior rationale"
       ],
-      "next_handoff": "Append or supersede the decision in docs/decisions/, preserve prior rationale, then reconcile affected surfaces."
+      "next_handoff": "Append or supersede the decision in docs/decisions/records.json, preserve prior rationale, then reconcile affected surfaces and rebuild the generated Decisions page."
     }
   ]
 }

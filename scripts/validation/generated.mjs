@@ -1,4 +1,5 @@
 const countFunctionDefinitions = (html, name) => (html.match(new RegExp(`function\\s+${name}\\s*\\(`, 'g')) || []).length;
+import { renderDecisionsPage } from '../build-decisions.mjs';
 
 export function playbookCatalogCard(html, playbookId) {
   const match = html.match(new RegExp(`<article\\b[^>]*\\bdata-playbook-id="${playbookId}"[^>]*>[\\s\\S]*?</article>`));
@@ -61,6 +62,8 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
+  const decisionSource = JSON.parse(await context.readFile('docs/decisions/records.json'));
+  if (decisionSource.source !== 'docs/decisions/records.json' || !Array.isArray(decisionSource.records) || !decisionSource.records.some(record => record.id === 'DEC-013') || files.decisionOutput !== renderDecisionsPage(files.decisionTemplateSource, decisionSource.records)) throw new Error('Generated dist/decisions.html is stale or its authored source is invalid; run build-library.mjs');
 
   const { page, skillsPage, templatesPage, templateViewerPage, jobSearchPage, playbooksPage, operatingPacksPage, prototypingPage, canvasPage, guidePage } = files;
   for (const [name, html] of [['library', page], ['skills', skillsPage]]) for (const script of ['data/library-data.js', 'data/library-model.js', 'js/library-ui.js', 'js/library-state.js']) if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);
@@ -74,10 +77,9 @@ export async function validateGeneratedOutputs(context) {
   if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Bounded parallel implementation') || !playbooksPage.includes('compact handoff') || !playbooksPage.includes('Shared state keeps the playbook coherent') || !playbooksPage.includes('Change control') || !playbooksPage.includes('conditional reconciliation gate')) throw new Error('Playbooks page is missing its mental model or current playbook');
   if (!playbooksPage.includes('Job opportunity ledger') || !playbooksPage.includes('not job-search domain ownership') || !playbooksPage.includes('Coordinated by Riley Morgan · AI orchestrator')) throw new Error('Playbooks page must keep outcome ownership, Riley coordination, and the job ledger shared-state card');
   if (!guidePage.includes('Evidence-led job search')) throw new Error('Docs page must keep Evidence-led job search as a Playbook example');
-  const decisionsPage = await context.readFile('dist/decisions.html');
+  const decisionsPage = files.decisionOutput;
   if (!decisionsPage.includes('DEC-011') || !decisionsPage.includes('Riley orchestrates job search; the Playbook owns the outcome')) throw new Error('Decisions page must record DEC-011 Riley/job-search ownership boundary');
-  const decisionSource = await context.readFile('docs/decisions/DEC-013-orchestrator-first-routing.md');
-  if (!decisionSource.includes('DEC-013') || !decisionSource.includes('Status: Applied') || !decisionSource.includes('Riley Morgan is the default interaction and routing front door') || !decisionSource.includes('Playbooks own reusable outcome procedures') || !decisionSource.includes('Explicit direct invocation')) throw new Error('Canonical DEC-013 source must record the revised routing conclusion');
+  if (!decisionsPage.includes('DEC-013') || !decisionsPage.includes('Riley is the default routing front door') || !decisionsPage.includes('Explicit requests naming a specialist')) throw new Error('Generated Decisions page must present DEC-013 routing conclusion');
   const jobLedgerContract = await context.readFile('docs/job-search/job-ledger-contract.md');
   if (!jobLedgerContract.includes('Riley Morgan · AI orchestrator') || !jobLedgerContract.includes('does not own the ledger') || !jobLedgerContract.includes('Persona-Library must not become the storage location')) throw new Error('Job ledger contract is missing ownership or privacy boundary');
   const jobSearchImpl = await context.readFile('docs/job-search/implementation.md');

@@ -37,14 +37,28 @@ Canonical sources in scope after the library-data refactor:
 - `content/library-data/workflows-core.js` — Riley workflow routing language.
 - `content/library-data/catalogs.js` — Playbook identities and ownership boundary.
 - `content/library-model.js` — append-only Riley semantic maintenance revision.
+- `docs/decisions/records.json` — single authored Decision collection, including preserved DEC-011/012 records and applied DEC-013.
+- `content/decisions-page.html` — authored Decisions presentation template.
+- `scripts/build-decisions.mjs` — deterministic Decision collection-to-page renderer invoked by the library build.
 - `docs/job-search/implementation.md` — current job-search operating guidance.
 - `scripts/validation/generated.mjs` and `scripts/validation/validation.test.mjs` — behavior-level routing invariants.
-- `docs/decisions/DEC-013-orchestrator-first-routing.md` — canonical append-only Decision source for the revised routing conclusion.
-- `dist/data/**` — generated outputs only, refreshed by `node scripts/build-library.mjs`.
+- `dist/decisions.html` and `dist/data/**` — generated outputs only, refreshed by `node scripts/build-library.mjs`.
+
+## Mara placement and boundary review
+
+Mara Okoye’s placement review classifies Decisions as an existing repository layer, not a new top-level library space or a Persona/Skill record. The selected canonical owner is the single `docs/decisions/records.json` collection because it can preserve the full Decision history and append new records without duplicating rationale. The selected generated consumer is `dist/decisions.html`, rendered from the authored `content/decisions-page.html` template by `scripts/build-decisions.mjs`.
+
+| Candidate | Result | Boundary reason |
+| --- | --- | --- |
+| `docs/decisions/records.json` → `content/decisions-page.html` → `dist/decisions.html` | Select | Extends the existing Decisions layer with one inspectable authored collection and one deterministic generated consumer. |
+| Standalone `docs/decisions/DEC-013-*.md` alongside a separate page copy | Reject | Creates a second record path and leaves DEC-011/012 without the same source contract. |
+| `dist/decisions.html` as authoring source | Reject | Generated output must not become canonical truth. |
+| `content/library-data/*.js` | Reject | Decisions are not Persona, Skill, workflow, catalog, or Tool-integration records. |
+| New top-level `data/`, `decisions/`, or runtime registry | Reject | Introduces a new product/source boundary for a responsibility already owned by the Decisions layer. |
 
 ## Decision and history boundary
 
-Preserve DEC-011 and its historical rationale. The repository's canonical authored Decision destination is now `docs/decisions/<id>.md`, declared by the Decisions route. DEC-013 records the KEEP / CHANGE / EXCEPTION routing conclusion without hand-editing the historical generated Decisions page or rewriting archived #90 Work Order content.
+Preserve DEC-011 and its historical rationale. The repository's canonical authored Decision collection is `docs/decisions/records.json`, declared by the Decisions route. DEC-011 and DEC-012 are represented in that same source, and DEC-013 records the KEEP / CHANGE / EXCEPTION routing conclusion. The generated Decisions page is rebuilt from the collection; archived #90 Work Order content is not rewritten.
 
 ## Owners and non-goals
 
@@ -63,7 +77,7 @@ Run one Persona-specific reconciliation review for Riley and one universal `$cha
 
 ## Current phase and next action
 
-Phase: source correction, reconciliation, and validation complete; ready for fresh review.
+Phase: source ownership review, source-to-generated reconciliation, and validation complete; ready for fresh review.
 
 Next action: fresh review of PR #112's current head. Do not merge without separate authorization.
 

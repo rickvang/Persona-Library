@@ -1,7 +1,7 @@
 # Change-impact reconciliation — issue #111
 
-- Status: complete for review — source correction, Decision append, validation, and reconciliation complete; merge remains separately unauthorized.
-- Change observed: Riley canonical record and default-routing semantics, Docs job-search route/guidance, Riley workflow wording, append-only maintenance revision, behavior-level validators, explicit routing-case tests, Decision source, and generated data output.
+- Status: complete for review — Mara placement review, single Decision source-to-generated path, source correction, validation, and reconciliation complete; merge remains separately unauthorized.
+- Change observed: Riley canonical record and default-routing semantics, Docs job-search route/guidance, Riley workflow wording, append-only maintenance revision, behavior-level validators, explicit routing-case tests, Decision collection, generated Decisions renderer, and generated data output.
 - Authority: issue #111, current `main` at `8f77c24ec63f063a801943fc6d5d4f3009b666c7`, `AGENTS.md`, `content/site-orientation.json`, selected route groups, and post-refactor modular source ownership.
 - Authorization: authorized one focused PR against `main`; merge remains separately unauthorized.
 
@@ -29,18 +29,21 @@ Checked `content/site-orientation.json`; Docs, Playbooks, Personas, and Decision
 | Job-ledger contract | Specialist/shared-state boundary | Unrelated | Riley remains outside ledger ownership and Persona-Library storage; no source change. |
 | Focused generated validator | Source semantics → regression guard | Extends | Old Playbook-first error framing was removed; checks now cover Riley identity, Playbook identity, six specialists, and all four routing cases. Retain. |
 | Generated data | Authored source → `dist/data/**` | Extends | `node scripts/build-library.mjs` refreshed library/model/Docs-route output; parity checks pass. Retain. |
-| Decision history | Decision → current rationale | Extends | `docs/decisions/DEC-013-orchestrator-first-routing.md` is the canonical authored source declared by the Decisions route. It preserves DEC-011's history and qualifies only its front-door conclusion; `dist/decisions.html` was not hand-edited. |
+| Decision placement | Mara gate → Decisions layer | Extends | Decisions remain an existing repository layer; the placement review selects one authored collection rather than a new space or a Persona/Skill data module. |
+| Decision history | Decision → current rationale | Extends | `docs/decisions/records.json` preserves DEC-011/012 and appends DEC-013. DEC-011's history remains intact while its front-door conclusion is qualified by DEC-013. |
+| Generated Decisions page | Authored collection/template → generated Site output | Extends | `scripts/build-decisions.mjs` renders `docs/decisions/records.json` through `content/decisions-page.html` into `dist/decisions.html`; the output contains the preserved historical records and DEC-013. |
 | Active Work Orders | Work Order → current execution state | Unrelated | Bounded search found only historical/reference mentions and this new active package; no existing active package requires wording edits. |
 
 ## Required updates and unchanged items
 
-Required source updates were applied to the Docs guidance, Docs route, Riley authored record/model maintenance, focused validator, four explicit routing tests, and canonical Decision source. Generated data was rebuilt. The Playbook catalog, Playbooks route, site bootstrap, job-ledger contract, specialist records, and archived Work Orders were checked and left unchanged where their current contracts already held.
+Required source updates were applied to the Docs guidance, Docs route, Riley authored record/model maintenance, focused validator, four explicit routing tests, Decision collection, authored Decisions template/renderer, and Work Order. Generated data and the Decisions page were rebuilt. The Playbook catalog, Playbooks route, site bootstrap, job-ledger contract, specialist records, and archived Work Orders were checked and left unchanged where their current contracts already held.
 
-The Decisions route now names `docs/decisions/` as the repository-local authored owner. DEC-013 is recorded there; the historical generated Decisions page remains untouched because `dist/` is not an authoring destination and no page generator is part of this scoped correction.
+The Decisions route now names `docs/decisions/records.json` as the repository-local authored owner. DEC-011, DEC-012, and DEC-013 are all represented in that source; `scripts/build-decisions.mjs` produces the current `dist/decisions.html` output, so no generated file is an authoring destination.
 
 ## Validation evidence
 
 - `node scripts/build-library.mjs` — pass.
+- Decision provenance check — pass; 14 authored records render deterministically from `docs/decisions/records.json` through `content/decisions-page.html` to `dist/decisions.html`.
 - `node scripts/validate-content.mjs` — pass; 20 personas, 2 operators, 2 leaders, 16 specialists, 20 workflow maps.
 - `node --test scripts/validation/validation.test.mjs` — pass; 11 tests, including four explicit routing cases.
 - `node eval/isolated-persona-skill.mjs validate` — pass; 97 cases, 14 Personas, 75 Skills.
@@ -50,4 +53,4 @@ The Decisions route now names `docs/decisions/` as the repository-local authored
 
 ## Review boundary and next action
 
-The source blocker is resolved by the repository-local `docs/decisions/` owner and applied DEC-013. The focused PR is ready for a fresh review of its current head; no merge or generated-page hand edit is authorized by this packet.
+The source blocker is resolved by Mara’s selected single Decision collection and deterministic generated-page path. The focused PR is ready for a fresh review of its current head; no merge or generated-page hand edit is authorized by this packet.

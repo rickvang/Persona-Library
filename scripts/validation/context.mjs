@@ -41,6 +41,8 @@ const FILES = {
   operatingPacksPage: 'dist/operating-packs.html',
   templatesPage: 'dist/templates.html',
   templateViewerPage: 'dist/template.html',
+  decisionTemplateSource: 'content/decisions-page.html',
+  decisionOutput: 'dist/decisions.html',
   canvasPage: 'dist/workflow-canvas.html',
   uiSource: 'client/library-ui.js',
   uiOutput: 'dist/js/library-ui.js',
