@@ -5,6 +5,20 @@ export function playbookCatalogCard(html, playbookId) {
   return match ? match[0] : '';
 }
 
+const normalized = value => String(value || '').toLowerCase();
+const includesAll = (value, terms) => terms.every(term => normalized(value).includes(term));
+
+export function validateJobSearchRoutingContract({ route, implementation, riley, rileyFlows, playbook, specialistIds }) {
+  if (!riley || riley.roleLabel !== 'AI orchestrator') throw new Error('Riley must retain the canonical AI orchestrator identity');
+  if (!rileyFlows?.some(flow => includesAll(`${flow.summary || ''} ${flow.title || ''}`, ['unqualified', 'bounded']))) throw new Error('Riley workflow must describe default handling of unqualified requests');
+  if (!playbook || playbook.id !== 'playbook-evidence-led-job-search') throw new Error('Evidence-led Job Search must remain the canonical job-search Playbook');
+  if (!includesAll(route?.next_handoff, ['unqualified', 'riley morgan', 'narrow', 'specialist', 'skill', 'full-outcome', 'playbook', 'explicit', 'directly', 'stages', 'shared state', 'quality gates', 'recovery', 'learning loop'])) throw new Error('Docs job-search route must distinguish Riley default routing, Playbook procedure, and direct invocation');
+  if (!includesAll(implementation, ['default system entry', 'unqualified requests', 'shared state', 'quality gates', 'learning loop', 'explicit requests', 'route directly']) || !/playbooks?\b.{0,80}\bown/i.test(implementation)) throw new Error('Job-search guidance must express orchestrator-first routing and Playbook outcome ownership');
+  const requiredSpecialists = ['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'ui-expert', 'document-designer'];
+  for (const id of requiredSpecialists) if (!specialistIds?.has(id)) throw new Error(`Job-search specialist boundary is missing: ${id}`);
+  if (specialistIds?.has('job-search')) throw new Error('No generic Job Search Persona may be introduced');
+}
+
 export async function validateGeneratedOutputs(context) {
   const { files, routeSources, canvasModules, root } = context;
   const freshnessPairs = [
@@ -32,7 +46,7 @@ export async function validateGeneratedOutputs(context) {
   if (/>\s*Job-search orchestrator\s*</.test(jobSearchPage) || /Riley Morgan[^<]{0,120}Job-search orchestration/i.test(jobSearchPage) || /Riley Morgan[^<]{0,80}Job Search Persona/i.test(jobSearchPage)) throw new Error('Job search page must not present Riley as a Job-search domain identity');
   if (!jobSearchPage.includes('Riley Morgan · AI orchestrator') || !jobSearchPage.includes('AI orchestrator · Playbook coordinator')) throw new Error('Job search page must present Riley as AI orchestrator / Playbook coordinator');
   if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Bounded parallel implementation') || !playbooksPage.includes('compact handoff') || !playbooksPage.includes('Shared state keeps the playbook coherent') || !playbooksPage.includes('Change control') || !playbooksPage.includes('conditional reconciliation gate')) throw new Error('Playbooks page is missing its mental model or current playbook');
-  if (!playbooksPage.includes('Job opportunity ledger') || !playbooksPage.includes('not job-search domain ownership') || !playbooksPage.includes('Coordinated by Riley Morgan · AI orchestrator')) throw new Error('Playbooks page must keep Playbook-front-door ownership and the job ledger shared-state card');
+  if (!playbooksPage.includes('Job opportunity ledger') || !playbooksPage.includes('not job-search domain ownership') || !playbooksPage.includes('Coordinated by Riley Morgan · AI orchestrator')) throw new Error('Playbooks page must keep outcome ownership, Riley coordination, and the job ledger shared-state card');
   if (!guidePage.includes('Evidence-led job search')) throw new Error('Docs page must keep Evidence-led job search as a Playbook example');
   const decisionsPage = await context.readFile('dist/decisions.html');
   if (!decisionsPage.includes('DEC-011') || !decisionsPage.includes('Riley orchestrates job search; the Playbook owns the outcome')) throw new Error('Decisions page must record DEC-011 Riley/job-search ownership boundary');
@@ -40,7 +54,11 @@ export async function validateGeneratedOutputs(context) {
   if (!jobLedgerContract.includes('Riley Morgan · AI orchestrator') || !jobLedgerContract.includes('does not own the ledger') || !jobLedgerContract.includes('Persona-Library must not become the storage location')) throw new Error('Job ledger contract is missing ownership or privacy boundary');
   const jobSearchImpl = await context.readFile('docs/job-search/implementation.md');
   if (jobSearchImpl.includes('Riley is the job-search orchestrator') || jobSearchImpl.includes('**Job-search orchestrator**')) throw new Error('docs/job-search/implementation.md must not frame Riley as the Job-search orchestrator identity');
-  if (!jobSearchImpl.includes('Evidence-led Job Search Playbook') || !jobSearchImpl.includes('AI orchestrator (Riley Morgan)') || !jobSearchImpl.includes('job ledger contract')) throw new Error('docs/job-search/implementation.md must be Playbook-first with Riley as AI orchestrator and a job ledger contract');
+  const riley = context.data.personas.find(persona => persona.id === 'ai-orchestrator');
+  const rileyFlows = context.data.flowLibrary?.['ai-orchestrator'] || [];
+  const jobSearchPlaybook = context.data.playbookCatalog.find(playbook => playbook.id === 'playbook-evidence-led-job-search');
+  validateJobSearchRoutingContract({ route: context.routeGroups.get('docs').routes.find(route => route.id === 'resume-application-work'), implementation: jobSearchImpl, riley, rileyFlows, playbook: jobSearchPlaybook, specialistIds: new Set(context.data.personas.map(persona => persona.id)) });
+  if (!jobSearchImpl.includes('AI orchestrator (Riley Morgan)') || !jobSearchImpl.includes('job ledger contract')) throw new Error('docs/job-search/implementation.md must retain Riley as AI orchestrator and the job ledger contract');
   const templateLifecycleCard = playbookCatalogCard(playbooksPage, 'playbook-template-lifecycle');
   if (!templateLifecycleCard || !templateLifecycleCard.includes('<span>7 stages</span>') || !templateLifecycleCard.includes('Elena Park · Template Librarian')) throw new Error('Template lifecycle catalog card must show 7 stages and Elena Park as coordinator');
   if (!playbooksPage.includes('id="template-lifecycle"') || !playbooksPage.includes('Research, promote, and maintain a reusable Template') || !playbooksPage.includes('Promote only with reuse evidence')) throw new Error('Playbooks page must present the Template lifecycle overview');

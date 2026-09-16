@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard } from './generated.mjs';
+import { playbookCatalogCard, validateJobSearchRoutingContract } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -88,6 +88,20 @@ test('Bounded parallel role count is scoped to its catalog card', () => {
   assert.equal(boundedCard.includes('<span>8 stages</span>'), true);
   assert.equal(playbookCatalogCard(html, 'playbook-other').includes('<span>3 roles</span>'), true);
   assert.equal(playbookCatalogCard(html, 'playbook-missing'), '');
+});
+
+test('Job-search routing separates Riley default entry, Playbook procedure, and direct targets', () => {
+  const route = {
+    next_handoff: 'For an unqualified request, begin with Riley Morgan as the default entry and routing point; Riley selects the smallest specialist or Skill for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns stages, shared state, quality gates, recovery, and the learning loop.'
+  };
+  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. The Playbook owns the reusable outcome procedure, shared state, quality gates, recovery, and learning loop. Explicit requests may route directly.';
+  const riley = { roleLabel: 'AI orchestrator' };
+  const rileyFlows = [{ title: 'Frame the system goal and boundary', summary: 'Turn an unqualified opportunity into a bounded outcome.' }];
+  const playbook = { id: 'playbook-evidence-led-job-search' };
+  const specialistIds = new Set(['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'ui-expert', 'document-designer']);
+  assert.doesNotThrow(() => validateJobSearchRoutingContract({ route, implementation, riley, rileyFlows, playbook, specialistIds }));
+  assert.throws(() => validateJobSearchRoutingContract({ route: { ...route, next_handoff: route.next_handoff.replace('Explicit requests', 'Requests') }, implementation, riley, rileyFlows, playbook, specialistIds }), /direct invocation/);
+  assert.throws(() => validateJobSearchRoutingContract({ route, implementation, riley: { roleLabel: 'Job-search orchestrator' }, rileyFlows, playbook, specialistIds }), /canonical AI orchestrator/);
 });
 
 test('Bounded parallel orientation, grounding, and callback gates remain separate', () => {
