@@ -54,6 +54,16 @@ jobs:
         run: |
           node scripts/issue-114-reconcile.mjs apply
           sed -i "s/jobSearchImpl.includes('AI orchestrator (Riley Morgan)')/jobSearchImpl.includes('Riley Morgan · AI orchestrator')/g" scripts/validation/generated.mjs
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('scripts/validation/validation.test.mjs')
+          text = path.read_text()
+          old = "  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. The Playbook owns the reusable outcome procedure, shared state, quality gates, recovery, and learning loop. Explicit requests may route directly.';"
+          new = "  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. Riley routes full-outcome work to Priya Desai, who operates the Evidence-led Job Search Playbook as the process surface. The Playbook supplies shared state, quality gates, recovery, and the learning loop. Explicit requests may route directly.';"
+          if old not in text:
+              raise SystemExit('Missing integrated routing test fixture')
+          path.write_text(text.replace(old, new, 1))
+          PY
       - name: Rebuild generated outputs
         run: node scripts/build-library.mjs
       - name: Validate reconciled branch
