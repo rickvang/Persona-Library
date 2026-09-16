@@ -42,7 +42,6 @@ A Work Order records authorization constraints but never grants permission to su
 - Timing and constraints:
 - Primary target:
 - Acceptable adjacent targets:
-- Job ledger `job_id` / status (if discovered via search; see [job ledger contract](job-ledger-contract.md)):
 
 ### Evidence source
 

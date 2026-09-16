@@ -264,7 +264,8 @@
 
     const elena = personaMaintenance['career-strategist'];
     elena.revisions.push({version:'1.1',date:'2026-09-14',changeType:'capability-extension',summary:'Attached durable job-ledger disposition to Elena’s search sequencing workflow so repeated discovery updates known opportunities instead of resurfacing them as new.',affectedFields:['skills','workflows'],evidence:'Issue #90 job ledger contract; search specialist owns disposition, Riley does not',confidenceChange:'Ledger ownership is declared; private runtime persistence remains outside Persona-Library'});
-    elena.version = '1.1'; elena.updated = '2026-09-14';
+    elena.revisions.push({version:'1.2',date:'2026-09-16',changeType:'scope-correction',summary:'Narrowed repeated-search persistence from a full opportunity ledger to a lightweight private seen-job set that suppresses openings already presented.',affectedFields:['skills','workflows'],evidence:'Issue #96 clarified user need: find new jobs without repeating previously shown openings; JobAgent remains reference evidence only',confidenceChange:'Duplicate suppression is explicit; application lifecycle tracking is no longer implied by the deduplication contract'});
+    elena.version = '1.2'; elena.updated = '2026-09-16';
 
     const searchSequencingSkillId = 'skill-search-sequencing-and-prioritization';
     const searchSequencingRecord = skillMaintenance[searchSequencingSkillId];
