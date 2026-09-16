@@ -140,13 +140,19 @@
       "date": "2026-09-14",
       "title": "Bounded parallel implementation is a distinct Playbook",
       "summary": "Keep Multi-Persona Collaboration as named-Persona synthesis through a shared problem-context. Catalog bounded parallel repository implementation as its own Playbook with Coordinator, Implementer, Reviewer, and Authorizer roles.",
-      "question": "Should usage-conscious parallel implementation be a new Playbook or a profile of Multi-Persona Collaboration?",
+      "question": "Should usage-conscious parallel implementation be a new Playbook or a profile of Multi-Persona Collaboration, especially while #71 is still open?",
       "decision": "Add playbook-bounded-parallel-implementation as a distinct Playbook. Reference collaboration instead of copying its stages, solution-quality gate, or problem-context contract. Do not create an Agent, Coordinator, Runtime, Budget, or Scheduler entity.",
-      "rationale": "Collaboration produces one inspectable solution from Persona lenses. Bounded parallel implementation produces independent reviewable PRs with one-level delegation, compact handoffs, independent review, and separately authorized merge.",
-      "alternatives": "Extend Multi-Persona Collaboration; wait for #71; encode ChatGPT Work or Codex as canonical meaning. Rejected because those options mix synthesis with mutation gates or bind the contract to a runtime.",
-      "affects": "Playbook catalog, Playbooks orientation route, Site Playbooks and Docs surfaces, root activation, and Work Order evidence for #82, #86, #89, and #94.",
+      "rationale": "Collaboration produces one inspectable solution from Persona lenses. Bounded parallel implementation produces independent reviewable PRs with one-level delegation, compact GitHub-reference handoffs, independent review, and separately authorized merge. Those outcomes and gates are materially different.",
+      "alternatives": "Extend Multi-Persona Collaboration with an implementation profile; wait for #71 before adding identity; encode ChatGPT Work or Codex as canonical meaning. Rejected because they mix synthesis with mutation gates or bind the contract to a runtime.",
+      "affects": "Playbook catalog, Playbooks orientation route, Site Playbooks and Docs surfaces, root AGENTS.md activation, and Work Order evidence for #82. Collaboration methodology is unchanged.",
       "evidence": "Issues #71, #82, #86, #89, and #94 plus the bounded-parallel Work Order.",
-      "revisit": "A two-repository proof is needed, or runtime-specific procedure becomes substantial enough for a Tool package."
+      "revisit": "#71 catalogs collaboration identity, a two-repository proof is needed, or runtime-specific procedure becomes substantial enough for a Tool package.",
+      "corrections": [
+        "2026-09-14: The Playbook models four roles—Coordinator, Implementer, Reviewer, and Authorizer. Authorizer remains a role. Bounded-parallel activation lives on the Playbooks route group, not as an always-on root AGENTS.md rule.",
+        "2026-09-14: Source-grounding is a required stage of the same Playbook identity, not a second Playbook. The target repository owns implementation truth after selection; Persona-Library remains catalog and discovery. Contradicted work stops for re-scope. Root AGENTS.md still does not carry bounded-parallel procedure. See issue #86.",
+        "2026-09-14: Issue #71 catalogs playbook-multi-persona-collaboration as its own first-class identity, resolving to the existing docs/collaboration/multi-persona-collaboration-playbook.md contract without copying its stages or gate. The two Playbooks remain distinct as decided above.",
+        "2026-09-14: The live-proof extension adds an orientation preflight before source-grounding and a bounded completion callback adapter. Implementer context remains fresh, previously_oriented, or unknown; grounding remains confirmed, qualified, or contradicted. Callback packets are notification-only, GitHub remains review truth, unsupported transport uses a compact coordinator fallback, and independent review, scoped correction/re-review, and separately authorized merge remain unchanged. See issues #89 and #94."
+      ]
     },
     {
       "id": "DEC-011",
@@ -155,14 +161,14 @@
       "category": "Role boundary",
       "date": "2026-09-14",
       "title": "Riley orchestrates job search; the Playbook owns the outcome",
-      "summary": "Keep Riley Morgan’s identity as AI orchestrator. Evidence-led Job Search remains the reusable outcome Playbook. Specialists own domain judgment. Do not create a generic Job Search Persona or store private job history in Persona-Library.",
+      "summary": "Keep Riley Morgan’s identity as AI orchestrator. Make the Evidence-led Job Search Playbook the front door for the full outcome. Specialists own domain judgment. Do not create a generic Job Search Persona or store private job history in Persona-Library.",
       "question": "Should Riley Morgan become the domain-owning Job Search Persona, or remain a reusable orchestrator for the Evidence-led Job Search Playbook?",
-      "decision": "Playbook owns the outcome. Riley Morgan coordinates contributors. Elena, Marcus, Leah, Samira, Camille, and Sofia retain specialist ownership. Private opportunity history uses the job ledger contract in candidate workspace state. No new Job Search Persona.",
-      "rationale": "Collapsing job-search expertise into Riley would make the reusable AI orchestrator identity accumulate domain methods and blur specialist quality criteria. The valid boundary is to keep search strategy, hiring calibration, narrative, outreach, visual, and document judgment with existing specialists.",
-      "alternatives": "Create a new Job Search Persona; rename Riley to Job Search Orchestrator; leave job-search orchestrator labels as-is. Rejected because no uncovered responsibility justified a new Persona and identity drift would damage reuse.",
-      "affects": "Job-search guidance, Playbooks and job-search Site surfaces, the Docs resume-application-work route, job-ledger contract, and issue #90 evidence. Riley’s canonical roleLabel remains AI orchestrator.",
+      "decision": "Playbook owns the outcome. Riley Morgan · AI orchestrator coordinates contributors. Elena, Marcus, Leah, Samira, Camille, and Sofia retain specialist ownership. Private opportunity history uses the job ledger contract in candidate workspace state. No new Job Search Persona.",
+      "rationale": "Collapsing job-search expertise into Riley would make the reusable AI orchestrator identity accumulate domain methods and blur specialist quality criteria. Playbook-first wording preserves reusable orchestration across domains while keeping search strategy, hiring calibration, narrative, outreach, visual, and document judgment with the existing specialists.",
+      "alternatives": "Create a new Job Search Persona; rename Riley to Job Search Orchestrator; leave “job-search orchestrator” labels as-is. Rejected because no uncovered responsibility justified a new Persona, and identity drift would damage reuse.",
+      "affects": "Job-search implementation guidance, Playbooks and job-search Site surfaces, Docs orientation route resume-application-work, Elena’s search workflow/skill wording, job ledger contract, and Work Order evidence for issue #90. Riley’s canonical roleLabel remains AI orchestrator.",
       "evidence": "Issue #90 ownership correction and the job-ledger contract.",
-      "revisit": "Implementation evidence shows a real uncovered job-search responsibility not owned by the existing specialists, Riley, or the Playbook; or a callable job-search Skill is authorized beyond the ledger contract."
+      "revisit": "Implementation evidence shows a real uncovered job-search responsibility not owned by Elena, Marcus, Leah, Samira, Camille, Sofia, Riley, or the Playbook; or when a callable job-search Skill package is authorized beyond the ledger contract."
     },
     {
       "id": "DEC-012",
@@ -193,6 +199,7 @@
       "tradeoffs": "Riley must choose among routes without absorbing their expertise. The route contract needs explicit tests and should be revisited if observed requests consistently choose a larger or less capable path than the smallest useful route.",
       "affects": "docs/job-search/implementation.md; content/orientation/docs.json; Riley’s authored record and maintenance history; routing validators/tests; generated library and Decisions output; issue #111.",
       "evidence": "Issue #111, PR #112, the Riley Persona/workflow sources, the four explicit routing tests, and Mara’s placement review recorded in the issue-111 Work Order.",
+      "qualifies": ["DEC-011"],
       "revisit": "Observed requests show that Riley’s route selection consistently chooses a larger or less capable path than the smallest useful route, or a later Decision establishes a different universal entry contract."
     }
   ]

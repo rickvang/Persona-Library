@@ -63,7 +63,10 @@ export async function validateGeneratedOutputs(context) {
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   const decisionSource = JSON.parse(await context.readFile('docs/decisions/records.json'));
-  if (decisionSource.source !== 'docs/decisions/records.json' || !Array.isArray(decisionSource.records) || !decisionSource.records.some(record => record.id === 'DEC-013') || files.decisionOutput !== renderDecisionsPage(files.decisionTemplateSource, decisionSource.records)) throw new Error('Generated dist/decisions.html is stale or its authored source is invalid; run build-library.mjs');
+  const decision010 = decisionSource.records.find(record => record.id === 'DEC-010');
+  const decision011 = decisionSource.records.find(record => record.id === 'DEC-011');
+  const decision013 = decisionSource.records.find(record => record.id === 'DEC-013');
+  if (decisionSource.source !== 'docs/decisions/records.json' || !Array.isArray(decisionSource.records) || !decision010?.corrections?.length || !decision011?.status_note?.includes('DEC-013') || !decision013?.qualifies?.includes('DEC-011') || files.decisionOutput !== renderDecisionsPage(files.decisionTemplateSource, decisionSource.records)) throw new Error('Generated Decisions output is stale or its authored source/history links are invalid; run build-library.mjs');
 
   const { page, skillsPage, templatesPage, templateViewerPage, jobSearchPage, playbooksPage, operatingPacksPage, prototypingPage, canvasPage, guidePage } = files;
   for (const [name, html] of [['library', page], ['skills', skillsPage]]) for (const script of ['data/library-data.js', 'data/library-model.js', 'js/library-ui.js', 'js/library-state.js']) if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);

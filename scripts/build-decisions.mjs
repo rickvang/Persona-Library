@@ -31,9 +31,13 @@ const renderRecord = record => {
     ['Affects', record.affects],
     ['Evidence', record.evidence],
     ['Status note', record.status_note],
+    ['Qualifies', Array.isArray(record.qualifies) ? record.qualifies.join(', ') : record.qualifies],
     ['Revisit when', record.revisit]
   ].map(([label, value]) => renderLine(label, value)).join('');
-  return `        <article class="decision-record" id="${escapeHtml(id)}" data-status="${escapeHtml(status)}"><div class="record-meta">${meta}</div><h3>${renderInline(record.title)}</h3><p class="record-summary">${renderInline(record.summary)}</p><div class="record-lines">${lines}</div></article>`;
+  const corrections = Array.isArray(record.corrections)
+    ? record.corrections.map(correction => renderLine('Correction', correction)).join('')
+    : renderLine('Correction', record.corrections);
+  return `        <article class="decision-record" id="${escapeHtml(id)}" data-status="${escapeHtml(status)}"><div class="record-meta">${meta}</div><h3>${renderInline(record.title)}</h3><p class="record-summary">${renderInline(record.summary)}</p><div class="record-lines">${lines}${corrections}</div></article>`;
 };
 
 const renderSummary = records => {
