@@ -60,7 +60,7 @@ The first build is a responsive reference surface plus actual working-draft pers
 - Six new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), Samira Nguyen (outreach and interview coach), and Priya Desai (job search orchestrator)
 - Reuse of Camille Ortiz for visual communication review and Sofia Calder for document production when needed; Riley Morgan remains the general AI orchestrator outside the default job-search operator role
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
-- The end-to-end search workflow owned by the Evidence-led Job Search Playbook
+- The end-to-end search workflow defined by the Evidence-led Job Search Playbook and operated by the Job Search Orchestrator
 - A reusable [job opportunity ledger contract](job-ledger-contract.md) for durable private search-state deduplication
 - Quality gates for ATS compatibility and evidence integrity by default, with human readability and visual communication when those outputs are warranted
 - A clear boundary between current capabilities and later product work

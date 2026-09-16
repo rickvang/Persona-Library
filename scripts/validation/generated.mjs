@@ -41,6 +41,7 @@ export async function validateGeneratedOutputs(context) {
   const jobSearchImpl = await context.readFile('docs/job-search/implementation.md');
   if (jobSearchImpl.includes('Riley is the job-search orchestrator') || jobSearchImpl.includes('**Job-search orchestrator**')) throw new Error('docs/job-search/implementation.md must not frame Riley as the Job-search orchestrator identity');
   if (!jobSearchImpl.includes('Evidence-led Job Search Playbook') || !jobSearchImpl.includes('Job search orchestrator (Priya Desai)') || !jobSearchImpl.includes('Riley Morgan · AI orchestrator') || !jobSearchImpl.includes('job ledger contract')) throw new Error('docs/job-search/implementation.md must define Priya as the Playbook operator, preserve Riley as general AI orchestrator, and retain the ledger contract');
+  if (jobSearchImpl.includes('workflow owned by the Evidence-led Job Search Playbook') || jobSearchImpl.includes('Playbook owns the outcome') || jobSearchImpl.includes('Playbook → owns the outcome')) throw new Error('Job-search implementation must not present the Playbook as the actor or outcome owner');
   const jobSearchOperator = data.personas.find((persona) => persona.id === 'job-search-orchestrator');
   if (!jobSearchOperator || jobSearchOperator.name !== 'Priya Desai' || jobSearchOperator.roleLabel !== 'Job search orchestrator') throw new Error('Canonical Job Search Orchestrator Persona is missing or malformed');
   const jobSearchOperatorFlows = data.flowLibrary['job-search-orchestrator'] || [];

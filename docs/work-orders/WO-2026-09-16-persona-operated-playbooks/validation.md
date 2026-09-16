@@ -9,6 +9,7 @@
 - `node scripts/build-library.mjs` — pass; generated data/orientation mirrors refreshed from authored source.
 - `node scripts/validate-content.mjs` — pass after the issue #113 changes.
 - Focused validator checks confirm Priya Desai / `job-search-orchestrator`, the campaign-health and recovery workflows, reused orchestration Skill applications, Persona-operated Playbook wording, Docs routing, DEC-013 supersession, ledger ownership/privacy, and current Site presentation.
+- Final regression coverage rejects stale job-search wording that assigns workflow/outcome ownership to the Playbook; the final branch validation is rerun after this correction.
 
 ## Boundaries checked
 
