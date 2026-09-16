@@ -3,7 +3,7 @@
 - Playbook ID: `playbook-template-lifecycle`
 - Status: Working model
 - Audience: Template Librarian stewards, domain specialists composing starters, and operators deciding whether a starter stays local or becomes canonical
-- Canonical catalog identity: `content/library-data.js` `playbookCatalog`
+- Canonical catalog identity: `content/library-data/catalogs.js` `playbookCatalog`; `content/library-data.js` assembles the compatibility bundle
 - Orientation route: `template-lifecycle`
 - Related Skills: `$template-research`, `$template-composer`, `$template-reconciliation`
 - Related Persona: Elena Park / `template-librarian`
