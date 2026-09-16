@@ -1,24 +1,26 @@
 # Work Order — library-data modularization
 
-- Status: ready-for-review
+- Status: active
 - Issue: #106 — Behavior-preserving modularization of `content/library-data.js` after IA cleanup
 - Repository: `rickvang/Persona-Library`
-- Base: `main` at `b3814a18addd89393581902137e0e552e0ba28a3`
-- Working branch: `refactor/issue-106-library-data-modules`
-- Authorization: explicit user request to implement #106 on 2026-09-15
+- Base: `main` at `968b5db8823e3de2a61cd5d4036409d85c87dd2f` after PR #109 merged
+- Working branch: `followup/mara-modular-source-guidance`
+- Authorization: explicit user request to implement #106 on 2026-09-15, plus explicit 2026-09-15 follow-up request to integrate Mara Okoye with the modular source boundary
 - Change mode: source update
-- Change domain: canonical library data organization
-- Reconciliation: completed at repository/dependency level; executable validation remains pre-merge
+- Change domain: canonical library data organization and architecture-governance routing
+- Reconciliation: Persona adapter and universal impact review completed for the follow-up; executable validation and generated refresh remain pre-merge
 
 ## Outcome
 
-Replace the 318 KB authored `content/library-data.js` monolith with real domain-owned source modules while preserving the existing `window.PersonaLibraryData` data shape, IDs, record meaning, ordering, normalization, and generated Site behavior.
+Replace the former 318 KB authored `content/library-data.js` monolith with real domain-owned source modules while preserving the existing `window.PersonaLibraryData` data shape, IDs, record meaning, ordering, normalization, and generated Site behavior.
 
-This work is not satisfied by documentation pointers. The authored records themselves have moved into owned source modules under `content/library-data/`.
+This work is not satisfied by documentation pointers. The authored records themselves live in owned source modules under `content/library-data/`.
+
+PR #109 merged the behavior-preserving modularization. The current follow-up makes the new boundary operational for Mara Okoye and the Persona/reconciliation Skills she relies on: architecture work resolves the owning authored module rather than treating `content/library-data.js` as record authority.
 
 ## Implemented source structure
 
-The source now has actual record owners for:
+The source has actual record owners for:
 
 - Personas: core, career, and systems modules;
 - Persona Skill profiles: core and specialist modules;
@@ -27,20 +29,32 @@ The source now has actual record owners for:
 - Tool integration: requirements, handoffs, and recipes;
 - Skill guidance, practice, primitive units, and typed relationships.
 
-`content/library-data.js` is now only a compatibility assembler. It requires the same 13 top-level data keys, restores them in their original order, assigns `window.PersonaLibraryData`, and clears the temporary fragment namespace.
+`content/library-data.js` is only a compatibility assembler. It requires the same 13 top-level data keys, restores them in their original order, assigns `window.PersonaLibraryData`, and clears the temporary fragment namespace.
 
-## Consumer updates
+## Post-merge Mara integration
+
+The follow-up keeps Mara’s existing substantive Skill set unchanged and adds explicit repository-operating linkage:
+
+- `content/site-orientation.json`: Mara’s creation gate now resolves canonical source ownership and points canonical record work to the owning `content/library-data/*.js` module;
+- `content/library-data/workflows-career.js`: Mara’s architecture workflow starts from current orientation/source ownership and names `$change-impact-reconciliation` after durable high-impact changes;
+- `.agents/skills/persona-research/SKILL.md`: Persona maintenance reads owning authored modules plus the compatibility assembler contract;
+- `.agents/skills/persona-reconciliation/SKILL.md`: Persona-specific reconciliation uses the modular authored source boundary;
+- `.agents/skills/change-impact-reconciliation/SKILL.md`: universal dependency review uses `content/library-data/` for authored records and `content/library-data.js` only for compatibility assembly.
+
+No new Skill, first-class library space, runtime, registry, schema, Tool permission model, or Site behavior is introduced.
+
+## Consumer contract
 
 - `scripts/build-library.mjs` composes the ordered authored modules and assembler into the single generated `dist/data/library-data.js` browser bundle.
+- It also copies `content/site-orientation.json` to `dist/data/site-orientation.json`.
 - `scripts/validation/context.mjs` loads the same authored source sequence before validation and generated-parity checks.
 - `eval/isolated-persona-skill.mjs` loads the same modular source by default while retaining explicit single-file fixture support.
 - `content/library-model.js` remains unchanged because the `window.PersonaLibraryData` compatibility contract remains unchanged.
-- current architecture, Persona Skills guidance, Template lifecycle guidance, and the current internal source-evidence index now point to the real modular source boundary.
 
 ## Boundaries preserved
 
 - no data-model redesign;
-- no ID/schema/record-meaning change intended;
+- no ID/schema/record-meaning change intended outside the explicit Mara workflow guidance update;
 - no new registry or runtime loader;
 - no Site behavior redesign;
 - no further filesystem-wide Docs cleanup;
@@ -48,35 +62,34 @@ The source now has actual record owners for:
 - no hand-editing generated `dist/` output;
 - archived Work Orders and historical issue/PR text remain untouched as historical evidence.
 
-## Structural audit
+## Original validation evidence
 
-- `main` remained at `b3814a18addd89393581902137e0e552e0ba28a3` during implementation.
-- Branch is based directly on that commit and is not behind `main`.
-- The old `content/library-data.js` changed from a 1,190-line mixed-domain record source to a 29-line compatibility assembler.
-- Fourteen authored module files now live under `content/library-data/` and contain the actual records rather than redirect stubs.
-- The build source order, validation source order, and isolated-eval source order are aligned.
-- Generated `dist/data/library-data.js` was not hand-edited and therefore remains intentionally stale until the build runs.
+Before PR #109 merged, the repository owner reported fresh-checkout validation on the final branch state with build, content validation, 6/6 validation tests, 97 isolated Persona/Skill cases, syntax checks, module syntax loop, `git diff --check`, runtime parity, all 13 domains, no runtime loader, and no unrelated-file changes passing.
 
-See `ia.md` for placement and ownership and `reconciliation.md` for the dependency review.
+That evidence was user-reported local execution, not a GitHub Actions run. PR #109 then merged into `main` at `968b5db8823e3de2a61cd5d4036409d85c87dd2f`.
 
-## Validation gate
+## Follow-up validation gate
 
-Required before merge:
+The current follow-up changes authored inputs to generated files, so before its PR can merge run:
 
 - `node scripts/build-library.mjs`
 - `node scripts/validate-content.mjs`
 - `node --test scripts/validation/validation.test.mjs`
 - `node eval/isolated-persona-skill.mjs validate`
-- syntax checks for changed JS modules
-- generated source/bundle parity checks
+- `node --check content/library-data/workflows-career.js`
 - `git diff --check`
 
-The connected GitHub surface exposes no repository command runner for these checks. They have **not** been claimed as run or passed. The PR must remain unmerged until this executable gate is satisfied or the user explicitly supplies/accepts equivalent validation evidence.
+Expected generated refresh from the normal build:
+
+- `dist/data/library-data.js`
+- `dist/data/site-orientation.json`
+
+The connected GitHub surface exposes no repository command runner for these checks. Generated outputs must be produced by the normal build and not hand-edited.
 
 ## Repository-side incident note
 
-During implementation, two accidental temporary issues (#107 and #108) were created by invoking the issue-creation action instead of the file-creation action. Both were immediately renamed `Accidental temporary issue — closed` and closed as `not_planned`. They do not authorize or own work and no source change depends on them.
+During the original #106 implementation, two accidental temporary issues (#107 and #108) were created by invoking the issue-creation action instead of the file-creation action. Both were immediately renamed `Accidental temporary issue — closed` and closed as `not_planned`. They do not authorize or own work and no source change depends on them.
 
 ## Next action
 
-Open the implementation PR against current `main`, run the executable validation gate in an environment with repository command execution, regenerate `dist/` through the normal build, then review the resulting generated diff before any merge decision.
+Run the follow-up executable validation gate in a fresh checkout, keep the generated changes produced by the build, confirm the branch diff remains scoped to the Mara/source-boundary integration plus generated outputs, then open or finalize the follow-up PR against current `main`.

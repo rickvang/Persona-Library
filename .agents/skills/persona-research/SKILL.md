@@ -23,7 +23,7 @@ Do not activate for generic market research with no persona or role-model outcom
 ## Required preflight
 
 1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `personas` route group. Classify the request as research, plan, prototype, or explicitly authorized update.
-2. Read the smallest relevant current sources: the target Persona and linked records, [the canonical data](../../../content/library-data.js), [the normalizer](../../../content/library-model.js), and [the architecture contract](../../../ARCHITECTURE.md) when the work touches their boundaries.
+2. Read the smallest relevant current sources: the target Persona and linked records, the owning authored module or modules under [`content/library-data/`](../../../content/library-data/), [the compatibility assembler](../../../content/library-data.js), [the normalizer](../../../content/library-model.js), and [the architecture contract](../../../ARCHITECTURE.md) when the work touches their boundaries. Do not treat `content/library-data.js` as the authored record source.
 3. Establish whether the destination is a research brief, an isolated prototype, or a named live record. A research result is read-only unless the user explicitly authorizes a live change.
 4. Build a context packet containing role, industry, product context, geography, audience, timeframe, research decision, existing record, source scope, authorization, and success criteria. Mark unavailable context as unknown.
 
