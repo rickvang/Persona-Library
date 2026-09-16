@@ -5,6 +5,24 @@ import { fileURLToPath } from 'node:url';
 
 const REQUIRED_SPACES = ['personas', 'skills', 'operating-packs', 'templates', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
 
+const LIBRARY_DATA_SOURCES = [
+  'content/library-data/personas-core.js',
+  'content/library-data/personas-career.js',
+  'content/library-data/personas-systems.js',
+  'content/library-data/skills-core.js',
+  'content/library-data/skills-specialists.js',
+  'content/library-data/workflows-core.js',
+  'content/library-data/workflows-operations.js',
+  'content/library-data/workflows-career.js',
+  'content/library-data/workflows-systems.js',
+  'content/library-data/catalogs.js',
+  'content/library-data/tool-integration.js',
+  'content/library-data/skill-guidance.js',
+  'content/library-data/skill-practice.js',
+  'content/library-data/skill-anatomy.js',
+  'content/library-data.js'
+];
+
 const FILES = {
   librarySource: 'content/library-data.js',
   libraryOutput: 'dist/data/library-data.js',
@@ -42,6 +60,10 @@ export async function loadValidationContext(root = defaultRoot) {
   const read = relativePath => readFile(path.join(root, relativePath), 'utf8');
   const entries = Object.entries(FILES);
   const contents = Object.fromEntries(await Promise.all(entries.map(async ([key, relativePath]) => [key, await read(relativePath)])));
+  contents.librarySource = `${(
+    await Promise.all(LIBRARY_DATA_SOURCES.map(sourcePath => read(sourcePath)))
+  ).join('\n\n')}\n`;
+
   const orientation = JSON.parse(contents.orientationSource);
   const generatedOrientation = JSON.parse(contents.orientationOutput);
   const routeGroups = new Map();
@@ -80,6 +102,7 @@ export async function loadValidationContext(root = defaultRoot) {
     routeSources,
     requiredSpaces: REQUIRED_SPACES,
     canvasModules: CANVAS_MODULES,
+    libraryDataSources: LIBRARY_DATA_SOURCES,
     files: contents
   };
 }
