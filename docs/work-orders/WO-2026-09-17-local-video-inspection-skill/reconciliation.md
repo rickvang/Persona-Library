@@ -2,7 +2,7 @@
 
 - Status: complete
 - Date: 2026-09-17
-- Change observed: proposed durable repository-local Skill package and its Work Order
+- Change observed: durable repository-local Skill package extended with transcript ingestion and capability-gated local speech-to-text
 - Initiating contract: `change_mode: external_execution`; `change_domain: local-media-inspection`; `reconciliation: change-impact-reconciliation`
 
 ## Scope checked
@@ -12,7 +12,7 @@
 - The repository-local Skill package convention and `pl-skill-creator` contract.
 - `ARCHITECTURE.md`, `content/library-model.js`, and `scripts/validate-content.mjs`.
 - Authored placement evidence for Mara Okoye.
-- Repository code search for the proposed Skill ID and related local-video, Media Foundation, FFmpeg, and frame-inspection terms.
+- Repository code search for the Skill ID and related local-video, Media Foundation, FFmpeg, Whisper, subtitle, transcript, and frame-inspection terms.
 - Canonical Skill catalog, Persona, Tool, Playbook, Operating Pack, client, and generated-output boundaries.
 
 The review was bounded to declared repository relationships, source/provenance contracts, and default-branch code search. Search cannot prove an exhaustive dependency graph.
@@ -29,6 +29,8 @@ The review was bounded to declared repository relationships, source/provenance c
 | Playbooks and Operating Packs | No explicit application or reference found | Unrelated | Code search and the selected Skills route found no declared dependent workflow or pack. | Medium | No update. |
 | Client modules and generated `dist/` outputs | Source/provenance boundary | Unrelated | No `content/`, client, template, or generated source changes are proposed. | High | Do not build or edit generated output. |
 | Local media safety contract | Direct execution behavior | Extends | The Skill makes local-only sampling, source preservation, overwrite refusal, untrusted-content handling, and audio separation explicit. | High | Keep these boundaries in `SKILL.md` and the helper. |
+| Transcript evidence contract | Direct execution behavior | Extends | The update adds sidecar normalization, embedded-subtitle extraction when FFmpeg exists, and explicit opt-in local Whisper routing while preserving provenance. | High | Add the transcript helper and update Skill routing. |
+| Tool availability boundary | Conditional runtime dependency | Qualifies | FFmpeg and Whisper documentation does not prove either command or a local model file is installed; runtime detection found none on the validation host. | High | Report capability-dependent paths and do not install dependencies or download models. |
 
 ## Required updates
 
@@ -36,7 +38,7 @@ Only the Skill package and this Work Order are required for the authorized scope
 
 ## Optional follow-ups
 
-- Add a separately validated FFmpeg helper if cross-platform execution becomes a supported requirement.
+- Exercise embedded-subtitle and Whisper success paths on a runtime where those commands are already installed.
 - Install the Skill into a user-level catalog only after separate authorization.
 - Open a pull request if the repository owner wants normal review and CI surfaces.
 

@@ -14,7 +14,7 @@
 
 ## Requested outcome
 
-Create a reusable Skill from the proven local-video frame-extraction workflow so Codex can inspect a local video without uploading it or relying on browser playback.
+Create a reusable Skill from the proven local-video frame-extraction workflow so Codex can inspect a local video without uploading it or relying on browser playback, then extend it to incorporate existing captions and explicitly requested local speech-to-text.
 
 ## Authorization and constraints
 
@@ -28,16 +28,17 @@ Mara Okoye's knowledge-systems gate places the capability in the existing flat r
 
 ### Included
 
-- A discoverable `SKILL.md` with trigger, workflow, evidence, safety, and audio boundaries.
+- A discoverable `SKILL.md` with trigger, visual/transcript workflow, evidence, safety, and audio boundaries.
 - `agents/openai.yaml` interface metadata.
 - A Windows PowerShell 5.1 Media Foundation helper for uniform or targeted frame extraction.
+- A local transcript helper that prioritizes supplied or nearby sidecars, then embedded subtitles through existing FFmpeg, then explicitly requested speech-to-text through an existing local Whisper CLI.
 - Deterministic output metadata and overwrite protection.
 - Real-file validation, trigger checks, and read-only downstream reconciliation.
 
 ### Excluded
 
 - Video editing or transcoding.
-- Automatic speech recognition or audio transcription.
+- Bundling a speech model or guaranteeing automatic speech recognition when no compatible local engine is installed.
 - Uploading local media to remote services.
 - Browser security workarounds.
 - Installing FFmpeg, codecs, Python packages, or other dependencies.
@@ -50,6 +51,7 @@ Mara Okoye's knowledge-systems gate places the capability in the existing flat r
 - Generated frames are readable and representative.
 - The source file remains byte-for-byte unchanged.
 - Existing outputs are not overwritten without explicit `-Force`.
+- Existing transcripts can be normalized locally, unavailable transcript paths return an explicit status, and speech-to-text never runs without `-AllowSpeechToText`.
 - Positive and negative trigger cases preserve the intended boundary.
 - Reconciliation identifies any affected downstream surfaces without silently changing them.
 
@@ -64,6 +66,7 @@ Mara Okoye's knowledge-systems gate places the capability in the existing flat r
 - Structural checks equivalent to the repository Skill quick validator passed.
 - The official `quick_validate.py` entrypoint was attempted but could not start because PyYAML is absent from the bundled Python runtime; no dependency was installed.
 - Read-only reconciliation found no required catalog, Persona, Operating Pack, client, or generated-output update.
+- Transcript enhancement: an SRT sidecar was normalized locally with timestamps and markup removed; automatic sidecar discovery, unavailable fallback, source preservation, and overwrite refusal passed. The current runtime has no FFmpeg, Whisper CLI, or local model file, so embedded-subtitle and speech-to-text execution remain capability-dependent.
 
 See [validation.md](validation.md) and [reconciliation.md](reconciliation.md) for details.
 
