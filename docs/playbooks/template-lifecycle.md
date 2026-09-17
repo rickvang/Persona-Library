@@ -15,9 +15,9 @@ This Playbook coordinates existing Template stewardship, lifecycle Skills, domai
 
 Move a reusable Template need from discovery through reuse-or-create, specialist quality when required, validation, promotion-or-local decision, Persona-Library catalog/Site publication, and reconciliation—without confusing library stewardship with domain authorship or copying external starters into Persona-Library.
 
-Success is an inspectable lifecycle decision with truthful source/provenance evidence, the correct specialist review when domain quality matters, and one bounded reconciliation pass after a material change. When reusable or canonical publication is the accepted outcome, success also requires a matching Persona-Library Template catalog record, refreshed generated Site data, and verified visibility in the Persona-Library Templates tab. Success is not automatic promotion, inferred runtime access, or a Playbook run for every bounded Skill action.
+Success is an inspectable lifecycle decision with truthful source/provenance evidence, the correct specialist review when domain quality matters, and one bounded reconciliation pass after a material change. When reusable or canonical publication is the accepted outcome, success also requires a matching Persona-Library Template catalog record, a Persona-Library-local illustrative viewer representation using synthetic content, refreshed generated Site data, verified visibility in the Persona-Library Templates tab, and a focused viewer state of `Illustrative concept available`. Planned Templates may remain without a local viewer representation until publication. Success is not automatic promotion, inferred runtime access, or a Playbook run for every bounded Skill action.
 
-The run stops when the need is satisfied by reuse/adaptation, a local/candidate starter is intentionally kept local, a reusable/canonical publication is source-verified, cataloged, visible in the Templates tab, and reconciled, or the run is blocked at a named gate (unverified source, missing specialist, insufficient reuse evidence, unauthorized promotion, stale generated Site data, missing Templates-tab visibility, or architecture escalation).
+The run stops when the need is satisfied by reuse/adaptation, a local/candidate starter is intentionally kept local, a reusable/canonical publication is source-verified, cataloged, represented locally in the viewer, visible in the Templates tab/focused viewer, and reconciled, or the run is blocked at a named gate (unverified source, missing specialist, insufficient reuse evidence, unauthorized promotion, missing required viewer representation, stale generated Site data, missing Templates-tab/viewer visibility, or architecture escalation).
 
 ## When to use
 
@@ -51,7 +51,7 @@ Mara Okoye → architecture / placement escalation
 $template-reconciliation → read-only Template downstream review
 $change-impact-reconciliation → one universal pass when required
 rickvang/template-library → canonical reusable starter artifacts
-Persona-Library → Template identity, applicability, relationships, provenance, lifecycle context, and Templates-tab publication
+Persona-Library → Template identity, applicability, relationships, provenance, lifecycle context, local viewer representation, and Templates-tab publication
 ```
 
 That is a reusable multi-stage coordination model. It is not a profile of Evidence-led Job Search, Skill formation, or Bounded Parallel Implementation.
@@ -79,6 +79,9 @@ template-library
 
 Persona-Library Template records
 → identity, applicability, relationships, evidence, lifecycle metadata
+
+Persona-Library local viewer
+→ synthetic illustrative representation for published reusable/canonical Templates
 
 Persona-Library generated Site
 → Templates-tab display of the current catalog state
@@ -132,7 +135,7 @@ Do not create a new Persona, Skill, registry, package manager, sync service, or 
 - **Purpose:** Produce only the useful starting structure after the boundary is accepted.
 - **Owner:** `$template-composer` with the relevant specialist when domain quality is in scope.
 - **Entry:** Accepted research result and explicit authorization for the target location.
-- **Actions:** Reuse or adapt first; create only needed starter files; preserve provenance; keep methodology/permissions/orchestration out of the Template.
+- **Actions:** Reuse or adapt first; create only needed starter files; preserve provenance; keep methodology/permissions/orchestration out of the Template; when reusable publication is intended, include a publication handoff for a Persona-Library-local synthetic viewer representation without copying the external starter.
 - **Exit:** Local, candidate, planned, or authorized canonical starter with an explicit boundary note and, when reusable publication is intended, an explicit publication handoff rather than a completion claim.
 - **Gate:** No silent promotion of a project starter into the reusable catalog. External source creation alone is not complete reusable publication.
 
@@ -140,25 +143,25 @@ Do not create a new Persona, Skill, registry, package manager, sync service, or 
 
 - **Purpose:** Make validation inspectable before lifecycle mutation.
 - **Owner:** Elena Park coordinates; specialist owns domain checks; research/composer evidence remains attached.
-- **Checks:** source/path/entrypoint/revision truthfulness; reusable structure vs project output vs operating guidance; domain quality when required; availability claims not inferred.
+- **Checks:** source/path/entrypoint/revision truthfulness; reusable structure vs project output vs operating guidance; domain quality when required; availability claims not inferred; local viewer content is synthetic and preserves the external-source boundary when publication is in scope.
 - **Exit:** Pass, revise, or block with named gaps.
-- **Gate:** Failed source verification or missing specialist review cannot be waved through as “good enough to promote.”
+- **Gate:** Failed source verification, missing specialist review, or a misleading viewer representation cannot be waved through as “good enough to promote.”
 
 ### 06 / LIFECYCLE — Keep local, publish, promote, update, or deprecate
 
 - **Purpose:** Decide and complete the durable collection action from reuse evidence.
-- **Owner:** Elena Park coordinates; authorized operator performs canonical source/catalog mutation and generated Site refresh.
-- **Actions:** Evaluate reuse/promotion evidence; update or relocate canonical source when authorized; add or refresh the Persona-Library Template catalog record; run the repository build that refreshes generated Site data; verify the Template appears in the Persona-Library Templates tab with the intended identity, source, lifecycle, and availability state; keep project-local starters local when evidence is weak.
-- **Exit:** Explicit lifecycle decision with owner, revision context, revisit condition, catalog state, generated-output freshness, and Templates-tab visibility status.
-- **Gate:** Reusable/canonical publication is incomplete until source, catalog, generated Site data, and Templates-tab display agree. Promotion requires reuse evidence and authorization. Unauthorized promotion stops here.
+- **Owner:** Elena Park coordinates; authorized operator performs canonical source/catalog/viewer mutation and generated Site refresh.
+- **Actions:** Evaluate reuse/promotion evidence; update or relocate canonical source when authorized; add or refresh the Persona-Library Template catalog record; add or refresh the local illustrative viewer representation using synthetic content; run the repository build that refreshes generated Site data; verify the Template appears in the Persona-Library Templates tab with the intended identity, source, lifecycle, and availability state and in the focused viewer as `Illustrative concept available`; keep project-local starters local when evidence is weak. Planned Templates may remain without a viewer until publication.
+- **Exit:** Explicit lifecycle decision with owner, revision context, revisit condition, catalog state, local viewer state, generated-output freshness, and Templates-tab/focused-viewer visibility status.
+- **Gate:** Reusable/canonical publication is incomplete until source, catalog, required local viewer representation, generated Site data, Templates-tab display, and focused-viewer state agree. Promotion requires reuse evidence and authorization. Unauthorized promotion stops here.
 
 ### 07 / RECONCILE — Review downstream effects once
 
 - **Purpose:** Keep related records and generated surfaces coherent after a material Template change.
 - **Owner:** `$template-reconciliation`, then one `$change-impact-reconciliation` pass when required.
-- **Actions:** Trace identity/source/status/relationship impacts; verify catalog/source alignment, generated Site freshness, and Templates-tab visibility when reusable publication is in scope; separate required vs optional follow-ups; escalate architecture questions to Mara.
+- **Actions:** Trace identity/source/status/relationship impacts; verify catalog/source alignment, required local viewer representation, generated Site freshness, Templates-tab visibility, and focused-viewer state when reusable publication is in scope; separate required vs optional follow-ups; escalate architecture questions to Mara.
 - **Exit:** Reconciliation report with next action; no recursive reconciliation.
-- **Gate:** Read-only unless a separately authorized update follows the report. Missing catalog/Site visibility is a required follow-up, not a successful publication.
+- **Gate:** Read-only unless a separately authorized update follows the report. Missing catalog/viewer/Site visibility is a required follow-up, not a successful publication.
 
 ## Shared state
 
@@ -169,10 +172,10 @@ Do not create a new Persona, Skill, registry, package manager, sync service, or 
 | Source evidence ledger | Elena / research Skill | Path, entrypoint, revision, verification status |
 | Boundary note | Composer / specialist | Starter vs examples vs methodology vs project output |
 | Lifecycle decision | Elena / authorized operator | Local, publish, promote, update, deprecate, supersede |
-| Publication state | Elena / authorized operator | Catalog record, generated Site freshness, Templates-tab visibility |
+| Publication state | Elena / authorized operator | Catalog record, local viewer representation, generated Site freshness, Templates-tab and focused-viewer visibility |
 | Reconciliation report | Template + universal adapters | Required updates and limitations |
 
-Private project content stays in the project workspace. Canonical reusable starters stay in `rickvang/template-library` unless another authorized source is verified. Persona-Library stores Template metadata and relationships, not duplicated artifact trees; its generated Site exposes the current catalog through the Templates tab.
+Private project content stays in the project workspace. Canonical reusable starters stay in `rickvang/template-library` unless another authorized source is verified. Persona-Library stores Template metadata and relationships plus synthetic local viewer representations, not duplicated artifact trees; its generated Site exposes the current catalog through the Templates tab.
 
 ## Quality gates
 
@@ -182,9 +185,10 @@ Private project content stays in the project workspace. Canonical reusable start
 4. **Domain quality:** right specialist reviewed when substantive quality is required.
 5. **Promotion evidence:** reuse evidence justifies canonical status; existence alone does not.
 6. **Lifecycle ownership:** every source/status change has an owner and revision context.
-7. **Site publication:** reusable/canonical publication requires matching Persona-Library catalog metadata, refreshed generated Site data, and verified Templates-tab visibility.
-8. **Reconciliation once:** Template adapter then one universal pass at the appropriate boundary.
-9. **Availability honesty:** catalog or Templates-tab visibility does not imply runtime access; missing source or runtime access remains visible.
+7. **Viewer representation:** every reusable/canonical publication has a Persona-Library-local illustrative representation using synthetic content and preserving the external-source boundary; planned Templates are exempt until publication.
+8. **Site publication:** reusable/canonical publication requires matching Persona-Library catalog metadata, refreshed generated Site data, verified Templates-tab visibility, and `Illustrative concept available` in the focused viewer.
+9. **Reconciliation once:** Template adapter then one universal pass at the appropriate boundary.
+10. **Availability honesty:** catalog, viewer, or Templates-tab visibility does not imply runtime access; missing source or runtime access remains visible.
 
 ## Failure and recovery
 
@@ -194,7 +198,8 @@ Private project content stays in the project workspace. Canonical reusable start
 | Missing specialist for domain Template | Stop at ROUTE/VALIDATE; do not let Elena author the discipline content |
 | Insufficient reuse evidence | Keep local/candidate; do not promote |
 | Unauthorized promotion or source write | Stop at LIFECYCLE; record blocker |
-| Canonical source exists but catalog/generated Site/Templates tab is stale or missing | Treat publication as incomplete; refresh the authorized catalog/generated surfaces and re-verify visibility before completion |
+| Published reusable/canonical Template lacks a local illustrative viewer or the viewer misrepresents the external source | Treat publication as incomplete; add/repair the Persona-Library-owned synthetic representation and revalidate the boundary |
+| Canonical source exists but catalog/generated Site/Templates tab/focused viewer is stale or missing | Treat publication as incomplete; refresh the authorized catalog/viewer/generated surfaces and re-verify visibility before completion |
 | Architecture / taxonomy ambiguity | Escalate to Mara; do not invent a new space or concept |
 | Stale relationships after change | Return through RECONCILE; apply only authorized follow-ups |
 
@@ -202,7 +207,7 @@ Private project content stays in the project workspace. Canonical reusable start
 
 ### Successful lifecycle case
 
-Need: a reusable web-app design-system starter is requested. Elena searches the catalog, finds a planned or partial match, verifies `template-library` path/revision, routes Camille/Jordan for design-system quality, composes only missing starter structure after authorization, validates boundary and provenance, promotes or updates the canonical source with reuse evidence, registers or refreshes its Persona-Library catalog record, rebuilds generated Site data, verifies the Template appears correctly in the Templates tab, then runs Template reconciliation and one universal pass.
+Need: a reusable web-app design-system starter is requested. Elena searches the catalog, finds a planned or partial match, verifies `template-library` path/revision, routes Camille/Jordan for design-system quality, composes only missing starter structure after authorization, validates boundary and provenance, promotes or updates the canonical source with reuse evidence, registers or refreshes its Persona-Library catalog record, adds or refreshes a synthetic local viewer representation, rebuilds generated Site data, verifies the Template appears correctly in the Templates tab and focused viewer, then runs Template reconciliation and one universal pass.
 
 ### Boundary / failure case
 
@@ -210,8 +215,8 @@ Need: promote a project resume draft into the Template catalog. Discovery shows 
 
 ## Runtime notes
 
-This Playbook is runtime-neutral. Current agent surfaces may load the Template catalog, Skills, and Work Order, but no runtime is the canonical meaning of the Playbook. Do not add fetch/install/sync machinery here. The Templates tab is a generated catalog surface, not proof of runtime access to the external source.
+This Playbook is runtime-neutral. Current agent surfaces may load the Template catalog, Skills, and Work Order, but no runtime is the canonical meaning of the Playbook. Do not add fetch/install/sync machinery here. The Templates tab and local illustrative viewer are Persona-Library publication surfaces, not proof of runtime access to the external source.
 
 ## Learning loop
 
-After each run, record whether catalog-first search avoided duplication, whether specialist routing preserved domain quality, whether promotion evidence was sufficient, whether Site publication completed successfully, and whether reconciliation found stale relationships. Revise this Playbook only when repeated runs show a missing stage/gate, not when a one-off Skill action would have been enough.
+After each run, record whether catalog-first search avoided duplication, whether specialist routing preserved domain quality, whether promotion evidence was sufficient, whether the local viewer representation remained synthetic and source-honest, whether Site publication completed successfully, and whether reconciliation found stale relationships. Revise this Playbook only when repeated runs show a missing stage/gate, not when a one-off Skill action would have been enough.
