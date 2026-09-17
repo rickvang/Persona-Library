@@ -6,7 +6,7 @@
 - Owner: TBD
 - Template basis: [Web App Design System](../../dist/template.html?template=template-design-system-web-app)
 - Operating context: `operating-pack-design-system` (Design System)
-- Evidence boundary: this file is the project-local seed that was adapted into [template-library](https://github.com/rickvang/template-library/tree/c01e9e605d2d7dfd8f12d189cfbce8c6f9237927/templates/design-systems/web-app); the target repository now owns the reusable artifact.
+- Evidence boundary: this file is the project-local seed that was adapted into [template-library](https://github.com/rickvang/template-library/tree/a8ed5d946bc13efdb3011c2853309a530bf73ea3/templates/design-systems/web-app); the target repository now owns the reusable artifact.
 
 ## Purpose
 
@@ -166,6 +166,6 @@ When a component becomes real implementation work, add these fields to its docum
 
 ## Provenance and next use
 
-The reusable starting identity is `template-design-system-web-app`. Its catalog record now points to `templates/design-systems/web-app/README.md` at revision `c01e9e605d2d7dfd8f12d189cfbce8c6f9237927`. The record declares semantic token structure, component organization, shared patterns, layout conventions, and example states, and relates the starting structure to the Design System Operating Pack and the component, interaction-state, responsive-layout, and accessibility Skills. This file remains the project-local seed used to compose the reusable artifact.
+The reusable starting identity is `template-design-system-web-app`. Its catalog record now points to `templates/design-systems/web-app/README.md` at revision `a8ed5d946bc13efdb3011c2853309a530bf73ea3`. The record declares semantic token structure, component organization, shared patterns, layout conventions, and source-neutral component examples, and relates the starting structure to the Design System Operating Pack and the component, interaction-state, responsive-layout, and accessibility Skills. This file remains the project-local seed used to compose the reusable artifact.
 
 The external Template remains a candidate until repeated reuse evidence supports promotion beyond its first publication.
