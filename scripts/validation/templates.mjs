@@ -21,6 +21,7 @@ export function assertKnownTemplateApplication(templateId, application) {
 export async function validateTemplates(context, indexes) {
   const { data, orientation, root, model, templatePreviewConfig } = context;
   const templateIds = new Set();
+  const previewRendererConfig = templatePreviewConfig?.previewRenderers || {};
   for (const template of data.templates) {
     if (!template.id || templateIds.has(template.id)) throw new Error(`Duplicate or missing Template id: ${template.id || '(missing)'}`);
     templateIds.add(template.id);
@@ -48,12 +49,13 @@ export async function validateTemplates(context, indexes) {
     for (const playbookId of template.playbooks) if (!indexes.playbookIds.has(playbookId)) throw new Error(`${template.id} references an unknown Playbook identity: ${playbookId}`);
     if (template.id.startsWith('proto-') || template.relatedSkills.some(id => id.startsWith('proto-')) || template.operatingPacks.some(id => id.startsWith('proto-')) || template.playbooks.some(id => id.startsWith('proto-')) || template.applications.some(application => application.personaId.startsWith('proto-') || application.skillId.startsWith('proto-'))) throw new Error(`Prototype identity leaked into live Template: ${template.id}`);
     if (/(?:\bTBD\b|\bTODO\b|REPLACE_ME|\[\[)/i.test(JSON.stringify(template))) throw new Error(`Unresolved canonical placeholder in Template: ${template.id}`);
+    const hasLocalViewer = Object.prototype.hasOwnProperty.call(previewRendererConfig, template.id);
+    if (template.lifecycle !== 'planned' && !hasLocalViewer) throw new Error(`${template.id} is published without a local illustrative viewer representation`);
   }
   const rebuiltTemplateCatalog = model.buildTemplateCatalog(data);
   if (JSON.stringify(data.templateCatalog) !== JSON.stringify(rebuiltTemplateCatalog)) throw new Error('Template catalog is not fresh from the canonical source model');
   for (const template of data.templateCatalog) {
     const expectedRuntimeState = model.templateRuntimeStateByAvailability[template.source?.availability] || 'unknown';
-    const previewRendererConfig = templatePreviewConfig?.previewRenderers || {};
     const expectedPreviewState = Object.prototype.hasOwnProperty.call(previewRendererConfig, template.id) ? 'illustrative' : 'none';
     if (template.runtimeAccessState.id !== expectedRuntimeState || template.previewState.id !== expectedPreviewState) throw new Error('Template display states are not derived from availability and Site preview configuration: ' + template.id);
     if (!templateIds.has(template.id) || !Array.isArray(template.relatedPersonas) || !Array.isArray(template.relatedSkills) || !Array.isArray(template.applications) || !Array.isArray(template.operatingPacks) || !Array.isArray(template.playbooks) || !Array.isArray(template.relatedToolRecipes) || !template.lifecycleState?.id || !template.sourceState?.id || !template.runtimeAccessState?.id || !template.previewState?.id) throw new Error(`Normalized Template catalog entry is incomplete: ${template.id || '(missing)'}`);
