@@ -3,7 +3,7 @@
 ## Header
 
 - Work Order ID: `WO-2026-09-16-resume-semantic-mapping`
-- Status: ready-for-review
+- Status: active
 - Created: 2026-09-16
 - Last updated: 2026-09-16
 - Requester: repository user
@@ -12,11 +12,11 @@
 - GitHub issue: [#122 — Add presentation-neutral resume content model and semantic Template mapping Skill](https://github.com/rickvang/Persona-Library/issues/122)
 - Persona-Library PR: [#123](https://github.com/rickvang/Persona-Library/pull/123)
 - External Template issue: [rickvang/template-library#4](https://github.com/rickvang/template-library/issues/4)
-- External Template PR: [rickvang/template-library#5](https://github.com/rickvang/template-library/pull/5), head reviewed at `39a89b7ebf2d73dd11ca7a724907d9a255447a1e`
+- External Template PR: [rickvang/template-library#5](https://github.com/rickvang/template-library/pull/5), reviewed head `39a89b7ebf2d73dd11ca7a724907d9a255447a1e`
 - External Operating Pack issue: [rickvang/operating-packs#3](https://github.com/rickvang/operating-packs/issues/3)
-- External Operating Pack PR: [rickvang/operating-packs#4](https://github.com/rickvang/operating-packs/pull/4), head reviewed at `6a69ff3fd0ef446aec3922fd7545d08ddeb0dad8`
-- Explicit authorization: implement the agreed architecture; no merge authorization implied by this Work Order
-- Stopping condition: open reviewable PRs with the semantic contract, Skill, Template slot manifest, Candidate Context integration, and validation evidence
+- External Operating Pack PR: [rickvang/operating-packs#4](https://github.com/rickvang/operating-packs/pull/4), reviewed head `6a69ff3fd0ef446aec3922fd7545d08ddeb0dad8`
+- Explicit authorization: implement issue #122 on its existing branch/PR; no merge, external-PR merge, or issue closure authorization is implied
+- Stopping condition: leave PR #123 reviewable against current `main`, with #122 acceptance scope represented and current checks truthfully reported
 
 ## Outcome
 
@@ -44,7 +44,7 @@ See [`ia.md`](ia.md).
 
 The implementation preserves these owners:
 
-- Persona-Library: semantic model contract, mapping Skill, reusable validation semantics;
+- Persona-Library: semantic model contract, mapping Skill, reusable validation semantics, and application Work Order fields;
 - template-library: Template-specific semantic slots and starter structure;
 - private Candidate Application Context: candidate-specific normalized model instance and provenance references;
 - private application instance: target-role selection/emphasis and rendered artifact;
@@ -58,37 +58,32 @@ The implementation preserves these owners:
 - [x] Add `docs/job-search/resume-content-model.schema.json`.
 - [x] Add `docs/job-search/resume-template-mapping.md`.
 - [x] Add `.agents/skills/resume-template-semantic-mapping/SKILL.md`.
-- [x] Extend `docs/job-search/candidate-context-contract.md` for private normalized resume content and slot manifests.
-- [x] Extend `docs/job-search/candidate-context-integration.md` so the callable Skill and normalized-content route are discoverable without duplicating Leah Okafor's existing skill profiles.
-- [x] Validate current changed-file set, semantic boundaries, schema/manifest structure by direct patch inspection, and exposed repository checks; Persona-Library Vercel is green at current head.
-- [x] Run one bounded change-impact reconciliation in [`reconciliation.md`](reconciliation.md).
+- [x] Make Leah Okafor / `application-editor` the explicit primary Persona application for the mapping Skill and add focused semantic-mapping quality guidance.
+- [x] Extend `docs/job-search/candidate-context-contract.md` for private normalized resume content, slot manifests, material loss states, and Work Order binding.
+- [x] Extend `docs/job-search/candidate-context-integration.md` so the normalized-content route and Leah application are discoverable while preserving existing specialist ownership.
+- [x] Update `docs/job-search/application-work-order-template.md` to record Resume Content Model revision/schema, Template slot-map path/revision, material `unmapped` / `blocked` / `omitted_with_reason` content, and semantic-mapping validation result.
+- [x] Preserve the finalized Candidate Application Context precedence and validation layering while adding semantic-model checks inside those existing layers.
+- [x] Run bounded change-impact reconciliation in [`reconciliation.md`](reconciliation.md).
+- [ ] Re-check PR #123 mergeability and current CI after the branch is reconciled with current `main`.
 
 ### `rickvang/template-library`
 
-- [x] Create issue #4 and implementation branch.
-- [x] Add `templates/resumes/classic-single-column/slot-map.json`.
-- [x] Document the semantic slot manifest in the Template README.
-- [x] Extend Template architecture with an optional descriptive `slot-map.json` contract.
-- [x] Inspect the current three-file PR diff and JSON manifest structure; no CI status checks are exposed for the current head.
-- [x] Open PR #5 at head `39a89b7ebf2d73dd11ca7a724907d9a255447a1e`.
+- [x] Issue #4 and PR #5 exist for the Classic Single-Column Resume `slot-map.json` and optional Template slot-manifest architecture.
+- [ ] PR #5 remains external review work; do not treat it as canonical on `main` until it is separately merged and re-verified.
 
 ### `rickvang/operating-packs`
 
-- [x] Create issue #3 and implementation branch.
-- [x] Extend Candidate Application Context with optional private normalized resume content.
-- [x] Extend validation for model traceability and mapping loss states.
-- [x] Inspect the current two-file PR diff; no CI status checks are exposed for the current head.
-- [x] Open PR #4 at head `6a69ff3fd0ef446aec3922fd7545d08ddeb0dad8`.
+- [x] Issue #3 and PR #4 exist for optional private normalized resume content in the Candidate Application Context Operating Pack.
+- [ ] PR #4 remains external review work; do not treat it as canonical on `main` until it is separately merged and re-verified.
 
-## Review state
+## Boundary corrections from the earlier #123 draft
 
-At the time of this update:
+The earlier branch implementation covered the core model/mapping architecture but missed two explicit #122 acceptance items. This update corrects them:
 
-- Persona-Library PR #123 is open and mergeable; Vercel reports success at current head and there are no unresolved review threads.
-- template-library PR #5 is open and mergeable with an automated approval and no unresolved review threads; no commit-status checks are exposed.
-- operating-packs PR #4 is open and mergeable with an automated approval and no unresolved review threads; no commit-status checks are exposed.
+1. the reusable application Work Order now carries the semantic-model and slot-manifest revision/loss/validation fields; and
+2. the callable Skill now explicitly records Leah Okafor / `application-editor` as its primary Persona application with focused mapping-quality checks.
 
-Merge remains a separate explicit action. If the external PRs merge before Persona-Library #123, refresh their final merge revisions in the Persona-Library integration/reconciliation evidence before merging #123.
+The branch also predates later merged application-packet reconciliation work. This update preserves the current Candidate Application Context precedence and validation order rather than overwriting it with the older branch wording.
 
 ## Non-goals
 
@@ -98,6 +93,7 @@ Merge remains a separate explicit action. If the external PRs merge before Perso
 - No executable mapping DSL.
 - No new Persona or Playbook.
 - No submission or employer-contact capability.
+- No merge or issue closure without separate authorization.
 
 ## Success criteria
 
@@ -106,10 +102,12 @@ Merge remains a separate explicit action. If the external PRs merge before Perso
 - Material normalized nodes can retain evidence and standing-decision references.
 - Employer-of-record, repeated employment periods, and nested client engagements can be represented without flattening.
 - A resume Template can describe semantic destinations without owning the mapping algorithm.
+- Leah Okafor has an explicit Persona-applied semantic-mapping procedure and focused quality checks without transferring other specialist ownership.
+- The application Work Order records model/slot-map revisions, explicit material loss states, and semantic-mapping validation.
 - The mapping Skill reports `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable` for material content rather than silently dropping it.
 - Role-specific selection/emphasis remains application-instance state.
 - Existing evidence-integrity, ATS, document/accessibility, candidate-isolation, and submission-authorization boundaries remain intact.
 
 ## Current state
 
-The reusable architecture is implemented and ready for review across three open PRs. No private candidate Resume Content Model instance is created by this Work Order; creating or migrating a real candidate instance is a separate private Candidate Context step after the reusable contracts are accepted.
+The reusable architecture and the missing #122 acceptance items are implemented on the existing PR #123 branch. Current remote mergeability/check state must be re-read after the branch reconciliation commit; this Work Order deliberately does not pre-claim that result.

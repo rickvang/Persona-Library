@@ -18,6 +18,12 @@ Use this Skill when a candidate's normalized Resume Content Model must be render
 
 Do not use it to discover candidate evidence, decide whether a claim is true, design a new Template from scratch, create candidate facts, or replace ATS/document/accessibility review.
 
+## Persona application
+
+The primary Persona application is **Leah Okafor / `application-editor`**. This Skill extends Leah's existing requirement-to-evidence mapping, information architecture/document hierarchy, ATS-aware formatting, persuasive writing, voice-preserving editing, and integrity responsibilities with one focused cross-Template semantic-mapping procedure.
+
+Leah uses this Skill to decide whether supported candidate meaning has a legitimate destination in a verified resume Template and to make semantic loss visible before composition. The Skill does not replace Leah's existing editorial capabilities, Priya Desai's application orchestration, or Sofia Calder's document-production, accessibility, and export-fidelity responsibilities.
+
 ## Required inputs
 
 1. One active private Candidate Application Context.
@@ -39,6 +45,20 @@ If the candidate boundary, content-model version, Template revision, or slot man
 7. **Compose the private artifact.** Copy/adapt the verified Template starter into the authorized role-specific workspace and fill it from the mapping. Prose may be compressed or synthesized only when the factual meaning remains supported.
 8. **Run layered validation.** Check candidate/model conformance, Template slot conformance, evidence integrity, role/channel requirements, candidate overlays, cross-candidate isolation, and the applicable ATS/document/accessibility/export gates on the actual output.
 9. **Surface Template mismatch.** When valid semantic content repeatedly remains `unmapped`, route the pattern to Template research rather than mutating the Template by implication.
+
+## Focused quality guidance for Leah Okafor
+
+A mapping is ready to hand off from Leah only when all of the following are true or explicitly dispositioned:
+
+- **Semantic fit:** every `mapped` item is placed in a slot whose documented purpose matches the content; available space alone is not a valid mapping reason.
+- **Evidence fidelity:** every material rendered claim still traces to the active candidate's evidence or approved standing decision, and compression does not strengthen contribution, scope, metric, or outcome meaning.
+- **Structural fidelity:** employer-of-record/client-engagement hierarchy, repeated employment periods, dates, role ownership, and candidate-specific chronology decisions survive the mapping.
+- **Loss visibility:** every material candidate node considered for the artifact ends as `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable`; no material node disappears silently.
+- **Role-instance isolation:** role-specific selection, emphasis, target terminology, and ordering choices stay in the application instance rather than becoming canonical candidate truth.
+- **Candidate isolation:** the model, decisions, evidence, and resulting mapping all belong to the active candidate.
+- **Validation boundary:** semantic mapping success is not reported as ATS, accessibility, visual, parser, or export success unless those checks were separately run on the actual output.
+
+When one of these checks fails, Leah records the failure against the affected mapping and routes the smallest next action: repair candidate/model state, resolve evidence, choose a legitimate slot, record an intentional omission, select another Template, or request Template research.
 
 ## Mapping quality signals
 
@@ -75,7 +95,8 @@ Return or record:
 - material mapping table with source node, destination slot, result state, and reason;
 - unmapped, blocked, or omitted-with-reason content;
 - candidate-specific overlays applied;
-- validation results and what was not checked;
+- semantic-mapping validation result and any failed focused-quality check;
+- downstream validation results and what was not checked;
 - resulting private artifact reference when one was created;
 - smallest next action.
 

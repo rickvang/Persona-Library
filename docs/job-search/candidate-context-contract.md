@@ -4,7 +4,7 @@
 
 Define the reusable boundary between a person-specific job-search context, canonical Templates, and one role-specific application instance.
 
-Persona-Library owns this contract and the composition/review process. `rickvang/template-library` owns reusable starter artifacts. The authorized private candidate workspace owns the candidate's facts, decisions, preferences, normalized candidate content, and evidence. A role-specific application folder owns the instantiated outputs for one candidate and one opportunity.
+Persona-Library owns this contract and the composition/review process. `rickvang/template-library` owns reusable starter artifacts and Template-specific semantic slot manifests. The authorized private candidate workspace owns the candidate's facts, decisions, preferences, normalized candidate content, and evidence. A role-specific application folder owns the instantiated outputs for one candidate and one opportunity.
 
 This contract lets multiple candidates use the same Persona-Library process and the same Templates without mixing their private context or encoding one person's preferences into reusable artifacts.
 
@@ -96,9 +96,10 @@ A Candidate Context is **not** a Persona, Template, evidence ledger, application
 When the candidate context exposes normalized resume content:
 
 - validate or inspect it against the current `resume-content-model.schema.json` contract when tooling is available;
+- record the model reference, model revision, and schema version in the active application Work Order;
 - keep material nodes traceable to evidence and applicable standing decisions;
 - preserve employer-of-record, separate employment periods, and nested client engagements where the sources require them;
-- keep role-specific target selection, target-employer terminology, and Template slot IDs out of canonical candidate data;
+- keep role-specific target selection, target-employer terminology, Template slot IDs, and layout choices out of canonical candidate data;
 - mark conflicted or unknown material nodes rather than polishing them into certainty;
 - reconcile affected normalized nodes after a source correction or standing-decision change.
 
@@ -136,14 +137,15 @@ For each reusable application artifact:
 1. identify the artifact required by the application run;
 2. resolve the Template through the Persona-Library Template catalog;
 3. verify the canonical `rickvang/template-library` path, `README.md` entrypoint, starter copy boundary, and Git revision;
-4. for resume Templates, verify `slot-map.json` and its declared Resume Content Model version when present;
+4. for a resume Template that declares semantic mapping, verify `slot-map.json`, its revision, and its declared Resume Content Model version;
 5. copy/adapt the starter into the role-specific private application folder;
 6. bind the active candidate context and role evidence to the instantiated artifact;
 7. map normalized candidate content or source evidence/decisions into the Template's intended semantic slots without changing material meaning;
-8. run the applicable validation layers;
-9. keep the resulting role-specific artifact private unless external sharing is separately authorized.
+8. record material mapping results, including `unmapped`, `blocked`, and `omitted_with_reason` content;
+9. run the applicable validation layers;
+10. keep the resulting role-specific artifact private unless external sharing is separately authorized.
 
-For resume work with a normalized candidate model, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` Skill rather than treating the prior rendered resume as the data model.
+For resume work with a normalized candidate model, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` Skill rather than treating a prior rendered resume as the data model.
 
 If the needed reusable Template does not exist or cannot be verified, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library`. Do not use a private candidate master as a silent substitute for a missing canonical Template.
 
@@ -151,58 +153,56 @@ If the needed reusable Template does not exist or cannot be verified, route to T
 
 The active application Work Order or private application notes should make important mappings inspectable.
 
-| Mapping ID | Candidate source / normalized node | Template / slot | Role requirement | Validation applied | Status |
+| Mapping ID | Candidate source / normalized node | Template / semantic slot | Role requirement | Validation applied | Status |
 | --- | --- | --- | --- | --- | --- |
-| MAP-001 | evidence, standing-decision, or Resume Content Model node reference | Template ID + semantic slot | requirement ID or not applicable | generic / candidate overlay / role-channel | mapped / blocked / unmapped / omitted with reason |
+| MAP-001 | evidence, standing-decision, or Resume Content Model node reference | Template ID + semantic slot | requirement ID or not applicable | generic / candidate overlay / role-channel | mapped / blocked / unmapped / omitted_with_reason / not_applicable |
 
 Use mapping records for material claims, candidate-specific structural decisions, and any field where an incorrect candidate binding would materially change the artifact. Do not create exhaustive bookkeeping for trivial prose.
 
+For a resume semantic-mapping run, also record:
+
+- Resume Content Model reference, revision, and schema version;
+- Template `slot-map.json` path and verified revision;
+- material `unmapped`, `blocked`, or `omitted_with_reason` content and disposition;
+- semantic-mapping validation result;
+- downstream checks that were and were not run.
+
 ## Validation layers
 
-Validation is deliberately split so reusable Templates remain candidate-neutral.
+Validation is deliberately split so reusable Templates remain candidate-neutral. Use the Candidate Application Context Operating Pack order; semantic-model checks extend the existing layers rather than replacing or reordering them.
 
-### 1. Candidate context and normalized-content validation
-
-Verify, when applicable:
-
-- the active candidate identity is unambiguous;
-- the Resume Content Model version is compatible with the consuming mapping contract;
-- material normalized nodes remain traceable to current evidence/decisions;
-- conflicted/unknown material nodes are blocked or explicitly dispositioned;
-- role-specific selection has not been promoted into canonical candidate truth.
-
-### 2. Template structural validation
+### 1. Template structural validation
 
 Owned by the Template artifact/repository boundary. Verify reusable structure such as:
 
 - required starter files exist;
 - documented placeholders and sections are present;
-- a required semantic slot manifest exists and targets the expected content model when the Template declares one;
+- when semantic mapping is used, the required slot manifest exists, its revision is recorded, and it targets a compatible Resume Content Model version;
 - the starter is non-empty and internally coherent;
 - reusable files do not contain unresolved candidate-specific content;
 - the documented copy boundary is usable.
 
 Template structural validation does not determine whether a candidate claim is true or whether a role-specific application is persuasive.
 
-### 3. Persona-Library composition validation
+### 2. Persona-Library composition validation
 
 Owned by the job-search process and relevant specialists. Verify, as applicable:
 
+- the active candidate/model binding is unambiguous and the model revision/schema version are recorded when used;
+- material normalized nodes remain traceable to current evidence/decisions;
+- semantic mapping completeness and explicit loss handling;
 - evidence integrity and claim traceability;
-- semantic mapping completeness and loss handling;
 - chronology and employer/client attribution;
 - ATS-safe structure and extraction;
 - role-to-evidence coverage;
 - cover-letter role relevance and truthful synthesis;
 - artifact packaging, parity, accessibility, and document-production checks.
 
-### 4. Role/channel validation
+A successful semantic mapping does not prove ATS compatibility, accessibility, visual quality, parser behavior, or export fidelity.
 
-Apply current employer, application-channel, or role-specific constraints when supported by current evidence. A portal label alone is not proof of parser behavior. Mandatory role/application requirements bound candidate preferences and overlays.
+### 3. Candidate-specific validation overlays
 
-### 5. Candidate-specific validation overlays
-
-Loaded from the active private Candidate Context. These checks apply only to that candidate, must trace to a candidate-confirmed decision or source fact, and operate within current task/channel requirements.
+Loaded from the active private Candidate Context. These checks apply only to that candidate and must trace to a candidate-confirmed decision or source fact.
 
 Examples include:
 
@@ -212,11 +212,17 @@ Examples include:
 - preserve a confirmed voice or terminology constraint;
 - prohibit a candidate-specific omission or unsupported abstraction.
 
-Candidate overlays may strengthen or specialize a generic check but must not weaken evidence integrity, create unsupported facts, or override a mandatory role/application requirement.
+Candidate overlays may strengthen or specialize a generic check but must not weaken evidence integrity or create unsupported facts.
 
-### 6. Cross-candidate isolation
+### 4. Role/channel validation
+
+Apply current employer, application-channel, or role-specific constraints when supported by current evidence. A portal label alone is not proof of parser behavior. Mandatory role/application requirements govern the deliverable when they conflict with candidate preferences or overlays; record the conflict rather than silently flattening it.
+
+### 5. Cross-candidate isolation
 
 Verify that candidate identity, contact data, evidence, normalized resume content, standing decisions, voice rules, Template preferences, and validation overlays all belong to the active candidate context and that no values leaked from another candidate.
+
+A later validation layer may add a stricter constraint but must not silently weaken an earlier factual or integrity rule.
 
 ## Work Order binding
 
@@ -233,10 +239,12 @@ A full application Work Order should record at minimum:
 - candidate-specific validation overlays applied;
 - unresolved context conflicts or candidate questions;
 - whether the Candidate Context itself was updated during the run;
-- Template IDs, slot-manifest paths, and verified revisions used for each instantiated resume artifact;
-- material `unmapped`, `blocked`, or `omitted_with_reason` semantic content.
+- Template IDs and verified revisions used for each instantiated artifact;
+- for mapped resumes, Template slot-manifest path/revision and declared model version;
+- material `unmapped`, `blocked`, or `omitted_with_reason` semantic content;
+- semantic-mapping validation result and downstream validation results.
 
-Before `ready-for-review`, the Work Order must show that the candidate boundary is unambiguous, required context has been loaded, material mappings are traceable, and applicable candidate overlays have passed or have an explicit blocker/disposition.
+Before `ready-for-review`, the Work Order must show that the candidate boundary is unambiguous, required context has been loaded, material mappings are traceable, mapping loss is explicit, and applicable candidate overlays have passed or have an explicit blocker/disposition.
 
 ## Multi-candidate use
 

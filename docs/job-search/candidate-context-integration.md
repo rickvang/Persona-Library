@@ -4,7 +4,7 @@
 
 Persona-Library uses a private **Candidate Application Context** to bind one person's facts, standing decisions, preferences, normalized candidate content, and validation overlays to reusable Templates and the job-search application workflow.
 
-The canonical reusable context rules live in `rickvang/operating-packs/packs/candidate-application-context` with `AGENTS.md` as the stable entrypoint. The current `main` pack is verified at merge revision `c216052321c683830333bda4c1928bb98e12b3f7`; normalized resume-content extensions are under review in `rickvang/operating-packs` PR #4 and must not be treated as canonical on `main` until merged and re-verified.
+The canonical reusable context rules live in `rickvang/operating-packs/packs/candidate-application-context` with `AGENTS.md` as the stable entrypoint. The current `main` pack is verified at merge revision `c216052321c683830333bda4c1928bb98e12b3f7`. A normalized-resume-content extension is under review in `rickvang/operating-packs` PR #4 and must not be treated as canonical on that repository's `main` until merged and re-verified.
 
 Persona-Library does not store candidate instances. Candidate values, private Resume Content Model instances, and private links remain in the authorized private workspace.
 
@@ -39,11 +39,13 @@ identify active candidate context
 → map normalized candidate content or source evidence into Template semantic slots
 → tailor/select for the target role without rewriting canonical candidate truth
 → run generic composition/integrity checks
+→ run candidate-specific validation overlays
 → enforce current role/application requirements
-→ run candidate-specific validation overlays within those requirements
 → run cross-candidate isolation check
 → package separate role-specific artifacts
 ```
+
+The validation gates still use the Candidate Application Context Operating Pack's canonical precedence and layering; the sequence above describes composition flow, not permission to reorder mandatory validation rules.
 
 For reusable cross-Template resume mapping, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` callable Skill. Material resume mappings end as `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable`; material content is not silently discarded merely because the chosen Template lacks a destination.
 
@@ -57,11 +59,13 @@ Do not draft from a private master as though it were the reusable Template. Do n
 | Presentation-neutral Resume Content Model contract and semantic mapping Skill | Persona-Library |
 | Candidate-context rules and validation layering | Candidate Application Context Operating Pack |
 | Candidate facts, evidence, private normalized resume-content instance, standing decisions, voice, private links | private candidate workspace |
-| Role-specific requirement map, selection/emphasis, and instantiated artifacts | application Work Order / private role folder |
+| Role-specific requirement map, selection/emphasis, material mapping dispositions, and instantiated artifacts | application Work Order / private role folder |
 | Reusable job-search expertise and review judgment | Persona-Library Personas and Skills |
 | End-to-end application/search stages and gates | Evidence-led Job Search Playbook operated by Priya Desai |
 
-Avery Brooks remains a reusable synthetic candidate-role Persona and never substitutes for the actual candidate's private context. Leah Okafor's existing application-editor capabilities remain responsible for requirement mapping, document hierarchy, writing, ATS-aware formatting, and integrity; the semantic mapping Skill adds the reusable cross-Template mapping procedure without replacing those judgments.
+Avery Brooks remains a reusable synthetic candidate-role Persona and never substitutes for the actual candidate's private context.
+
+**Leah Okafor / `application-editor` is the primary Persona application for `resume-template-semantic-mapping`.** Her existing requirement-to-evidence mapping, document hierarchy, ATS-aware formatting, writing, voice-preserving editing, and integrity capabilities remain authoritative. The callable Skill adds the focused cross-Template semantic-mapping procedure and quality checks; it does not transfer document-production or orchestration ownership.
 
 ## Resume semantic mapping boundary
 
@@ -84,6 +88,14 @@ The private normalized model may represent identity/contact, supported descripto
 The normalized model must not contain Template slot IDs, layout/style decisions, target-employer keywords as canonical facts, or role-specific selection as universal candidate truth.
 
 A Template slot manifest describes where compatible semantic content can go. It does not decide whether the candidate claim is true, which evidence to select, or whether the final document passes ATS/accessibility/output review.
+
+The application Work Order must record, when semantic mapping is used:
+
+- Resume Content Model reference, revision, and schema version;
+- Template `slot-map.json` path and verified revision;
+- material `unmapped`, `blocked`, and `omitted_with_reason` content;
+- semantic-mapping validation result;
+- downstream validation that was and was not completed.
 
 ## Candidate isolation gate
 
@@ -114,16 +126,15 @@ A candidate preference, standing decision, or normalized model value cannot over
 
 ## Validation layering
 
-Keep validation responsibilities separate:
+Keep validation responsibilities separate and preserve the Candidate Application Context Operating Pack order:
 
-1. **Candidate context / normalized content** — active candidate is unambiguous; any normalized Resume Content Model is compatible, current, and traceable.
-2. **Template structure / semantic slots** — starter shape, documented slot manifest, and model-version compatibility are valid when applicable.
-3. **Persona-Library composition/integrity** — semantic mapping completeness, evidence, chronology, attribution, ATS/readability/accessibility rules as applicable.
-4. **Role/application requirements** — current employer and target-role constraints are enforced where supported by evidence.
-5. **Candidate-specific overlays** — private candidate-confirmed rules and preferences apply within the task/channel constraints above.
-6. **Isolation** — no cross-candidate contamination.
+1. **Template structure** — starter shape and placeholders are valid; when semantic mapping is used, the slot manifest exists, its revision is recorded, and its declared Resume Content Model version is compatible.
+2. **Persona-Library composition/integrity** — evidence, chronology, attribution, semantic mapping completeness/loss handling, ATS/readability/accessibility rules as applicable. The candidate/model reference and revision must be recorded when used.
+3. **Candidate-specific overlays** — private candidate-confirmed rules and preferences are checked without weakening factual or integrity rules.
+4. **Role/application requirements** — current employer, channel, and target-role constraints are enforced where supported by evidence.
+5. **Isolation** — no cross-candidate contamination, including normalized Resume Content Model nodes.
 
-A candidate overlay may make a rule stricter, but it cannot create evidence, weaken a material-truth/integrity rule, or override a mandatory role/application requirement. A successful semantic mapping is not proof that the final artifact passes ATS, accessibility, or export review.
+A candidate overlay may make a rule stricter, but it cannot create evidence, weaken a material-truth/integrity rule, or override a mandatory role/application requirement. A successful semantic mapping is not proof that the final artifact passes ATS, accessibility, parser, visual, or export review.
 
 ## Multi-candidate behavior
 
