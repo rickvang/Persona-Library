@@ -27,19 +27,27 @@ No new Decision is required because the change applies the existing Template own
 | `$template-composer` | extends | Reusable/canonical publication now explicitly includes local illustrative viewer completion. |
 | `$template-reconciliation` | extends | Publication reconciliation now checks the local viewer and source-honesty boundary. |
 | Template lifecycle Playbook | extends | Validation, lifecycle, recovery, and reconciliation stages now include local viewer representation. |
-| Generated `dist/js/template-preview.js` | build-derived | Source remains `client/template-preview.js`; the repository build refreshes generated output. |
+| Generated `dist/js/template-preview.js` | build-derived and verified | Source remains `client/template-preview.js`; Vercel logs confirm the exact PR build copied it into deployed output. |
 | `dist/template.html` | confirms existing viewer | Existing focused viewer is retained; #131 uses its established extension/configuration path rather than vendoring external starters. |
 | `rickvang/template-library` | unchanged | No starter or source files are copied or modified by this issue. |
 | Candidate Application Context / job-search evidence | unchanged | Synthetic viewer content is illustrative only and does not become candidate evidence or application state. |
 | Resume semantic mapping #122/#123 | unrelated | No semantic mapping contract is changed. |
 
-## Required validation before handoff
+## Deployment reconciliation
 
-- Vercel must build the final PR head successfully.
-- The branch focused-viewer route for `template-cover-letter-evidence-led` must show `Illustrative concept available` and the local cover-letter concept.
-- The branch focused-viewer route for `template-job-application-notes` must show `Illustrative concept available` and the local application-notes concept.
-- The final PR diff/check/review state must be re-fetched after all validation evidence is recorded.
+PR #132 deployment `dpl_CC8KBti1JnoGnKHfimi8Y9N8oDqq` built head `976b56328ad2317fcfc42989f1512cb570116d45` successfully and reached `READY`. GitHub reported the Vercel status as `success`; the build log confirms the viewer module was copied into `dist/js/template-preview.js` before deployment.
+
+Direct rendered-DOM verification of the two branch routes is incomplete because Vercel Preview Authentication redirects the available fetch surfaces to Vercel login. The implementation therefore does not claim that this one acceptance item was independently observed. Source/configuration and deployed-output evidence support the expected route behavior, but an authenticated browser check remains the smallest validation follow-up.
+
+## Review state before evidence update
+
+- PR #132 was open, not merged, and GitHub reported it mergeable.
+- The diff contained the intended eight files.
+- No inline review threads were present.
+- Vercel was green on the deployment head.
+
+Because this reconciliation/validation evidence itself changes the branch head, those remote states must be refreshed once more before final handoff.
 
 ## Universal change-impact conclusion
 
-The bounded downstream effects are the Template publication lifecycle, validation, and generated viewer configuration described above. No Persona identity, Skill ownership, Operating Pack content, external Template source, submission authorization, or runtime-access claim needs modification. The smallest remaining action is deployment verification followed by a reviewable PR handoff.
+The bounded downstream effects are the Template publication lifecycle, validation, and generated viewer configuration described above. No Persona identity, Skill ownership, Operating Pack content, external Template source, submission authorization, or runtime-access claim needs modification. The code and publication contract are reviewable; the only incomplete visibility is authenticated browser observation of the two protected focused-viewer routes.
