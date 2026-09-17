@@ -4,7 +4,7 @@
 
 Persona-Library uses a private **Candidate Application Context** to bind one person's facts, standing decisions, preferences, and validation overlays to reusable Templates and the job-search application workflow.
 
-The canonical reusable context rules live in `rickvang/operating-packs/packs/candidate-application-context` with `AGENTS.md` as the stable entrypoint. Until that external pack is merged to `main`, treat the integration as pending external-source verification rather than claiming a canonical verified Operating Pack record.
+The canonical reusable context rules live in `rickvang/operating-packs/packs/candidate-application-context` with `AGENTS.md` as the stable entrypoint. The pack is verified on `main` at merge revision `c216052321c683830333bda4c1928bb98e12b3f7`.
 
 Persona-Library does not store candidate instances. Candidate values and private links remain in the authorized private workspace.
 
@@ -34,8 +34,8 @@ identify active candidate context
 → map candidate evidence and decisions into Template semantic slots
 → tailor for the target role
 → run generic composition/integrity checks
-→ run candidate-specific validation overlays
-→ run role/application-specific checks
+→ enforce current role/application requirements
+→ run candidate-specific validation overlays within those requirements
 → run cross-candidate isolation check
 → package separate role-specific artifacts
 ```
@@ -68,17 +68,30 @@ Before an application packet can be `ready-for-review`, verify that:
 
 If candidate identity or source ownership is ambiguous, block only the affected candidate-specific composition until it is resolved.
 
+## Precedence and conflict handling
+
+Use the Candidate Application Context Operating Pack precedence unless a stricter consuming-project rule applies:
+
+1. current task and mandatory role/application requirements;
+2. verified correction to candidate source evidence;
+3. current explicit candidate instruction within those task/channel bounds;
+4. active candidate standing decision;
+5. Operating Pack domain guidance;
+6. generic best practice and Template defaults.
+
+A candidate preference or standing decision cannot override a mandatory employer/submission requirement or contradictory factual evidence. Record the conflict and block or route only the affected decision instead of silently flattening either side.
+
 ## Validation layering
 
 Keep validation responsibilities separate:
 
 1. **Template structure** — starter shape and placeholders are valid.
 2. **Persona-Library composition/integrity** — evidence, chronology, attribution, ATS/readability/accessibility rules as applicable.
-3. **Candidate-specific overlays** — private candidate-confirmed rules and preferences.
-4. **Role/application requirements** — employer and target-role constraints.
+3. **Role/application requirements** — current employer and target-role constraints are enforced where supported by evidence.
+4. **Candidate-specific overlays** — private candidate-confirmed rules and preferences apply within the task/channel constraints above.
 5. **Isolation** — no cross-candidate contamination.
 
-A candidate overlay may make a rule stricter, but it cannot create evidence or weaken a material-truth/integrity rule.
+A candidate overlay may make a rule stricter, but it cannot create evidence, weaken a material-truth/integrity rule, or override a mandatory role/application requirement.
 
 ## Multi-candidate behavior
 
