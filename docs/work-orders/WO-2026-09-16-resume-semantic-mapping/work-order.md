@@ -3,7 +3,7 @@
 ## Header
 
 - Work Order ID: `WO-2026-09-16-resume-semantic-mapping`
-- Status: active
+- Status: ready-for-review
 - Created: 2026-09-16
 - Last updated: 2026-09-16
 - Requester: repository user
@@ -11,6 +11,8 @@
 - Request mode: update
 - GitHub issue: [#122 — Add presentation-neutral resume content model and semantic Template mapping Skill](https://github.com/rickvang/Persona-Library/issues/122)
 - Persona-Library PR: [#123](https://github.com/rickvang/Persona-Library/pull/123)
+- Persona-Library reconciled head: `fe2da3e306064fbec0683114a1ecd2e5a40d79a5`
+- Current `main` reconciled into branch: `734024f1858f33fc608d4f818fd5bfc5c18a595e`
 - External Template issue: [rickvang/template-library#4](https://github.com/rickvang/template-library/issues/4)
 - External Template PR: [rickvang/template-library#5](https://github.com/rickvang/template-library/pull/5), reviewed head `39a89b7ebf2d73dd11ca7a724907d9a255447a1e`
 - External Operating Pack issue: [rickvang/operating-packs#3](https://github.com/rickvang/operating-packs/issues/3)
@@ -64,7 +66,7 @@ The implementation preserves these owners:
 - [x] Update `docs/job-search/application-work-order-template.md` to record Resume Content Model revision/schema, Template slot-map path/revision, material `unmapped` / `blocked` / `omitted_with_reason` content, and semantic-mapping validation result.
 - [x] Preserve the finalized Candidate Application Context precedence and validation layering while adding semantic-model checks inside those existing layers.
 - [x] Run bounded change-impact reconciliation in [`reconciliation.md`](reconciliation.md).
-- [ ] Re-check PR #123 mergeability and current CI after the branch is reconciled with current `main`.
+- [x] Reconcile PR #123 with current `main` and re-check mergeability/current CI.
 
 ### `rickvang/template-library`
 
@@ -83,7 +85,17 @@ The earlier branch implementation covered the core model/mapping architecture bu
 1. the reusable application Work Order now carries the semantic-model and slot-manifest revision/loss/validation fields; and
 2. the callable Skill now explicitly records Leah Okafor / `application-editor` as its primary Persona application with focused mapping-quality checks.
 
-The branch also predates later merged application-packet reconciliation work. This update preserves the current Candidate Application Context precedence and validation order rather than overwriting it with the older branch wording.
+The branch also predated later merged application-packet reconciliation work. The reconciliation commit uses current `main` as its base tree and preserves the current Candidate Application Context precedence and validation order rather than overwriting it with the older branch wording.
+
+## Review state
+
+At the reconciled head check:
+
+- Persona-Library PR #123 is open, not merged, and **mergeable** against `main`.
+- Vercel reports **success** for reconciled head `fe2da3e306064fbec0683114a1ecd2e5a40d79a5`.
+- The PR diff contains the intended 11 files, including the previously missing reusable application Work Order update.
+- No merge or issue closure has been performed.
+- External PR #5 and PR #4 remain separate review/merge decisions.
 
 ## Non-goals
 
@@ -110,4 +122,4 @@ The branch also predates later merged application-packet reconciliation work. Th
 
 ## Current state
 
-The reusable architecture and the missing #122 acceptance items are implemented on the existing PR #123 branch. Current remote mergeability/check state must be re-read after the branch reconciliation commit; this Work Order deliberately does not pre-claim that result.
+The reusable #122 implementation is built and reviewable on PR #123. The remaining actions are governance decisions, not missing Persona-Library implementation: separately review/merge the two external dependency PRs if desired, then merge #123 and close #122 only with explicit authorization.

@@ -45,12 +45,19 @@ The capability is not a new repository, Persona, Playbook, Operating Pack, or ru
 
 This is the smallest durable architecture that lets multiple people and multiple resume Templates share well-defined content without sharing private candidate data.
 
-## Remaining review gates
+## Reconciliation result
+
+- PR #123 was reconciled with current `main` `734024f1858f33fc608d4f818fd5bfc5c18a595e` at head `fe2da3e306064fbec0683114a1ecd2e5a40d79a5`.
+- GitHub reports PR #123 mergeable after reconciliation.
+- Vercel reports success for the reconciled head.
+- The changed-file set is the intended 11 files and now includes `docs/job-search/application-work-order-template.md`.
+- No merge, issue closure, external-PR merge, or private candidate instantiation was performed.
+
+## Remaining governance gates
 
 Before issue #122 can truthfully be closed:
 
-- refresh PR #123 mergeability and current checks after reconciling its branch with current `main`;
-- review the actual post-reconciliation diff for unintended loss of later merged application-packet changes;
-- keep external PR #5 and #4 qualified as external dependencies until they are separately merged and their final revisions are verified;
-- do not create a real candidate Resume Content Model instance until the reusable contracts are accepted and the active candidate private context is explicitly selected;
-- do not merge PR #123 or close #122 without separate authorization.
+- review/merge external PR #5 and #4 separately if those cross-repository contracts are desired as canonical dependencies, then record their final merge revisions;
+- merge PR #123 only with explicit authorization;
+- close #122 only after the chosen dependency/merge state satisfies the repository's completion rule;
+- do not create a real candidate Resume Content Model instance until the reusable contracts are accepted and the active candidate private context is explicitly selected.

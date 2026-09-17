@@ -17,7 +17,9 @@
 | No private candidate data | pass | Reusable files contain schemas, contracts, field names, and placeholders only. No candidate instance is committed. |
 | No generator/runtime | pass | Slot manifest and Skill remain descriptive/operational contracts; no renderer, generator platform, registry, or synchronization service is introduced. |
 | Change-impact reconciliation | pass | [`reconciliation.md`](reconciliation.md) records affected, confirmed, qualified, and unchanged surfaces. |
-| PR #123 mergeability/current CI | pending refresh | Re-read after the branch reconciliation commit; do not reuse the older green/mergeable status as current evidence. |
+| PR #123 reconciliation | pass | Branch head `fe2da3e306064fbec0683114a1ecd2e5a40d79a5` reconciles current `main` `734024f1858f33fc608d4f818fd5bfc5c18a595e`; GitHub reports PR #123 mergeable. |
+| Current deployment check | pass | Vercel reports `success` for reconciled head `fe2da3e306064fbec0683114a1ecd2e5a40d79a5`. |
+| Diff scope | pass | PR #123 contains 11 changed files: the original semantic model/mapping/Work Order package plus the reusable `docs/job-search/application-work-order-template.md` update required by #122. |
 
 ## Semantic edge cases represented in the contracts
 
@@ -34,7 +36,7 @@
 
 Expected behavior is to preserve structure and meaning or return `blocked`, `unmapped`, or `omitted_with_reason`; never invent, silently flatten, or silently discard material content.
 
-## Repository checks for this update
+## Repository checks completed
 
 - [x] Re-read current `main`, issue #122, PR #123, and the repository orientation/mutation contract.
 - [x] Re-read external PR #5 and PR #4 state before relying on their interfaces.
@@ -42,10 +44,14 @@ Expected behavior is to preserve structure and meaning or return `blocked`, `unm
 - [x] Reconciled Candidate Context wording against the current merged precedence and validation order rather than preserving stale branch ordering.
 - [x] Added the missing application Work Order fields and focused Leah mapping-quality guidance.
 - [x] Recorded bounded change-impact reconciliation.
-- [ ] Re-fetch PR #123, its changed files, mergeability, review state, and current commit status after updating the branch.
+- [x] Reconciled the branch with current `main` and re-fetched PR #123.
+- [x] Confirmed PR #123 is mergeable at reconciled head.
+- [x] Confirmed Vercel reports success at reconciled head.
+- [x] Confirmed changed-file scope is the intended 11 files.
 
 ## Limits
 
 - No real candidate Resume Content Model instance was created or schema-validated in this public Work Order; private candidate instantiation is a separate step.
 - No rendered resume was produced from the new semantic mapping path in this Work Order, so ATS/parser, PDF/DOCX fidelity, live accessibility, and employer-channel behavior are not proven by this architecture change.
 - External PR #5 and PR #4 remain pending until separately merged; Persona-Library must re-verify their final merge revisions before treating those external changes as canonical dependencies.
+- PR #123 has not been merged and issue #122 has not been closed because those actions require separate authorization.
