@@ -1,0 +1,5 @@
+interface:
+  display_name: "Local Video Inspection"
+  short_description: "Inspect videos from frames and transcripts"
+  default_prompt: "Use $local-video-inspection to inspect this local video from sampled frames and available transcripts."
+
