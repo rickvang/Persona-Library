@@ -1,0 +1,343 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rickvang/Persona-Library/docs/job-search/resume-content-model.schema.json",
+  "title": "Resume Content Model",
+  "description": "Presentation-neutral, candidate-bound semantic resume content used as an evidence-traceable projection for Template mapping.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "candidate_ref", "identity", "experience"],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "candidate_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Private/local stable reference for the active candidate context. Do not require a public identifier."
+    },
+    "revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string"},
+        "reviewed_at": {"type": "string"},
+        "source_basis": {"type": "string"}
+      }
+    },
+    "identity": {"$ref": "#/$defs/identity"},
+    "profile": {"$ref": "#/$defs/profile"},
+    "skills": {"$ref": "#/$defs/skills"},
+    "experience": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/employment"}
+    },
+    "education": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/education"}
+    },
+    "certifications": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/certification"}
+    },
+    "projects": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/project"}
+    },
+    "portfolio_items": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/portfolioItem"}
+    }
+  },
+  "$defs": {
+    "status": {
+      "type": "string",
+      "enum": ["confirmed", "supported", "conflicted", "unknown"]
+    },
+    "traceability": {
+      "type": "object",
+      "properties": {
+        "evidence_refs": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "decision_refs": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "status": {"$ref": "#/$defs/status"},
+        "notes": {"type": "string"}
+      }
+    },
+    "traceableText": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["text"],
+          "properties": {
+            "text": {"type": "string", "minLength": 1}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "phone": {"type": "string"},
+        "email": {"type": "string"},
+        "portfolio_url": {"type": "string"},
+        "linkedin_url": {"type": "string"},
+        "other_urls": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "identity": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": {"type": "string", "minLength": 1},
+            "location": {"type": "string"},
+            "contact": {"$ref": "#/$defs/contact"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "descriptors": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/traceableText"}
+        },
+        "summary_statements": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/traceableText"}
+        }
+      }
+    },
+    "skillItem": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": {"type": "string", "minLength": 1}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "skillCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "items"],
+      "properties": {
+        "label": {"type": "string", "minLength": 1},
+        "items": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/skillItem"}
+        }
+      }
+    },
+    "skills": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/skillCategory"}
+        }
+      }
+    },
+    "dateRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "start": {"type": "string"},
+        "end": {"type": ["string", "null"]},
+        "present": {"type": "boolean"},
+        "precision": {
+          "type": "string",
+          "enum": ["day", "month", "year", "unknown"]
+        }
+      }
+    },
+    "achievement": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["text"],
+          "properties": {
+            "text": {"type": "string", "minLength": 1},
+            "metric_refs": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "tags": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "engagement": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["engagement_id", "client"],
+          "properties": {
+            "engagement_id": {"type": "string", "minLength": 1},
+            "client": {"type": "string", "minLength": 1},
+            "title": {"type": "string"},
+            "dates": {"$ref": "#/$defs/dateRange"},
+            "location": {"type": "string"},
+            "achievements": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/achievement"}
+            },
+            "skills": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/skillItem"}
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "employmentPeriod": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["period_id", "title", "dates"],
+          "properties": {
+            "period_id": {"type": "string", "minLength": 1},
+            "title": {"type": "string", "minLength": 1},
+            "dates": {"$ref": "#/$defs/dateRange"},
+            "location": {"type": "string"},
+            "achievements": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/achievement"}
+            },
+            "skills": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/skillItem"}
+            },
+            "engagements": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/engagement"}
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "employment": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["employment_id", "employer", "periods"],
+          "properties": {
+            "employment_id": {"type": "string", "minLength": 1},
+            "employer": {"type": "string", "minLength": 1},
+            "employment_type": {"type": "string"},
+            "location": {"type": "string"},
+            "periods": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"$ref": "#/$defs/employmentPeriod"}
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "education": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["credential", "institution"],
+          "properties": {
+            "credential": {"type": "string", "minLength": 1},
+            "field": {"type": "string"},
+            "institution": {"type": "string", "minLength": 1},
+            "location": {"type": "string"},
+            "date_or_status": {"type": "string"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "certification": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["name", "issuer"],
+          "properties": {
+            "name": {"type": "string", "minLength": 1},
+            "issuer": {"type": "string", "minLength": 1},
+            "date_or_status": {"type": "string"},
+            "credential_url": {"type": "string"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "project": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["project_id", "name"],
+          "properties": {
+            "project_id": {"type": "string", "minLength": 1},
+            "name": {"type": "string", "minLength": 1},
+            "role": {"type": "string"},
+            "summary": {"type": "string"},
+            "url": {"type": "string"},
+            "achievements": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/achievement"}
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "portfolioItem": {
+      "allOf": [
+        {"$ref": "#/$defs/traceability"},
+        {
+          "type": "object",
+          "required": ["item_id", "name"],
+          "properties": {
+            "item_id": {"type": "string", "minLength": 1},
+            "name": {"type": "string", "minLength": 1},
+            "summary": {"type": "string"},
+            "url": {"type": "string"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

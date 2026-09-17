@@ -1,4 +1,3 @@
-
 # Job-search Application Packet Work Order
 
 This Work Order extends the repository-wide [Work Order convention](../work-orders.md) for a job-search application packet. It tracks active work and decisions; it is not a transcript, a job-submission authorization, or a substitute for the candidate's source evidence.
@@ -7,7 +6,7 @@ A full application packet is a role-specific foldered artifact set, not one comb
 
 Reusable starting artifacts come from `rickvang/template-library`. Persona-Library catalogs Template identity and applicability; `template-library` owns the canonical starter files. Do not silently treat a private Drive master or prior role-specific artifact as the reusable Template source.
 
-Person-specific facts, standing decisions, voice preferences, evidence sources, Template preferences, and candidate-specific validation overlays come from one private Candidate Context governed by the [Candidate Context contract](candidate-context-contract.md). Bind exactly one Candidate Context before candidate evidence is used so multiple people can use the same process and Templates without inheriting one another's private context.
+Person-specific facts, standing decisions, voice preferences, evidence sources, Template preferences, optional normalized Resume Content Model instances, and candidate-specific validation overlays come from one private Candidate Context governed by the [Candidate Context contract](candidate-context-contract.md). Bind exactly one Candidate Context before candidate evidence is used so multiple people can use the same process and Templates without inheriting one another's private context.
 
 ## Header
 
@@ -37,7 +36,10 @@ Person-specific facts, standing decisions, voice preferences, evidence sources, 
 - Candidate Context reference or private location name:
 - Candidate Context status: not checked / located / read / missing / stale / conflicted / not applicable
 - Candidate Context revision or last-reviewed date:
+- Resume Content Model status: not used / located / validated / stale / conflicted / blocked
+- Resume Content Model schema version and revision:
 - Template-source status: verified / missing / stale / conflicted / not applicable
+- Resume Template slot-manifest status: not applicable / verified / missing / stale / conflicted
 
 A Work Order records authorization constraints but never grants permission to submit an application, contact an employer, publish a document, or send an external message.
 
@@ -56,6 +58,8 @@ Record only the references and statuses needed to operate the Work Order; keep t
 - Candidate identity/contact source located? yes / no / not applicable
 - Goals and constraints source located? yes / no / not applicable
 - Evidence sources located? yes / no / partial
+- Normalized Resume Content Model located? yes / no / not applicable
+- Resume Content Model reference / revision / schema version:
 - Standing decisions located? yes / no / not applicable
 - Voice/writing preferences located? yes / no / not applicable
 - Candidate-specific Template preferences located? yes / no / not applicable
@@ -63,7 +67,7 @@ Record only the references and statuses needed to operate the Work Order; keep t
 - Unresolved context conflicts or candidate questions:
 - Candidate Context updated during this Work Order? yes / no
 
-If the candidate boundary is missing or ambiguous, stop the affected composition step rather than borrowing context from a prior application or another candidate.
+If the candidate boundary is missing or ambiguous, stop the affected composition step rather than borrowing context from a prior application or another candidate. A normalized Resume Content Model is a presentation-neutral projection for composition; it is not a replacement evidence ledger and cannot create or override facts.
 
 ### Target role
 
@@ -116,7 +120,7 @@ Apply the Candidate Application Context Operating Pack precedence when sources d
 5. Operating Pack or generic job-search/application guidance;
 6. Template default or placeholder behavior.
 
-Mandatory employer or submission requirements do not lose to a candidate preference. Evidence still governs material claims; instructions and preferences may change structure or wording but cannot create unsupported facts.
+Mandatory employer or submission requirements do not lose to a candidate preference. Evidence still governs material claims; instructions, normalized content, and preferences may change structure or wording but cannot create unsupported facts.
 
 ### Requirement map
 
@@ -124,19 +128,24 @@ Mandatory employer or submission requirements do not lose to a candidate prefere
 | --- | --- | --- | --- | --- | --- |
 | R-001 |  |  | high / medium / low / unknown |  |  |
 
-### Candidate-to-Template mapping
+### Candidate-to-Template semantic mapping
 
-Record material candidate bindings and candidate-specific structural decisions where an incorrect mapping could materially change the application.
+Record material candidate bindings and candidate-specific structural decisions where an incorrect mapping could materially change the application. When a Resume Content Model is used, source references may point to normalized model nodes but must remain traceable to evidence/standing decisions.
 
-| Mapping ID | Candidate evidence / decision | Template / slot | Role requirement | Validation applied | Status |
+| Mapping ID | Candidate evidence / decision / Resume Content Model node | Template / semantic slot | Role requirement | Validation applied | Status |
 | --- | --- | --- | --- | --- | --- |
-| MAP-001 |  | Template ID + section/placeholder | requirement ID / not applicable | generic / candidate overlay / role-channel | mapped / blocked / omitted with reason |
+| MAP-001 |  | Template ID + semantic slot | requirement ID / not applicable | generic / candidate overlay / role-channel | mapped / blocked / unmapped / omitted_with_reason / not_applicable |
 
-Do not create exhaustive bookkeeping for trivial prose. Use this record for material claims, standing-decision effects, candidate-specific Template preferences, and validation overlays.
+Do not create exhaustive bookkeeping for trivial prose. Use this record for material claims, standing-decision effects, candidate-specific Template preferences, semantic loss, and validation overlays.
+
+- Material unmapped content and disposition:
+- Material blocked content and required resolution:
+- Material omitted-with-reason content and disposition:
+- Semantic mapping validation result: pass / revise / blocked / not applicable / unknown
 
 ## 2. Output contract
 
-Start with one canonical ATS resume rendered from the shared evidence ledger. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
+Start with one canonical ATS resume rendered from the shared evidence ledger or, when used, from a validated evidence-traceable Resume Content Model projection. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
 
 ### Template source gate
 
@@ -154,28 +163,32 @@ For each required Template record:
 
 - verify that the path and entrypoint resolve at the cited revision;
 - inspect the documented `starter/` copy boundary;
+- for a resume Template that declares semantic mapping, verify `slot-map.json`, record its path and verified Git revision, and confirm its declared Resume Content Model version is compatible;
 - copy/adapt the starter into the role-specific private application folder;
-- record the Template ID, source path, and revision in this Work Order or the private notes artifact;
+- record the Template ID, source path, Template revision, and applicable slot-manifest revision in this Work Order or the private notes artifact;
 - keep candidate facts and project-specific content in the instantiated private artifact, not in the reusable Template.
 
-If a required Template is missing, unavailable, stale, or cannot be verified, do **not** silently substitute a private Google Drive master, previous application, or ad hoc document as the canonical reusable Template. Route to Template research/composition and create or repair the reusable Template in `rickvang/template-library`; treat the application artifact as blocked on Template resolution until the canonical source can be verified. A one-off private artifact may be used only when the requester explicitly chooses a non-reusable exception and the Work Order records that exception.
+If a required Template or required slot manifest is missing, unavailable, stale, incompatible, or cannot be verified, do **not** silently substitute a private Google Drive master, previous application, or ad hoc document as the canonical reusable Template. Route to Template research/composition and create or repair the reusable Template in `rickvang/template-library`; treat the affected application artifact as blocked on Template resolution until the canonical source can be verified. A one-off private artifact may be used only when the requester explicitly chooses a non-reusable exception and the Work Order records that exception.
 
 ### Validation layering
 
 Keep validation responsibilities separate and use the Candidate Application Context Operating Pack order:
 
-1. **Template structural validation** checks the reusable starter boundary and generic Template structure.
-2. **Persona-Library composition validation** checks evidence integrity, chronology/attribution, ATS structure, role coverage, writing, accessibility, packaging, and other shared application rules.
+1. **Template structural validation** checks the reusable starter boundary and generic Template structure; when semantic mapping is used, it also verifies the slot manifest and Resume Content Model compatibility.
+2. **Persona-Library composition validation** checks evidence integrity, semantic mapping completeness/loss handling, chronology/attribution, ATS structure, role coverage, writing, accessibility, packaging, and other shared application rules.
 3. **Candidate-specific validation overlays** come from the active Candidate Context and apply only to that candidate; each overlay must trace to a candidate-confirmed decision or source fact.
 4. **Role/channel validation** applies employer- or channel-specific constraints only when current evidence supports them.
+5. **Cross-candidate isolation** verifies candidate identity, evidence, decisions, normalized content, and private values did not leak across candidates.
 
-A later layer may add a stricter constraint but must not silently weaken an earlier factual/integrity rule. If a candidate overlay conflicts with a mandatory role/application requirement, the role/application requirement governs the deliverable and the conflict is recorded.
+A later layer may add a stricter constraint but must not silently weaken an earlier factual/integrity rule. If a candidate overlay conflicts with a mandatory role/application requirement, the role/application requirement governs the deliverable and the conflict is recorded. Semantic mapping success alone is not proof of ATS, parser, accessibility, visual, or export quality.
 
 - Candidate-specific validation overlays applied:
 - Overlay source decision/evidence IDs:
 - Overlay result: pass / revise / blocked / not applicable
 - Generic composition validation result:
 - Role/channel validation result:
+- Cross-candidate isolation result:
+- Semantic mapping validation result:
 
 ### Role-specific application folder
 
@@ -198,7 +211,10 @@ For a **full application-packet request**, create the standalone cover letter by
 Before `ready-for-review`, verify:
 
 - exactly one Candidate Context is bound and its required private sources were loaded or explicitly marked not applicable;
-- material candidate-to-Template mappings are traceable and any candidate-specific validation overlays have passed or have an explicit blocker/disposition;
+- when a Resume Content Model is used, its reference, revision, schema version, and compatibility state are recorded;
+- every mapped resume Template has a verified `slot-map.json` path/revision when the Template declares semantic mapping;
+- material semantic mapping outcomes are traceable and all `unmapped`, `blocked`, or `omitted_with_reason` content has an explicit disposition;
+- semantic mapping validation and any candidate-specific validation overlays have passed or have an explicit blocker/disposition;
 - every reusable application artifact has a verified `template-library` Template source and recorded revision, or an explicit requester-approved one-off exception;
 - the role-specific application folder exists in the configured private workspace;
 - each required artifact is independently openable;
@@ -228,6 +244,10 @@ For the ATS version, target employer, role, location, and work-mode context rema
 
 - Template ID, source path, and verified revision:
 - Candidate Context revision used:
+- Resume Content Model reference / revision / schema version used, or not applicable:
+- Template `slot-map.json` path and verified revision, or not applicable:
+- Material unmapped / blocked / omitted-with-reason content affecting this artifact:
+- Semantic mapping validation result: pass / revise / blocked / not applicable / unknown
 - Candidate-specific validation overlays affecting this artifact:
 - Section schema: `SUMMARY` (optional) → `SKILLS` or `TECHNICAL SKILLS` (optional) → `WORK EXPERIENCE`, `EXPERIENCE`, or `PROFESSIONAL EXPERIENCE` → `EDUCATION` and/or `CERTIFICATIONS`:
 - Optional `ADDITIONAL EXPERIENCE`, `PROJECTS`, or `PORTFOLIO` section and why it is needed:
@@ -259,7 +279,8 @@ Minimum gate:
 - Missing dates, ties, overlaps, and source ambiguity remain visible.
 - Terminology is natural and supported; no keyword stuffing.
 - Important content is not hidden in graphics, columns, images, or decorative labels without a safe text equivalent.
-- Every material claim traces to the shared evidence ledger.
+- Every material claim traces to the shared evidence ledger, including claims rendered from a normalized Resume Content Model.
+- Every material semantic source considered for the artifact has an explicit mapping result; valid content is not silently dropped because the Template lacks a destination.
 - Headings use conventional labels or an intentional deviation is recorded; derived `SELECTED IMPACT`, `CORE ALIGNMENT`, `TARGET`, `FIT`, and `MATCH` sections are not created by default.
 - Target employer, role, location, and work-mode context stays in Work Order metadata unless explicitly requested.
 - No duplicated impact block or keyword category repeats an existing claim without a recorded reason.
@@ -273,6 +294,10 @@ Complete this section only when a second rendering is warranted.
 
 - Template ID, source path, and verified revision when a reusable Template is used:
 - Candidate Context revision used:
+- Resume Content Model reference / revision / schema version used, or not applicable:
+- Template slot-manifest path and verified revision, or not applicable:
+- Material unmapped / blocked / omitted-with-reason content affecting this artifact:
+- Semantic mapping validation result:
 - Candidate-specific validation overlays affecting this artifact:
 - Why a human-facing version is useful for this channel:
 - Reader and review context:
@@ -374,7 +399,7 @@ Run reviews on the actual output revision.
 
 | Review ID | Version | Lens | Criterion | Source IDs or exact location | Finding | Reader or system consequence | Status | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| REV-001 | OUT-ATS / OUT-HUMAN / OUT-LETTER / OUT-NOTES | ATS / human / visual / integrity / parity / artifact-packaging / template-source / candidate-context / mapping |  |  |  |  | pass / revise / blocked / unknown |  |
+| REV-001 | OUT-ATS / OUT-HUMAN / OUT-LETTER / OUT-NOTES | ATS / human / visual / integrity / parity / artifact-packaging / template-source / candidate-context / semantic-mapping |  |  |  |  | pass / revise / blocked / unknown |  |
 
 Record what was not checked. Do not claim a specific employer parser, human response, preference, or outcome unless that evidence exists.
 
@@ -386,17 +411,19 @@ Update at phase transitions, decisions, failed gates, material assumptions, hand
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Resolve and load Candidate Context |  |  |  |  |  |  |  |  |
 | Load candidate standing decisions and validation overlays |  |  |  |  |  |  |  |  |
+| Load/reconcile Resume Content Model when used |  |  |  |  |  |  |  |  |
 | Define target and constraints |  |  |  |  |  |  |  |  |
 | Align role and evidence |  |  |  |  |  |  |  |  |
 | Build shared evidence source |  |  |  |  |  |  |  |  |
-| Resolve and verify reusable Templates |  |  |  |  |  |  |  |  |
-| Map Candidate Context and evidence into Template slots |  |  |  |  |  |  |  |  |
+| Resolve and verify reusable Templates and slot manifests |  |  |  |  |  |  |  |  |
+| Map candidate content into Template semantic slots |  |  |  |  |  |  |  |  |
+| Resolve unmapped / blocked / omitted-with-reason material |  |  |  |  |  |  |  |  |
 | Create or verify role-specific application folder |  |  |  |  |  |  |  |  |
 | Render ATS version |  |  |  |  |  |  |  |  |
 | Render human-facing version (optional) |  |  |  |  |  |  |  |  |
 | Draft and review standalone cover letter |  |  |  |  |  |  |  |  |
 | Build and review Application Notes & Answers |  |  |  |  |  |  |  |  |
-| Review Candidate Context, Template source, mappings, validation overlays, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
+| Review Candidate Context, semantic mapping, Template source, validation overlays, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
 | Select submission artifact |  |  |  |  |  |  |  |  |
 | Learn after submission |  |  |  |  |  |  |  |  |
 
@@ -420,10 +447,14 @@ Do not infer that a version was submitted because it was drafted or reviewed. Su
 
 - Candidate Context result and revision used:
 - Candidate Context updated during run? yes / no
+- Resume Content Model result / schema version / revision used:
 - Candidate-specific validation overlay result:
 - Role-specific application folder:
 - Template-source result and revisions used:
-- Candidate-to-Template mapping result:
+- Resume Template slot-manifest path/revision used:
+- Candidate-to-Template semantic mapping result:
+- Material unmapped / blocked / omitted-with-reason content and disposition:
+- Semantic mapping validation result:
 - Concrete packet or decision:
 - Success criterion addressed:
 - ATS result and limitations:
@@ -436,6 +467,6 @@ Do not infer that a version was submitted because it was drafted or reviewed. Su
 - What was not tested:
 - Real-user or market feedback actually available:
 - Synthetic assumptions to validate later:
-- Learning that changes the target, evidence map, Candidate Context, or future versions:
+- Learning that changes the target, evidence map, Candidate Context, Resume Content Model, Template choice, or future versions:
 - Final gate: pass / revise / no-go / blocked
 - Next action or explicit completion boundary:
