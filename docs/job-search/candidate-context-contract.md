@@ -29,7 +29,7 @@ context              canonical reusable starters
 
 - the Candidate Context contract;
 - when candidate context must be loaded;
-- precedence among candidate instructions, source corrections, standing decisions, generic guidance, and Template defaults;
+- precedence among current task/channel requirements, candidate instructions, source corrections, standing decisions, generic guidance, and Template defaults;
 - evidence-to-artifact mapping rules;
 - composition, integrity, ATS, human, and candidate-overlay review contracts;
 - Work Order fields and gates that prove the correct candidate context was used.
@@ -95,15 +95,18 @@ Every application run must bind to exactly one candidate context before candidat
 
 ## Decision precedence
 
-When candidate context, source evidence, generic guidance, and Template defaults disagree, apply this order:
+When candidate context, source evidence, current task/channel requirements, generic guidance, and Template defaults disagree, apply the Candidate Application Context Operating Pack order unless a stricter consuming-project rule applies:
 
-1. later explicit candidate instruction for the current work;
+1. current task and mandatory role/application requirements;
 2. verified correction to the candidate's source evidence;
-3. current candidate standing decision;
-4. generic job-search or application guidance;
-5. Template default or placeholder behavior.
+3. current explicit candidate instruction within those task/channel bounds;
+4. active candidate standing decision;
+5. Operating Pack or generic job-search/application guidance;
+6. Template default or placeholder behavior.
 
-A higher-precedence instruction may change structure or wording, but material facts still require supporting evidence. Record conflicts and superseded decisions rather than silently flattening them.
+Mandatory employer or submission requirements do not lose to a candidate preference. When a candidate instruction conflicts with a mandatory role/application requirement or factual evidence, record the conflict and block or route the affected decision instead of silently overriding either side.
+
+Evidence still governs material claims. A higher-precedence instruction may change structure or wording, but it cannot create an unsupported fact, metric, title, employer, date, tool, responsibility, or outcome. Record conflicts and superseded decisions rather than silently flattening them.
 
 ## Template binding
 
@@ -114,7 +117,7 @@ For each reusable application artifact:
 3. verify the canonical `rickvang/template-library` path, `README.md` entrypoint, starter copy boundary, and Git revision;
 4. copy/adapt the starter into the role-specific private application folder;
 5. bind the active candidate context and role evidence to the instantiated artifact;
-6. map candidate evidence and decisions into the Template's intended slots without changing the meaning of the evidence;
+6. map candidate evidence and decisions into the Template's intended semantic slots without changing the meaning of the evidence;
 7. run the applicable validation layers;
 8. keep the resulting role-specific artifact private unless external sharing is separately authorized.
 
@@ -157,9 +160,13 @@ Owned by the job-search process and relevant specialists. Verify, as applicable:
 - cover-letter role relevance and truthful synthesis;
 - artifact packaging, parity, accessibility, and document-production checks.
 
-### 3. Candidate-specific validation overlays
+### 3. Role/channel validation
 
-Loaded from the active private Candidate Context. These checks apply only to that candidate and must trace to a candidate-confirmed decision or source fact.
+Apply current employer, application-channel, or role-specific constraints when supported by current evidence. A portal label alone is not proof of parser behavior. Mandatory role/application requirements bound candidate preferences and overlays.
+
+### 4. Candidate-specific validation overlays
+
+Loaded from the active private Candidate Context. These checks apply only to that candidate, must trace to a candidate-confirmed decision or source fact, and operate within current task/channel requirements.
 
 Examples include:
 
@@ -169,11 +176,11 @@ Examples include:
 - preserve a confirmed voice or terminology constraint;
 - prohibit a candidate-specific omission or unsupported abstraction.
 
-Candidate overlays may strengthen or specialize a generic check but must not weaken evidence integrity or create unsupported facts.
+Candidate overlays may strengthen or specialize a generic check but must not weaken evidence integrity, create unsupported facts, or override a mandatory role/application requirement.
 
-### 4. Role/channel validation
+### 5. Cross-candidate isolation
 
-Apply current employer, application-channel, or role-specific constraints only when supported by current evidence. A portal label alone is not proof of parser behavior.
+Verify that candidate identity, contact data, evidence, standing decisions, voice rules, Template preferences, and validation overlays all belong to the active candidate context and that no values leaked from another candidate.
 
 ## Work Order binding
 
