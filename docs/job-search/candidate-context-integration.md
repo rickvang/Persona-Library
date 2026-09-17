@@ -34,8 +34,8 @@ identify active candidate context
 → map candidate evidence and decisions into Template semantic slots
 → tailor for the target role
 → run generic composition/integrity checks
+→ run candidate-specific validation overlays
 → enforce current role/application requirements
-→ run candidate-specific validation overlays within those requirements
 → run cross-candidate isolation check
 → package separate role-specific artifacts
 ```
@@ -83,15 +83,15 @@ A candidate preference or standing decision cannot override a mandatory employer
 
 ## Validation layering
 
-Keep validation responsibilities separate:
+Keep validation responsibilities separate and use the Candidate Application Context Operating Pack order:
 
 1. **Template structure** — starter shape and placeholders are valid.
 2. **Persona-Library composition/integrity** — evidence, chronology, attribution, ATS/readability/accessibility rules as applicable.
-3. **Role/application requirements** — current employer and target-role constraints are enforced where supported by evidence.
-4. **Candidate-specific overlays** — private candidate-confirmed rules and preferences apply within the task/channel constraints above.
+3. **Candidate-specific overlays** — private candidate-confirmed rules and preferences are checked without weakening factual or integrity rules.
+4. **Role/application requirements** — current employer, channel, and target-role constraints are enforced where supported by evidence.
 5. **Isolation** — no cross-candidate contamination.
 
-A candidate overlay may make a rule stricter, but it cannot create evidence, weaken a material-truth/integrity rule, or override a mandatory role/application requirement.
+A later validation layer may add a stricter constraint but must not silently weaken an earlier factual/integrity rule. If a candidate overlay conflicts with a mandatory role/application requirement, the role/application requirement governs the deliverable and the conflict is recorded rather than silently flattened.
 
 ## Multi-candidate behavior
 

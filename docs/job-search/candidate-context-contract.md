@@ -135,7 +135,7 @@ Use mapping records for material claims, candidate-specific structural decisions
 
 ## Validation layers
 
-Validation is deliberately split so reusable Templates remain candidate-neutral.
+Validation is deliberately split so reusable Templates remain candidate-neutral. Use the Candidate Application Context Operating Pack order.
 
 ### 1. Template structural validation
 
@@ -160,13 +160,9 @@ Owned by the job-search process and relevant specialists. Verify, as applicable:
 - cover-letter role relevance and truthful synthesis;
 - artifact packaging, parity, accessibility, and document-production checks.
 
-### 3. Role/channel validation
+### 3. Candidate-specific validation overlays
 
-Apply current employer, application-channel, or role-specific constraints when supported by current evidence. A portal label alone is not proof of parser behavior. Mandatory role/application requirements bound candidate preferences and overlays.
-
-### 4. Candidate-specific validation overlays
-
-Loaded from the active private Candidate Context. These checks apply only to that candidate, must trace to a candidate-confirmed decision or source fact, and operate within current task/channel requirements.
+Loaded from the active private Candidate Context. These checks apply only to that candidate and must trace to a candidate-confirmed decision or source fact.
 
 Examples include:
 
@@ -176,11 +172,17 @@ Examples include:
 - preserve a confirmed voice or terminology constraint;
 - prohibit a candidate-specific omission or unsupported abstraction.
 
-Candidate overlays may strengthen or specialize a generic check but must not weaken evidence integrity, create unsupported facts, or override a mandatory role/application requirement.
+Candidate overlays may strengthen or specialize a generic check but must not weaken evidence integrity or create unsupported facts.
+
+### 4. Role/channel validation
+
+Apply current employer, application-channel, or role-specific constraints when supported by current evidence. A portal label alone is not proof of parser behavior. Mandatory role/application requirements govern the deliverable when they conflict with candidate preferences or overlays; record the conflict rather than silently flattening it.
 
 ### 5. Cross-candidate isolation
 
 Verify that candidate identity, contact data, evidence, standing decisions, voice rules, Template preferences, and validation overlays all belong to the active candidate context and that no values leaked from another candidate.
+
+A later validation layer may add a stricter constraint but must not silently weaken an earlier factual or integrity rule.
 
 ## Work Order binding
 

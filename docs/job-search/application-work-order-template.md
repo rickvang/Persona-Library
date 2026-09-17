@@ -107,13 +107,16 @@ Read the standing-decision portion of the active Candidate Context before role a
 
 A standing decision guides repeatable candidate-specific structure and attribution. It does not create evidence, upgrade a claim, resolve a conflict silently, or authorize upload, submission, employer contact, or external sharing.
 
-Apply precedence in this order when sources disagree:
+Apply the Candidate Application Context Operating Pack precedence when sources disagree, unless a stricter consuming-project rule applies:
 
-1. later explicit candidate instruction for the current work;
+1. current task and mandatory role/application requirements;
 2. verified correction to candidate source evidence;
-3. current candidate standing decision;
-4. generic job-search/application guidance;
-5. Template default or placeholder behavior.
+3. current explicit candidate instruction within those task/channel bounds;
+4. active candidate standing decision;
+5. Operating Pack or generic job-search/application guidance;
+6. Template default or placeholder behavior.
+
+Mandatory employer or submission requirements do not lose to a candidate preference. Evidence still governs material claims; instructions and preferences may change structure or wording but cannot create unsupported facts.
 
 ### Requirement map
 
@@ -159,14 +162,14 @@ If a required Template is missing, unavailable, stale, or cannot be verified, do
 
 ### Validation layering
 
-Keep validation responsibilities separate:
+Keep validation responsibilities separate and use the Candidate Application Context Operating Pack order:
 
 1. **Template structural validation** checks the reusable starter boundary and generic Template structure.
 2. **Persona-Library composition validation** checks evidence integrity, chronology/attribution, ATS structure, role coverage, writing, accessibility, packaging, and other shared application rules.
 3. **Candidate-specific validation overlays** come from the active Candidate Context and apply only to that candidate; each overlay must trace to a candidate-confirmed decision or source fact.
 4. **Role/channel validation** applies employer- or channel-specific constraints only when current evidence supports them.
 
-Candidate-specific overlays may specialize a generic check but must not weaken evidence integrity or create unsupported facts.
+A later layer may add a stricter constraint but must not silently weaken an earlier factual/integrity rule. If a candidate overlay conflicts with a mandatory role/application requirement, the role/application requirement governs the deliverable and the conflict is recorded.
 
 - Candidate-specific validation overlays applied:
 - Overlay source decision/evidence IDs:
