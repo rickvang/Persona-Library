@@ -3,6 +3,12 @@
 
 This Work Order extends the repository-wide [Work Order convention](../work-orders.md) for a job-search application packet. It tracks active work and decisions; it is not a transcript, a job-submission authorization, or a substitute for the candidate's source evidence.
 
+A full application packet is a role-specific foldered artifact set, not one combined document. Keep the resume, cover letter, and application notes/answers as separate files in the authorized private application workspace.
+
+Reusable starting artifacts come from `rickvang/template-library`. Persona-Library catalogs Template identity and applicability; `template-library` owns the canonical starter files. Do not silently treat a private Drive master or prior role-specific artifact as the reusable Template source.
+
+Person-specific facts, standing decisions, voice preferences, evidence sources, Template preferences, and candidate-specific validation overlays come from one private Candidate Context governed by the [Candidate Context contract](candidate-context-contract.md). Bind exactly one Candidate Context before candidate evidence is used so multiple people can use the same process and Templates without inheriting one another's private context.
+
 ## Header
 
 - Work Order ID:
@@ -26,10 +32,38 @@ This Work Order extends the repository-wide [Work Order convention](../work-orde
 - Proportionality tier:
 - Explicit authorization and target:
 - Stopping condition:
+- Private application root:
+- Role-specific application folder:
+- Candidate Context reference or private location name:
+- Candidate Context status: not checked / located / read / missing / stale / conflicted / not applicable
+- Candidate Context revision or last-reviewed date:
+- Template-source status: verified / missing / stale / conflicted / not applicable
 
 A Work Order records authorization constraints but never grants permission to submit an application, contact an employer, publish a document, or send an external message.
 
 ## 1. Target and source of truth
+
+### Candidate Context gate
+
+Resolve exactly one private Candidate Context before role alignment or drafting. Use the [Candidate Context contract](candidate-context-contract.md) to keep reusable system behavior separate from person-specific facts and preferences.
+
+Record only the references and statuses needed to operate the Work Order; keep the private contents in the authorized candidate workspace.
+
+- Candidate reference or display label:
+- Private context source or location name:
+- Discovery status: not checked / located / read / missing / stale / conflicted / not applicable
+- Context revision or last reviewed:
+- Candidate identity/contact source located? yes / no / not applicable
+- Goals and constraints source located? yes / no / not applicable
+- Evidence sources located? yes / no / partial
+- Standing decisions located? yes / no / not applicable
+- Voice/writing preferences located? yes / no / not applicable
+- Candidate-specific Template preferences located? yes / no / not applicable
+- Candidate-specific validation overlays located? yes / no / not applicable
+- Unresolved context conflicts or candidate questions:
+- Candidate Context updated during this Work Order? yes / no
+
+If the candidate boundary is missing or ambiguous, stop the affected composition step rather than borrowing context from a prior application or another candidate.
 
 ### Target role
 
@@ -52,9 +86,10 @@ Use one shared evidence inventory or claim ledger for every output.
 | E-001 |  |  |  |  | sourced / observed / assumption / unknown |  |
 
 Keep candidate facts, researched claims, interpretations, generated writing, and unresolved questions distinct. Do not invent a metric, tool, responsibility, title, date, employer, or outcome.
+
 ### Candidate-specific standing decisions
 
-Read the private candidate-specific standing-decision record before role alignment or drafting when one exists.
+Read the standing-decision portion of the active Candidate Context before role alignment or drafting when one exists.
 
 - Private record name or location (do not copy private contents into this repository):
 - Discovery status: not checked / located / read / missing / stale / conflicted / not applicable
@@ -72,6 +107,13 @@ Read the private candidate-specific standing-decision record before role alignme
 
 A standing decision guides repeatable candidate-specific structure and attribution. It does not create evidence, upgrade a claim, resolve a conflict silently, or authorize upload, submission, employer contact, or external sharing.
 
+Apply precedence in this order when sources disagree:
+
+1. later explicit candidate instruction for the current work;
+2. verified correction to candidate source evidence;
+3. current candidate standing decision;
+4. generic job-search/application guidance;
+5. Template default or placeholder behavior.
 
 ### Requirement map
 
@@ -79,15 +121,95 @@ A standing decision guides repeatable candidate-specific structure and attributi
 | --- | --- | --- | --- | --- | --- |
 | R-001 |  |  | high / medium / low / unknown |  |  |
 
+### Candidate-to-Template mapping
+
+Record material candidate bindings and candidate-specific structural decisions where an incorrect mapping could materially change the application.
+
+| Mapping ID | Candidate evidence / decision | Template / slot | Role requirement | Validation applied | Status |
+| --- | --- | --- | --- | --- | --- |
+| MAP-001 |  | Template ID + section/placeholder | requirement ID / not applicable | generic / candidate overlay / role-channel | mapped / blocked / omitted with reason |
+
+Do not create exhaustive bookkeeping for trivial prose. Use this record for material claims, standing-decision effects, candidate-specific Template preferences, and validation overlays.
+
 ## 2. Output contract
 
 Start with one canonical ATS resume rendered from the shared evidence ledger. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
+
+### Template source gate
+
+Before drafting or rendering an application artifact, resolve its reusable starting Template through the Persona-Library Template catalog and verify the external `rickvang/template-library` source path, `README.md` entrypoint, and Git revision.
+
+Expected full-packet Template identities and source paths:
+
+| Artifact | Template identity | Canonical source path | Status |
+| --- | --- | --- | --- |
+| ATS resume | `template-resume-classic-single-column` | `templates/resumes/classic-single-column` | verify before use |
+| Cover letter | `template-cover-letter-evidence-led` | `templates/cover-letters/evidence-led` | verify before use |
+| Application Notes & Answers | `template-job-application-notes` | `templates/job-applications/application-notes` | verify before use |
+
+For each required Template record:
+
+- verify that the path and entrypoint resolve at the cited revision;
+- inspect the documented `starter/` copy boundary;
+- copy/adapt the starter into the role-specific private application folder;
+- record the Template ID, source path, and revision in this Work Order or the private notes artifact;
+- keep candidate facts and project-specific content in the instantiated private artifact, not in the reusable Template.
+
+If a required Template is missing, unavailable, stale, or cannot be verified, do **not** silently substitute a private Google Drive master, previous application, or ad hoc document as the canonical reusable Template. Route to Template research/composition and create or repair the reusable Template in `rickvang/template-library`; treat the application artifact as blocked on Template resolution until the canonical source can be verified. A one-off private artifact may be used only when the requester explicitly chooses a non-reusable exception and the Work Order records that exception.
+
+### Validation layering
+
+Keep validation responsibilities separate:
+
+1. **Template structural validation** checks the reusable starter boundary and generic Template structure.
+2. **Persona-Library composition validation** checks evidence integrity, chronology/attribution, ATS structure, role coverage, writing, accessibility, packaging, and other shared application rules.
+3. **Candidate-specific validation overlays** come from the active Candidate Context and apply only to that candidate; each overlay must trace to a candidate-confirmed decision or source fact.
+4. **Role/channel validation** applies employer- or channel-specific constraints only when current evidence supports them.
+
+Candidate-specific overlays may specialize a generic check but must not weaken evidence integrity or create unsupported facts.
+
+- Candidate-specific validation overlays applied:
+- Overlay source decision/evidence IDs:
+- Overlay result: pass / revise / blocked / not applicable
+- Generic composition validation result:
+- Role/channel validation result:
+
+### Role-specific application folder
+
+For a full application-packet run, create one role-specific folder in the authorized private application workspace before the packet can be marked ready for review. Use the candidate-configured application root; do not hardcode private Drive IDs, private links, or candidate-specific storage identifiers in Persona-Library.
+
+Default folder name:
+
+`<Company> — <Role> — <YYYY-MM-DD>`
+
+Keep the principal artifacts as separate files by default:
+
+1. `<Company> — <Role> — Resume — ATS`
+2. `<Company> — <Role> — Cover Letter`
+3. `<Company> — <Role> — Application Notes & Answers`
+
+The notes/answers record is the coordination artifact for role fit, constraints, portfolio planning, application questions, unresolved candidate decisions, and the submission checklist. It may link to the resume and cover letter, but it must not contain the only copy of either submission artifact.
+
+For a **full application-packet request**, create the standalone cover letter by default. Skip it only when the employer does not accept a cover letter or the requester explicitly says not to create one; record the reason. A narrow resume-only or cover-letter-only request does not imply the full three-artifact packet.
+
+Before `ready-for-review`, verify:
+
+- exactly one Candidate Context is bound and its required private sources were loaded or explicitly marked not applicable;
+- material candidate-to-Template mappings are traceable and any candidate-specific validation overlays have passed or have an explicit blocker/disposition;
+- every reusable application artifact has a verified `template-library` Template source and recorded revision, or an explicit requester-approved one-off exception;
+- the role-specific application folder exists in the configured private workspace;
+- each required artifact is independently openable;
+- file names identify the company and role without relying on folder context alone;
+- the notes/answers record links or points to the separate resume and cover letter rather than embedding the only copy;
+- any skipped cover letter has an explicit reason;
+- no private workspace identifier is copied into Persona-Library.
 
 | Output ID | Artifact | Primary reader or system | Format and revision | Source ledger revision | Status | Owner | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | OUT-ATS | ATS resume version (default) | Employer intake and screening |  |  | draft / reviewed / selected / superseded |  |  |
 | OUT-HUMAN | Human-facing resume version (optional) | Human reviewer |  |  | not warranted / draft / reviewed / selected / superseded |  |  |
-| OUT-LETTER | Cover letter (optional) | Human reviewer and required submission channel |  |  | not requested / draft / reviewed / selected |  |  |
+| OUT-LETTER | Standalone cover letter | Human reviewer and required submission channel |  |  | draft / reviewed / selected / skipped with reason |  |  |
+| OUT-NOTES | Application Notes & Answers | Candidate and application operator |  |  | draft / reviewed / ready |  |  |
 
 Both resume versions, when both exist, are renderings of one evidence source rather than independent stories. The human-facing version may improve hierarchy, density, order, voice, and contextual visual communication; neither version may change the meaning of a material claim.
 
@@ -101,6 +223,9 @@ For the ATS version, target employer, role, location, and work-mode context rema
 
 ### ATS resume version (default)
 
+- Template ID, source path, and verified revision:
+- Candidate Context revision used:
+- Candidate-specific validation overlays affecting this artifact:
 - Section schema: `SUMMARY` (optional) → `SKILLS` or `TECHNICAL SKILLS` (optional) → `WORK EXPERIENCE`, `EXPERIENCE`, or `PROFESSIONAL EXPERIENCE` → `EDUCATION` and/or `CERTIFICATIONS`:
 - Optional `ADDITIONAL EXPERIENCE`, `PROJECTS`, or `PORTFOLIO` section and why it is needed:
 - Heading deviations and reason:
@@ -126,7 +251,7 @@ Minimum gate:
 
 - Intended sections and text are extractable, or parser suitability is explicitly unknown.
 - Dates, titles, employers, role identity, attribution, scope, and outcomes are unambiguous.
-- Confirmed client engagements appear under the actual employer, separate employment periods remain separate, and client attribution survives plain-text extraction.
+- Confirmed client engagements appear under the actual employer, separate employer periods remain separate when the active Candidate Context or source evidence requires it, and client attribution survives plain-text extraction.
 - Roles are reverse chronological unless an intentional alternative is documented.
 - Missing dates, ties, overlaps, and source ambiguity remain visible.
 - Terminology is natural and supported; no keyword stuffing.
@@ -137,11 +262,15 @@ Minimum gate:
 - No duplicated impact block or keyword category repeats an existing claim without a recorded reason.
 - Provider-specific rules are used only when the profile or an actual test supports them; a portal name alone is insufficient.
 - Generic checker results are labeled implementation-specific rather than vendor certification.
+- Applicable Candidate Context overlays pass without weakening evidence integrity.
 
 ### Human-facing resume version (optional)
 
 Complete this section only when a second rendering is warranted.
 
+- Template ID, source path, and verified revision when a reusable Template is used:
+- Candidate Context revision used:
+- Candidate-specific validation overlays affecting this artifact:
 - Why a human-facing version is useful for this channel:
 - Reader and review context:
 - First-scan decision path:
@@ -177,15 +306,35 @@ A reusable human-facing template is not an application output and does not repla
 
 ### Cover letter
 
+- Template ID, source path, and verified revision:
+- Candidate Context revision used:
+- Candidate-specific voice/writing preferences applied:
+- Candidate-specific validation overlays affecting this artifact:
 - Why a letter is useful for this application:
 - Specific connection or motivation it adds:
 - Evidence IDs used:
 - What it deliberately does not repeat:
 - Voice and author review:
 - Channel or parser requirement:
-- Review result: pass / revise / not requested / unknown
+- Standalone artifact link or private location:
+- Review result: pass / revise / skipped with reason / unknown
 
-A cover letter is separate from both resume versions. It may need a structured, readable format for its submission channel, but it must not become a new source of unsupported claims.
+For a full application packet, the cover letter is a standalone artifact by default. It may need a structured, readable format for its submission channel, but it must not become a new source of unsupported claims and must not exist only as embedded text inside the application notes/answers record.
+
+### Application Notes & Answers
+
+- Template ID, source path, and verified revision:
+- Candidate Context revision used:
+- Role-fit summary:
+- Eligibility, location, timing, or compensation constraints:
+- Portfolio or work-sample plan:
+- Application-form questions and candidate-confirmed answers:
+- Unresolved questions requiring candidate input:
+- Submission checklist:
+- Links or private references to the separate resume and cover letter:
+- Review result: pass / revise / blocked / unknown
+
+This artifact coordinates the application. It is not a substitute for the resume or cover letter and is not a submission artifact unless the employer explicitly requests its contents.
 
 ## 4. Version parity table
 
@@ -202,6 +351,7 @@ Check at least:
 - employer, role, title, dates, chronology, and engagement identity;
 - contribution, attribution, scope, method, metrics, and outcomes;
 - high-priority evidence and known gaps;
+- candidate-specific standing decisions and validation overlays affecting those claims;
 - uncertainty, caveats, and intentional omissions;
 - parser suitability and untested scope.
 
@@ -221,7 +371,7 @@ Run reviews on the actual output revision.
 
 | Review ID | Version | Lens | Criterion | Source IDs or exact location | Finding | Reader or system consequence | Status | Next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| REV-001 | OUT-ATS / OUT-HUMAN / OUT-LETTER | ATS / human / visual / integrity / parity |  |  |  |  | pass / revise / blocked / unknown |  |
+| REV-001 | OUT-ATS / OUT-HUMAN / OUT-LETTER / OUT-NOTES | ATS / human / visual / integrity / parity / artifact-packaging / template-source / candidate-context / mapping |  |  |  |  | pass / revise / blocked / unknown |  |
 
 Record what was not checked. Do not claim a specific employer parser, human response, preference, or outcome unless that evidence exists.
 
@@ -231,15 +381,19 @@ Update at phase transitions, decisions, failed gates, material assumptions, hand
 
 | Phase | Operating Persona | Stage owner | Supporting Persona(s) | Status | Output or link | Evidence status | Gate result | Smallest next action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Load candidate standing decisions |  |  |  |  |  |  |  |  |
-
+| Resolve and load Candidate Context |  |  |  |  |  |  |  |  |
+| Load candidate standing decisions and validation overlays |  |  |  |  |  |  |  |  |
 | Define target and constraints |  |  |  |  |  |  |  |  |
 | Align role and evidence |  |  |  |  |  |  |  |  |
 | Build shared evidence source |  |  |  |  |  |  |  |  |
+| Resolve and verify reusable Templates |  |  |  |  |  |  |  |  |
+| Map Candidate Context and evidence into Template slots |  |  |  |  |  |  |  |  |
+| Create or verify role-specific application folder |  |  |  |  |  |  |  |  |
 | Render ATS version |  |  |  |  |  |  |  |  |
 | Render human-facing version (optional) |  |  |  |  |  |  |  |  |
-| Draft and review cover letter |  |  |  |  |  |  |  |  |
-| Review parity and integrity |  |  |  |  |  |  |  |  |
+| Draft and review standalone cover letter |  |  |  |  |  |  |  |  |
+| Build and review Application Notes & Answers |  |  |  |  |  |  |  |  |
+| Review Candidate Context, Template source, mappings, validation overlays, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
 | Select submission artifact |  |  |  |  |  |  |  |  |
 | Learn after submission |  |  |  |  |  |  |  |  |
 
@@ -261,15 +415,24 @@ Do not infer that a version was submitted because it was drafted or reviewed. Su
 
 ## 8. Close and learning
 
+- Candidate Context result and revision used:
+- Candidate Context updated during run? yes / no
+- Candidate-specific validation overlay result:
+- Role-specific application folder:
+- Template-source result and revisions used:
+- Candidate-to-Template mapping result:
 - Concrete packet or decision:
 - Success criterion addressed:
 - ATS result and limitations:
+- Cover-letter result and limitations:
+- Application-notes result and limitations:
+- Artifact-packaging result:
 - Human review result and limitations:
 - Parity result:
 - Integrity result:
 - What was not tested:
 - Real-user or market feedback actually available:
 - Synthetic assumptions to validate later:
-- Learning that changes the target, evidence map, or future versions:
+- Learning that changes the target, evidence map, Candidate Context, or future versions:
 - Final gate: pass / revise / no-go / blocked
 - Next action or explicit completion boundary:

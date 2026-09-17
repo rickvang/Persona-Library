@@ -82,7 +82,8 @@ Each future job-search record should preserve:
 - Job description, source URL, company context, and research date
 - Requirement-to-evidence mappings with confidence and gaps
 - Resume, cover letter, portfolio, outreach, and interview artifacts
-- Reusable cover-letter master guidance kept separate from role-specific cover-letter copies
+- Template identity, canonical `rickvang/template-library` source path, entrypoint, and verified revision for every reusable starting artifact
+- Role-specific copies kept separate from their reusable Template sources
 - ATS review findings and human review findings as separate records
 - Version history, decisions, submitted date, outcome, and learning
 - Open questions and what evidence would change the search strategy
@@ -98,6 +99,26 @@ Repeated searches must not present previously shown jobs as new by default. Afte
 The default application path is ATS-first: read any candidate standing decisions, maintain one shared evidence source, map the target requirements to it, render one semantically structured ATS resume, and run an evidence-integrity review. This is the smallest useful path for most applications.
 
 Create a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by habit. When no human-facing version is warranted, record that decision and use ATS-to-ledger integrity rather than an empty ATS-versus-human parity exercise.
+
+### Reusable Template source contract
+
+`rickvang/template-library` is the canonical owner of reusable starting artifacts. Persona-Library may catalog Template identity, applicability, relationships, and verified source evidence, but it does not own the starter files.
+
+Before drafting or rendering a reusable application artifact:
+
+1. resolve the Template through the Persona-Library Template catalog;
+2. verify the external `template-library` path, `README.md` entrypoint, and Git revision;
+3. inspect and copy/adapt the documented `starter/` boundary into the candidate's private role-specific application folder;
+4. record the Template ID and revision used;
+5. keep the resulting role-specific artifact independently owned after instantiation.
+
+For the current full application packet, the expected reusable starters are:
+
+- ATS resume → `template-resume-classic-single-column` / `templates/resumes/classic-single-column`;
+- cover letter → `template-cover-letter-evidence-led` / `templates/cover-letters/evidence-led`;
+- Application Notes & Answers → `template-job-application-notes` / `templates/job-applications/application-notes`.
+
+A repository or catalog entry is not proof that a Template exists. If a required Template path or entrypoint is missing, stale, or unverifiable, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library` before treating it as the application starter. Do not silently promote a private Google Drive master, prior application, or ad hoc document into the canonical Template source. A requester may explicitly authorize a one-off non-reusable artifact, but that exception must be recorded and must not be cataloged as a Template without the normal Template lifecycle review.
 
 ### Shared evidence source
 
@@ -233,6 +254,7 @@ A template should define its intended audience, scan path, hierarchy, density, a
 Every application packet runs:
 
 - role-to-evidence mapping;
+- Template-source verification for every reusable starter;
 - ATS structure and terminology review;
 - claim-to-ledger integrity review;
 - chronology and ambiguity preflight;
@@ -247,13 +269,13 @@ When a human-facing version exists, also run the human/visual review and a parit
 
 The selected submission artifact follows employer instructions. Do not submit both resume versions unless the employer or requester explicitly asks for both. Cover-letter claims, when requested, trace to the same ledger and add useful context rather than becoming a second evidence source.
 
-A reusable cover-letter master is a separate private design asset, not a role-specific application artifact or a second evidence source. It contains an internal tailoring brief and a clean sendable structure; each application creates a new tailored copy from the master and the shared evidence ledger. Keep prior drafts out of a fresh design unless the requester explicitly includes them.
+The reusable cover-letter starting artifact lives in `rickvang/template-library`, not in a private Drive master. Each application copies/adapts the verified Template starter into the role-specific private folder, then combines it with the positioning brief and shared evidence ledger. Prior role-specific drafts remain project artifacts and are not reusable Template sources unless the requester explicitly includes them as evidence for a later Template revision.
 
 For cover letters, the internal tailoring brief is the positioning layer. It may translate several related evidence items into a candidate-approved theme or descriptor so the sendable letter can read naturally. The final review protects material truth and role coverage without turning the letter into a line-by-line evidence audit.
 
 ### Work Order tracking
 
-The Work Order records the target, shared ledger, canonical ATS version, optional human-facing version, cover letter if requested, review findings, integrity result, optional parity result, selected submission file, and learning after submission. It is the active progress record; specialized artifacts remain separate and linked.
+The Work Order records the target, shared ledger, verified Template identities/revisions, canonical ATS version, optional human-facing version, standalone cover letter, Application Notes & Answers, review findings, integrity result, optional parity result, selected submission file, and learning after submission. It is the active progress record; specialized artifacts remain separate and linked.
 
 ## Phased delivery
 
@@ -271,8 +293,11 @@ The Work Order records the target, shared ledger, canonical ATS version, optiona
 
 ### Phase 2 — Application packet
 
+- Resolve every reusable application starter through the Persona-Library Template catalog and a verified `rickvang/template-library` path/entrypoint/revision. If a required Template is missing, route to Template research/composition before drafting from it.
+- Create one role-specific folder in the configured private application workspace and keep the ATS resume, cover letter, and Application Notes & Answers as separate artifacts by default.
 - Build one shared evidence source and render the canonical ATS submission version. Add a human-facing resume only when the target channel or review context justifies a second output.
-- Draft a separate cover letter only when it adds context, motivation, or a relevant connection that the resume cannot carry. Draft from the positioning brief, then review material claims and voice as separate questions.
+- Draft a separate cover letter for a full packet unless the employer does not accept one or the requester explicitly skips it; draft from the positioning brief, then review material claims and voice as separate questions.
+- Build the Application Notes & Answers artifact for role fit, constraints, application questions, portfolio planning, blockers, and submission checks.
 - Generate portfolio or case-study emphasis for design-oriented roles.
 
 ### Application preflight — before the council
@@ -290,6 +315,7 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 ### Phase 3 — Quality review
 
 - Start with the preflight result rather than relying on visual inspection or persona memory.
+- Verify each reusable artifact's Template ID, canonical source path, entrypoint, and revision.
 - Run the ATS pass for parseability, terminology coverage, structure, and truthful alignment.
 - Run the claim-to-ledger integrity pass and chronology preflight.
 - For a cover letter, run the positioning and voice pass before the material-claim pass. Accept candidate-owned abstractions that preserve meaning; escalate only new material facts or changes to scope, ownership, metrics, tools, credentials, dates, or gaps.
@@ -310,6 +336,14 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.
 
 ## Quality gates
+
+### Template-source quality
+
+- Every reusable application artifact has a Template ID and a verified `rickvang/template-library` path, `README.md` entrypoint, and Git revision before use.
+- The documented `starter/` copy boundary exists and is non-empty.
+- A missing or stale Template routes to Template research/composition rather than a silent private-master fallback.
+- Candidate facts and role-specific content live only in the instantiated private artifact, not the reusable Template source.
+- Persona-Library does not claim a proposed external Template is canonical on `main` until the source path and entrypoint actually resolve there.
 
 ### ATS default quality
 
@@ -381,6 +415,8 @@ These other items remain future opportunities, not implied capabilities of the c
 - Is Riley presented as the default routing front door for unqualified requests, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?
 - Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?
 - Do repeated searches avoid presenting previously shown jobs as new by default, using the seen-job deduplication contract?
+- Does every reusable application artifact resolve to a verified `rickvang/template-library` Template before it is instantiated?
+- When a needed reusable Template is missing, does the workflow create/repair it in `template-library` instead of silently falling back to a private Drive master?
 - Can a candidate explain why a role is in or out of scope?
 - Can each important claim in an application be traced to evidence?
 - Does the preflight catch wrong role order even when the content and visual review look good?
