@@ -636,6 +636,25 @@
         "DEC-014"
       ],
       "revisit": "Application tracking needs authenticated cross-device sync, collaboration, external integrations, or server-side automation; browser-local recovery proves insufficient; or extraction into a standalone app begins."
+    },
+    {
+      "id": "DEC-017",
+      "status": "Applied",
+      "category": "Application tracker integration",
+      "date": "2026-09-18",
+      "title": "Application packets hand off lifecycle state through private URL fragments",
+      "summary": "Connect packet creation and submission events to the browser-local Applications tracker with a versioned, confirmed upsert handoff carried in the URL fragment.",
+      "question": "How should application-packet work update a browser-local tracker without adding a public database, credentials, or coupling the packet process to one deployment?",
+      "decision": "Use a versioned base64url handoff payload in the Applications route fragment. Packet work generates an upsert after material lifecycle events; the browser validates and confirms it, merges it into local tracker state, and clears the fragment. Treat the handoff link as private transient metadata, not encryption or submission authorization.",
+      "rationale": "The tracker and packet workflow were structurally related but operationally disconnected. A server-backed API would add authentication and private-data infrastructure before it is needed, while browser localStorage cannot be written directly by the packet workflow. A URL fragment provides an explicit user-confirmed bridge without sending payload contents to the web server.",
+      "alternatives": "Leave packet links manual; introduce an unauthenticated API; store application state in the public repository; or require a new private backend immediately. Rejected because manual state drifts, unauthenticated persistence leaks data, Git violates the privacy boundary, and a backend adds avoidable infrastructure.",
+      "tradeoffs": "The candidate must open and confirm the handoff link, and base64url does not conceal the payload from someone who receives that link. In return, the workflow becomes operationally connected while preserving local-only storage and a clean future extraction path.",
+      "affects": "Applications tracker runtime and UI; application-tracker contract; application packet Work Order; job-search implementation guidance; validation; issue #153.",
+      "evidence": "Issue #153; merged tracker boundary DEC-016; existing application-packet Work Order; requester instruction to integrate packet creation with the tracker.",
+      "qualifies": [
+        "DEC-016"
+      ],
+      "revisit": "The tracker gains authenticated private persistence, packet runs need silent cross-device synchronization, or the standalone tracker app replaces the fragment handoff with a secure API."
     }
   ]
 }
