@@ -160,7 +160,7 @@ For each reusable application artifact, verify reusable Template state separatel
 9. run the applicable validation layers;
 10. keep the resulting role-specific artifact private unless external sharing is separately authorized.
 
-For resume work with a normalized candidate model, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` Skill rather than treating a prior rendered resume as the data model.
+When cross-Template semantic mapping is actually needed and a normalized candidate model is available, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` Skill. Do not treat an arbitrary prior rendered resume as the data model, and do not use the mapping layer to bypass or reconstruct a standing-decision-designated Candidate Baseline Resume.
 
 If the needed reusable Template does not exist or cannot be verified, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library`. Do not use a private candidate master as a silent substitute for a missing canonical Template.
 
