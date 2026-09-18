@@ -14,7 +14,7 @@ metadata:
 
 Map presentation-neutral candidate resume content into a verified resume Template without treating layout as truth, losing material content, flattening employer/client structure, or inventing unsupported claims.
 
-Use this Skill when a candidate's normalized Resume Content Model must be rendered through a reusable resume Template, especially when switching between materially different resume layouts or testing a new Template against an existing candidate content set.
+Use this Skill when a candidate's normalized Resume Content Model must be rendered through a reusable resume Template, especially when switching between materially different resume layouts or testing a new Template against an existing candidate content set. If current standing decisions designate a Candidate Baseline Resume, use this Skill only as a bounded transformation/mapping aid; it must not force reconstruction of the approved candidate career spine.
 
 Do not use it to discover candidate evidence, decide whether a claim is true, design a new Template from scratch, create candidate facts, or replace ATS/document/accessibility review.
 
@@ -31,18 +31,19 @@ Leah uses this Skill to decide whether supported candidate meaning has a legitim
 3. One verified resume Template in `rickvang/template-library`, including path, entrypoint, revision, starter boundary, and `slot-map.json`.
 4. Role/application requirements when mapping for a specific opportunity.
 5. Applicable candidate standing decisions and validation overlays.
+6. Any standing-decision-designated Candidate Baseline Resume, including its source/revision.
 
-If the candidate boundary, content-model version, Template revision, or slot manifest is unresolved, return `blocked` for the affected mapping instead of guessing.
+If the candidate boundary, a designated Candidate Baseline Resume, content-model version, Template revision, or slot manifest is unresolved, return `blocked` for the affected mapping instead of guessing. Never substitute a secondary profile store or stale resume for the missing baseline.
 
 ## Operating procedure
 
-1. **Verify candidate and model.** Confirm the normalized model belongs to the active candidate, matches the expected schema version, and keeps material nodes traceable to current evidence/decisions.
+1. **Verify candidate, baseline, and model.** Read current standing decisions. If they designate a Candidate Baseline Resume, resolve that exact artifact and record its source/revision before mapping. Confirm the normalized model belongs to the active candidate, matches the expected schema version, and keeps material nodes traceable to current evidence/decisions.
 2. **Verify Template and slots.** Resolve the Template's current source path, entrypoint, starter boundary, revision, and semantic slot manifest. Confirm the manifest targets a compatible Resume Content Model version.
 3. **Select role-relevant content.** Use the current requirement-to-evidence map to choose supported descriptors, profile statements, skills, achievements, projects, and portfolio content. Keep this selection in application-instance state rather than rewriting canonical candidate data.
 4. **Map by semantic purpose.** Match each selected content node to a legitimate Template slot. Preserve the owning employment relationship, employment period, client engagement, dates, locations, achievements, and skills.
-5. **Preserve candidate structure.** Keep employer-of-record distinct from clients; keep separate employment periods separate when evidence/standing decisions require it; preserve metric, scope, contribution, and outcome meaning.
+5. **Preserve candidate structure.** Keep employer-of-record distinct from clients; keep separate employment periods separate when evidence/standing decisions require it; preserve metric, scope, contribution, and outcome meaning. When a Candidate Baseline Resume is active, preserve its identity/contact, recent employers, chronology, education, certifications, and candidate-confirmed historical grouping unless a verified correction or explicit candidate decision authorizes a difference.
 6. **Classify material results.** Mark each material source as `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable`. Never silently drop material content because the Template lacks a destination.
-7. **Compose the private artifact.** Copy/adapt the verified Template starter into the authorized role-specific workspace and fill it from the mapping. Prose may be compressed or synthesized only when the factual meaning remains supported.
+7. **Compose the private artifact.** If no Candidate Baseline Resume is active, copy/adapt the verified Template starter into the authorized role-specific workspace and fill it from the mapping. If a baseline is active, begin from that baseline and use the Template/mapping contract only for the required role-specific adaptation. Prose may be compressed or synthesized only when the factual meaning remains supported.
 8. **Run layered validation.** Check candidate/model conformance, Template slot conformance, evidence integrity, role/channel requirements, candidate overlays, cross-candidate isolation, and the applicable ATS/document/accessibility/export gates on the actual output.
 9. **Surface Template mismatch.** When valid semantic content repeatedly remains `unmapped`, route the pattern to Template research rather than mutating the Template by implication.
 
@@ -52,7 +53,7 @@ A mapping is ready to hand off from Leah only when all of the following are true
 
 - **Semantic fit:** every `mapped` item is placed in a slot whose documented purpose matches the content; available space alone is not a valid mapping reason.
 - **Evidence fidelity:** every material rendered claim still traces to the active candidate's evidence or approved standing decision, and compression does not strengthen contribution, scope, metric, or outcome meaning.
-- **Structural fidelity:** employer-of-record/client-engagement hierarchy, repeated employment periods, dates, role ownership, and candidate-specific chronology decisions survive the mapping.
+- **Structural fidelity:** employer-of-record/client-engagement hierarchy, repeated employment periods, dates, role ownership, and candidate-specific chronology decisions survive the mapping. An active Candidate Baseline Resume's protected career spine also survives unless each material difference has a supported disposition.
 - **Loss visibility:** every material candidate node considered for the artifact ends as `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable`; no material node disappears silently.
 - **Role-instance isolation:** role-specific selection, emphasis, target terminology, and ordering choices stay in the application instance rather than becoming canonical candidate truth.
 - **Candidate isolation:** the model, decisions, evidence, and resulting mapping all belong to the active candidate.
@@ -76,6 +77,7 @@ A strong mapping has these observable properties:
 
 Watch for:
 
+- bypassing a current standing-decision-designated Candidate Baseline Resume because another profile store or normalized model is easier to access;
 - using a previous resume's section placement as the semantic model;
 - treating Template placeholders as candidate data fields;
 - replacing employer-of-record with a client because the Template has one employer line;
@@ -89,7 +91,7 @@ Watch for:
 
 Return or record:
 
-- active candidate-context reference and Resume Content Model revision;
+- active candidate-context reference, any Candidate Baseline Resume source/revision and baseline-to-output integrity result, and Resume Content Model revision;
 - Template ID, source path, slot-manifest path, and verified Git revision;
 - target role/application reference when applicable;
 - material mapping table with source node, destination slot, result state, and reason;
