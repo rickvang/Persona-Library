@@ -445,19 +445,20 @@ Update at phase transitions, decisions, failed gates, material assumptions, hand
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Resolve and load Candidate Context |  |  |  |  |  |  |  |  |
 | Load candidate standing decisions and validation overlays |  |  |  |  |  |  |  |  |
+| Resolve/read Candidate Baseline Resume when designated |  |  |  |  |  |  |  |  |
 | Load/reconcile Resume Content Model when used |  |  |  |  |  |  |  |  |
 | Define target and constraints |  |  |  |  |  |  |  |  |
 | Align role and evidence |  |  |  |  |  |  |  |  |
 | Build shared evidence source |  |  |  |  |  |  |  |  |
 | Resolve and verify reusable Templates and slot manifests |  |  |  |  |  |  |  |  |
-| Map candidate content into Template semantic slots |  |  |  |  |  |  |  |  |
+| Map candidate content into Template semantic slots when needed; do not reconstruct a designated baseline |  |  |  |  |  |  |  |  |
 | Resolve unmapped / blocked / omitted-with-reason material |  |  |  |  |  |  |  |  |
 | Create or verify role-specific application folder |  |  |  |  |  |  |  |  |
 | Render ATS version |  |  |  |  |  |  |  |  |
 | Render human-facing version (optional) |  |  |  |  |  |  |  |  |
 | Draft and review standalone cover letter |  |  |  |  |  |  |  |  |
 | Build and review Application Notes & Answers |  |  |  |  |  |  |  |  |
-| Review Candidate Context, semantic mapping, Template source, validation overlays, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
+| Review Candidate Context, baseline-to-output integrity, semantic mapping, Template source, validation overlays, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
 | Select submission artifact |  |  |  |  |  |  |  |  |
 | Learn after submission |  |  |  |  |  |  |  |  |
 
