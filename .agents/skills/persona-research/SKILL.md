@@ -62,8 +62,23 @@ Inspect an existing Persona for missing or weakly supported context, workflows, 
 6. Model multiple journeys or workflows when the role has materially different paths. Use tiers only when evidence supports them: `foundational`, `supporting`, and `edge-case`.
 7. Keep activities distinct from workflows. A workflow explains a trigger-to-outcome path; an activity is a recurring or interrupt-driven unit of work that can belong to one or more workflows.
 8. Keep skills distinct from tools, behaviors, credentials, and preferences. A tool named only by role inference is a representative hypothesis, not observed usage or proof of availability.
-9. Connect each conclusion to product implications, confidence, open questions, and a validation activity. State what the research cannot establish.
-10. For an authorized live change, make the smallest supported edit, preserve revision history, invoke the named `persona-reconciliation` adapter, then invoke `$change-impact-reconciliation` once. This skill owns the research; reconciliation owns downstream consistency.
+9. For each material workflow or Skill where execution capability matters, run the Tool integration review below. Reuse explicit Persona Tool requirements and Tool-use recipes when they already fit; do not create a Tool relationship merely because a Tool is mentioned.
+10. Connect each conclusion to product implications, confidence, open questions, and a validation activity. State what the research cannot establish.
+11. For an authorized live change, make the smallest supported edit, preserve revision history, invoke the named `persona-reconciliation` adapter, then invoke `$change-impact-reconciliation` once. This skill owns the research; reconciliation owns downstream consistency.
+
+## Tool integration review
+
+Run this review only when a material Persona workflow or linked Skill depends on execution capability. Inspect the current Persona Tool requirements, related Tool-use recipes, linked Skills, and Tool records before proposing a new relationship.
+
+Classify each material Tool implication as exactly one of:
+
+1. **Existing Tool + existing recipe:** reuse the current Tool requirement and recipe when their capability, Skill, Persona, mode, scope, fallback, and evidence fit.
+2. **Existing Tool + recipe candidate:** the Tool and Skill are already known, but a reusable capability-to-Tool procedure is missing. Return a bounded recipe proposal or handoff; do not author it automatically.
+3. **Possible Tool-record candidate:** the capability appears to need a durable Tool identity that is not in the catalog. Route canonical Tool-record work to `tool-record-maintenance`; do not create it as a side effect of Persona research.
+4. **Representative Tool hypothesis only:** evidence suggests a Tool or category, but does not establish actual use, availability, or a canonical relationship. Keep it explicitly hypothetical.
+5. **No Tool relationship needed:** the capability does not materially depend on a Tool. Do not add Tool metadata for completeness.
+
+Treat a Persona's preferred Tool as a default path, not vendor lock-in. A requester may explicitly test the same Skill with another actually exposed and authorized Tool or recipe. Route runtime capability selection, availability, scope, permissions, fallback, bounded probing, and verification to `tool-discovery-and-safe-execution`. Preserve the canonical Persona requirement and portable Skill during the experiment. Record one run as usage evidence only; do not change the preferred Tool, create shared guidance, or mutate the Skill unless a later reviewed and authorized update justifies it.
 
 ## Minimum modeling contract
 
@@ -73,7 +88,7 @@ Use the current repository records as the shape authority. The following concept
 - **Workflow:** trigger, outcome, steps and decisions, handoffs, collaborators, tools or workarounds, friction or risks, ranked concerns, success signals, evidence/confidence, and linked product opportunities.
 - **Activity:** cadence or estimated duration, trigger, planned/reactive/interrupt-driven status, collaborators, tools and information needed, desired outcome, friction, and related workflow or journey.
 - **Skill:** portable capability, workflow links, proficiency or quality signals, prerequisites/decisions, evidence status, and validation questions.
-- **Tool candidate:** tool or category, purpose, evidence status (`observed`, `reported`, or representative `hypothesis`), and validation note when a source does not name a specific tool. Never infer connector, credential, workspace, permission, or availability.
+- **Tool candidate:** tool or category, purpose, evidence status (`observed`, `reported`, or representative `hypothesis`), Tool-integration classification when execution capability is material, and a validation note when a source does not name a specific tool. Never infer connector, credential, workspace, permission, or availability.
 - **Resource:** source, publisher/author, URL or locator, date checked, contribution, and scope. Keep resources at the end of a Persona record when the current record contract does so.
 
 See the focused references for the distinctions and source-update rules. Do not copy current Persona data into this skill; the library remains the source of truth.
@@ -98,6 +113,7 @@ Return a compact, record-oriented result containing:
 - Persona context and operating model.
 - Workflow/journey map with tiers, activities, handoffs, friction, priorities, and success signals.
 - Skill candidates and tool candidates with their evidence distinctions.
+- Tool integration review for material execution dependencies: classification, reused requirement/recipe when applicable, candidate handoff when missing, preferred/default path, and any bounded alternate-Tool experiment status.
 - Product implications or decision relevance.
 - Resources, open questions, and focused validation plan.
 - If a source or live record changed: affected fields, reconciliation handoff, checks run, blockers, and next action.
@@ -109,6 +125,8 @@ Label missing evidence, ambiguous context, and unverified tool availability expl
 - Default to read-only. Research does not authorize a write.
 - Never silently replace a Persona or change unrelated fields.
 - Never treat a representative tool hypothesis as observed usage, a tool record as availability, or a source outside its population as universal evidence.
+- Never automatically create a Tool record or Tool-use recipe from Persona research. Send canonical Tool-record work to `tool-record-maintenance` and runtime capability resolution or alternate-Tool experiments to `tool-discovery-and-safe-execution`.
+- A bounded alternate-Tool experiment does not rewrite the Persona's preferred Tool, portable Skill, or shared guidance by itself.
 - Prototype results remain isolated and cannot become live Persona evidence without an explicit promotion decision.
 - A live update requires explicit authorization, an identified target, a scoped impact review, validation, and the repository's reconciliation contract.
 - If required metadata, source files, or a downstream package are unavailable, report the gap and stop at a safe proposal rather than pretending the handoff occurred.
@@ -122,6 +140,8 @@ Before handoff, confirm:
 - The context and operating mode are explicit; any clarification was bounded and materially necessary.
 - Observed evidence, synthesis, and hypotheses are distinct and traceable to resources.
 - Workflows and activities are separate but connected; skills are separate from tools and behaviors.
+- Material Tool implications were classified through the Tool integration review, while irrelevant Skills were allowed to remain Tool-independent.
+- Preferred/default Tool paths, runtime alternatives, usage evidence, and canonical updates remained distinct.
 - Research-only output did not mutate durable records.
 - An authorized update names its target, affected scope, reconciliation handoff, checks, limitations, and next action.
 
