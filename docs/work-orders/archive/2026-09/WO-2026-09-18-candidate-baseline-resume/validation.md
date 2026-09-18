@@ -1,6 +1,6 @@
 # Validation — Candidate Baseline Resume workflow repair
 
-Status: merge-authorized with explicit execution gap preserved.
+Status: complete with explicit execution gap preserved.
 
 ## Checks completed
 
@@ -41,3 +41,10 @@ The connected GitHub surface exposes file/PR/status operations but no repository
 - Candidate Application Context Operating Pack: https://github.com/rickvang/operating-packs/pull/6
 
 Merge authorization was provided separately by Rick Vang in chat on 2026-09-18 at 10:51 AM CT. This validation record preserves the unexecuted checks and does not convert authorization into a validation pass.
+
+
+## Merge result
+
+- operating-packs PR #6 merged as `36b1336d5a8edf4c91b5016ed66d7e5e64a5e9d6`.
+- Persona-Library PR #149 merged as `134102d5eaad7683f8a253f5b059e229e43292d4`.
+- The unexecuted Node commands remain a documented limitation; this record does not claim they passed.

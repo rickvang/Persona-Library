@@ -1,6 +1,6 @@
 # WO-2026-09-18 — Candidate Baseline Resume workflow repair
 
-- Status: merge-authorized
+- Status: complete
 - Created: 2026-09-18
 - Last updated: 2026-09-18
 - Requester: Rick Vang
@@ -45,7 +45,7 @@ The repair extends existing surfaces rather than creating a new top-level concep
 
 ## Current phase
 
-Implementation and reconciliation are complete. Rick Vang explicitly authorized merge in chat on 2026-09-18 at 10:51 AM CT despite the documented command-runner validation gap. The Operating Pack dependency merged first as PR #6 at `36b1336d5a8edf4c91b5016ed66d7e5e64a5e9d6`; Persona-Library is authorized to merge after pinning that revision.
+Complete. Operating Pack PR #6 merged at `36b1336d5a8edf4c91b5016ed66d7e5e64a5e9d6`; Persona-Library PR #149 merged at `134102d5eaad7683f8a253f5b059e229e43292d4`. The documented command-runner validation gap remains historical evidence and was not converted into a pass.
 
 ## Current evidence
 
@@ -63,6 +63,6 @@ Implementation and reconciliation are complete. Rick Vang explicitly authorized 
 - Persona-Library Vercel status is green on the current branch head.
 - No GitHub Actions workflow is attached to the PR head; the canonical Node build/validation commands remain unexecuted and are a pre-merge requirement.
 
-## Next action
+## Completion boundary
 
-Merge Persona-Library PR #149 after pinning the merged Operating Pack revision. The canonical Node checks remain unexecuted and must stay recorded as a known validation limitation rather than being reported as passed.
+The workflow repair is merged and active on both repositories. Future application runs should resolve any standing-decision-designated Candidate Baseline Resume before role-specific composition and enforce baseline-to-output integrity. The canonical Node checks were not executed in the merge runtime and remain recorded as a limitation of this completed Work Order.

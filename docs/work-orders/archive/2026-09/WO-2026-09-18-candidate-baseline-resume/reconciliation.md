@@ -1,6 +1,6 @@
 # Reconciliation — Candidate Baseline Resume workflow repair
 
-Status: merge-authorized.
+Status: complete.
 
 ## Impact map
 
@@ -41,3 +41,8 @@ The companion Operating Pack PR #6 merged first as `36b1336d5a8edf4c91b5016ed66d
 ## Review boundary
 
 Source-level and generated-parity checks are complete. Canonical Node build/validation commands remain unexecuted because this GitHub runtime exposes no command runner and no PR Actions workflow executed them. Rick Vang explicitly authorized merge on 2026-09-18 at 10:51 AM CT with that limitation visible; authorization does not change the validation result.
+
+
+## Completion
+
+The cross-repository repair is merged. The Operating Pack dependency merged first and Persona-Library was pinned to its merged revision before PR #149 merged. `rickvang/template-library` remained unchanged. The Work Order is archived because the terminal state is complete.
