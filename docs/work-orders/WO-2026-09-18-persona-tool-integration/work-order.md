@@ -2,7 +2,7 @@
 
 - **Work Order ID:** WO-2026-09-18-persona-tool-integration
 - **Title:** Integrate Tool-use review into Persona creation workflow
-- **Status:** active
+- **Status:** ready-for-review
 - **Created:** 2026-09-18
 - **Last updated:** 2026-09-18
 - **Requester:** repository owner
@@ -81,14 +81,57 @@ This authorizes implementation of issue #146 within `rickvang/Persona-Library`, 
 
 ## Current phase
 
-**Build — source contract update**
+**Review — implementation and validation complete**
 
-Gate result: **pass**. Existing architecture is sufficient; no new concept or schema is required.
+Gate result: **pass**. Existing architecture is sufficient; no new concept or schema is required. Source changes are limited to the Persona research contract, Persona routing, and Persona-research golden scenarios.
+
+## Validation evidence
+
+- Normal branch build for source commit `4b5bd0bf8d8c71511f65a398defd6f15badc59ad`: Vercel deployment `dpl_fZY5ZBojUswC5D7caxGbCTe18ZKQ` reached **READY** and copied the updated Persona orientation source into generated output.
+- Focused regression run on temporary branch-only validation instrumentation: deployment `dpl_8b9kAcPRtfBGym67R6u6A4AuXsnG` reached **READY**.
+  - tests: 11
+  - pass: 11
+  - fail: 0
+- Top-level validation was executed on deployment `dpl_HdNMAFDo7GSboPvD18916dXhLy1Q`.
+  - build completed;
+  - validation stopped at the known unrelated defect: `Skill package is missing from the onboarding routing map: local-video-inspection`;
+  - no #146-specific validation failure was reported before that blocker.
+- Temporary `vercel.json` instrumentation was restored exactly to the canonical build command in commit `e6dfbd712f65d850a4507a61d19a5bdd6a214625`.
+
+## Persona reconciliation
+
+**Status:** complete within the bounded #146 scope.
+
+- **Change observed:** Persona research/routing now requires a Tool integration review when execution capability is material.
+- **Extends:** Persona creation/recheck can classify existing recipe reuse, recipe candidates, Tool-record candidates, representative hypotheses, and no-Tool-needed cases.
+- **Confirms:** portable Skills remain separate from vendor-specific Tool-use recipes; preferred Tools remain defaults rather than runtime lock-in.
+- **Confirms:** Tool record maintenance and Tool discovery remain separate handoffs; Persona research does not gain credential, permission, connector, or execution authority.
+- **Unchanged checked:** live Persona records, Persona Tool requirements, Tool-use recipe records, Skill identities, workflow maps, handoffs, and maintenance history.
+- **Required Persona updates:** none beyond the contract/routing changes already implemented.
+
+## Universal change-impact reconciliation
+
+**Status:** complete with one known external validation blocker.
+
+| Dependent | Impact | Evidence | Action |
+| --- | --- | --- | --- |
+| `persona-skills` | confirms | Already separates portable capability from Tool-use recipes and checks recipes before new Skill identities | none |
+| `tool-discovery-and-safe-execution` | confirms | Already owns actual runtime exposure, permission, fallback, bounded probes, and usage evidence | none |
+| `tool-record-maintenance` | confirms | Already owns canonical Tool record add/change/relate operations | none |
+| `content/orientation/tools.json` | confirms | Existing Tool routes match the new Persona handoffs | none |
+| `content/library-data/tool-integration.js` | confirms | Existing Persona requirements and Tool-use recipes already model the relationships #146 needs | none |
+| `scripts/validation/relationships.mjs` | confirms | Existing validation already enforces recipe→Skill and Persona requirement→recipe integrity | none |
+| `content/library-model.js` | confirms | Existing normalizer attaches Tool-use recipes to Skills and filters Persona Tool requirements | none |
+| `ARCHITECTURE.md` | confirms | Current Tool/Skill/Persona boundaries already describe the implemented model | none |
+| generated Persona orientation | extends | Vercel build copied updated `content/orientation/personas.json` to generated output | rebuild verified |
+| Operating Packs / Templates / Playbooks | unrelated | No relationship identity, application, process, or ownership contract changed | none |
+
+Dependency visibility is bounded to explicit repository relationships, declared provenance, the named issue scope, and the inspected current sources; repository search is not treated as an exhaustive dependency graph.
 
 ## Current blocker / fallback
 
-No implementation blocker identified at start. The known `local-video-inspection` onboarding-routing validator defect remains explicitly out of scope if it reappears during top-level validation.
+The top-level validator remains non-green because `.agents/skills/local-video-inspection` is missing from the onboarding routing map. This defect predates #146 and is out of scope. The focused regression suite and normal branch build are green.
 
 ## Next action
 
-Update the Persona research contract, Persona routing, and Persona-research golden scenarios on the issue branch, then inspect the diff and run validation.
+Open a reviewable pull request for #146 with the final diff and validation/reconciliation evidence. Merge remains separately authorized.
