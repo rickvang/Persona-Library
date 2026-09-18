@@ -4,6 +4,8 @@ Reusable contract for avoiding duplicate job results across repeated job-search 
 
 The file name is retained for compatibility with existing references. This contract does **not** define a full job-opportunity ledger or application tracker.
 
+Application lifecycle tracking is defined separately in [`application-tracker-contract.md`](application-tracker-contract.md). The two stores may reference the same posting identity, but neither contract silently absorbs the other.
+
 ## Ownership boundary
 
 ```text
