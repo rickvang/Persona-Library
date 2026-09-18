@@ -40,7 +40,9 @@ export function validateJobSearchRoutingContract({ route, implementation, riley,
   if (!playbook || playbook.id !== 'playbook-evidence-led-job-search') throw new Error('Evidence-led Job Search must remain the canonical job-search Playbook');
   for (const caseId of Object.keys(routingCaseRequirements)) validateJobSearchRoutingCase(route, caseId);
   if (!includesAll(route?.next_handoff, ['stages', 'shared state', 'quality gates', 'recovery', 'learning loop'])) throw new Error('Docs job-search route must describe Playbook procedure ownership');
+  if (!includesAll(route?.next_handoff, ['candidate baseline', 'standing decisions', 'career spine', 'secondary profile'])) throw new Error('Docs job-search route must enforce designated Candidate Baseline resolution before composition');
   if (!includesAll(implementation, ['default system entry', 'unqualified requests', 'priya desai', 'operates', 'shared state', 'quality gates', 'learning loop', 'explicit requests', 'route directly', 'process surface'])) throw new Error('Job-search guidance must express Riley-first routing, Priya operation, and Playbook process ownership');
+  if (!includesAll(implementation, ['candidate baseline resume', 'private-source resolution gate', 'career spine', 'secondary profile stores', 'baseline-to-output'])) throw new Error('Job-search guidance must preserve a designated candidate baseline and baseline-integrity gate');
   const requiredSpecialists = ['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'ui-expert', 'document-designer'];
   for (const id of requiredSpecialists) if (!specialistIds?.has(id)) throw new Error(`Job-search specialist boundary is missing: ${id}`);
   if (specialistIds?.has('job-search')) throw new Error('No generic Job Search Persona may be introduced');
