@@ -38,7 +38,7 @@ identify active candidate context
 → load or reconcile that candidate's normalized Resume Content Model when resume mapping uses it
 → resolve and verify reusable Templates in rickvang/template-library
 → for resume Templates, verify the Template's semantic slot manifest when present
-→ map normalized candidate content or source evidence into Template semantic slots
+→ when semantic remapping is actually needed, map normalized candidate content or source evidence into Template semantic slots without reconstructing a designated baseline
 → tailor/select for the target role without rewriting canonical candidate truth
 → run generic composition/integrity checks
 → run candidate-specific validation overlays
@@ -51,7 +51,7 @@ The validation gates still use the Candidate Application Context Operating Pack'
 
 For reusable cross-Template resume mapping, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` callable Skill. Material resume mappings end as `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable`; material content is not silently discarded merely because the chosen Template lacks a destination.
 
-Do not draft from a private master as though it were the reusable Template. Do not treat a prior formatted resume as the semantic data model when a normalized Resume Content Model is available. Do not use another candidate's prior application or normalized content as source material unless the requester explicitly provides it as a non-conflicting reference and the active candidate evidence remains authoritative.
+Do not draft from a private master as though it were the reusable Template. When current standing decisions explicitly designate that private master as the Candidate Baseline Resume, do begin role-specific composition from it while keeping the reusable Template and semantic data model separate. Do not treat an arbitrary prior formatted resume as the semantic data model when a normalized Resume Content Model is available. Do not use another candidate's prior application or normalized content as source material unless the requester explicitly provides it as a non-conflicting reference and the active candidate evidence remains authoritative.
 
 ## Ownership boundaries
 
