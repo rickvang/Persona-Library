@@ -100,7 +100,7 @@ Each future job-search record should preserve:
 - Version history, decisions, submitted date, outcome, and learning
 - Open questions and what evidence would change the search strategy
 
-Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct. Keep the private seen-job set in the consuming Skill/runtime; Persona-Library owns only the reusable deduplication contract.
+These are application-run/evidence records, not the row schema for the Applications tracker. Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct. Keep the private seen-job set in the consuming Skill/runtime; Persona-Library owns only the reusable deduplication contract.
 
 ### Repeated-search deduplication
 
