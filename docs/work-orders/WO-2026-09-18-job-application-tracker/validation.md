@@ -40,3 +40,10 @@ The branch materializes the deterministic generated tracker/page/navigation outp
 6. Delete the record.
 7. Import the export and verify restoration.
 8. Verify Posting/Packet links reject non-HTTP(S) imported values.
+
+
+## Production deployment
+
+- Requested by repository owner on 2026-09-18 after the merged tracker page returned 404 from the stale production deployment.
+- This documentation commit intentionally triggers the Vercel Git integration from `main`.
+- Production verification target: `/job-tracker.html`.
