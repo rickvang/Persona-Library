@@ -85,6 +85,8 @@ The original responsive job-search page remains a Playbook/reference surface. A 
 - Versioned JSON export/import is the portability boundary for backup and future extraction into a standalone app.
 - The tracker does not submit applications, send outreach, scrape jobs, or infer lifecycle transitions.
 - The seen-job deduplication contract remains separate: it suppresses already-presented search results and does not become the application tracker.
+- Application-packet runs use the tracker handoff contract after material lifecycle events. A completed packet emits a `Packet Ready` upsert with the private packet URL; an explicitly submitted application emits `Applied` with the applied date. The browser confirms the upsert and keeps the resulting row in local private state.
+- Handoff payloads travel in the `#handoff=` URL fragment, are cleared after processing, and are private transient artifacts rather than public repository data or submission authorization.
 
 ## Data model
 
