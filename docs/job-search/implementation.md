@@ -110,7 +110,7 @@ Before drafting or rendering a reusable application artifact:
 
 1. resolve the Template through the Persona-Library Template catalog;
 2. verify the external `template-library` path, `README.md` entrypoint, and Git revision;
-3. inspect and copy/adapt the documented `starter/` boundary into the candidate's private role-specific application folder;
+3. inspect the documented `starter/` boundary; copy/adapt it into the candidate's private role-specific application folder only when no standing-decision-designated Candidate Baseline Resume is active, otherwise use the baseline as the composition starting artifact while retaining the verified Template as the reusable-structure contract;
 4. record the Template ID and revision used;
 5. keep the resulting role-specific artifact independently owned after instantiation.
 
