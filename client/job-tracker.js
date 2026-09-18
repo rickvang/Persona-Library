@@ -42,7 +42,7 @@
   function safeUrl(value) {
     if (!value) return '';
     try {
-      const parsed = new URL(value, window.location.href);
+      const parsed = new URL(value);
       return ['http:','https:'].includes(parsed.protocol) ? parsed.href : '';
     } catch { return ''; }
   }
@@ -52,6 +52,23 @@
     const a = document.createElement('a');
     a.href = href; a.target = '_blank'; a.rel = 'noreferrer'; a.textContent = label;
     return a;
+  }
+  function normalizeRecord(record = {}) {
+    return {
+      id: String(record.id || uid()),
+      company: String(record.company || '').trim(),
+      role: String(record.role || '').trim(),
+      status: STATUSES.includes(record.status) ? record.status : 'Found',
+      location: String(record.location || '').trim(),
+      compensation: String(record.compensation || '').trim(),
+      foundDate: String(record.foundDate || ''),
+      appliedDate: String(record.appliedDate || ''),
+      nextAction: String(record.nextAction || '').trim(),
+      sourceUrl: safeUrl(record.sourceUrl),
+      packetUrl: safeUrl(record.packetUrl),
+      notes: String(record.notes || '').trim(),
+      updatedAt: String(record.updatedAt || new Date().toISOString())
+    };
   }
   function matches(record) {
     const term = search.value.trim().toLowerCase();
@@ -153,10 +170,12 @@
     const file = importFile.files?.[0]; if (!file) return;
     try {
       const parsed = JSON.parse(await file.text());
+      if (!Array.isArray(parsed) && parsed?.format && parsed.format !== 'persona-library-job-applications') throw new Error('Unsupported tracker format');
+      if (!Array.isArray(parsed) && Number(parsed?.version || 1) > FORMAT_VERSION) throw new Error('Tracker export is from a newer unsupported version');
       const incoming = Array.isArray(parsed) ? parsed : parsed?.records;
       if (!Array.isArray(incoming)) throw new Error('No records array found');
       if (!confirm(`Import ${incoming.length} records and replace the current local tracker?`)) return;
-      records = incoming.map(record => ({...record,id:record.id || uid()})); save(); render();
+      records = incoming.map(normalizeRecord).filter(record => record.company && record.role); save(); render();
     } catch (error) { alert(`Could not import tracker: ${error.message}`); }
     finally { importFile.value=''; }
   });
