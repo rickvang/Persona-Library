@@ -2,7 +2,7 @@
 
 ## Status
 
-- Status: completed
+- Status: active
 - Created: 2026-09-17
 - Last updated: 2026-09-17
 - Requester: repository owner
@@ -11,7 +11,8 @@
 - Repository: `rickvang/Persona-Library`
 - Working branch: `codex/persona-workspace-139`
 - Parent issue: #138
-- Current implementation issue: #139
+- Current implementation issue: #140
+- Completed implementation issue: #139
 
 ## Objective
 
@@ -67,19 +68,21 @@ No canonical child artifact is duplicated in the parent.
 
 The requester explicitly asked to start issue #139 and authorized creation of a private `rickvang/Persona-Workspace` repository. The requester then directed execution to use the connected GitHub plugin rather than browser fallback.
 
-The connected GitHub plugin is authorized for repository work but its exposed actions currently do not include repository creation or an authenticated raw GitHub/gh command. No unauthenticated browser fallback will be used while the plugin-only direction is in force.
+The requester has since authorized cleanup of the migration tracking state so #140 and #141 can proceed from a clean baseline.
 
 ## Current phase
 
 ### Completed
 
 - Loaded the repository orientation and pinned GitHub operating instructions.
-- Re-fetched #138 and #139 and confirmed #139 is open.
-- Verified that `rickvang/Persona-Workspace` does not currently exist.
+- Re-fetched #138 and #139 and confirmed #139 is complete.
 - Re-verified all five canonical repositories and default branches.
 - Verified current child entrypoint state.
 - Established the separate-parent placement decision and parent contract.
 - Created branch `codex/persona-workspace-139` from current `main` at `7959f23c7fbf7cedf6e283becacab7fe276c3213`.
+- Created and verified the private `rickvang/persona-workspace` parent repository.
+- Published and verified the parent shell on `main`.
+- Recorded the #139 completion handoff in #138.
 
 ### Implementation outcome
 
@@ -106,6 +109,21 @@ Verification confirmed:
 - no `.gitmodules` file exists;
 - no submodule, subtree, combined-history, or copied canonical-content mechanism was introduced.
 
+## Migration tracking
+
+Implementation order is owned by #138:
+
+1. #139 — parent workspace shell — **complete**
+2. #140 — child repository membership adapters — **next / may proceed**
+3. #141 — repository relocation and path reconciliation — **may proceed alongside #140 with checkout coordination**
+4. #142 — lightweight Codex confirmation — **after the relocated workspace is usable**
+
+Forward-progress posture:
+
+- fix small/local issues immediately;
+- log focused follow-up issues for non-critical problems;
+- continue unless there is concrete risk of data loss, Git corruption, destination overwrite, or the workspace is unusable for Codex.
+
 ## Success criteria
 
 - `rickvang/Persona-Workspace` exists as an independent repository.
@@ -114,8 +132,8 @@ Verification confirmed:
 - `repositories/` is excluded from parent history.
 - No child source of truth is duplicated.
 - Any non-blocking Claude/Cursor/editor gaps are recorded separately.
-- #138 receives the completion handoff before #139 closes.
+- #138 remains the umbrella progress record until #140, #141, and #142 are complete.
 
 ## Next action
 
-Proceed to #140 for child membership adapters. After #140, #141 can perform the repository relocation into the parent workspace layout. Keep #138 as the umbrella handoff record for deviations and follow-ups.
+Proceed with #140 and #141 under the ordering and coordination rules in #138. Keep this Work Order active as the broader migration progress/handoff record. #142 remains the final lightweight Codex baseline check after the relocated parent layout is usable.
