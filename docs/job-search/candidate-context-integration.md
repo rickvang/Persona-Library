@@ -4,7 +4,7 @@
 
 Persona-Library uses a private **Candidate Application Context** to bind one person's facts, standing decisions, preferences, normalized candidate content, and validation overlays to reusable Templates and the job-search application workflow.
 
-The canonical reusable context rules live in `rickvang/operating-packs/packs/candidate-application-context` with `AGENTS.md` as the stable entrypoint. The current `main` pack is verified at merge revision `c216052321c683830333bda4c1928bb98e12b3f7`. A normalized-resume-content extension is under review in `rickvang/operating-packs` PR #4 and must not be treated as canonical on that repository's `main` until merged and re-verified.
+The canonical reusable context rules live in `rickvang/operating-packs/packs/candidate-application-context` with `AGENTS.md` as the stable entrypoint. The current `main` pack was re-verified at revision `9b31cfafaef20cb2b3edb5f0370d7f1c6cde8360`; the normalized-resume-content extension previously tracked in PR #4 is merged on `main` and is part of that verified context.
 
 Persona-Library does not store candidate instances. Candidate values, private Resume Content Model instances, and private links remain in the authorized private workspace.
 
