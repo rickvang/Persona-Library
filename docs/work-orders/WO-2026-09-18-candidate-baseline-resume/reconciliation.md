@@ -1,6 +1,6 @@
 # Reconciliation — Candidate Baseline Resume workflow repair
 
-Status: active.
+Status: ready-for-review.
 
 ## Impact map
 
@@ -25,3 +25,19 @@ Status: active.
 - Resume Content Model remains a private evidence-traceable projection, not evidence.
 - Submission, employer contact, and external sharing remain separately authorized actions.
 - No candidate-specific private values are stored in Persona-Library or operating-packs.
+
+
+## Cross-repository dependency
+
+The repair spans two independently owned contracts:
+
+1. `rickvang/operating-packs#6` establishes Candidate Baseline Resume source precedence and validation in the Candidate Application Context Operating Pack.
+2. `rickvang/Persona-Library#149` consumes that boundary in job-search composition, semantic mapping, Work Orders, routing, Decisions, and regression validation.
+
+The reusable Template repository is intentionally not part of the mutation set. The existing Template contract remains valid: reusable Templates own portable presentation structure; they do not own a candidate's private composed career spine.
+
+Because the companion Operating Pack PR is still draft and unmerged, Persona-Library's current-main provenance reference remains pinned to the last verified Operating Pack main revision. If #6 is later merged, re-verify and update that external revision before merging #149 if the consuming docs require the new main SHA.
+
+## Review boundary
+
+Source-level and generated-parity checks are complete. Canonical Node build/validation commands remain a pre-merge requirement because this GitHub runtime exposes no command runner and no PR Actions workflow executed them. Neither draft PR is merge-authorized.
