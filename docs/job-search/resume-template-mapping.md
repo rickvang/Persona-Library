@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define how a private candidate-bound Resume Content Model instance is mapped into a verified resume Template without losing material content, flattening candidate-specific structure, or changing factual meaning.
+Define how a private candidate-bound Resume Content Model instance is mapped into a verified resume Template without losing material content, flattening candidate-specific structure, changing factual meaning, or silently reconstructing a standing-decision-designated Candidate Baseline Resume.
 
 This contract is operated by the reusable `resume-template-semantic-mapping` Skill. Template-specific destinations remain owned by the Template's `slot-map.json` in `rickvang/template-library`.
 
@@ -14,14 +14,17 @@ A mapping run requires:
 2. one Resume Content Model instance conforming to the expected model version;
 3. one verified resume Template with path, entrypoint, Git revision, and semantic slot manifest;
 4. the target role/application requirements when the mapping is role-specific;
-5. applicable candidate standing decisions and validation overlays.
+5. applicable candidate standing decisions and validation overlays;
+6. any Candidate Baseline Resume designated by those standing decisions, including source/revision.
 
-If candidate identity, model version, Template source, or slot manifest cannot be resolved, block only the affected mapping work rather than guessing.
+If candidate identity, a designated Candidate Baseline Resume, model version, Template source, or slot manifest cannot be resolved, block only the affected mapping work rather than guessing. Do not use semantic mapping to bypass an unresolved baseline.
 
 ## Mapping boundary
 
 ```text
 candidate evidence + decisions
+        ↓
+Candidate Baseline Resume when designated
         ↓
 normalized Resume Content Model
         ↓
@@ -51,7 +54,8 @@ The mapper may not:
 - silently drop material content because a Template lacks a destination;
 - promote role-specific emphasis into canonical candidate data;
 - rewrite a candidate-specific exception into a reusable Template rule;
-- treat a slot manifest as permission to bypass ATS, accessibility, integrity, or role/channel validation.
+- treat a slot manifest as permission to bypass ATS, accessibility, integrity, or role/channel validation;
+- silently replace, omit, or rewrite the protected career spine from a designated Candidate Baseline Resume.
 
 ## Mapping result states
 
@@ -67,8 +71,11 @@ Do not use `mapped` when a node was merely copied somewhere convenient without s
 
 ## Mapping procedure
 
-### 1. Verify candidate and content-model state
+### 1. Verify candidate, baseline, and content-model state
 
+- Read current standing decisions before mapping.
+- If they designate a Candidate Baseline Resume, resolve that exact artifact and record its source/revision.
+- Treat the baseline as the candidate-specific composition baseline for the protected career spine; do not treat it as evidence or reusable Template content.
 - Confirm the Resume Content Model belongs to the active candidate.
 - Confirm expected `schema_version`.
 - Inspect conflicted/unknown nodes that could affect the output.
@@ -96,8 +103,9 @@ For each material source node:
 
 ### 5. Detect semantic loss
 
-Before rendering, inspect for:
+Before rendering, compare selected/mapped content against any active Candidate Baseline Resume and inspect for:
 
+- dropped or rewritten baseline identity/contact, recent employers, education, certifications, or historical grouping;
 - employer/client flattening;
 - merged or lost employment periods;
 - dates or locations detached from the owning role;
@@ -112,13 +120,13 @@ A Template limitation is not permission to discard material candidate meaning.
 
 ### 6. Compose the instantiated artifact
 
-Copy/adapt the Template starter into the private role-specific application folder and fill it from the mapping. Prose synthesis may improve clarity and concision, but material factual claims must remain traceable to selected semantic nodes and evidence.
+When no Candidate Baseline Resume is designated, copy/adapt the Template starter into the private role-specific application folder and fill it from the mapping. When a baseline is designated, use that baseline as the composition starting artifact and use semantic mapping only where needed to support the verified Template/role adaptation. Prose synthesis may improve clarity and concision, but material factual claims must remain traceable to selected semantic nodes and evidence.
 
 ### 7. Validate after mapping
 
 Run the existing layered validation:
 
-1. candidate context / model conformance;
+1. candidate context / Candidate Baseline / model conformance, including baseline-to-output career-spine integrity when applicable;
 2. Template structure and slot-manifest conformance;
 3. reusable composition and evidence integrity;
 4. role/channel requirements;

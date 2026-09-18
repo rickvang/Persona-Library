@@ -4,7 +4,7 @@ This Work Order extends the repository-wide [Work Order convention](../work-orde
 
 A full application packet is a role-specific foldered artifact set, not one combined document. Keep the resume, cover letter, and application notes/answers as separate files in the authorized private application workspace.
 
-Reusable starting artifacts come from `rickvang/template-library`. Persona-Library catalogs Template identity and applicability; `template-library` owns the canonical starter files. Do not silently treat a private Drive master or prior role-specific artifact as the reusable Template source.
+Reusable starting artifacts come from `rickvang/template-library`. Persona-Library catalogs Template identity and applicability; `template-library` owns the canonical starter files. Do not silently treat a private Drive master or prior role-specific artifact as the reusable Template source. Separately, when the active Candidate Context designates a private master as the **Candidate Baseline Resume**, that baseline remains the candidate-specific composition starting point for the protected career spine; reusable Template ownership does not erase that candidate decision.
 
 Person-specific facts, standing decisions, voice preferences, evidence sources, Template preferences, optional normalized Resume Content Model instances, and candidate-specific validation overlays come from one private Candidate Context governed by the [Candidate Context contract](candidate-context-contract.md). Bind exactly one Candidate Context before candidate evidence is used so multiple people can use the same process and Templates without inheriting one another's private context.
 
@@ -36,6 +36,9 @@ Person-specific facts, standing decisions, voice preferences, evidence sources, 
 - Candidate Context reference or private location name:
 - Candidate Context status: not checked / located / read / missing / stale / conflicted / not applicable
 - Candidate Context revision or last-reviewed date:
+- Candidate Baseline Resume status: not designated / located / read / stale / conflicted / blocked
+- Candidate Baseline Resume reference/revision:
+- Baseline-to-output integrity result: not applicable / pass / revise / blocked / unknown
 - Resume Content Model status: not used / located / validated / stale / conflicted / blocked
 - Resume Content Model schema version and revision:
 - Template-source status: verified / missing / stale / conflicted / not applicable
@@ -58,6 +61,9 @@ Record only the references and statuses needed to operate the Work Order; keep t
 - Candidate identity/contact source located? yes / no / not applicable
 - Goals and constraints source located? yes / no / not applicable
 - Evidence sources located? yes / no / partial
+- Candidate Baseline Resume designated? yes / no / not applicable
+- Candidate Baseline Resume located and read? yes / no / blocked / not applicable
+- Candidate Baseline Resume reference / revision:
 - Normalized Resume Content Model located? yes / no / not applicable
 - Resume Content Model reference / revision / schema version:
 - Standing decisions located? yes / no / not applicable
@@ -111,6 +117,25 @@ Read the standing-decision portion of the active Candidate Context before role a
 
 A standing decision guides repeatable candidate-specific structure and attribution. It does not create evidence, upgrade a claim, resolve a conflict silently, or authorize upload, submission, employer contact, or external sharing.
 
+### Candidate Baseline Resume gate
+
+If the standing-decision record designates an active master/baseline resume, resolve that exact private artifact before role alignment or drafting.
+
+- Baseline designated by:
+- Baseline private reference / title:
+- Baseline source system:
+- Baseline revision / modified date:
+- Resolution status: located / read / stale / conflicted / blocked / not applicable
+- Protected career spine captured: identity/contact · employers/titles · periods/dates/locations · employer/client hierarchy · recent-employer presence · education · certifications · candidate-confirmed historical grouping
+- Candidate-specific presentation carried forward:
+- Known baseline/source conflicts:
+- Allowed tailoring surfaces:
+- Protected-field changes requiring evidence/decision:
+- Material baseline omissions and reasons:
+- Baseline-to-output integrity result: pass / revise / blocked / unknown / not applicable
+
+Do not substitute a secondary profile store, older resume, portfolio summary, or application-history record for an unresolved designated baseline. If the baseline cannot be resolved, block the affected resume composition step.
+
 Apply the Candidate Application Context Operating Pack precedence when sources disagree, unless a stricter consuming-project rule applies:
 
 1. current task and mandatory role/application requirements;
@@ -145,11 +170,13 @@ Do not create exhaustive bookkeeping for trivial prose. Use this record for mate
 
 ## 2. Output contract
 
-Start with one canonical ATS resume rendered from the shared evidence ledger or, when used, from a validated evidence-traceable Resume Content Model projection. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
+Start with one canonical ATS resume. When an active Candidate Baseline Resume is designated, create the role-specific ATS resume by copying/adapting that baseline and tailoring only supported material; otherwise render from the shared evidence ledger or, when used, from a validated evidence-traceable Resume Content Model projection into the verified Template. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
 
 ### Template source gate
 
 Before drafting or rendering an application artifact, resolve its reusable starting Template through the Persona-Library Template catalog and verify the external `rickvang/template-library` source path, `README.md` entrypoint, and Git revision.
+
+Template verification and Candidate Baseline verification answer different questions. The reusable Template supplies portable presentation structure; an active Candidate Baseline Resume supplies the candidate-specific composed career spine. Verify both when both apply.
 
 Expected full-packet Template identities and source paths:
 
@@ -164,7 +191,7 @@ For each required Template record:
 - verify that the path and entrypoint resolve at the cited revision;
 - inspect the documented `starter/` copy boundary;
 - for a resume Template that declares semantic mapping, verify `slot-map.json`, record its path and verified Git revision, and confirm its declared Resume Content Model version is compatible;
-- copy/adapt the starter into the role-specific private application folder;
+- for resume artifacts, copy/adapt the starter into the role-specific private application folder only when no Candidate Baseline Resume is designated; when a baseline is designated, begin from that baseline and retain the verified Template as the reusable-structure contract; for non-resume artifacts, copy/adapt the starter normally;
 - record the Template ID, source path, Template revision, and applicable slot-manifest revision in this Work Order or the private notes artifact;
 - keep candidate facts and project-specific content in the instantiated private artifact, not in the reusable Template.
 
@@ -211,6 +238,8 @@ For a **full application-packet request**, create the standalone cover letter by
 Before `ready-for-review`, verify:
 
 - exactly one Candidate Context is bound and its required private sources were loaded or explicitly marked not applicable;
+- when standing decisions designate a Candidate Baseline Resume, that exact baseline was located/read and its reference/revision recorded before drafting;
+- the final ATS artifact passed baseline-to-output career-spine integrity, or every material difference has an explicit supported disposition;
 - when a Resume Content Model is used, its reference, revision, schema version, and compatibility state are recorded;
 - every mapped resume Template has a verified `slot-map.json` path/revision when the Template declares semantic mapping;
 - material semantic mapping outcomes are traceable and all `unmapped`, `blocked`, or `omitted_with_reason` content has an explicit disposition;
@@ -244,6 +273,10 @@ For the ATS version, target employer, role, location, and work-mode context rema
 
 - Template ID, source path, and verified revision:
 - Candidate Context revision used:
+- Candidate Baseline Resume reference / revision used, or not applicable:
+- Baseline-to-output integrity result:
+- Protected-field differences and evidence/decision basis:
+- Material baseline omissions marked `omitted_with_reason`:
 - Resume Content Model reference / revision / schema version used, or not applicable:
 - Template `slot-map.json` path and verified revision, or not applicable:
 - Material unmapped / blocked / omitted-with-reason content affecting this artifact:
@@ -274,6 +307,7 @@ Minimum gate:
 
 - Intended sections and text are extractable, or parser suitability is explicitly unknown.
 - Dates, titles, employers, role identity, attribution, scope, and outcomes are unambiguous.
+- When a Candidate Baseline Resume is active, identity/contact, recent employers, chronology, employer/client hierarchy, education, certifications, and candidate-confirmed historical grouping match the baseline unless an explicit evidence-backed change or `omitted_with_reason` disposition is recorded.
 - Confirmed client engagements appear under the actual employer, separate employer periods remain separate when the active Candidate Context or source evidence requires it, and client attribution survives plain-text extraction.
 - Roles are reverse chronological unless an intentional alternative is documented.
 - Missing dates, ties, overlaps, and source ambiguity remain visible.
@@ -411,19 +445,20 @@ Update at phase transitions, decisions, failed gates, material assumptions, hand
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Resolve and load Candidate Context |  |  |  |  |  |  |  |  |
 | Load candidate standing decisions and validation overlays |  |  |  |  |  |  |  |  |
+| Resolve/read Candidate Baseline Resume when designated |  |  |  |  |  |  |  |  |
 | Load/reconcile Resume Content Model when used |  |  |  |  |  |  |  |  |
 | Define target and constraints |  |  |  |  |  |  |  |  |
 | Align role and evidence |  |  |  |  |  |  |  |  |
 | Build shared evidence source |  |  |  |  |  |  |  |  |
 | Resolve and verify reusable Templates and slot manifests |  |  |  |  |  |  |  |  |
-| Map candidate content into Template semantic slots |  |  |  |  |  |  |  |  |
+| Map candidate content into Template semantic slots when needed; do not reconstruct a designated baseline |  |  |  |  |  |  |  |  |
 | Resolve unmapped / blocked / omitted-with-reason material |  |  |  |  |  |  |  |  |
 | Create or verify role-specific application folder |  |  |  |  |  |  |  |  |
 | Render ATS version |  |  |  |  |  |  |  |  |
 | Render human-facing version (optional) |  |  |  |  |  |  |  |  |
 | Draft and review standalone cover letter |  |  |  |  |  |  |  |  |
 | Build and review Application Notes & Answers |  |  |  |  |  |  |  |  |
-| Review Candidate Context, semantic mapping, Template source, validation overlays, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
+| Review Candidate Context, baseline-to-output integrity, semantic mapping, Template source, validation overlays, parity, integrity, and artifact packaging |  |  |  |  |  |  |  |  |
 | Select submission artifact |  |  |  |  |  |  |  |  |
 | Learn after submission |  |  |  |  |  |  |  |  |
 

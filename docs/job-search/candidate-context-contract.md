@@ -4,7 +4,7 @@
 
 Define the reusable boundary between a person-specific job-search context, canonical Templates, and one role-specific application instance.
 
-Persona-Library owns this contract and the composition/review process. `rickvang/template-library` owns reusable starter artifacts and Template-specific semantic slot manifests. The authorized private candidate workspace owns the candidate's facts, decisions, preferences, normalized candidate content, and evidence. A role-specific application folder owns the instantiated outputs for one candidate and one opportunity.
+Persona-Library owns this contract and the composition/review process. `rickvang/template-library` owns reusable starter artifacts and Template-specific semantic slot manifests. The authorized private candidate workspace owns the candidate's facts, decisions, preferences, any designated Candidate Baseline Resume, normalized candidate content, and evidence. A role-specific application folder owns the instantiated outputs for one candidate and one opportunity.
 
 This contract lets multiple candidates use the same Persona-Library process and the same Templates without mixing their private context or encoding one person's preferences into reusable artifacts.
 
@@ -51,6 +51,7 @@ Templates must not contain candidate facts, candidate-specific standing decision
 - candidate identity and contact facts;
 - goals, constraints, and search preferences;
 - source resumes, work-history evidence, portfolio evidence, and other candidate evidence;
+- an optional Candidate Baseline Resume / explicitly promoted private master when current standing decisions designate one;
 - an optional normalized Resume Content Model instance for repeatable resume composition;
 - candidate-confirmed standing decisions;
 - voice and writing preferences;
@@ -82,6 +83,7 @@ A usable candidate context should provide or explicitly mark unknown:
 | Identity | candidate reference, display name, contact-source reference | Keep private values in the authorized workspace. |
 | Goals and constraints | target families, level, geography/work mode, timing, compensation or other candidate constraints when relevant | These guide search and application decisions; they are not Template content. |
 | Evidence sources | source resume/work history, portfolio/work samples, metrics, project evidence, credentials, supporting records | Material claims must remain traceable to evidence. |
+| Candidate baseline resume | optional explicitly promoted private master/baseline designated by current standing decisions | Resolve the exact artifact before resume composition; preserve its protected career spine unless evidence or a later candidate instruction changes it. |
 | Normalized resume content | optional private instance conforming to [`resume-content-model.md`](resume-content-model.md) and its schema | A repeatable semantic projection for composition; it does not replace evidence. |
 | Standing decisions | candidate-confirmed rules about chronology, employer/client attribution, section placement, naming, omissions, or other repeatable choices | Decisions guide composition but do not create evidence. |
 | Voice and writing preferences | recognizable tone, terminology preferences, recurring wording constraints, approved abstractions | Voice preferences cannot upgrade facts or scope. |
@@ -90,6 +92,19 @@ A usable candidate context should provide or explicitly mark unknown:
 | Revision/provenance | last reviewed date, source basis, active/superseded/conflicted state | Stale or conflicted context blocks affected decisions until resolved. |
 
 A Candidate Context is **not** a Persona, Template, evidence ledger, application tracker, or Work Order. It is the private person-specific input contract consumed by the job-search process.
+
+## Candidate Baseline Resume binding
+
+When current standing decisions designate a Candidate Baseline Resume or active private master:
+
+- resolve that exact private artifact and record its source/revision before role alignment or resume drafting;
+- treat it as the default composition baseline for the approved candidate career spine, not as factual evidence and not as the reusable Template source;
+- protect identity/contact, employer and role identity, separate periods, dates, locations, employer/client hierarchy, recent-employer presence, education, certifications, and candidate-confirmed historical grouping;
+- allow role-specific emphasis, supported summary/skill changes, and achievement selection without silently reconstructing protected fields;
+- record every material protected-field difference with its evidence/decision basis and use `omitted_with_reason` for intentional material omissions;
+- block the affected composition step if the designated baseline cannot be resolved instead of substituting a secondary profile store, stale summary, or prior application.
+
+A Candidate Baseline Resume may coexist with a normalized Resume Content Model and verified reusable Template. Evidence governs truth; the baseline governs the current candidate-specific composed career spine; the normalized model supports semantic portability; the Template supplies reusable structure.
 
 ## Resume Content Model binding
 
@@ -110,7 +125,7 @@ The same private Resume Content Model instance should be reusable across multipl
 Every application run must bind to exactly one candidate context before candidate evidence or normalized candidate content is used.
 
 - Do not infer that a prior application's candidate is the candidate for the current run.
-- Do not reuse standing decisions, voice preferences, contact details, validation overlays, normalized Resume Content Model nodes, or private evidence across candidates.
+- Do not reuse standing decisions, voice preferences, contact details, Candidate Baseline Resume artifacts, validation overlays, normalized Resume Content Model nodes, or private evidence across candidates.
 - Do not copy candidate-specific content into `template-library` or Persona-Library.
 - Do not treat the synthetic Job Seeker Persona as the actual candidate. The candidate remains the source of truth for their own facts, goals, constraints, and voice.
 - If the candidate context is missing or ambiguous, stop the affected composition step and resolve the candidate boundary before drafting.
@@ -132,20 +147,20 @@ Evidence still governs material claims. A higher-precedence instruction may chan
 
 ## Template binding
 
-For each reusable application artifact:
+For each reusable application artifact, verify reusable Template state separately from candidate-baseline state. A Candidate Baseline Resume never becomes the canonical Template merely because it is the composition baseline.
 
 1. identify the artifact required by the application run;
 2. resolve the Template through the Persona-Library Template catalog;
 3. verify the canonical `rickvang/template-library` path, `README.md` entrypoint, starter copy boundary, and Git revision;
 4. for a resume Template that declares semantic mapping, verify `slot-map.json`, its revision, and its declared Resume Content Model version;
-5. copy/adapt the starter into the role-specific private application folder;
-6. bind the active candidate context and role evidence to the instantiated artifact;
-7. map normalized candidate content or source evidence/decisions into the Template's intended semantic slots without changing material meaning;
+5. when no Candidate Baseline Resume is designated, copy/adapt the starter into the role-specific private application folder; when a baseline is designated, use the baseline as the role-specific composition starting artifact while keeping the verified Template reference as the reusable-structure contract;
+6. bind the active candidate context, baseline when designated, and role evidence to the instantiated artifact;
+7. map normalized candidate content or source evidence/decisions into Template semantic slots when needed without changing material meaning or forcing reconstruction of a designated baseline;
 8. record material mapping results, including `unmapped`, `blocked`, and `omitted_with_reason` content;
 9. run the applicable validation layers;
 10. keep the resulting role-specific artifact private unless external sharing is separately authorized.
 
-For resume work with a normalized candidate model, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` Skill rather than treating a prior rendered resume as the data model.
+When cross-Template semantic mapping is actually needed and a normalized candidate model is available, use [`resume-template-mapping.md`](resume-template-mapping.md) and the `resume-template-semantic-mapping` Skill. Do not treat an arbitrary prior rendered resume as the data model, and do not use the mapping layer to bypass or reconstruct a standing-decision-designated Candidate Baseline Resume.
 
 If the needed reusable Template does not exist or cannot be verified, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library`. Do not use a private candidate master as a silent substitute for a missing canonical Template.
 
@@ -189,6 +204,7 @@ Template structural validation does not determine whether a candidate claim is t
 Owned by the job-search process and relevant specialists. Verify, as applicable:
 
 - the active candidate/model binding is unambiguous and the model revision/schema version are recorded when used;
+- any standing-decision-designated Candidate Baseline Resume was resolved, recorded, and compared against the final artifact's protected career spine;
 - material normalized nodes remain traceable to current evidence/decisions;
 - semantic mapping completeness and explicit loss handling;
 - evidence integrity and claim traceability;
@@ -232,6 +248,7 @@ A full application Work Order should record at minimum:
 - Candidate Context status: `not checked | located | read | missing | stale | conflicted | not applicable`;
 - Candidate Context revision or last-reviewed date when available;
 - evidence sources used from that context;
+- Candidate Baseline Resume designation, source/revision, resolution status, protected-field differences, material omissions, and baseline-to-output integrity result when applicable;
 - Resume Content Model reference/revision and schema version when used;
 - standing decisions applied or explicitly not applicable;
 - voice/writing preferences applied when relevant;
@@ -244,7 +261,7 @@ A full application Work Order should record at minimum:
 - material `unmapped`, `blocked`, or `omitted_with_reason` semantic content;
 - semantic-mapping validation result and downstream validation results.
 
-Before `ready-for-review`, the Work Order must show that the candidate boundary is unambiguous, required context has been loaded, material mappings are traceable, mapping loss is explicit, and applicable candidate overlays have passed or have an explicit blocker/disposition.
+Before `ready-for-review`, the Work Order must show that the candidate boundary is unambiguous, required context has been loaded, any designated Candidate Baseline Resume was resolved and passed baseline-to-output career-spine integrity or has explicit supported dispositions, material mappings are traceable, mapping loss is explicit, and applicable candidate overlays have passed or have an explicit blocker/disposition.
 
 ## Multi-candidate use
 

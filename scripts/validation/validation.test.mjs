@@ -116,9 +116,9 @@ test('Routing case: explicit Playbook request supports direct invocation', () =>
 
 test('Job-search routing preserves Riley identity, Playbook procedure, and specialist boundaries', () => {
   const route = {
-    next_handoff: 'For an unqualified request, begin with Riley Morgan as the default entry and routing point; Riley selects the smallest specialist or Skill for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns stages, shared state, quality gates, recovery, and the learning loop.'
+    next_handoff: 'For an unqualified request, begin with Riley Morgan as the default entry and routing point; Riley selects the smallest specialist or Skill for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns stages, shared state, quality gates, recovery, and the learning loop. Resolve standing decisions and any Candidate Baseline before composition, preserve the career spine, and do not substitute a secondary profile store.'
   };
-  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. Riley routes full-outcome work to Priya Desai, who operates the Evidence-led Job Search Playbook as the process surface. The Playbook supplies shared state, quality gates, recovery, and the learning loop. Explicit requests may route directly.';
+  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. Riley routes full-outcome work to Priya Desai, who operates the Evidence-led Job Search Playbook as the process surface. The Playbook supplies shared state, quality gates, recovery, and the learning loop. Explicit requests may route directly. The Candidate Baseline Resume passes a Private-source resolution gate before role tailoring; preserve the career spine, block secondary profile stores from substitution, and run baseline-to-output integrity.';
   const riley = { roleLabel: 'AI orchestrator' };
   const rileyFlows = [{ title: 'Frame the system goal and boundary', summary: 'Turn an unqualified opportunity into a bounded outcome.' }];
   const playbook = { id: 'playbook-evidence-led-job-search' };
@@ -126,6 +126,8 @@ test('Job-search routing preserves Riley identity, Playbook procedure, and speci
   assert.doesNotThrow(() => validateJobSearchRoutingContract({ route, implementation, riley, rileyFlows, playbook, specialistIds }));
   assert.throws(() => validateJobSearchRoutingContract({ route: { ...route, next_handoff: route.next_handoff.replace('Explicit requests', 'Requests') }, implementation, riley, rileyFlows, playbook, specialistIds }), /direct invocation/);
   assert.throws(() => validateJobSearchRoutingContract({ route, implementation, riley: { roleLabel: 'Job-search orchestrator' }, rileyFlows, playbook, specialistIds }), /canonical AI orchestrator/);
+  assert.throws(() => validateJobSearchRoutingContract({ route: { ...route, next_handoff: route.next_handoff.replace('Candidate Baseline', 'resume source') }, implementation, riley, rileyFlows, playbook, specialistIds }), /Candidate Baseline resolution/);
+  assert.throws(() => validateJobSearchRoutingContract({ route, implementation: implementation.replace('baseline-to-output', 'final review'), riley, rileyFlows, playbook, specialistIds }), /baseline-integrity gate/);
 });
 
 test('Bounded parallel orientation, grounding, and callback gates remain separate', () => {

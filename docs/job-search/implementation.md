@@ -96,7 +96,9 @@ Repeated searches must not present previously shown jobs as new by default. Afte
 
 ## ATS-primary application packet
 
-The default application path is ATS-first: read any candidate standing decisions, maintain one shared evidence source, map the target requirements to it, render one semantically structured ATS resume, and run an evidence-integrity review. This is the smallest useful path for most applications.
+The default application path is ATS-first: identify the active Candidate Context, read its standing decisions, resolve any standing-decision-designated **Candidate Baseline Resume**, maintain one shared evidence source, map the target requirements, render one semantically structured ATS resume, and run both evidence-integrity and baseline-integrity review. This is the smallest useful path for most applications.
+
+A Candidate Baseline Resume is a private, candidate-owned composed artifact such as an explicitly promoted master resume. It is not factual evidence and it is not the canonical reusable Template. When the active standing decisions designate one, it is the default composition baseline for the candidate's career spine. Role tailoring may change emphasis, summary language, supported skills, and selected achievements, but it must not silently reconstruct or replace the protected career spine from secondary profile stores or stale summaries.
 
 Create a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by habit. When no human-facing version is warranted, record that decision and use ATS-to-ledger integrity rather than an empty ATS-versus-human parity exercise.
 
@@ -108,7 +110,7 @@ Before drafting or rendering a reusable application artifact:
 
 1. resolve the Template through the Persona-Library Template catalog;
 2. verify the external `template-library` path, `README.md` entrypoint, and Git revision;
-3. inspect and copy/adapt the documented `starter/` boundary into the candidate's private role-specific application folder;
+3. inspect the documented `starter/` boundary; copy/adapt it into the candidate's private role-specific application folder only when no standing-decision-designated Candidate Baseline Resume is active, otherwise use the baseline as the composition starting artifact while retaining the verified Template as the reusable-structure contract;
 4. record the Template ID and revision used;
 5. keep the resulting role-specific artifact independently owned after instantiation.
 
@@ -118,7 +120,7 @@ For the current full application packet, the expected reusable starters are:
 - cover letter → `template-cover-letter-evidence-led` / `templates/cover-letters/evidence-led`;
 - Application Notes & Answers → `template-job-application-notes` / `templates/job-applications/application-notes`.
 
-A repository or catalog entry is not proof that a Template exists. If a required Template path or entrypoint is missing, stale, or unverifiable, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library` before treating it as the application starter. Do not silently promote a private Google Drive master, prior application, or ad hoc document into the canonical Template source. A requester may explicitly authorize a one-off non-reusable artifact, but that exception must be recorded and must not be cataloged as a Template without the normal Template lifecycle review.
+A repository or catalog entry is not proof that a Template exists. If a required Template path or entrypoint is missing, stale, or unverifiable, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library` before treating it as the application starter. Do not silently promote a private Google Drive master, prior application, or ad hoc document into the canonical Template source. This reusable-Template boundary does **not** demote a candidate-designated baseline resume: the Template owns reusable presentation structure, while the Candidate Baseline Resume owns the candidate-specific composed career spine when standing decisions designate one. A requester may explicitly authorize a one-off non-reusable artifact, but that exception must be recorded and must not be cataloged as a Template without the normal Template lifecycle review.
 
 ### Shared evidence source
 
@@ -168,6 +170,25 @@ The evidence ledger remains authoritative for material claims. A standing decisi
 
 Reading or updating the standing record never authorizes upload, submission, employer contact, or external sharing. The Work Order must end with a recommendation or review handoff unless separate submission authorization is explicitly provided.
 
+### Private-source resolution gate
+
+Before role alignment or resume drafting, resolve private candidate sources in this order when they exist:
+
+1. Locate and read the active candidate standing-decision record.
+2. If it designates an active master or baseline resume, resolve that exact private artifact and record its source/revision before drafting.
+3. Resolve the shared evidence ledger and any normalized Resume Content Model referenced by the candidate context.
+4. Use secondary profile stores, old resumes, portfolio summaries, or application-history records only as supporting sources unless the active candidate context explicitly promotes them.
+5. If the designated baseline or authoritative evidence source cannot be resolved, mark the affected composition step `blocked`; do not silently substitute a stale or secondary source.
+
+When the runtime exposes a connected private-document source such as Google Drive, use its search/fetch capability to resolve the standing record and named baseline directly. Tool availability does not change source precedence.
+
+### Candidate Baseline Resume boundary
+
+A designated Candidate Baseline Resume protects the candidate's approved **career spine**: identity/contact values, employers, titles, employment periods, dates, locations, employer/client hierarchy, recent-employer presence, education, certifications, and candidate-confirmed grouped historical structure.
+
+It may also carry approved presentation choices such as heading hierarchy and categorized skills. Those presentation choices remain candidate-specific; they do not become reusable Template rules.
+
+The baseline does not override contradictory evidence. A verified evidence correction or later explicit candidate instruction may change it. When a role-specific output intentionally differs from the baseline on a protected field, record the difference and its evidence/decision basis. Material omissions must be `omitted_with_reason`, not silently dropped.
 
 ### ATS resume contract
 
@@ -295,7 +316,7 @@ The Work Order records the target, shared ledger, verified Template identities/r
 
 - Resolve every reusable application starter through the Persona-Library Template catalog and a verified `rickvang/template-library` path/entrypoint/revision. If a required Template is missing, route to Template research/composition before drafting from it.
 - Create one role-specific folder in the configured private application workspace and keep the ATS resume, cover letter, and Application Notes & Answers as separate artifacts by default.
-- Build one shared evidence source and render the canonical ATS submission version. Add a human-facing resume only when the target channel or review context justifies a second output.
+- Build one shared evidence source. When the active Candidate Context designates a Candidate Baseline Resume, copy/adapt that baseline into the role-specific artifact and tailor it conservatively; otherwise compose from the validated evidence/model into the verified Template. Add a human-facing resume only when the target channel or review context justifies a second output.
 - Draft a separate cover letter for a full packet unless the employer does not accept one or the requester explicitly skips it; draft from the positioning brief, then review material claims and voice as separate questions.
 - Build the Application Notes & Answers artifact for role fit, constraints, application questions, portfolio planning, blockers, and submission checks.
 - Generate portfolio or case-study emphasis for design-oriented roles.
@@ -344,6 +365,15 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - A missing or stale Template routes to Template research/composition rather than a silent private-master fallback.
 - Candidate facts and role-specific content live only in the instantiated private artifact, not the reusable Template source.
 - Persona-Library does not claim a proposed external Template is canonical on `main` until the source path and entrypoint actually resolve there.
+
+### Candidate-baseline quality
+
+- Any standing-decision-designated baseline/master was resolved and read before resume drafting.
+- The final ATS artifact passed **baseline-to-output** integrity by comparing the protected baseline career spine against the role-specific output.
+- Name/contact, employer/title/date/location chronology, employer/client hierarchy, recent employers, education, certifications, and candidate-confirmed historical grouping are unchanged unless a supported correction or explicit candidate decision authorizes the difference.
+- Every material baseline omission is recorded as `omitted_with_reason`; every protected-field change identifies its evidence or decision basis.
+- Secondary profile stores and stale summaries did not replace unresolved authoritative private sources.
+- Reusable Template verification remains separate from candidate-baseline verification.
 
 ### ATS default quality
 
@@ -417,6 +447,9 @@ These other items remain future opportunities, not implied capabilities of the c
 - Do repeated searches avoid presenting previously shown jobs as new by default, using the seen-job deduplication contract?
 - Does every reusable application artifact resolve to a verified `rickvang/template-library` Template before it is instantiated?
 - When a needed reusable Template is missing, does the workflow create/repair it in `template-library` instead of silently falling back to a private Drive master?
+- When standing decisions designate an active Candidate Baseline Resume, is that exact private artifact resolved before drafting?
+- Does the role-specific resume preserve the baseline career spine or record every material difference with evidence and an explicit disposition?
+- Are secondary profile stores prevented from substituting for an unresolved designated baseline or authoritative evidence source?
 - Can a candidate explain why a role is in or out of scope?
 - Can each important claim in an application be traced to evidence?
 - Does the preflight catch wrong role order even when the content and visual review look good?
