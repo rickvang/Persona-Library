@@ -11,8 +11,8 @@
 - Repository: `rickvang/Persona-Library`
 - Tracking state: reconciled on `main` via PR #143
 - Parent issue: #138
-- Current implementation issue: #140
-- Completed implementation issue: #139
+- Current implementation issue: #141
+- Completed implementation issues: #139, #140
 
 ## Objective
 
@@ -28,11 +28,11 @@ Live GitHub state was re-verified on 2026-09-17.
 | --- | --- | --- | --- |
 | `rickvang/Persona-Library` | `main` | Persona system, catalog, routing, docs, decisions, playbooks, and generated Site contract | `AGENTS.md` |
 | `rickvang/operating-packs` | `main` | Canonical Markdown Operating Pack files and pack-local validation | `AGENTS.md` |
-| `rickvang/SkillRepo` | `main` | Skill packages and model-specific Skill variations | `README.md` currently; no root `AGENTS.md` |
-| `rickvang/tool-repo` | `main` | Reusable Tool implementation and instruction artifacts | `README.md` currently; package entrypoints live under `tools/<tool-id>/AGENTS.md` |
-| `rickvang/template-library` | `main` | Canonical reusable Template starter artifacts and scaffolds | `README.md` currently; no root `AGENTS.md` |
+| `rickvang/SkillRepo` | `main` | Skill packages and model-specific Skill variations | `AGENTS.md` |
+| `rickvang/tool-repo` | `main` | Reusable Tool implementation and instruction artifacts | `AGENTS.md`; package entrypoints live under `tools/<tool-id>/AGENTS.md` |
+| `rickvang/template-library` | `main` | Canonical reusable Template starter artifacts and scaffolds | `AGENTS.md` |
 
-The missing child root `AGENTS.md` files are #140 concerns. They do not block creation of the parent shell.
+#140 completed the repository-local membership adapters and root Codex entrypoints needed for shared-workspace participation.
 
 ## Architecture and boundaries
 
@@ -114,8 +114,8 @@ Verification confirmed:
 Implementation order is owned by #138:
 
 1. #139 — parent workspace shell — **complete**
-2. #140 — child repository membership adapters — **next / may proceed**
-3. #141 — repository relocation and path reconciliation — **may proceed alongside #140 with checkout coordination**
+2. #140 — child repository membership adapters — **complete**
+3. #141 — repository relocation and path reconciliation — **current / may proceed**
 4. #142 — lightweight Codex confirmation — **after the relocated workspace is usable**
 
 Forward-progress posture:
@@ -136,4 +136,4 @@ Forward-progress posture:
 
 ## Next action
 
-Proceed with #140 and #141 under the ordering and coordination rules in #138. Keep this Work Order active as the broader migration progress/handoff record. #142 remains the final lightweight Codex baseline check after the relocated parent layout is usable.
+Proceed with #141 under the ordering and coordination rules in #138. Keep this Work Order active as the broader migration progress/handoff record. #142 remains the final lightweight Codex baseline check after the relocated parent layout is usable.
