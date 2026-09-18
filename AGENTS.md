@@ -21,6 +21,13 @@ Use the shortest relevant path:
 12. For work that depends on current repository state, treat `rickvang/Persona-Library` as this project's canonical GitHub repository and online work surface unless the requester explicitly names another repository. Prefer an exposed connected/native GitHub plugin or connector for supported operations; use browser or computer interaction for unsupported operations or explicitly requested UI workflows. Do not use a local checkout, Codex worktree, remote-local checkout, local file edits, or local Git commands as a fallback for repository work. Refresh current `main` and relevant issue, pull request, branch, commit, review, and check state before planning or review, and again before consequential mutations. If the direct integration is available but not connected, ask the requester to connect or authorize it; if GitHub is unavailable, report that limitation instead of falling back locally or inferring remote state. Follow the pinned [GitHub operating instructions](https://github.com/rickvang/tool-repo/blob/94acc6082e941439d2ee532f1b1b091cd42eb923/tools/github/AGENTS.md). Reading GitHub state does not authorize comments, edits, branch or file writes, pull request changes, merges, closes, labels, assignments, settings, or access changes.
 
 
+## Shared Persona Workspace
+
+Persona-Library may be opened from the parent [Persona Workspace](https://github.com/rickvang/persona-workspace). Use the parent workspace only for cross-repository discovery and coordination. For sibling discovery, follow the parent workspace's [repository map](https://github.com/rickvang/persona-workspace/blob/main/REPOSITORIES.md) rather than hard-coding sibling paths or behavior.
+
+For work inside Persona-Library, this repository's local instructions remain authoritative. Workspace membership or visibility of sibling repositories does not grant permission to mutate them; keep reads, writes, commits, branches, pull requests, and other mutations scoped to the explicitly authorized repository.
+
+
 ## Bootstrap handoff
 
 
