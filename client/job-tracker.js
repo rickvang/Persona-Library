@@ -27,7 +27,7 @@
   }
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); }
   function uid() { return globalThis.crypto?.randomUUID?.() || `job-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
-  function today() { return new Date().toISOString().slice(0,10); }
+  function today() { const now = new Date(); const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000); return local.toISOString().slice(0,10); }
   function formatDate(value) {
     if (!value) return '—';
     const date = new Date(`${value}T00:00:00`);
@@ -39,10 +39,18 @@
     node.textContent = value || '';
     return node;
   }
+  function safeUrl(value) {
+    if (!value) return '';
+    try {
+      const parsed = new URL(value, window.location.href);
+      return ['http:','https:'].includes(parsed.protocol) ? parsed.href : '';
+    } catch { return ''; }
+  }
   function link(url, label) {
-    if (!url) return null;
+    const href = safeUrl(url);
+    if (!href) return null;
     const a = document.createElement('a');
-    a.href = url; a.target = '_blank'; a.rel = 'noreferrer'; a.textContent = label;
+    a.href = href; a.target = '_blank'; a.rel = 'noreferrer'; a.textContent = label;
     return a;
   }
   function matches(record) {
