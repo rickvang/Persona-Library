@@ -33,6 +33,9 @@ Person-specific facts, standing decisions, voice preferences, evidence sources, 
 - Stopping condition:
 - Private application root:
 - Role-specific application folder:
+- Applications tracker record state: not tracked / Found / Reviewing / Packet Ready / Applied / Interviewing / Offer / Closed
+- Tracker handoff status: not needed / pending / generated / applied / declined / blocked
+- Tracker handoff link or private payload reference:
 - Candidate Context reference or private location name:
 - Candidate Context status: not checked / located / read / missing / stale / conflicted / not applicable
 - Candidate Context revision or last-reviewed date:
@@ -168,6 +171,23 @@ Do not create exhaustive bookkeeping for trivial prose. Use this record for mate
 - Material omitted-with-reason content and disposition:
 - Semantic mapping validation result: pass / revise / blocked / not applicable / unknown
 
+## Applications tracker handoff
+
+Use the [Application tracker contract](application-tracker-contract.md) to keep the private Applications row synchronized with material packet/application lifecycle events.
+
+For a full application-packet run:
+
+- when the role enters active packet work, prepare a `Reviewing` upsert when a tracker row does not already exist;
+- after the role-specific packet folder and required artifacts are created and reviewable, generate a `Packet Ready` handoff that includes the role source URL, private packet/folder URL, found date when known, and the smallest next action;
+- after an application is explicitly authorized and actually submitted, generate an `Applied` handoff with the submitted date;
+- later interview, offer, or closure events use the same versioned `upsert` handoff rather than creating parallel tracker mechanisms.
+
+Record the handoff state in this Work Order. The handoff link may be delivered to the candidate for opening in the Applications page, but it must not contain secrets, credentials, demographic answers, or private evidence beyond the small tracker-row fields allowed by the contract.
+
+A generated handoff link is not proof that the browser-local tracker was updated. Distinguish `generated` from `applied` unless the Applications page confirms the upsert.
+
+Tracker state never grants application-submission permission. `Applied` may be emitted only after the external submission itself was separately authorized and completed.
+
 ## 2. Output contract
 
 Start with one canonical ATS resume. When an active Candidate Baseline Resume is designated, create the role-specific ATS resume by copying/adapting that baseline and tailoring only supported material; otherwise render from the shared evidence ledger or, when used, from a validated evidence-traceable Resume Content Model projection into the verified Template. Add a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by default.
@@ -250,7 +270,8 @@ Before `ready-for-review`, verify:
 - file names identify the company and role without relying on folder context alone;
 - the notes/answers record links or points to the separate resume and cover letter rather than embedding the only copy;
 - any skipped cover letter has an explicit reason;
-- no private workspace identifier is copied into Persona-Library.
+- no private workspace identifier is copied into Persona-Library;
+- the Applications tracker handoff is generated for the packet’s current lifecycle state, or an explicit blocker/opt-out is recorded.
 
 | Output ID | Artifact | Primary reader or system | Format and revision | Source ledger revision | Status | Owner | Link |
 | --- | --- | --- | --- | --- | --- | --- | --- |
