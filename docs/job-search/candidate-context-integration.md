@@ -15,6 +15,7 @@ The candidate context does not replace these existing concepts; it gives them on
 - candidate identity and approved contact data;
 - goals, constraints, and search boundaries;
 - evidence ledger / candidate source evidence;
+- optional Candidate Baseline Resume or explicitly promoted private master for preserving the approved candidate career spine;
 - optional normalized Resume Content Model instance for repeatable resume composition;
 - candidate standing decisions;
 - voice and writing preferences;
@@ -33,6 +34,7 @@ For candidate-specific application work:
 ```text
 identify active candidate context
 → load only that candidate's private sources and decisions
+→ resolve any standing-decision-designated Candidate Baseline Resume and record its source/revision
 → load or reconcile that candidate's normalized Resume Content Model when resume mapping uses it
 → resolve and verify reusable Templates in rickvang/template-library
 → for resume Templates, verify the Template's semantic slot manifest when present
@@ -59,13 +61,36 @@ Do not draft from a private master as though it were the reusable Template. Do n
 | Presentation-neutral Resume Content Model contract and semantic mapping Skill | Persona-Library |
 | Candidate-context rules and validation layering | Candidate Application Context Operating Pack |
 | Candidate facts, evidence, private normalized resume-content instance, standing decisions, voice, private links | private candidate workspace |
-| Role-specific requirement map, selection/emphasis, material mapping dispositions, and instantiated artifacts | application Work Order / private role folder |
+| Candidate Baseline Resume / promoted private master and its candidate-specific career-spine presentation | private candidate workspace |
+| Role-specific requirement map, selection/emphasis, baseline divergence dispositions, material mapping dispositions, and instantiated artifacts | application Work Order / private role folder |
 | Reusable job-search expertise and review judgment | Persona-Library Personas and Skills |
 | End-to-end application/search stages and gates | Evidence-led Job Search Playbook operated by Priya Desai |
 
 Avery Brooks remains a reusable synthetic candidate-role Persona and never substitutes for the actual candidate's private context.
 
 **Leah Okafor / `application-editor` is the primary Persona application for `resume-template-semantic-mapping`.** Her existing requirement-to-evidence mapping, document hierarchy, ATS-aware formatting, writing, voice-preserving editing, and integrity capabilities remain authoritative. The callable Skill adds the focused cross-Template semantic-mapping procedure and quality checks; it does not transfer document-production or orchestration ownership.
+
+## Candidate Baseline Resume boundary
+
+A Candidate Baseline Resume is a private, candidate-owned composed artifact explicitly designated by the candidate's current standing decisions or source-of-truth record as the default resume baseline. It may be called a master resume in the consuming workspace.
+
+It is distinct from both evidence and a reusable Template:
+
+```text
+candidate evidence + standing decisions
+        ↓
+Candidate Baseline Resume
+→ approved candidate career spine and candidate-specific presentation
+
+verified reusable Template
+→ reusable presentation structure only
+```
+
+When a baseline is designated, role-specific resume work should begin by resolving and reading that exact baseline. Tailor by selecting, emphasizing, or carefully rewriting supported material. Do not rebuild the career spine from a secondary profile store merely because a normalized model or reusable Template exists.
+
+The protected baseline career spine includes identity/contact, employer and role identity, separate periods, dates, locations, employer/client hierarchy, recent-employer presence, education, certifications, and candidate-confirmed historical grouping. A verified source correction or later candidate instruction may change those values; role tailoring alone may not.
+
+A normalized Resume Content Model can coexist with the baseline. It supports semantic portability across Templates, but it does not automatically supersede an active baseline. If the normalized model and baseline disagree on a protected field, return to evidence/standing decisions and repair the conflict before composition.
 
 ## Resume semantic mapping boundary
 
@@ -106,6 +131,7 @@ Before an application packet can be `ready-for-review`, verify that:
 - evidence sources belong to that candidate;
 - any normalized Resume Content Model instance belongs to that candidate and traces to that candidate's sources/decisions;
 - standing decisions and voice rules belong to that candidate;
+- any designated Candidate Baseline Resume belongs to that candidate and was resolved from the current standing decision rather than inferred from a prior application;
 - candidate-specific validation overlays were applied only to that candidate;
 - no facts, normalized nodes, links, employers, metrics, decisions, or prose assumptions leaked from another candidate context.
 
@@ -129,7 +155,7 @@ A candidate preference, standing decision, or normalized model value cannot over
 Keep validation responsibilities separate and preserve the Candidate Application Context Operating Pack order:
 
 1. **Template structure** — starter shape and placeholders are valid; when semantic mapping is used, the slot manifest exists, its revision is recorded, and its declared Resume Content Model version is compatible.
-2. **Persona-Library composition/integrity** — evidence, chronology, attribution, semantic mapping completeness/loss handling, ATS/readability/accessibility rules as applicable. The candidate/model reference and revision must be recorded when used.
+2. **Persona-Library composition/integrity** — evidence, chronology, attribution, baseline-to-output career-spine integrity when a Candidate Baseline Resume is active, semantic mapping completeness/loss handling, ATS/readability/accessibility rules as applicable. The candidate/model/baseline references and revisions must be recorded when used.
 3. **Candidate-specific overlays** — private candidate-confirmed rules and preferences are checked without weakening factual or integrity rules.
 4. **Role/application requirements** — current employer, channel, and target-role constraints are enforced where supported by evidence.
 5. **Isolation** — no cross-candidate contamination, including normalized Resume Content Model nodes.
