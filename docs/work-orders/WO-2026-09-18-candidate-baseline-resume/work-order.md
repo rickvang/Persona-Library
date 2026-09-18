@@ -1,12 +1,14 @@
 # WO-2026-09-18 — Candidate Baseline Resume workflow repair
 
-- Status: active
+- Status: ready-for-review
 - Created: 2026-09-18
 - Last updated: 2026-09-18
 - Requester: Rick Vang
 - Current owner: ChatGPT / implementation agent
 - Request mode: update
 - Tracking issue: [#148 — Repair application workflow around candidate baseline resumes](https://github.com/rickvang/Persona-Library/issues/148)
+- Persona-Library draft PR: [#149](https://github.com/rickvang/Persona-Library/pull/149)
+- Operating Pack companion draft PR: [rickvang/operating-packs#6](https://github.com/rickvang/operating-packs/pull/6)
 - Authorized repository targets: `rickvang/Persona-Library` and `rickvang/operating-packs`
 - Authorized change: repair the job-application workflow after the Tessera Labs regression
 - Stopping condition: pull requests ready for independent review; merge remains separately unauthorized
@@ -43,7 +45,7 @@ The repair extends existing surfaces rather than creating a new top-level concep
 
 ## Current phase
 
-Implementation and reconciliation.
+Implementation and reconciliation are complete for source review. Both PRs remain draft because the repository's canonical Node validation commands cannot be executed through this GitHub connector and the repository exposes no pull-request Actions runner.
 
 ## Current evidence
 
@@ -52,6 +54,15 @@ Implementation and reconciliation.
 - The failed Tessera packet omitted or altered several of those protected elements.
 - Current reusable Template and normalized-content contracts did not contain a first-class Candidate Baseline Resume layer.
 
+## Result
+
+- Candidate Baseline Resume is now explicit in the Candidate Context, composition, Work Order, semantic-mapping, routing, and validation contracts.
+- The reusable Template contract remains intact and `rickvang/template-library` is unchanged.
+- DEC-015 records the durable baseline-vs-Template boundary.
+- Focused route and generated-output parity checks pass through the connected GitHub source.
+- Persona-Library Vercel status is green on the current branch head.
+- No GitHub Actions workflow is attached to the PR head; the canonical Node build/validation commands remain unexecuted and are a pre-merge requirement.
+
 ## Next action
 
-Finish cross-repository contract reconciliation, append a durable Decision, run focused validation, and open review pull requests without merging.
+Independent review and execution of the repository's canonical Node checks in an environment with a command runner. Keep both PRs draft until those checks pass. Merge remains separately unauthorized.
