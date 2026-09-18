@@ -48,6 +48,15 @@ export function validateJobSearchRoutingContract({ route, implementation, riley,
   if (specialistIds?.has('job-search')) throw new Error('No generic Job Search Persona may be introduced');
 }
 
+export function validateJobApplicationTrackerContract({ page, runtime, contract }) {
+  if (!page.includes('Local-only data') || !page.includes('persona-library.job-applications.v1') || !page.includes('<script src="js/job-tracker.js"></script>') || !page.includes('Keep every opportunity in one place.')) throw new Error('Applications tracker page is missing its privacy boundary, storage contract, or runtime');
+  for (const status of ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']) if (!runtime.includes(status)) throw new Error(`Applications tracker runtime is missing lifecycle state: ${status}`);
+  if (!runtime.includes('localStorage.getItem(STORAGE_KEY)') || !runtime.includes('localStorage.setItem(STORAGE_KEY') || !runtime.includes("format:'persona-library-job-applications'") || !runtime.includes('importFile.addEventListener')) throw new Error('Applications tracker runtime is missing local persistence or portability behavior');
+  if (/\bfetch\s*\(/.test(runtime)) throw new Error('Applications tracker MVP must not add remote persistence or network calls');
+  if (!contract.includes('browser-local private state') || !contract.includes('versioned JSON') || !contract.includes('standalone application') || !contract.includes('seen-job deduplication contract')) throw new Error('Application tracker contract is missing privacy, portability, extraction, or seen-job separation');
+  if (/Rick Vang|rickvang\.com|612\.366\.3550/i.test(page + runtime)) throw new Error('Applications tracker source must not seed candidate-specific private values');
+}
+
 export async function validateGeneratedOutputs(context) {
   const { files, routeSources, canvasModules, root } = context;
   const freshnessPairs = [
@@ -82,8 +91,7 @@ export async function validateGeneratedOutputs(context) {
   for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage, templatesPage]) if (!html.includes('operating-packs.html')) throw new Error('Primary pages must link to the Operating Packs space');
   for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage, templatesPage]) if (!html.includes('templates.html')) throw new Error('Primary pages must link to the Templates space');
   for (const html of [page, skillsPage, jobSearchPage, jobTrackerPage, playbooksPage, operatingPacksPage, templatesPage, toolsPage, guidePage, prototypingPage, files.decisionOutput]) if (!html.includes('job-tracker.html')) throw new Error('Primary pages must link to the Applications tracker surface');
-  if (!jobTrackerPage.includes('Local-only data') || !jobTrackerPage.includes('persona-library.job-applications.v1') || !jobTrackerPage.includes('<script src="js/job-tracker.js"></script>') || !jobTrackerPage.includes('Keep every opportunity in one place.')) throw new Error('Applications tracker page is missing its privacy boundary, storage contract, or runtime');
-  if (!jobTrackerRuntimeOutput.includes("const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']") || !jobTrackerRuntimeOutput.includes('localStorage.getItem(STORAGE_KEY)') || !jobTrackerRuntimeOutput.includes('localStorage.setItem(STORAGE_KEY') || !jobTrackerRuntimeOutput.includes("format:'persona-library-job-applications'") || !jobTrackerRuntimeOutput.includes('Import') && !jobTrackerPage.includes('Import')) throw new Error('Applications tracker runtime is missing lifecycle, local persistence, or portability behavior');
+
   if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchPage.includes('Define target') || !jobSearchPage.includes('ATS quality') || !jobSearchPage.includes('Integrity quality') || !jobSearchPage.includes('Preflight before the council') || !jobSearchPage.includes('reverse chronological') || !jobSearchPage.includes('date consistency')) throw new Error('Job search page is missing its system summary or quality gates');
   if (/>\s*Job-search orchestrator\s*</.test(jobSearchPage) || /Riley Morgan[^<]{0,120}Job-search orchestration/i.test(jobSearchPage) || /Riley Morgan[^<]{0,80}Job Search Persona/i.test(jobSearchPage)) throw new Error('Job search page must not present Riley as a Job-search domain identity');
   if (!jobSearchPage.includes('Priya Desai · Job search orchestrator') || !jobSearchPage.includes('Job search orchestrator · Playbook operator') || !jobSearchPage.includes('Riley Morgan · AI orchestrator')) throw new Error('Job search page must present Riley as the entry/router and Priya as the Job Search Orchestrator / Playbook operator');
@@ -99,7 +107,7 @@ export async function validateGeneratedOutputs(context) {
   const seenJobContract = await context.readFile('docs/job-search/job-ledger-contract.md');
   if (!seenJobContract.includes('Seen-job deduplication contract') || !seenJobContract.includes('private seen-job set') || !seenJobContract.includes('first_shown') || !seenJobContract.includes('does **not** define a full job-opportunity ledger or application tracker')) throw new Error('Seen-job deduplication contract is missing identity, privacy, or scope boundaries');
   const trackerContract = await context.readFile('docs/job-search/application-tracker-contract.md');
-  if (!trackerContract.includes('browser-local private state') || !trackerContract.includes('versioned JSON') || !trackerContract.includes('standalone application') || !trackerContract.includes('seen-job deduplication contract')) throw new Error('Application tracker contract is missing privacy, portability, extraction, or seen-job separation');
+  validateJobApplicationTrackerContract({ page: jobTrackerPage, runtime: jobTrackerRuntimeOutput, contract: trackerContract });
   const jobSearchImpl = await context.readFile('docs/job-search/implementation.md');
   if (jobSearchImpl.includes('Riley is the job-search orchestrator') || jobSearchImpl.includes('**Job-search orchestrator**')) throw new Error('docs/job-search/implementation.md must not frame Riley as the Job-search orchestrator identity');
   const riley = context.data.personas.find(persona => persona.id === 'ai-orchestrator');
