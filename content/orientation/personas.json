@@ -30,6 +30,7 @@
       "secondary_spaces": [
         "docs",
         "skills",
+        "tools",
         "operating-packs"
       ],
       "target": "persona-research",
@@ -40,14 +41,15 @@
         "persona record",
         "relevant workflow maps",
         "resources",
-        "revision history"
+        "revision history",
+        "Persona Tool requirements and related Tool-use recipes when execution capability is material"
       ],
       "mutation_boundary": "authorized_update",
       "reconciliation": "persona-reconciliation",
       "non_triggers": [
         "A general role question that does not request Persona research or maintenance"
       ],
-      "next_handoff": "Use persona-reconciliation before the universal impact pass when durable Persona content changes."
+      "next_handoff": "Use persona-reconciliation before the universal impact pass when durable Persona content changes. Route canonical Tool-record work to tool-record-maintenance and runtime capability resolution or alternate-Tool experiments to tool-discovery-and-safe-execution."
     },
     {
       "id": "persona-consultation",
