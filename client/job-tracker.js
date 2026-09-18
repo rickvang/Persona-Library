@@ -11,6 +11,7 @@
   const dialog = $('#editor');
   const form = $('#application-form');
   const importFile = $('#import-file');
+  const handoffStatus = $('#handoff-status');
   const fields = {
     id: $('#record-id'), company: $('#company'), role: $('#role'), status: $('#status'),
     location: $('#location'), compensation: $('#compensation'), foundDate: $('#found-date'),
@@ -69,6 +70,78 @@
       notes: String(record.notes || '').trim(),
       updatedAt: String(record.updatedAt || new Date().toISOString())
     };
+  }
+  function canonicalPostingUrl(value) {
+    const href = safeUrl(value);
+    if (!href) return '';
+    const parsed = new URL(href);
+    parsed.hash = '';
+    for (const key of [...parsed.searchParams.keys()]) {
+      if (/^(utm_|iis$|iisn$|source$|src$|ref$)/i.test(key)) parsed.searchParams.delete(key);
+    }
+    return parsed.toString().replace(/\/$/, '');
+  }
+  function recordIdentity(record = {}) {
+    const canonicalUrl = canonicalPostingUrl(record.sourceUrl);
+    if (canonicalUrl) return `url:${canonicalUrl.toLowerCase()}`;
+    const normalize = value => String(value || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    return `role:${normalize(record.company)}|${normalize(record.role)}|${normalize(record.location)}`;
+  }
+  function decodeBase64Url(value) {
+    const normalized = String(value || '').replace(/-/g, '+').replace(/_/g, '/');
+    const padded = normalized + '='.repeat((4 - normalized.length % 4) % 4);
+    const bytes = Uint8Array.from(atob(padded), character => character.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+  function sanitizeHandoffRecord(record = {}) {
+    const cleaned = {};
+    const stringFields = ['company','role','location','compensation','foundDate','appliedDate','nextAction','notes'];
+    for (const key of stringFields) if (Object.prototype.hasOwnProperty.call(record, key)) cleaned[key] = String(record[key] || '').trim();
+    if (Object.prototype.hasOwnProperty.call(record, 'status')) cleaned.status = STATUSES.includes(record.status) ? record.status : 'Found';
+    if (Object.prototype.hasOwnProperty.call(record, 'sourceUrl')) cleaned.sourceUrl = safeUrl(record.sourceUrl);
+    if (Object.prototype.hasOwnProperty.call(record, 'packetUrl')) cleaned.packetUrl = safeUrl(record.packetUrl);
+    return cleaned;
+  }
+  function showHandoffStatus(message, tone = 'success') {
+    if (!handoffStatus) return;
+    handoffStatus.textContent = message;
+    handoffStatus.dataset.tone = tone;
+    handoffStatus.hidden = false;
+  }
+  function clearHandoffFragment() {
+    if (!window.location.hash) return;
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+  function consumeHandoff() {
+    const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+    const encoded = params.get('handoff');
+    if (!encoded) return;
+    try {
+      const payload = JSON.parse(decodeBase64Url(encoded));
+      if (payload?.format !== 'persona-library-job-application-handoff') throw new Error('Unsupported tracker handoff format');
+      if (Number(payload?.version) !== 1) throw new Error('Unsupported tracker handoff version');
+      if (payload?.operation !== 'upsert') throw new Error('Unsupported tracker handoff operation');
+      const incoming = sanitizeHandoffRecord(payload.record);
+      if (!incoming.company || !incoming.role) throw new Error('Tracker handoff is missing company or role');
+      const identity = recordIdentity(incoming);
+      const index = records.findIndex(record => recordIdentity(record) === identity);
+      const existing = index >= 0 ? records[index] : null;
+      const action = existing ? 'Update' : 'Add';
+      if (!confirm(`${action} ${incoming.company} — ${incoming.role} in Applications?`)) {
+        showHandoffStatus('Tracker handoff was not applied.', 'neutral');
+        clearHandoffFragment();
+        return;
+      }
+      const merged = normalizeRecord({...existing, ...incoming, id: existing?.id || uid(), updatedAt: new Date().toISOString()});
+      if (index >= 0) records[index] = merged; else records.push(merged);
+      save();
+      render();
+      showHandoffStatus(`Applications updated: ${merged.company} — ${merged.role} is ${merged.status}.`);
+    } catch (error) {
+      showHandoffStatus(`Could not apply tracker handoff: ${error.message}`, 'error');
+    } finally {
+      clearHandoffFragment();
+    }
   }
   function matches(record) {
     const term = search.value.trim().toLowerCase();
@@ -179,5 +252,5 @@
     } catch (error) { alert(`Could not import tracker: ${error.message}`); }
     finally { importFile.value=''; }
   });
-  populateSelects(); render();
+  populateSelects(); render(); consumeHandoff();
 })();
