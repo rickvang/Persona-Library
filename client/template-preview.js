@@ -83,5 +83,7 @@
     if (!viewer.querySelector('#mockup') && previewSection) previewSection.insertAdjacentHTML('afterend', renderer(template.source || {}));
   };
 
-  if (typeof window.addEventListener === 'function') {\n    window.addEventListener('DOMContentLoaded', patchFocusedViewer, { once: true });\n  }
+  if (typeof window.addEventListener === 'function') {
+    window.addEventListener('DOMContentLoaded', patchFocusedViewer, { once: true });
+  }
 })();
