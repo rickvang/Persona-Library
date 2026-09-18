@@ -191,7 +191,7 @@ For each required Template record:
 - verify that the path and entrypoint resolve at the cited revision;
 - inspect the documented `starter/` copy boundary;
 - for a resume Template that declares semantic mapping, verify `slot-map.json`, record its path and verified Git revision, and confirm its declared Resume Content Model version is compatible;
-- copy/adapt the starter into the role-specific private application folder;
+- for resume artifacts, copy/adapt the starter into the role-specific private application folder only when no Candidate Baseline Resume is designated; when a baseline is designated, begin from that baseline and retain the verified Template as the reusable-structure contract; for non-resume artifacts, copy/adapt the starter normally;
 - record the Template ID, source path, Template revision, and applicable slot-manifest revision in this Work Order or the private notes artifact;
 - keep candidate facts and project-specific content in the instantiated private artifact, not in the reusable Template.
 
