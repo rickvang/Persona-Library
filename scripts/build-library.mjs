@@ -43,10 +43,12 @@ const files = [
   ['content/site-orientation.json', 'dist/data/site-orientation.json'],
   ['client/library-ui.js', 'dist/js/library-ui.js'],
   ['client/library-state.js', 'dist/js/library-state.js'],
+  ['client/job-tracker.js', 'dist/js/job-tracker.js'],
   ['client/template-preview.js', 'dist/js/template-preview.js'],
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
   ['client/canvas-intent.js', 'dist/js/canvas-intent.js'],
   ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js'],
+  ['content/job-tracker-page.html', 'dist/job-tracker.html'],
   ...routeFiles.map((routeFile) => [`content/${routeFile}`, `dist/data/${routeFile}`])
 ];
 
@@ -59,3 +61,30 @@ for (const [sourcePath, outputPath] of files) {
 }
 
 await buildDecisionsPage(root);
+
+const primarySitePages = [
+  'dist/index.html',
+  'dist/skills.html',
+  'dist/operating-packs.html',
+  'dist/templates.html',
+  'dist/tools.html',
+  'dist/playbooks.html',
+  'dist/job-search.html',
+  'dist/job-tracker.html',
+  'dist/guide.html',
+  'dist/decisions.html',
+  'dist/prototyping.html'
+];
+
+for (const relativePath of primarySitePages) {
+  const filePath = path.join(root, relativePath);
+  let html = await readFile(filePath, 'utf8');
+  if (html.includes('href="job-tracker.html"')) continue;
+  const updated = html.replace(
+    /(<a href="playbooks\.html"[^>]*>Playbooks<\/a>)/,
+    '$1<a href="job-tracker.html">Applications</a>'
+  );
+  if (updated === html) throw new Error(`Could not add Applications navigation to ${relativePath}`);
+  await writeFile(filePath, updated, 'utf8');
+  console.log(`Added Applications navigation -> ${relativePath}`);
+}
