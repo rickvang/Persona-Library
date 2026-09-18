@@ -1,6 +1,6 @@
 # Validation — Candidate Baseline Resume workflow repair
 
-Status: ready-for-review with explicit pre-merge execution gap.
+Status: merge-authorized with explicit execution gap preserved.
 
 ## Checks completed
 
@@ -33,11 +33,11 @@ These remain required; do not report them as passed:
 - [ ] `node eval/isolated-persona-skill.mjs validate`
 - [ ] `git diff --check`
 
-The connected GitHub surface exposes file/PR/status operations but no repository command runner. The repository also has no pull-request Actions workflow that can execute the Node suite from this branch. The PR remains draft until an execution-capable environment runs these checks.
+The connected GitHub surface exposes file/PR/status operations but no repository command runner. The repository also has no pull-request Actions workflow that can execute the Node suite from this branch. These checks remain unexecuted. Rick Vang explicitly authorized merge in chat on 2026-09-18 at 10:51 AM CT with this limitation visible; do not retroactively report these commands as passed.
 
 ## Pull requests
 
 - Persona-Library: https://github.com/rickvang/Persona-Library/pull/149
 - Candidate Application Context Operating Pack: https://github.com/rickvang/operating-packs/pull/6
 
-No merge is authorized by this validation record.
+Merge authorization was provided separately by Rick Vang in chat on 2026-09-18 at 10:51 AM CT. This validation record preserves the unexecuted checks and does not convert authorization into a validation pass.
