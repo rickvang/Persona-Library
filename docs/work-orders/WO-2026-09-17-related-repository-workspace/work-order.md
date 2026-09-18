@@ -9,7 +9,7 @@
 - Current owner: ChatGPT
 - Request mode: update
 - Repository: `rickvang/Persona-Library`
-- Working branch: `codex/persona-workspace-139`
+- Tracking state: reconciled on `main` via PR #143
 - Parent issue: #138
 - Current implementation issue: #140
 - Completed implementation issue: #139
@@ -79,7 +79,7 @@ The requester has since authorized cleanup of the migration tracking state so #1
 - Re-verified all five canonical repositories and default branches.
 - Verified current child entrypoint state.
 - Established the separate-parent placement decision and parent contract.
-- Created branch `codex/persona-workspace-139` from current `main` at `7959f23c7fbf7cedf6e283becacab7fe276c3213`.
+- Created the #139 implementation branch from `main`; its Work Order changes were later merged through PR #143.
 - Created and verified the private `rickvang/persona-workspace` parent repository.
 - Published and verified the parent shell on `main`.
 - Recorded the #139 completion handoff in #138.
