@@ -597,6 +597,25 @@
         "DEC-011"
       ],
       "revisit": "Real job-search runs show Priya is redundant with Riley or Elena, Persona-operated Playbooks reduce clarity or completeness, or a later Decision establishes a different durable operator boundary."
+    },
+    {
+      "id": "DEC-015",
+      "status": "Applied",
+      "category": "Candidate application source boundary",
+      "date": "2026-09-18",
+      "title": "A designated candidate baseline preserves the career spine",
+      "summary": "When current standing decisions designate a private master or baseline resume, resolve it before role tailoring. Reusable Templates and normalized resume models remain separate layers and must not silently reconstruct the candidate's approved career spine.",
+      "question": "How should reusable Templates and normalized resume content interact with an explicitly promoted private candidate master?",
+      "decision": "Add Candidate Baseline Resume as a private Candidate Context layer. Standing decisions determine whether one is active. Resolve the exact baseline source and revision before resume composition, use it as the default composition baseline for the protected career spine, keep evidence authoritative for factual truth, keep reusable Templates authoritative only for reusable presentation structure, and use normalized resume content as an optional portability layer. Material protected-field changes require a verified evidence correction or explicit candidate decision; intentional material omissions are recorded as omitted_with_reason; an unresolved designated baseline blocks the affected resume composition.",
+      "rationale": "The 2026-09-18 Tessera Labs packet bypassed the candidate's active standing decisions and Google Docs master, then reconstructed the resume from stale or secondary context. That run dropped recent employers, changed chronology and contact data, weakened quantified evidence, and produced a materially different ATS artifact. The September 16–17 Candidate Context, Resume Content Model, and semantic Template mapping work separated reusable structure from candidate data correctly but left the promoted private baseline implicit rather than first-class.",
+      "alternatives": "Remove the reusable Template and Resume Content Model architecture; promote the private master into the reusable Template library; or always regenerate role resumes from evidence/model data. Rejected because the first loses useful reusable infrastructure, the second leaks candidate-specific composition into a reusable artifact boundary, and the third repeats the failure mode this decision is intended to prevent.",
+      "tradeoffs": "Application runs gain one explicit private-source resolution step and one baseline-to-output integrity comparison. That adds a small amount of process state, but it prevents silent loss of approved candidate chronology and structure while preserving the ability to use materially different verified Templates when needed.",
+      "affects": "docs/job-search/implementation.md; docs/job-search/candidate-context-contract.md; docs/job-search/candidate-context-integration.md; docs/job-search/resume-template-mapping.md; docs/job-search/application-work-order-template.md; .agents/skills/resume-template-semantic-mapping/SKILL.md; content/orientation/docs.json and generated route data; validation guards/tests; Candidate Application Context Operating Pack; issue #148.",
+      "evidence": "Issue #148; Rick Vang — Resume Standing Decisions; Rick Vang Resume — Master Template; evidence-led prior application records; the failed Tessera Labs packet comparison; Persona-Library semantic mapping merge #123; operating-packs normalized resume context merge #4.",
+      "qualifies": [
+        "DEC-008"
+      ],
+      "revisit": "A future candidate explicitly replaces the baseline with a different source-of-truth model, repeated runs show baseline drift creates more conflicts than it prevents, or a validated normalized candidate model becomes the explicitly designated composition baseline through a later candidate decision."
     }
   ]
 }
