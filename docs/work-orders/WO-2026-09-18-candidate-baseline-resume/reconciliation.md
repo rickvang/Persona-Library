@@ -1,6 +1,6 @@
 # Reconciliation — Candidate Baseline Resume workflow repair
 
-Status: ready-for-review.
+Status: merge-authorized.
 
 ## Impact map
 
@@ -36,8 +36,8 @@ The repair spans two independently owned contracts:
 
 The reusable Template repository is intentionally not part of the mutation set. The existing Template contract remains valid: reusable Templates own portable presentation structure; they do not own a candidate's private composed career spine.
 
-Because the companion Operating Pack PR is still draft and unmerged, Persona-Library's current-main provenance reference remains pinned to the last verified Operating Pack main revision. If #6 is later merged, re-verify and update that external revision before merging #149 if the consuming docs require the new main SHA.
+The companion Operating Pack PR #6 merged first as `36b1336d5a8edf4c91b5016ed66d7e5e64a5e9d6`. Persona-Library's consuming documentation is pinned to that merged revision before PR #149 is merged.
 
 ## Review boundary
 
-Source-level and generated-parity checks are complete. Canonical Node build/validation commands remain a pre-merge requirement because this GitHub runtime exposes no command runner and no PR Actions workflow executed them. Neither draft PR is merge-authorized.
+Source-level and generated-parity checks are complete. Canonical Node build/validation commands remain unexecuted because this GitHub runtime exposes no command runner and no PR Actions workflow executed them. Rick Vang explicitly authorized merge on 2026-09-18 at 10:51 AM CT with that limitation visible; authorization does not change the validation result.
