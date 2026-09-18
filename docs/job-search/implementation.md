@@ -74,6 +74,18 @@ The first workflow is:
 
 `Define target → Analyze role → Map evidence → Build shared evidence source → Render ATS → Review integrity → Optionally render human version and review parity → Submit → Learn`
 
+## Application tracker companion surface
+
+The original responsive job-search page remains a Playbook/reference surface. A separate top-level **Applications** companion surface now owns opportunity/application lifecycle tracking.
+
+- The tracker is governed by `application-tracker-contract.md`.
+- Real records stay in browser-local private state; Persona-Library stores only tracker code, schema, lifecycle vocabulary, and migration behavior.
+- The tracker lifecycle is `Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed`.
+- Job posting and application-packet URLs are integration links, not canonical relationships to Persona or Skill records.
+- Versioned JSON export/import is the portability boundary for backup and future extraction into a standalone app.
+- The tracker does not submit applications, send outreach, scrape jobs, or infer lifecycle transitions.
+- The seen-job deduplication contract remains separate: it suppresses already-presented search results and does not become the application tracker.
+
 ## Data model
 
 Each future job-search record should preserve:
