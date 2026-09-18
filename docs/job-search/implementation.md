@@ -369,7 +369,7 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 ### Candidate-baseline quality
 
 - Any standing-decision-designated baseline/master was resolved and read before resume drafting.
-- The final ATS artifact was compared against the baseline career spine.
+- The final ATS artifact passed **baseline-to-output** integrity by comparing the protected baseline career spine against the role-specific output.
 - Name/contact, employer/title/date/location chronology, employer/client hierarchy, recent employers, education, certifications, and candidate-confirmed historical grouping are unchanged unless a supported correction or explicit candidate decision authorizes the difference.
 - Every material baseline omission is recorded as `omitted_with_reason`; every protected-field change identifies its evidence or decision basis.
 - Secondary profile stores and stale summaries did not replace unresolved authoritative private sources.
