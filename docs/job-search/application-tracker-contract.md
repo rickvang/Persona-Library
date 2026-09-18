@@ -53,6 +53,55 @@ Each record uses a tracker-generated stable `id` and may contain:
 
 The tracker does not infer transitions. External submission, outreach, or interview actions remain separately authorized actions.
 
+## Application-packet handoff
+
+Application-packet work can update the browser-local tracker through a transient, versioned handoff link rather than a server-backed API.
+
+The handoff payload shape is:
+
+```json
+{
+  "format": "persona-library-job-application-handoff",
+  "version": 1,
+  "operation": "upsert",
+  "record": {
+    "company": "Example",
+    "role": "Staff Product Designer",
+    "status": "Packet Ready",
+    "sourceUrl": "https://example.com/job/123",
+    "packetUrl": "https://drive.google.com/...",
+    "foundDate": "2026-09-18",
+    "nextAction": "Review packet and confirm application answers."
+  }
+}
+```
+
+Encode the UTF-8 JSON as base64url and append it to the deployed Applications route as `#handoff=<payload>`. URL fragments are processed client-side and are not sent to the web server.
+
+When the Applications page opens a handoff:
+
+1. require the exact handoff format, supported version, and `upsert` operation;
+2. sanitize allowed fields and restrict posting/packet links to HTTP(S);
+3. identify the existing record by canonical posting URL when available, otherwise by normalized company + role + location;
+4. ask the user to confirm the add/update;
+5. merge only fields present in the handoff so existing notes or metadata are not erased accidentally;
+6. save the resulting record to the browser-local store;
+7. remove the fragment from the address after success, decline, or error.
+
+A handoff link is a **private transient artifact, not encryption**. Base64url makes the payload URL-safe but does not hide its contents from anyone who receives the link. Do not put secrets, credentials, demographic answers, or unsupported private candidate evidence into the payload.
+
+### Workflow state mapping
+
+- role discovered → `Found`;
+- active evaluation / packet work → `Reviewing`;
+- packet created and reviewable → `Packet Ready` with `packetUrl`;
+- explicitly submitted application → `Applied` with `appliedDate`;
+- interview activity → `Interviewing`;
+- offer → `Offer`;
+- rejected, withdrawn, expired, or intentionally stopped → `Closed`.
+
+Creating or opening a tracker handoff never authorizes application submission, outreach, interview scheduling, or another external action. The handoff records an event that has already been authorized or completed.
+
 ## Persistence and privacy
 
 MVP persistence uses browser `localStorage` key `persona-library.job-applications.v1`.
