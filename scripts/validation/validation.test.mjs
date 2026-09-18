@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
+import { playbookCatalogCard, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -128,6 +128,16 @@ test('Job-search routing preserves Riley identity, Playbook procedure, and speci
   assert.throws(() => validateJobSearchRoutingContract({ route, implementation, riley: { roleLabel: 'Job-search orchestrator' }, rileyFlows, playbook, specialistIds }), /canonical AI orchestrator/);
   assert.throws(() => validateJobSearchRoutingContract({ route: { ...route, next_handoff: route.next_handoff.replace('Candidate Baseline', 'resume source') }, implementation, riley, rileyFlows, playbook, specialistIds }), /Candidate Baseline resolution/);
   assert.throws(() => validateJobSearchRoutingContract({ route, implementation: implementation.replace('baseline-to-output', 'final review'), riley, rileyFlows, playbook, specialistIds }), /baseline-integrity gate/);
+});
+
+test('Application tracker stays local, portable, and free of candidate seed data', () => {
+  const page = '<h1>Keep every opportunity in one place.</h1><strong>Local-only data</strong><code>persona-library.job-applications.v1</code><script src="js/job-tracker.js"></script>';
+  const runtime = "const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; localStorage.getItem(STORAGE_KEY); localStorage.setItem(STORAGE_KEY, '[]'); const payload={format:'persona-library-job-applications'}; importFile.addEventListener('change',()=>{}); throw new Error('Unsupported tracker format'); throw new Error('Tracker export is from a newer unsupported version'); new URL(value); ['http:','https:'];";
+  const contract = 'Real records use browser-local private state. Export uses versioned JSON for a future standalone application. This remains separate from the seen-job deduplication contract.';
+  assert.doesNotThrow(() => validateJobApplicationTrackerContract({ page, runtime, contract }));
+  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime + ' fetch("/sync")', contract }), /remote persistence or network calls/);
+  assert.throws(() => validateJobApplicationTrackerContract({ page: page + 'Rick Vang', runtime, contract }), /candidate-specific private values/);
+  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime.replace('Packet Ready','Ready'), contract }), /Packet Ready/);
 });
 
 test('Bounded parallel orientation, grounding, and callback gates remain separate', () => {

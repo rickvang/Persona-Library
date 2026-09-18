@@ -180,7 +180,7 @@ This contract does not add:
 
 - a candidate database or registry;
 - a new Persona or Playbook;
-- a new application tracker;
+- application lifecycle tracking inside Candidate Application Context; the separate top-level Applications companion surface is governed by `application-tracker-contract.md` and keeps real rows in browser-local private state;
 - private candidate records to Persona-Library;
 - synchronization between private candidate files and reusable Templates;
 - a resume generator/runtime or executable mapping DSL;

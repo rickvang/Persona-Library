@@ -283,7 +283,7 @@ This contract does not create:
 - a public candidate registry;
 - a new Persona;
 - a new job-search Playbook;
-- a candidate CRM or application tracker;
+- Candidate Application Context becoming a candidate CRM or application tracker; the separate Applications companion surface may track lifecycle state under `application-tracker-contract.md` without moving candidate values into canonical Persona-Library records;
 - a requirement to store private candidate data in Persona-Library;
 - a synchronization service between private candidate files and Templates;
 - a rendering/generator runtime;

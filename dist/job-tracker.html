@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Private, browser-local job application tracking for the Persona Library job-search workflow." />
+  <title>Applications — Personas</title>
+  <style>
+    :root{--ink:#101827;--soft:#5b6878;--night:#08111f;--paper:#f5f4ef;--card:#fffefa;--line:#d8dcd6;--coral:#ff7c62;--mint:#a6ead7;--blue:#92bdf2;--yellow:#f2d47e;--green:#b7e4c7;--radius:18px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper)}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper)}button,input,select,textarea{font:inherit}button{cursor:pointer}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:20px clamp(20px,4vw,60px);background:var(--night);color:#fff;border-bottom:1px solid rgba(255,255,255,.14)}
+    .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-weight:800;letter-spacing:-.03em}.mark{width:28px;height:28px;display:grid;place-items:center;color:var(--night);background:var(--coral);border-radius:8px;font-size:12px;font-weight:900}
+    .topnav{display:flex;gap:20px;align-items:center;overflow-x:auto;color:#c0cad6;font-size:13px}.topnav a{color:inherit;text-decoration:none;white-space:nowrap}.topnav a[aria-current="page"]{color:#fff;font-weight:800}
+    .hero{padding:50px clamp(20px,7vw,112px) 42px;background:var(--night);color:#fff}.eyebrow{margin:0 0 14px;color:var(--mint);font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.hero h1{max-width:850px;margin:0;font-size:clamp(40px,6vw,72px);line-height:1;letter-spacing:-.06em}.hero-copy{max-width:760px;margin:22px 0 0;color:#bdc8d5;font-size:17px;line-height:1.6}
+    .privacy{display:flex;gap:14px;align-items:flex-start;max-width:1180px;margin:-18px auto 0;padding:18px 20px;border:1px solid #d6cf9e;border-radius:14px;background:#fff7d7;box-shadow:0 8px 24px rgba(16,24,39,.06)}.privacy strong{white-space:nowrap}.privacy p{margin:0;color:#645b37;line-height:1.45}
+    .workspace{max-width:1320px;margin:0 auto;padding:36px clamp(20px,4vw,60px) 72px}.toolbar{display:grid;grid-template-columns:minmax(240px,1fr) 190px auto;gap:12px;align-items:center;margin-bottom:18px}.control{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:var(--card);color:var(--ink);outline:none}.control:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(16,24,39,.08)}
+    .actions{display:flex;gap:8px;justify-content:flex-end}.btn{padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-weight:800}.btn:hover{background:#eceee9}.btn.primary{border-color:var(--ink);background:var(--ink);color:#fff}.btn.danger{color:#963c32}.btn.small{padding:7px 9px;font-size:12px}
+    .summary{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}.stat{padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:#fffefa;color:var(--soft);font-size:12px}.stat strong{color:var(--ink)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px;background:var(--card)}table{width:100%;border-collapse:collapse;min-width:1000px}th,td{padding:14px 16px;text-align:left;border-bottom:1px solid #e7e8e3;vertical-align:top}th{position:sticky;top:0;background:#f0f1ec;color:var(--soft);font-size:11px;letter-spacing:.08em;text-transform:uppercase}tr:last-child td{border-bottom:0}.company{font-weight:850}.role{margin-top:3px;color:var(--soft);font-size:13px}.meta{color:var(--soft);font-size:12px;line-height:1.45}.status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:850;background:#edf0eb}.status[data-status="Found"]{background:#e6edf8}.status[data-status="Reviewing"]{background:#fff0bf}.status[data-status="Packet Ready"]{background:#e3f2ec}.status[data-status="Applied"]{background:#dcecff}.status[data-status="Interviewing"]{background:#f7dfef}.status[data-status="Offer"]{background:#dff3df}.status[data-status="Closed"]{background:#ecebea}
+    .links{display:flex;gap:8px;flex-wrap:wrap}.links a{color:#234d75;font-size:12px;font-weight:800}.row-actions{display:flex;gap:6px;white-space:nowrap}.empty{padding:56px 24px;text-align:center;color:var(--soft)}.empty strong{display:block;margin-bottom:8px;color:var(--ink);font-size:20px}
+    dialog{width:min(760px,calc(100vw - 28px));max-height:90vh;padding:0;border:0;border-radius:18px;background:var(--card);box-shadow:0 24px 80px rgba(0,0,0,.25)}dialog::backdrop{background:rgba(8,17,31,.58)}.dialog-head{display:flex;justify-content:space-between;align-items:center;padding:22px 24px;border-bottom:1px solid var(--line)}.dialog-head h2{margin:0;font-size:24px;letter-spacing:-.03em}.close{border:0;background:transparent;font-size:26px}.form{padding:24px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:850;color:var(--soft)}textarea.control{min-height:96px;resize:vertical}.form-actions{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}.form-actions-right{display:flex;gap:8px}
+    .foot{margin-top:24px;color:var(--soft);font-size:12px;line-height:1.55}.foot code{color:var(--ink)}
+    @media(max-width:900px){.topbar{align-items:flex-start;flex-direction:column}.topnav{width:100%}.toolbar{grid-template-columns:1fr 160px}.actions{grid-column:1/-1;justify-content:flex-start}.privacy{margin:-12px 20px 0}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+    @media(max-width:560px){.toolbar{grid-template-columns:1fr}.actions{grid-column:auto;flex-wrap:wrap}.privacy{display:block}.privacy strong{display:block;margin-bottom:5px}.hero{padding-top:38px}.workspace{padding-top:28px}.form{padding:18px}.dialog-head{padding:18px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="job-tracker.html" aria-current="page">Applications</a><a href="guide.html">Docs</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <section class="hero">
+    <p class="eyebrow">Private workspace / job search</p>
+    <h1>Keep every opportunity in one place.</h1>
+    <p class="hero-copy">Track discovered roles from first review through application, interviews, offers, and closure. The tracker is deliberately independent of Persona records so it can later move into its own app.</p>
+  </section>
+  <section class="privacy" aria-label="Privacy boundary"><strong>Local-only data</strong><p>Your application records are stored in this browser’s local storage. They are not committed to Persona Library or included in the public site source. Export JSON regularly if you want a portable backup.</p></section>
+  <main class="workspace">
+    <div class="toolbar">
+      <input class="control" id="search" type="search" placeholder="Search company, role, location, next action…" aria-label="Search applications" />
+      <select class="control" id="status-filter" aria-label="Filter by status"><option value="all">All statuses</option></select>
+      <div class="actions"><button class="btn" id="import-button" type="button">Import</button><button class="btn" id="export-button" type="button">Export</button><button class="btn primary" id="add-button" type="button">Add opportunity</button></div>
+    </div>
+    <div class="summary" id="summary" aria-live="polite"></div>
+    <section class="table-wrap" aria-label="Job applications">
+      <table>
+        <thead><tr><th>Opportunity</th><th>Status</th><th>Dates</th><th>Compensation</th><th>Next action</th><th>Links</th><th></th></tr></thead>
+        <tbody id="application-rows"></tbody>
+      </table>
+      <div class="empty" id="empty-state" hidden><strong>No applications yet.</strong>Add a role you found, or import a previous tracker export.</div>
+    </section>
+    <p class="foot">Storage key: <code>persona-library.job-applications.v1</code>. Export format is versioned JSON so the records can be migrated into a standalone application later.</p>
+  </main>
+
+  <dialog id="editor" aria-labelledby="editor-title">
+    <div class="dialog-head"><h2 id="editor-title">Add opportunity</h2><button class="close" id="close-editor" type="button" aria-label="Close">×</button></div>
+    <form class="form" id="application-form">
+      <input type="hidden" id="record-id" />
+      <div class="grid">
+        <div class="field"><label for="company">Company</label><input class="control" id="company" required /></div>
+        <div class="field"><label for="role">Role</label><input class="control" id="role" required /></div>
+        <div class="field"><label for="status">Status</label><select class="control" id="status"></select></div>
+        <div class="field"><label for="location">Location / work mode</label><input class="control" id="location" /></div>
+        <div class="field"><label for="compensation">Compensation</label><input class="control" id="compensation" placeholder="$175K–$220K + equity" /></div>
+        <div class="field"><label for="found-date">Found date</label><input class="control" id="found-date" type="date" /></div>
+        <div class="field"><label for="applied-date">Applied date</label><input class="control" id="applied-date" type="date" /></div>
+        <div class="field"><label for="next-action">Next action</label><input class="control" id="next-action" /></div>
+        <div class="field full"><label for="source-url">Posting URL</label><input class="control" id="source-url" type="url" /></div>
+        <div class="field full"><label for="packet-url">Application packet URL</label><input class="control" id="packet-url" type="url" /></div>
+        <div class="field full"><label for="notes">Notes</label><textarea class="control" id="notes"></textarea></div>
+      </div>
+      <div class="form-actions"><button class="btn danger" id="delete-button" type="button" hidden>Delete</button><div class="form-actions-right"><button class="btn" id="cancel-button" type="button">Cancel</button><button class="btn primary" type="submit">Save</button></div></div>
+    </form>
+  </dialog>
+  <input id="import-file" type="file" accept="application/json,.json" hidden />
+  <script src="js/job-tracker.js"></script>
+</body>
+</html>

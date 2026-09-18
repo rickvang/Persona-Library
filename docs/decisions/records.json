@@ -616,6 +616,26 @@
         "DEC-008"
       ],
       "revisit": "A future candidate explicitly replaces the baseline with a different source-of-truth model, repeated runs show baseline drift creates more conflicts than it prevents, or a validated normalized candidate model becomes the explicitly designated composition baseline through a later candidate decision."
+    },
+    {
+      "id": "DEC-016",
+      "status": "Applied",
+      "category": "Private application tracking boundary",
+      "date": "2026-09-18",
+      "title": "Application tracking stays private and extractable",
+      "summary": "Add a top-level Applications surface while keeping real opportunity and application records browser-local, portable, and independent of canonical Persona and Skill data.",
+      "question": "How can Persona Library support application tracking now without publishing private job history or making a later standalone app difficult to extract?",
+      "decision": "Ship application tracking as a separate top-level Applications companion surface. Persona Library owns the tracker code, portable record schema, lifecycle vocabulary, and export/import behavior; real application records remain browser-local private state and never become canonical repository data. Keep seen-job deduplication, candidate context, and application lifecycle tracking as separate contracts.",
+      "rationale": "The requester wants application tracking inside Persona Library now but may make Persona Library public later or split the tracker into its own app. Coupling records to Persona/Skill data or committing opportunity history would create a privacy problem and an expensive extraction boundary. Browser-local persistence provides useful single-user state while versioned JSON keeps the data portable.",
+      "alternatives": "Store application records in Git; overload the seen-job deduplication contract; embed lifecycle state directly into the job-search Playbook page; or build a separate app immediately. Rejected because they respectively expose private history, collapse distinct state models, couple persistence to orchestration presentation, or add infrastructure before it is needed.",
+      "tradeoffs": "Browser-local storage is single-device and can be lost when browser data is cleared, so export is the backup and migration path. In return, the repository stays publishable, the MVP needs no backend or authentication, and a future standalone app can replace only the storage adapter rather than untangling canonical library records.",
+      "affects": "Top-level Applications Site surface; build/navigation; docs/job-search/application-tracker-contract.md; job-search implementation and candidate-context boundaries; architecture; generated validation; issue #151.",
+      "evidence": "Requester decision on 2026-09-18; public Persona-Library repository boundary; existing private candidate-context and seen-job contracts; issue #151; WO-2026-09-18-job-application-tracker.",
+      "qualifies": [
+        "DEC-011",
+        "DEC-014"
+      ],
+      "revisit": "Application tracking needs authenticated cross-device sync, collaboration, external integrations, or server-side automation; browser-local recovery proves insufficient; or extraction into a standalone app begins."
     }
   ]
 }
