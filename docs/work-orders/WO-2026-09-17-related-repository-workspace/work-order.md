@@ -2,7 +2,7 @@
 
 ## Status
 
-- Status: active
+- Status: completed
 - Created: 2026-09-17
 - Last updated: 2026-09-17
 - Requester: repository owner
@@ -81,11 +81,30 @@ The connected GitHub plugin is authorized for repository work but its exposed ac
 - Established the separate-parent placement decision and parent contract.
 - Created branch `codex/persona-workspace-139` from current `main` at `7959f23c7fbf7cedf6e283becacab7fe276c3213`.
 
-### Blocker
+### Implementation outcome
 
-The current GitHub plugin does not expose repository creation. Because #139 requires a new independent repository, the parent files cannot be published to their correct canonical destination until `rickvang/Persona-Workspace` exists.
+The requester created the private `rickvang/persona-workspace` repository. The connected GitHub plugin then initialized and verified the parent shell on `main`.
 
-This is a tooling blocker, not an architecture or Git-integrity blocker.
+Published parent files:
+
+- `README.md`
+- `AGENTS.md`
+- `REPOSITORIES.md`
+- `.gitignore`
+- `Persona-Workspace.code-workspace`
+- `CLAUDE.md` as a thin optional compatibility adapter
+
+Verification confirmed:
+
+- all five canonical child repositories are named in the parent map;
+- all five intended local paths use `repositories/<name>`;
+- all current default branches are `main`;
+- child repository-local instructions are authoritative for child-local changes;
+- workspace membership explicitly does not grant sibling mutation authority;
+- `repositories/` is ignored by the parent;
+- the editor workspace uses only relative paths;
+- no `.gitmodules` file exists;
+- no submodule, subtree, combined-history, or copied canonical-content mechanism was introduced.
 
 ## Success criteria
 
@@ -99,4 +118,4 @@ This is a tooling blocker, not an architecture or Git-integrity blocker.
 
 ## Next action
 
-Create the empty private `rickvang/Persona-Workspace` repository through an authenticated GitHub path that supports repository creation. Once it exists, use the connected GitHub plugin to add the parent shell files defined in `ia.md`, verify them from the canonical repository, then update #138 and close #139 only after the completion criteria are met.
+Proceed to #140 for child membership adapters. After #140, #141 can perform the repository relocation into the parent workspace layout. Keep #138 as the umbrella handoff record for deviations and follow-ups.
