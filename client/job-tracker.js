@@ -26,7 +26,7 @@
     } catch { return []; }
   }
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); }
-  function uid() { return crypto?.randomUUID?.() || `job-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+  function uid() { return globalThis.crypto?.randomUUID?.() || `job-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
   function today() { return new Date().toISOString().slice(0,10); }
   function formatDate(value) {
     if (!value) return '—';
