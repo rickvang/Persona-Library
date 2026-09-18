@@ -1,6 +1,6 @@
 # WO-2026-09-18 — Candidate Baseline Resume workflow repair
 
-- Status: ready-for-review
+- Status: merge-authorized
 - Created: 2026-09-18
 - Last updated: 2026-09-18
 - Requester: Rick Vang
@@ -11,7 +11,7 @@
 - Operating Pack companion draft PR: [rickvang/operating-packs#6](https://github.com/rickvang/operating-packs/pull/6)
 - Authorized repository targets: `rickvang/Persona-Library` and `rickvang/operating-packs`
 - Authorized change: repair the job-application workflow after the Tessera Labs regression
-- Stopping condition: pull requests ready for independent review; merge remains separately unauthorized
+- Stopping condition: merge the two reviewed branches after explicit requester authorization, while preserving the known validation gap
 
 ## Problem
 
@@ -45,7 +45,7 @@ The repair extends existing surfaces rather than creating a new top-level concep
 
 ## Current phase
 
-Implementation and reconciliation are complete for source review. Both PRs remain draft because the repository's canonical Node validation commands cannot be executed through this GitHub connector and the repository exposes no pull-request Actions runner.
+Implementation and reconciliation are complete. Rick Vang explicitly authorized merge in chat on 2026-09-18 at 10:51 AM CT despite the documented command-runner validation gap. The Operating Pack dependency merged first as PR #6 at `36b1336d5a8edf4c91b5016ed66d7e5e64a5e9d6`; Persona-Library is authorized to merge after pinning that revision.
 
 ## Current evidence
 
@@ -65,4 +65,4 @@ Implementation and reconciliation are complete for source review. Both PRs remai
 
 ## Next action
 
-Independent review and execution of the repository's canonical Node checks in an environment with a command runner. Keep both PRs draft until those checks pass. Merge remains separately unauthorized.
+Merge Persona-Library PR #149 after pinning the merged Operating Pack revision. The canonical Node checks remain unexecuted and must stay recorded as a known validation limitation rather than being reported as passed.
