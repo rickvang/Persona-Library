@@ -68,6 +68,7 @@ export async function validateGeneratedOutputs(context) {
     ['stateSource', 'stateOutput', 'Generated dist/js/library-state.js is stale; run build-library.mjs'],
     ['templatePreviewSource', 'templatePreviewOutput', 'Generated dist/js/template-preview.js is stale; run build-library.mjs'],
     ['jobTrackerSource', 'jobTrackerPage', 'Generated dist/job-tracker.html is stale; run build-library.mjs'],
+    ['jobTrackerImportSource', 'jobTrackerImportOutput', 'Generated dist/js/job-tracker-import.js is stale; run build-library.mjs'],
     ['jobTrackerRuntimeSource', 'jobTrackerRuntimeOutput', 'Generated dist/js/job-tracker.js is stale; run build-library.mjs']
   ];
   for (const [sourceKey, outputKey, message] of freshnessPairs) if (files[sourceKey] !== files[outputKey]) throw new Error(message);
