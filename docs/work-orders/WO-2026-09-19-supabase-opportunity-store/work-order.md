@@ -128,8 +128,10 @@ Phase: repository source implementation complete; remote proof blocked.
 
 Gate result: storage adapter, auth/migration UI, generated deployment config, database contract, DEC-017, architecture changes, and validation contracts are implemented on the working branch. Connected-tool syntax/contract checks passed for the browser modules. Canonical Node build/test commands remain unexecuted on this tool surface and are not claimed passed.
 
-Blocker: no Persona-Library Supabase project exists. The only visible organization is `ACME`; existing projects `rs3trade` and `Pursando` are unrelated and were not modified. Project creation requires explicit organization selection plus connector-enforced cost confirmation.
+Live project created: `persona-workspace-data` (`spqruezbccrabmliuijm`) in ACME / `us-east-2` at an approved cost of $0/month. Migrations `create_app_opportunities` and `expose_app_schema` are applied. `app.opportunities` has RLS enabled; authenticated has CRUD grants; anon has no schema/table access; Supabase security and performance advisors both report no findings. PostgREST role config includes `pgrst.db_schemas=public, app`.
+
+Remaining blocker: the connected Supabase surface does not expose Auth user administration, and the connected Vercel surface does not expose environment-variable writes. A private owner Auth user must exist before the app's `shouldCreateUser: false` magic-link login can succeed, and Vercel must receive `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, and optional `SUPABASE_SCHEMA=app` before the deployed Applications page switches from local to remote mode.
 
 ## Next action
 
-Open a draft PR for source review. Then, after the requester explicitly selects the Supabase organization and confirms the retrieved project cost, create the dedicated project, apply a real migration from the reviewed database contract, run RLS/advisor tests, configure deployment env, and migrate/verify the private opportunity rows.
+Create/invite the private Supabase Auth owner, configure the Vercel project environment with the new project's URL/publishable key and `app` schema, redeploy, sign in through the Applications surface, migrate the current local tracker rows, verify remote CRUD and RLS behavior, then update PR #157 from draft once canonical repository build/validation also pass.
