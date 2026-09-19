@@ -1,0 +1,133 @@
+# Work Order — Supabase opportunity persistence
+
+- Work Order ID: `WO-2026-09-19-supabase-opportunity-store`
+- Title: Supabase-backed opportunity persistence and catalog projection foundation
+- Status: active
+- Created: 2026-09-19
+- Last updated: 2026-09-19
+- Requester: repository owner
+- Current owner: ChatGPT / implementation agent
+- Request mode: update
+- Tracking issue: [#156](https://github.com/rickvang/Persona-Library/issues/156)
+- Repository: `rickvang/Persona-Library`
+- Base: `main @ bb41dac2b9dc887547ff00f7ab305c8e26b270a3`
+- Working branch: `feat/issue-156-supabase-opportunity-store`
+
+## Objective
+
+Implement the first executable milestone from #156: make the Applications surface storage-implementation-independent, add an authenticated Supabase persistence path, preserve a safe local migration/rollback path, and prepare the database contract without publishing private opportunity records.
+
+Do not begin the read-only catalog projection until the opportunity-store path is proven against a real authorized Supabase project.
+
+## Placement / Mara boundary review
+
+Classification:
+
+- existing Applications surface extension, not a new Persona-Library top-level space;
+- new storage adapter and deployment configuration behavior;
+- durable architecture/source-of-truth clarification;
+- external private persistence remains outside canonical Persona/Skill/Tool/Playbook records.
+
+Destination:
+
+- `client/job-tracker-store.js` — storage/auth adapter boundary;
+- `client/job-tracker.js` — Applications UI orchestration only;
+- `content/job-tracker-page.html` — auth, storage-state, and migration controls;
+- `scripts/build-library.mjs` — generated runtime config and copied storage module;
+- `docs/job-search/application-tracker-contract.md` — current persistence contract;
+- `ARCHITECTURE.md` and Decisions — accepted source-of-truth boundary;
+- `scripts/validation/*` — regression checks.
+
+Rejected placement alternatives:
+
+- storing real opportunity rows in `content/library-data/*`;
+- reusing an unrelated existing Supabase project;
+- committing a SQLite/JSON/CSV private tracker database;
+- making Supabase canonical for Personas, Skills, Playbooks, or Decisions;
+- starting the catalog projection before remote opportunity persistence is validated.
+
+## Current evidence
+
+Sourced / observed:
+
+- Current tracker stores records under `persona-library.job-applications.v1`.
+- Current main includes safe merge/import behavior from commit `bb41dac2b9dc887547ff00f7ab305c8e26b270a3`.
+- Supabase account access currently exposes organization `ACME` and two unrelated projects: `rs3trade` and `Pursando`; neither is authorized as the Persona-Library data store.
+- Current Supabase docs support browser `supabase-js` clients with publishable keys, custom schemas, Auth sessions, explicit Data API grants, and RLS.
+- Current npm release observed for `@supabase/supabase-js`: `2.116.0`; browser CDN dependency will be version-pinned if used.
+
+Unknown / blocked:
+
+- new project cost has not yet been retrieved/confirmed;
+- requester has not yet explicitly selected the Supabase organization for project creation;
+- final project URL/publishable key and auth redirect origins do not exist yet;
+- remote RLS behavior cannot be claimed verified until a project is created.
+
+## Authorization
+
+Authorized now:
+
+- branch/file changes in `rickvang/Persona-Library` required to implement #156;
+- Work Order, Docs, Decision, client, build, and validation changes;
+- PR creation for review.
+
+Not yet authorized:
+
+- creating a paid Supabase project without the explicit organization + cost confirmation required by the connector;
+- repurposing `rs3trade` or `Pursando`;
+- merging a PR;
+- closing #153 or #156;
+- committing private opportunity rows or secret keys.
+
+## Scope
+
+1. Introduce an asynchronous `OpportunityStore` boundary.
+2. Keep `LocalStorageOpportunityStore` as explicit fallback/migration source.
+3. Add `SupabaseOpportunityStore` using authenticated user sessions and the `app` schema.
+4. Add signed-in / signed-out / local-mode UI states.
+5. Add explicit one-time local → Supabase migration review.
+6. Keep JSON import/export portable.
+7. Generate public runtime config from deployment environment variables without committing credentials.
+8. Specify the first database schema/RLS contract for later application once a project is authorized.
+9. Update architecture/Decision/validation contracts.
+
+## Non-goals
+
+- catalog projection implementation in this milestone;
+- job scraping or autonomous submission;
+- recruiter CRM features;
+- replacing candidate context;
+- bidirectional Supabase → Git catalog authoring;
+- creating a standalone tracker repository;
+- deleting local backups immediately after migration.
+
+## Success criteria
+
+Repository milestone is ready for remote proof when:
+
+- tracker UI no longer directly owns persistence;
+- remote mode never silently falls back to local writes;
+- signed-out remote mode cannot mutate tracker data;
+- local migration is explicit and reviewable;
+- remote CRUD maps between current tracker records and the proposed database columns;
+- generated config contains no service/secret key;
+- existing import/export behavior remains available;
+- build/validation contracts cover the new boundary;
+- private opportunity records remain absent from repository content.
+
+Remote milestone remains blocked until:
+
+- a new Supabase project is explicitly authorized and created;
+- schema/RLS are applied;
+- security advisors and cross-user isolation tests pass;
+- current local opportunity data is migrated and verified.
+
+## Current phase
+
+Phase: repository implementation.
+
+Gate result: placement approved for an Applications storage-adapter extension; remote project creation blocked by explicit Supabase organization/cost gate.
+
+## Next action
+
+Implement the storage adapter, UI/config wiring, contract/Decision updates, and regression validation on `feat/issue-156-supabase-opportunity-store`, then open a draft PR with the remote-project gate clearly identified.
