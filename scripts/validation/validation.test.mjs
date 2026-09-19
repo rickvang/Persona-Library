@@ -139,7 +139,7 @@ test('Application tracker stays local, portable, and free of candidate seed data
   assert.doesNotThrow(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, contract }));
   assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime + ' fetch("/sync")', importRuntime, contract }), /remote persistence or network calls/);
   assert.throws(() => validateJobApplicationTrackerContract({ page: page + 'Rick Vang', runtime, importRuntime, contract }), /candidate-specific private values/);
-  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime: importRuntime.replace('Packet Ready','Ready'), contract }), /Packet Ready/);
+  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime.replace('Packet Ready','Ready'), importRuntime: importRuntime.replace('Packet Ready','Ready'), contract }), /Packet Ready/);
 });
 
 test('Applications tracker import merges safely and remains idempotent', () => {
