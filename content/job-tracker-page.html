@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Private, browser-local job application tracking for the Persona Library job-search workflow." />
+  <meta name="description" content="Private job application tracking with authenticated remote persistence and an explicit local fallback for the Persona Library job-search workflow." />
   <title>Applications — Personas</title>
   <style>
     :root{--ink:#101827;--soft:#5b6878;--night:#08111f;--paper:#f5f4ef;--card:#fffefa;--line:#d8dcd6;--coral:#ff7c62;--mint:#a6ead7;--blue:#92bdf2;--yellow:#f2d47e;--green:#b7e4c7;--radius:18px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper)}
@@ -12,9 +12,9 @@
     .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-weight:800;letter-spacing:-.03em}.mark{width:28px;height:28px;display:grid;place-items:center;color:var(--night);background:var(--coral);border-radius:8px;font-size:12px;font-weight:900}
     .topnav{display:flex;gap:20px;align-items:center;overflow-x:auto;color:#c0cad6;font-size:13px}.topnav a{color:inherit;text-decoration:none;white-space:nowrap}.topnav a[aria-current="page"]{color:#fff;font-weight:800}
     .hero{padding:50px clamp(20px,7vw,112px) 42px;background:var(--night);color:#fff}.eyebrow{margin:0 0 14px;color:var(--mint);font-size:12px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.hero h1{max-width:850px;margin:0;font-size:clamp(40px,6vw,72px);line-height:1;letter-spacing:-.06em}.hero-copy{max-width:760px;margin:22px 0 0;color:#bdc8d5;font-size:17px;line-height:1.6}
-    .privacy{display:flex;gap:14px;align-items:flex-start;max-width:1180px;margin:-18px auto 0;padding:18px 20px;border:1px solid #d6cf9e;border-radius:14px;background:#fff7d7;box-shadow:0 8px 24px rgba(16,24,39,.06)}.privacy strong{white-space:nowrap}.privacy p{margin:0;color:#645b37;line-height:1.45}
+    .privacy{display:flex;gap:14px;align-items:flex-start;max-width:1180px;margin:-18px auto 0;padding:18px 20px;border:1px solid #d6cf9e;border-radius:14px;background:#fff7d7;box-shadow:0 8px 24px rgba(16,24,39,.06)}.privacy strong{white-space:nowrap}.privacy p{margin:0;color:#645b37;line-height:1.45}.connection{display:flex;gap:12px;align-items:center;flex-wrap:wrap;max-width:1180px;margin:14px auto 0;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}.connection-state{margin-right:auto;color:var(--soft);font-size:12px;font-weight:800}.auth-form{display:flex;gap:8px;align-items:center}.auth-form .control{min-width:260px;padding:9px 11px}
     .workspace{max-width:1320px;margin:0 auto;padding:36px clamp(20px,4vw,60px) 72px}.toolbar{display:grid;grid-template-columns:minmax(240px,1fr) 190px auto;gap:12px;align-items:center;margin-bottom:18px}.control{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:var(--card);color:var(--ink);outline:none}.control:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(16,24,39,.08)}
-    .actions{display:flex;gap:8px;justify-content:flex-end}.btn{padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-weight:800}.btn:hover{background:#eceee9}.btn.primary{border-color:var(--ink);background:var(--ink);color:#fff}.btn.danger{color:#963c32}.btn.small{padding:7px 9px;font-size:12px}
+    .actions{display:flex;gap:8px;justify-content:flex-end}.btn{padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-weight:800}.btn:hover{background:#eceee9}.btn:disabled{cursor:not-allowed;opacity:.45}.btn.primary{border-color:var(--ink);background:var(--ink);color:#fff}.btn.danger{color:#963c32}.btn.small{padding:7px 9px;font-size:12px}
     .summary{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}.stat{padding:8px 11px;border:1px solid var(--line);border-radius:999px;background:#fffefa;color:var(--soft);font-size:12px}.stat strong{color:var(--ink)}
     .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px;background:var(--card)}table{width:100%;border-collapse:collapse;min-width:1000px}th,td{padding:14px 16px;text-align:left;border-bottom:1px solid #e7e8e3;vertical-align:top}th{position:sticky;top:0;background:#f0f1ec;color:var(--soft);font-size:11px;letter-spacing:.08em;text-transform:uppercase}tr:last-child td{border-bottom:0}.company{font-weight:850}.role{margin-top:3px;color:var(--soft);font-size:13px}.meta{color:var(--soft);font-size:12px;line-height:1.45}.status{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:850;background:#edf0eb}.status[data-status="Found"]{background:#e6edf8}.status[data-status="Reviewing"]{background:#fff0bf}.status[data-status="Packet Ready"]{background:#e3f2ec}.status[data-status="Applied"]{background:#dcecff}.status[data-status="Interviewing"]{background:#f7dfef}.status[data-status="Offer"]{background:#dff3df}.status[data-status="Closed"]{background:#ecebea}
     .links{display:flex;gap:8px;flex-wrap:wrap}.links a{color:#234d75;font-size:12px;font-weight:800}.row-actions{display:flex;gap:6px;white-space:nowrap}.empty{padding:56px 24px;text-align:center;color:var(--soft)}.empty strong{display:block;margin-bottom:8px;color:var(--ink);font-size:20px}
@@ -34,7 +34,13 @@
     <h1>Keep every opportunity in one place.</h1>
     <p class="hero-copy">Track discovered roles from first review through application, interviews, offers, and closure. The tracker is deliberately independent of Persona records so it can later move into its own app.</p>
   </section>
-  <section class="privacy" aria-label="Privacy boundary"><strong>Local-only data</strong><p>Your application records are stored in this browser’s local storage. They are not committed to Persona Library or included in the public site source. Export JSON regularly if you want a portable backup.</p></section>
+  <section class="privacy" aria-label="Privacy boundary"><strong id="storage-mode-title">Private data</strong><p id="storage-mode-copy">Initializing the opportunity store. Real application records are never committed to Persona Library.</p></section>
+  <section class="connection" aria-label="Opportunity storage connection">
+    <span class="connection-state" id="storage-state" aria-live="polite">Initializing storage…</span>
+    <form class="auth-form" id="auth-form" hidden><input class="control" id="auth-email" type="email" autocomplete="email" placeholder="Email for sign-in link" aria-label="Email for sign-in link" required /><button class="btn primary" type="submit">Send sign-in link</button></form>
+    <button class="btn" id="migrate-local-button" type="button" hidden>Migrate local data</button>
+    <button class="btn" id="sign-out-button" type="button" hidden>Sign out</button>
+  </section>
   <main class="workspace">
     <div class="toolbar">
       <input class="control" id="search" type="search" placeholder="Search company, role, location, next action…" aria-label="Search applications" />
@@ -49,7 +55,7 @@
       </table>
       <div class="empty" id="empty-state" hidden><strong>No applications yet.</strong>Add a role you found, or import a previous tracker export.</div>
     </section>
-    <p class="foot">Storage key: <code>persona-library.job-applications.v1</code>. Export format is versioned JSON so the records can be migrated into a standalone application later.</p>
+    <p class="foot">Portable fallback key: <code>persona-library.job-applications.v1</code>. In configured remote mode, authenticated Supabase storage is primary and the browser-local copy is retained only as an explicit migration/rollback source. Export format remains versioned JSON for portability.</p>
   </main>
 
   <dialog id="editor" aria-labelledby="editor-title">
@@ -81,7 +87,10 @@
     </div>
   </dialog>
   <input id="import-file" type="file" accept="application/json,.json" hidden />
+  <script src="js/job-tracker-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script>
   <script src="js/job-tracker-import.js"></script>
+  <script src="js/job-tracker-store.js"></script>
   <script src="js/job-tracker.js"></script>
 </body>
 </html>
