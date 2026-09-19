@@ -197,6 +197,7 @@
   $('#cancel-button').addEventListener('click', closeEditor);
   dialog.addEventListener('click', event => { if (event.target === dialog) closeEditor(); });
   $('#cancel-import').addEventListener('click', closeImportReview);
+  $('#cancel-import-secondary').addEventListener('click', closeImportReview);
   mergeImportButton.addEventListener('click', commitMerge);
   replaceAllButton.addEventListener('click', commitReplaceAll);
   importDialog.addEventListener('click', event => { if (event.target === importDialog) closeImportReview(); });
