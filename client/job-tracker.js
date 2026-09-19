@@ -216,6 +216,7 @@
     try {
       const parsed = JSON.parse(await file.text());
       const incoming = importTools.parseImport(parsed);
+      records = load();
       pendingImport = { preview: importTools.previewMerge(records, incoming, { createId: uid }), incoming };
       renderImportReview(pendingImport.preview);
       importDialog.showModal();
