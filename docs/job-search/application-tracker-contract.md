@@ -63,6 +63,23 @@ MVP persistence uses browser `localStorage` key `persona-library.job-application
 - Publishing Persona Library source must not publish local tracker contents.
 - Clearing browser data can remove the local tracker; export is the recovery path.
 
+## Import behavior
+
+The normal import path is a non-destructive merge/upsert into the current browser-local records.
+
+- Read the current `persona-library.job-applications.v1` records before applying incoming JSON.
+- Match by stable `id` first, then by canonicalized `sourceUrl` when IDs differ.
+- Do not use company/title similarity as an automatic overwrite identity.
+- Add records with no stable identity match.
+- Preserve existing non-empty lifecycle fields and user-owned `notes` and `nextAction`.
+- Advance lifecycle state only when the incoming state is further along; never downgrade an existing `Applied`, `Interviewing`, or `Offer` record to an earlier state.
+- Fill empty metadata such as `packetUrl`, `location`, and `compensation`; an incoming posting URL may correct a matched record.
+- Surface ambiguous or conflicting identities in the import review before committing safe changes.
+- Show counts for new, updated, unchanged, and conflicting records before the merge is committed.
+- Keep an explicit `Replace all` action for restoring a backup; it is never the default.
+- Malformed, unsupported, or invalid imports fail without changing local state.
+- Export format remains `format: "persona-library-job-applications"` with `version: 1`.
+
 ## Extraction boundary
 
 The tracker must remain extractable:
