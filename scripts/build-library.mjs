@@ -43,6 +43,7 @@ const files = [
   ['content/site-orientation.json', 'dist/data/site-orientation.json'],
   ['client/library-ui.js', 'dist/js/library-ui.js'],
   ['client/library-state.js', 'dist/js/library-state.js'],
+  ['client/job-tracker-import.js', 'dist/js/job-tracker-import.js'],
   ['client/job-tracker.js', 'dist/js/job-tracker.js'],
   ['client/template-preview.js', 'dist/js/template-preview.js'],
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
