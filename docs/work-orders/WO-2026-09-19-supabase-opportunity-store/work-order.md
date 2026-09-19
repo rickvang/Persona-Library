@@ -2,7 +2,7 @@
 
 - Work Order ID: `WO-2026-09-19-supabase-opportunity-store`
 - Title: Supabase-backed opportunity persistence and catalog projection foundation
-- Status: active
+- Status: blocked
 - Created: 2026-09-19
 - Last updated: 2026-09-19
 - Requester: repository owner
@@ -124,10 +124,12 @@ Remote milestone remains blocked until:
 
 ## Current phase
 
-Phase: repository implementation.
+Phase: repository source implementation complete; remote proof blocked.
 
-Gate result: placement approved for an Applications storage-adapter extension; remote project creation blocked by explicit Supabase organization/cost gate.
+Gate result: storage adapter, auth/migration UI, generated deployment config, database contract, DEC-017, architecture changes, and validation contracts are implemented on the working branch. Connected-tool syntax/contract checks passed for the browser modules. Canonical Node build/test commands remain unexecuted on this tool surface and are not claimed passed.
+
+Blocker: no Persona-Library Supabase project exists. The only visible organization is `ACME`; existing projects `rs3trade` and `Pursando` are unrelated and were not modified. Project creation requires explicit organization selection plus connector-enforced cost confirmation.
 
 ## Next action
 
-Implement the storage adapter, UI/config wiring, contract/Decision updates, and regression validation on `feat/issue-156-supabase-opportunity-store`, then open a draft PR with the remote-project gate clearly identified.
+Open a draft PR for source review. Then, after the requester explicitly selects the Supabase organization and confirms the retrieved project cost, create the dedicated project, apply a real migration from the reviewed database contract, run RLS/advisor tests, configure deployment env, and migrate/verify the private opportunity rows.
