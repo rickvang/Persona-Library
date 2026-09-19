@@ -3,6 +3,7 @@ import test from 'node:test';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
 import { playbookCatalogCard, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
@@ -131,13 +132,93 @@ test('Job-search routing preserves Riley identity, Playbook procedure, and speci
 });
 
 test('Application tracker stays local, portable, and free of candidate seed data', () => {
-  const page = '<h1>Keep every opportunity in one place.</h1><strong>Local-only data</strong><code>persona-library.job-applications.v1</code><script src="js/job-tracker.js"></script>';
-  const runtime = "const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; localStorage.getItem(STORAGE_KEY); localStorage.setItem(STORAGE_KEY, '[]'); const payload={format:'persona-library-job-applications'}; importFile.addEventListener('change',()=>{}); throw new Error('Unsupported tracker format'); throw new Error('Tracker export is from a newer unsupported version'); new URL(value); ['http:','https:'];";
-  const contract = 'Real records use browser-local private state. Export uses versioned JSON for a future standalone application. This remains separate from the seen-job deduplication contract.';
-  assert.doesNotThrow(() => validateJobApplicationTrackerContract({ page, runtime, contract }));
-  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime + ' fetch("/sync")', contract }), /remote persistence or network calls/);
-  assert.throws(() => validateJobApplicationTrackerContract({ page: page + 'Rick Vang', runtime, contract }), /candidate-specific private values/);
-  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime.replace('Packet Ready','Ready'), contract }), /Packet Ready/);
+  const page = '<h1>Keep every opportunity in one place.</h1><strong>Local-only data</strong><code>persona-library.job-applications.v1</code><button id="merge-import-button">Merge safe changes</button><button id="replace-all-button">Replace all</button><script src="js/job-tracker-import.js"></script><script src="js/job-tracker.js"></script>';
+  const runtime = "const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; localStorage.getItem(STORAGE_KEY); localStorage.setItem(STORAGE_KEY, '[]'); const payload = { format: FORMAT, version: FORMAT_VERSION }; importFile.addEventListener('change',()=>{});";
+  const importRuntime = "const FORMAT = 'persona-library-job-applications'; const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; canonicalizeSourceUrl; previewMerge; replaceAll; throw new Error('Unsupported tracker format'); throw new Error('newer or unsupported version'); ['http:', 'https:'];";
+  const contract = 'Real records use browser-local private state. Export uses versioned JSON for a future standalone application. This remains separate from the seen-job deduplication contract. The normal import is a non-destructive merge/upsert.';
+  assert.doesNotThrow(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, contract }));
+  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime + ' fetch("/sync")', importRuntime, contract }), /remote persistence or network calls/);
+  assert.throws(() => validateJobApplicationTrackerContract({ page: page + 'Rick Vang', runtime, importRuntime, contract }), /candidate-specific private values/);
+  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime: importRuntime.replace('Packet Ready','Ready'), contract }), /Packet Ready/);
+});
+
+test('Applications tracker import merges safely and remains idempotent', () => {
+  const source = readFileSync(path.join(root, 'client/job-tracker-import.js'), 'utf8');
+  const sandbox = { URL, Date, Math, console };
+  vm.runInNewContext(source, sandbox, { filename: path.join(root, 'client/job-tracker-import.js') });
+  const importTools = sandbox.PersonaLibraryJobTrackerImport;
+  const incoming = [0, 1, 2, 3].map(index => ({
+    company: 'Example employer ' + index,
+    role: 'Product designer ' + index,
+    status: 'Packet Ready',
+    sourceUrl: 'https://jobs.example.com/role/' + index
+  }));
+  const emptyPreview = importTools.previewMerge([], incoming, { createId: () => 'generated-empty', getNow: () => '2026-09-18T00:00:00.000Z' });
+  assert.equal(emptyPreview.added, 4);
+  assert.equal(emptyPreview.records.length, 4);
+
+  const withUnrelated = importTools.previewMerge([{ id: 'unrelated', company: 'Unrelated', role: 'Designer', status: 'Found' }], incoming, { createId: () => 'generated-unrelated', getNow: () => '2026-09-18T00:00:00.000Z' });
+  assert.equal(withUnrelated.added, 4);
+  assert.equal(withUnrelated.records.length, 5);
+
+  const reimport = importTools.previewMerge(emptyPreview.records, incoming, { createId: () => 'different-generated-id', getNow: () => '2026-09-18T00:00:00.000Z' });
+  assert.equal(reimport.added, 0);
+  assert.equal(reimport.updated, 0);
+  assert.equal(reimport.unchanged, 4);
+
+  const advanced = importTools.previewMerge([{
+    id: 'applied-1',
+    company: 'Example employer',
+    role: 'Senior designer',
+    status: 'Applied',
+    sourceUrl: 'https://jobs.example.com/advanced',
+    nextAction: 'Follow up with recruiter',
+    notes: 'User-owned note'
+  }], [{
+    id: 'applied-1',
+    company: 'Example employer',
+    role: 'Senior designer',
+    status: 'Packet Ready',
+    sourceUrl: 'https://jobs.example.com/advanced',
+    packetUrl: 'https://drive.example.com/packet'
+  }], { getNow: () => '2026-09-18T00:00:00.000Z' });
+  assert.equal(advanced.records[0].status, 'Applied');
+  assert.equal(advanced.records[0].nextAction, 'Follow up with recruiter');
+  assert.equal(advanced.records[0].notes, 'User-owned note');
+  assert.equal(advanced.records[0].packetUrl, 'https://drive.example.com/packet');
+
+  const canonical = importTools.previewMerge([{
+    id: 'canonical-existing',
+    company: 'Canonical employer',
+    role: 'Designer',
+    sourceUrl: 'https://JOBS.example.com/role/7/?utm_source=old'
+  }], [{
+    id: 'different-id',
+    company: 'Canonical employer',
+    role: 'Designer',
+    sourceUrl: 'https://jobs.example.com/role/7/?utm_source=new',
+    compensation: '$100K'
+  }], { getNow: () => '2026-09-18T00:00:00.000Z' });
+  assert.equal(canonical.records.length, 1);
+  assert.equal(canonical.records[0].compensation, '$100K');
+  assert.equal(canonical.updated, 1);
+
+  const fuzzyDifferentPosting = importTools.previewMerge([{
+    id: 'fuzzy-existing',
+    company: 'Same employer',
+    role: 'Same role',
+    sourceUrl: 'https://jobs.example.com/role/old'
+  }], [{
+    company: 'Same employer',
+    role: 'Same role',
+    sourceUrl: 'https://jobs.example.com/role/new'
+  }], { createId: () => 'fuzzy-new', getNow: () => '2026-09-18T00:00:00.000Z' });
+  assert.equal(fuzzyDifferentPosting.added, 1);
+
+  assert.throws(() => importTools.parseImport({ format: 'unsupported', version: 1, records: [] }), /Unsupported tracker format/);
+  assert.throws(() => importTools.parseImport({ format: 'persona-library-job-applications', version: 2, records: [] }), /newer or unsupported/);
+  assert.throws(() => importTools.previewMerge([], [{ company: 'Missing role' }]), /company and role are required/);
+  assert.equal(importTools.replaceAll([{ company: 'Restored', role: 'Role' }], { createId: () => 'restored' })[0].id, 'restored');
 });
 
 test('Bounded parallel orientation, grounding, and callback gates remain separate', () => {
