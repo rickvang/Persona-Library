@@ -38,6 +38,8 @@ const FILES = {
   jobSearchPage: 'dist/job-search.html',
   jobTrackerSource: 'content/job-tracker-page.html',
   jobTrackerPage: 'dist/job-tracker.html',
+  jobTrackerImportSource: 'client/job-tracker-import.js',
+  jobTrackerImportOutput: 'dist/js/job-tracker-import.js',
   jobTrackerRuntimeSource: 'client/job-tracker.js',
   jobTrackerRuntimeOutput: 'dist/js/job-tracker.js',
   playbooksPage: 'dist/playbooks.html',
