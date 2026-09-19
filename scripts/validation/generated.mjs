@@ -48,14 +48,15 @@ export function validateJobSearchRoutingContract({ route, implementation, riley,
   if (specialistIds?.has('job-search')) throw new Error('No generic Job Search Persona may be introduced');
 }
 
-export function validateJobApplicationTrackerContract({ page, runtime, contract }) {
-  if (!page.includes('Local-only data') || !page.includes('persona-library.job-applications.v1') || !page.includes('<script src="js/job-tracker.js"></script>') || !page.includes('Keep every opportunity in one place.')) throw new Error('Applications tracker page is missing its privacy boundary, storage contract, or runtime');
-  for (const status of ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']) if (!runtime.includes(status)) throw new Error(`Applications tracker runtime is missing lifecycle state: ${status}`);
-  if (!runtime.includes('localStorage.getItem(STORAGE_KEY)') || !runtime.includes('localStorage.setItem(STORAGE_KEY') || !runtime.includes("format:'persona-library-job-applications'") || !runtime.includes('importFile.addEventListener') || !runtime.includes('Unsupported tracker format') || !runtime.includes('newer unsupported version')) throw new Error('Applications tracker runtime is missing local persistence, versioned import, or portability behavior');
-  if (!runtime.includes('new URL(value)') || !runtime.includes("['http:','https:']")) throw new Error('Applications tracker must restrict imported links to HTTP/HTTPS');
-  if (/\bfetch\s*\(/.test(runtime)) throw new Error('Applications tracker MVP must not add remote persistence or network calls');
-  if (!contract.includes('browser-local private state') || !contract.includes('versioned JSON') || !contract.includes('standalone application') || !contract.includes('seen-job deduplication contract')) throw new Error('Application tracker contract is missing privacy, portability, extraction, or seen-job separation');
-  if (/Rick Vang|rickvang\.com|612\.366\.3550/i.test(page + runtime)) throw new Error('Applications tracker source must not seed candidate-specific private values');
+export function validateJobApplicationTrackerContract({ page, runtime, importRuntime = '', contract }) {
+  if (!page.includes('Local-only data') || !page.includes('persona-library.job-applications.v1') || !page.includes('<script src="js/job-tracker-import.js"></script>') || !page.includes('<script src="js/job-tracker.js"></script>') || !page.includes('Keep every opportunity in one place.') || !page.includes('id="merge-import-button"') || !page.includes('id="replace-all-button"')) throw new Error('Applications tracker page is missing its privacy boundary, import review controls, storage contract, or runtime');
+  for (const status of ['Found', 'Reviewing', 'Packet Ready', 'Applied', 'Interviewing', 'Offer', 'Closed']) if (!runtime.includes(status) && !importRuntime.includes(status)) throw new Error('Applications tracker runtime is missing lifecycle state: ' + status);
+  if (!runtime.includes('localStorage.getItem(STORAGE_KEY)') || !runtime.includes('localStorage.setItem(STORAGE_KEY') || !runtime.includes("FORMAT, version: FORMAT_VERSION") || !runtime.includes('importFile.addEventListener') || !importRuntime.includes('Unsupported tracker format') || !importRuntime.includes('unsupported version')) throw new Error('Applications tracker runtime is missing local persistence, versioned import, or portability behavior');
+  if (!importRuntime.includes('canonicalizeSourceUrl') || !importRuntime.includes('previewMerge') || !importRuntime.includes('replaceAll') || !page.includes('Merge safe changes')) throw new Error('Applications tracker is missing non-destructive merge or explicit Replace all behavior');
+  if (!runtime.includes('safeUrl') && !importRuntime.includes("['http:', 'https:']")) throw new Error('Applications tracker must restrict imported links to HTTP/HTTPS');
+  if (/\bfetch\s*\(/.test(runtime + importRuntime)) throw new Error('Applications tracker MVP must not add remote persistence or network calls');
+  if (!contract.includes('browser-local private state') || !contract.includes('versioned JSON') || !contract.includes('standalone application') || !contract.includes('seen-job deduplication contract') || !contract.includes('non-destructive merge')) throw new Error('Application tracker contract is missing privacy, portability, extraction, merge, or seen-job separation');
+  if (/Rick Vang|rickvang\.com|612\.366\.3550/i.test(page + runtime + importRuntime)) throw new Error('Applications tracker source must not seed candidate-specific private values');
 }
 
 export async function validateGeneratedOutputs(context) {
@@ -68,6 +69,7 @@ export async function validateGeneratedOutputs(context) {
     ['stateSource', 'stateOutput', 'Generated dist/js/library-state.js is stale; run build-library.mjs'],
     ['templatePreviewSource', 'templatePreviewOutput', 'Generated dist/js/template-preview.js is stale; run build-library.mjs'],
     ['jobTrackerSource', 'jobTrackerPage', 'Generated dist/job-tracker.html is stale; run build-library.mjs'],
+    ['jobTrackerImportSource', 'jobTrackerImportOutput', 'Generated dist/js/job-tracker-import.js is stale; run build-library.mjs'],
     ['jobTrackerRuntimeSource', 'jobTrackerRuntimeOutput', 'Generated dist/js/job-tracker.js is stale; run build-library.mjs']
   ];
   for (const [sourceKey, outputKey, message] of freshnessPairs) if (files[sourceKey] !== files[outputKey]) throw new Error(message);
@@ -85,7 +87,7 @@ export async function validateGeneratedOutputs(context) {
   const decision016 = decisionSource.records.find(record => record.id === 'DEC-016');
   if (decisionSource.source !== 'docs/decisions/records.json' || !Array.isArray(decisionSource.records) || !decision010?.corrections?.length || !decision011?.status_note?.includes('DEC-013') || !decision011?.status_note?.includes('DEC-014') || !decision013?.qualifies?.includes('DEC-011') || !decision014?.qualifies?.includes('DEC-011') || !decision015?.qualifies?.includes('DEC-008') || !normalized(decision015?.decision).includes('candidate baseline resume') || !decision016?.qualifies?.includes('DEC-011') || !decision016?.qualifies?.includes('DEC-014') || !normalized(decision016?.decision).includes('browser-local private state') || files.decisionOutput !== renderDecisionsPage(files.decisionTemplateSource, decisionSource.records)) throw new Error('Generated Decisions output is stale or its authored source/history links are invalid; run build-library.mjs');
 
-  const { page, skillsPage, templatesPage, templateViewerPage, jobSearchPage, jobTrackerPage, jobTrackerRuntimeOutput, playbooksPage, operatingPacksPage, prototypingPage, canvasPage, guidePage, toolsPage } = files;
+  const { page, skillsPage, templatesPage, templateViewerPage, jobSearchPage, jobTrackerPage, jobTrackerRuntimeOutput, jobTrackerImportOutput, playbooksPage, operatingPacksPage, prototypingPage, canvasPage, guidePage, toolsPage } = files;
   for (const [name, html] of [['library', page], ['skills', skillsPage]]) for (const script of ['data/library-data.js', 'data/library-model.js', 'js/library-ui.js', 'js/library-state.js']) if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);
   for (const [name, html] of [['templates', templatesPage], ['template-viewer', templateViewerPage]]) if (!html.includes('<script src="js/template-preview.js"></script>')) throw new Error(`${name} page is missing js/template-preview.js`);
   for (const html of [page, skillsPage, jobSearchPage, playbooksPage, operatingPacksPage, templatesPage]) if (!html.includes('playbooks.html')) throw new Error('Primary pages must link to the Playbooks space');
@@ -108,7 +110,7 @@ export async function validateGeneratedOutputs(context) {
   const seenJobContract = await context.readFile('docs/job-search/job-ledger-contract.md');
   if (!seenJobContract.includes('Seen-job deduplication contract') || !seenJobContract.includes('private seen-job set') || !seenJobContract.includes('first_shown') || !seenJobContract.includes('does **not** define a full job-opportunity ledger or application tracker')) throw new Error('Seen-job deduplication contract is missing identity, privacy, or scope boundaries');
   const trackerContract = await context.readFile('docs/job-search/application-tracker-contract.md');
-  validateJobApplicationTrackerContract({ page: jobTrackerPage, runtime: jobTrackerRuntimeOutput, contract: trackerContract });
+  validateJobApplicationTrackerContract({ page: jobTrackerPage, runtime: jobTrackerRuntimeOutput, importRuntime: jobTrackerImportOutput, contract: trackerContract });
   const jobSearchImpl = await context.readFile('docs/job-search/implementation.md');
   if (jobSearchImpl.includes('Riley is the job-search orchestrator') || jobSearchImpl.includes('**Job-search orchestrator**')) throw new Error('docs/job-search/implementation.md must not frame Riley as the Job-search orchestrator identity');
   const riley = context.data.personas.find(persona => persona.id === 'ai-orchestrator');
