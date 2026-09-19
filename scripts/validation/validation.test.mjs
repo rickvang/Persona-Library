@@ -153,11 +153,13 @@ test('Applications tracker import merges safely and remains idempotent', () => {
     status: 'Packet Ready',
     sourceUrl: 'https://jobs.example.com/role/' + index
   }));
-  const emptyPreview = importTools.previewMerge([], incoming, { createId: () => 'generated-empty', getNow: () => '2026-09-18T00:00:00.000Z' });
+  let generatedEmptyId = 0;
+  const emptyPreview = importTools.previewMerge([], incoming, { createId: () => 'generated-empty-' + generatedEmptyId++, getNow: () => '2026-09-18T00:00:00.000Z' });
   assert.equal(emptyPreview.added, 4);
   assert.equal(emptyPreview.records.length, 4);
 
-  const withUnrelated = importTools.previewMerge([{ id: 'unrelated', company: 'Unrelated', role: 'Designer', status: 'Found' }], incoming, { createId: () => 'generated-unrelated', getNow: () => '2026-09-18T00:00:00.000Z' });
+  let generatedUnrelatedId = 0;
+  const withUnrelated = importTools.previewMerge([{ id: 'unrelated', company: 'Unrelated', role: 'Designer', status: 'Found' }], incoming, { createId: () => 'generated-unrelated-' + generatedUnrelatedId++, getNow: () => '2026-09-18T00:00:00.000Z' });
   assert.equal(withUnrelated.added, 4);
   assert.equal(withUnrelated.records.length, 5);
 
