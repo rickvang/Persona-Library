@@ -619,7 +619,7 @@
     },
     {
       "id": "DEC-016",
-      "status": "Applied",
+      "status": "Superseded",
       "category": "Private application tracking boundary",
       "date": "2026-09-18",
       "title": "Application tracking stays private and extractable",
@@ -635,7 +635,29 @@
         "DEC-011",
         "DEC-014"
       ],
-      "revisit": "Application tracking needs authenticated cross-device sync, collaboration, external integrations, or server-side automation; browser-local recovery proves insufficient; or extraction into a standalone app begins."
+      "revisit": "Application tracking needs authenticated cross-device sync, collaboration, external integrations, or server-side automation; browser-local recovery proves insufficient; or extraction into a standalone app begins.",
+      "status_note": "Superseded by DEC-017 after application tracking required authenticated cross-device and agent-accessible persistence. DEC-016 remains the historical MVP boundary."
+    },
+    {
+      "id": "DEC-017",
+      "status": "Applied",
+      "category": "Private application tracking boundary",
+      "date": "2026-09-19",
+      "title": "Authenticated storage becomes primary for private application tracking",
+      "summary": "Keep Persona-Library as the code and contract owner while moving real opportunity rows behind an authenticated Supabase storage adapter; preserve Git as canonical authoring for library catalogs.",
+      "question": "Where should private application state live now that browser-local persistence prevents reliable cross-device and authorized agent updates, and should the same database become the canonical home for Persona-Library catalogs?",
+      "decision": "Use authenticated Supabase storage as the primary opportunity store when configured. Persona-Library owns the tracker UI, portable schema, storage adapter, database contract, and migration/export behavior, but real opportunity rows remain private operational data outside Git. Keep browser-local state only as an explicit fallback, migration source, and rollback copy; never silently redirect a failed remote write to local storage. Keep Personas, Skills, Tools, Templates, Operating Packs, Playbooks, Docs, Decisions, and Work Orders canonical in Git. Any later Supabase catalog tables are deterministic read-only projections from those authored sources, not a replacement authoring system.",
+      "rationale": "The local-only MVP protected privacy and extraction, but it prevents ChatGPT/Codex workflows from reliably creating or updating tracked opportunities and does not provide cross-device persistence. A storage adapter preserves the extraction boundary while authenticated RLS-backed storage solves the operational requirement. Keeping catalog authoring in Git retains reviewable diffs, provenance, validation, and deterministic builds while still allowing a future query index.",
+      "alternatives": "Keep localStorage and rely on import/handoff files; store opportunity history in Git; repurpose an unrelated existing Supabase project; move all canonical catalogs into database tables; or split Applications into a separate app immediately. These respectively preserve the integration constraint, violate privacy, blur project ownership, weaken Git-based authoring/provenance, or add extraction work before the storage boundary is proven.",
+      "tradeoffs": "The tracker now depends on authentication, deployment configuration, RLS, and an external service when remote mode is enabled. Local fallback/export remains important for recovery. Catalog projection adds synchronization responsibility later, so it is deferred until opportunity persistence is proven.",
+      "affects": "Applications storage/runtime, build configuration, docs/job-search/application-tracker-contract.md, architecture, validation, issue #156, future catalog projection, and the later disposition of issue #153.",
+      "evidence": "Requester direction on 2026-09-19; issue #156; current browser-local integration constraint; current Supabase documentation for publishable browser clients, custom Data API schemas, Auth, explicit grants, and RLS; WO-2026-09-19-supabase-opportunity-store.",
+      "qualifies": [
+        "DEC-016",
+        "DEC-011",
+        "DEC-014"
+      ],
+      "revisit": "Authenticated persistence creates unacceptable operational cost or security burden; the tracker is extracted into a standalone application with a different private store; or evidence shows canonical catalog authoring should move away from Git."
     }
   ]
 }

@@ -131,15 +131,17 @@ test('Job-search routing preserves Riley identity, Playbook procedure, and speci
   assert.throws(() => validateJobSearchRoutingContract({ route, implementation: implementation.replace('baseline-to-output', 'final review'), riley, rileyFlows, playbook, specialistIds }), /baseline-integrity gate/);
 });
 
-test('Application tracker stays local, portable, and free of candidate seed data', () => {
-  const page = '<h1>Keep every opportunity in one place.</h1><strong>Local-only data</strong><code>persona-library.job-applications.v1</code><button id="merge-import-button">Merge safe changes</button><button id="replace-all-button">Replace all</button><script src="js/job-tracker-import.js"></script><script src="js/job-tracker.js"></script>';
-  const runtime = "const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; localStorage.getItem(STORAGE_KEY); localStorage.setItem(STORAGE_KEY, '[]'); const payload = { format: FORMAT, version: FORMAT_VERSION }; importFile.addEventListener('change',()=>{});";
+test('Application tracker keeps private data behind explicit local or authenticated stores', () => {
+  const page = '<h1>Keep every opportunity in one place.</h1><strong id="storage-mode-title">Private data</strong><code>persona-library.job-applications.v1</code><form id="auth-form"></form><button id="migrate-local-button">Migrate local data</button><button id="merge-import-button">Merge safe changes</button><button id="replace-all-button">Replace all</button><script src="js/job-tracker-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script><script src="js/job-tracker-import.js"></script><script src="js/job-tracker-store.js"></script><script src="js/job-tracker.js"></script>';
+  const runtime = "const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; const payload = { format: FORMAT, version: FORMAT_VERSION }; importFile.addEventListener('change',()=>{}); importTools.safeUrl; 'Local writes are not used as a silent fallback';";
   const importRuntime = "const FORMAT = 'persona-library-job-applications'; const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; canonicalizeSourceUrl; previewMerge; replaceAll; throw new Error('Unsupported tracker format'); throw new Error('newer or unsupported version'); ['http:', 'https:'];";
-  const contract = 'Real records use browser-local private state. Export uses versioned JSON for a future standalone application. This remains separate from the seen-job deduplication contract. The normal import is a non-destructive merge/upsert.';
-  assert.doesNotThrow(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, contract }));
-  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime + ' fetch("/sync")', importRuntime, contract }), /remote persistence or network calls/);
-  assert.throws(() => validateJobApplicationTrackerContract({ page: page + 'Rick Vang', runtime, importRuntime, contract }), /candidate-specific private values/);
-  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime: runtime.replace('Packet Ready','Ready'), importRuntime: importRuntime.replace('Packet Ready','Ready'), contract }), /Packet Ready/);
+  const storeRuntime = "createLocalStorageOpportunityStore; createSupabaseOpportunityStore; client.schema(schema).from('opportunities'); shouldCreateUser: false; persistSession: true; localStorage.getItem(storageKey);";
+  const configRuntime = "globalThis.PersonaLibraryJobTrackerConfig = {\"mode\":\"local\",\"supabaseUrl\":\"\",\"publishableKey\":\"\",\"schema\":\"app\"};";
+  const contract = 'Authenticated private opportunity store. LocalStorageOpportunityStore and SupabaseOpportunityStore preserve versioned JSON for a future standalone application. This remains separate from the seen-job deduplication contract. The normal import is a non-destructive merge/upsert and remote failure is never a silent fallback.';
+  assert.doesNotThrow(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, storeRuntime, configRuntime, contract }));
+  assert.throws(() => validateJobApplicationTrackerContract({ page: page + 'Rick Vang', runtime, importRuntime, storeRuntime, configRuntime, contract }), /candidate-specific private values/);
+  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, storeRuntime: storeRuntime + ' service_role', configRuntime, contract }), /secret\/service-role key/);
+  assert.throws(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, storeRuntime: '', configRuntime, contract }), /storage adapter/);
 });
 
 test('Applications tracker import merges safely and remains idempotent', () => {

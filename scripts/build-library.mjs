@@ -43,7 +43,9 @@ const files = [
   ['content/site-orientation.json', 'dist/data/site-orientation.json'],
   ['client/library-ui.js', 'dist/js/library-ui.js'],
   ['client/library-state.js', 'dist/js/library-state.js'],
+  ['client/job-tracker-config.js', 'dist/js/job-tracker-config.js'],
   ['client/job-tracker-import.js', 'dist/js/job-tracker-import.js'],
+  ['client/job-tracker-store.js', 'dist/js/job-tracker-store.js'],
   ['client/job-tracker.js', 'dist/js/job-tracker.js'],
   ['client/template-preview.js', 'dist/js/template-preview.js'],
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
@@ -60,6 +62,24 @@ for (const [sourcePath, outputPath] of files) {
   await copyFile(source, output);
   console.log(`Copied ${sourcePath} -> ${outputPath}`);
 }
+
+const trackerSupabaseUrl = String(process.env.SUPABASE_URL || '').trim();
+const trackerSupabasePublishableKey = String(process.env.SUPABASE_PUBLISHABLE_KEY || '').trim();
+if (Boolean(trackerSupabaseUrl) !== Boolean(trackerSupabasePublishableKey)) {
+  throw new Error('Applications Supabase config requires both SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY');
+}
+const trackerRuntimeConfig = {
+  mode: trackerSupabaseUrl && trackerSupabasePublishableKey ? 'supabase' : 'local',
+  supabaseUrl: trackerSupabaseUrl,
+  publishableKey: trackerSupabasePublishableKey,
+  schema: String(process.env.SUPABASE_SCHEMA || 'app').trim() || 'app'
+};
+await writeFile(
+  path.join(root, 'dist/js/job-tracker-config.js'),
+  `globalThis.PersonaLibraryJobTrackerConfig = Object.freeze(${JSON.stringify(trackerRuntimeConfig)});\n`,
+  'utf8'
+);
+console.log(`Built Applications storage config -> ${trackerRuntimeConfig.mode} mode`);
 
 await buildDecisionsPage(root);
 
