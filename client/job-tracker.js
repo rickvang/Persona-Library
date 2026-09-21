@@ -27,6 +27,7 @@
   const storageState = $('#storage-state');
   const authForm = $('#auth-form');
   const authEmail = $('#auth-email');
+  const authPassword = $('#auth-password');
   const signOutButton = $('#sign-out-button');
   const migrateLocalButton = $('#migrate-local-button');
   const addButton = $('#add-button');
@@ -405,12 +406,16 @@
   authForm.addEventListener('submit', async event => {
     event.preventDefault();
     const email = authEmail.value.trim();
-    if (!email || !store?.isRemote) return;
+    const password = authPassword.value;
+    if (!email || !password || !store?.isRemote) return;
+    storageState.textContent = 'Signing in…';
     try {
-      await store.signInWithEmail(email, location.href.split('#')[0]);
-      storageState.textContent = 'Sign-in link sent · check ' + email;
+      await store.signInWithPassword(email, password);
+      authPassword.value = '';
+      await refreshRemoteSession();
     } catch (error) {
-      storageState.textContent = 'Could not send sign-in link · ' + error.message;
+      authPassword.value = '';
+      storageState.textContent = 'Could not sign in · ' + error.message;
     }
   });
 
