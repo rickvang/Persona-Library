@@ -1,5 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "node ../scripts/build-library.mjs > build-output.txt 2>&1; b=$?; node --test ../scripts/validation/validation.test.mjs > validation-test-output.txt 2>&1; t=$?; node ../scripts/validate-content.mjs > validation-content-output.txt 2>&1; v=$?; printf 'build=%s\\ntests=%s\\ncontent=%s\\n' \"$b\" \"$t\" \"$v\" > validation-results.txt; exit 0",
+  "buildCommand": "node --test ../scripts/validation/validation.test.mjs",
   "outputDirectory": "."
 }
