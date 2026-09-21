@@ -62,7 +62,7 @@ Tracking-only URL parameters must not make the same posting appear new. The fall
 
 ## Authenticated private record
 
-The dedicated store is `app.seen_jobs` in the existing `persona-workspace-data` Supabase project.
+The private seen-job set is persisted in the dedicated `app.seen_jobs` store in the existing `persona-workspace-data` Supabase project.
 
 | Field | Purpose |
 | --- | --- |
