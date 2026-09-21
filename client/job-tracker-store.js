@@ -19,6 +19,7 @@
       source_url: String(record.sourceUrl || '').trim() || null,
       normalized_source_url: canonicalizeSourceUrl(record.sourceUrl) || null,
       packet_url: String(record.packetUrl || '').trim() || null,
+      posted_at: String(record.postingDate || '') || null,
       found_at: String(record.foundDate || '') || null,
       applied_at: String(record.appliedDate || '') || null,
       next_action: String(record.nextAction || '').trim(),
@@ -37,6 +38,7 @@
       compensation: row.compensation,
       sourceUrl: row.source_url,
       packetUrl: row.packet_url,
+      postingDate: row.posted_at,
       foundDate: row.found_at,
       appliedDate: row.applied_at,
       nextAction: row.next_action,
@@ -116,7 +118,7 @@
     async function load() {
       const user = await currentUser();
       const { data, error } = await table()
-        .select('id,company,role,status,location,compensation,source_url,packet_url,found_at,applied_at,next_action,notes,updated_at')
+        .select('id,company,role,status,location,compensation,source_url,packet_url,posted_at,found_at,applied_at,next_action,notes,updated_at')
         .eq('user_id', user.id)
         .order('updated_at', { ascending: false });
       if (error) throw error;
@@ -129,7 +131,7 @@
       if (!rows.length) return [];
       const { data, error } = await table()
         .upsert(rows, { onConflict: 'user_id,id' })
-        .select('id,company,role,status,location,compensation,source_url,packet_url,found_at,applied_at,next_action,notes,updated_at');
+        .select('id,company,role,status,location,compensation,source_url,packet_url,posted_at,found_at,applied_at,next_action,notes,updated_at');
       if (error) throw error;
       return (data || []).map(row => fromRow(row, normalizeRecord, createId));
     }
