@@ -2,7 +2,7 @@
 
 - Work Order ID: `WO-2026-09-19-supabase-opportunity-store`
 - Title: Supabase-backed opportunity persistence and catalog projection foundation
-- Status: active
+- Status: ready for merge
 - Created: 2026-09-19
 - Last updated: 2026-09-21
 - Requester: repository owner
@@ -142,6 +142,17 @@ Remote CRUD checkpoint: authenticated Preview create/read is proven. The request
 
 Remote CRUD proof complete: the authenticated Preview successfully created the temporary `supabase test` / `crud smoke test` row, read it back, updated status from `Found` to `Reviewing`, and deleted it through the UI. Direct Supabase verification confirmed each state transition and now reports zero matching rows. The authenticated application CRUD path is proven end-to-end.
 
+## Validation closeout
+
+- Live Preview is verified in `mode: supabase`.
+- Authenticated email/password sign-in is proven against the live Supabase project.
+- UI CRUD is proven end-to-end: create → read → update → delete, with direct database verification after each step.
+- RLS isolation smoke test passed: the owner JWT could read the temporary row, a different authenticated JWT subject could not, anon has neither schema USAGE nor table SELECT, and the transaction left zero residual rows.
+- `node --test scripts/validation/validation.test.mjs` passed in an isolated Vercel build.
+- The normal Vercel build `node scripts/build-library.mjs` passes and the final Preview is READY.
+- `node scripts/validate-content.mjs` was executed and fails on a pre-existing main-branch inconsistency: `.agents/skills/local-video-inspection` exists on `main`, but `content/orientation/skills.json` on `main` does not route it. The same condition exists on this branch and was not introduced by #157.
+- Supabase Security Advisor has one non-blocking Auth warning: leaked-password protection is disabled.
+
 ## Next action
 
-Complete remaining repository validation and RLS isolation evidence, then request explicit merge authorization. After merge/deploy, sign in on the production origin and migrate the existing production-origin local tracker rows.
+Merge PR #157 under the requester's explicit authorization. After production deploy, sign in on the production origin and migrate the existing production-origin local tracker rows.
