@@ -104,7 +104,7 @@ Repository validation complete:
 - authenticated has SELECT + INSERT only, with UPDATE/DELETE denied by grants;
 - `app.seen_jobs` contains zero rows after synthetic proof cleanup.
 
-Merge and issue closure remain governed by the pinned GitHub Tool contract and are not implied by this Work Order.
+Merge is authorized by the requester’s explicit instruction to merge issue #96 and by the current Persona-Library standing completion contract; the pinned GitHub Tool contract still governs fresh preflight and linked-issue completion.
 
 ## Posting-date follow-up
 
@@ -123,6 +123,12 @@ Result:
 - Workiva: 2026-08-03;
 - Apollo.io, Future, ngrok, and Order.co remain blank because their linked pages did not expose an exact published date that could be verified without inference.
 
+## Decision-history correction
+
+Codex review identified that moving the private seen-job set from caller/runtime-only state to a dedicated authenticated Supabase table is a durable architecture change that requires Decision history. DEC-020 now records that choice, qualifies DEC-011 and DEC-017, preserves the Applications separation, and defines the revisit conditions.
+
+The earlier VM cross-realm test issue and implementation-guide ownership mismatch are also corrected on this branch.
+
 ## Next action
 
-Review PR #170. Merge and linked issue closure remain separate GitHub-governed actions.
+Run repository validation on the Decision-corrected head, resolve the addressed review threads, refresh current `main` and PR state, and merge PR #170 if the full preflight is clean.
