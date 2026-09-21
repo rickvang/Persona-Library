@@ -64,7 +64,7 @@ The tracker does not infer transitions. External submission, outreach, or interv
 
 ### Configured remote mode
 
-When deployment supplies `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY`, the generated tracker runtime uses authenticated Supabase storage as the primary persistence layer.
+When deployment supplies a complete Supabase URL + publishable-key pair, the generated tracker runtime uses authenticated Supabase storage as the primary persistence layer. The build accepts either `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` or the Vercel/Next.js aliases `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
 
 - Browser code may use only a publishable key; secret/service-role keys are prohibited.
 - The exposed `app` schema must be explicitly allowed through the Supabase Data API.
@@ -140,8 +140,8 @@ A Work Order or application process must not claim migration is complete without
 The static build produces `dist/js/job-tracker-config.js`.
 
 - No remote env config → explicit `local` mode.
-- Both `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` → `supabase` mode.
-- Supplying only one of those values is a build error.
+- A complete `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` pair, or a complete `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` pair → `supabase` mode.
+- Supplying a URL without a matching publishable key, or vice versa, is a build error.
 - `SUPABASE_SCHEMA` may select the exposed application schema and defaults to `app`.
 - The build never reads or emits a secret/service-role key.
 
