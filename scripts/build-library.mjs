@@ -63,10 +63,10 @@ for (const [sourcePath, outputPath] of files) {
   console.log(`Copied ${sourcePath} -> ${outputPath}`);
 }
 
-const trackerSupabaseUrl = String(process.env.SUPABASE_URL || '').trim();
-const trackerSupabasePublishableKey = String(process.env.SUPABASE_PUBLISHABLE_KEY || '').trim();
+const trackerSupabaseUrl = String(process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim();
+const trackerSupabasePublishableKey = String(process.env.SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || '').trim();
 if (Boolean(trackerSupabaseUrl) !== Boolean(trackerSupabasePublishableKey)) {
-  throw new Error('Applications Supabase config requires both SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY');
+  throw new Error('Applications Supabase config requires a matching URL + publishable-key pair (SUPABASE_* or NEXT_PUBLIC_SUPABASE_*)');
 }
 const trackerRuntimeConfig = {
   mode: trackerSupabaseUrl && trackerSupabasePublishableKey ? 'supabase' : 'local',
