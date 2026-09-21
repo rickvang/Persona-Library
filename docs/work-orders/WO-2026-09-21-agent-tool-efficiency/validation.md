@@ -26,3 +26,22 @@ The implementation is ready for review. GitHub CI run `35625619378` is green end
 Vercel still creates a deployment record before the ignored-build decision is reflected as CANCELED. The improvement is therefore **avoided completed Preview builds**, not zero Vercel deployment records.
 
 The remaining unverified boundary is the real Production deployment from `main`, which requires a separately authorized merge.
+
+
+## 2026-09-21 deployment-record quota correction
+
+The earlier ignored-build proof was insufficient for quota control: ignored commits still created Vercel deployment records before ending `CANCELED`.
+
+Follow-up evidence:
+
+| Check | State | Evidence |
+| --- | --- | --- |
+| Branch-level Git gate configured | pass | `vercel.json` sets `git.deploymentEnabled["**"] = false`, `main = true`, and `preview-* = true`; `ignoreCommand` is removed. |
+| First fix commit creates no deployment record | pass | Commit `5d0e43a3a4853b1208ab2deb27e0e4600463d269` is absent from the project's Vercel deployment list. |
+| Follow-up implementation commits create no deployment records | pass | Commits `b46914ebb51c4de533c9cb98278b15b95def9203`, `a2cde86da809abd4af9daa747f077c81bcfb5189`, `60e493edac8439c47102b554c2e7902f62a9e21f`, and `5668752cdf3b57b58cb3f3114b0e99e3026d99a5` are also absent from Vercel's recent deployment list. |
+| Obsolete ignored-build implementation removed | pass | `scripts/vercel-ignore-build.mjs` and `scripts/validation/vercel-ignore-build.test.mjs` are removed. |
+| Focused regression replacement | pending PR CI | `scripts/validation/vercel-git-deployment.test.mjs` asserts the branch policy and absence of `ignoreCommand`. |
+| Production deployment behavior | pending merge | Static policy preserves `main: true`; live Production proof requires the merged main commit. |
+| Explicit Preview branch behavior | configuration-proven; live proof deferred | `preview-*` is enabled by Vercel configuration. A live Preview is intentionally not triggered while the account is at its daily deployment limit. |
+
+This follow-up changes the claim from “ignored commits avoid completed builds” to “routine branches do not create automatic Vercel deployment records.”
