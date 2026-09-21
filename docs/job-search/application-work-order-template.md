@@ -23,6 +23,9 @@ Person-specific facts, standing decisions, voice preferences, evidence sources, 
 - Current stage owner:
 - Supporting Persona(s):
 - Opportunity state:
+- Applications tracker record ID:
+- Tracker record resolution: not checked / existing / created / not applicable / blocked
+- Tracker sync/update status: not checked / in sync / update required / updated / blocked / not applicable
 - Work/process state:
 - Artifact state:
 - Current gate:
@@ -47,6 +50,17 @@ Person-specific facts, standing decisions, voice preferences, evidence sources, 
 A Work Order records authorization constraints but never grants permission to submit an application, contact an employer, publish a document, or send an external message.
 
 ## 1. Target and source of truth
+
+### Applications tracker binding
+
+When opportunity/application tracking is in scope, read [the Applications tracker contract](application-tracker-contract.md) and resolve an existing tracker record before creating a duplicate. Match a stable tracker ID first and then the canonical posting URL. Keep lifecycle status, canonical URL, posting date, and milestone details in the tracker itself. The Work Order retains only the tracker reference, resolution/sync state, and any remaining operational action or blocker.
+
+- Tracker record ID:
+- Resolution result: existing / created / not applicable / blocked
+- Tracker sync/update status:
+- Remaining tracker action or blocker:
+
+A selected/tracked opportunity may be created or updated as `Found`. Packet completion may set `packetUrl` and advance to `Packet Ready` when appropriate. Only a confirmed submission may set `Applied` and `appliedDate`; interview, offer, and closure states require confirmed events. Never infer a posting date or lifecycle transition from drafting progress, elapsed time, or assumption.
 
 ### Candidate Context gate
 
@@ -478,8 +492,14 @@ Gate values are pass, revise, skipped with reason, blocked, no-go, or unknown.
 
 Do not infer that a version was submitted because it was drafted or reviewed. Submission is a separate authorized action.
 
+After a confirmed submission, synchronize the bound Applications tracker record to `Applied` and record `appliedDate`. Do not make that transition from packet readiness alone.
+
 ## 8. Close and learning
 
+- Final Applications tracker lifecycle status:
+- Final tracker sync/update result:
+- Final tracker update checkpoint completed? yes / no / not applicable
+- Confirmed event/source for any lifecycle advancement:
 - Candidate Context result and revision used:
 - Candidate Context updated during run? yes / no
 - Resume Content Model result / schema version / revision used:
