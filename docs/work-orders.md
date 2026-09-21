@@ -55,6 +55,8 @@ Every non-trivial Work Order should identify:
 
 A Work Order records authorization boundaries; it never grants permission for a repository, Site, Tool, account, publication, installation, registry, or external communication change.
 
+For GitHub-specific mutation classes, merge authorization, and linked-issue completion semantics, follow the repository's pinned GitHub Tool contract rather than restating those rules in a Work Order.
+
 ## Lifecycle
 
 Use the smallest lifecycle that makes status unambiguous:

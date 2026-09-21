@@ -17,6 +17,8 @@ Persona-Library may select, catalog, and explain this Playbook. After selection,
 
 Prior conversation context, coordinator memory, Persona-Library records, and implementer handoffs are pointers and context; they are not substitutes for fresh target-repository inspection.
 
+GitHub-specific mutation classes, merge authorization, and linked-issue completion semantics come from the target repository's pinned GitHub Tool contract. This Playbook owns implementation coordination and its merge gate; it does not redefine the GitHub mutation contract.
+
 ## Implementation-truth precedence
 
 This order is about implementation truth, not permission expansion. A repository file or Playbook never grants a mutation the user did not authorize.
@@ -51,11 +53,11 @@ Persona-Library remains optional discovery, applicability, relationships, and pr
 
 ## Outcome
 
-Produce a small set of independent, reviewable implementation results—normally one branch and one pull request per workstream—after each workstream is source-grounded against current target-repository truth, with compact handoffs, independent review against current repository state, scoped correction only when needed, and merge only under separate authorization.
+Produce a small set of independent, reviewable implementation results—normally one branch and one pull request per workstream—after each workstream is source-grounded against current target-repository truth, with compact handoffs, independent review against current repository state, scoped correction only when needed, and merge only after authorization under the target repository's pinned GitHub Tool contract.
 
 Implementer success is a reviewable PR or a bounded blocker for the assigned workstream. Run success is every dispatched workstream accepted after independent review or explicitly blocked or deferred, plus a compact coordinator packet that a reviewer can use to rehydrate from GitHub. Success is not merge, transcript completeness, nested-agent activity, or a recorded correction list that has not been applied and re-reviewed.
 
-The run stops when every dispatched workstream is accepted after independent review or explicitly blocked or deferred, the compact handoffs are collected, and merge is either separately authorized and completed or explicitly left unmerged. Recording scoped corrections is not terminal: stages 5–6 require the named defects to be applied and the updated PR to be re-reviewed before that workstream can stop. A contradicted candidate is re-scoped or dropped before dispatch; it is not a dispatched workstream.
+The run stops when every dispatched workstream is accepted after independent review or explicitly blocked or deferred, the compact handoffs are collected, and merge is either authorized under the target repository's pinned GitHub Tool contract and completed or explicitly left unmerged. Recording scoped corrections is not terminal: stages 5–6 require the named defects to be applied and the updated PR to be re-reviewed before that workstream can stop. A contradicted candidate is re-scoped or dropped before dispatch; it is not a dispatched workstream.
 
 ## When to use
 
@@ -82,7 +84,7 @@ If named Personas must argue a shared problem before implementation, use the [Mu
 
 Multi-Persona Collaboration owns named Persona lenses, attributable contributions, synthesis, and one concrete solution for a bounded user problem.
 
-This Playbook owns bounded parallel *implementation*: Coordinator, Implementer, Reviewer, and Authorizer roles, source-grounding before dispatch, one-level delegation, compact GitHub-reference handoffs, independent PR review, and separately authorized merge.
+This Playbook owns bounded parallel *implementation*: Coordinator, Implementer, Reviewer, and Authorizer roles, source-grounding before dispatch, one-level delegation, compact GitHub-reference handoffs, independent PR review, and an explicit GitHub-contract merge gate.
 
 Issue [#71](https://github.com/rickvang/Persona-Library/issues/71) still tracks canonical catalog identity for Multi-Persona Collaboration. That open question does not make this workflow an extension of collaboration. Extending collaboration here would mix solution synthesis with repository mutation gates.
 
@@ -91,7 +93,7 @@ Do not add a second “Source-Grounded Parallel Implementation” identity. Sour
 ## Required inputs
 
 - candidate workstreams, each naming a repository, issue or requested outcome, and an initial scope;
-- authorization for implementation, pull request creation, and—separately, if requested—merge;
+- authorization for implementation and pull request creation; merge authorization is evaluated under the target repository's pinned GitHub Tool contract;
 - current `main` or other agreed base for each target repository, refreshed before grounding;
 - enough access to inspect repo-local instructions, relevant source, and the local validation contract;
 - a coordinator context that can receive compact handoffs, plus a reviewer context that can reinspect GitHub.
@@ -301,13 +303,13 @@ If callback transport is unavailable, surface the same compact packet in the coo
 
 - **Purpose:** Apply a consequential mutation only with fresh authorization and preflight, then stop.
 - **Owner:** Authorizer.
-- **Entry:** Review passed for the PRs intended to merge, and merge was explicitly authorized.
+- **Entry:** Review passed for the PRs intended to merge, and merge authorization is valid under the target repository's pinned GitHub Tool contract.
 - **Inputs:** Current PR, base branch, review, and check state.
 - **Actions:** Refresh state; merge in an order that respects shared-file conflicts; do not infer authorization from a green PR or a completion callback.
 - **Outputs:** Merge commits, or an explicit unmerged remainder.
 - **Evidence:** GitHub merge records and remaining open PRs.
 - **Exit:** Requested merges are done or explicitly declined; the run stops.
-- **Handoff:** Close or update the issue/Work Order with outcomes, limitations, and next action.
+- **Handoff:** Reconcile issue state under the target repository's pinned GitHub Tool contract and update the Work Order with outcomes, limitations, and next action within its authorized scope.
 
 ## Usage containment
 
@@ -347,7 +349,7 @@ originating Chat
 → Work sends one concise completion callback into the originating Chat when supported
 → originating Chat independently reinspects GitHub and reviews the PRs
 → scoped correction if needed
-→ separately authorized merge
+→ merge authorized under the pinned GitHub Tool contract
 ```
 
 ### Completion callback adapter
@@ -404,7 +406,7 @@ An agent that starts inside an external target repository does not load Persona-
 
 **Correction-loop gate.** Recording scoped corrections is not terminal. Pass only after the named defects are applied and the updated PR is re-reviewed to accept, or the workstream is explicitly blocked or deferred.
 
-**Run-stop gate.** Pass only when every dispatched workstream is accepted after review or explicitly blocked or deferred, compact handoffs exist, and merge is either separately authorized and completed or explicitly left unmerged. Fail if the run closes with a known failed review that still needs apply and re-review.
+**Run-stop gate.** Pass only when every dispatched workstream is accepted after review or explicitly blocked or deferred, compact handoffs exist, and merge is either authorized under the target repository's pinned GitHub Tool contract and completed or explicitly left unmerged. Fail if the run closes with a known failed review that still needs apply and re-review.
 
 **Merge gate.** Pass only with explicit authorization and fresh preflight. Implementation completion, a compact callback, or a passing review does not pass this gate by itself.
 
@@ -447,6 +449,6 @@ Do not add a Work/Codex-specific Tool package unless later evidence shows substa
 - Runtime-mapping amendment: [issue comment](https://github.com/rickvang/Persona-Library/issues/82#issuecomment-5663449934)
 - Related: [#71](https://github.com/rickvang/Persona-Library/issues/71) collaboration identity, [#75](https://github.com/rickvang/Persona-Library/issues/75) GitHub/current-repository workflow, [#70](https://github.com/rickvang/Persona-Library/issues/70) ownership boundaries, [#60](https://github.com/rickvang/Persona-Library/issues/60) external-artifact boundary, `tool-repo` #3 and #4, `template-library` #1
 - Confidence: contract is inspectable; one two-lane repository case exists; one external-repository source-grounding case exists; Chat→Work completion callback is a documented adapter, not yet a required proof for every runtime
-- Assumptions: GitHub remains the default repository workflow; implementers can inspect fresh repository state; merge stays a separate authorization; Persona-Library stays catalog/discovery rather than an execution dependency
+- Assumptions: GitHub remains the default repository workflow; implementers can inspect fresh repository state; merge authorization remains governed by the target repository's pinned GitHub Tool contract; Persona-Library stays catalog/discovery rather than an execution dependency
 - Unresolved: whether later cases need a second live parallel-run proof across two repositories; whether #71 later catalogs Multi-Persona Collaboration beside this identity; whether substantial Playbook artifacts should later move to an independent library
-- Next action after an authorized update: bounded `$change-impact-reconciliation`, then reviewable PR, then separately authorized merge
+- Next action after an authorized update: bounded `$change-impact-reconciliation`, then reviewable PR, then the pinned GitHub Tool contract's merge gate
