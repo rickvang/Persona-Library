@@ -714,6 +714,25 @@
         "DEC-017"
       ],
       "revisit": "The seen-job store is extracted into a standalone job-search application with a different authenticated persistence layer; repeated-search behavior needs richer repost/version history; Supabase availability or security cost becomes unacceptable; or evidence shows discovery memory and application lifecycle should share a different explicitly designed state model."
+    },
+    {
+      "id": "DEC-021",
+      "status": "Applied",
+      "category": "Orchestration state boundary",
+      "date": "2026-09-21",
+      "title": "Riley resumes work from Current Work, then Work Orders, then live state",
+      "summary": "Use the existing Notion Current Work database as Riley's cross-agent workstream index, Work Orders as detailed execution/recovery state, and GitHub or other live systems as the authority for volatile operational facts.",
+      "question": "How should Riley preserve enough state for another agent to resume substantial work without duplicating fast-changing GitHub and tool state or reconstructing the entire conversation?",
+      "decision": "For substantial Riley-operated work, create or resume one row in the user's existing Notion Current Work tracker when it is available. Keep that row concise and human-facing: objective, owner, next action, blocker, last checkpoint, and authoritative links. Use the linked Work Order for detailed scope, evidence, decisions, gates, handoffs, validation, and recovery. Treat GitHub, CI, reviews, mergeability, deployments, permissions, and other independently changing systems as freshness-sensitive authorities rather than mirrored tracker fields. Resume in the order Current Work → Work Order → selective live refresh, and update Current Work only at material lifecycle, ownership, blocker, or next-action transitions.",
+      "rationale": "The existing Current Work database was already designed as a cross-thread index and the Work Order already owns detailed resumable execution state. Creating another Riley database would duplicate state and create reconciliation overhead. Conversely, copying live repository facts into Notion would become stale and force additional verification. A clear state hierarchy preserves interruption recovery while allowing agents to reuse still-valid evidence and fetch only facts whose freshness matters.",
+      "alternatives": "Create a separate Riley orchestration database; make Work Orders the only cross-agent index; mirror full GitHub/CI state into Notion; or rely on each agent's conversation context. Rejected because they respectively duplicate the existing tracker, make portfolio-level resumption harder, create stale duplicated live state, or fail when a session or agent ends mid-work.",
+      "tradeoffs": "Agents must maintain concise Current Work checkpoints and correctly distinguish historical evidence from freshness-sensitive live state. Runtime enforcement still depends on agents loading the linked records. In return, substantial work can survive agent/session interruption with fewer broad rediscovery calls and less duplicated state.",
+      "affects": "Riley Morgan Persona and workflow; root AGENTS guidance; Work Order handoff/recovery contract; regression validation; Notion Current Work operating convention; issue #178.",
+      "evidence": "Issue #178; existing Notion Current Work purpose/schema observed on 2026-09-21; docs/work-orders.md recovery contract; issue #159 remote-tool efficiency lessons; Riley's existing AI-orchestrator responsibilities.",
+      "qualifies": [
+        "DEC-018"
+      ],
+      "revisit": "Current Work becomes unavailable or is replaced; Work Orders no longer serve as detailed recovery packets; runtime orchestration gains a more reliable shared state service; or evidence shows the hierarchy causes stale decisions, duplicate work, or excessive tracker maintenance."
     }
   ]
 }

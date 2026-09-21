@@ -113,6 +113,22 @@ The Work Order is the active coordination layer. Link, rather than duplicate, th
 
 Do not rename a specialized artifact to Work Order merely because it is linked from one. The names describe different responsibilities.
 
+## Riley cross-agent continuity
+
+For substantial Riley-operated work, use the user's existing **Notion Current Work** database as the cross-thread/cross-agent index when that tracker is available. Do not create a second orchestration database for the same purpose. One Current Work row represents one substantial workstream; the linked Work Order remains the detailed project-scoped execution and recovery record.
+
+Use this state hierarchy:
+
+1. **Current Work** — concise cross-agent index: current objective, owner or agent, next action, blocker, last checkpoint, and links to the authoritative work surfaces.
+2. **Work Order** — detailed execution/recovery state: scope, constraints, decisions, accepted evidence, phase and gate state, handoffs, validation, and resumable next action.
+3. **Live systems** — freshness-sensitive operational authority: GitHub branch/PR head, CI, review threads, mergeability, deployments, permissions, and other state that can change independently of the checkpoint.
+
+**Resume order:** Current Work → linked Work Order → selectively refresh live systems whose state may have been invalidated. Reuse still-valid evidence instead of reconstructing the conversation or broadly refetching every source.
+
+Update Current Work at material lifecycle or ownership transitions and whenever the next safe action materially changes. Do not use it as a mirror of every commit, check, review count, current SHA, mergeability result, or deployment event. **Do not mirror volatile live state** merely to make the tracker look complete; the Last Checkpoint should record the last proven state and the Next Action should name what must be refreshed before a consequential mutation.
+
+If an agent is interrupted, the next agent should be able to resume from the Current Work row and Work Order without replaying completed phases. Historical checkpoint facts remain reusable unless a named invalidation event makes them stale; current external state must still be refreshed at the boundary where freshness matters.
+
 ## Handoff and recovery
 
 A handoff records:

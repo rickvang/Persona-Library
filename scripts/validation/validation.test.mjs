@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateVercelToolCatalogSurface } from './generated.mjs';
+import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateRileyContinuityContract, validateVercelToolCatalogSurface } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -315,4 +315,14 @@ test('Playbook identity is validated before the shared Playbook ID index is trus
   assert.throws(() => buildValidationIndexes({ ...valid, playbookCatalog: [{ name: 'Missing id', status: 'Working model' }] }), /Invalid or duplicate Playbook catalog identity: \(missing\)/);
   assert.throws(() => buildValidationIndexes({ ...valid, playbookCatalog: [{ id: 'playbook-test', status: 'Working model' }] }), /Invalid or duplicate Playbook catalog identity: playbook-test/);
   assert.throws(() => buildValidationIndexes({ ...valid, playbookCatalog: [{ id: 'playbook-test', name: 'Missing status' }] }), /Invalid or duplicate Playbook catalog identity: playbook-test/);
+});
+
+
+test('Riley continuity keeps Current Work, Work Orders, and volatile live state in distinct roles', () => {
+  const agents = 'For substantial Riley-operated work, use Notion Current Work as the cross-thread/cross-agent index. Load the linked Work Order. Do not mirror volatile GitHub state; refresh live systems when freshness requires it.';
+  const workOrders = 'Riley cross-agent continuity uses Current Work as the cross-agent index, the Work Order for detailed recovery, and live systems for volatile authority. Resume order: Current Work → linked Work Order → selective refresh. Do not mirror volatile live state.';
+  const riley = { id:'ai-orchestrator', behaviors:['Resumes substantial linked work from the Current Work checkpoint before broad rediscovery'], needs:['A durable cross-agent workstream index linked to detailed Work Orders'], implication:'Use Current Work as the cross-agent index, the Work Order as detailed recovery state, and live systems as freshness-sensitive authority; resume before broad rediscovery.' };
+  const rileyFlows = [{title:'Operate and improve the system',activities:[['Resume and checkpoint substantial work','At material transition','Continuity','Reconstruction','Current Work + linked Work Order (representative)']]}];
+  assert.doesNotThrow(() => validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }));
+  assert.throws(() => validateRileyContinuityContract({ agents, workOrders: workOrders.replace('Do not mirror volatile live state', 'Mirror all live state'), riley, rileyFlows }), /Work Order guidance/i);
 });
