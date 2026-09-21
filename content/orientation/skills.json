@@ -173,6 +173,39 @@
         "Installing or downloading codecs, transcription models, or dependencies without separate authorization"
       ],
       "next_handoff": "Keep extracted evidence temporary unless the request authorizes a durable artifact; reconcile only when execution creates durable repository state."
+    },
+    {
+      "id": "resume-template-semantic-mapping",
+      "request": "Map a private candidate Resume Content Model into a verified resume Template while preserving the designated baseline and material meaning",
+      "modes": [
+        "research",
+        "update"
+      ],
+      "primary_space": "skills",
+      "secondary_spaces": [
+        "docs",
+        "templates",
+        "operating-packs"
+      ],
+      "target": "resume-template-semantic-mapping",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/resume-template-semantic-mapping",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "active private Candidate Application Context",
+        "standing-decision-designated Candidate Baseline Resume when one is active",
+        "docs/job-search/resume-content-model.md",
+        "verified resume Template and slot-map.json",
+        "docs/job-search/resume-template-mapping.md"
+      ],
+      "mutation_boundary": "artifact_generation",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "Discovering candidate evidence or deciding whether a claim is true",
+        "Designing a new reusable Template from scratch",
+        "Replacing ATS, accessibility, document-production, or export validation"
+      ],
+      "next_handoff": "Return the bounded semantic mapping to the application workflow, then run the applicable artifact and cross-space validation when durable output is created."
     }
   ]
 }
