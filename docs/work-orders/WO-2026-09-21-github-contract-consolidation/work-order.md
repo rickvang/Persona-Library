@@ -46,7 +46,7 @@ The consumer pin is provisional while tool-repo PR #10 is unmerged. The final Pe
 
 Phase: draft consumer implementation complete.
 
-Gate: upstream dependency pending. tool-repo PR #10 is open and mergeable, but not merged. Persona-Library draft PR #166 is staged against PR #10's immutable head and remains blocked until the exact landed upstream revision is known.
+Gate: upstream dependency pending. Persona-Library repository validation is green on PR #166, including build, authored/generated content, tests, whitespace, and generated-output freshness. tool-repo PR #10 is open and mergeable but not merged, so PR #166 remains blocked until the exact landed upstream revision is known.
 
 ## Success criteria
 
@@ -59,4 +59,4 @@ Gate: upstream dependency pending. tool-repo PR #10 is open and mergeable, but n
 
 ## Next action
 
-Wait for authorized tool-repo PR #10 merge. After it lands, refresh the exact upstream revision, update the pin if needed, run final validation/reconciliation, and move Persona-Library PR #166 to review-ready.
+Wait for authorized tool-repo PR #10 merge. After it lands, refresh the exact upstream revision, update the pin if needed, rerun final validation/reconciliation, and move Persona-Library PR #166 to review-ready.
