@@ -9,6 +9,19 @@ export function playbookCatalogCard(html, playbookId) {
 const normalized = value => String(value || '').toLowerCase();
 const includesAll = (value, terms) => terms.every(term => normalized(value).includes(term));
 
+export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute }) {
+  const pin = String(agents || '').match(/rickvang\/tool-repo\/blob\/([0-9a-f]{40})\/tools\/github\/AGENTS\.md/i);
+  if (!pin) throw new Error('Persona-Library must pin an exact GitHub Tool contract revision');
+  if (pin[1].toLowerCase() === '94acc6082e941439d2ee532f1b1b091cd42eb923') throw new Error('Persona-Library must pin the post-split GitHub Tool contract');
+  if (!includesAll(agents, ['github mutation classes', 'linked-issue completion semantics'])) throw new Error('Root AGENTS must defer GitHub mutation and linked-issue completion semantics to the pinned Tool contract');
+  if (!includesAll(workOrders, ['pinned github tool contract', 'merge authorization', 'linked-issue completion semantics'])) throw new Error('Work Order guidance must defer GitHub mutation semantics to the pinned Tool contract');
+  if (!includesAll(boundedPlaybook, ['pinned github tool contract', 'merge authorization', 'linked-issue completion semantics'])) throw new Error('Bounded Parallel must defer GitHub mutation semantics to the pinned Tool contract');
+  if (normalized(boundedPlaybook).includes('separately authorized merge')) throw new Error('Bounded Parallel must not maintain a duplicate reusable merge-authorization rule');
+  if (!includesAll(boundedRoute?.next_handoff, ['pinned github tool contract', 'merge authorization', 'linked-issue completion semantics'])) throw new Error('Bounded Parallel routing must defer GitHub mutation semantics to the pinned Tool contract');
+  if (normalized(boundedRoute?.next_handoff).includes('separately authorized mutation')) throw new Error('Bounded Parallel routing must not maintain a duplicate reusable merge-authorization rule');
+  return pin[1].toLowerCase();
+}
+
 const routingCaseRequirements = {
   unqualifiedNarrow: {
     terms: ['unqualified', 'riley morgan', 'narrow', 'specialist', 'skill'],
@@ -84,6 +97,17 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
+  const [rootAgents, workOrderContract, boundedParallelPlaybook] = await Promise.all([
+    context.readFile('AGENTS.md'),
+    context.readFile('docs/work-orders.md'),
+    context.readFile('docs/playbooks/bounded-parallel-implementation.md')
+  ]);
+  validateGitHubGovernanceContract({
+    agents: rootAgents,
+    workOrders: workOrderContract,
+    boundedPlaybook: boundedParallelPlaybook,
+    boundedRoute: context.routeGroups.get('playbooks').routes.find(route => route.id === 'bounded-parallel-implementation')
+  });
   const decisionSource = JSON.parse(await context.readFile('docs/decisions/records.json'));
   const decision010 = decisionSource.records.find(record => record.id === 'DEC-010');
   const decision011 = decisionSource.records.find(record => record.id === 'DEC-011');
