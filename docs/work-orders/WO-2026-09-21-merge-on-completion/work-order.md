@@ -3,7 +3,7 @@
 ## Header
 
 - Work Order ID: `WO-2026-09-21-merge-on-completion`
-- Status: active
+- Status: ready-for-review
 - Created: 2026-09-21
 - Last updated: 2026-09-21
 - Requester: Rick Vang
@@ -51,10 +51,29 @@ Repository-defined review using Mara Okoye's knowledge-systems placement contrac
 - focused validation catches regression to an unconditional second-confirmation rule.
 - required repository validation is green.
 
+## Validation
+
+- PR #173 opened from `feat/issue-172-merge-on-completion`.
+- Repository validation run #38 passed on head `0880ff4a7799d4bcab89d45a1dfaa17f6304ea26`.
+- Current PR diff is scoped to repository governance, Bounded Parallel routing/process, Work Order guidance, DEC-019, generated mirrors, and focused regression validation.
+- Historical Work Orders are unchanged.
+- The pinned GitHub Tool contract is unchanged.
+
+## Change-impact reconciliation
+
+- **Root repository instructions — extends:** now define Persona-Library-specific standing completion authorization while retaining the pinned GitHub Tool contract for reusable mutation semantics and fresh preflight.
+- **Bounded Parallel Playbook — qualifies:** Reviewer/Authorizer separation remains; the Authorizer gate may be satisfied by a current requester instruction or repository-level standing authorization. Green status alone still does not create permission.
+- **Playbooks route — extends:** activates the same repository-standing-authorization handoff; authored and generated route files remain identical.
+- **Work Order lifecycle — qualifies:** Work Orders continue to record rather than grant permission and now record standing authorization plus explicit task-level overrides.
+- **Decisions — extends:** DEC-019 records the new repository authorization choice and qualifies DEC-010 without rewriting its historical rationale.
+- **GitHub Tool contract — unchanged:** mutation classes, linked-issue completion semantics, and merge preflight remain owned by the pinned tool-repo revision.
+- **Archived Work Orders — unchanged:** historical evidence is not rewritten.
+- **External repositories and non-GitHub consequential actions — unchanged:** no standing authorization is created.
+
 ## Current phase
 
-Implementation in progress.
+Review-ready with repository validation green.
 
 ## Next action
 
-Apply the scoped governance and validation changes, open a PR, run repository validation, and reconcile the affected current surfaces. After issue #172 is dispositioned under the authorization in force, refresh PR #170 and merge issue #96 if its preflight remains clean.
+Refresh PR #173 head/base/review/check/mergeability/linked-completion state immediately before merge. After the governance change is on `main`, refresh PR #170 and merge issue #96 if its preflight remains clean.
