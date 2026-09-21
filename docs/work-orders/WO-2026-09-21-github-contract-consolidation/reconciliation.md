@@ -1,6 +1,6 @@
 # Change-impact reconciliation — issue #165
 
-- Status: partial — consumer implementation and repository CI are complete; the final landed upstream revision remains pending.
+- Status: complete for final review — consumer implementation is staged against the exact landed upstream Tool revision; final PR validation/preflight remains.
 - Change observed: Persona-Library now defers reusable GitHub mutation, merge-authorization, and linked-issue completion semantics to the pinned `rickvang/tool-repo` GitHub Tool package.
 - Initiating contract: docs/playbooks update + Work Order lifecycle guidance; reconciliation required by the selected routes and repository contract.
 - Authority: issue #165, current Persona-Library `main`, root `AGENTS.md`, `content/site-orientation.json`, Docs/Playbooks routes, and `change-impact-reconciliation`.
@@ -34,11 +34,9 @@
 
 ## Required updates
 
-1. Merge or otherwise land tool-repo PR #10 under its own authorization path.
-2. Refresh the exact landed tool-repo revision.
-3. Replace the provisional Persona-Library pin if the landed revision differs from PR #10 head.
-4. Run/verify repository validation and generated-output freshness.
-5. Update the Work Order from blocked to review-ready only after the upstream dependency is satisfied.
+1. Verify repository validation and generated-output freshness against the landed Tool revision.
+2. Refresh PR #166 review threads, mergeability, and current main/head state.
+3. Mark PR #166 review-ready and merge only if the final preflight remains green.
 
 ## Optional follow-ups
 
@@ -54,8 +52,8 @@
 
 ## Blockers and incomplete visibility
 
-The Persona-Library consumer pin is intentionally provisional at tool-repo PR #10 head `303e98d048ae689239f53eae309fd55c050fac38`. PR #10 is open, not merged, so issue #165 cannot satisfy its final pin acceptance criterion yet.
+The upstream dependency is satisfied: tool-repo PR #10 merged and Persona-Library pins the landed revision `01198019e8f1520eb222dc6af2ec17bd81bc9c30`. No upstream blocker remains.
 
 ## Next action
 
-Open the Persona-Library change as a draft dependency PR. After tool-repo PR #10 lands, refresh the upstream revision, finalize the pin, verify CI/reconciliation, and move the consumer PR to review-ready.
+Verify final CI and current PR state, then move the consumer PR to review-ready and merge under the pinned GitHub Tool contract.
