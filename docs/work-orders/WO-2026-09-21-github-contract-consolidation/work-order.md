@@ -1,7 +1,7 @@
 # Work Order — GitHub authorization contract consolidation
 
 - Work Order ID: WO-2026-09-21-github-contract-consolidation
-- Status: blocked
+- Status: active
 - Created: 2026-09-21
 - Last updated: 2026-09-21
 - Requester: repository user
@@ -11,7 +11,7 @@
 - Upstream dependency: rickvang/tool-repo#9 / PR #10
 - Branch: `feat/issue-165-github-contract-consolidation`
 - Pull request: #166 — draft, dependency-blocked
-- Provisional upstream Tool revision: `303e98d048ae689239f53eae309fd55c050fac38`
+- Provisional upstream Tool revision: `01198019e8f1520eb222dc6af2ec17bd81bc9c30`
 - Change domain: repository governance documentation, Playbook routing, focused validation
 - Reconciliation: change-impact-reconciliation
 
@@ -46,7 +46,7 @@ The consumer pin is provisional while tool-repo PR #10 is unmerged. The final Pe
 
 Phase: draft consumer implementation complete.
 
-Gate: upstream dependency pending. Persona-Library repository validation is green on PR #166, including build, authored/generated content, tests, whitespace, and generated-output freshness. tool-repo PR #10 is open and mergeable but not merged, so PR #166 remains blocked until the exact landed upstream revision is known.
+Gate: upstream dependency satisfied. tool-repo PR #10 merged at `01198019e8f1520eb222dc6af2ec17bd81bc9c30`; Persona-Library now pins that exact landed revision. Final consumer validation and merge preflight remain.
 
 ## Success criteria
 
@@ -59,4 +59,4 @@ Gate: upstream dependency pending. Persona-Library repository validation is gree
 
 ## Next action
 
-Wait for authorized tool-repo PR #10 merge. After it lands, refresh the exact upstream revision, update the pin if needed, rerun final validation/reconciliation, and move Persona-Library PR #166 to review-ready.
+Run final repository validation against the landed Tool revision, refresh PR #166 review/check state, mark it review-ready, and merge if unchanged and green.
