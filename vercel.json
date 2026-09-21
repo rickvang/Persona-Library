@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "node ../scripts/vercel-ignore-build.mjs",
   "buildCommand": "node ../scripts/build-library.mjs",
   "outputDirectory": "."
 }
