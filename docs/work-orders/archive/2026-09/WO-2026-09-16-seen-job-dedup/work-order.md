@@ -4,7 +4,7 @@
 
 - Work Order ID: WO-2026-09-16-seen-job-dedup
 - Issue: #96
-- Status: ready-for-review
+- Status: complete
 - Last updated: 2026-09-21
 - Authorized repository: `rickvang/Persona-Library`
 - Working branch: `feat/issue-96-supabase-seen-jobs`
@@ -25,7 +25,7 @@ Selected placement:
 - `client/seen-job-store.js` — dedicated stable-identity + authenticated storage adapter;
 - `dist/js/seen-job-store.js` — generated/copied runtime asset;
 - `docs/job-search/job-ledger-contract.md` — current reusable behavior/security contract;
-- `docs/work-orders/WO-2026-09-16-seen-job-dedup/database-contract.sql` — repository-side database contract;
+- `docs/work-orders/archive/2026-09/WO-2026-09-16-seen-job-dedup/database-contract.sql` — archived repository-side database contract;
 - existing private Supabase `app.seen_jobs` — actual user-specific state.
 
 Rejected alternatives:
@@ -95,6 +95,7 @@ Repository validation complete:
 
 - PR #170 opened against `main`;
 - GitHub Actions Repository validation run #36 passed;
+- final GitHub Actions Repository validation run #45 passed on merge candidate `5dbf78b1c4b288ba9fd5583d0e78664dc3d014bc`;
 - build generated library output passed;
 - authored/generated content validation passed;
 - repository tests passed, including the new seen-job identity and repeated-run tests;
@@ -129,6 +130,15 @@ Codex review identified that moving the private seen-job set from caller/runtime
 
 The earlier VM cross-realm test issue and implementation-guide ownership mismatch are also corrected on this branch.
 
+## Completion
+
+- all Codex review threads were addressed and resolved;
+- DEC-020 records the authenticated seen-job storage decision;
+- PR #170 merged to `main` as `143612e152fd32fab1950f70d1e1c21ebdfb7ad6` on 2026-09-21;
+- GitHub automatically closed issue #96 from the existing in-scope closing keyword;
+- the linked Current Work record was reconciled to `Done / Reference` with checkpoint C04 before completion was reported;
+- this terminal Work Order package was moved to the September 2026 archive under the repository's archive lifecycle.
+
 ## Next action
 
-Run repository validation on the Decision-corrected head, resolve the addressed review threads, refresh current `main` and PR state, and merge PR #170 if the full preflight is clean.
+Reference only. Reopen with a new GitHub issue and a new active Work Order if seen-job persistence or deduplication requires further changes.
