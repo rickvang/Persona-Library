@@ -130,8 +130,8 @@ Gate result: storage adapter, auth/migration UI, generated deployment config, da
 
 Live project created: `persona-workspace-data` (`spqruezbccrabmliuijm`) in ACME / `us-east-2` at an approved cost of $0/month. Migrations `create_app_opportunities` and `expose_app_schema` are applied. `app.opportunities` has RLS enabled; authenticated has CRUD grants; anon has no schema/table access; Supabase security and performance advisors both report no findings. PostgREST role config includes `pgrst.db_schemas=public, app`.
 
-Remaining blocker: the connected Supabase surface does not expose Auth user administration, and the connected Vercel surface does not expose environment-variable writes. A private owner Auth user must exist before the app's `shouldCreateUser: false` magic-link login can succeed, and Vercel must receive `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, and optional `SUPABASE_SCHEMA=app` before the deployed Applications page switches from local to remote mode.
+Live wiring update: the private Supabase Auth owner now exists (`auth.users` count = 1), and the requester connected `persona-workspace-data` to the Persona-Library Vercel project. The currently deployed PR preview still reports generated tracker config `mode: local` because it predates that integration connection; a fresh preview deployment is required to verify the synced environment variables are present.
 
 ## Next action
 
-Create/invite the private Supabase Auth owner, configure the Vercel project environment with the new project's URL/publishable key and `app` schema, redeploy, sign in through the Applications surface, migrate the current local tracker rows, verify remote CRUD and RLS behavior, then update PR #157 from draft once canonical repository build/validation also pass.
+Verify a fresh Vercel preview generated after the Supabase integration connection reports `mode: supabase`; then sign in through Applications, migrate the current local tracker rows, verify remote CRUD/RLS behavior, and update PR #157 from draft once canonical repository build/validation also pass.
