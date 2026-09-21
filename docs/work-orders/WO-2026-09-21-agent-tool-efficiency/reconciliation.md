@@ -32,4 +32,4 @@ Mara’s placement review selected an existing-record extension rather than a ne
 - Vercel Preview is deployed-state evidence, not a replacement for repository CI.
 - User-visible review checkpoints are preserved; the internal marker is not a user responsibility.
 - The pre-existing Skill-route repair is explicitly separated from the #159 root cause.
-- Final status remains pending current CI and skip-behavior evidence.
+- Final pre-merge status: reconciled. GitHub CI run `35625619378` passed all repository gates, one explicit Preview reached READY, and unmarked follow-up commits were canceled by the Vercel ignored-build gate. Actual Production behavior remains a post-merge verification.

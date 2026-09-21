@@ -78,9 +78,9 @@ Also verify one branch commit without the marker is ignored by Vercel, one `[ver
 
 ## Current phase and next action
 
-Phase: implementation published as PR #163; first GitHub CI run exposed one pre-existing Skills onboarding gap (`local-video-inspection`) before reaching the new #159 checks. The explicit `[vercel-preview]` checkpoint is READY.
+Phase: ready for review. PR #163 has a READY explicit Preview and GitHub repository validation run `35625619378` passed build, full content validation, focused tests, committed-range whitespace, and generated-output parity. Unmarked follow-up commits are canceled by the Vercel ignored-build gate rather than reaching READY.
 
-Next action: repair the pre-existing route gap, refresh the generated outputs affected by #159, rerun GitHub CI, and verify this unmarked repair commit is skipped by Vercel.
+Next action: review PR #163 and its live Preview. Merge remains a separate requester decision; after merge, verify the actual `main` Production deployment before closing issue #159.
 
 ## Completion boundary
 
