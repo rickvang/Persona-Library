@@ -134,7 +134,7 @@ Live wiring update: the private Supabase Auth owner exists (`auth.users` count =
 
 Deployment verification checkpoint: Vercel Supabase integration environment scope was saved for Production, Preview, and Development on 2026-09-21. The Applications login was changed from magic-link email to direct Supabase email + password authentication to remove SMTP delivery as a dependency. Store/runtime/page JavaScript syntax checks passed, no magic-link auth residue remains in those runtime surfaces, and the latest Vercel Preview for commit `5224860677dab35b0ef47086763e7e4b75620ce7` is READY. Supabase Security Advisor now reports one Auth warning: leaked-password protection is disabled; this is not blocking the private owner sign-in proof but should be reviewed before broader use.
 
-Vercel connection checkpoint: requester confirmed `persona-workspace-data` is explicitly connected to the `persona-library` Vercel project. A fresh Preview deployment is being triggered to verify the generated tracker config switches from local fallback to Supabase mode.
+Vercel connection checkpoint: requester confirmed `persona-workspace-data` is explicitly connected to the `persona-library` Vercel project. Fresh Preview deployment `f99d66420a457bb9bee9870ad4526b82d3534281` is READY and its generated `job-tracker-config.js` was directly verified as `mode: supabase` with project URL `https://spqruezbccrabmliuijm.supabase.co`, publishable key, and schema `app`. The previous no-op login was traced to an older Preview built in `mode: local`, not to the user's Auth credentials.
 
 ## Next action
 
