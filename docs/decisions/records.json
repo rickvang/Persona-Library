@@ -733,6 +733,21 @@
         "DEC-018"
       ],
       "revisit": "Current Work becomes unavailable or is replaced; Work Orders no longer serve as detailed recovery packets; runtime orchestration gains a more reliable shared state service; or evidence shows the hierarchy causes stale decisions, duplicate work, or excessive tracker maintenance."
+    },
+    {
+      "id": "DEC-022",
+      "status": "Applied",
+      "category": "Orchestration boundary",
+      "date": "2026-09-21",
+      "title": "Riley governs durable orchestration for every substantial Current Work workstream",
+      "summary": "Make Riley Morgan / ai-orchestrator the default durable orchestration owner for substantial Current Work while preserving direct execution and the existing Current Work → Work Order → live-system hierarchy.",
+      "question": "How should Riley become a durable control plane across all substantial workstreams without forcing every execution step through an extra Riley runtime call or creating another orchestration database?",
+      "decision": "Every substantial Current Work workstream is Riley-governed for continuity and orchestration unless the requester explicitly establishes another orchestration boundary. The selected Persona, Skill, Playbook, Tool path, or execution runtime may operate directly. Riley reconciles durable orchestration state at workstream creation, material rerouting, cross-agent handoff, major blocker, and completion. Current Work records Operating Route and optional Parent Work ID; Work Orders retain detailed recovery state; live systems retain volatile authority.",
+      "rationale": "Riley already owns default intake/routing and cross-agent continuity. Extending that responsibility to every substantial Current Work item closes the remaining gap between initial routing and durable resumption without adding a second control database or a redundant execution hop.",
+      "tradeoffs": "Agents must load and honor the shared Riley invariant and maintain concise route state at material boundaries. The model deliberately does not prove that every runtime invoked Riley as a separate agent; it preserves orchestration ownership without adding that overhead.",
+      "affects": "Riley Morgan Persona and operating workflow; root AGENTS guidance; Work Order continuity contract; regression validation; Notion Current Work schema and governance; ChatGPT, Codex, Claude, Cursor, and Hermes collaboration contracts; issue #180.",
+      "evidence": "Issue #180; Riley v1.4 continuity contract from issue #178; Notion Current Work Work ID, Operating Route, Parent Work ID, and Shared Collaboration Governance.",
+      "revisit": "A user explicitly assigns another durable orchestration owner, direct execution becomes ambiguous or unsafe without a runtime Riley hop, or repeated work shows Operating Route / Parent Work ID are insufficient for resumption."
     }
   ]
 }
