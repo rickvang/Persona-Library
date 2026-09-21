@@ -132,6 +132,8 @@ Live project created: `persona-workspace-data` (`spqruezbccrabmliuijm`) in ACME 
 
 Live wiring update: the private Supabase Auth owner now exists (`auth.users` count = 1), and the requester connected `persona-workspace-data` to the Persona-Library Vercel project. The currently deployed PR preview still reports generated tracker config `mode: local` because it predates that integration connection; a fresh preview deployment is required to verify the synced environment variables are present.
 
+Deployment verification checkpoint: Vercel Supabase integration environment scope was saved for Production, Preview, and Development on 2026-09-21. A fresh preview deployment is being triggered to verify the generated Applications config receives the synced Supabase variables.
+
 ## Next action
 
 Verify a fresh Vercel preview generated after the Supabase integration connection reports `mode: supabase`; then sign in through Applications, migrate the current local tracker rows, verify remote CRUD/RLS behavior, and update PR #157 from draft once canonical repository build/validation also pass.
