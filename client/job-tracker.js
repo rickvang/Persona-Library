@@ -121,8 +121,9 @@
       opportunity.append(text('div', record.company, 'company'), text('div', record.role, 'role'), text('div', record.location, 'meta'));
       const statusTd = document.createElement('td');
       const badge = text('span', record.status || 'Found', 'status'); badge.dataset.status = record.status || 'Found'; statusTd.append(badge);
+      const postingDate = document.createElement('td');
+      postingDate.append(text('div', formatDate(record.postingDate), 'meta'));
       const dates = document.createElement('td');
-      dates.append(text('div', 'Posted: ' + formatDate(record.postingDate), 'meta'));
       dates.append(text('div', 'Found: ' + formatDate(record.foundDate), 'meta'));
       dates.append(text('div', 'Applied: ' + formatDate(record.appliedDate), 'meta'));
       const comp = document.createElement('td'); comp.append(text('div', record.compensation || '—', 'meta'));
@@ -136,7 +137,7 @@
       const actions = document.createElement('td'); const actionWrap = text('div', '', 'row-actions');
       const edit = text('button', 'Edit', 'btn small'); edit.type = 'button'; edit.disabled = !canWrite; edit.addEventListener('click', () => openEditor(record.id));
       actionWrap.append(edit); actions.append(actionWrap);
-      tr.append(opportunity, statusTd, dates, comp, next, links, actions); rows.append(tr);
+      tr.append(opportunity, statusTd, postingDate, dates, comp, next, links, actions); rows.append(tr);
     }
     renderSummary();
     exportButton.disabled = records.length === 0;
