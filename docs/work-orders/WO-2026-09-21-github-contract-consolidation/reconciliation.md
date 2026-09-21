@@ -1,6 +1,6 @@
 # Change-impact reconciliation — issue #165
 
-- Status: partial — consumer changes are staged; final upstream revision and repository CI remain pending.
+- Status: partial — consumer implementation and repository CI are complete; the final landed upstream revision remains pending.
 - Change observed: Persona-Library now defers reusable GitHub mutation, merge-authorization, and linked-issue completion semantics to the pinned `rickvang/tool-repo` GitHub Tool package.
 - Initiating contract: docs/playbooks update + Work Order lifecycle guidance; reconciliation required by the selected routes and repository contract.
 - Authority: issue #165, current Persona-Library `main`, root `AGENTS.md`, `content/site-orientation.json`, Docs/Playbooks routes, and `change-impact-reconciliation`.
@@ -30,7 +30,7 @@
 
 ## Generated outputs
 
-`content/orientation/playbooks.json` and `dist/data/orientation/playbooks.json` are byte-identical on the implementation branch after the route change. Full generated-output freshness and repository validation remain pending GitHub CI.
+`content/orientation/playbooks.json` and `dist/data/orientation/playbooks.json` are byte-identical on the implementation branch after the route change. GitHub repository validation run `35632601841` passed build, authored/generated content validation, focused tests, whitespace, and generated-output freshness.
 
 ## Required updates
 
