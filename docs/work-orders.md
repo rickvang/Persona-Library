@@ -135,7 +135,10 @@ A Work Order is complete only when:
 - evidence, assumptions, unknowns, and untested scope remain visible;
 - material gate failures and corrections have dispositions;
 - authorization and mutation boundaries were respected;
-- the next action or explicit completion boundary is recorded.
+- the next action or explicit completion boundary is recorded;
+- when the Work Order or linked GitHub issue is already mirrored in an external active-work tracker, that linked tracker has been reconciled to the material lifecycle change and both systems have been verified before completion is reported.
+
+This reconciliation requirement applies only to an already-linked active-work tracker; it does not require creating one for otherwise trivial standalone work. Treat blocked, ready-for-review, complete, no-go, and cancelled transitions as material when stale mirrored state would misrepresent the work. GitHub-specific merge authorization and linked-issue completion semantics remain governed by the repository's pinned GitHub Tool contract.
 
 A polished artifact, a handoff, or a full-looking checklist is not completion by itself.
 
