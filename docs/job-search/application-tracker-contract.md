@@ -72,6 +72,8 @@ When deployment supplies a complete Supabase URL + publishable-key pair, the gen
 - RLS policies must bind reads and writes to `auth.uid() = user_id`.
 - UPDATE requires both `USING` and `WITH CHECK`.
 - Signed-out remote mode cannot mutate opportunity records.
+- The initial private owner flow uses Supabase email + password authentication; the tracker does not depend on magic-link email delivery.
+- Password values are submitted directly to Supabase Auth and are never written to local storage, repository content, generated config, logs, or tracker records.
 - A remote error must not silently write the same change into browser-local state.
 
 ### Local fallback mode
@@ -99,7 +101,7 @@ Expected adapters:
 - `LocalStorageOpportunityStore` — explicit fallback/migration implementation.
 - `SupabaseOpportunityStore` — authenticated remote implementation.
 
-Both expose the operations needed by the UI: load, upsert, remove, safe batch save, explicit replace-all restore, and authentication state where applicable.
+Both expose the operations needed by the UI: load, upsert, remove, safe batch save, explicit replace-all restore, and authentication state where applicable. The Supabase adapter uses `signInWithPassword` for the private owner login.
 
 The UI must not decide that a failed remote write should become a local write.
 
