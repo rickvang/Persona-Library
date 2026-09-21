@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v7
@@ -35,8 +37,13 @@ jobs:
       - name: Run repository validation tests
         run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-ignore-build.test.mjs
 
-      - name: Check whitespace
-        run: git diff --check
+      - name: Check committed whitespace for pull request
+        if: github.event_name == 'pull_request'
+        run: git diff --check "${{ github.event.pull_request.base.sha }}...HEAD"
+
+      - name: Check committed whitespace for main push
+        if: github.event_name == 'push'
+        run: git diff --check "${{ github.event.before }}..${{ github.sha }}"
 
       - name: Verify generated output is committed
         run: git diff --exit-code -- dist
