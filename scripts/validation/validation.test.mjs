@@ -89,10 +89,12 @@ test('GitHub governance semantics stay owned by the pinned Tool contract', () =>
   const workOrders = 'For GitHub merge authorization and linked-issue completion semantics, follow the pinned GitHub Tool contract.';
   const boundedPlaybook = 'Use the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics.';
   const boundedRoute = { next_handoff: 'Apply the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics.' };
-  assert.equal(validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute }), pin);
-  assert.throws(() => validateGitHubGovernanceContract({ agents: agents.replace(pin, '94acc6082e941439d2ee532f1b1b091cd42eb923'), workOrders, boundedPlaybook, boundedRoute }), /post-split GitHub Tool contract/i);
-  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook: boundedPlaybook + ' Separately authorized merge.', boundedRoute }), /duplicate reusable merge-authorization rule/i);
-  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute: { next_handoff: 'Treat merge as a separately authorized mutation.' } }), /routing must defer GitHub mutation semantics/i);
+  const toolsPage = `GitHub Verified contract Runtime access varies. Explicit authorization + fresh preflight. https://github.com/rickvang/tool-repo/blob/${pin}/tools/github/AGENTS.md`;
+  assert.equal(validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }), pin);
+  assert.throws(() => validateGitHubGovernanceContract({ agents: agents.replace(pin, '94acc6082e941439d2ee532f1b1b091cd42eb923'), workOrders, boundedPlaybook, boundedRoute, toolsPage }), /post-split GitHub Tool contract/i);
+  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook: boundedPlaybook + ' Separately authorized merge.', boundedRoute, toolsPage }), /duplicate reusable merge-authorization rule/i);
+  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute: { next_handoff: 'Treat merge as a separately authorized mutation.' }, toolsPage }), /routing must defer GitHub mutation semantics/i);
+  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage: toolsPage.replace(pin, 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') }), /Tools page GitHub contract link must match/i);
 });
 
 test('Bounded parallel role count is scoped to its catalog card', () => {
