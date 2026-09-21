@@ -138,6 +138,8 @@ Vercel connection checkpoint: requester confirmed `persona-workspace-data` is ex
 
 Live Auth proof: requester successfully signed in through the Supabase-mode Preview; Supabase `auth.users.last_sign_in_at` confirms the session at 2026-09-21 14:46 UTC. Screenshot evidence also exposed a UI issue where the login form remained visible while signed in; commit `5518518ae21c2f33e0e7da81e10ca70ca09ce7bf` adds an explicit `.auth-form[hidden]{display:none!important}` rule. Its Preview deployment is READY.
 
+Remote CRUD checkpoint: authenticated Preview create/read is proven. The requester created `supabase test` / `crud smoke test` with status `Found`; direct Supabase verification found the row in `app.opportunities` at 2026-09-21 14:49 UTC. Update/delete client-path proof remains.
+
 ## Next action
 
 Verify authenticated remote CRUD/RLS with one Preview opportunity create/read/update/delete cycle. Then request explicit merge authorization, deploy to production, sign in on the production origin, and migrate the existing production-origin local tracker rows. Update PR #157 from draft once the canonical repository build/validation also pass.
