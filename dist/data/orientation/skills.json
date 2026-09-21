@@ -145,6 +145,34 @@
         "Claiming independent conformance when the observer shares the runner runtime"
       ],
       "next_handoff": "Archive temporary tasks, store sanitized results under eval/results/isolated/, and run one bounded impact review."
+    },
+    {
+      "id": "local-video-inspection",
+      "request": "Inspect or summarize a local video file from representative frames and available transcript evidence",
+      "modes": [
+        "research"
+      ],
+      "primary_space": "skills",
+      "secondary_spaces": [
+        "tools"
+      ],
+      "target": "local-video-inspection",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/local-video-inspection",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "exact local video path",
+        "available local decoder and image-inspection capability",
+        "sidecar or embedded transcript evidence when available"
+      ],
+      "mutation_boundary": "external_execution",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "Video editing or transformation",
+        "Remote-video research or downloading media",
+        "Installing or downloading codecs, transcription models, or dependencies without separate authorization"
+      ],
+      "next_handoff": "Keep extracted evidence temporary unless the request authorizes a durable artifact; reconcile only when execution creates durable repository state."
     }
   ]
 }

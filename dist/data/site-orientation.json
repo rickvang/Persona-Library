@@ -23,7 +23,7 @@
       "label": "Skills",
       "answers": "What reusable capability is needed, how does it operate, and how can quality be recognized?",
       "route_file": "orientation/skills.json",
-      "route_count": 4
+      "route_count": 5
     },
     "operating-packs": {
       "label": "Operating Packs",
