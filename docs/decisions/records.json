@@ -674,6 +674,46 @@
       "affects": "Tool discovery/safe execution guidance; GitHub and Vercel Tool-use recipes; Riley Tool requirements; repository AGENTS guidance; Work Order guidance; GitHub Actions validation; Vercel ignored-build configuration; issue #159.",
       "evidence": "Issue #159; live Vercel deployment inspection on 2026-09-21; Persona-Library commit/deployment history; current Tool-use architecture and repository validation contracts.",
       "revisit": "Representative workstreams miss deployed defects, users receive review checkpoints too late to steer effectively, GitHub CI becomes materially more expensive than the avoided deployment churn, or Vercel/GitHub platform behavior changes the safe trigger model."
+    },
+    {
+      "id": "DEC-019",
+      "status": "Applied",
+      "category": "Repository authorization boundary",
+      "date": "2026-09-21",
+      "title": "Scoped implementation requests carry standing completion authorization",
+      "summary": "For Persona-Library, a scoped request to implement, fix, build, or complete repository work authorizes the normal implementation path through merge once current completion gates pass, unless the requester explicitly narrows the stopping boundary.",
+      "question": "Should Persona-Library require a second user confirmation to merge after a requester has already asked it to implement scoped repository work and the current PR has passed review and validation?",
+      "decision": "Treat a scoped requester instruction to implement, fix, build, or complete Persona-Library work as standing completion authorization for branch/file changes, pull-request creation and updates, scoped review corrections, and merge into the default branch after fresh preflight. Explicit requester instructions such as `do not merge`, `PR only`, `leave for review`, or equivalent override the standing authorization. The standing rule is repository-specific and does not authorize unrelated issue mutation, repository settings/access changes, external repositories, external communications, or other out-of-scope consequential actions.",
+      "rationale": "The canonical GitHub Tool contract already allows merge when either the requester or repository contract authorizes it. Requiring an additional chat confirmation after every green implementation creates a redundant gate without adding new scope or safety. Safety comes from a clearly bounded initial request, independent review, required validation, fresh merge preflight, and explicit override handling—not from repeating the same approval after the work is complete.",
+      "alternatives": "Keep a mandatory second merge confirmation; change the reusable GitHub Tool contract for every repository; infer merge permission from green CI alone; or auto-merge every open PR. Rejected because they respectively add redundant friction, broaden a Persona-Library-specific preference globally, confuse validation with authorization, or remove the scoped-request boundary.",
+      "tradeoffs": "Agents must preserve the exact original scope and requester overrides through the implementation lifecycle and must stop when current merge preflight exposes a blocker or out-of-scope side effect. In return, ordinary scoped implementation work can finish without an unnecessary conversational round trip while retaining fresh-state and review gates.",
+      "affects": "AGENTS.md; docs/playbooks/bounded-parallel-implementation.md; content/orientation/playbooks.json and generated mirror; docs/work-orders.md; focused governance validation; future Persona-Library Work Orders; issue #172.",
+      "evidence": "Requester direction on 2026-09-21; current rickvang/tool-repo GitHub contract revision 01198019e8f1520eb222dc6af2ec17bd81bc9c30; issue #172; prior issue #165/PR #166 consolidation of GitHub authorization semantics.",
+      "qualifies": [
+        "DEC-010",
+        "DEC-018"
+      ],
+      "revisit": "Standing completion authorization causes unintended merges, requester overrides are not reliably preserved, repository review/validation gates materially change, or Persona-Library adopts a different default completion model."
+    },
+    {
+      "id": "DEC-020",
+      "status": "Applied",
+      "category": "Private job-discovery state boundary",
+      "date": "2026-09-21",
+      "title": "Authenticated storage becomes the durable seen-job set",
+      "summary": "Keep seen-job deduplication separate from Applications while moving repeated-search memory into a dedicated authenticated Supabase table in the existing private application-data project.",
+      "question": "Where should durable seen-job memory live now that repeated job-discovery runs need reliable suppression across sessions and authorized agent contexts, without turning Applications into a discovery-history ledger?",
+      "decision": "Use the existing authenticated `persona-workspace-data` Supabase project with a dedicated private `app.seen_jobs` table as the durable seen-job store. Persona-Library owns the reusable stable-identity behavior, browser storage adapter contract, database schema/migration, and validation; real seen-job rows remain private operational data outside Git. Read the owner-bound store before presenting results and insert only jobs actually presented afterward. Prefer provider/source plus stable provider job ID, then canonical source URL, then a conservative normalized company + title + location fingerprint. Do not silently fall back to local storage. Keep this store separate from `app.opportunities`, which remains the Applications lifecycle store.",
+      "rationale": "The earlier job-ledger boundary correctly kept private search history out of Git, but leaving the durable set only in a consuming runtime makes repeated searches unreliable across sessions and authorized agent contexts. DEC-017 already established authenticated Supabase with RLS as the private operational-state pattern for Applications. Reusing that project while creating a dedicated table preserves privacy and the separation between 'already shown' discovery memory and intentionally tracked opportunity lifecycle state.",
+      "alternatives": "Keep the seen-job set only in caller memory or browser-local state; reuse `app.opportunities`; add seen/rejected/expired lifecycle fields to Applications; create a new Supabase project; or store seen-job history in Git. Rejected because they respectively fail durable cross-run suppression, conflate discovery with application lifecycle, expand the wrong state model, create unnecessary infrastructure, or violate the private-data boundary.",
+      "tradeoffs": "Repeated-search deduplication now depends on authenticated Supabase availability, RLS, and the existing private project. There is intentionally no silent local fallback, so an unavailable remote store must be surfaced rather than forking deduplication history. In return, the identity and privacy boundary is durable, testable, and reusable across authorized job-discovery runs.",
+      "affects": "client/seen-job-store.js; dist/js/seen-job-store.js; docs/job-search/job-ledger-contract.md; docs/job-search/implementation.md; docs/work-orders/WO-2026-09-16-seen-job-dedup/database-contract.sql; repository validation; live app.seen_jobs schema/RLS; issue #96.",
+      "evidence": "Issue #96; PR #170; live `persona-workspace-data` migration `create_app_seen_jobs`; authenticated owner/cross-user RLS proof; repository validation for provider-ID precedence, URL canonicalization, conservative fallback identity, read-before-record behavior, repeated-run suppression, and no silent local fallback.",
+      "qualifies": [
+        "DEC-011",
+        "DEC-017"
+      ],
+      "revisit": "The seen-job store is extracted into a standalone job-search application with a different authenticated persistence layer; repeated-search behavior needs richer repost/version history; Supabase availability or security cost becomes unacceptable; or evidence shows discovery memory and application lifecycle should share a different explicitly designed state model."
     }
   ]
 }
