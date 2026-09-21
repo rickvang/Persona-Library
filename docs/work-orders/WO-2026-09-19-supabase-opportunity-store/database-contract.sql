@@ -16,6 +16,7 @@ create table if not exists app.opportunities (
   source_url text,
   normalized_source_url text,
   packet_url text,
+  posted_at date,
   found_at date,
   applied_at date,
   next_action text not null default '',
