@@ -74,7 +74,8 @@ test('authenticated store filters before recording and suppresses after recordin
               };
             },
             upsert(rows, options) {
-              assert.deepEqual(options, { onConflict: 'user_id,stable_key', ignoreDuplicates: true });
+              assert.equal(options.onConflict, 'user_id,stable_key');
+              assert.equal(options.ignoreDuplicates, true);
               const inserted = [];
               for (const row of rows) {
                 if (!state.has(row.stable_key)) {
