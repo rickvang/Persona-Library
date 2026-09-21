@@ -3,7 +3,7 @@
 ## Header
 
 - Work Order ID: `WO-2026-09-21-merge-on-completion`
-- Status: ready-for-review
+- Status: complete
 - Created: 2026-09-21
 - Last updated: 2026-09-21
 - Requester: Rick Vang
@@ -55,6 +55,8 @@ Repository-defined review using Mara Okoye's knowledge-systems placement contrac
 
 - PR #173 opened from `feat/issue-172-merge-on-completion`.
 - Repository validation run #38 passed on head `0880ff4a7799d4bcab89d45a1dfaa17f6304ea26`.
+- Final PR validation run #39 passed on head `f639fe504997ef214610033684fda06d145f7392`.
+- Main push validation run #40 passed on merge commit `98346d06246152fe1dfa310ea70fb819278da7b8`.
 - Current PR diff is scoped to repository governance, Bounded Parallel routing/process, Work Order guidance, DEC-019, generated mirrors, and focused regression validation.
 - Historical Work Orders are unchanged.
 - The pinned GitHub Tool contract is unchanged.
@@ -70,10 +72,19 @@ Repository-defined review using Mara Okoye's knowledge-systems placement contrac
 - **Archived Work Orders — unchanged:** historical evidence is not rewritten.
 - **External repositories and non-GitHub consequential actions — unchanged:** no standing authorization is created.
 
+## Completion
+
+- PR #173 merged to `main` as `98346d06246152fe1dfa310ea70fb819278da7b8` on 2026-09-21;
+- GitHub automatically closed issue #172 from the existing in-scope closing keyword;
+- DEC-019 is applied and the standing completion authorization is now part of the root repository contract;
+- the new behavior was exercised in the issue #96 completion path while preserving fresh preflight, review, validation, and linked-issue boundaries;
+- no external active-work tracker was linked to this Work Order, so no cross-system reconciliation was required;
+- this terminal Work Order package was moved to the September 2026 archive.
+
 ## Current phase
 
-Review-ready with repository validation green.
+Complete and archived.
 
 ## Next action
 
-Refresh PR #173 head/base/review/check/mergeability/linked-completion state immediately before merge. After the governance change is on `main`, refresh PR #170 and merge issue #96 if its preflight remains clean.
+Reference only. Open a new GitHub issue and Work Order if the standing completion authorization model needs to change.
