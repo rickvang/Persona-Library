@@ -55,6 +55,8 @@ Every non-trivial Work Order should identify:
 
 A Work Order records authorization boundaries; it never grants permission for a repository, Site, Tool, account, publication, installation, registry, or external communication change.
 
+When the repository contract defines **standing completion authorization** for a scoped implementation request, the Work Order may record that repository-level authorization as the applicable source instead of inventing a second confirmation gate. Record any explicit requester override such as `do not merge`, `PR only`, `leave for review`, or an equivalent narrower stopping boundary; the override wins for that Work Order.
+
 For GitHub-specific mutation classes, merge authorization, and linked-issue completion semantics, follow the repository's pinned GitHub Tool contract rather than restating those rules in a Work Order.
 
 ## Lifecycle
