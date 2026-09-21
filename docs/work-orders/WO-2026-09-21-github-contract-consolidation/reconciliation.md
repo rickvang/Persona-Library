@@ -54,7 +54,7 @@
 
 ## Blockers and incomplete visibility
 
-The Persona-Library consumer pin is intentionally provisional at tool-repo PR #10 head `2626ef2154595cc7f20a1560bc34e353ebb3c153`. PR #10 is open, not merged, so issue #165 cannot satisfy its final pin acceptance criterion yet.
+The Persona-Library consumer pin is intentionally provisional at tool-repo PR #10 head `303e98d048ae689239f53eae309fd55c050fac38`. PR #10 is open, not merged, so issue #165 cannot satisfy its final pin acceptance criterion yet.
 
 ## Next action
 
