@@ -1,7 +1,7 @@
 # Work Order — GitHub authorization contract consolidation
 
 - Work Order ID: WO-2026-09-21-github-contract-consolidation
-- Status: active
+- Status: blocked
 - Created: 2026-09-21
 - Last updated: 2026-09-21
 - Requester: repository user
@@ -10,6 +10,7 @@
 - GitHub issue: #165 — Consolidate GitHub authorization guidance onto tool-repo contract
 - Upstream dependency: rickvang/tool-repo#9 / PR #10
 - Branch: `feat/issue-165-github-contract-consolidation`
+- Pull request: #166 — draft, dependency-blocked
 - Change domain: repository governance documentation, Playbook routing, focused validation
 - Reconciliation: change-impact-reconciliation
 
@@ -42,9 +43,9 @@ The consumer pin is provisional while tool-repo PR #10 is unmerged. The final Pe
 
 ## Current phase and gate
 
-Phase: implementation staging.
+Phase: draft consumer implementation complete.
 
-Gate: upstream dependency pending. tool-repo PR #10 is open and mergeable, but not merged. Persona-Library may stage a draft consumer change against PR #10's immutable head for review, but completion requires refreshing the exact landed revision after the upstream merge.
+Gate: upstream dependency pending. tool-repo PR #10 is open and mergeable, but not merged. Persona-Library draft PR #166 is staged against PR #10's immutable head and remains blocked until the exact landed upstream revision is known.
 
 ## Success criteria
 
@@ -57,4 +58,4 @@ Gate: upstream dependency pending. tool-repo PR #10 is open and mergeable, but n
 
 ## Next action
 
-Stage the bounded consumer changes and draft PR, then wait for authorized tool-repo PR #10 merge. After it lands, refresh the exact upstream revision, update the pin if needed, run final validation/reconciliation, and move the Persona-Library PR to review-ready.
+Wait for authorized tool-repo PR #10 merge. After it lands, refresh the exact upstream revision, update the pin if needed, run final validation/reconciliation, and move Persona-Library PR #166 to review-ready.
