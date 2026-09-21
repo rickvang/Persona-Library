@@ -93,8 +93,8 @@
       onAuthStateChange() {
         return { unsubscribe() {} };
       },
-      async signInWithEmail() {
-        throw new Error('Email sign-in is unavailable in local storage mode');
+      async signInWithPassword() {
+        throw new Error('Password sign-in is unavailable in local storage mode');
       },
       async signOut() {}
     };
@@ -180,14 +180,8 @@
         const { data } = client.auth.onAuthStateChange((_event, session) => callback(session));
         return data?.subscription || { unsubscribe() {} };
       },
-      async signInWithEmail(email, redirectTo) {
-        const { error } = await client.auth.signInWithOtp({
-          email,
-          options: {
-            emailRedirectTo: redirectTo,
-            shouldCreateUser: false
-          }
-        });
+      async signInWithPassword(email, password) {
+        const { error } = await client.auth.signInWithPassword({ email, password });
         if (error) throw error;
       },
       async signOut() {
