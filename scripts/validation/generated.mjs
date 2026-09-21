@@ -63,6 +63,15 @@ export function validateJobSearchRoutingContract({ route, implementation, riley,
   if (specialistIds?.has('job-search')) throw new Error('No generic Job Search Persona may be introduced');
 }
 
+export function validateApplicationWorkflowTrackerGuidance({ route, implementation }) {
+  const firstReads = Array.isArray(route?.first_reads) ? route.first_reads.join(' ') : '';
+  if (!includesAll(firstReads, ['application-tracker-contract.md', 'opportunity/application tracking'])) throw new Error('Resume/application routing must read the Applications tracker contract when tracking is in scope');
+  if (!includesAll(route?.next_handoff, ['existing tracker record', 'duplicate', 'sourceurl', 'postingdate', 'packeturl', 'packet ready', 'applieddate', 'confirmed submission', 'confirmed events'])) throw new Error('Resume/application routing must preserve tracker identity and milestone rules');
+  if (!includesAll(implementation, ['primary persistence layer', 'browser-local', 'explicit fallback', 'migration', 'recovery', 'existing record', 'sourceurl', 'postingdate', 'never infer', 'packeturl', 'packet ready', 'applieddate', 'confirmed submission', 'confirmed events'])) throw new Error('Job-search implementation must describe current tracker persistence and source-backed updates');
+  if (implementation.includes('Real records stay in browser-local private state')) throw new Error('Job-search implementation must not describe browser-local-only tracker persistence as current');
+}
+
+
 export function validateJobApplicationTrackerContract({ page, runtime, importRuntime = '', storeRuntime = '', configRuntime = '', contract }) {
   if (!page.includes('id="storage-mode-title"') || !page.includes('persona-library.job-applications.v1') || !page.includes('<script src="js/job-tracker-config.js"></script>') || !page.includes('<script src="js/job-tracker-import.js"></script>') || !page.includes('<script src="js/job-tracker-store.js"></script>') || !page.includes('<script src="js/job-tracker.js"></script>') || !page.includes('Keep every opportunity in one place.') || !page.includes('id="auth-form"') || !page.includes('id="auth-email"') || !page.includes('id="auth-password"') || !page.includes('autocomplete="current-password"') || !page.includes('id="posting-date"') || !page.includes('<th>Posting date</th>') || !page.includes('id="migrate-local-button"') || !page.includes('id="merge-import-button"') || !page.includes('id="replace-all-button"')) throw new Error('Applications tracker page is missing its privacy, password authentication, migration, import review, or storage runtime boundary');
   if (!page.includes('@supabase/supabase-js@2.116.0')) throw new Error('Applications tracker must pin the reviewed Supabase browser client version');
@@ -151,7 +160,9 @@ export async function validateGeneratedOutputs(context) {
   const riley = context.data.personas.find(persona => persona.id === 'ai-orchestrator');
   const rileyFlows = context.data.flowLibrary?.['ai-orchestrator'] || [];
   const jobSearchPlaybook = context.data.playbookCatalog.find(playbook => playbook.id === 'playbook-evidence-led-job-search');
-  validateJobSearchRoutingContract({ route: context.routeGroups.get('docs').routes.find(route => route.id === 'resume-application-work'), implementation: jobSearchImpl, riley, rileyFlows, playbook: jobSearchPlaybook, specialistIds: new Set(context.data.personas.map(persona => persona.id)) });
+  const jobSearchRoute = context.routeGroups.get('docs').routes.find(route => route.id === 'resume-application-work');
+  validateJobSearchRoutingContract({ route: jobSearchRoute, implementation: jobSearchImpl, riley, rileyFlows, playbook: jobSearchPlaybook, specialistIds: new Set(context.data.personas.map(persona => persona.id)) });
+  validateApplicationWorkflowTrackerGuidance({ route: jobSearchRoute, implementation: jobSearchImpl });
   const jobSearchOperator = context.data.personas.find(persona => persona.id === 'job-search-orchestrator');
   const jobSearchOperatorFlows = context.data.flowLibrary?.['job-search-orchestrator'] || [];
   if (!jobSearchOperator || jobSearchOperator.name !== 'Priya Desai' || jobSearchOperator.roleLabel !== 'Job search orchestrator') throw new Error('Canonical Job Search Orchestrator Persona is missing or malformed');

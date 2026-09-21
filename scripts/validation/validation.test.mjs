@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
+import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -132,14 +132,18 @@ test('Routing case: explicit Playbook request supports direct invocation', () =>
 
 test('Job-search routing preserves Riley identity, Playbook procedure, and specialist boundaries', () => {
   const route = {
-    next_handoff: 'For an unqualified request, begin with Riley Morgan as the default entry and routing point; Riley selects the smallest specialist or Skill for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns stages, shared state, quality gates, recovery, and the learning loop. Resolve standing decisions and any Candidate Baseline before composition, preserve the career spine, and do not substitute a secondary profile store.'
+    first_reads: ['docs/job-search/application-tracker-contract.md when opportunity/application tracking is in scope'],
+    next_handoff: 'For an unqualified request, begin with Riley Morgan as the default entry and routing point; Riley selects the smallest specialist or Skill for narrow work and the Evidence-led Job Search Playbook for full-outcome work. Explicit requests for a named specialist, Skill, or Playbook may route directly. The Playbook owns stages, shared state, quality gates, recovery, and the learning loop. Resolve standing decisions and any Candidate Baseline before composition, preserve the career spine, and do not substitute a secondary profile store. Resolve an existing tracker record before creating a duplicate, preserve sourceUrl and source-backed postingDate, set packetUrl and Packet Ready after packet completion, set appliedDate only after confirmed submission, and use confirmed events for later states.'
   };
-  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. Riley routes full-outcome work to Priya Desai, who operates the Evidence-led Job Search Playbook as the process surface. The Playbook supplies shared state, quality gates, recovery, and the learning loop. Explicit requests may route directly. The Candidate Baseline Resume passes a Private-source resolution gate before role tailoring; preserve the career spine, block secondary profile stores from substitution, and run baseline-to-output integrity.';
+  const implementation = 'Riley Morgan is the default system entry and routing point for unqualified requests. Riley routes full-outcome work to Priya Desai, who operates the Evidence-led Job Search Playbook as the process surface. The Playbook supplies shared state, quality gates, recovery, and the learning loop. Explicit requests may route directly. The Candidate Baseline Resume passes a Private-source resolution gate before role tailoring; preserve the career spine, block secondary profile stores from substitution, and run baseline-to-output integrity. The remote store is the primary persistence layer when configured; browser-local state is explicit fallback, migration, and recovery. Resolve an existing record by sourceUrl; postingDate is source-backed and never infer it. Set packetUrl and Packet Ready after packet completion, appliedDate only after confirmed submission, and later lifecycle states only from confirmed events.';
   const riley = { roleLabel: 'AI orchestrator' };
   const rileyFlows = [{ title: 'Frame the system goal and boundary', summary: 'Turn an unqualified opportunity into a bounded outcome.' }];
   const playbook = { id: 'playbook-evidence-led-job-search' };
   const specialistIds = new Set(['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'ui-expert', 'document-designer']);
   assert.doesNotThrow(() => validateJobSearchRoutingContract({ route, implementation, riley, rileyFlows, playbook, specialistIds }));
+  assert.doesNotThrow(() => validateApplicationWorkflowTrackerGuidance({ route, implementation }));
+  assert.throws(() => validateApplicationWorkflowTrackerGuidance({ route: { ...route, first_reads: [] }, implementation }), /tracker contract/i);
+  assert.throws(() => validateApplicationWorkflowTrackerGuidance({ route, implementation: implementation.replace('never infer', 'estimate') }), /source-backed updates/i);
   assert.throws(() => validateJobSearchRoutingContract({ route: { ...route, next_handoff: route.next_handoff.replace('Explicit requests', 'Requests') }, implementation, riley, rileyFlows, playbook, specialistIds }), /direct invocation/);
   assert.throws(() => validateJobSearchRoutingContract({ route, implementation, riley: { roleLabel: 'Job-search orchestrator' }, rileyFlows, playbook, specialistIds }), /canonical AI orchestrator/);
   assert.throws(() => validateJobSearchRoutingContract({ route: { ...route, next_handoff: route.next_handoff.replace('Candidate Baseline', 'resume source') }, implementation, riley, rileyFlows, playbook, specialistIds }), /Candidate Baseline resolution/);

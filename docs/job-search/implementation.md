@@ -76,15 +76,27 @@ The first workflow is:
 
 ## Application tracker companion surface
 
-The original responsive job-search page remains a Playbook/reference surface. A separate top-level **Applications** companion surface now owns opportunity/application lifecycle tracking.
+The original responsive job-search page remains a Playbook/reference surface. A separate top-level **Applications** companion surface owns opportunity/application lifecycle tracking and serves as shared persistent opportunity state for authorized job-search and application runs.
 
 - The tracker is governed by `application-tracker-contract.md`.
-- Real records stay in browser-local private state; Persona-Library stores only tracker code, schema, lifecycle vocabulary, and migration behavior.
+- When Supabase deployment configuration is present and the user is authenticated, the authenticated Supabase private opportunity store is the primary persistence layer for real opportunity/application rows.
+- Browser-local private state is an explicit fallback when remote configuration is absent, plus a migration source and rollback/recovery copy. A remote failure must never silently become a local write.
+- Real opportunity/application rows remain outside Git and outside canonical Persona, Skill, Tool, Template, Operating Pack, Playbook, Doc, Decision, and Work Order data.
 - The tracker lifecycle is `Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed`.
 - Job posting and application-packet URLs are integration links, not canonical relationships to Persona or Skill records.
-- Versioned JSON export/import is the portability boundary for backup and future extraction into a standalone app.
+- Versioned JSON export/import remains the portability boundary for backup and future extraction into a standalone app.
 - The tracker does not submit applications, send outreach, scrape jobs, or infer lifecycle transitions.
 - The seen-job deduplication contract remains separate: it suppresses already-presented search results and does not become the application tracker.
+
+### Tracker workflow checkpoints
+
+- Before creating a tracker row, resolve an existing record by stable `id` and then canonical `sourceUrl`; do not create a duplicate for the same opportunity.
+- When an opportunity is selected for tracking, create or update the record with `Found` and preserve the canonical `sourceUrl`.
+- Capture optional `postingDate` only when the source actually provides it. Never infer or fabricate a posting date.
+- When the application packet is complete, set `packetUrl` and advance to `Packet Ready` when appropriate; never downgrade a later confirmed lifecycle state.
+- Only after an actual confirmed submission, advance to `Applied` and record `appliedDate`.
+- Advance to `Interviewing`, `Offer`, or `Closed` only from confirmed events. Do not infer lifecycle transitions from drafting, packet completion, elapsed time, or assumptions.
+- Tracker state changes record lifecycle facts; they do not authorize application submission, employer contact, outreach, or external sharing.
 
 ## Data model
 
@@ -308,7 +320,7 @@ For cover letters, the internal tailoring brief is the positioning layer. It may
 
 ### Work Order tracking
 
-The Work Order records the target, shared ledger, verified Template identities/revisions, canonical ATS version, optional human-facing version, standalone cover letter, Application Notes & Answers, review findings, integrity result, optional parity result, selected submission file, and learning after submission. It is the active progress record; specialized artifacts remain separate and linked.
+The Work Order records the target, shared ledger, verified Template identities/revisions, canonical ATS version, optional human-facing version, standalone cover letter, Application Notes & Answers, review findings, integrity result, optional parity result, selected submission file, tracker record reference and sync status when opportunity/application tracking is in scope, and learning after submission. It is the active progress record; specialized artifacts and private tracker rows remain separate and linked rather than duplicated.
 
 ## Phased delivery
 
@@ -331,6 +343,7 @@ The Work Order records the target, shared ledger, verified Template identities/r
 - Build one shared evidence source. When the active Candidate Context designates a Candidate Baseline Resume, copy/adapt that baseline into the role-specific artifact and tailor it conservatively; otherwise compose from the validated evidence/model into the verified Template. Add a human-facing resume only when the target channel or review context justifies a second output.
 - Draft a separate cover letter for a full packet unless the employer does not accept one or the requester explicitly skips it; draft from the positioning brief, then review material claims and voice as separate questions.
 - Build the Application Notes & Answers artifact for role fit, constraints, application questions, portfolio planning, blockers, and submission checks.
+- At packet completion, resolve the Applications tracker record, set `packetUrl`, and advance to `Packet Ready` when appropriate without downgrading a later confirmed state.
 - Generate portfolio or case-study emphasis for design-oriented roles.
 
 ### Application preflight — before the council
@@ -364,7 +377,7 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 ### Phase 5 — Search learning loop
 
 - Use the private seen-job set so repeated discovery checks do not resurface openings already presented as new.
-- Track submissions, responses, interviews, and rejection signals in the active Work Order or appropriate private workspace when the run requires them; do not make those lifecycle records part of the seen-job deduplication contract.
+- Use the Applications tracker as the lifecycle store for tracked opportunities while the Work Order references only the minimum operational state needed. Set `Applied` and `appliedDate` only after a confirmed submission, and advance interview, offer, or closure states only from confirmed events; never infer those transitions. Keep this lifecycle state separate from the seen-job deduplication contract.
 - Separate market feedback from noise and small-sample assumptions.
 - Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.
 
@@ -457,6 +470,9 @@ These other items remain future opportunities, not implied capabilities of the c
 - Is Riley presented as the default routing front door for unqualified requests, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?
 - Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?
 - Do repeated searches avoid presenting previously shown jobs as new by default, using the seen-job deduplication contract?
+- When opportunity/application tracking is in scope, does the workflow resolve an existing Applications tracker record before creating a duplicate?
+- Does authenticated Supabase remain primary persistence when configured, with browser-local state limited to explicit fallback, migration, and recovery?
+- Are `postingDate` values source-backed only, and are `Applied`, `appliedDate`, interview, offer, and closure transitions recorded only from confirmed events?
 - Does every reusable application artifact resolve to a verified `rickvang/template-library` Template before it is instantiated?
 - When a needed reusable Template is missing, does the workflow create/repair it in `template-library` instead of silently falling back to a private Drive master?
 - When standing decisions designate an active Candidate Baseline Resume, is that exact private artifact resolved before drafting?

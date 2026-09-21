@@ -1,5 +1,7 @@
 # Reconciliation — WO-2026-09-18-job-application-tracker
 
+> **Current-state note (2026-09-21):** This document preserves the original browser-local reconciliation as historical evidence. DEC-017 and issue #156 later changed the current persistence model to Supabase-backed primary storage when configured, with browser-local state retained for explicit fallback, migration, and recovery. The historical findings below are intentionally unchanged.
+
 ## Change
 
 Add a top-level Applications tracker as a companion product surface while keeping real application data browser-local and extractable.
