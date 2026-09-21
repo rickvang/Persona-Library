@@ -396,7 +396,6 @@ Object.assign(window.PersonaLibraryDataFragments.flowLibrary, {
   ]
 });
 
-
 window.PersonaLibraryDataFragments = window.PersonaLibraryDataFragments || {};
 window.PersonaLibraryDataFragments.flowLibrary = window.PersonaLibraryDataFragments.flowLibrary || {};
 Object.assign(window.PersonaLibraryDataFragments.flowLibrary, {
@@ -461,6 +460,21 @@ Object.assign(window.PersonaLibraryDataFragments, {
       playbooks:['playbook-create-and-integrate-reusable-skill'],
       evidence:'Verified external source evidence: rickvang/operating-packs/packs/design-system/AGENTS.md identifies the Design System Operating Pack, routes to the pack’s local Markdown guidance and workflows, and matches the repository README stable Persona-Library contract. Persona-Library relationship evidence: Camille Ortiz (ui-expert) applies the Component and design-system thinking Skill in the Extend and govern the design system workflow; the four related design-system Skills, the Playbook identity, and the derived Figma Tool-use context remain unchanged.',
       revision:{version:'0.2',date:'2026-09-11',changeType:'source-verification',summary:'Replaced the planned TemplateRepo source with the verified canonical operating-packs repository and Design System pack entrypoint.',affectedFields:['status','source','evidence'],confidence:'Verified source location and entrypoint at main revision 569c326f6f9df4077ee77352fe691bda6ec37b92; existing applicability relationships unchanged after reconciliation'}
+    },
+    {
+      id:'operating-pack-candidate-application-context',
+      name:'Candidate Application Context',
+      purpose:'Provide reusable context rules for binding exactly one private candidate context to shared application Templates and role-specific application work.',
+      domain:'Job-search application work that uses private candidate facts, decisions, preferences, and validation overlays with reusable Templates.',
+      useWhen:'A resume, cover letter, application-notes artifact, or full application packet must use candidate-specific context without leaking private values into reusable artifacts or across candidates.',
+      status:'Canonical external reference',
+      source:{kind:'github_repository',repository:'rickvang/operating-packs',path:'packs/candidate-application-context',entrypoint:'AGENTS.md',availability:'documentation_only',verification:'Verified on 2026-09-16 at merge commit c216052321c683830333bda4c1928bb98e12b3f7; packs/candidate-application-context resolves with AGENTS.md, CONTEXT.md, VALIDATION.md, and README.md. Runtime access remains capability-dependent.'},
+      provides:['Candidate-context boundary and isolation rules','Application-source precedence','Canonical Template-binding guidance','Layered candidate/application validation','Conflict and unknown handling'],
+      relatedSkills:[],
+      applications:[],
+      playbooks:['playbook-evidence-led-job-search'],
+      evidence:'Verified external source evidence: rickvang/operating-packs/packs/candidate-application-context/AGENTS.md defines the stable entrypoint, candidate isolation, precedence, and Template-binding rules; VALIDATION.md defines Template structure → reusable composition/integrity → candidate-specific overlays → role/application requirements → cross-candidate isolation. Persona-Library application docs consume this pack for candidate-specific application work while candidate instances remain private.',
+      revision:{version:'0.1',date:'2026-09-16',changeType:'initial-catalog-entry',summary:'Registered the merged Candidate Application Context Operating Pack as the canonical external source for candidate isolation, precedence, Template binding, and layered validation.',affectedFields:['identity','source','status','relationships','evidence','revision'],confidence:'Pack path, AGENTS.md entrypoint, supporting context and validation files resolve at merge revision c216052321c683830333bda4c1928bb98e12b3f7; runtime access remains capability-dependent'}
     }
   ],
   templates: [
@@ -497,6 +511,40 @@ Object.assign(window.PersonaLibraryDataFragments, {
       playbooks:[],
       evidence:'Verified external source evidence: templates/resumes/classic-single-column and its README.md entrypoint resolve in rickvang/template-library at main revision a275a48, with starter/ as the documented copy boundary. The Template captures a source-inspired single-column reading order, typography pairing, ruled section boundaries, role syntax, achievement lists, inline skills, and an education / certification ending. Its personal source content remains outside the public artifact. Related document Skills cover reading paths, output fidelity, and accessible export; resume-writing judgment, candidate evidence, and submission workflow remain outside the Template. Repeated reuse evidence is not yet established, so the Template remains a candidate.',
       revision:{version:'0.1',date:'2026-09-12',changeType:'source-publication',summary:'Published a second resume Template adapted from a user-supplied private HTML reference and verified its canonical path, README entrypoint, and starter copy boundary.',affectedFields:['identity','source','status','evidence','revision'],confidence:'Path, entrypoint, and starter boundary resolve at main revision a275a48; the source shape is documented and reusable, while repeated adoption evidence remains unavailable'}
+    },
+    {
+      id:'template-cover-letter-evidence-led',
+      name:'Evidence-Led Cover Letter',
+      purpose:'Provide a reusable starting structure for a concise role-specific cover letter that connects supported candidate evidence to the employer problem without repeating the resume line by line.',
+      category:'cover-letters',
+      useWhen:'An application accepts or benefits from a cover letter that should add context, motivation, role relevance, and evidence-backed narrative.',
+      lifecycle:'candidate',
+      status:'Candidate external reference',
+      source:{kind:'github_repository',repository:'rickvang/template-library',path:'templates/cover-letters/evidence-led',entrypoint:'README.md',repositoryDocumentationEntrypoint:'README.md',revision:'362710ea7a4b26f1f8f5669acba0f12483af5b41',availability:'documentation_only',verification:'Verified on 2026-09-16 at merge commit 362710ea7a4b26f1f8f5669acba0f12483af5b41; templates/cover-letters/evidence-led/README.md resolves, declares Template ID template-cover-letter-evidence-led, and documents starter/cover-letter.md as the copy boundary. Runtime access remains capability-dependent.'},
+      provides:['compact contact and date block','role/company opening structure','evidence-backed narrative paragraphs','concise closing and portfolio option','removable internal tailoring brief'],
+      applications:[],
+      relatedSkills:[],
+      operatingPacks:['operating-pack-candidate-application-context'],
+      playbooks:['playbook-evidence-led-job-search'],
+      evidence:'Verified external source evidence: templates/cover-letters/evidence-led and its README.md entrypoint resolve in rickvang/template-library at merge revision 362710ea7a4b26f1f8f5669acba0f12483af5b41, with starter/cover-letter.md present. The Template is candidate-neutral and explicitly excludes candidate facts, employer claims, evidence-ledger ownership, ATS-provider rules, and submission authorization. Repeated reuse evidence is not yet established, so the Template remains a candidate.',
+      revision:{version:'0.1',date:'2026-09-16',changeType:'initial-catalog-entry',summary:'Registered the merged Evidence-Led Cover Letter Template and its verified canonical source, entrypoint, and starter boundary.',affectedFields:['identity','source','status','relationships','evidence','revision'],confidence:'Path, README.md entrypoint, Template identity, and starter/cover-letter.md resolve at merge revision 362710ea7a4b26f1f8f5669acba0f12483af5b41; repeated reuse evidence remains unavailable'}
+    },
+    {
+      id:'template-job-application-notes',
+      name:'Application Notes & Answers',
+      purpose:'Provide a reusable coordination document for one job application without replacing the separate resume or cover letter.',
+      category:'job-applications',
+      useWhen:'A full application packet or application has enough role-specific decisions, questions, constraints, or submission checks to justify a persistent notes record.',
+      lifecycle:'candidate',
+      status:'Candidate external reference',
+      source:{kind:'github_repository',repository:'rickvang/template-library',path:'templates/job-applications/application-notes',entrypoint:'README.md',repositoryDocumentationEntrypoint:'README.md',revision:'362710ea7a4b26f1f8f5669acba0f12483af5b41',availability:'documentation_only',verification:'Verified on 2026-09-16 at merge commit 362710ea7a4b26f1f8f5669acba0f12483af5b41; templates/job-applications/application-notes/README.md resolves, declares Template ID template-job-application-notes, and documents starter/application-notes.md as the copy boundary. Runtime access remains capability-dependent.'},
+      provides:['target-role metadata and packet status','role-fit evidence summary','separate resume and cover-letter references','portfolio and application-answer planning','submission checklist and source notes'],
+      applications:[],
+      relatedSkills:[],
+      operatingPacks:['operating-pack-candidate-application-context'],
+      playbooks:['playbook-evidence-led-job-search'],
+      evidence:'Verified external source evidence: templates/job-applications/application-notes and its README.md entrypoint resolve in rickvang/template-library at merge revision 362710ea7a4b26f1f8f5669acba0f12483af5b41, with starter/application-notes.md present. The Template is a coordination artifact rather than a resume, cover letter, evidence ledger, tracker, employer-contact record, or submission authorization. Repeated reuse evidence is not yet established, so the Template remains a candidate.',
+      revision:{version:'0.1',date:'2026-09-16',changeType:'initial-catalog-entry',summary:'Registered the merged Application Notes & Answers Template and its verified canonical source, entrypoint, and starter boundary.',affectedFields:['identity','source','status','relationships','evidence','revision'],confidence:'Path, README.md entrypoint, Template identity, and starter/application-notes.md resolve at merge revision 362710ea7a4b26f1f8f5669acba0f12483af5b41; repeated reuse evidence remains unavailable'}
     },
     {
       id:'template-design-system-web-app',
