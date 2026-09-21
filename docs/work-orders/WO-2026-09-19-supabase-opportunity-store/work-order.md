@@ -136,6 +136,8 @@ Deployment verification checkpoint: Vercel Supabase integration environment scop
 
 Vercel connection checkpoint: requester confirmed `persona-workspace-data` is explicitly connected to the `persona-library` Vercel project. Fresh Preview deployment `f99d66420a457bb9bee9870ad4526b82d3534281` is READY and its generated `job-tracker-config.js` was directly verified as `mode: supabase` with project URL `https://spqruezbccrabmliuijm.supabase.co`, publishable key, and schema `app`. The previous no-op login was traced to an older Preview built in `mode: local`, not to the user's Auth credentials.
 
+Live Auth proof: requester successfully signed in through the Supabase-mode Preview; Supabase `auth.users.last_sign_in_at` confirms the session at 2026-09-21 14:46 UTC. Screenshot evidence also exposed a UI issue where the login form remained visible while signed in; commit `5518518ae21c2f33e0e7da81e10ca70ca09ce7bf` adds an explicit `.auth-form[hidden]{display:none!important}` rule. Its Preview deployment is READY.
+
 ## Next action
 
-Have the requester sign in through the READY Preview using the existing private Auth email + password. If sign-in succeeds, verify authenticated remote CRUD/RLS behavior, then merge/deploy to production and migrate the existing production-origin local tracker rows. Update PR #157 from draft once the canonical repository build/validation also pass.
+Verify authenticated remote CRUD/RLS with one Preview opportunity create/read/update/delete cycle. Then request explicit merge authorization, deploy to production, sign in on the production origin, and migrate the existing production-origin local tracker rows. Update PR #157 from draft once the canonical repository build/validation also pass.
