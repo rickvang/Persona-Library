@@ -674,6 +674,26 @@
       "affects": "Tool discovery/safe execution guidance; GitHub and Vercel Tool-use recipes; Riley Tool requirements; repository AGENTS guidance; Work Order guidance; GitHub Actions validation; Vercel ignored-build configuration; issue #159.",
       "evidence": "Issue #159; live Vercel deployment inspection on 2026-09-21; Persona-Library commit/deployment history; current Tool-use architecture and repository validation contracts.",
       "revisit": "Representative workstreams miss deployed defects, users receive review checkpoints too late to steer effectively, GitHub CI becomes materially more expensive than the avoided deployment churn, or Vercel/GitHub platform behavior changes the safe trigger model."
+    },
+    {
+      "id": "DEC-019",
+      "status": "Applied",
+      "category": "Repository authorization boundary",
+      "date": "2026-09-21",
+      "title": "Scoped implementation requests carry standing completion authorization",
+      "summary": "For Persona-Library, a scoped request to implement, fix, build, or complete repository work authorizes the normal implementation path through merge once current completion gates pass, unless the requester explicitly narrows the stopping boundary.",
+      "question": "Should Persona-Library require a second user confirmation to merge after a requester has already asked it to implement scoped repository work and the current PR has passed review and validation?",
+      "decision": "Treat a scoped requester instruction to implement, fix, build, or complete Persona-Library work as standing completion authorization for branch/file changes, pull-request creation and updates, scoped review corrections, and merge into the default branch after fresh preflight. Explicit requester instructions such as `do not merge`, `PR only`, `leave for review`, or equivalent override the standing authorization. The standing rule is repository-specific and does not authorize unrelated issue mutation, repository settings/access changes, external repositories, external communications, or other out-of-scope consequential actions.",
+      "rationale": "The canonical GitHub Tool contract already allows merge when either the requester or repository contract authorizes it. Requiring an additional chat confirmation after every green implementation creates a redundant gate without adding new scope or safety. Safety comes from a clearly bounded initial request, independent review, required validation, fresh merge preflight, and explicit override handling—not from repeating the same approval after the work is complete.",
+      "alternatives": "Keep a mandatory second merge confirmation; change the reusable GitHub Tool contract for every repository; infer merge permission from green CI alone; or auto-merge every open PR. Rejected because they respectively add redundant friction, broaden a Persona-Library-specific preference globally, confuse validation with authorization, or remove the scoped-request boundary.",
+      "tradeoffs": "Agents must preserve the exact original scope and requester overrides through the implementation lifecycle and must stop when current merge preflight exposes a blocker or out-of-scope side effect. In return, ordinary scoped implementation work can finish without an unnecessary conversational round trip while retaining fresh-state and review gates.",
+      "affects": "AGENTS.md; docs/playbooks/bounded-parallel-implementation.md; content/orientation/playbooks.json and generated mirror; docs/work-orders.md; focused governance validation; future Persona-Library Work Orders; issue #172.",
+      "evidence": "Requester direction on 2026-09-21; current rickvang/tool-repo GitHub contract revision 01198019e8f1520eb222dc6af2ec17bd81bc9c30; issue #172; prior issue #165/PR #166 consolidation of GitHub authorization semantics.",
+      "qualifies": [
+        "DEC-010",
+        "DEC-018"
+      ],
+      "revisit": "Standing completion authorization causes unintended merges, requester overrides are not reliably preserved, repository review/validation gates materially change, or Persona-Library adopts a different default completion model."
     }
   ]
 }
