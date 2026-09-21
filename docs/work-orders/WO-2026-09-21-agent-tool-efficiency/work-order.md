@@ -6,8 +6,8 @@
 - Last updated: 2026-09-21
 - Issue: https://github.com/rickvang/Persona-Library/issues/159
 - Repository: `rickvang/Persona-Library`
-- Base: `main` at `e428cd87e0b8655e08da825569d603052a79162a`
-- Branch: `feat/issue-159-agent-tool-efficiency`
+- Base: `main` at `fd244c555a70dca0b0683aad1b1af92532949ee8`
+- Branch: `fix/issue-159-vercel-git-gating`
 - Requester: `rickvang`
 - Owner: ChatGPT implementation agent
 - Explicit collaborator: Mara Okoye · knowledge systems architect (placement/boundary review)
@@ -38,7 +38,7 @@ The durable architecture rationale is recorded in `DEC-018`.
 - shared remote-tool efficiency contract in the Tool execution skill;
 - GitHub and Vercel Tool-use recipes plus Riley requirements;
 - GitHub-native repository validation;
-- Vercel ignored-build gating for non-main commits;
+- Vercel Git branch gating that prevents routine non-main commits from creating deployment records;
 - focused tests for preview gating;
 - concise repository and Work Order guidance;
 - generated output refresh and reconciliation evidence.
@@ -55,7 +55,7 @@ The durable architecture rationale is recorded in `DEC-018`.
 ## Success criteria
 
 - repository validation runs in GitHub without requiring Vercel;
-- non-main commits skip Vercel unless the agent marks a materially reviewable checkpoint;
+- routine non-main branches create no automatic Vercel deployment records; `main` remains automatic and `preview-*` branches are the explicit automatic Preview path;
 - `main` continues to build for Production;
 - future agents can discover the efficiency behavior through the Tool-use route;
 - requester-visible Preview checkpoints remain available and agent-owned;
@@ -69,19 +69,33 @@ Run or obtain current CI evidence for:
 ```bash
 node scripts/build-library.mjs
 node scripts/validate-content.mjs
-node --test scripts/validation/validation.test.mjs scripts/validation/vercel-ignore-build.test.mjs
+node --test scripts/validation/validation.test.mjs scripts/validation/vercel-git-deployment.test.mjs
 git diff --check
 git diff --exit-code -- dist
 ```
 
-Also verify one branch commit without the marker is ignored by Vercel, one `[vercel-preview]` checkpoint reaches Preview, and `main` remains production-build eligible.
+Also verify routine branch commits create no Vercel deployment records, `preview-*` remains explicitly deployment-enabled for intentional Previews, and `main` remains production-build eligible.
 
 ## Current phase and next action
 
-Phase: ready for review. PR #163 has a READY explicit Preview and GitHub repository validation run `35625619378` passed build, full content validation, focused tests, committed-range whitespace, and generated-output parity. Unmarked follow-up commits are canceled by the Vercel ignored-build gate rather than reaching READY.
+Phase: follow-up implementation. PR #163 landed the original ignored-build gate, but live quota evidence showed that Vercel still created a deployment record before canceling each ignored build. The current fix moves gating earlier with `git.deploymentEnabled`: routine branches are disabled, `main` stays enabled, and `preview-*` is the explicit automatic Preview path. Five commits on this fix branch have produced zero Vercel deployment records.
 
-Next action: review PR #163 and its live Preview. Merge remains a separate requester decision; after merge, verify the actual `main` Production deployment before closing issue #159.
+Next action: open the follow-up PR, verify GitHub repository validation, confirm the PR branch still creates no Vercel deployment record, then review. Merge remains a separate requester decision; after merge, verify `main` remains production-build eligible.
 
 ## Completion boundary
 
 Ready-for-review requires the focused PR, passing repository validation, current generated output, a successful explicit Preview checkpoint, and recorded Tool/cross-space reconciliation. Completion and merge remain separately authorized.
+
+
+## 2026-09-21 quota follow-up
+
+The original ignored-build mechanism reduced completed builds but did not reduce deployment-object creation. Vercel created a deployment record for each Git push and only then returned the ignored build as `CANCELED`; those records contributed to the daily deployment limit.
+
+The correction uses Vercel's Git `deploymentEnabled` branch rules instead:
+
+- `**: false` blocks automatic Git deployments by default;
+- `main: true` preserves automatic Production deployment;
+- `preview-*: true` provides an explicit automatic Preview branch convention;
+- the obsolete `ignoreCommand`, marker script, and marker regression test are removed.
+
+This changes the mechanism, not DEC-018's architectural boundary: GitHub CI remains repository truth, Vercel remains deployed-state evidence, and Previews are reserved for materially useful checkpoints.
