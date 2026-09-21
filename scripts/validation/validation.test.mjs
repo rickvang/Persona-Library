@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
+import { playbookCatalogCard, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -80,6 +80,19 @@ test('Relationship validation keeps cross-domain references explicit', () => {
   const recipeWithoutSteps = { ...recipe };
   delete recipeWithoutSteps.steps;
   assert.throws(() => validateRelationships({ data: { ...context.data, toolUseRecipes: [recipeWithoutSteps] } }, indexes), /Tool-use recipe has no steps: recipe-test/);
+});
+
+
+test('GitHub governance semantics stay owned by the pinned Tool contract', () => {
+  const pin = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+  const agents = `Follow https://github.com/rickvang/tool-repo/blob/${pin}/tools/github/AGENTS.md for GitHub mutation classes, authorization, and linked-issue completion semantics.`;
+  const workOrders = 'For GitHub merge authorization and linked-issue completion semantics, follow the pinned GitHub Tool contract.';
+  const boundedPlaybook = 'Use the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics.';
+  const boundedRoute = { next_handoff: 'Apply the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics.' };
+  assert.equal(validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute }), pin);
+  assert.throws(() => validateGitHubGovernanceContract({ agents: agents.replace(pin, '94acc6082e941439d2ee532f1b1b091cd42eb923'), workOrders, boundedPlaybook, boundedRoute }), /post-split GitHub Tool contract/i);
+  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook: boundedPlaybook + ' Separately authorized merge.', boundedRoute }), /duplicate reusable merge-authorization rule/i);
+  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute: { next_handoff: 'Treat merge as a separately authorized mutation.' } }), /routing must defer GitHub mutation semantics/i);
 });
 
 test('Bounded parallel role count is scoped to its catalog card', () => {
