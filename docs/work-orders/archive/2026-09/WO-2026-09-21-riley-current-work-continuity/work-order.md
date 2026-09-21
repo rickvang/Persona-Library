@@ -1,7 +1,7 @@
 # Work Order — Riley cross-agent Current Work continuity
 
 - Work Order ID: `WO-2026-09-21-riley-current-work-continuity`
-- Status: active
+- Status: complete
 - Created: 2026-09-21
 - Last updated: 2026-09-21
 - Issue: https://github.com/rickvang/Persona-Library/issues/178
@@ -46,10 +46,17 @@ Make Riley durable across agents and interruptions without introducing another o
 - generated `dist/**` freshness
 - current PR review/check/mergeability preflight before merge
 
-## Current phase and next action
+## Completion evidence
 
-Phase: implementation.
+- PR #179 contains the Riley Persona/workflow continuity contract, Work Order guidance, DEC-021, generated mirrors, and focused regression validation.
+- Repository validation run #51 proved build, authored/generated validation, and all 23 tests; its only failure was changed-line whitespace in `AGENTS.md`.
+- The whitespace correction was batched into commit `2442004a441ac28e9a7541f6a00ccfa580f4d5c0`.
+- Repository validation run #52 passed on that corrected head.
+- Cursor approval is present and no unresolved review threads were observed before closeout.
+- The linked Current Work row has been maintained as the concise cross-agent checkpoint while GitHub remains authoritative for volatile CI/review/mergeability state.
 
-Last checkpoint: issue #178 and this branch were created from `9e39fc5db1a33ef8e6241f39538a05ce81491a0f`; Current Work row `3e2cd825-35ff-8100-8fbd-e52c8a04bb6d` records the active workstream.
+## Completion boundary
 
-Next action: open the focused PR, use GitHub repository validation as the primary implementation signal, batch any review corrections, then perform one fresh merge preflight.
+Implementation, validation, decision recording, generated-output reconciliation, and Work Order lifecycle closeout are complete. PR #179 remains the final publication step and is eligible for merge only after the repository-required fresh preflight confirms the current head/base, checks, reviews, mergeability, and linked issue-closing effect.
+
+Next action: perform the fresh merge preflight and merge PR #179 if no blocker has appeared.
