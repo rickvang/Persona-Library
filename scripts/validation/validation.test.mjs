@@ -132,12 +132,12 @@ test('Job-search routing preserves Riley identity, Playbook procedure, and speci
 });
 
 test('Application tracker keeps private data behind explicit local or authenticated stores', () => {
-  const page = '<h1>Keep every opportunity in one place.</h1><strong id="storage-mode-title">Private data</strong><code>persona-library.job-applications.v1</code><form id="auth-form"><input id="auth-email"><input id="auth-password" autocomplete="current-password"></form><button id="migrate-local-button">Migrate local data</button><button id="merge-import-button">Merge safe changes</button><button id="replace-all-button">Replace all</button><script src="js/job-tracker-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script><script src="js/job-tracker-import.js"></script><script src="js/job-tracker-store.js"></script><script src="js/job-tracker.js"></script>';
-  const runtime = "const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; const payload = { format: FORMAT, version: FORMAT_VERSION }; importFile.addEventListener('change',()=>{}); importTools.safeUrl; 'Local writes are not used as a silent fallback';";
-  const importRuntime = "const FORMAT = 'persona-library-job-applications'; const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; canonicalizeSourceUrl; previewMerge; replaceAll; throw new Error('Unsupported tracker format'); throw new Error('newer or unsupported version'); ['http:', 'https:'];";
-  const storeRuntime = "createLocalStorageOpportunityStore; createSupabaseOpportunityStore; client.schema(schema).from('opportunities'); client.auth.signInWithPassword({ email, password }); persistSession: true; localStorage.getItem(storageKey);";
+  const page = '<h1>Keep every opportunity in one place.</h1><strong id="storage-mode-title">Private data</strong><code>persona-library.job-applications.v1</code><form id="auth-form"><input id="auth-email"><input id="auth-password" autocomplete="current-password"></form><input id="posting-date" type="date"><button id="migrate-local-button">Migrate local data</button><button id="merge-import-button">Merge safe changes</button><button id="replace-all-button">Replace all</button><script src="js/job-tracker-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script><script src="js/job-tracker-import.js"></script><script src="js/job-tracker-store.js"></script><script src="js/job-tracker.js"></script>';
+  const runtime = "const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; const postingDate = fields.postingDate.value; const payload = { format: FORMAT, version: FORMAT_VERSION }; importFile.addEventListener('change',()=>{}); importTools.safeUrl; 'Local writes are not used as a silent fallback';";
+  const importRuntime = "const FORMAT = 'persona-library-job-applications'; const STATUSES = ['Found','Reviewing','Packet Ready','Applied','Interviewing','Offer','Closed']; const postingDate = record.postingDate; canonicalizeSourceUrl; previewMerge; replaceAll; throw new Error('Unsupported tracker format'); throw new Error('newer or unsupported version'); ['http:', 'https:'];";
+  const storeRuntime = "createLocalStorageOpportunityStore; createSupabaseOpportunityStore; client.schema(schema).from('opportunities'); posted_at; client.auth.signInWithPassword({ email, password }); persistSession: true; localStorage.getItem(storageKey);";
   const configRuntime = "globalThis.PersonaLibraryJobTrackerConfig = {\"mode\":\"local\",\"supabaseUrl\":\"\",\"publishableKey\":\"\",\"schema\":\"app\"};";
-  const contract = 'Authenticated private opportunity store. LocalStorageOpportunityStore and SupabaseOpportunityStore use signInWithPassword; password values are never written to local storage. They preserve versioned JSON for a future standalone application. This remains separate from the seen-job deduplication contract. The normal import is a non-destructive merge/upsert and remote failure is never a silent fallback.';
+  const contract = 'Authenticated private opportunity store. postingDate is optional and sources must never infer or fabricate it. LocalStorageOpportunityStore and SupabaseOpportunityStore use signInWithPassword; password values are never written to local storage. They preserve versioned JSON for a future standalone application. This remains separate from the seen-job deduplication contract. The normal import is a non-destructive merge/upsert and remote failure is never a silent fallback.';
   assert.doesNotThrow(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, storeRuntime, configRuntime, contract }));
   assert.throws(() => validateJobApplicationTrackerContract({ page: page + 'Rick Vang', runtime, importRuntime, storeRuntime, configRuntime, contract }), /candidate-specific private values/);
   assert.throws(() => validateJobApplicationTrackerContract({ page, runtime, importRuntime, storeRuntime: storeRuntime + ' service_role', configRuntime, contract }), /secret\/service-role key/);
@@ -184,6 +184,7 @@ test('Applications tracker import merges safely and remains idempotent', () => {
     company: 'Example employer',
     role: 'Senior designer',
     status: 'Packet Ready',
+    postingDate: '2026-09-10',
     sourceUrl: 'https://jobs.example.com/advanced',
     packetUrl: 'https://drive.example.com/packet'
   }], { getNow: () => '2026-09-18T00:00:00.000Z' });
@@ -191,6 +192,7 @@ test('Applications tracker import merges safely and remains idempotent', () => {
   assert.equal(advanced.records[0].nextAction, 'Follow up with recruiter');
   assert.equal(advanced.records[0].notes, 'User-owned note');
   assert.equal(advanced.records[0].packetUrl, 'https://drive.example.com/packet');
+  assert.equal(advanced.records[0].postingDate, '2026-09-10');
 
   const canonical = importTools.previewMerge([{
     id: 'canonical-existing',
