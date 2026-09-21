@@ -658,6 +658,22 @@
         "DEC-014"
       ],
       "revisit": "Authenticated persistence creates unacceptable operational cost or security burden; the tracker is extracted into a standalone application with a different private store; or evidence shows canonical catalog authoring should move away from Git."
+    },
+    {
+      "id": "DEC-018",
+      "status": "Applied",
+      "category": "Tool-use and deployment boundary",
+      "date": "2026-09-21",
+      "title": "Remote tool work batches evidence, CI, and review checkpoints",
+      "summary": "Separate repository validation from deployed-state verification: reuse still-valid remote evidence, batch coherent changes, use GitHub CI for repository correctness, and reserve Vercel Preview for materially user-reviewable or deployment-specific states.",
+      "question": "How should increasingly autonomous agents keep repository work safe and visible without making remote calls, commits, CI runs, and Vercel deployments scale with every internal iteration?",
+      "decision": "Use the Tool-use layer to require bounded evidence gathering, explicit freshness triggers, coherent batching, and cheapest-sufficient validation. GitHub is the default remote repository truth and CI validation surface; refresh it when evidence can materially change and immediately before consequential mutations. Vercel is the deployed-state verification surface: non-main intermediate commits are skipped by default, while agents deliberately create or allow a Preview for materially new user-reviewable states or questions that repository CI cannot answer. Keep Production deployment from main separate and consequential.",
+      "rationale": "Live Vercel inspection for issue #159 found at least 20 Persona-Library deployments in roughly 35 minutes, including four errors, while no grouped production runtime errors were found in the inspected seven-day window. The commit sequence showed validation and diagnostic iterations repeatedly reaching deployment infrastructure. Reducing only Vercel builds would leave the broader remote-call pattern intact, while suppressing previews entirely would make work harder to steer.",
+      "alternatives": "Buy more Vercel capacity; continue deploying every intermediate commit; disable previews entirely; or encode the behavior separately in every Persona and workflow. Rejected because these respectively mask the cause, preserve churn, reduce visibility, or duplicate vendor-specific execution guidance.",
+      "tradeoffs": "Agents must distinguish still-valid evidence from freshness-sensitive state and decide when a review checkpoint is materially useful. CI becomes a required repository validation layer, and Preview triggering gains a small amount of infrastructure logic. In return, remote cost and noise should fall without removing reviewability or safety.",
+      "affects": "Tool discovery/safe execution guidance; GitHub and Vercel Tool-use recipes; Riley Tool requirements; repository AGENTS guidance; Work Order guidance; GitHub Actions validation; Vercel ignored-build configuration; issue #159.",
+      "evidence": "Issue #159; live Vercel deployment inspection on 2026-09-21; Persona-Library commit/deployment history; current Tool-use architecture and repository validation contracts.",
+      "revisit": "Representative workstreams miss deployed defects, users receive review checkpoints too late to steer effectively, GitHub CI becomes materially more expensive than the avoided deployment churn, or Vercel/GitHub platform behavior changes the safe trigger model."
     }
   ]
 }

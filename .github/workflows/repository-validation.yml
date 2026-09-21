@@ -1,0 +1,49 @@
+name: Repository validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repository-validation-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Build generated library output
+        run: node scripts/build-library.mjs
+
+      - name: Validate authored and generated content
+        run: node scripts/validate-content.mjs
+
+      - name: Run repository validation tests
+        run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-ignore-build.test.mjs
+
+      - name: Check committed whitespace for pull request
+        if: github.event_name == 'pull_request'
+        run: git diff --check "${{ github.event.pull_request.base.sha }}...HEAD"
+
+      - name: Check committed whitespace for main push
+        if: github.event_name == 'push'
+        run: git diff --check "${{ github.event.before }}..${{ github.sha }}"
+
+      - name: Verify generated output is committed
+        run: git diff --exit-code -- dist

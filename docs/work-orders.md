@@ -83,6 +83,12 @@ Keep entries concise. Add or revise an entry when one of these occurs:
 
 Do not log invented activity, synthetic answers as real observations, or repeated status messages that add no information.
 
+## Remote-tool efficiency and visible checkpoints
+
+For Tool-heavy Work Orders, use the reusable Tool-use guidance rather than treating every intermediate step as a new remote checkpoint. Gather the minimum sufficient remote state, record what would invalidate it, reuse it while still valid, batch related work, and validate at the cheapest layer that can answer the question. Refresh freshness-sensitive state before consequential mutations.
+
+A reduction in calls must not hide meaningful progress from the requester. For visual, interaction, routing, environment, or deployed integration work, record a user-reviewable checkpoint when there is materially new state to inspect. Vendor-specific GitHub, Vercel, browser, document, or other execution procedure belongs in the applicable Tool-use recipe rather than being duplicated in each Work Order.
+
 ## Evidence and uncertainty
 
 Use explicit status labels appropriate to the work. At minimum distinguish sourced, observed, heuristic, synthetic_assumption, assumption, recommendation, and unknown.

@@ -39,6 +39,19 @@ Use one explicit state for each candidate:
 
 Never turn `referenced but unavailable` into an execution attempt. A connector record does not establish that a credential, workspace, or permission is configured.
 
+## Remote-tool efficiency contract
+
+When a task needs repeated repository, deployment, document, browser, or other remote-tool interaction:
+
+1. Gather the minimum sufficient state in one bounded evidence pass before acting.
+2. Record what would invalidate that evidence. Reuse it until a named freshness trigger occurs instead of polling unchanged state.
+3. Batch related reads and writes into coherent units. Do not use remote calls, commits, deployments, or previews as a scratchpad for every internal thought or edit.
+4. Validate at the cheapest layer that can answer the question: source/static checks before repository CI, repository CI before deployed Preview, and Preview before Production observation.
+5. Escalate to another remote call when it adds new evidence, responds to a failed gate, satisfies a required freshness check, answers a deployed-state question, or produces a materially new user-reviewable state.
+6. Preserve visibility while reducing calls. For visual, interaction, or deployed integration work, surface a meaningful review checkpoint early enough for the requester to steer the result; skip previews that add no new reviewable state.
+
+Vendor-specific details belong in Tool-use recipes. This contract does not weaken permission, approval, verification, or pre-mutation freshness requirements.
+
 ## Operating procedure
 
 1. Define the capability rather than assuming a vendor.
@@ -118,5 +131,6 @@ Before handoff, confirm:
 - Result, partial failure, friction, and evidence are recorded accurately.
 - Usage note, lesson, recipe, and validated guidance are not conflated.
 - Catalog and reconciliation handoffs are named only when required and actually available.
+- Repeated remote calls were justified by new evidence, a failed gate, a material freshness trigger, a deployed-state question, or a meaningful review checkpoint rather than routine polling.
 
 See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/tool-discovery-and-safe-execution.golden.md).
