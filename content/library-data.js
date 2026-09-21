@@ -7,6 +7,7 @@
     'playbookCatalog',
     'operatingPacks',
     'templates',
+    'toolCatalog',
     'personaToolRequirements',
     'personaHandoffs',
     'toolUseRecipes',
