@@ -115,15 +115,17 @@ Do not rename a specialized artifact to Work Order merely because it is linked f
 
 ## Riley cross-agent continuity
 
-For substantial Riley-operated work, use the user's existing **Notion Current Work** database as the cross-thread/cross-agent index when that tracker is available. Do not create a second orchestration database for the same purpose. One Current Work row represents one substantial workstream; the linked Work Order remains the detailed project-scoped execution and recovery record.
+For every substantial workstream, treat Riley Morgan / `ai-orchestrator` as the default durable orchestration owner unless the requester explicitly establishes another orchestration boundary. The selected Persona, Skill, Playbook, Tool path, or execution runtime may operate directly without an unnecessary Riley execution hop. Use the user's existing **Notion Current Work** database as the cross-thread/cross-agent index when that tracker is available. Do not create a second orchestration database for the same purpose. One Current Work row represents one substantial workstream; the linked Work Order remains the detailed project-scoped execution and recovery record.
 
 Use this state hierarchy:
 
-1. **Current Work** — concise cross-agent index: current objective, owner or agent, next action, blocker, last checkpoint, and links to the authoritative work surfaces.
+1. **Current Work** — concise cross-agent index: Work ID, current objective, owner or agent, Operating Route, optional Parent Work ID, next action, blocker, last checkpoint, and links to the authoritative work surfaces.
 2. **Work Order** — detailed execution/recovery state: scope, constraints, decisions, accepted evidence, phase and gate state, handoffs, validation, and resumable next action.
 3. **Live systems** — freshness-sensitive operational authority: GitHub branch/PR head, CI, review threads, mergeability, deployments, permissions, and other state that can change independently of the checkpoint.
 
 **Resume order:** Current Work → linked Work Order → selectively refresh live systems whose state may have been invalidated. Reuse still-valid evidence instead of reconstructing the conversation or broadly refetching every source.
+
+**Riley reconciliation points:** workstream creation, material rerouting, cross-agent handoff, major blocker, and completion. At these boundaries, update the durable route and next action in Current Work; do not require an extra Riley runtime call when the selected operating route can continue directly.
 
 Update Current Work at material lifecycle or ownership transitions and whenever the next safe action materially changes. Do not use it as a mirror of every commit, check, review count, current SHA, mergeability result, or deployment event. **Do not mirror volatile live state** merely to make the tracker look complete; the Last Checkpoint should record the last proven state and the Next Action should name what must be refreshed before a consequential mutation.
 

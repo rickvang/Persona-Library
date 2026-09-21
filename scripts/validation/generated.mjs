@@ -22,11 +22,11 @@ export function validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, 
 export function validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }) {
   if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley AI orchestrator record is missing');
   const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
-  if (!includesAll(personaText, ['current work', 'work order', 'live systems', 'broad rediscovery'])) throw new Error('Riley must declare the Current Work → Work Order → live-system continuity boundary');
+  if (!includesAll(personaText, ['current work', 'work order', 'live systems', 'broad rediscovery', 'every substantial current work workstream', 'operating route', 'parent work id', 'execute directly'])) throw new Error('Riley must declare universal durable Current Work orchestration while preserving direct execution');
   const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
-  if (!operate || !includesAll(JSON.stringify(operate), ['resume and checkpoint substantial work', 'current work', 'linked work order'])) throw new Error('Riley operating workflow must include durable cross-agent checkpoint/resume behavior');
-  if (!includesAll(agents, ['notion current work', 'cross-thread/cross-agent index', 'linked work order', 'do not mirror volatile', 'refresh live systems'])) throw new Error('Root AGENTS must route Riley-operated substantial work through Current Work without mirroring volatile live state');
-  if (!includesAll(workOrders, ['riley cross-agent continuity', 'current work', 'cross-agent index', 'work order', 'live systems', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define the Riley Current Work → Work Order → live-system hierarchy');
+  if (!operate || !includesAll(JSON.stringify(operate), ['resume and checkpoint substantial work', 'reconcile durable orchestration state', 'operating route', 'parent work id'])) throw new Error('Riley operating workflow must include durable cross-agent checkpoint/resume and orchestration reconciliation behavior');
+  if (!includesAll(agents, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'do not mirror volatile', 'refresh live systems'])) throw new Error('Root AGENTS must make Riley the default durable orchestration owner without forcing an extra execution hop');
+  if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → Work Order → live-system hierarchy');
 }
 
 export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }) {
