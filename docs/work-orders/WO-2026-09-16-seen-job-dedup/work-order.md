@@ -1,30 +1,134 @@
-# Seen-job deduplication scope correction Work Order
+# Seen-job deduplication Work Order
 
 ## Header
 
 - Work Order ID: WO-2026-09-16-seen-job-dedup
 - Issue: #96
 - Status: ready-for-review
+- Last updated: 2026-09-21
 - Authorized repository: `rickvang/Persona-Library`
-- Branch: `fix/issue-96-seen-job-dedup`
-- Change mode: source update + reconciliation
+- Working branch: `feat/issue-96-supabase-seen-jobs`
+- Change mode: source update + private Supabase migration + runtime proof
+- Current owner: ChatGPT / implementation agent
+- Explicit collaborator: Mara Okoye · knowledge systems architect (placement/boundary review)
 
 ## Outcome
 
-Correct the overbuilt job-ledger concept to the actual requirement: repeated Creative Job Search / job-discovery checks remember openings already presented and suppress those duplicates on later “what’s new?” runs.
+Prevent repeated Creative Job Search / job-discovery runs from presenting the same opening again by using the existing authenticated `persona-workspace-data` Supabase project as the durable private seen-job store.
 
-## Boundary
+Keep this separate from the Applications tracker. Seen-job persistence answers “have I already been shown this opening?” Applications continues to answer “what is the lifecycle state of an opportunity I intentionally chose to track?”
 
-- Keep only stable identity + lightweight private seen-job state.
-- No application tracker, lifecycle state machine, campaign database, scheduler, queue, sync service, or JobAgent integration.
-- Keep real seen-job state outside Persona-Library in the consuming Skill/runtime.
-- Preserve Riley → Priya → Playbook → specialist architecture from #112/#114.
-- Preserve historical Decisions and archived Work Orders; this correction changes current guidance, not history.
+## Placement / boundary review
 
-## Reconciliation
+Selected placement:
 
-Updated the current contract, job-search implementation guidance, Elena search workflow wording, Priya validation wording, Docs orientation pointer, application Work Order template, Playbooks Site shared-state card, and focused validators. Historical DEC-011 / archived proof records remain unchanged.
+- `client/seen-job-store.js` — dedicated stable-identity + authenticated storage adapter;
+- `dist/js/seen-job-store.js` — generated/copied runtime asset;
+- `docs/job-search/job-ledger-contract.md` — current reusable behavior/security contract;
+- `docs/work-orders/WO-2026-09-16-seen-job-dedup/database-contract.sql` — repository-side database contract;
+- existing private Supabase `app.seen_jobs` — actual user-specific state.
 
-## Validation
+Rejected alternatives:
 
-Run the repository build, top-level content validator, focused validation tests, isolated Persona–Skill validation, and `git diff --check`. Merge remains separate.
+- putting all discovered jobs into `app.opportunities`;
+- expanding Applications with seen/rejected/expired observation state;
+- creating a new Supabase project or job database;
+- storing private job-search history in Git;
+- importing JobAgent or `rickvang/ai-job-search`.
+
+## Implemented repository contract
+
+The adapter now:
+
+1. prefers provider/source + stable provider job ID;
+2. otherwise uses a canonical posting URL with tracking-only parameters removed;
+3. otherwise requires a conservative normalized `company + title + location` fingerprint;
+4. reads the authenticated `app.seen_jobs` table before display;
+5. leaves unseen results unpersisted until the caller has actually presented them;
+6. records shown results afterward with `first_shown_at`;
+7. ignores duplicate inserts so first-shown time remains stable;
+8. provides no local-storage fallback for repeated-run memory.
+
+Applications remains unchanged as the lifecycle store.
+
+## Live Supabase state
+
+Project: `persona-workspace-data` (`spqruezbccrabmliuijm`).
+
+Migration `create_app_seen_jobs` was applied on 2026-09-21.
+
+`app.seen_jobs` contains only:
+
+- `row_id`
+- `user_id`
+- `stable_key`
+- `provider_job_id`
+- `source_url`
+- `normalized_source_url`
+- `company`
+- `title`
+- `location`
+- `first_shown_at`
+
+Security boundary:
+
+- RLS enabled;
+- anonymous table access revoked;
+- authenticated gets SELECT + INSERT only;
+- owner-bound SELECT and INSERT policies use `(select auth.uid()) = user_id`;
+- browser/runtime integration uses the existing publishable-key + authenticated-session model;
+- no real seen-job rows are committed as evidence.
+
+## Validation status
+
+Observed:
+
+- live table exists with RLS enabled;
+- synthetic owner row could be inserted under an authenticated owner JWT context;
+- a different authenticated JWT subject saw zero rows for that owner record;
+- the synthetic proof row was deleted afterward, leaving no test residue;
+- Supabase performance advisor reports no findings;
+- Supabase security advisor reports only the pre-existing Auth warning that leaked-password protection is disabled;
+- focused Node tests cover provider-ID precedence, tracking-parameter canonicalization, conservative fallback identity, read-before-record behavior, repeated-run suppression, and no silent local fallback.
+
+Repository validation complete:
+
+- PR #170 opened against `main`;
+- GitHub Actions Repository validation run #36 passed;
+- build generated library output passed;
+- authored/generated content validation passed;
+- repository tests passed, including the new seen-job identity and repeated-run tests;
+- pull-request whitespace check passed;
+- generated-output parity check passed;
+- final Supabase privilege proof confirms anon has no app schema usage and no SELECT/INSERT on `app.seen_jobs`;
+- authenticated has SELECT + INSERT only, with UPDATE/DELETE denied by grants;
+- `app.seen_jobs` contains zero rows after synthetic proof cleanup.
+
+Merge is authorized by the requester’s explicit instruction to merge issue #96 and by the current Persona-Library standing completion contract; the pinned GitHub Tool contract still governs fresh preflight and linked-issue completion.
+
+## Posting-date follow-up
+
+The requester separately asked to backfill missing Applications posting dates from the stored posting links. This is private data maintenance, not part of the seen-job schema.
+
+Result:
+
+- 8 of 12 previously blank posting dates were backfilled from exact employer/ATS metadata;
+- Cengage Group: 2026-05-27;
+- Filevine: 2026-07-15;
+- Function Health: 2026-01-28;
+- HighLevel: 2026-09-05;
+- Render: 2026-08-07;
+- Tessera Labs: 2026-05-13;
+- Vanta: 2026-06-26;
+- Workiva: 2026-08-03;
+- Apollo.io, Future, ngrok, and Order.co remain blank because their linked pages did not expose an exact published date that could be verified without inference.
+
+## Decision-history correction
+
+Codex review identified that moving the private seen-job set from caller/runtime-only state to a dedicated authenticated Supabase table is a durable architecture change that requires Decision history. DEC-020 now records that choice, qualifies DEC-011 and DEC-017, preserves the Applications separation, and defines the revisit conditions.
+
+The earlier VM cross-realm test issue and implementation-guide ownership mismatch are also corrected on this branch.
+
+## Next action
+
+Run repository validation on the Decision-corrected head, resolve the addressed review threads, refresh current `main` and PR state, and merge PR #170 if the full preflight is clean.

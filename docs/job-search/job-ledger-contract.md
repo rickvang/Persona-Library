@@ -1,6 +1,6 @@
 # Seen-job deduplication contract
 
-Reusable contract for avoiding duplicate job results across repeated job-search checks. This is intentionally small: it remembers which openings have already been presented so a later “what’s new?” search can suppress the same jobs by default.
+Reusable contract for avoiding duplicate job results across repeated job-search checks. It answers one question only: **has this opening already been presented to this authenticated user?**
 
 The file name is retained for compatibility with existing references. This contract does **not** define a full job-opportunity ledger or application tracker.
 
@@ -11,39 +11,46 @@ Application lifecycle tracking is defined separately in [`application-tracker-co
 ```text
 Creative Job Search / job-discovery capability
 → finds current openings
-→ derives a stable identity for each result
-→ checks the private seen-job set
-→ presents only results not already shown by default
-→ records newly presented results after they are shown
+→ derives the strongest stable identity for each result
+→ reads the authenticated private seen-job store before presentation
+→ suppresses identities already shown from default “what’s new?” output
+→ presents genuinely new results
+→ records only the results actually presented, after they are shown
 
-Elena Marin / career search strategist
-→ owns search strategy, targeting, fit judgment, and opportunity evaluation when those judgments are requested
-
-Priya Desai · Job search orchestrator
-→ may use search results inside a full-outcome Playbook run
-→ does not own the seen-job store
+Applications tracker
+→ stores only opportunities intentionally selected for lifecycle tracking
+→ remains canonical for Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed
 
 Persona-Library
-→ owns this reusable behavior contract only
-→ does not store the user’s seen-job history
+→ owns this reusable behavior, identity precedence, client/storage integration contract,
+  and the private database schema/migration required for the feature
+→ does not own or commit user-specific seen-job rows
+
+persona-workspace-data Supabase private state
+→ owns the actual per-user seen-job rows in app.seen_jobs
+→ uses the existing authenticated app schema and Data API boundary
 ```
 
-The actual seen-job set belongs to the consuming private Skill/runtime state.
+JobAgent remains reference evidence only. Do not integrate JobAgent, import its broader model, or recreate its lifecycle.
 
 ## Required behavior
 
 ```text
 search
 → normalize each returned job enough to derive identity
-→ check private seen-job set
+→ query app.seen_jobs for the authenticated user
 → already presented?
    ├─ yes → suppress from default new-results output
-   └─ no  → present → add identity to seen-job set
+   └─ no  → present
+             ↓
+           after presentation succeeds
+             ↓
+           insert identity into app.seen_jobs
 ```
 
-The goal is simple: repeated searches should surface genuinely new openings instead of repeatedly showing the same ones.
+Reading happens **before** presentation. Recording happens **after** presentation. A discovered job that was never shown must not be marked seen merely because it appeared in an intermediate search result.
 
-## Identity order
+## Stable identity order
 
 Use the strongest available identity first:
 
@@ -51,47 +58,92 @@ Use the strongest available identity first:
 2. normalized canonical posting URL;
 3. conservative normalized `company + title + location` fingerprint.
 
-Tracking-only URL parameters should not make the same posting look new. The fallback fingerprint should be conservative so distinct roles are not collapsed merely because they are similar.
+Tracking-only URL parameters must not make the same posting appear new. The fallback fingerprint should require enough information to avoid collapsing distinct openings; if company, title, and location are not all available and there is no stronger identity, treat identity as unresolved instead of guessing.
 
-## Minimum private record
+## Authenticated private record
 
-Keep the stored state as small as practical. A record may contain only:
+The private seen-job set is persisted in the dedicated `app.seen_jobs` store in the existing `persona-workspace-data` Supabase project.
 
 | Field | Purpose |
 | --- | --- |
-| `key` | Stable identity used for deduplication |
-| `company` | Human-readable reference |
-| `title` | Human-readable reference |
-| `first_shown` | When the job was first presented |
+| `user_id` | Authenticated owner; RLS binds access to `auth.uid()` |
+| `stable_key` | Identity used for repeated-result suppression |
+| `provider_job_id` | Stable provider/source job identifier when available |
+| `source_url` | Presented posting URL when available |
+| `normalized_source_url` | Canonical URL used for URL identity |
+| `company` | Human-readable employer |
+| `title` | Human-readable job title |
+| `location` | Location used by the conservative fallback when available |
+| `first_shown_at` | Time the opening was first actually presented |
 
-A simple private structured file, Skill state, or equivalent lightweight store is sufficient. Do not add a database service merely for this behavior.
+The table intentionally has no application status, rejection state, recruiter fields, campaign fields, observation history, or `last_seen`.
+
+## Security boundary
+
+The seen-job table follows the same private-data principles as Applications while remaining a separate table and workflow:
+
+- `app` is the existing explicitly exposed Data API schema;
+- `authenticated` receives only the table privileges required for deduplication;
+- anonymous access is revoked;
+- RLS limits reads and inserts to `(select auth.uid()) = user_id`;
+- browser/runtime code uses only the publishable project key plus the authenticated user session;
+- secret/service-role credentials are prohibited from client code;
+- real seen-job rows never appear in Persona-Library source, fixtures, generated output, Work Orders, or test evidence.
+
+## Client/storage integration
+
+`client/seen-job-store.js` provides the reusable integration boundary.
+
+- `deriveIdentity(job)` applies provider ID → canonical URL → conservative fingerprint precedence.
+- `canonicalizeSourceUrl(url)` removes fragments and tracking-only parameters while preserving identity-bearing URL data.
+- `filterUnseen(results)` reads the authenticated `app.seen_jobs` table before results are presented.
+- `recordPresented(shownResults)` inserts identities only after those results were actually shown.
+- Duplicate inserts are ignored so `first_shown_at` is not rewritten on later equivalent runs.
+- There is no local-storage fallback for seen-job suppression; configured repeated-run memory is the authenticated private Supabase store.
+
+## Applications relationship
+
+A seen job is not automatically a tracked opportunity.
+
+```text
+seen job
+→ optionally selected for tracking
+→ create/update Applications opportunity
+→ lifecycle begins at Found
+```
+
+The same posting may therefore exist in both stores for different reasons. Seen-job state answers whether it has been presented; Applications state answers what is happening with an intentionally tracked opportunity.
 
 ## Explicit non-goals
 
 This contract does not require:
 
-- application lifecycle tracking;
-- rejected / applied / expired status management;
+- application lifecycle fields in `seen_jobs`;
+- rejected / applied / expired state;
 - `last_seen` observation history;
 - repost/material-change state machines;
 - campaign analytics or campaign-health persistence;
-- application references;
-- a remote database, scheduler, queue, daemon, or sync service;
-- importing or integrating JobAgent;
-- storing private job-search history inside Persona-Library.
+- recruiter CRM data;
+- a new Supabase project;
+- a scheduler, queue, daemon, or sync service;
+- autonomous job discovery or application submission;
+- JobAgent integration;
+- `rickvang/ai-job-search` as an implementation target.
 
-JobAgent remains reference evidence only. The retained concept here is repeated-result deduplication, not JobAgent’s broader state model.
+## Validation
 
-## Validation questions
+Use synthetic/test rows and an authorized private runtime. Do not commit live private history.
 
-- Does the first search present a matching job?
-- Does a later equivalent search suppress that same job by default?
-- Do tracking-only URL differences avoid creating duplicates?
-- Are stable provider job IDs preferred when available?
-- Does the fallback fingerprint avoid obvious duplicates without collapsing clearly different roles?
-- Do genuinely new jobs continue to appear normally?
-- Is the implementation still a small private seen-results mechanism rather than a general job-tracking system?
+1. A first search returns a synthetic matching job as unseen.
+2. The runtime presents it, then records it.
+3. A later equivalent search suppresses it.
+4. Tracking-only URL differences resolve to the same identity.
+5. Stable provider job IDs take precedence when available.
+6. Conservative fallback identity does not collapse clearly distinct locations/roles.
+7. Genuinely new jobs still pass through.
+8. The same posting can independently be added to Applications as `Found`.
+9. Anonymous and different-user contexts cannot read or mutate the row.
 
-## Runtime proof status
+## Completion boundary
 
-Persona-Library defines the contract only. The consuming Skill/runtime must provide the small persistent seen-job set if repeated-run memory is required. If that runtime cannot persist state across runs, record the limitation instead of adding unrelated infrastructure.
+Issue #96 is complete only when the repository contract and client adapter, the live private `app.seen_jobs` schema, repeated-run proof, and owner-isolation/security validation all agree. Applications remains a separate lifecycle store and no real seen-job history is committed to Git.

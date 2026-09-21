@@ -44,6 +44,8 @@ const FILES = {
   jobTrackerImportOutput: 'dist/js/job-tracker-import.js',
   jobTrackerStoreSource: 'client/job-tracker-store.js',
   jobTrackerStoreOutput: 'dist/js/job-tracker-store.js',
+  seenJobStoreSource: 'client/seen-job-store.js',
+  seenJobStoreOutput: 'dist/js/seen-job-store.js',
   jobTrackerRuntimeSource: 'client/job-tracker.js',
   jobTrackerRuntimeOutput: 'dist/js/job-tracker.js',
   playbooksPage: 'dist/playbooks.html',

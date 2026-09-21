@@ -46,6 +46,7 @@ const files = [
   ['client/job-tracker-config.js', 'dist/js/job-tracker-config.js'],
   ['client/job-tracker-import.js', 'dist/js/job-tracker-import.js'],
   ['client/job-tracker-store.js', 'dist/js/job-tracker-store.js'],
+  ['client/seen-job-store.js', 'dist/js/seen-job-store.js'],
   ['client/job-tracker.js', 'dist/js/job-tracker.js'],
   ['client/template-preview.js', 'dist/js/template-preview.js'],
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
