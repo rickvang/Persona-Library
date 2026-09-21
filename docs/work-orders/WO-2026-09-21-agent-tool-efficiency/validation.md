@@ -41,7 +41,22 @@ Follow-up evidence:
 | Follow-up implementation commits create no deployment records | pass | Commits `b46914ebb51c4de533c9cb98278b15b95def9203`, `a2cde86da809abd4af9daa747f077c81bcfb5189`, `60e493edac8439c47102b554c2e7902f62a9e21f`, and `5668752cdf3b57b58cb3f3114b0e99e3026d99a5` are also absent from Vercel's recent deployment list. |
 | Obsolete ignored-build implementation removed | pass | `scripts/vercel-ignore-build.mjs` and `scripts/validation/vercel-ignore-build.test.mjs` are removed. |
 | Focused regression replacement | pending PR CI | `scripts/validation/vercel-git-deployment.test.mjs` asserts the branch policy and absence of `ignoreCommand`. |
-| Production deployment behavior | pending merge | Static policy preserves `main: true`; live Production proof requires the merged main commit. |
+| Production deployment behavior | pass | PR #167 merged as `64bbc8b7b189c8504154546bfff17a26a5bd75fb`; Vercel deployment `dpl_6hDDknEKP4MCQSz1dv2oByi789iT` for that exact `main` commit reached READY. |
 | Explicit Preview branch behavior | configuration-proven; live proof deferred | `preview-*` is enabled by Vercel configuration. A live Preview is intentionally not triggered while the account is at its daily deployment limit. |
 
 This follow-up changes the claim from “ignored commits avoid completed builds” to “routine branches do not create automatic Vercel deployment records.”
+
+## 2026-09-21 canonical Vercel Tool-record validation
+
+| Check | State | Evidence |
+| --- | --- | --- |
+| Canonical Tool identity | implemented | `content/library-data/tool-integration.js` defines `tool-vercel` under `toolCatalog` with explicit identity, capability, scope, risk, permissions, approval, verification, fallback, availability, evidence, relationships, and revision history. |
+| Recipe relationship | implemented | `recipe-riley-vercel-review-checkpoint` points to `tool-vercel` via `toolId`. |
+| Persona requirement relationship | implemented | `requirement-riley-vercel-review-checkpoint` points to `tool-vercel` via `preferredToolId`. |
+| Canonical data loader | implemented | `content/library-data.js` requires and publishes `toolCatalog`. |
+| Relationship validation | implemented | `scripts/validation/relationships.mjs` validates Tool shape, Skill/Persona targets, recipe links, and requirement links. |
+| Tools surface | implemented | `dist/tools.html` exposes Vercel as a validated Tool record and links to the Vercel review-checkpoint recipe. |
+| Architecture boundary | implemented | `ARCHITECTURE.md` identifies `toolCatalog` as the canonical data-backed Tool identity source while allowing static legacy cards during migration. |
+| Generated library data | synchronized | `dist/data/library-data.js` contains the canonical Vercel Tool record and updated relationships. |
+| Focused regression tests | pending PR CI | Tests cover Vercel Tool record relationships and Tools-surface synchronization. |
+| Vercel deployment churn on this branch | pass so far | The current feature branch is not present in recent Vercel deployment records, consistent with the merged branch-level Git deployment gate. |

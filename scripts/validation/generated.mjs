@@ -9,6 +9,16 @@ export function playbookCatalogCard(html, playbookId) {
 const normalized = value => String(value || '').toLowerCase();
 const includesAll = (value, terms) => terms.every(term => normalized(value).includes(term));
 
+export function validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements, toolsPage }) {
+  const tool = (toolCatalog || []).find(item => item.id === 'tool-vercel');
+  if (!tool || tool.name !== 'Vercel' || tool.status !== 'active' || tool.evidenceStatus !== 'validated' || tool.availability !== 'runtime-dependent') throw new Error('Canonical Vercel Tool record is missing or malformed');
+  const recipe = (toolUseRecipes || []).find(item => item.id === 'recipe-riley-vercel-review-checkpoint');
+  if (!recipe || recipe.toolId !== tool.id || recipe.tool !== tool.name || !tool.toolUseRecipeIds?.includes(recipe.id)) throw new Error('Canonical Vercel Tool recipe relationship is invalid');
+  const requirement = (personaToolRequirements || []).find(item => item.id === 'requirement-riley-vercel-review-checkpoint');
+  if (!requirement || requirement.preferredToolId !== tool.id || requirement.preferredTool !== tool.name || requirement.recipeId !== recipe.id) throw new Error('Canonical Vercel Persona Tool relationship is invalid');
+  if (!includesAll(toolsPage, ['data-tool-id="tool-vercel"', '<h3>vercel</h3>', 'runtime availability', 'account permission', '#recipe-vercel-review-checkpoint'])) throw new Error('Tools page must expose the canonical Vercel Tool record and linked recipe');
+}
+
 export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }) {
   const pin = String(agents || '').match(/rickvang\/tool-repo\/blob\/([0-9a-f]{40})\/tools\/github\/AGENTS\.md/i);
   if (!pin) throw new Error('Persona-Library must pin an exact GitHub Tool contract revision');
@@ -118,6 +128,12 @@ export async function validateGeneratedOutputs(context) {
     workOrders: workOrderContract,
     boundedPlaybook: boundedParallelPlaybook,
     boundedRoute: context.routeGroups.get('playbooks').routes.find(route => route.id === 'bounded-parallel-implementation'),
+    toolsPage: files.toolsPage
+  });
+  validateVercelToolCatalogSurface({
+    toolCatalog: context.data.toolCatalog,
+    toolUseRecipes: context.data.toolUseRecipes,
+    personaToolRequirements: context.data.personaToolRequirements,
     toolsPage: files.toolsPage
   });
   const decisionSource = JSON.parse(await context.readFile('docs/decisions/records.json'));

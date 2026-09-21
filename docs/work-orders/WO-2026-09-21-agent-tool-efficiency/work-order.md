@@ -6,8 +6,8 @@
 - Last updated: 2026-09-21
 - Issue: https://github.com/rickvang/Persona-Library/issues/159
 - Repository: `rickvang/Persona-Library`
-- Base: `main` at `fd244c555a70dca0b0683aad1b1af92532949ee8`
-- Branch: `fix/issue-159-vercel-git-gating`
+- Base: `main` at `64bbc8b7b189c8504154546bfff17a26a5bd75fb`
+- Branch: `feat/issue-159-vercel-tool-record`
 - Requester: `rickvang`
 - Owner: ChatGPT implementation agent
 - Explicit collaborator: Mara Okoye · knowledge systems architect (placement/boundary review)
@@ -27,7 +27,7 @@ Mara Okoye’s creation gate was applied from `content/site-orientation.json`, t
 | Extend `tool-discovery-and-safe-execution` with a shared remote-tool efficiency contract | Select | This is reusable execution behavior across remote Tools, not a new Persona or Skill identity. |
 | Add separate GitHub and Vercel Tool-use recipes to `content/library-data/tool-integration.js` | Select | Vendor-specific procedures belong in Tool-use recipes and can attach to the existing Tool and context design Skill. |
 | Add Riley Tool requirements for the two recipes | Select | Riley is the default routing/orchestration front door and already owns Tool/context preflight; the requirements make the recipes discoverable without copying them into every Persona. |
-| Add a new Tool space, registry, Persona, Skill, or Playbook | Reject | Existing Tool-use, Skill, and Work Order layers already own the required responsibilities. |
+| Add a new Tool space, registry, Persona, Skill, or Playbook | Qualify | No new space, Persona, Skill, Playbook, or runtime is needed. A canonical Vercel Tool identity is now justified because the existing Tool-use recipe, live deployment evidence, and permission/availability boundary need a stable record relationship rather than a static page-only label. |
 | Put all behavior only in this Work Order or issue | Reject | That would not make the behavior reusable for future agents. |
 | Put GitHub/Vercel-specific rules directly into every Work Order | Reject | Work Orders should reference reusable Tool-use procedures rather than duplicate vendor-specific execution details. |
 
@@ -41,7 +41,8 @@ The durable architecture rationale is recorded in `DEC-018`.
 - Vercel Git branch gating that prevents routine non-main commits from creating deployment records;
 - focused tests for preview gating;
 - concise repository and Work Order guidance;
-- generated output refresh and reconciliation evidence.
+- generated output refresh and reconciliation evidence;
+- canonical `tool-vercel` record plus stable recipe/Persona requirement relationships.
 
 ## Non-goals
 
@@ -78,10 +79,9 @@ Also verify routine branch commits create no Vercel deployment records, `preview
 
 ## Current phase and next action
 
-Phase: follow-up implementation. PR #163 landed the original ignored-build gate, but live quota evidence showed that Vercel still created a deployment record before canceling each ignored build. The current fix moves gating earlier with `git.deploymentEnabled`: routine branches are disabled, `main` stays enabled, and `preview-*` is the explicit automatic Preview path. Five commits on this fix branch have produced zero Vercel deployment records.
+Phase: canonical Tool-record follow-up. PR #167 merged the deployment-record quota correction as `64bbc8b7b189c8504154546bfff17a26a5bd75fb`; Vercel reports that exact `main` production deployment READY. The current branch promotes the already-proven Vercel capability and boundaries into canonical `toolCatalog` data, attaches the existing Vercel recipe and Riley requirement by stable Tool ID, updates the Tools surface, and adds relationship/regression validation. Routine branch commits continue to create no Vercel deployment records.
 
-Next action: open the follow-up PR, verify GitHub repository validation, confirm the PR branch still creates no Vercel deployment record, then review. Merge remains a separate requester decision; after merge, verify `main` remains production-build eligible.
-
+Next action: open the focused Tool-record PR, run GitHub repository validation, verify the branch still creates no Vercel deployment record, and merge after a clean preflight.
 ## Completion boundary
 
 Ready-for-review requires the focused PR, passing repository validation, current generated output, a successful explicit Preview checkpoint, and recorded Tool/cross-space reconciliation. Completion and merge remain separately authorized.
@@ -99,3 +99,9 @@ The correction uses Vercel's Git `deploymentEnabled` branch rules instead:
 - the obsolete `ignoreCommand`, marker script, and marker regression test are removed.
 
 This changes the mechanism, not DEC-018's architectural boundary: GitHub CI remains repository truth, Vercel remains deployed-state evidence, and Previews are reserved for materially useful checkpoints.
+
+## 2026-09-21 Vercel Tool-record follow-up
+
+The Tool-use recipe and Riley requirement existed before a canonical Vercel Tool identity. That left a catalog inconsistency: the Tools surface described Tool records, but Vercel existed only as recipe/requirement strings.
+
+This follow-up adds a first-class `toolCatalog` data model and promotes Vercel as `tool-vercel` with explicit capability, connector description, scope, risk, permission, approval, verification, fallback, runtime-dependent availability, evidence, relationships, revision history, and lifecycle status. The existing recipe and Riley requirement now reference that stable Tool ID. This does not claim that Vercel is available in every runtime or that account permissions are configured.

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract } from './generated.mjs';
+import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateVercelToolCatalogSurface } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -71,7 +71,7 @@ test('Skill validation owns skill shape and does not need presentation context',
 
 test('Relationship validation keeps cross-domain references explicit', () => {
   const recipe = { id: 'recipe-test', title: 'Test recipe', tool: 'A bounded tool', skillId: 'skill-test', playbook: 'playbook-test', mode: 'review', requires: 'A fixture', output: 'A result', fallback: 'Manual review', status: 'Needs validation', personaIds: [persona.id], steps: ['Inspect'] };
-  const context = { data: { toolUseRecipes: [recipe], skillCatalog: [{ id: 'skill-test', toolUseRecipes: [recipe] }], personaToolRequirements: [], personaHandoffs: [], skillRelations: [] } };
+  const context = { data: { toolCatalog: [], toolUseRecipes: [recipe], skillCatalog: [{ id: 'skill-test', toolUseRecipes: [recipe] }], personaToolRequirements: [], personaHandoffs: [], skillRelations: [] } };
   const indexes = { personaIds: new Set([persona.id]), catalogIds: new Set(['skill-test']), entityIds: new Set(['skill-test']) };
   validateRelationships(context, indexes);
   assert.deepEqual([...indexes.recipeIds], ['recipe-test']);
@@ -80,8 +80,28 @@ test('Relationship validation keeps cross-domain references explicit', () => {
   const recipeWithoutSteps = { ...recipe };
   delete recipeWithoutSteps.steps;
   assert.throws(() => validateRelationships({ data: { ...context.data, toolUseRecipes: [recipeWithoutSteps] } }, indexes), /Tool-use recipe has no steps: recipe-test/);
+  assert.throws(() => validateRelationships({ data: { ...context.data, toolCatalog: [{ id: 'tool-test', name: 'Test Tool', category: 'test', capability: 'Test', scope: 'Named fixture', risk: 'Low', permission: 'Read', approval: 'None', verification: 'Inspect', fallback: 'Manual', availability: 'unknown', evidenceStatus: 'proposed', status: 'active', version: '1.0', updated: '2026-09-21', aliases: [], evidence: ['fixture'], toolUseRecipeIds: ['recipe-test'], personaIds: [persona.id], skillIds: ['skill-test'], revisions: [{ version: '1.0' }] }] } }, indexes), /invalid recipe relationship/i);
 });
 
+
+test('Vercel canonical Tool record stays linked to its recipe and Tools surface', () => {
+  const toolCatalog = [{
+    id:'tool-vercel', name:'Vercel', aliases:['Vercel platform'], category:'deployment-platform',
+    capability:'Deployed-state verification', scope:'Named Vercel project', risk:'High for mutation',
+    permission:'Runtime-specific', approval:'Explicit authorization for deployment mutation',
+    verification:'Fresh deployed-state preflight', fallback:'Use GitHub repository validation',
+    availability:'runtime-dependent', evidenceStatus:'validated', evidence:['Issue #159'],
+    toolUseRecipeIds:['recipe-riley-vercel-review-checkpoint'], personaIds:['ai-orchestrator'],
+    skillIds:['skill-tool-and-context-design'], status:'active', version:'1.0', updated:'2026-09-21',
+    revisions:[{version:'1.0'}]
+  }];
+  const toolUseRecipes = [{ id:'recipe-riley-vercel-review-checkpoint', toolId:'tool-vercel', tool:'Vercel' }];
+  const personaToolRequirements = [{ id:'requirement-riley-vercel-review-checkpoint', preferredToolId:'tool-vercel', preferredTool:'Vercel', recipeId:'recipe-riley-vercel-review-checkpoint' }];
+  const toolsPage = '<article id="tool-vercel" data-tool-id="tool-vercel"><h3>Vercel</h3>Runtime availability and account permission remain separate.<a href="#recipe-vercel-review-checkpoint">Open Vercel review-checkpoint recipe</a></article>';
+  assert.doesNotThrow(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements, toolsPage }));
+  assert.throws(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes: [{ ...toolUseRecipes[0], toolId:'missing' }], personaToolRequirements, toolsPage }), /recipe/i);
+  assert.throws(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements, toolsPage: toolsPage.replace('data-tool-id="tool-vercel"', '') }), /Tools page/i);
+});
 
 test('GitHub governance semantics stay owned by the pinned Tool contract', () => {
   const pin = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
