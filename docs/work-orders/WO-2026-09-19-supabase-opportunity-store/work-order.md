@@ -2,9 +2,9 @@
 
 - Work Order ID: `WO-2026-09-19-supabase-opportunity-store`
 - Title: Supabase-backed opportunity persistence and catalog projection foundation
-- Status: blocked
+- Status: active
 - Created: 2026-09-19
-- Last updated: 2026-09-19
+- Last updated: 2026-09-21
 - Requester: repository owner
 - Current owner: ChatGPT / implementation agent
 - Request mode: update
@@ -130,10 +130,10 @@ Gate result: storage adapter, auth/migration UI, generated deployment config, da
 
 Live project created: `persona-workspace-data` (`spqruezbccrabmliuijm`) in ACME / `us-east-2` at an approved cost of $0/month. Migrations `create_app_opportunities` and `expose_app_schema` are applied. `app.opportunities` has RLS enabled; authenticated has CRUD grants; anon has no schema/table access; Supabase security and performance advisors both report no findings. PostgREST role config includes `pgrst.db_schemas=public, app`.
 
-Live wiring update: the private Supabase Auth owner now exists (`auth.users` count = 1), and the requester connected `persona-workspace-data` to the Persona-Library Vercel project. The currently deployed PR preview still reports generated tracker config `mode: local` because it predates that integration connection; a fresh preview deployment is required to verify the synced environment variables are present.
+Live wiring update: the private Supabase Auth owner exists (`auth.users` count = 1) and has a password credential. The requester connected `persona-workspace-data` to the Persona-Library Vercel project. The build accepts both `SUPABASE_*` and `NEXT_PUBLIC_SUPABASE_*` URL/publishable-key pairs.
 
-Deployment verification checkpoint: Vercel Supabase integration environment scope was saved for Production, Preview, and Development on 2026-09-21. A fresh preview deployment is being triggered to verify the generated Applications config receives the synced Supabase variables.
+Deployment verification checkpoint: Vercel Supabase integration environment scope was saved for Production, Preview, and Development on 2026-09-21. The Applications login was changed from magic-link email to direct Supabase email + password authentication to remove SMTP delivery as a dependency. Store/runtime/page JavaScript syntax checks passed, no magic-link auth residue remains in those runtime surfaces, and the latest Vercel Preview for commit `5224860677dab35b0ef47086763e7e4b75620ce7` is READY. Supabase Security Advisor now reports one Auth warning: leaked-password protection is disabled; this is not blocking the private owner sign-in proof but should be reviewed before broader use.
 
 ## Next action
 
-Verify a fresh Vercel preview generated after the Supabase integration connection reports `mode: supabase`; then sign in through Applications, migrate the current local tracker rows, verify remote CRUD/RLS behavior, and update PR #157 from draft once canonical repository build/validation also pass.
+Have the requester sign in through the READY Preview using the existing private Auth email + password. If sign-in succeeds, verify authenticated remote CRUD/RLS behavior, then merge/deploy to production and migrate the existing production-origin local tracker rows. Update PR #157 from draft once the canonical repository build/validation also pass.
