@@ -2,7 +2,7 @@
 
 ## Current result
 
-Persona-Library draft PR #166 is technically green and remains dependency-blocked only on the final landed revision of tool-repo PR #10.
+Persona-Library PR #166 was technically green before the upstream merge and now pins the exact landed tool-repo revision. A final validation run is required for the refreshed consumer head.
 
 ## GitHub evidence
 
@@ -35,10 +35,10 @@ The preceding run `35632490435` failed only on one trailing-whitespace line in `
 
 ## Upstream evidence
 
-tool-repo PR #10 is open and mergeable at `303e98d048ae689239f53eae309fd55c050fac38`. Automated review identified commit-message and default-branch closing-keyword edge cases; both were corrected and both review threads are resolved.
+tool-repo PR #10 merged successfully at `01198019e8f1520eb222dc6af2ec17bd81bc9c30`. Automated review identified commit-message and default-branch closing-keyword edge cases before merge; both were corrected and both review threads were resolved.
 
 tool-repo exposes no repository CI run for this PR, so there is no CI claim to record there.
 
 ## Remaining blocker
 
-PR #166 must not leave draft/dependency-blocked state until tool-repo PR #10 lands and the exact landed revision is refreshed. If merge/squash/rebase changes the upstream revision, update the Persona-Library pin and rerun repository validation.
+The upstream dependency is satisfied. PR #166 now needs one final repository validation run and fresh merge preflight on the landed Tool revision.
