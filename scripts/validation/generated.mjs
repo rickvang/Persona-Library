@@ -9,7 +9,7 @@ export function playbookCatalogCard(html, playbookId) {
 const normalized = value => String(value || '').toLowerCase();
 const includesAll = (value, terms) => terms.every(term => normalized(value).includes(term));
 
-export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute }) {
+export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }) {
   const pin = String(agents || '').match(/rickvang\/tool-repo\/blob\/([0-9a-f]{40})\/tools\/github\/AGENTS\.md/i);
   if (!pin) throw new Error('Persona-Library must pin an exact GitHub Tool contract revision');
   if (pin[1].toLowerCase() === '94acc6082e941439d2ee532f1b1b091cd42eb923') throw new Error('Persona-Library must pin the post-split GitHub Tool contract');
@@ -19,6 +19,8 @@ export function validateGitHubGovernanceContract({ agents, workOrders, boundedPl
   if (normalized(boundedPlaybook).includes('separately authorized merge')) throw new Error('Bounded Parallel must not maintain a duplicate reusable merge-authorization rule');
   if (!includesAll(boundedRoute?.next_handoff, ['pinned github tool contract', 'merge authorization', 'linked-issue completion semantics'])) throw new Error('Bounded Parallel routing must defer GitHub mutation semantics to the pinned Tool contract');
   if (normalized(boundedRoute?.next_handoff).includes('separately authorized mutation')) throw new Error('Bounded Parallel routing must not maintain a duplicate reusable merge-authorization rule');
+  if (!includesAll(toolsPage, ['github', 'verified contract', 'runtime access', 'explicit authorization', 'fresh preflight'])) throw new Error('Tools page must present GitHub as a verified contract with runtime and authorization boundaries');
+  if (!String(toolsPage || '').includes(`rickvang/tool-repo/blob/${pin[1]}/tools/github/AGENTS.md`)) throw new Error('Tools page GitHub contract link must match the root AGENTS pin');
   return pin[1].toLowerCase();
 }
 
@@ -106,7 +108,8 @@ export async function validateGeneratedOutputs(context) {
     agents: rootAgents,
     workOrders: workOrderContract,
     boundedPlaybook: boundedParallelPlaybook,
-    boundedRoute: context.routeGroups.get('playbooks').routes.find(route => route.id === 'bounded-parallel-implementation')
+    boundedRoute: context.routeGroups.get('playbooks').routes.find(route => route.id === 'bounded-parallel-implementation'),
+    toolsPage: files.toolsPage
   });
   const decisionSource = JSON.parse(await context.readFile('docs/decisions/records.json'));
   const decision010 = decisionSource.records.find(record => record.id === 'DEC-010');
