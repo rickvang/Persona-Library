@@ -86,7 +86,7 @@ The original responsive job-search page remains a Playbook/reference surface. A 
 - Job posting and application-packet URLs are integration links, not canonical relationships to Persona or Skill records.
 - Versioned JSON export/import remains the portability boundary for backup and future extraction into a standalone app.
 - The tracker does not submit applications, send outreach, scrape jobs, or infer lifecycle transitions.
-- The seen-job deduplication contract remains separate: it suppresses already-presented search results and does not become the application tracker.
+- Seen-job deduplication remains separate from Applications: repeated discovery uses the authenticated private `app.seen_jobs` store to suppress already-presented results, while Applications stores only intentionally tracked opportunities and their lifecycle.
 
 ### Tracker workflow checkpoints
 
@@ -116,7 +116,7 @@ These are application-run/evidence records, not the row schema for the Applicati
 
 ### Repeated-search deduplication
 
-Repeated searches must not present previously shown jobs as new by default. After discovery, derive the strongest stable identity available—source + stable job ID first, then canonical URL, then a conservative `company + title + location` fingerprint—compare it with the private seen-job set, suppress matches, and record newly presented jobs after they are shown. No rejected/applied/expired lifecycle state, `last_seen` history, repost state machine, or application tracker is required for this behavior.
+Repeated searches must not present previously shown jobs as new by default. After discovery, derive the strongest stable identity available—source + stable job ID first, then canonical URL, then a conservative `company + title + location` fingerprint. Read the authenticated private `app.seen_jobs` store before display, suppress matches, present genuinely new jobs, then record only the jobs actually shown afterward. Tracking-only URL parameters must not create a new identity. No rejected/applied/expired lifecycle state, `last_seen` history, repost state machine, or application tracker is required for this behavior.
 
 ## ATS-primary application packet
 
@@ -376,7 +376,7 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 
 ### Phase 5 — Search learning loop
 
-- Use the private seen-job set so repeated discovery checks do not resurface openings already presented as new.
+- Use the authenticated private `app.seen_jobs` store so repeated discovery checks do not resurface openings already presented as new; read before display and record only presented results afterward.
 - Use the Applications tracker as the lifecycle store for tracked opportunities while the Work Order references only the minimum operational state needed. Set `Applied` and `appliedDate` only after a confirmed submission, and advance interview, offer, or closure states only from confirmed events; never infer those transitions. Keep this lifecycle state separate from the seen-job deduplication contract.
 - Separate market feedback from noise and small-sample assumptions.
 - Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.
@@ -461,7 +461,7 @@ Leah owns the ATS review and claim-to-ledger integrity result. Human-readable an
 - Hosting private candidate job history inside Persona-Library
 - Full CRM-style application reminders or campaign automation
 
-The [seen-job deduplication contract](job-ledger-contract.md) is in scope as reusable guidance for suppressing openings already presented in repeated searches. A hosted Persona-Library job database is not.
+The [seen-job deduplication contract](job-ledger-contract.md) is in scope for suppressing openings already presented in repeated searches using the existing private Supabase data layer. A separate job database, second Supabase project, or Applications-lifecycle expansion is not.
 
 These other items remain future opportunities, not implied capabilities of the current reference page.
 
