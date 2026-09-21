@@ -140,6 +140,8 @@ Live Auth proof: requester successfully signed in through the Supabase-mode Prev
 
 Remote CRUD checkpoint: authenticated Preview create/read is proven. The requester created `supabase test` / `crud smoke test` with status `Found`; direct Supabase verification found the row in `app.opportunities` at 2026-09-21 14:49 UTC. Update/delete client-path proof remains.
 
+Remote CRUD proof complete: the authenticated Preview successfully created the temporary `supabase test` / `crud smoke test` row, read it back, updated status from `Found` to `Reviewing`, and deleted it through the UI. Direct Supabase verification confirmed each state transition and now reports zero matching rows. The authenticated application CRUD path is proven end-to-end.
+
 ## Next action
 
-Verify authenticated remote CRUD/RLS with one Preview opportunity create/read/update/delete cycle. Then request explicit merge authorization, deploy to production, sign in on the production origin, and migrate the existing production-origin local tracker rows. Update PR #157 from draft once the canonical repository build/validation also pass.
+Complete remaining repository validation and RLS isolation evidence, then request explicit merge authorization. After merge/deploy, sign in on the production origin and migrate the existing production-origin local tracker rows.
