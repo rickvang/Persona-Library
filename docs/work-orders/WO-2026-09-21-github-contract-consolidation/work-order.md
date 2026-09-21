@@ -11,6 +11,7 @@
 - Upstream dependency: rickvang/tool-repo#9 / PR #10
 - Branch: `feat/issue-165-github-contract-consolidation`
 - Pull request: #166 — draft, dependency-blocked
+- Provisional upstream Tool revision: `303e98d048ae689239f53eae309fd55c050fac38`
 - Change domain: repository governance documentation, Playbook routing, focused validation
 - Reconciliation: change-impact-reconciliation
 
