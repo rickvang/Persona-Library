@@ -46,6 +46,7 @@ Each portable record uses a tracker-generated stable `id` and may contain:
 | `compensation` | Human-readable compensation note |
 | `sourceUrl` | Canonical job posting |
 | `packetUrl` | Private application packet/folder link |
+| `postingDate` | Date the employer published the job posting, when known |
 | `foundDate` | Date the opportunity was first tracked |
 | `appliedDate` | Date submitted, when applicable |
 | `nextAction` | Smallest current follow-up |
@@ -115,7 +116,8 @@ The normal import path is a non-destructive merge/upsert into the current active
 - Add records with no stable identity match.
 - Preserve existing non-empty lifecycle fields and user-owned `notes` and `nextAction`.
 - Advance lifecycle state only when the incoming state is further along; never downgrade an existing `Applied`, `Interviewing`, or `Offer` record to an earlier state.
-- Fill empty metadata such as `packetUrl`, `location`, and `compensation`; an incoming posting URL may correct a matched record.
+- Fill empty metadata such as `packetUrl`, `location`, `compensation`, and `postingDate`; an incoming posting URL may correct a matched record.
+- Keep `postingDate` optional and never infer or fabricate it when the source does not provide a posting date.
 - Surface ambiguous or conflicting identities in the import review before committing safe changes.
 - Show counts for new, updated, unchanged, and conflicting records before the merge is committed.
 - Keep an explicit `Replace all` action for restoring a backup; it is never the default.
