@@ -21,7 +21,7 @@ GitHub-specific mutation classes, merge authorization, and linked-issue completi
 
 ## Implementation-truth precedence
 
-This order is about implementation truth, not permission expansion. A repository file or Playbook never grants a mutation the user did not authorize.
+This order is about implementation truth, not permission expansion. A repository contract may define standing authorization semantics tied to a user's scoped request; this Playbook records and applies that existing authorization but never creates permission from implementation status, review status, or a callback.
 
 ```text
 explicit user request / authorization
@@ -75,7 +75,7 @@ Do not use this Playbook when:
 - the work is a Multi-Persona Collaboration run that must synthesize one solution from named Personas through a `problem-context`;
 - a single implementer can finish one workstream without parallel dispatch;
 - the request needs a new runtime, scheduler, worker pool, token meter, or model-selection engine;
-- merge, publication, or access changes are being treated as implied by implementation completion;
+- merge, publication, or access changes are being treated as authorized merely because implementation or review is green, rather than by a current requester instruction or repository contract;
 - the work is still a one-off that does not need a reusable stage contract.
 
 If named Personas must argue a shared problem before implementation, use the [Multi-Persona Collaboration Playbook](../collaboration/multi-persona-collaboration-playbook.md) first. Do not copy its stages, solution-quality gate, or `problem-context` contract into this Playbook.
@@ -93,7 +93,7 @@ Do not add a second “Source-Grounded Parallel Implementation” identity. Sour
 ## Required inputs
 
 - candidate workstreams, each naming a repository, issue or requested outcome, and an initial scope;
-- authorization for implementation and pull request creation; merge authorization is evaluated under the target repository's pinned GitHub Tool contract;
+- authorization for implementation and pull request creation; merge authorization is evaluated under the target repository's pinned GitHub Tool contract together with any target-repository standing completion authorization or explicit requester override;
 - current `main` or other agreed base for each target repository, refreshed before grounding;
 - enough access to inspect repo-local instructions, relevant source, and the local validation contract;
 - a coordinator context that can receive compact handoffs, plus a reviewer context that can reinspect GitHub.
@@ -109,7 +109,7 @@ These are role names, not new library entities.
 | Coordinator | Determine and verify Implementer orientation state, source-ground candidate workstreams, dispatch only confirmed or qualified packets, collect compact handoffs, stop. | Reimplementing a workstream, nested agents, polling as a substitute for handoff, implementation-code review during dispatch, silently rewriting a contradicted request. |
 | Implementer | Exactly one workstream in one repository: follow the target repository's orientation path from the packet's references, re-open current source, produce one branch and one PR or a bounded blocker/defer outcome, then stop. | Other workstreams, sub-agents, merge, treating a missing capability as success, treating the dispatch packet as copied repository history. |
 | Reviewer | Independent reinspection of current PR, diff, review threads, and checks; problem-correctness against current repository owner and source; separate blockers from suggestions; send only scoped correction. | Treating the implementer handoff as GitHub truth; expanding scope; merging. |
-| Authorizer | Merge and other consequential mutations after fresh preflight. | Implied by a green implementer stop or a compact callback. |
+| Authorizer | Merge and other consequential mutations after fresh preflight when current requester or repository-contract authorization covers them. | Creating authorization from a green implementer stop, passing review, or compact callback. |
 
 The same person or runtime may hold different roles in different stages. Holding the Coordinator role does not authorize Reviewer or Authorizer work during the coordinate stage.
 
@@ -301,11 +301,11 @@ If callback transport is unavailable, surface the same compact packet in the coo
 
 ### 7. Authorized merge and stop
 
-- **Purpose:** Apply a consequential mutation only with fresh authorization and preflight, then stop.
+- **Purpose:** Apply a consequential mutation only when authorization is already valid and fresh preflight passes, then stop.
 - **Owner:** Authorizer.
-- **Entry:** Review passed for the PRs intended to merge, and merge authorization is valid under the target repository's pinned GitHub Tool contract.
-- **Inputs:** Current PR, base branch, review, and check state.
-- **Actions:** Refresh state; merge in an order that respects shared-file conflicts; do not infer authorization from a green PR or a completion callback.
+- **Entry:** Review passed for the PRs intended to merge, and merge authorization is valid under the target repository's pinned GitHub Tool contract through a current requester instruction or repository contract.
+- **Inputs:** Current PR, base branch, review, check, mergeability, and effective linked-completion state, plus the applicable authorization source and any requester override.
+- **Actions:** Refresh state; merge in an order that respects shared-file conflicts; recognize repository standing completion authorization when the target repository defines it; do not create authorization from a green PR, passing review, or completion callback.
 - **Outputs:** Merge commits, or an explicit unmerged remainder.
 - **Evidence:** GitHub merge records and remaining open PRs.
 - **Exit:** Requested merges are done or explicitly declined; the run stops.
@@ -349,7 +349,7 @@ originating Chat
 → Work sends one concise completion callback into the originating Chat when supported
 → originating Chat independently reinspects GitHub and reviews the PRs
 → scoped correction if needed
-→ merge authorized under the pinned GitHub Tool contract
+→ merge when authorized by the requester or target-repository standing contract under the pinned GitHub Tool contract
 ```
 
 ### Completion callback adapter
@@ -408,7 +408,7 @@ An agent that starts inside an external target repository does not load Persona-
 
 **Run-stop gate.** Pass only when every dispatched workstream is accepted after review or explicitly blocked or deferred, compact handoffs exist, and merge is either authorized under the target repository's pinned GitHub Tool contract and completed or explicitly left unmerged. Fail if the run closes with a known failed review that still needs apply and re-review.
 
-**Merge gate.** Pass only with explicit authorization and fresh preflight. Implementation completion, a compact callback, or a passing review does not pass this gate by itself.
+**Merge gate.** Pass only when merge is authorized by the current requester instruction or target-repository contract and fresh preflight passes. A green implementation, compact callback, or passing review does not create authorization by itself; repository standing completion authorization may already have been established by the scoped implementation request.
 
 ## Failure and recovery
 
@@ -421,7 +421,7 @@ An agent that starts inside an external target repository does not load Persona-
 - Implementer blocked: keep the workstream blocked; do not spawn a grandchild agent to bypass the blocker.
 - Reviewer unavailable: leave PRs unmerged; do not have the coordinator silently review during the coordinate stage.
 - Interrupted run: resume from GitHub identities in the last compact handoff, not from remembered transcripts.
-- Unauthorized merge request: stop at reviewable PRs and ask for authorization.
+- Missing merge authorization: when neither the requester nor the target repository contract authorizes merge, stop at reviewable PRs and surface the missing authorization boundary.
 - Unsupported callback transport: surface the compact packet in the coordinator context, record the limitation, and stop without simulating delivery or polling indefinitely.
 
 ## Capabilities and Tools
