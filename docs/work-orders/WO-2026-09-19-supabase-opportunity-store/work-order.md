@@ -2,7 +2,7 @@
 
 - Work Order ID: `WO-2026-09-19-supabase-opportunity-store`
 - Title: Supabase-backed opportunity persistence and catalog projection foundation
-- Status: ready for merge
+- Status: active follow-up
 - Created: 2026-09-19
 - Last updated: 2026-09-21
 - Requester: repository owner
@@ -156,3 +156,10 @@ Remote CRUD proof complete: the authenticated Preview successfully created the t
 ## Next action
 
 Merge PR #157 under the requester's explicit authorization. After production deploy, sign in on the production origin and migrate the existing production-origin local tracker rows.
+
+
+## Follow-up — Posting date (#158)
+
+Issue #158 extends the existing opportunity record with an optional employer posting date. The live Supabase table now includes nullable `posted_at date`; existing rows remain valid and currently retain blank posting dates unless a trusted source supplies one. The tracker portable shape uses `postingDate`, the Add/Edit form exposes a Posting date field, the Dates column renders Posted / Found / Applied, and import/export plus Supabase mapping preserve the value without inferring it.
+
+Validation checkpoint: browser store/import/runtime modules parse successfully; Supabase confirms `posted_at` is nullable; the tracker Node test suite passed in an isolated Vercel validation build; Supabase performance advisor is clean and the only security advisor warning remains the existing leaked-password-protection Auth warning. The normal Vercel build command was restored afterward.

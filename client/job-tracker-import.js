@@ -3,7 +3,7 @@
   const VERSION = 1;
   const STATUSES = ['Found', 'Reviewing', 'Packet Ready', 'Applied', 'Interviewing', 'Offer', 'Closed'];
   const STATUS_RANK = Object.fromEntries(STATUSES.map((status, index) => [status, index]));
-  const RECORD_FIELDS = ['id', 'company', 'role', 'status', 'location', 'compensation', 'foundDate', 'appliedDate', 'nextAction', 'sourceUrl', 'packetUrl', 'notes', 'updatedAt'];
+  const RECORD_FIELDS = ['id', 'company', 'role', 'status', 'location', 'compensation', 'postingDate', 'foundDate', 'appliedDate', 'nextAction', 'sourceUrl', 'packetUrl', 'notes', 'updatedAt'];
 
   function defaultId() {
     return globalThis.crypto?.randomUUID?.() || 'job-' + Date.now() + '-' + Math.random().toString(16).slice(2);
@@ -48,6 +48,7 @@
       status: STATUSES.includes(record.status) ? record.status : 'Found',
       location: String(record.location || '').trim(),
       compensation: String(record.compensation || '').trim(),
+      postingDate: String(record.postingDate || ''),
       foundDate: String(record.foundDate || ''),
       appliedDate: String(record.appliedDate || ''),
       nextAction: String(record.nextAction || '').trim(),
@@ -103,6 +104,7 @@
       status: incomingRank > existingRank ? incoming.status : existing.status,
       location: existing.location || incoming.location,
       compensation: existing.compensation || incoming.compensation,
+      postingDate: existing.postingDate || incoming.postingDate,
       foundDate: existing.foundDate || incoming.foundDate,
       appliedDate: existing.appliedDate || incoming.appliedDate,
       nextAction: existing.nextAction || incoming.nextAction,

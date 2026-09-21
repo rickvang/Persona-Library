@@ -35,8 +35,8 @@
   const exportButton = $('#export-button');
   const fields = {
     id: $('#record-id'), company: $('#company'), role: $('#role'), status: $('#status'),
-    location: $('#location'), compensation: $('#compensation'), foundDate: $('#found-date'),
-    appliedDate: $('#applied-date'), nextAction: $('#next-action'), sourceUrl: $('#source-url'),
+    location: $('#location'), compensation: $('#compensation'), postingDate: $('#posting-date'),
+    foundDate: $('#found-date'), appliedDate: $('#applied-date'), nextAction: $('#next-action'), sourceUrl: $('#source-url'),
     packetUrl: $('#packet-url'), notes: $('#notes')
   };
 
@@ -122,6 +122,7 @@
       const statusTd = document.createElement('td');
       const badge = text('span', record.status || 'Found', 'status'); badge.dataset.status = record.status || 'Found'; statusTd.append(badge);
       const dates = document.createElement('td');
+      dates.append(text('div', 'Posted: ' + formatDate(record.postingDate), 'meta'));
       dates.append(text('div', 'Found: ' + formatDate(record.foundDate), 'meta'));
       dates.append(text('div', 'Applied: ' + formatDate(record.appliedDate), 'meta'));
       const comp = document.createElement('td'); comp.append(text('div', record.compensation || '—', 'meta'));
@@ -177,7 +178,7 @@
       id: fields.id.value || uid(),
       company: fields.company.value.trim(), role: fields.role.value.trim(), status: fields.status.value,
       location: fields.location.value.trim(), compensation: fields.compensation.value.trim(),
-      foundDate: fields.foundDate.value, appliedDate: fields.appliedDate.value,
+      postingDate: fields.postingDate.value, foundDate: fields.foundDate.value, appliedDate: fields.appliedDate.value,
       nextAction: fields.nextAction.value.trim(), sourceUrl: fields.sourceUrl.value.trim(),
       packetUrl: fields.packetUrl.value.trim(), notes: fields.notes.value.trim(),
       updatedAt: new Date().toISOString()
