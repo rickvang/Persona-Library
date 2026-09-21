@@ -4,7 +4,7 @@
 
 - Work Order ID: WO-2026-09-16-seen-job-dedup
 - Issue: #96
-- Status: active
+- Status: ready-for-review
 - Last updated: 2026-09-21
 - Authorized repository: `rickvang/Persona-Library`
 - Working branch: `feat/issue-96-supabase-seen-jobs`
@@ -91,12 +91,18 @@ Observed:
 - Supabase security advisor reports only the pre-existing Auth warning that leaked-password protection is disabled;
 - focused Node tests cover provider-ID precedence, tracking-parameter canonicalization, conservative fallback identity, read-before-record behavior, repeated-run suppression, and no silent local fallback.
 
-Still required before issue completion:
+Repository validation complete:
 
-- execute repository build and focused test commands against the branch;
-- inspect the final diff and generated asset parity;
-- open the review PR and verify CI/deployment checks;
-- record final repository validation evidence.
+- PR #170 opened against `main`;
+- GitHub Actions Repository validation run #36 passed;
+- build generated library output passed;
+- authored/generated content validation passed;
+- repository tests passed, including the new seen-job identity and repeated-run tests;
+- pull-request whitespace check passed;
+- generated-output parity check passed;
+- final Supabase privilege proof confirms anon has no app schema usage and no SELECT/INSERT on `app.seen_jobs`;
+- authenticated has SELECT + INSERT only, with UPDATE/DELETE denied by grants;
+- `app.seen_jobs` contains zero rows after synthetic proof cleanup.
 
 Merge and issue closure remain governed by the pinned GitHub Tool contract and are not implied by this Work Order.
 
@@ -104,12 +110,19 @@ Merge and issue closure remain governed by the pinned GitHub Tool contract and a
 
 The requester separately asked to backfill missing Applications posting dates from the stored posting links. This is private data maintenance, not part of the seen-job schema.
 
-Rules:
+Result:
 
-- use an exact employer/ATS-published date only when the posting or its structured data exposes one;
-- do not derive a date from the Applications found date, crawl time, search-result age, or a vague “30+ days ago” label;
-- leave `posted_at` blank where no exact date is available.
+- 8 of 12 previously blank posting dates were backfilled from exact employer/ATS metadata;
+- Cengage Group: 2026-05-27;
+- Filevine: 2026-07-15;
+- Function Health: 2026-01-28;
+- HighLevel: 2026-09-05;
+- Render: 2026-08-07;
+- Tessera Labs: 2026-05-13;
+- Vanta: 2026-06-26;
+- Workiva: 2026-08-03;
+- Apollo.io, Future, ngrok, and Order.co remain blank because their linked pages did not expose an exact published date that could be verified without inference.
 
 ## Next action
 
-Run branch validation, finish the source-backed posting-date backfill, then open the issue #96 PR with the live Supabase proof summarized.
+Review PR #170. Merge and linked issue closure remain separate GitHub-governed actions.
