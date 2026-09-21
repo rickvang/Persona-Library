@@ -103,16 +103,17 @@ test('Vercel canonical Tool record stays linked to its recipe and Tools surface'
   assert.throws(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements, toolsPage: toolsPage.replace('data-tool-id="tool-vercel"', '') }), /Tools page/i);
 });
 
-test('GitHub governance semantics stay owned by the pinned Tool contract', () => {
+test('GitHub governance semantics stay owned by the pinned Tool contract while Persona-Library supplies standing completion authorization', () => {
   const pin = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
-  const agents = `Follow https://github.com/rickvang/tool-repo/blob/${pin}/tools/github/AGENTS.md for GitHub mutation classes, authorization, and linked-issue completion semantics.`;
-  const workOrders = 'For GitHub merge authorization and linked-issue completion semantics, follow the pinned GitHub Tool contract.';
-  const boundedPlaybook = 'Use the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics.';
-  const boundedRoute = { next_handoff: 'Apply the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics.' };
+  const agents = `Follow https://github.com/rickvang/tool-repo/blob/${pin}/tools/github/AGENTS.md for GitHub mutation classes, authorization, and linked-issue completion semantics. Persona-Library standing completion authorization applies when the requester says implement, fix, build, or complete; do not merge, PR only, or leave for review overrides it.`;
+  const workOrders = 'For GitHub merge authorization and linked-issue completion semantics, follow the pinned GitHub Tool contract. A Work Order records standing completion authorization without inventing a second confirmation gate; do not merge, PR only, and leave for review are explicit overrides.';
+  const boundedPlaybook = 'Use the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics. The Merge gate recognizes standing completion authorization from the current requester instruction or target-repository contract; green review does not create authorization by itself.';
+  const boundedRoute = { next_handoff: 'Apply the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics. Standing completion authorization is a valid Authorizer source after fresh preflight; green review does not create authorization.' };
   const toolsPage = `GitHub Verified contract Runtime access varies. Explicit authorization + fresh preflight. https://github.com/rickvang/tool-repo/blob/${pin}/tools/github/AGENTS.md`;
   assert.equal(validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }), pin);
   assert.throws(() => validateGitHubGovernanceContract({ agents: agents.replace(pin, '94acc6082e941439d2ee532f1b1b091cd42eb923'), workOrders, boundedPlaybook, boundedRoute, toolsPage }), /post-split GitHub Tool contract/i);
   assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook: boundedPlaybook + ' Separately authorized merge.', boundedRoute, toolsPage }), /duplicate reusable merge-authorization rule/i);
+  assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook: boundedPlaybook + ' Pass only with explicit authorization and fresh preflight.', boundedRoute, toolsPage }), /redundant second confirmation/i);
   assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute: { next_handoff: 'Treat merge as a separately authorized mutation.' }, toolsPage }), /routing must defer GitHub mutation semantics/i);
   assert.throws(() => validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage: toolsPage.replace(pin, 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') }), /Tools page GitHub contract link must match/i);
 });
@@ -293,7 +294,8 @@ test('Bounded parallel orientation, grounding, and callback gates remain separat
   assert.match(playbook, /deferred.*dependency.*re-entry condition/s);
   assert.ok(playbook.indexOf('### 5. Independent review') < playbook.indexOf('### 6. Scoped correction'));
   assert.ok(playbook.indexOf('### 6. Scoped correction') < playbook.indexOf('### 7. Authorized merge and stop'));
-  assert.match(playbook, /Pass only with explicit authorization/);
+  assert.match(playbook, /authorized by the current requester instruction or target-repository contract/);
+  assert.match(playbook, /standing completion authorization may already have been established/);
   assert.match(route.next_handoff, /fresh, previously_oriented, or unknown/);
   assert.match(route.next_handoff, /review_ready, blocked, or deferred/);
   assert.equal(rootInstructions.includes('bounded-parallel'), false);
