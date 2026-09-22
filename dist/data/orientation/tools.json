@@ -8,7 +8,8 @@
       "tool record",
       "availability status",
       "scope and approval boundary",
-      "tool-use recipe"
+      "tool-use recipe",
+      "matching operational scenario"
     ],
     "write": "Maintain a tool record only when explicitly requested; execution and record maintenance are separate concerns.",
     "do_not": [
@@ -39,7 +40,8 @@
         "Tool record",
         "availability signal",
         "scope and approval boundary",
-        "tool-use recipe"
+        "tool-use recipe",
+        "matching active operational scenario for the selected Tool-use recipe"
       ],
       "mutation_boundary": "external_execution",
       "reconciliation": "change-impact-reconciliation",
@@ -47,7 +49,7 @@
         "A catalog-only Tool record edit",
         "Assuming a documented Tool is configured or available"
       ],
-      "next_handoff": "Run the smallest safe probe and separate usage evidence from shared guidance."
+      "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance."
     },
     {
       "id": "tool-record-maintenance",
