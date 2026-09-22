@@ -9,6 +9,17 @@ const routeFiles = Object.values(orientation.spaces)
   .map((space) => space.route_file)
   .filter(Boolean);
 
+const operationalScenarioIndexPath = 'content/library-data/operational-scenarios/index.json';
+const operationalScenarioIndex = JSON.parse(await readFile(path.join(root, operationalScenarioIndexPath), 'utf8'));
+if (!Array.isArray(operationalScenarioIndex.scenarios)) throw new Error('Operational Scenario index must expose a scenarios array');
+const operationalScenarioSources = operationalScenarioIndex.scenarios.map(entry => {
+  if (!entry?.id || !/^content\/library-data\/operational-scenarios\/[a-z0-9-]+\.js$/.test(entry.path || '')) {
+    throw new Error(`Operational Scenario index has an invalid entry: ${entry?.id || '(missing)'}`);
+  }
+  return entry.path;
+});
+if (new Set(operationalScenarioSources).size !== operationalScenarioSources.length) throw new Error('Operational Scenario index paths must be unique');
+
 const libraryDataSources = [
   'content/library-data/personas-core.js',
   'content/library-data/personas-career.js',
@@ -24,7 +35,7 @@ const libraryDataSources = [
   'content/library-data/skill-guidance.js',
   'content/library-data/skill-practice.js',
   'content/library-data/skill-anatomy.js',
-  'content/library-data/operational-knowledge.js',
+  ...operationalScenarioSources,
   'content/library-data.js'
 ];
 

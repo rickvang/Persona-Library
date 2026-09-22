@@ -4,7 +4,7 @@
 
 Operational knowledge turns abstract guidance such as “batch calls,” “use the simplest architecture,” or “validate at the cheapest layer” into concrete, reusable examples of what good and bad execution look like.
 
-The canonical records are `operationalScenarios` in `content/library-data/operational-knowledge.js`. They are **relationships owned by an existing Skill or Tool-use recipe**, not a new top-level Persona-Library space.
+The canonical scenario bodies live one-per-file under `content/library-data/operational-scenarios/`. `index.json` in that directory is the small routing manifest. The scenario records remain **relationships owned by an existing Skill or Tool-use recipe**, not a new top-level Persona-Library space.
 
 ## Ownership boundary
 
@@ -21,15 +21,16 @@ An Operational Scenario never grants permission, changes source authority, or cr
 ## Smallest relevant context
 
 1. Resolve the task to the Persona / Skill / Tool-use recipe that owns the decision or execution.
-2. Load active Operational Scenarios attached to that owner.
-3. Match the task against scenario phrases, keywords, situation, and route.
-4. Prefer one primary scenario; add another only for a distinct material boundary.
-5. Load a relevant Operating Pack when project/domain context narrows the generic scenario.
-6. Stop retrieving when the selected owner + scenario + local context answer the execution question.
+2. Read `content/library-data/operational-scenarios/index.json`. This is the routing surface; it contains only ID, title, owner, status, match hints, and the body path.
+3. Match the task against the index entry's owner and `match` hints.
+4. Load only the selected scenario file from its declared `path`.
+5. Prefer one primary scenario; load another body only when it covers a distinct material boundary.
+6. Load a relevant Operating Pack when project/domain context narrows the generic scenario.
+7. Stop retrieving when the selected owner + scenario + local context answer the execution question.
 
-Do not load the whole scenario catalog for every task.
+Do not fetch every scenario body in order to choose one.
 
-`window.PersonaLibraryModel.findOperationalScenarios(query, options)` provides lightweight deterministic matching and owner filters.
+The build still combines all scenario bodies into `dist/data/library-data.js` for browser/runtime use. That generated bundle is not the agent retrieval surface. `window.PersonaLibraryModel.findOperationalScenarios(query, options)` provides lightweight deterministic matching for consumers that already loaded the generated runtime model.
 
 ## Precedence and safety
 

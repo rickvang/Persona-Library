@@ -1,11 +1,13 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const REQUIRED_SPACES = ['personas', 'skills', 'operating-packs', 'templates', 'tools', 'playbooks', 'docs', 'decisions', 'prototyping'];
 
-const LIBRARY_DATA_SOURCES = [
+const OPERATIONAL_SCENARIO_INDEX_PATH = 'content/library-data/operational-scenarios/index.json';
+const OPERATIONAL_SCENARIO_DIR = 'content/library-data/operational-scenarios';
+const LIBRARY_DATA_BASE_SOURCES = [
   'content/library-data/personas-core.js',
   'content/library-data/personas-career.js',
   'content/library-data/personas-systems.js',
@@ -19,9 +21,7 @@ const LIBRARY_DATA_SOURCES = [
   'content/library-data/tool-integration.js',
   'content/library-data/skill-guidance.js',
   'content/library-data/skill-practice.js',
-  'content/library-data/skill-anatomy.js',
-  'content/library-data/operational-knowledge.js',
-  'content/library-data.js'
+  'content/library-data/skill-anatomy.js'
 ];
 
 const FILES = {
@@ -77,8 +77,26 @@ export async function loadValidationContext(root = defaultRoot) {
   const read = relativePath => readFile(path.join(root, relativePath), 'utf8');
   const entries = Object.entries(FILES);
   const contents = Object.fromEntries(await Promise.all(entries.map(async ([key, relativePath]) => [key, await read(relativePath)])));
+
+  const operationalScenarioIndex = JSON.parse(await read(OPERATIONAL_SCENARIO_INDEX_PATH));
+  if (!Array.isArray(operationalScenarioIndex.scenarios)) throw new Error('Operational Scenario index must expose a scenarios array');
+  const operationalScenarioSources = operationalScenarioIndex.scenarios.map(entry => entry.path);
+  const indexedScenarioPaths = new Set(operationalScenarioSources);
+  if (indexedScenarioPaths.size !== operationalScenarioSources.length) throw new Error('Operational Scenario index paths must be unique');
+  for (const entry of operationalScenarioIndex.scenarios) {
+    if (!entry?.id || !/^content\/library-data\/operational-scenarios\/[a-z0-9-]+\.js$/.test(entry.path || '')) throw new Error(`Operational Scenario index has an invalid path: ${entry?.id || '(missing)'}`);
+  }
+  const authoredScenarioPaths = (await readdir(path.join(root, OPERATIONAL_SCENARIO_DIR), { withFileTypes: true }))
+    .filter(entry => entry.isFile() && entry.name.endsWith('.js'))
+    .map(entry => `${OPERATIONAL_SCENARIO_DIR}/${entry.name}`);
+  const missingFromIndex = authoredScenarioPaths.filter(sourcePath => !indexedScenarioPaths.has(sourcePath));
+  const missingFromDirectory = operationalScenarioSources.filter(sourcePath => !authoredScenarioPaths.includes(sourcePath));
+  if (missingFromIndex.length || missingFromDirectory.length) {
+    throw new Error(`Operational Scenario index/source mismatch: unindexed=${missingFromIndex.join(',') || 'none'} missing=${missingFromDirectory.join(',') || 'none'}`);
+  }
+  const libraryDataSources = [...LIBRARY_DATA_BASE_SOURCES, ...operationalScenarioSources, 'content/library-data.js'];
   contents.librarySource = `${(
-    await Promise.all(LIBRARY_DATA_SOURCES.map(async sourcePath => normalizeLineEndings(await read(sourcePath))))
+    await Promise.all(libraryDataSources.map(async sourcePath => normalizeLineEndings(await read(sourcePath))))
   ).join('\n\n').replace(/\n+$/, '')}\n`;
 
   const orientation = JSON.parse(contents.orientationSource);
@@ -119,7 +137,8 @@ export async function loadValidationContext(root = defaultRoot) {
     routeSources,
     requiredSpaces: REQUIRED_SPACES,
     canvasModules: CANVAS_MODULES,
-    libraryDataSources: LIBRARY_DATA_SOURCES,
+    operationalScenarioIndex,
+    libraryDataSources,
     files: contents
   };
 }
