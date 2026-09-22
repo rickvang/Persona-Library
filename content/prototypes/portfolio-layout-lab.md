@@ -36,6 +36,10 @@ A sticky section index paired with a continuously changing work stage. Tests whe
 
 A mostly immersive story surface with restrained navigation and chapter markers. Tests whether a narrative-first portfolio increases case-study engagement at the cost of global orientation.
 
+### E — Rail + chapter index
+
+The recommended hybrid keeps the cinematic left rail as the global shell and adds an explicit chapter path inside each case study. It tests whether memorability and evidence findability can coexist without turning the entire site into a deck.
+
 ## Comparison state
 
 No option is selected. No Decision record or promotion authorization exists. This experiment should remain reversible until Rick explicitly chooses a direction and authorizes implementation.
