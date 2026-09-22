@@ -65,12 +65,32 @@ export function validateWebArchitecturePersonaContract({ personas, flowLibrary, 
 }
 
 
-export function validateOperationalKnowledgeContract({ operationalScenarios, operationalScenarioCatalog, toolUseRecipes, skillCatalog, model, orientation, toolsRoute, skillsRoute, agents, contract, toolSkill }) {
+export function validateOperationalKnowledgeContract({ operationalScenarios, operationalScenarioCatalog, operationalScenarioIndex, toolUseRecipes, skillCatalog, model, orientation, toolsRoute, skillsRoute, agents, contract, toolSkill }) {
   const expectedIds = ['scenario-github-issue-implementation','scenario-vercel-deployed-state-verification','scenario-architecture-proportionate-decision','scenario-frontend-runtime-boundary','scenario-application-data-source-of-truth'];
   const allowedEvidence = new Set(['candidate','reviewed','validated']);
   if (!Array.isArray(operationalScenarios) || !Array.isArray(operationalScenarioCatalog) || operationalScenarios.length < expectedIds.length) throw new Error('Operational Scenario source/catalog is missing');
   const sourceById = new Map(operationalScenarios.map(item => [item.id, item]));
   if (sourceById.size !== operationalScenarios.length) throw new Error('Operational Scenario IDs must be unique');
+
+  const indexEntries = operationalScenarioIndex?.scenarios;
+  if (operationalScenarioIndex?.schema_version !== '1.0' || !Array.isArray(indexEntries)) throw new Error('Operational Scenario index is missing or malformed');
+  const allowedIndexKeys = new Set(['id','title','ownerType','ownerId','status','path','match']);
+  const indexIds = new Set();
+  const indexPaths = new Set();
+  for (const entry of indexEntries) {
+    if (!entry?.id || indexIds.has(entry.id)) throw new Error(`Operational Scenario index has an invalid or duplicate ID: ${entry?.id || '(missing)'}`);
+    if (!entry.path || indexPaths.has(entry.path) || !/^content\/library-data\/operational-scenarios\/[a-z0-9-]+\.js$/.test(entry.path)) throw new Error(`Operational Scenario index has an invalid or duplicate path: ${entry.path || '(missing)'}`);
+    const extraKeys = Object.keys(entry).filter(key => !allowedIndexKeys.has(key));
+    if (extraKeys.length) throw new Error(`Operational Scenario index must stay routing-only; unexpected keys on ${entry.id}: ${extraKeys.join(', ')}`);
+    const scenario = sourceById.get(entry.id);
+    if (!scenario) throw new Error(`Operational Scenario index points to missing scenario: ${entry.id}`);
+    if (entry.title !== scenario.title || entry.ownerType !== scenario.ownerType || entry.ownerId !== scenario.ownerId || entry.status !== scenario.status || JSON.stringify(entry.match) !== JSON.stringify(scenario.match)) {
+      throw new Error(`Operational Scenario index metadata is stale: ${entry.id}`);
+    }
+    indexIds.add(entry.id);
+    indexPaths.add(entry.path);
+  }
+  if (indexEntries.length !== operationalScenarios.length || operationalScenarios.some(scenario => !indexIds.has(scenario.id))) throw new Error('Operational Scenario index must map one-to-one to authored scenarios');
   for (const id of expectedIds) if (!operationalScenarioCatalog.some(item => item.id === id)) throw new Error(`Required seed Operational Scenario is missing: ${id}`);
   for (const scenario of operationalScenarioCatalog) {
     if (!scenario.id || !scenario.ownerKnown || scenario.unresolvedRouteIds?.length) throw new Error(`Operational Scenario is missing or has unresolved ownership/route: ${scenario.id || '(missing)'}`);
@@ -240,6 +260,7 @@ export async function validateGeneratedOutputs(context) {
   validateOperationalKnowledgeContract({
     operationalScenarios: context.data.operationalScenarios,
     operationalScenarioCatalog: context.data.operationalScenarioCatalog,
+    operationalScenarioIndex: context.operationalScenarioIndex,
     toolUseRecipes: context.data.toolUseRecipes,
     skillCatalog: context.data.skillCatalog,
     model: context.model,

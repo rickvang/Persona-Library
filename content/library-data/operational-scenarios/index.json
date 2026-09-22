@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Small routing manifest for targeted Operational Scenario retrieval. Read this before loading a scenario body.",
+  "scenarios": [
+    {
+      "id": "scenario-github-issue-implementation",
+      "title": "Implement a GitHub issue without remote-call churn",
+      "ownerType": "tool-use-recipe",
+      "ownerId": "recipe-riley-github-efficient-change",
+      "status": "active",
+      "path": "content/library-data/operational-scenarios/github-issue-implementation.js",
+      "match": {
+        "phrases": [
+          "implement github issue",
+          "implement repository issue",
+          "fix github issue",
+          "complete repository change"
+        ],
+        "keywords": [
+          "github",
+          "repository",
+          "issue",
+          "implement",
+          "fix",
+          "pull request",
+          "merge"
+        ]
+      }
+    },
+    {
+      "id": "scenario-vercel-deployed-state-verification",
+      "title": "Use Vercel only when deployed-state evidence adds value",
+      "ownerType": "tool-use-recipe",
+      "ownerId": "recipe-riley-vercel-review-checkpoint",
+      "status": "active",
+      "path": "content/library-data/operational-scenarios/vercel-deployed-state-verification.js",
+      "match": {
+        "phrases": [
+          "verify deployed preview",
+          "check vercel preview",
+          "deployed state",
+          "runtime deployment issue"
+        ],
+        "keywords": [
+          "vercel",
+          "preview",
+          "deployment",
+          "deployed",
+          "runtime",
+          "logs",
+          "production"
+        ]
+      }
+    },
+    {
+      "id": "scenario-architecture-proportionate-decision",
+      "title": "Choose the simplest architecture that satisfies the current requirement",
+      "ownerType": "skill",
+      "ownerId": "skill-architecture-decision-making",
+      "status": "active",
+      "path": "content/library-data/operational-scenarios/architecture-proportionate-decision.js",
+      "match": {
+        "phrases": [
+          "architecture decision",
+          "do we need a database",
+          "should we add a cms",
+          "choose architecture"
+        ],
+        "keywords": [
+          "architecture",
+          "tradeoff",
+          "database",
+          "cms",
+          "framework",
+          "dependency",
+          "scale",
+          "reversible"
+        ]
+      }
+    },
+    {
+      "id": "scenario-frontend-runtime-boundary",
+      "title": "Keep frontend runtime decisions inside the frontend boundary",
+      "ownerType": "skill",
+      "ownerId": "skill-web-application-architecture",
+      "status": "active",
+      "path": "content/library-data/operational-scenarios/frontend-runtime-boundary.js",
+      "match": {
+        "phrases": [
+          "frontend implementation",
+          "nextjs runtime architecture",
+          "server client boundary",
+          "web application architecture"
+        ],
+        "keywords": [
+          "frontend",
+          "web",
+          "nextjs",
+          "rendering",
+          "client",
+          "server",
+          "state",
+          "performance",
+          "accessibility"
+        ]
+      }
+    },
+    {
+      "id": "scenario-application-data-source-of-truth",
+      "title": "Choose persistence from information lifecycle, not from technology preference",
+      "ownerType": "skill",
+      "ownerId": "skill-application-and-data-architecture",
+      "status": "active",
+      "path": "content/library-data/operational-scenarios/application-data-source-of-truth.js",
+      "match": {
+        "phrases": [
+          "where should this data live",
+          "files vs cms vs database",
+          "source of truth",
+          "schema migration",
+          "application data architecture"
+        ],
+        "keywords": [
+          "data",
+          "content",
+          "persistence",
+          "cms",
+          "database",
+          "schema",
+          "authorization",
+          "migration",
+          "source of truth"
+        ]
+      }
+    }
+  ]
+}
