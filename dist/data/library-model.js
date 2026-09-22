@@ -283,6 +283,62 @@
       confidenceChange: 'Contract-level ledger behavior added; repeated-search runtime proof deferred'
     });
 
+    for (const id of ['frontend-systems-engineer', 'application-data-architect']) {
+      const record = personaMaintenance[id];
+      record.version = '1.0';
+      record.updated = '2026-09-21';
+      record.revisions = [{
+        version:'1.0',
+        date:'2026-09-21',
+        changeType:'research-backed-persona-creation',
+        summary:'Added the specialist Persona after the paired placement, Skill-deduplication, Tool-integration, and portfolio-to-CMS boundary review in issues #182 and #183.',
+        affectedFields:['identity','context','goals','pains','behaviors','needs','skills','workflows','resources','handoffs'],
+        evidence:'Issue #182 research result; issue #183 placement review; current O*NET, framework/structured-content, accessibility/security, performance, and ADR sources',
+        confidenceChange:'Working draft established with evidence-backed role boundaries; repeated real-project use remains the validation path'
+      }];
+    }
+
+    for (const id of ['skill-architecture-decision-making', 'skill-web-application-architecture', 'skill-application-and-data-architecture']) {
+      const record = skillMaintenance[id];
+      record.version = '1.0';
+      record.updated = '2026-09-21';
+      record.revisions = [{
+        version:'1.0',
+        date:'2026-09-21',
+        changeType:'capability-formation',
+        summary:'Added the reusable architecture capability after duplicate review and scenario validation across frontend/runtime and application/data decisions.',
+        affectedFields:['definition','triggers','operation','quality','workflows','actions','evidence'],
+        evidence:'Issues #182 and #183 plus authored Skill practice guidance and representative architecture scenarios',
+        confidenceChange:'Working synthesis established; independent reuse should be rechecked after repeated project application'
+      }];
+    }
+
+    const architectureReusedSkills = [
+      'skill-problem-framing-and-systems-thinking',
+      'skill-component-and-design-system-thinking',
+      'skill-accessibility-and-inclusive-design',
+      'skill-evidence-led-validation',
+      'skill-decision-communication-and-rationale-documentation',
+      'skill-cross-functional-systems-communication'
+    ];
+    for (const id of architectureReusedSkills) {
+      const record = skillMaintenance[id];
+      if (!record) continue;
+      const [major, minor] = record.version.split('.').map(Number);
+      const version = `${major}.${minor + 1}`;
+      record.version = version;
+      record.updated = '2026-09-21';
+      record.revisions.push({
+        version,
+        date:'2026-09-21',
+        changeType:'persona-application',
+        summary:'Added a bounded Frontend Systems Engineer and/or Application & Data Architect application while preserving the portable Skill identity.',
+        affectedFields:['profiles','workflows'],
+        evidence:'Issue #183 Persona-Skill duplicate review and explicit role-boundary validation',
+        confidenceChange:'Portable Skill definition remains unchanged; the new Persona application remains a working synthesis'
+      });
+    }
+
     const conformanceObserver = personaMaintenance['conformance-observer'];
     conformanceObserver.version = '1.1'; conformanceObserver.updated = '2026-09-08';
     conformanceObserver.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added the Issue #37 conformance suite, Issue #43 observation contract, and explicit live-runtime unknowns to Noor’s working-draft Persona record.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'Persona Library Issues #37 and #43; conformance-observability Work Order; repository orientation and mutation contracts',confidenceChange:'Working synthesis remains; cross-LLM behavior and identity boundary require actual use'});
