@@ -748,6 +748,26 @@
       "affects": "Riley Morgan Persona and operating workflow; root AGENTS guidance; Work Order continuity contract; regression validation; Notion Current Work schema and governance; ChatGPT, Codex, Claude, Cursor, and Hermes collaboration contracts; issue #180.",
       "evidence": "Issue #180; Riley v1.4 continuity contract from issue #178; Notion Current Work Work ID, Operating Route, Parent Work ID, and Shared Collaboration Governance.",
       "revisit": "A user explicitly assigns another durable orchestration owner, direct execution becomes ambiguous or unsafe without a runtime Riley hop, or repeated work shows Operating Route / Parent Work ID are insufficient for resumption."
+    },
+    {
+      "id": "DEC-023",
+      "status": "Applied",
+      "category": "Operational knowledge boundary",
+      "date": "2026-09-21",
+      "title": "Operational knowledge stays attached to the capability that owns it",
+      "summary": "Make concrete good/bad execution examples first-class structured relationships on existing Skills and Tool-use recipes, with targeted retrieval and evidence lifecycle, instead of adding a generic knowledge-base space.",
+      "question": "Where should agents get concrete do/don't, call-order, freshness, stop, recovery, and good/bad examples so they stop reconstructing best practice on every run without creating another overlapping source of truth?",
+      "decision": "Add structured Operational / Golden Scenario records as authored library data. Each scenario has one primary owning Skill or Tool-use recipe and may reference Personas or local Operating Pack context for routing. Normalize owner relationships and expose targeted matching so agents resolve the owner first and load only the smallest active scenario. Keep vendor-specific procedure in Tool-use recipes, project/domain rules in Operating Packs, and multi-stage coordination in Playbooks. Existing .golden.md files remain callable-Skill test fixtures rather than the canonical runtime knowledge store. Scenario evidence progresses conservatively from candidate to reviewed/validated guidance and never grants permission or overrides current source-of-truth rules.",
+      "rationale": "The current system already separates reusable judgment, Tool procedure, local context, and coordination. A new generic knowledge-base space would duplicate those owners and force agents to search a second taxonomy. At the same time, abstract guidance alone leaves too much execution shape to be reinvented. Relationship data closes that gap while preserving existing ownership and allowing targeted retrieval.",
+      "alternatives": "Create a new top-level Knowledge Base; make existing .golden.md test files the runtime source; put all examples directly into Skill practice; put every example into Tool-use recipes; or store all best practice in Operating Packs. Rejected because they respectively duplicate taxonomy, confuse tests with canonical knowledge, mix vendor execution into portable judgment, cannot cover non-Tool Skills, or turn project context into universal practice.",
+      "tradeoffs": "The library gains another structured relationship type and agents must distinguish owner guidance from scenario examples and current live evidence. Scenario matching is intentionally lightweight rather than a semantic search service. In return, good execution becomes concrete and inspectable without another top-level space or broad context dump.",
+      "affects": "content/library-data/operational-knowledge.js; content/library-model.js; Skills and Tool-use recipe relationships; Tool/Skill routing; root AGENTS guidance; docs/operational-knowledge.md; repository validation; generated library data; issue #185.",
+      "evidence": "Issue #185; existing Skill operation/quality guidance; DEC-018 remote-tool efficiency evidence; existing callable-Skill .golden.md fixtures; issue #182/#183 architecture Skill research and implementation.",
+      "qualifies": [
+        "DEC-018",
+        "DEC-022"
+      ],
+      "revisit": "Operational Scenario volume, navigation, independent lifecycle, cross-owner reuse, or retrieval/index requirements can no longer be handled cleanly as relationships; or evidence shows agents routinely miss or misuse owner-scoped scenario retrieval."
     }
   ]
 }

@@ -64,6 +64,43 @@ export function validateWebArchitecturePersonaContract({ personas, flowLibrary, 
   for (const skill of skillCatalog || []) if (/next\.?js|supabase|vercel|sanity|payload|prisma/i.test(skill.name || '')) throw new Error('Technology-specific implementation choices must not become core Skill identities');
 }
 
+
+export function validateOperationalKnowledgeContract({ operationalScenarios, operationalScenarioCatalog, toolUseRecipes, skillCatalog, model, orientation, toolsRoute, skillsRoute, agents, contract, toolSkill }) {
+  const expectedIds = ['scenario-github-issue-implementation','scenario-vercel-deployed-state-verification','scenario-architecture-proportionate-decision','scenario-frontend-runtime-boundary','scenario-application-data-source-of-truth'];
+  const allowedEvidence = new Set(['candidate','reviewed','validated']);
+  if (!Array.isArray(operationalScenarios) || !Array.isArray(operationalScenarioCatalog) || operationalScenarios.length < expectedIds.length) throw new Error('Operational Scenario source/catalog is missing');
+  const sourceById = new Map(operationalScenarios.map(item => [item.id, item]));
+  if (sourceById.size !== operationalScenarios.length) throw new Error('Operational Scenario IDs must be unique');
+  for (const id of expectedIds) {
+    const scenario = operationalScenarioCatalog.find(item => item.id === id);
+    if (!scenario || scenario.status !== 'active' || !scenario.ownerKnown || scenario.unresolvedRouteIds?.length) throw new Error(`Operational Scenario is missing or has unresolved ownership/route: ${id}`);
+    if (!allowedEvidence.has(scenario.evidenceStatus)) throw new Error(`Operational Scenario has invalid evidence status: ${id}`);
+    for (const field of ['do','dont','recommendedSequence','stopConditions','successSignals','goodTrace','badTrace','recoveryPath','evidence']) if (!Array.isArray(scenario[field]) || scenario[field].length === 0) throw new Error(`Operational Scenario ${id} is missing concrete ${field}`);
+  }
+  const recipeById = new Map((toolUseRecipes || []).map(recipe => [recipe.id, recipe]));
+  const skillById = new Map((skillCatalog || []).map(skill => [skill.id, skill]));
+  if (!recipeById.get('recipe-riley-github-efficient-change')?.operationalScenarios?.some(item => item.id === 'scenario-github-issue-implementation')) throw new Error('GitHub operational scenario must attach to the GitHub Tool-use recipe');
+  if (!recipeById.get('recipe-riley-vercel-review-checkpoint')?.operationalScenarios?.some(item => item.id === 'scenario-vercel-deployed-state-verification')) throw new Error('Vercel operational scenario must attach to the Vercel Tool-use recipe');
+  if (!skillById.get('skill-architecture-decision-making')?.operationalScenarios?.some(item => item.id === 'scenario-architecture-proportionate-decision')) throw new Error('Architecture scenario must attach to its Skill');
+  if (!skillById.get('skill-web-application-architecture')?.operationalScenarios?.some(item => item.id === 'scenario-frontend-runtime-boundary')) throw new Error('Frontend scenario must attach to its Skill');
+  if (!skillById.get('skill-application-and-data-architecture')?.operationalScenarios?.some(item => item.id === 'scenario-application-data-source-of-truth')) throw new Error('Application/data scenario must attach to its Skill');
+  const all = id => JSON.stringify(operationalScenarioCatalog.find(item=>item.id===id));
+  if (!includesAll(all('scenario-github-issue-implementation'), ['reuse still-valid evidence','freshness','cheapest sufficient','immediately before merge','stop'])) throw new Error('GitHub scenario must encode reuse/freshness/stop');
+  if (!includesAll(all('scenario-vercel-deployed-state-verification'), ['repository ci','do not deploy','preview','deployed-state question','stop'])) throw new Error('Vercel scenario must encode CI-first/no-unnecessary-preview behavior');
+  if (!includesAll(all('scenario-architecture-proportionate-decision'), ['keep-current','do nothing yet','revisit trigger','technology-first'])) throw new Error('Architecture scenario must encode proportionate choice');
+  if (!includesAll(all('scenario-frontend-runtime-boundary'), ['camille','jordan','nadia','accessibility','performance'])) throw new Error('Frontend scenario must preserve handoffs');
+  if (!includesAll(all('scenario-application-data-source-of-truth'), ['structured files','cms','database','authentication','authorization','rollback'])) throw new Error('Application/data scenario must cover persistence/auth/migration');
+  if (model.findOperationalScenarios('implement GitHub issue',{limit:1})[0]?.id !== 'scenario-github-issue-implementation') throw new Error('GitHub matcher failed');
+  if (model.findOperationalScenarios('verify deployed preview in Vercel',{limit:1})[0]?.id !== 'scenario-vercel-deployed-state-verification') throw new Error('Vercel matcher failed');
+  if (!model.findOperationalScenarios('do we need a database or CMS for this content',{limit:2}).some(item=>item.id==='scenario-application-data-source-of-truth')) throw new Error('Application/data matcher failed');
+  if (orientation.spaces['operational-knowledge'] || orientation.spaces['knowledge-base']) throw new Error('Issue #185 must not create a top-level operational knowledge space');
+  if (!includesAll(agents,['active operational scenario','smallest relevant scenario','never overrides authorization'])) throw new Error('AGENTS operational scenario rule missing');
+  if (!includesAll(JSON.stringify(toolsRoute),['matching active operational scenario','stop when evidence is sufficient'])) throw new Error('Tools route operational scenario rule missing');
+  if (!includesAll(JSON.stringify(skillsRoute),['matching active operational scenarios owned by the selected skill'])) throw new Error('Skills route operational scenario rule missing');
+  if (!includesAll(contract,['relationships owned by an existing skill or tool-use recipe','smallest relevant context','do not load the whole scenario catalog','evidence lifecycle','.golden.md','never grants permission'])) throw new Error('Operational knowledge contract incomplete');
+  if (!includesAll(toolSkill,['active operational scenario','smallest matching scenario','never grants permission'])) throw new Error('Tool discovery Skill scenario rule missing');
+}
+
 export function validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }) {
   if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley AI orchestrator record is missing');
   const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
@@ -178,10 +215,12 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
-  const [rootAgents, workOrderContract, boundedParallelPlaybook] = await Promise.all([
+  const [rootAgents, workOrderContract, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill] = await Promise.all([
     context.readFile('AGENTS.md'),
     context.readFile('docs/work-orders.md'),
-    context.readFile('docs/playbooks/bounded-parallel-implementation.md')
+    context.readFile('docs/playbooks/bounded-parallel-implementation.md'),
+    context.readFile('docs/operational-knowledge.md'),
+    context.readFile('.agents/skills/tool-discovery-and-safe-execution/SKILL.md')
   ]);
   validateRileyContinuityContract({
     agents: rootAgents,
@@ -195,6 +234,19 @@ export async function validateGeneratedOutputs(context) {
     boundedPlaybook: boundedParallelPlaybook,
     boundedRoute: context.routeGroups.get('playbooks').routes.find(route => route.id === 'bounded-parallel-implementation'),
     toolsPage: files.toolsPage
+  });
+  validateOperationalKnowledgeContract({
+    operationalScenarios: context.data.operationalScenarios,
+    operationalScenarioCatalog: context.data.operationalScenarioCatalog,
+    toolUseRecipes: context.data.toolUseRecipes,
+    skillCatalog: context.data.skillCatalog,
+    model: context.model,
+    orientation: context.orientation,
+    toolsRoute: context.routeGroups.get('tools'),
+    skillsRoute: context.routeGroups.get('skills'),
+    agents: rootAgents,
+    contract: operationalKnowledgeContract,
+    toolSkill: toolDiscoverySkill
   });
   validateVercelToolCatalogSurface({
     toolCatalog: context.data.toolCatalog,
@@ -217,7 +269,8 @@ export async function validateGeneratedOutputs(context) {
   const decision015 = decisionSource.records.find(record => record.id === 'DEC-015');
   const decision016 = decisionSource.records.find(record => record.id === 'DEC-016');
   const decision017 = decisionSource.records.find(record => record.id === 'DEC-017');
-  if (decisionSource.source !== 'docs/decisions/records.json' || !Array.isArray(decisionSource.records) || !decision010?.corrections?.length || !decision011?.status_note?.includes('DEC-013') || !decision011?.status_note?.includes('DEC-014') || !decision013?.qualifies?.includes('DEC-011') || !decision014?.qualifies?.includes('DEC-011') || !decision015?.qualifies?.includes('DEC-008') || !normalized(decision015?.decision).includes('candidate baseline resume') || decision016?.status !== 'Superseded' || !decision017?.qualifies?.includes('DEC-016') || !normalized(decision017?.decision).includes('authenticated supabase storage') || !normalized(decision017?.decision).includes('canonical in git') || files.decisionOutput !== renderDecisionsPage(files.decisionTemplateSource, decisionSource.records)) throw new Error('Generated Decisions output is stale or its authored source/history links are invalid; run build-library.mjs');
+  const decision023 = decisionSource.records.find(record => record.id === 'DEC-023');
+  if (decisionSource.source !== 'docs/decisions/records.json' || !Array.isArray(decisionSource.records) || !decision010?.corrections?.length || !decision011?.status_note?.includes('DEC-013') || !decision011?.status_note?.includes('DEC-014') || !decision013?.qualifies?.includes('DEC-011') || !decision014?.qualifies?.includes('DEC-011') || !decision015?.qualifies?.includes('DEC-008') || !normalized(decision015?.decision).includes('candidate baseline resume') || decision016?.status !== 'Superseded' || !decision017?.qualifies?.includes('DEC-016') || !normalized(decision017?.decision).includes('authenticated supabase storage') || !normalized(decision017?.decision).includes('canonical in git') || !decision023?.qualifies?.includes('DEC-018') || !normalized(decision023?.decision).includes('operational / golden scenario') || files.decisionOutput !== renderDecisionsPage(files.decisionTemplateSource, decisionSource.records)) throw new Error('Generated Decisions output is stale or its authored source/history links are invalid; run build-library.mjs');
 
   const { page, skillsPage, templatesPage, templateViewerPage, jobSearchPage, jobTrackerPage, jobTrackerRuntimeOutput, jobTrackerImportOutput, jobTrackerStoreOutput, jobTrackerConfigOutput, playbooksPage, operatingPacksPage, prototypingPage, canvasPage, guidePage, toolsPage } = files;
   for (const [name, html] of [['library', page], ['skills', skillsPage]]) for (const script of ['data/library-data.js', 'data/library-model.js', 'js/library-ui.js', 'js/library-state.js']) if (!html.includes(`<script src="${script}"></script>`)) throw new Error(`${name} page is missing ${script}`);

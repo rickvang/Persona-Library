@@ -38,7 +38,46 @@
   const templatePreviewConfig = () => window.PersonaLibraryTemplatePreviewConfig?.previewRenderers || {};
   const templateState = (group, id, fallback) => ({ id, ...(templateStateCatalog[group][id] || fallback) });
 
-  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [] }) {
+  function buildOperationalScenarioCatalog({ operationalScenarios = [], personas = [], skillLibrary = {}, toolUseRecipes = [] }) {
+    const personaIds = new Set(personas.map(persona => persona.id));
+    const skillIds = new Set(Object.values(skillLibrary).flat().map(profile => slugify(profile.name)));
+    const recipeIds = new Set(toolUseRecipes.map(recipe => recipe.id));
+    return operationalScenarios.map(scenario => {
+      const ownerKnown = scenario.ownerType === 'skill' ? skillIds.has(scenario.ownerId) : scenario.ownerType === 'tool-use-recipe' ? recipeIds.has(scenario.ownerId) : false;
+      const route = scenario.route || {};
+      const unresolvedRouteIds = [
+        ...(route.personaIds || []).filter(id => !personaIds.has(id)).map(id => 'persona:' + id),
+        ...(route.skillIds || []).filter(id => !skillIds.has(id)).map(id => 'skill:' + id),
+        ...(route.toolRecipeIds || []).filter(id => !recipeIds.has(id)).map(id => 'recipe:' + id)
+      ];
+      const searchableText = [scenario.title, scenario.situation, scenario.expectedRoute, ...(scenario.match?.phrases || []), ...(scenario.match?.keywords || [])].filter(Boolean).join(' ').toLowerCase();
+      return {...scenario, ownerKnown, unresolvedRouteIds, searchableText};
+    }).sort((a, b) => a.title.localeCompare(b.title));
+  }
+
+  function buildToolUseRecipes({ toolUseRecipes = [], operationalScenarioCatalog = [] }) {
+    return toolUseRecipes.map(recipe => ({...recipe, operationalScenarios: operationalScenarioCatalog.filter(scenario => scenario.ownerType === 'tool-use-recipe' && scenario.ownerId === recipe.id && scenario.status === 'active')}));
+  }
+
+  function findOperationalScenarios(query, options = {}) {
+    const catalog = options.catalog || data.operationalScenarioCatalog || [];
+    const ownerType = options.ownerType || '';
+    const ownerId = options.ownerId || '';
+    const limit = Number.isInteger(options.limit) && options.limit > 0 ? options.limit : 3;
+    const phrase = String(query || '').trim().toLowerCase();
+    const tokens = [...new Set(phrase.split(/[^a-z0-9]+/).filter(token => token.length > 2))];
+    return catalog.filter(scenario => scenario.status === 'active')
+      .filter(scenario => !ownerType || scenario.ownerType === ownerType)
+      .filter(scenario => !ownerId || scenario.ownerId === ownerId)
+      .map(scenario => {
+        const exactPhraseMatches = (scenario.match?.phrases || []).filter(item => phrase.includes(String(item).toLowerCase())).length;
+        const keywordMatches = (scenario.match?.keywords || []).filter(item => tokens.includes(String(item).toLowerCase())).length;
+        const textMatches = tokens.filter(token => scenario.searchableText.includes(token)).length;
+        return {scenario, score: exactPhraseMatches * 8 + keywordMatches * 3 + textMatches};
+      }).filter(item => item.score > 0).sort((a,b)=>b.score-a.score || a.scenario.title.localeCompare(b.scenario.title)).slice(0,limit).map(item=>item.scenario);
+  }
+
+  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [], operationalScenarioCatalog = [] }) {
     const catalog = new Map();
     for (const persona of personas) {
       for (const profile of skillLibrary[persona.id] || []) {
@@ -80,6 +119,7 @@
         quality: specified(quality, ['signals', 'checks', 'watchFor']) ? 'Authored' : 'Starter or partial'
       };
       skill.toolUseRecipes = toolUseRecipes.filter(recipe => recipe.skillId === skill.id);
+      skill.operationalScenarios = operationalScenarioCatalog.filter(scenario => scenario.ownerType === 'skill' && scenario.ownerId === skill.id && scenario.status === 'active');
       skill.guidance = {
         operation: {
           startsWith: operation.startsWith || primary.triggers || 'A situation where this capability is relevant.',
@@ -475,11 +515,13 @@
       .map(handoff => ({ ...handoff }));
   }
 
+  data.operationalScenarioCatalog = buildOperationalScenarioCatalog(data);
+  data.toolUseRecipes = buildToolUseRecipes({ toolUseRecipes: data.toolUseRecipes, operationalScenarioCatalog: data.operationalScenarioCatalog });
   data.skillCatalog = buildSkillCatalog(data);
   data.operatingPackCatalog = buildOperatingPackCatalog(data);
   data.templateCatalog = buildTemplateCatalog(data);
   data.personaToolRequirements = buildPersonaToolRequirements(data);
   data.personaHandoffs = buildPersonaHandoffs(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance, templateStateCatalog, templateRuntimeStateByAvailability };
+  window.PersonaLibraryModel = { slugify, buildOperationalScenarioCatalog, buildToolUseRecipes, findOperationalScenarios, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance, templateStateCatalog, templateRuntimeStateByAvailability };
 })();
