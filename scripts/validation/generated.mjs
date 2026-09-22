@@ -19,6 +19,51 @@ export function validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, 
   if (!includesAll(toolsPage, ['data-tool-id="tool-vercel"', '<h3>vercel</h3>', 'runtime availability', 'account permission', '#recipe-vercel-review-checkpoint'])) throw new Error('Tools page must expose the canonical Vercel Tool record and linked recipe');
 }
 
+export function validateWebArchitecturePersonaContract({ personas, flowLibrary, skillCatalog, personaHandoffs, personaToolRequirements }) {
+  const frontend = (personas || []).find(persona => persona.id === 'frontend-systems-engineer');
+  const appData = (personas || []).find(persona => persona.id === 'application-data-architect');
+  if (!frontend || frontend.name !== 'Evan Reyes' || frontend.roleLabel !== 'Frontend systems engineer') throw new Error('Frontend Systems Engineer Persona is missing or malformed');
+  if (!appData || appData.name !== 'Nadia Shah' || appData.roleLabel !== 'Application & data architect') throw new Error('Application & Data Architect Persona is missing or malformed');
+
+  const frontendFlows = flowLibrary?.['frontend-systems-engineer'] || [];
+  const appDataFlows = flowLibrary?.['application-data-architect'] || [];
+  for (const title of ['Frame the frontend runtime boundary','Design the web application architecture','Implement and validate production behavior','Evaluate a framework or dependency change','Recover a frontend regression']) {
+    if (!frontendFlows.some(flow => flow.title === title)) throw new Error(`Frontend Systems Engineer workflow is missing: ${title}`);
+  }
+  for (const title of ['Define the application source of truth','Design persistence and service boundaries','Evolve schema, authorization, and contracts','Plan migration or scaling change','Recover data integrity or reliability risk']) {
+    if (!appDataFlows.some(flow => flow.title === title)) throw new Error(`Application & Data Architect workflow is missing: ${title}`);
+  }
+
+  const skillById = new Map((skillCatalog || []).map(skill => [skill.id, skill]));
+  const requireApplication = (skillId, personaId) => {
+    const skill = skillById.get(skillId);
+    if (!skill || !skill.profiles?.some(profile => profile.personaId === personaId)) throw new Error(`${skillId} is missing ${personaId} application`);
+  };
+  requireApplication('skill-architecture-decision-making', 'frontend-systems-engineer');
+  requireApplication('skill-architecture-decision-making', 'application-data-architect');
+  requireApplication('skill-web-application-architecture', 'frontend-systems-engineer');
+  requireApplication('skill-application-and-data-architecture', 'application-data-architect');
+  for (const skillId of ['skill-component-and-design-system-thinking','skill-accessibility-and-inclusive-design']) requireApplication(skillId, 'frontend-systems-engineer');
+  for (const personaId of ['frontend-systems-engineer','application-data-architect']) {
+    for (const skillId of ['skill-problem-framing-and-systems-thinking','skill-evidence-led-validation','skill-decision-communication-and-rationale-documentation','skill-cross-functional-systems-communication']) requireApplication(skillId, personaId);
+  }
+
+  const requiredHandoffs = [
+    'handoff-riley-to-frontend-systems-engineer',
+    'handoff-riley-to-application-data-architect',
+    'handoff-frontend-to-camille-interface-intent',
+    'handoff-frontend-to-jordan-ux-structure',
+    'handoff-frontend-to-application-data-architect',
+    'handoff-application-data-to-frontend-systems-engineer',
+    'handoff-application-data-to-jordan-content-workflow'
+  ];
+  for (const id of requiredHandoffs) if (!(personaHandoffs || []).some(handoff => handoff.id === id && handoff.required === true)) throw new Error(`Web architecture Persona handoff is missing: ${id}`);
+
+  if ((personaToolRequirements || []).some(requirement => ['frontend-systems-engineer','application-data-architect'].includes(requirement.personaId))) throw new Error('Web architecture Personas must not gain a vendor-specific Tool requirement without a separately validated recipe and Tool review');
+  if ((personas || []).some(persona => /full[- ]stack architect|database architect/i.test(persona.roleLabel || ''))) throw new Error('Issue #183 must preserve the two-Persona boundary instead of adding a generic Full-Stack or pure Database Architect');
+  for (const skill of skillCatalog || []) if (/next\.?js|supabase|vercel|sanity|payload|prisma/i.test(skill.name || '')) throw new Error('Technology-specific implementation choices must not become core Skill identities');
+}
+
 export function validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }) {
   if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley AI orchestrator record is missing');
   const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
@@ -156,6 +201,13 @@ export async function validateGeneratedOutputs(context) {
     toolUseRecipes: context.data.toolUseRecipes,
     personaToolRequirements: context.data.personaToolRequirements,
     toolsPage: files.toolsPage
+  });
+  validateWebArchitecturePersonaContract({
+    personas: context.data.personas,
+    flowLibrary: context.data.flowLibrary,
+    skillCatalog: context.data.skillCatalog,
+    personaHandoffs: context.data.personaHandoffs,
+    personaToolRequirements: context.data.personaToolRequirements
   });
   const decisionSource = JSON.parse(await context.readFile('docs/decisions/records.json'));
   const decision010 = decisionSource.records.find(record => record.id === 'DEC-010');
