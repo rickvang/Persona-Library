@@ -42,6 +42,15 @@ Canonical destinations: `content/library-data/operational-knowledge.js`, `conten
 
 Scenario owners/routes resolve; concrete good/bad guidance is present; targeted retrieval works; no new top-level space appears; generated outputs are current; repository validation/checks pass; reconciliation finds no duplicate source of truth; PR is mergeable with no blocking review.
 
-## Current phase
+## Closeout checkpoint
 
-Authored source/model and routing contract are committed. Next action: refresh generated outputs, open the PR, use GitHub validation, correct only evidenced failures, reconcile, archive, and merge if current gates stay clean.
+- PR: https://github.com/rickvang/Persona-Library/pull/186
+- Final implementation head before archive: `68209a109d581d341e40165b62c11d90054d4a02`
+- Repository validation: `35678274016` completed / success.
+- Review: Cursor approval present; both later Codex review findings were corrected in `68209a1` and resolved.
+- Review corrections:
+  - validate every Operational Scenario, not only the original five seeds;
+  - validate `route.operatingPackIds` against canonical Operating Packs.
+- Branch was 0 behind `main` before closeout.
+- Known blocker: none.
+- Next action: validate this archive-only commit, perform a fresh PR/base/review/check pre-merge read, then merge if the gate remains clean.
