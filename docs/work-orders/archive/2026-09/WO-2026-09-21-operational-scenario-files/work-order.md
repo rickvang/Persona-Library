@@ -54,8 +54,12 @@ Do not load every body to decide which scenario applies.
 - Existing five scenario IDs and matcher behavior remain intact.
 - Generated runtime data remains current.
 
-## Current checkpoint
+## Closeout checkpoint
 
-Core source split committed in `ebeaa1eeee395316b968a54d3a7076842fda5b18`.
-
-Next: repository validation, review corrections if any, reconciliation/archive, final merge preflight.
+- PR: https://github.com/rickvang/Persona-Library/pull/188
+- Final implementation head before archive: `891e5a9693aae35b84ee648dcfefb3769e9096a5`
+- Repository validation run `35680800549`: completed / success.
+- Cursor approval present; no review threads.
+- Index preflight: ~4 KB routing manifest; five scenario bodies reconstruct the same five IDs exactly.
+- Two CI corrections updated stale regression assertions to the new manifest-first wording; no source/model behavior was rolled back.
+- Next: validate this archive-only commit, refresh base/head/check/review/mergeability, merge if clean.
