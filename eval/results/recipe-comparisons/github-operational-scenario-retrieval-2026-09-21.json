@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0",
+  "comparison_id": "recipe-comparison-github-operational-scenario-retrieval-2026-09-21",
+  "status": "reviewed",
+  "repository_ref": "20f40b2a98ec04200e837e216d4f33ce2cf8d089",
+  "observed_at": "2026-09-21",
+  "stable_unit": {
+    "skill_id": "skill-tool-and-context-design",
+    "workflow": "Operate and improve the system",
+    "task_class": "operational-scenario-retrieval",
+    "fixture_id": "github-issue-operational-scenario-resolution"
+  },
+  "environment": {
+    "model": "GPT-5.6 Sol",
+    "model_version": "GPT-5.6 Sol",
+    "surface": "ChatGPT",
+    "runtime": "ChatGPT text runtime with connected GitHub app",
+    "tool": "GitHub connected app",
+    "tool_availability": "available",
+    "permissions": "Read-only comparison actions; issue #171 repository mutation authorization remained separate."
+  },
+  "comparability": {
+    "assessment": "comparable",
+    "controlled": [
+      "same repository and immutable repository_ref",
+      "same natural-language task query: implement github issue",
+      "same model, runtime, GitHub connector, and permission scope",
+      "same expected scenario identity/owner/freshness/stop validation gate"
+    ],
+    "differences": [
+      "discovery strategy only: routing-manifest lookup versus GitHub code search"
+    ],
+    "material_uncontrolled": []
+  },
+  "validation_gate": {
+    "required": [
+      "scenario_id equals scenario-github-issue-implementation",
+      "owner_id equals recipe-riley-github-efficient-change",
+      "at least one freshness trigger is present",
+      "at least one stop condition is present"
+    ]
+  },
+  "strategies": [
+    {
+      "strategy_id": "manifest-first",
+      "candidate_type": "execution-strategy",
+      "recipe_id": "recipe-riley-github-efficient-change",
+      "tool": "GitHub connected app",
+      "procedure": [
+        "fetch content/library-data/operational-scenarios/index.json at the fixed repository_ref",
+        "match the task against active phrase/keyword metadata",
+        "fetch only the selected scenario body from its declared path",
+        "evaluate the shared validation gate"
+      ],
+      "observation": {
+        "result_class": "success",
+        "validation_pass": true,
+        "friction": "low; one deterministic candidate path was selected from structured routing metadata",
+        "metrics": {
+          "remote_call_count": 2,
+          "discovery_payload_bytes": 4037,
+          "body_payload_bytes": 6494,
+          "candidate_count": 1
+        },
+        "evidence": [
+          "index selected content/library-data/operational-scenarios/github-issue-implementation.js",
+          "selected body resolved scenario-github-issue-implementation",
+          "selected body resolved owner recipe-riley-github-efficient-change",
+          "freshnessTriggers and stopConditions were both present"
+        ]
+      }
+    },
+    {
+      "strategy_id": "code-search-first",
+      "candidate_type": "execution-strategy",
+      "recipe_id": "recipe-riley-github-efficient-change",
+      "tool": "GitHub connected app",
+      "procedure": [
+        "run GitHub code search for the fixed task phrase at the repository",
+        "inspect returned candidates and select the Operational Scenario source candidate",
+        "fetch the selected scenario body at the fixed repository_ref",
+        "evaluate the shared validation gate"
+      ],
+      "observation": {
+        "result_class": "success",
+        "validation_pass": true,
+        "friction": "moderate; discovery returned four candidates and required candidate filtering",
+        "metrics": {
+          "remote_call_count": 2,
+          "discovery_payload_bytes": 19816,
+          "body_payload_bytes": 6494,
+          "candidate_count": 4
+        },
+        "evidence": [
+          "code search returned four candidates for the task phrase",
+          "candidate filtering selected content/library-data/operational-scenarios/github-issue-implementation.js",
+          "selected body resolved the same scenario and owner as manifest-first",
+          "freshnessTriggers and stopConditions were both present"
+        ]
+      }
+    }
+  ],
+  "review": {
+    "status": "reviewed",
+    "reviewer": "Riley Morgan / scoped implementation evidence review",
+    "reviewed_at": "2026-09-21",
+    "conclusion": "conditional",
+    "preferred_strategy_id": "manifest-first",
+    "fallback_strategy_id": "code-search-first",
+    "conditions": [
+      "Prefer manifest-first when the Operational Scenario routing index exists and is current.",
+      "Use code-search-first as fallback when the index is unavailable, stale, or lacks a usable match for the task."
+    ],
+    "rationale": [
+      "Both strategies passed the same validation gate under the same repository/runtime conditions.",
+      "Remote-call count was equal at two calls per strategy.",
+      "Manifest-first reduced discovery payload from 19,816 bytes to 4,037 bytes and reduced candidate ambiguity from four candidates to one declared path.",
+      "The proof supports a scoped retrieval preference only; it does not establish universal GitHub search or Tool superiority."
+    ],
+    "evidence": [
+      "Live read-only comparison executed through the connected GitHub app on 2026-09-21.",
+      "Issue #187 established the compact routing manifest used by the manifest-first strategy.",
+      "PR #189 Repository validation run 35682858750 passed the comparison contract, focused tests, and full repository validation."
+    ]
+  },
+  "promotion": {
+    "evidence_status": "reviewed",
+    "canonical_change": "requires-separate-authorized-update",
+    "accepted_updates": [
+      "extend eval contract with comparable recipe/strategy evidence shape",
+      "extend Tool discovery Skill with explicit experimentation/review loop"
+    ]
+  },
+  "freshness": {
+    "stale_when": [
+      "Operational Scenario index schema or routing semantics materially change.",
+      "The GitHub connector/search response shape materially changes.",
+      "The owning Tool-use recipe procedure changes in a way that changes discovery.",
+      "The task class or validation gate changes materially."
+    ]
+  },
+  "persistence_decision": {
+    "disposition": "git-sanitized-evidence",
+    "rationale": [
+      "This proof is low-volume and review-oriented.",
+      "The evidence is non-private and benefits from repository review/history.",
+      "No runtime writer, recurring cross-time consumer query, or high-churn/private observation need was demonstrated.",
+      "A Supabase observations table would duplicate review evidence without a proven operational benefit."
+    ],
+    "supabase_followup_required": false
+  }
+}

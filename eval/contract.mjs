@@ -177,3 +177,117 @@ export function summarize(results) {
   for (const result of results) counts[result.verdict] = (counts[result.verdict] || 0) + 1;
   return { total: results.length, counts };
 }
+
+
+export const RECIPE_COMPARISON_CONCLUSIONS = [
+  'preferred',
+  'conditional',
+  'fallback',
+  'insufficient-evidence'
+];
+
+export const RECIPE_COMPARABILITY = ['comparable', 'qualified', 'not-comparable'];
+export const RECIPE_COMPARISON_REVIEW_STATUSES = ['pending-review', 'reviewed'];
+export const RECIPE_COMPARISON_PERSISTENCE = ['git-sanitized-evidence', 'supabase-operational-followup'];
+
+export function validateRecipeComparison(record) {
+  const errors = [];
+  if (!record || record.schema_version !== '1.0') errors.push('Recipe comparison must use schema 1.0');
+  if (!record?.comparison_id) errors.push('Recipe comparison is missing comparison_id');
+  if (!record?.repository_ref) errors.push('Recipe comparison is missing repository_ref');
+
+  const stable = record?.stable_unit;
+  for (const field of ['skill_id', 'workflow', 'task_class', 'fixture_id']) {
+    if (!stable?.[field]) errors.push(`Recipe comparison stable_unit is missing ${field}`);
+  }
+
+  const environment = record?.environment;
+  for (const field of ['model', 'model_version', 'surface', 'runtime', 'tool', 'tool_availability', 'permissions']) {
+    if (!environment?.[field]) errors.push(`Recipe comparison environment is missing ${field}`);
+  }
+
+  const comparability = record?.comparability;
+  if (!RECIPE_COMPARABILITY.includes(comparability?.assessment)) errors.push('Recipe comparison has invalid comparability assessment');
+  for (const field of ['controlled', 'differences', 'material_uncontrolled']) {
+    if (!Array.isArray(comparability?.[field])) errors.push(`Recipe comparison comparability is missing ${field}`);
+  }
+  if (!Array.isArray(comparability?.controlled) || comparability.controlled.length === 0) errors.push('Recipe comparison must name controlled conditions');
+  if (!Array.isArray(comparability?.differences) || comparability.differences.length === 0) errors.push('Recipe comparison must name the intended strategy difference');
+
+  if (!Array.isArray(record?.validation_gate?.required) || record.validation_gate.required.length === 0) {
+    errors.push('Recipe comparison must define a validation gate');
+  }
+
+  const strategies = Array.isArray(record?.strategies) ? record.strategies : [];
+  if (strategies.length < 2) errors.push('Recipe comparison requires at least two strategies');
+  const strategyIds = new Set();
+  for (const strategy of strategies) {
+    if (!strategy?.strategy_id || strategyIds.has(strategy.strategy_id)) errors.push(`Recipe comparison has a missing or duplicate strategy_id: ${strategy?.strategy_id || '(missing)'}`);
+    strategyIds.add(strategy?.strategy_id);
+    if (!['tool-use-recipe', 'execution-strategy'].includes(strategy?.candidate_type)) errors.push(`Recipe comparison strategy has invalid candidate_type: ${strategy?.strategy_id || '(missing)'}`);
+    if (!strategy?.recipe_id) errors.push(`Recipe comparison strategy is missing recipe_id: ${strategy?.strategy_id || '(missing)'}`);
+    if (!strategy?.tool) errors.push(`Recipe comparison strategy is missing tool: ${strategy?.strategy_id || '(missing)'}`);
+    if (!Array.isArray(strategy?.procedure) || strategy.procedure.length === 0) errors.push(`Recipe comparison strategy is missing procedure: ${strategy?.strategy_id || '(missing)'}`);
+    const observation = strategy?.observation;
+    if (!OBSERVATION_RESULT_CLASSES.includes(observation?.result_class)) errors.push(`Recipe comparison strategy has invalid result_class: ${strategy?.strategy_id || '(missing)'}`);
+    if (typeof observation?.validation_pass !== 'boolean') errors.push(`Recipe comparison strategy must record validation_pass: ${strategy?.strategy_id || '(missing)'}`);
+    if (!observation?.friction) errors.push(`Recipe comparison strategy is missing friction: ${strategy?.strategy_id || '(missing)'}`);
+    if (!Array.isArray(observation?.evidence) || observation.evidence.length === 0) errors.push(`Recipe comparison strategy is missing evidence: ${strategy?.strategy_id || '(missing)'}`);
+    if ('score' in (strategy || {}) || 'score' in (observation || {})) errors.push(`Recipe comparison must not use a hidden composite score: ${strategy?.strategy_id || '(missing)'}`);
+    for (const [name, value] of Object.entries(observation?.metrics || {})) {
+      if (value !== null && value !== undefined && (typeof value !== 'number' || !Number.isFinite(value) || value < 0)) {
+        errors.push(`Recipe comparison metric must be a non-negative number when recorded: ${strategy?.strategy_id || '(missing)'}/${name}`);
+      }
+    }
+  }
+
+  const review = record?.review;
+  if (!RECIPE_COMPARISON_REVIEW_STATUSES.includes(review?.status)) errors.push('Recipe comparison has invalid review status');
+  if (!RECIPE_COMPARISON_CONCLUSIONS.includes(review?.conclusion)) errors.push('Recipe comparison has invalid review conclusion');
+  if (!Array.isArray(review?.rationale) || review.rationale.length === 0) errors.push('Recipe comparison review must include rationale');
+  if ('score' in (review || {})) errors.push('Recipe comparison review must not use a hidden composite score');
+  if (review?.status === 'reviewed' && !review?.reviewer) errors.push('Reviewed recipe comparison must name a reviewer');
+  if (review?.status === 'reviewed' && !Array.isArray(review?.evidence)) errors.push('Reviewed recipe comparison must include review evidence');
+  if (review?.conclusion === 'conditional' && (!Array.isArray(review?.conditions) || review.conditions.length === 0)) errors.push('Conditional recipe comparison must name conditions');
+  if (['preferred', 'conditional'].includes(review?.conclusion) && !strategyIds.has(review?.preferred_strategy_id)) errors.push('Recipe comparison preferred strategy must reference a compared strategy');
+  if (['conditional', 'fallback'].includes(review?.conclusion) && !strategyIds.has(review?.fallback_strategy_id)) errors.push('Recipe comparison fallback strategy must reference a compared strategy');
+  if (comparability?.assessment === 'not-comparable' && review?.conclusion !== 'insufficient-evidence') errors.push('Non-comparable runs cannot support a conclusive recipe disposition');
+
+  const promotion = record?.promotion;
+  if (!['candidate', 'reviewed', 'validated'].includes(promotion?.evidence_status)) errors.push('Recipe comparison promotion has invalid evidence_status');
+  if (promotion?.canonical_change !== 'requires-separate-authorized-update') errors.push('Recipe comparison must not automatically mutate canonical guidance');
+  if (review?.status !== 'reviewed' && promotion?.evidence_status !== 'candidate') errors.push('Unreviewed recipe comparison must remain candidate evidence');
+
+  if (!Array.isArray(record?.freshness?.stale_when) || record.freshness.stale_when.length === 0) errors.push('Recipe comparison must define evidence staleness triggers');
+
+  const persistence = record?.persistence_decision;
+  if (!RECIPE_COMPARISON_PERSISTENCE.includes(persistence?.disposition)) errors.push('Recipe comparison has invalid persistence disposition');
+  if (!Array.isArray(persistence?.rationale) || persistence.rationale.length === 0) errors.push('Recipe comparison persistence decision needs rationale');
+  if (persistence?.disposition === 'supabase-operational-followup') {
+    for (const field of ['writer', 'consumer', 'query', 'followup_issue']) {
+      if (!persistence?.[field]) errors.push(`Supabase comparison follow-up is missing ${field}`);
+    }
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+export function reviewedRecipeComparisonConclusion(record) {
+  const validation = validateRecipeComparison(record);
+  if (!validation.valid || record?.review?.status !== 'reviewed') {
+    return {
+      status: 'insufficient-evidence',
+      preferred_strategy_id: null,
+      fallback_strategy_id: null,
+      conditions: [],
+      reason: validation.valid ? 'Comparison has not passed the explicit review gate.' : validation.errors.join('; ')
+    };
+  }
+  return {
+    status: record.review.conclusion,
+    preferred_strategy_id: record.review.preferred_strategy_id || null,
+    fallback_strategy_id: record.review.fallback_strategy_id || null,
+    conditions: record.review.conditions || [],
+    reason: record.review.rationale.join(' ')
+  };
+}

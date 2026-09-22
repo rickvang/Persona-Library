@@ -80,6 +80,21 @@ For each candidate, capture when known:
 
 Separate these facts from a Tool record, a Skill requirement, a Tool-use recipe, a usage note, or a hypothesis. Never claim a candidate is available merely because it appears in the Site catalog or current documentation.
 
+## Recipe experimentation and evidence loop
+
+When the question is which Tool-use recipe or execution strategy works better for a stable Skill/workflow, use the comparison contract in [`eval/recipe-comparison.md`](../../../eval/recipe-comparison.md) instead of turning one execution into preference guidance.
+
+1. Hold the stable unit explicit: Skill, workflow/activity, task or fixture, expected gate, repository/source revision, model/runtime, Tool availability, and permission conditions.
+2. Change only the intended recipe/strategy dimension when practical. Record every material uncontrolled difference; classify the pair as comparable, qualified, or not comparable instead of hiding confounds.
+3. Run at least two bounded candidates against the same named validation gate. Record success/failure, validation evidence, recovery/friction, and only resource metrics the runtime can observe reliably.
+4. Keep every strategy result as an observation. Do not average away contradictory evidence and do not invent a composite score.
+5. Review the evidence explicitly. The conclusion must be `preferred`, `conditional`, `fallback`, or `insufficient-evidence`, with scope and conditions visible.
+6. Treat the reviewed conclusion as evidence for a separately authorized canonical update. It does not mutate Tool-use recipes, Persona Tool requirements, Operational Scenarios, or Skills by itself.
+7. Mark evidence stale when a material Tool/runtime capability, recipe procedure, permissions model, source revision, validation gate, or task class changes.
+8. Keep low-volume sanitized comparison evidence in Git by default. Propose a Supabase operational store only after a real writer, consumer, and query demonstrate that review files are insufficient.
+
+A reviewed comparison can prefer one strategy in one context and keep another as fallback elsewhere. Never convert contextual evidence into a universal Tool ranking.
+
 ## Probe and execution contract
 
 A bounded probe must name its purpose, target, inputs, expected result, scope limit, approval, rollback or recovery path, and verification. Prefer no-write probes. If a probe can alter shared state, publish, merge, send a message, change access, incur material cost, or expose sensitive data, treat it as a side effect and wait for explicit authorization.
@@ -132,6 +147,7 @@ Before handoff, confirm:
 - The action was read-only, sandboxed, or explicitly authorized; no boundary was bypassed.
 - Result, partial failure, friction, and evidence are recorded accurately.
 - Usage note, lesson, recipe, and validated guidance are not conflated.
+- Recipe/strategy comparisons preserve the stable unit, comparable conditions, explicit review, freshness triggers, and no automatic canonical mutation.
 - Catalog and reconciliation handoffs are named only when required and actually available.
 - Repeated remote calls were justified by new evidence, a failed gate, a material freshness trigger, a deployed-state question, or a meaningful review checkpoint rather than routine polling.
 - When an active Operational Scenario matched the selected recipe, only the relevant scenario was loaded and its stop/recovery guidance was respected.

@@ -49,3 +49,10 @@ Keep these rules:
 - Keep raw reports and sensitive traces in the authorized private run location. Commit only this sanitized bundle and concise system-level findings.
 
 The repository evaluator supplies the expected response contract from `cases.json` and normalizes omitted optional arrays. The bundle remains responsible for recording evidence, limitations, and the next action.
+
+
+## Tool-use recipe / execution-strategy comparisons
+
+Do not overload the conformance run bundle when the question is whether one Tool-use recipe or execution strategy should be preferred under a named condition. Use [the recipe comparison contract](recipe-comparison.md) and `validateRecipeComparison()` from `eval/contract.mjs`.
+
+A comparison keeps the stable Skill/workflow/task separate from the execution strategy, records material context differences, preserves each strategy run as an observation, and requires an explicit review gate before a conclusion can affect shared guidance. One observation never silently becomes canonical preference.

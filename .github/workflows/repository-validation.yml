@@ -35,7 +35,7 @@ jobs:
         run: node scripts/validate-content.mjs
 
       - name: Run repository validation tests
-        run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-git-deployment.test.mjs scripts/validation/seen-job-store.test.mjs
+        run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-git-deployment.test.mjs scripts/validation/seen-job-store.test.mjs scripts/validation/recipe-comparison.test.mjs
 
       - name: Check committed whitespace for pull request
         if: github.event_name == 'pull_request'
