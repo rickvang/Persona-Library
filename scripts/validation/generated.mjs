@@ -71,11 +71,13 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
   if (!Array.isArray(operationalScenarios) || !Array.isArray(operationalScenarioCatalog) || operationalScenarios.length < expectedIds.length) throw new Error('Operational Scenario source/catalog is missing');
   const sourceById = new Map(operationalScenarios.map(item => [item.id, item]));
   if (sourceById.size !== operationalScenarios.length) throw new Error('Operational Scenario IDs must be unique');
-  for (const id of expectedIds) {
-    const scenario = operationalScenarioCatalog.find(item => item.id === id);
-    if (!scenario || scenario.status !== 'active' || !scenario.ownerKnown || scenario.unresolvedRouteIds?.length) throw new Error(`Operational Scenario is missing or has unresolved ownership/route: ${id}`);
-    if (!allowedEvidence.has(scenario.evidenceStatus)) throw new Error(`Operational Scenario has invalid evidence status: ${id}`);
-    for (const field of ['do','dont','recommendedSequence','stopConditions','successSignals','goodTrace','badTrace','recoveryPath','evidence']) if (!Array.isArray(scenario[field]) || scenario[field].length === 0) throw new Error(`Operational Scenario ${id} is missing concrete ${field}`);
+  for (const id of expectedIds) if (!operationalScenarioCatalog.some(item => item.id === id)) throw new Error(`Required seed Operational Scenario is missing: ${id}`);
+  for (const scenario of operationalScenarioCatalog) {
+    if (!scenario.id || !scenario.ownerKnown || scenario.unresolvedRouteIds?.length) throw new Error(`Operational Scenario is missing or has unresolved ownership/route: ${scenario.id || '(missing)'}`);
+    if (!allowedEvidence.has(scenario.evidenceStatus)) throw new Error(`Operational Scenario has invalid evidence status: ${scenario.id}`);
+    if (scenario.status === 'active') {
+      for (const field of ['do','dont','recommendedSequence','stopConditions','successSignals','goodTrace','badTrace','recoveryPath','evidence']) if (!Array.isArray(scenario[field]) || scenario[field].length === 0) throw new Error(`Operational Scenario ${scenario.id} is missing concrete ${field}`);
+    }
   }
   const recipeById = new Map((toolUseRecipes || []).map(recipe => [recipe.id, recipe]));
   const skillById = new Map((skillCatalog || []).map(skill => [skill.id, skill]));

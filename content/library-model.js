@@ -38,17 +38,19 @@
   const templatePreviewConfig = () => window.PersonaLibraryTemplatePreviewConfig?.previewRenderers || {};
   const templateState = (group, id, fallback) => ({ id, ...(templateStateCatalog[group][id] || fallback) });
 
-  function buildOperationalScenarioCatalog({ operationalScenarios = [], personas = [], skillLibrary = {}, toolUseRecipes = [] }) {
+  function buildOperationalScenarioCatalog({ operationalScenarios = [], personas = [], skillLibrary = {}, toolUseRecipes = [], operatingPacks = [] }) {
     const personaIds = new Set(personas.map(persona => persona.id));
     const skillIds = new Set(Object.values(skillLibrary).flat().map(profile => slugify(profile.name)));
     const recipeIds = new Set(toolUseRecipes.map(recipe => recipe.id));
+    const operatingPackIds = new Set(operatingPacks.map(pack => pack.id));
     return operationalScenarios.map(scenario => {
       const ownerKnown = scenario.ownerType === 'skill' ? skillIds.has(scenario.ownerId) : scenario.ownerType === 'tool-use-recipe' ? recipeIds.has(scenario.ownerId) : false;
       const route = scenario.route || {};
       const unresolvedRouteIds = [
         ...(route.personaIds || []).filter(id => !personaIds.has(id)).map(id => 'persona:' + id),
         ...(route.skillIds || []).filter(id => !skillIds.has(id)).map(id => 'skill:' + id),
-        ...(route.toolRecipeIds || []).filter(id => !recipeIds.has(id)).map(id => 'recipe:' + id)
+        ...(route.toolRecipeIds || []).filter(id => !recipeIds.has(id)).map(id => 'recipe:' + id),
+        ...(route.operatingPackIds || []).filter(id => !operatingPackIds.has(id)).map(id => 'operating-pack:' + id)
       ];
       const searchableText = [scenario.title, scenario.situation, scenario.expectedRoute, ...(scenario.match?.phrases || []), ...(scenario.match?.keywords || [])].filter(Boolean).join(' ').toLowerCase();
       return {...scenario, ownerKnown, unresolvedRouteIds, searchableText};
