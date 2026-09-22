@@ -9,7 +9,8 @@
       "operating model",
       "quality signals",
       "workflow reach",
-      "persona applications"
+      "persona applications",
+      "matching operational scenario"
     ],
     "write": "Check for an existing skill first; create or change one only when the capability is reusable and the request authorizes it.",
     "do_not": [
@@ -38,7 +39,8 @@
         "Persona skillLibrary relationship",
         "canonical Skill profile",
         "activities and workflows",
-        "skill relationships"
+        "skill relationships",
+        "matching active operational scenarios owned by the selected Skill"
       ],
       "mutation_boundary": "authorized_update",
       "reconciliation": "persona-reconciliation",

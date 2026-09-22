@@ -14,7 +14,8 @@
     'skillGuidance',
     'skillPractice',
     'skillUnits',
-    'skillRelations'
+    'skillRelations',
+    'operationalScenarios'
   ];
 
   const missing = requiredKeys.filter(key => !(key in fragments));

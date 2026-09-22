@@ -24,6 +24,7 @@ const libraryDataSources = [
   'content/library-data/skill-guidance.js',
   'content/library-data/skill-practice.js',
   'content/library-data/skill-anatomy.js',
+  'content/library-data/operational-knowledge.js',
   'content/library-data.js'
 ];
 

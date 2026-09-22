@@ -20,6 +20,7 @@ const LIBRARY_DATA_SOURCES = [
   'content/library-data/skill-guidance.js',
   'content/library-data/skill-practice.js',
   'content/library-data/skill-anatomy.js',
+  'content/library-data/operational-knowledge.js',
   'content/library-data.js'
 ];
 
@@ -102,8 +103,8 @@ export async function loadValidationContext(root = defaultRoot) {
   vm.runInNewContext(contents.templatePreviewSource, sandbox, { filename: path.join(root, FILES.templatePreviewSource) });
   vm.runInNewContext(contents.modelSource, sandbox, { filename: path.join(root, FILES.modelSource) });
   const data = sandbox.window.PersonaLibraryData;
-  if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !Array.isArray(data.playbookCatalog) || !Array.isArray(data.operatingPacks) || !Array.isArray(data.operatingPackCatalog) || !Array.isArray(data.templates) || !Array.isArray(data.templateCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
-    throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, toolUseRecipes, personaToolRequirements, personaHandoffs, skillCatalog, playbookCatalog, operatingPacks, operatingPackCatalog, templates, templateCatalog, maintenance, and PersonaLibraryModel');
+  if (!data || !Array.isArray(data.personas) || !data.skillLibrary || !data.flowLibrary || !data.skillGuidance || !data.skillPractice || !Array.isArray(data.skillUnits) || !Array.isArray(data.skillRelations) || !Array.isArray(data.operationalScenarios) || !Array.isArray(data.operationalScenarioCatalog) || !Array.isArray(data.toolUseRecipes) || !Array.isArray(data.personaToolRequirements) || !Array.isArray(data.personaHandoffs) || !Array.isArray(data.skillCatalog) || !Array.isArray(data.playbookCatalog) || !Array.isArray(data.operatingPacks) || !Array.isArray(data.operatingPackCatalog) || !Array.isArray(data.templates) || !Array.isArray(data.templateCatalog) || !data.maintenance || !sandbox.window.PersonaLibraryModel) {
+    throw new Error('Content modules must expose personas, skillLibrary, flowLibrary, skillGuidance, skillPractice, skillUnits, skillRelations, operationalScenarios, operationalScenarioCatalog, toolUseRecipes, personaToolRequirements, personaHandoffs, skillCatalog, playbookCatalog, operatingPacks, operatingPackCatalog, templates, templateCatalog, maintenance, and PersonaLibraryModel');
   }
 
   return {
