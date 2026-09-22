@@ -119,7 +119,7 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
   if (!includesAll(agents,['active operational scenario','operational-scenarios/index.json','load only the selected scenario body','do not fetch every scenario body','never overrides authorization'])) throw new Error('AGENTS targeted Operational Scenario retrieval rule missing');
   if (!includesAll(JSON.stringify(toolsRoute),['matching active operational scenario','stop when evidence is sufficient'])) throw new Error('Tools route operational scenario rule missing');
   if (!includesAll(JSON.stringify(skillsRoute),['matching active operational scenarios owned by the selected skill'])) throw new Error('Skills route operational scenario rule missing');
-  if (!includesAll(contract,['relationships owned by an existing skill or tool-use recipe','smallest relevant context','do not load the whole scenario catalog','evidence lifecycle','.golden.md','never grants permission'])) throw new Error('Operational knowledge contract incomplete');
+  if (!includesAll(contract,['relationships owned by an existing skill or tool-use recipe','operational-scenarios/index.json','do not fetch every scenario body','generated bundle is not the agent retrieval surface','evidence lifecycle','.golden.md','never grants permission'])) throw new Error('Operational knowledge targeted-retrieval contract incomplete');
   if (!includesAll(toolSkill,['active operational scenario','smallest matching scenario','never grants permission'])) throw new Error('Tool discovery Skill scenario rule missing');
 }
 
