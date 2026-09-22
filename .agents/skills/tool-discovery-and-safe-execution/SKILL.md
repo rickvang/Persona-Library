@@ -27,6 +27,7 @@ Do not activate for canonical Tool catalog maintenance, credential configuration
 3. Inspect the Tools, connectors, MCPs, workspaces, and permissions actually exposed by the current requester runtime. Do not infer availability, credentials, or approval from repository documentation.
 4. Identify the intended mode: catalog/planning (read-only), bounded read-only probe, authorized side-effecting action, or durable usage/lesson/artifact recording.
 5. Record the requested workspace, authorization, approval status, fallback, and verification method. If any material value is unknown, report it before execution.
+6. If the selected Tool-use recipe has an active Operational Scenario, load only the smallest matching scenario and apply its concrete do/don't, sequence, freshness, stop, escalation, and recovery guidance. Scenario guidance never grants permission or replaces current Tool/runtime evidence.
 
 ## Availability states
 
@@ -91,6 +92,7 @@ If execution is blocked, return the availability state, exact missing requiremen
 - **Candidate lesson:** a possible reusable learning that still needs review or repetition.
 - **Reviewed lesson:** a learning accepted through the repository's review process with evidence and scope.
 - **Tool-use recipe:** a reviewed capability-to-Tool procedure with prerequisites, mode, fallback, and verification.
+- **Operational / Golden Scenario:** a reviewed concrete execution example attached to an existing Skill or Tool-use recipe, with routing cues, good/bad traces, freshness and stopping rules, recovery, and evidence state.
 - **Validated guidance:** repeated or otherwise explicitly reviewed evidence suitable for shared guidance.
 
 Do not promote a usage note to a reviewed lesson, recipe, or validated guidance automatically. Do not update Persona or Skill records as a side effect of execution.
@@ -132,5 +134,6 @@ Before handoff, confirm:
 - Usage note, lesson, recipe, and validated guidance are not conflated.
 - Catalog and reconciliation handoffs are named only when required and actually available.
 - Repeated remote calls were justified by new evidence, a failed gate, a material freshness trigger, a deployed-state question, or a meaningful review checkpoint rather than routine polling.
+- When an active Operational Scenario matched the selected recipe, only the relevant scenario was loaded and its stop/recovery guidance was respected.
 
 See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/tool-discovery-and-safe-execution.golden.md).

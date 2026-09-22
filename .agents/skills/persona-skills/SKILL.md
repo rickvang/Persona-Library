@@ -71,6 +71,7 @@ Use the current repository record as the exact schema authority. At minimum, kee
 - **Relationships:** primitive/composed/application/workflow/recipe and related or replacement links, backed by explicit evidence.
 - **Tools and evidence:** Tool or category, purpose, source status, and recipe links. Never infer availability, credentials, permission, or workspace.
 - **Validation:** evidence, confidence, open questions, validation activities, and revision context.
+- **Operational examples:** when concrete do/don't guidance, good/bad traces, stopping conditions, or recovery patterns are reusable, link them as Operational Scenarios owned by the Skill instead of bloating the portable core or creating a duplicate Skill.
 
 Do not add fields merely to satisfy this list. Do not copy the site's current capability records into the package; the site remains the content source of truth.
 
