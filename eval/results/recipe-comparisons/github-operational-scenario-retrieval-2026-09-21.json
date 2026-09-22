@@ -120,7 +120,7 @@
     "evidence": [
       "Live read-only comparison executed through the connected GitHub app on 2026-09-21.",
       "Issue #187 established the compact routing manifest used by the manifest-first strategy.",
-      "The result is subject to repository PR review before issue #171 completion."
+      "PR #189 Repository validation run 35682858750 passed the comparison contract, focused tests, and full repository validation."
     ]
   },
   "promotion": {

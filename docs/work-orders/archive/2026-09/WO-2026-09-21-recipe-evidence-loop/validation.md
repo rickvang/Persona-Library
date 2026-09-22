@@ -15,6 +15,13 @@
 - Proof fixture validates and documentation preserves evidence boundaries.
 - Full Repository validation passes.
 
-## Current evidence
+## Final evidence
 
-The live comparison passed both candidate validation gates and produced a conditional manifest-first/fallback conclusion. Repository CI pending.
+- Live comparison passed both candidate validation gates.
+- Manifest-first: 2 calls, 4,037-byte discovery payload, 1 candidate.
+- Code-search-first: 2 calls, 19,816-byte discovery payload, 4 candidates.
+- Reviewed conclusion: conditional manifest-first preference with code-search fallback.
+- Source-level schema preflight: pass.
+- Repository validation run `35682858750`: pass.
+- Focused comparison test is part of the Repository validation workflow.
+- No Supabase writer/consumer/query need was demonstrated.
