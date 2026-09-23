@@ -1829,7 +1829,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
     "Existing Riley Current Work continuity and bounded-parallel implementation contracts",
     "CW-44 runtime-dispatch-proof.md: live dispatch, context-free reconstruction, same-identity interrupt/resume, and fresh-agent takeover of an interrupted WorkNode from durable state without its transcript"
   ],
-  "confidence": "Working synthesis; one live supervised dispatch, same-identity interrupt/resume, and fresh-agent graph-level takeover of a bounded WorkNode from durable state without the interrupted attempt's transcript are evidenced. The representative Riley/Noor conformance case passes; provider-level Dispatch/session identity or runtime lifecycle controls remain unproven.",
+  "confidence": "Working synthesis; one live supervised dispatch, same-identity interrupt/resume, and fresh-agent graph-level takeover of a bounded WorkNode from durable state without its interrupted attempt's transcript are evidenced. The representative Riley/Noor conformance case passes; provider-level Dispatch/session identity or runtime lifecycle controls remain unproven.",
   "status": "active",
   "version": "1.0",
   "updated": "2026-09-22"
