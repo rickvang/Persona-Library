@@ -1826,9 +1826,10 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "evidence": [
     "CW-44 external orchestration pattern review",
     "Persona-Library issue #197 implementation plan",
-    "Existing Riley Current Work continuity and bounded-parallel implementation contracts"
+    "Existing Riley Current Work continuity and bounded-parallel implementation contracts",
+    "CW-44 runtime-dispatch-proof.md: live dispatch, context-free reconstruction, and same-identity interrupted resume"
   ],
-  "confidence": "Working synthesis; repository contract validation is in progress and live supervised-dispatch / interrupted-recovery proof remains pending.",
+  "confidence": "Working synthesis; one live supervised dispatch and same-identity interrupted resume are evidenced. A distinct agent takeover and runtime replacement/supersession remain unproven; repository validation and final Riley conformance are pending.",
   "status": "active",
   "version": "1.0",
   "updated": "2026-09-22"
