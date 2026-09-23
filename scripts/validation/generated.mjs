@@ -130,7 +130,7 @@ export function validateRileyContinuityContract({ agents, workOrders, riley, ril
   const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
   if (!operate || !includesAll(JSON.stringify(operate), ['resume and checkpoint substantial work', 'reconcile durable orchestration state', 'operating route', 'parent work id'])) throw new Error('Riley operating workflow must include durable cross-agent checkpoint/resume and orchestration reconciliation behavior');
   if (!includesAll(agents, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'do not mirror volatile', 'refresh live systems'])) throw new Error('Root AGENTS must make Riley the default durable orchestration owner without forcing an extra execution hop');
-  if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → Work Order → live-system hierarchy');
+  if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → recovery artifact → live-system hierarchy');
 }
 
 export function validateRepositoryWorkingCopyContract({ agents, workOrders, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {
