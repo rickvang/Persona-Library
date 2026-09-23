@@ -141,7 +141,7 @@ export function validateRepositoryWorkingCopyContract({ agents, workOrders, uxPr
   if (!includesAll(uxContextTemplate, ['small-change-lane', 'do not create this packet', 'pull request', 'worknode'])) throw new Error('UX Project Context template must defer qualifying small changes to the pull-request record');
   if (!includesAll(uxWorkOrderTemplate, ['small-change-lane', 'do not create this template', 'pull request', 'worknode'])) throw new Error('UX Work Order template must not require a Work Order for the small-change lane');
   if (!includesAll(uxRouting, ['small-change lane', 'pull request', 'active work record', 'worknode', 'work graph'])) throw new Error('UX routing guidance must align with the small-change lane and preserve Work Graph membership');
-  if (!includesAll(docsReadme, ['qualifying small repository change', 'pull request', 'worknode', 'work graph'])) throw new Error('Documentation placement guidance must include the small-change pull-request record and Work Graph boundary');
+  if (!includesAll(docsReadme, ['qualifying small repository change', 'pull request', 'current work', 'test queue', 'work graph'])) throw new Error('Documentation placement guidance must include the small-change authoritative-record boundary, Test Queue continuity, and Work Graph preservation');
 }
 
 export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }) {
