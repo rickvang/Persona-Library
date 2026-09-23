@@ -352,7 +352,8 @@ test('Riley work graph contract keeps one authoritative dispatch, evidence gates
     dont:['Do not infer completion from idle or self-report.','Do not create a second authoritative task database.']
   }];
   const skillsRoute = {routes:[{id:'work-graph-orchestration',target:'work-graph-orchestration',package_path:'.agents/skills/work-graph-orchestration'}]};
-  const skillPackage = 'Keep one authoritative active Dispatch per WorkNode. Distinguish handoff from supervised delegation. Parallelize only collision-safe work. Recovery is read-before-retry. Use the Execution-adapter contract. This Skill does not persist a second canonical task database.';
+  const skillPackage = 'Keep one authoritative active Dispatch per WorkNode. Distinguish handoff from supervised delegation. Parallelize only collision-safe work. Recovery is read-before-retry. Use the Execution-adapter contract. This Skill does not persist a second canonical task database. A bounded correction stays in the same attempt: CI runs and review events are not new Dispatches. Create a new Dispatch identity only when the attempt is abandoned, superseded, or reassigned.';
   assert.doesNotThrow(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }));
   assert.throws(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage: skillPackage.replace('one authoritative active Dispatch per WorkNode', 'several active attempts per WorkNode') }), /Callable work-graph Skill/i);
+  assert.throws(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage: skillPackage.replace('CI runs and review events are not new Dispatches', 'Every CI run creates a new Dispatch') }), /Callable work-graph Skill/i);
 });

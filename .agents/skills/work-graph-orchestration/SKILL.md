@@ -162,6 +162,32 @@ Before parallel repository dispatch, confirm:
 - downstream nodes name dependencies;
 - later merges can be serialized safely.
 
+### Repository dispatch identity
+
+For repository work, keep these identities distinct:
+
+- **WorkNode** is the stable objective. It survives commits, CI reruns, review cycles, rebases, and bounded corrections.
+- **Dispatch** is one authoritative execution attempt for the WorkNode.
+- **Branch / worktree / task / session / PR** are references owned by the Dispatch; none of them alone replaces WorkNode or Dispatch identity.
+- **CI runs, review events, comments, and commits** are evidence events inside a Dispatch, not new Dispatches.
+
+A bounded correction on the same owned execution attempt stays inside the current Dispatch. Do **not** create a new Dispatch merely because CI failed, review requested changes, a rebase was required, or another commit was added.
+
+Create a **new Dispatch identity** only when the current execution attempt is abandoned, superseded, reassigned, or replaced by another route/branch/task/session that will now own the WorkNode. Before doing so, re-read the current branch/PR/runtime state and explicitly disposition the previous Dispatch.
+
+### Repository state mapping
+
+A typical repository lane maps as follows:
+
+- `ready`: dependencies and collision gate pass; no execution attempt owns the node yet;
+- `running`: one authoritative Dispatch owns the node and is mutating/validating its branch or equivalent execution surface;
+- `review`: the Dispatch produced a coherent review checkpoint such as a PR and required implementation-stage validation is complete or explicitly bounded;
+- `waiting`: a dependency, shared-file collision, base change, authorization gate, or external condition prevents safe progress;
+- `accepted`: the node's declared completion evidence and required review/authorization conditions are satisfied;
+- `blocked | deferred | superseded`: use the named disposition and re-entry/cleanup rule.
+
+If collision or dependency uncertainty appears after dispatch, freeze the affected later node, serialize the lanes, refresh the relevant base after the earlier node settles, then resume/rebase or explicitly supersede. Do not keep conflicting authority active in parallel.
+
 ## Recovery rules
 
 - A timeout or lost callback does not prove the action failed; inspect current state before retrying.
