@@ -1,13 +1,13 @@
 # WO-2026-09-23-token-usage-telemetry
 
-- Status: ready-for-review
+- Status: complete
 - Created: 2026-09-23
 - Last updated: 2026-09-23
 - Requester: Rick
 - Current owner: Riley Morgan / ai-orchestrator
 - Request mode: update
 - Authorized target: Persona-Library issue #195
-Artifact home: docs/work-orders/WO-2026-09-23-token-usage-telemetry/
+Artifact home: docs/work-orders/archive/2026-09/WO-2026-09-23-token-usage-telemetry/
 
 ## Request and outcome
 
@@ -77,3 +77,18 @@ The requester authorized implementation in Persona-Library for issue #195. This 
 ## Current state and next action
 
 The implementation, focused tests, pinned baseline, docs, and Work Order are included in one reviewable branch update. Review the configured PR checks and resolve findings. The independently missing measured runtime sample remains outstanding for issue #195; do not infer it from subscription allowance or the static baseline.
+
+
+## Scope correction and terminal disposition — 2026-09-23
+
+This Work Order is complete and archived as the historical delivery record for PR #202. It correctly implemented the token/context telemetry scope that issue #195 contained at the time.
+
+A later intent-to-implementation audit of CW-40, #195, PR #202, this Work Order, and VQ-1 found that the issue itself had drifted from the requester's original primary objective. The intended metric is task-level consumption of included Work/Codex subscription allowance, not paid API token telemetry. The corrective implementation is tracked separately in CW-50 and the updated #195.
+
+Accordingly:
+
+- the PR #202 token/context subsystem remains valid secondary diagnostic infrastructure;
+- the former metered-API runtime proof is no longer an acceptance gate for #195;
+- VQ-1 is cancelled as a superseded verification and must not be run or requeued;
+- no API authorization or spend is required by this historical Work Order;
+- this package is terminal historical evidence and should not be treated as active work.

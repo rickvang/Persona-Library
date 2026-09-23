@@ -2,6 +2,8 @@
 
 Status: evaluation evidence contract for measured runtime usage, static context estimates, and unavailable usage.
 
+Role: **secondary diagnostic evidence**. For included ChatGPT Work / Codex capacity, the primary task-resource contract is [`allowance-usage.md`](allowance-usage.md). A subscription allowance percentage or credit meter must remain in its native unit and must not be converted into token counts. No paid API call or measured-token sample is required to validate subscription allowance consumption.
+
 ## Measurement boundary
 
 Keep three evidence classes distinct:

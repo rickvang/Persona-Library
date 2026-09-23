@@ -808,6 +808,25 @@
         "DEC-024"
       ],
       "revisit": "The label is applied inconsistently, creates ambiguity with GitHub issue types or Projects, GitHub gains a native state that expresses verification-only work cleanly, or Verification Queue lifecycle ownership changes."
+    },
+    {
+      "id": "DEC-026",
+      "status": "Applied",
+      "category": "Usage measurement boundary",
+      "date": "2026-09-23",
+      "title": "Subscription allowance is the primary task-resource metric",
+      "summary": "Measure included Work/Codex resource consumption from comparable subscription-allowance snapshots before and after a task; retain token and static-context telemetry as secondary diagnostics rather than a substitute.",
+      "question": "What should Persona-Library measure when the goal is to understand how much included Work/Codex usage a task consumes?",
+      "decision": "Use the product-exposed subscription allowance as the primary measurement domain. Record before/after snapshots per observable window in the native unit (for example percent or credits), derive a task delta only when windows, units, and used/remaining semantics are comparable, and classify reset crossings, coarse-meter resolution, update lag, and possible concurrent usage explicitly. Keep PR #202 token/context telemetry as a separate secondary evidence system. Do not require an API key, paid API call, token conversion, or measured-token calibration to satisfy the subscription-usage objective.",
+      "rationale": "The audit of CW-40, issue #195, PR #202, its Work Order, and VQ-1 found that the implementation faithfully followed a drifted issue definition centered on token telemetry. That produced useful context-efficiency tooling but did not answer the requester's actual question: how much of the included Work/Codex allowance a task consumes. OpenAI's current product guidance describes Work/Codex usage as allowance-based, surface/model/task dependent, viewable through usage surfaces such as Settings/Usage and Codex /status, and potentially delayed in the dashboard. A separate allowance contract preserves those observable semantics without false precision.",
+      "alternatives": "Patch allowance percentages into the existing token-shaped usage object; require paid API calls as a proxy; infer subscription usage from static context size; or discard PR #202. Rejected because they respectively mix incompatible measurement domains, measure a different billing surface, fabricate a relationship not established by evidence, or throw away useful secondary diagnostics.",
+      "tradeoffs": "Allowance meters may be coarse, delayed, shared across concurrent agentic work, or reset during a task, so some observations will be caveated, below-resolution, reset-crossed, or unavailable rather than numeric. In return, the system measures the resource the user actually cares about and avoids treating tokens as a universal proxy for subscription consumption.",
+      "affects": "Issue #195; CW-40 historical interpretation; CW-50 remediation; VQ-1 disposition; eval/allowance-usage.md; eval/allowance-usage.mjs; Codex /status and Settings → Usage adapters; token/context telemetry documentation; repository validation; future task-resource comparisons.",
+      "evidence": "Requester clarification and intent audit on 2026-09-23; PR #202 and WO-2026-09-23-token-usage-telemetry; VQ-1; OpenAI Help 'Using Codex with your ChatGPT plan' and 'How banked Codex resets work' as reviewed on 2026-09-23.",
+      "qualifies": [
+        "DEC-018"
+      ],
+      "revisit": "OpenAI exposes a stable per-task subscription usage API or first-party task ledger that removes the need for before/after snapshots; allowance semantics materially change; repeated observations are too coarse or contaminated to support useful comparisons; or token/context evidence proves to be the more direct resource signal for the user's actual plan."
     }
   ]
 }
