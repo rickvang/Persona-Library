@@ -1,6 +1,6 @@
 # Work Order Artifacts
 
-This directory is the default repository home for non-trivial project work.
+This directory is the repository home for project work that needs a dedicated Work Order execution/recovery packet.
 
 ## Default location
 
@@ -30,7 +30,7 @@ Do not create every file automatically. Use the smallest package that supports t
 - A project package does not grant permission to create, publish, execute, or change anything.
 - Keep synthetic participant responses, project assumptions, and unvalidated examples project-scoped.
 - If the target is another repository or external project, use its authorized workspace and record the destination in the Work Order.
-- For a small change, do not create a directory; see the small-change lane in [Work Orders](../work-orders.md).
+- When existing Current Work, issue/PR, and domain-specific artifacts already preserve the state needed to resume the work, do not create a directory solely because the change is non-trivial or touches a shared surface; use the small-change lane in [Work Orders](../work-orders.md).
 - Do not invent a Work Order ID or destination when the target is unclear.
 
 See [Work Orders](../work-orders.md) for the full contract.
