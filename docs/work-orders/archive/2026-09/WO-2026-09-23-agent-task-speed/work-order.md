@@ -7,7 +7,7 @@
 - Last updated: 2026-09-23
 - Requester: repository owner
 - Orchestration owner: Riley Morgan / `ai-orchestrator`
-- Operating route: Hermes desktop agent working in a clean working copy with the GitHub CLI
+- Operating route: Hermes desktop agent working in a clean working copy with the GitHub CLI; review corrections also made by ChatGPT through connected GitHub
 - Current Work: CW-47 — Persona-Library — agent task speed: working copy and small-change lane (#203)
 - GitHub issue: #203
 - Branch: `feat/issue-203-agent-task-speed`
@@ -71,6 +71,10 @@ This is a repository-defined review using Mara Okoye's placement contract, not a
 | `docs/work-orders/README.md`, archive README, `ARCHITECTURE.md` | Qualifies the "trivial" wording | Updated |
 | `content/orientation/docs.json` `work-order-start` non-trigger | Qualifies | Updated; mirror regenerated |
 | GitHub issue-implementation Operational Scenario | Extends | Updated; `dist/data/library-data.js` regenerated |
+| UX practice, UX routing, Project Context template, UX Work Order template | Qualifies | Updated; qualifying small changes use existing authoritative records |
+| `docs/README.md` placement table | Extends | Updated |
+| Work Graph orchestration Skill | Qualifies | Updated; WorkNode membership is kept |
+| Repository validation and tests | Extends | Updated; also rejects the retired small-change wording |
 | DEC-018 | Qualified by DEC-024 | Unchanged; listed in DEC-024 `qualifies` |
 | DEC-021 / DEC-022 Work Order hierarchy | Qualified by DEC-024 | Current Work remains the durable cross-agent index; a Work Order is now explicitly optional when issue/PR/domain artifacts already preserve sufficient recovery state |
 | DEC-019 standing authorization | Unrelated | Unchanged |
@@ -82,6 +86,8 @@ This is a repository-defined review using Mara Okoye's placement contract, not a
 Before the recovery-state refinement, local validation on the implementation tree (rebased onto `a1c2977`) passed the build, content validation, 40-test CI set, and `git diff --check`. The contract was then corrected after #205 / TQ-40-001 exposed that the original one-session/no-shared-schema definition still over-created Work Orders.
 
 The updated validator now also rejects an automatic non-trivial-work trigger and requires the recovery-state boundary plus Test Queue independence. **Latest-head GitHub CI is the required validation for this corrected revision; the earlier local result is historical evidence only.**
+
+The final review commit adds a guard: validation fails if the retired one-session gate or the old UX Work Order sentences return.
 
 ## Next action
 

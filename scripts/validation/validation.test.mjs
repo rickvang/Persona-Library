@@ -348,6 +348,10 @@ test('Repository working copy and small-change lane replace the local-checkout b
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('WorkNode', 'task') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxPractice: 'A focused small change requires a short work-order status.' }), /UX practice/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxContextTemplate: 'For a trivial change, record a short skip reason in the Work Order.' }), /UX Project Context template/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: `${workOrders} A change is small when it fits in one pull request and is expected to finish in one session.` }), /one-session small-change gate/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxPractice: `${uxPractice} Focused tier: short work-order status.` }), /UX practice must not restore/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxContextTemplate: `${uxContextTemplate} For a trivial change, record a short skip reason in the Work Order instead of creating a full packet.` }), /UX Project Context template must not restore/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxWorkOrderTemplate: `${uxWorkOrderTemplate} For a trivial change, a short note may state that a full work order was not warranted and why.` }), /UX Work Order template must not restore/);
 });
 
 
