@@ -11,19 +11,30 @@
 - Work Graph Skill: `.agents/skills/work-graph-orchestration/SKILL.md` (blob `e607621d1892a3cc62334d221dafc79611446905`)
 - Durable recovery packet branch: `codex/cw44-runtime-dispatch-proof`
 
+## Dispatch ID ledger
+
+Dispatch IDs are supervisor-assigned work-graph identities. The Codex collaboration runtime exposed returned agent identities but no provider Dispatch UUID. This ledger maps each actual execution to a stable graph-level ID before its execution evidence is accepted in this packet; it does not claim the runtime returned these IDs. Any future retry or reassignment must allocate and persist the next Dispatch ID before dispatch. No retry or reassignment occurred for these completed attempts.
+
+| WorkNode | Graph Dispatch ID | Runtime reference | Lifecycle / disposition |
+| --- | --- | --- | --- |
+| `CW44-P3-N1` | `CW44-P3-N1-D1` | `/root/cw44_runtime_eval` | One attempt; interrupted and continued under the same runtime identity; completed and accepted as bounded Phase 3 evidence. |
+| `CW44-P3-REHYDRATE-N1` | `CW44-P3-REHYDRATE-N1-D1` | `/root/cw44_recovery_rehydrate` | Separate context-free reconstruction audit; completed; reconstructed the checkpoint but did not take over or resume an interrupted runtime. |
+| `CW44-P4-N1` | `CW44-P4-N1-D1` | `/root/cw44_phase4_recovery` | Returned runtime identity was persisted before interruption; same identity resumed and completed; partial recovery evidence. |
+
 ## Phase 3 WorkNode — `CW44-P3-N1`
 
 - **Objective:** independently verify one bounded read-only runtime dispatch and its recovery references.
 - **Dependency:** Phases 1–2 merged; fresh `main` and issue #197 checked before dispatch.
 - **Route:** Codex child-agent runtime through `collaboration.spawn_agent`.
-- **Returned runtime identity:** `/root/cw44_runtime_eval`. The tool exposed no separate Dispatch UUID, thread/session ID, branch, or worktree for this read-only execution.
-- **Disposition:** accepted as bounded Phase 3 execution/evaluation evidence; this does not accept CW-44 or #197.
+- **Graph Dispatch ID:** `CW44-P3-N1-D1`, supervisor-assigned and mapped to this execution before accepting its evidence in this packet.
+- **Returned runtime identity:** `/root/cw44_runtime_eval`. This is the runtime reference; the tool exposed no separate Dispatch UUID, thread/session ID, branch, or worktree for this read-only execution.
+- **Disposition:** accepted as bounded Phase 3 execution/evaluation evidence under graph Dispatch `CW44-P3-N1-D1`; this does not accept CW-44 or #197.
 
 The child fetched the Work Order, Skill, issue, and current `main`, returned a source-grounded checkpoint, was followed under the same identity, and was interrupted while running. The supervisor re-read Current Work, main, issue, Work Order, and Skill, then continued that same identity; the child re-fetched sources and completed. No replacement was created. At the time of this first interruption, however, the identity was absent from the durable records, so the supervisor supplied it from live context. This first recovery is not transcript-independent.
 
 ## Context-free rehydration audit
 
-After the Phase 3 identity and lifecycle were recorded, a separate child was started with `fork_turns: none` and only durable-source references. Its returned identity was `/root/cw44_recovery_rehydrate`; no separate dispatch/session UUID was exposed.
+After the Phase 3 identity and lifecycle were recorded, a separate child was started with `fork_turns: none` and only durable-source references. This audit is recorded as graph Dispatch `CW44-P3-REHYDRATE-N1-D1` under WorkNode `CW44-P3-REHYDRATE-N1`; its returned runtime identity was `/root/cw44_recovery_rehydrate`, and no separate dispatch/session UUID was exposed.
 
 It re-fetched CW-44, this branch's Work Order and proof, the main Skill, live `main`, issue #197, and collaboration runtime state. It reconstructed the P3 node, dependency, route, prior runtime identity, lifecycle, evidence gap, current issue state, and safe next action. It found the original runtime completed and made no mutations.
 
@@ -35,8 +46,9 @@ This shows that a fresh agent can reconstruct the prior run and recovery decisio
 - **Dependencies:** P3 evidence and the context-free rehydration audit above.
 - **Source checkpoint:** `main` `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 open; Current Work at checkpoint C09; this packet and Work Order on `codex/cw44-runtime-dispatch-proof`.
 - **Route / boundary:** Codex child-agent runtime; read-only source review; no repository, branch, issue, PR, or Notion mutations by the child.
-- **Returned runtime identity:** `/root/cw44_phase4_recovery`. The collaboration API exposed the agent name only, with no separate Dispatch UUID, session, branch, or worktree.
-- **Disposition:** accepted for this bounded recovery test. No replacement was created because the same identity resumed safely.
+- **Graph Dispatch ID:** `CW44-P4-N1-D1`, supervisor-assigned and mapped to the run from its persisted runtime identity; the collaboration API exposed no provider Dispatch UUID.
+- **Returned runtime identity:** `/root/cw44_phase4_recovery`. The collaboration API exposed the agent name only, with no separate session, branch, or worktree.
+- **Disposition:** accepted as partial evidence under graph Dispatch `CW44-P4-N1-D1`. No replacement was created because the same identity resumed safely.
 
 ### Lifecycle evidence
 
