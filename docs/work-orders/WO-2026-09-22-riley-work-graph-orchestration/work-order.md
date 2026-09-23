@@ -39,7 +39,7 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 | 1. Capability and schema | implemented / PR #198 | Callable Skill, Riley application, workflow/guidance, relationships, Skills route, Operational Scenario, orientation registration, and focused validator are implemented. Repository validation run #97 passed all substantive gates on the corrected Phase 1 sources. |
 | 2. GitHub execution semantics | implemented / PR #199 | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill distinguishes bounded corrections from new Dispatch identity and defines collision/sequential fallback. |
 | 3. Runtime-aware dispatch | demonstrated / proof branch | A real supervised, read-only Codex child-agent path ran as `/root/cw44_runtime_eval`. Its bounded result and lifecycle are recorded in [runtime-dispatch-proof.md](runtime-dispatch-proof.md). The collaboration API exposed no separate Dispatch UUID, session, branch, or worktree for this run. |
-| 4. Recovery and resumption | partial; controlled durable interruption/resume ready | The first same-identity interruption/resumption preceded persistence of its identity. A fresh no-history agent independently reconstructed the prior run and next action from durable/current sources. WorkNode `CW44-P4-N1` now defines a bounded read-only post-persistence interruption/resume test; its child identity must be saved before interruption. |
+| 4. Recovery and resumption | running; identity persisted before controlled interruption | WorkNode `CW44-P4-N1` is running as `/root/cw44_phase4_recovery`. The returned runtime identity is now saved in the proof packet and Work Order before any interruption. Next: interrupt, rehydrate from current durable/live sources, then continue the same identity if supported. |
 | 5. Validation and learning | planned | Run repository validation, a Riley conformance case, and change-impact reconciliation. |
 
 ## Non-goals
@@ -52,8 +52,8 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 ## Current checkpoint
 
-[C09 | 2026-09-22] Main checkpoint remains `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 remains open. Phase 3 evidence and context-free rehydration are recorded in the proof packet. The packet now defines `CW44-P4-N1`, including its read-only boundary, dependencies, source checkpoint, evidence contract, and requirement to persist the returned runtime identity before interruption. No runtime identity or active Dispatch is recorded for this test yet.
+[C10 | 2026-09-22] Main checkpoint remains `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 remains open. `CW44-P4-N1` is running as `/root/cw44_phase4_recovery`. Its exact returned agent identity is persisted in the proof packet and Work Order before interruption. No separate Dispatch/session ID was exposed by the runtime.
 
 ## Next action
 
-Re-fetch Current Work, Work Order, packet, Skill, current `main`, issue #197, and live runtime state. Then dispatch exactly one bounded `CW44-P4-N1` child, save its returned identity in both durable GitHub records, and only then test interruption and recovery. Resume the same identity if supported; otherwise explicitly dispose it before a new identity. Complete repository validation, change-impact reconciliation, and Riley conformance. Keep #197 open.
+After confirming the identity is saved, interrupt the running child. Re-fetch Current Work, Work Order, packet, Skill, current `main`, issue #197, and live runtime state. Resume `/root/cw44_phase4_recovery` from those saved identifiers if supported; do not create another identity unless the live state requires explicit supersession. Complete repository validation, change-impact reconciliation, and Riley conformance. Keep #197 open.
