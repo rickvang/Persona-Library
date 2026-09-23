@@ -176,8 +176,10 @@ export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog
 
   const route = (skillsRoute?.routes || []).find(item => item.id === 'work-graph-orchestration');
   if (!route || route.target !== 'work-graph-orchestration' || route.package_path !== '.agents/skills/work-graph-orchestration') throw new Error('Skills orientation must route work-graph orchestration to the callable package');
+  const recoveryRead = (route.first_reads || []).find(item => normalized(item).includes('work order'));
+  if (!recoveryRead || !includesAll(recoveryRead, ['when one exists', 'otherwise', 'verification queue', 'domain artifact'])) throw new Error('Work-graph orientation must make the Work Order recovery read conditional and name the authoritative domain-artifact fallback');
 
-  if (!includesAll(skillPackage, ['one authoritative active dispatch per worknode', 'handoff', 'supervised delegation', 'parallelize only', 'read-before-retry', 'execution-adapter contract', 'does not persist a second canonical task database', 'bounded correction', 'not new dispatches', 'new dispatch identity', 'abandoned', 'superseded', 'reassigned', 'small-change lane', 'tracking artifacts', 'orchestration membership', 'recovery state'])) throw new Error('Callable work-graph Skill is missing required orchestration invariants, repository dispatch identity, recovery-state boundary, or adapter boundary');
+  if (!includesAll(skillPackage, ['one authoritative active dispatch per worknode', 'handoff', 'supervised delegation', 'parallelize only', 'read-before-retry', 'execution-adapter contract', 'does not persist a second canonical task database', 'bounded correction', 'not new dispatches', 'new dispatch identity', 'abandoned', 'superseded', 'reassigned', 'small-change lane', 'tracking artifacts', 'orchestration membership', 'recovery state', 'linked work order when one exists', 'authoritative issue/pr/verification queue/domain artifact'])) throw new Error('Callable work-graph Skill is missing required orchestration invariants, repository dispatch identity, recovery-state boundary, or adapter boundary');
 }
 
 export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }) {
