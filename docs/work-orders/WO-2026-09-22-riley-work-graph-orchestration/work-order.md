@@ -41,7 +41,7 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 | 2. GitHub execution semantics | implemented / PR #199 | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill distinguishes bounded corrections from new Dispatch identity and defines collision/sequential fallback. |
 | 3. Runtime-aware dispatch | demonstrated / proof branch | A real supervised, read-only Codex child-agent path is recorded as supervisor-assigned graph Dispatch `CW44-P3-N1-D1` in [runtime-dispatch-proof.md](runtime-dispatch-proof.md); `/root/cw44_runtime_eval` is its runtime reference, and the collaboration API exposed no provider Dispatch UUID, session, branch, or worktree. |
 | 4. Recovery and resumption | demonstrated at graph level; provider lifecycle remains opaque | `runtime-dispatch-proof.md` records same-identity continuation after interruption and a fresh low-reasoning agent taking over a separately interrupted WorkNode from the durable Work Order with no child transcript. Supervisor-assigned D2 became authoritative after D1 interruption. The adapter exposes no provider Dispatch/session UUID or runtime-level cancel/resume state. |
-| 5. Validation and learning | in progress | Change Impact Reconciliation is recorded. Repository validation run #113 passed on prior head `df7ee5463c29bede0a2b0365e0db9fa392b4a25d`; the cross-agent recovery update needs latest-head validation. Complete the representative Riley conformance case. |
+| 5. Validation and learning | in progress | Change Impact Reconciliation is recorded. Repository validation run #115 passed on head `509eca48bc321c2e789ad235904a65c655e22d0d`, including the cross-agent recovery update. Complete the representative Riley conformance case and inspect the latest-head check after this checkpoint update. |
 
 ## Non-goals
 
@@ -64,7 +64,10 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 [C16 | 2026-09-22] The proof and Work Order now assign stable graph-level Dispatch IDs and map them to the actual runtime references; the IDs are supervisor-assigned because the adapter exposes no provider Dispatch UUID. Repository validation run #107 passed on the prior checkpoint `f3a3520ae54ec7c89826f9d629107308bd0fe06b`; the current identity-ledger update must be checked on the latest PR head. Final Riley conformance and distinct-agent takeover/runtime replacement remain outstanding; issue #197 stays open.
 
 
-[C17 | 2026-09-22] A fresh no-history Dispatch D2 took over WorkNode CW44-P4-TAKEOVER-N1 after D1 was interrupted with its identity persisted. D2 re-read the Work Order, Skill, issue, and PR; reconstructed objective, dependencies, route, state, and next action without D1's transcript; and completed the bounded read-only audit. The proof records graph-level D1→D2 supersession; the runtime exposes no provider Dispatch UUID or lifecycle controls. PR #200 and issue #197 remain open. Run #113 passed on the prior head; validate the latest recovery update. Final Riley conformance remains required.
+[C17 | 2026-09-22] A fresh no-history Dispatch D2 took over WorkNode CW44-P4-TAKEOVER-N1 after D1 was interrupted with its identity persisted. D2 re-read the Work Order, Skill, issue, and PR; reconstructed objective, dependencies, route, state, and next action without D1's transcript; and completed the bounded read-only audit. The proof records graph-level D1→D2 supersession; the runtime exposes no provider Dispatch UUID or lifecycle controls. PR #200 and issue #197 remain open. Final Riley conformance remains required.
+
+
+[C18 | 2026-09-22] Repository validation run #115 passed on PR head `509eca48bc321c2e789ad235904a65c655e22d0d`, which contains the cross-agent recovery proof. The PR description and this Work Order now reflect the result; the latest-head workflow must include this checkpoint update. Issue #197 remains open. Riley conformance remains REVIEW and requires the prescribed archived projectless-task lifecycle.
 
 ## Next action
 
