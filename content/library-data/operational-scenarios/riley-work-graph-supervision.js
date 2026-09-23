@@ -74,7 +74,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
     'Resume another agent from stable identifiers and compact checkpoints rather than child transcripts.'
   ],
   output:'A compact WorkGraph supervisory packet with node states, authoritative dispatches, evidence/gates, blockers, dispositions, next orchestration action, and durable-checkpoint status.',
-  evidenceStatus:'working-synthesis',
+  evidenceStatus:'candidate',
   evidence:[
     'CW-44 external orchestration pattern review',
     'Persona-Library #197 implementation plan',
