@@ -79,17 +79,9 @@ This is a repository-defined review using Mara Okoye's placement contract, not a
 
 ## Validation
 
-Run in the working copy on the implementation tree, after rebasing onto `a1c2977`:
+Before the recovery-state refinement, local validation on the implementation tree (rebased onto `a1c2977`) passed the build, content validation, 40-test CI set, and `git diff --check`. The contract was then corrected after #205 / TQ-40-001 exposed that the original one-session/no-shared-schema definition still over-created Work Orders.
 
-- `node scripts/build-library.mjs` passed with 25 Decisions. A second build changed nothing.
-- `node scripts/validate-content.mjs` passed.
-- The CI test set passed 40 of 40 tests, including #202's telemetry tests and the new working-copy test.
-- `git diff --check` was clean.
-- Regression proof:
-  - Restoring the old `AGENTS.md` makes validation fail.
-  - Removing the ban check from the validator makes the new test fail.
-
-GitHub CI on the pull request is the required check.
+The updated validator now also rejects an automatic non-trivial-work trigger and requires the recovery-state boundary plus Test Queue independence. **Latest-head GitHub CI is the required validation for this corrected revision; the earlier local result is historical evidence only.**
 
 ## Next action
 
