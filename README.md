@@ -31,7 +31,7 @@ This repository contains the source and generated output for the Persona Library
 - docs/ux/design-reference-library.md — curated sources, examples, and failure exhibits.
 - docs/job-search/ — Application packet Work Order and ATS/human version contract.
 - `.agents/skills/` — repository-local callable Skill packages; each package declares its change contract and routing layer in `SKILL.md` frontmatter.
-- eval/ — file-based conformance fixtures, normalized result checks, recorded-result adapter, isolated Persona–Skill matrix, and observation templates. It does not provide live provider access, but the `persona-skill-conformance` Skill can use exposed Codex task tools for bounded fresh-task runs.
+- eval/ — file-based conformance fixtures, normalized result checks, recorded-result and opt-in usage adapters, isolated Persona–Skill matrix, context estimation/reporting, and sanitized observation evidence. It does not make provider requests or imply that a runtime exposes usage; exact telemetry is accepted only when returned directly.
 
 ## Run locally
 

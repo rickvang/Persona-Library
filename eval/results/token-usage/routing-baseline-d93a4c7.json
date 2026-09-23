@@ -1,0 +1,387 @@
+{
+  "schema_version": "1.0",
+  "record_type": "usage-baseline",
+  "baseline_id": "routing-baseline-d93a4c7",
+  "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+  "estimator": "utf8-byte-count-divided-by-four",
+  "estimator_formula": "ceil(sum(UTF-8 bytes of listed text files) / 4)",
+  "generated_at": "2026-09-23T15:55:57.756Z",
+  "notes": [
+    "Static estimates for named repository-owned context files, not observed prompts or runtime token counts.",
+    "Conversation history, system/developer instructions, Tool definitions/results, compaction, delegated work, and response generation are not represented."
+  ],
+  "base_context": {
+    "artifacts": [
+      "AGENTS.md",
+      "content/site-orientation.json"
+    ],
+    "included_utf8_bytes": 17313,
+    "estimated_input_tokens": 4329
+  },
+  "records": [
+    {
+      "record_id": "route-docs-system-orientation",
+      "task_class": "docs/system orientation",
+      "model": "not-applicable",
+      "model_version": "not-applicable",
+      "surface": "repository-context-estimate",
+      "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+      "estimator": "utf8-byte-count-divided-by-four",
+      "included_utf8_bytes": 37390,
+      "usage": {
+        "measurement": "estimated",
+        "scope": "context",
+        "input_tokens": 9348,
+        "cached_input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "total_tokens": null,
+        "estimator": "utf8-byte-count-divided-by-four",
+        "source": "Static estimate of the listed repository file text; approximate, not runtime telemetry.",
+        "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+        "estimated_at": "2026-09-23T15:55:57.756Z",
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/docs.json",
+          ".agents/skills/persona-library-orientation/SKILL.md"
+        ],
+        "context_attribution": {
+          "primary_space": "docs",
+          "route_id": "system-orientation",
+          "skill_id": "persona-library-orientation",
+          "loaded_artifacts": [
+            {
+              "path": "AGENTS.md",
+              "role": "universal"
+            },
+            {
+              "path": "content/site-orientation.json",
+              "role": "bootstrap"
+            },
+            {
+              "path": "content/orientation/docs.json",
+              "role": "route-group"
+            },
+            {
+              "path": ".agents/skills/persona-library-orientation/SKILL.md",
+              "role": "selected-skill"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "record_id": "route-persona-research",
+      "task_class": "persona research",
+      "model": "not-applicable",
+      "model_version": "not-applicable",
+      "surface": "repository-context-estimate",
+      "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+      "estimator": "utf8-byte-count-divided-by-four",
+      "included_utf8_bytes": 34973,
+      "usage": {
+        "measurement": "estimated",
+        "scope": "context",
+        "input_tokens": 8744,
+        "cached_input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "total_tokens": null,
+        "estimator": "utf8-byte-count-divided-by-four",
+        "source": "Static estimate of the listed repository file text; approximate, not runtime telemetry.",
+        "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+        "estimated_at": "2026-09-23T15:55:57.756Z",
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/personas.json",
+          ".agents/skills/persona-research/SKILL.md"
+        ],
+        "context_attribution": {
+          "primary_space": "personas",
+          "route_id": "persona-research",
+          "skill_id": "persona-research",
+          "loaded_artifacts": [
+            {
+              "path": "AGENTS.md",
+              "role": "universal"
+            },
+            {
+              "path": "content/site-orientation.json",
+              "role": "bootstrap"
+            },
+            {
+              "path": "content/orientation/personas.json",
+              "role": "route-group"
+            },
+            {
+              "path": ".agents/skills/persona-research/SKILL.md",
+              "role": "selected-skill"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "record_id": "route-skill-package-maintenance",
+      "task_class": "Skill maintenance",
+      "model": "not-applicable",
+      "model_version": "not-applicable",
+      "surface": "repository-context-estimate",
+      "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+      "estimator": "utf8-byte-count-divided-by-four",
+      "included_utf8_bytes": 31874,
+      "usage": {
+        "measurement": "estimated",
+        "scope": "context",
+        "input_tokens": 7969,
+        "cached_input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "total_tokens": null,
+        "estimator": "utf8-byte-count-divided-by-four",
+        "source": "Static estimate of the listed repository file text; approximate, not runtime telemetry.",
+        "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+        "estimated_at": "2026-09-23T15:55:57.756Z",
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/skills.json",
+          ".agents/skills/pl-skill-creator/SKILL.md"
+        ],
+        "context_attribution": {
+          "primary_space": "skills",
+          "route_id": "skill-package-maintenance",
+          "skill_id": "pl-skill-creator",
+          "loaded_artifacts": [
+            {
+              "path": "AGENTS.md",
+              "role": "universal"
+            },
+            {
+              "path": "content/site-orientation.json",
+              "role": "bootstrap"
+            },
+            {
+              "path": "content/orientation/skills.json",
+              "role": "route-group"
+            },
+            {
+              "path": ".agents/skills/pl-skill-creator/SKILL.md",
+              "role": "selected-skill"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "record_id": "route-tool-discovery-execution",
+      "task_class": "Tool discovery/execution",
+      "model": "not-applicable",
+      "model_version": "not-applicable",
+      "surface": "repository-context-estimate",
+      "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+      "estimator": "utf8-byte-count-divided-by-four",
+      "included_utf8_bytes": 33331,
+      "usage": {
+        "measurement": "estimated",
+        "scope": "context",
+        "input_tokens": 8333,
+        "cached_input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "total_tokens": null,
+        "estimator": "utf8-byte-count-divided-by-four",
+        "source": "Static estimate of the listed repository file text; approximate, not runtime telemetry.",
+        "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+        "estimated_at": "2026-09-23T15:55:57.756Z",
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/tools.json",
+          ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+        ],
+        "context_attribution": {
+          "primary_space": "tools",
+          "route_id": "tool-resolution",
+          "skill_id": "tool-discovery-and-safe-execution",
+          "loaded_artifacts": [
+            {
+              "path": "AGENTS.md",
+              "role": "universal"
+            },
+            {
+              "path": "content/site-orientation.json",
+              "role": "bootstrap"
+            },
+            {
+              "path": "content/orientation/tools.json",
+              "role": "route-group"
+            },
+            {
+              "path": ".agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+              "role": "selected-skill"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "record_id": "route-playbook-composition",
+      "task_class": "Playbook work",
+      "model": "not-applicable",
+      "model_version": "not-applicable",
+      "surface": "repository-context-estimate",
+      "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+      "estimator": "utf8-byte-count-divided-by-four",
+      "included_utf8_bytes": 37471,
+      "usage": {
+        "measurement": "estimated",
+        "scope": "context",
+        "input_tokens": 9368,
+        "cached_input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "total_tokens": null,
+        "estimator": "utf8-byte-count-divided-by-four",
+        "source": "Static estimate of the listed repository file text; approximate, not runtime telemetry.",
+        "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+        "estimated_at": "2026-09-23T15:55:57.756Z",
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/playbooks.json",
+          ".agents/skills/playbook-composer/SKILL.md"
+        ],
+        "context_attribution": {
+          "primary_space": "playbooks",
+          "route_id": "playbook-composition",
+          "skill_id": "playbook-composer",
+          "loaded_artifacts": [
+            {
+              "path": "AGENTS.md",
+              "role": "universal"
+            },
+            {
+              "path": "content/site-orientation.json",
+              "role": "bootstrap"
+            },
+            {
+              "path": "content/orientation/playbooks.json",
+              "role": "route-group"
+            },
+            {
+              "path": ".agents/skills/playbook-composer/SKILL.md",
+              "role": "selected-skill"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "record_id": "route-template-research",
+      "task_class": "Template work",
+      "model": "not-applicable",
+      "model_version": "not-applicable",
+      "surface": "repository-context-estimate",
+      "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+      "estimator": "utf8-byte-count-divided-by-four",
+      "included_utf8_bytes": 28311,
+      "usage": {
+        "measurement": "estimated",
+        "scope": "context",
+        "input_tokens": 7078,
+        "cached_input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "total_tokens": null,
+        "estimator": "utf8-byte-count-divided-by-four",
+        "source": "Static estimate of the listed repository file text; approximate, not runtime telemetry.",
+        "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+        "estimated_at": "2026-09-23T15:55:57.756Z",
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/templates.json",
+          ".agents/skills/template-research/SKILL.md"
+        ],
+        "context_attribution": {
+          "primary_space": "templates",
+          "route_id": "template-research",
+          "skill_id": "template-research",
+          "loaded_artifacts": [
+            {
+              "path": "AGENTS.md",
+              "role": "universal"
+            },
+            {
+              "path": "content/site-orientation.json",
+              "role": "bootstrap"
+            },
+            {
+              "path": "content/orientation/templates.json",
+              "role": "route-group"
+            },
+            {
+              "path": ".agents/skills/template-research/SKILL.md",
+              "role": "selected-skill"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "record_id": "route-prototype-comparison",
+      "task_class": "prototype/layout work",
+      "model": "not-applicable",
+      "model_version": "not-applicable",
+      "surface": "repository-context-estimate",
+      "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+      "estimator": "utf8-byte-count-divided-by-four",
+      "included_utf8_bytes": 27155,
+      "usage": {
+        "measurement": "estimated",
+        "scope": "context",
+        "input_tokens": 6789,
+        "cached_input_tokens": null,
+        "output_tokens": null,
+        "reasoning_tokens": null,
+        "total_tokens": null,
+        "estimator": "utf8-byte-count-divided-by-four",
+        "source": "Static estimate of the listed repository file text; approximate, not runtime telemetry.",
+        "repository_ref": "d93a4c7d561563d318ebb16167abbda49761b1be",
+        "estimated_at": "2026-09-23T15:55:57.756Z",
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/prototyping.json",
+          ".agents/skills/layout-lab/SKILL.md"
+        ],
+        "context_attribution": {
+          "primary_space": "prototyping",
+          "route_id": "prototype-comparison",
+          "skill_id": "layout-lab",
+          "loaded_artifacts": [
+            {
+              "path": "AGENTS.md",
+              "role": "universal"
+            },
+            {
+              "path": "content/site-orientation.json",
+              "role": "bootstrap"
+            },
+            {
+              "path": "content/orientation/prototyping.json",
+              "role": "route-group"
+            },
+            {
+              "path": ".agents/skills/layout-lab/SKILL.md",
+              "role": "selected-skill"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

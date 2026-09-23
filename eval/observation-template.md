@@ -38,6 +38,28 @@ Use this minimum shape for a run bundle:
 }
 ```
 
+## Optional token-usage evidence
+
+Usage is optional and backward compatible. Add a run-level object when the runtime returns an aggregate for the run, or add a result-level object only when that fixture maps to one directly observed turn. Do not copy a run total into every result. The reporter keeps run, turn, and static-context scopes separate.
+
+When a runtime does not expose exact usage, record unavailable with a reason, or omit the optional field. Do not substitute a static estimate for measured runtime usage.
+
+Example of unavailable run-level evidence:
+
+    "usage": {
+      "measurement": "unavailable",
+      "scope": "run",
+      "input_tokens": null,
+      "cached_input_tokens": null,
+      "output_tokens": null,
+      "reasoning_tokens": null,
+      "total_tokens": null,
+      "source": "runtime usage metadata",
+      "reason": "This execution surface did not expose per-run token counts."
+    }
+
+A measured per-turn object must include a stable turn_id and a named source. An estimated context object must use context scope, name its estimator, list its artifact paths, and pin a full repository revision. Cached input is a subset of input and reasoning is a subset of output when the provider defines them that way; never add these subcategories again when reconciling total_tokens. See the token-usage evidence contract in usage-telemetry.md.
+
 Keep these rules:
 
 - Record common model, surface, repository, context, Tool, permission, observer, and conformance fields once at the run level.

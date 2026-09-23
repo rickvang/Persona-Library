@@ -33,8 +33,169 @@ export const OBSERVATION_RESULT_CLASSES = [
 
 export const OBSERVER_STATUSES = ['independent', 'same-runtime', 'unavailable', 'not-applicable'];
 
-export function validateRunBundle(bundle) {
+
+export const USAGE_MEASUREMENTS = ['measured', 'estimated', 'unavailable'];
+export const USAGE_SCOPES = ['run', 'turn', 'context'];
+const USAGE_TOKEN_FIELDS = ['input_tokens', 'cached_input_tokens', 'output_tokens', 'reasoning_tokens', 'total_tokens'];
+
+const nonemptyString = value => typeof value === 'string' && value.trim().length > 0;
+const pinnedRevision = value => typeof value === 'string' && /^[0-9a-f]{40}$/i.test(value);
+
+function taxonomyIncludes(taxonomy, category, value) {
+  const entries = taxonomy?.[category];
+  if (!entries) return null;
+  if (entries instanceof Set) return entries.has(value);
+  if (Array.isArray(entries)) return entries.includes(value);
+  return false;
+}
+
+export function validateUsage(usage, { taxonomy } = {}) {
   const errors = [];
+  if (!usage || typeof usage !== 'object' || Array.isArray(usage)) {
+    return { valid: false, errors: ['Usage must be an object'] };
+  }
+  if (!USAGE_MEASUREMENTS.includes(usage.measurement)) errors.push('Usage has an invalid measurement class');
+  if (!USAGE_SCOPES.includes(usage.scope)) errors.push('Usage has an invalid scope');
+
+  for (const field of USAGE_TOKEN_FIELDS) {
+    const value = usage[field];
+    if (value !== undefined && value !== null && (!Number.isSafeInteger(value) || value < 0)) {
+      errors.push('Usage field must be a non-negative safe integer when present: ' + field);
+    }
+  }
+
+  if (usage.measurement === 'measured') {
+    if (!nonemptyString(usage.source)) errors.push('Measured usage must name its runtime usage source');
+    if (usage.scope === 'context') errors.push('Measured runtime usage cannot use context scope');
+    if (Number.isSafeInteger(usage.cached_input_tokens) && Number.isSafeInteger(usage.input_tokens) &&
+        usage.cached_input_tokens > usage.input_tokens) {
+      errors.push('Measured cached_input_tokens cannot exceed input_tokens');
+    }
+    if (Number.isSafeInteger(usage.reasoning_tokens) && Number.isSafeInteger(usage.output_tokens) &&
+        usage.reasoning_tokens > usage.output_tokens) {
+      errors.push('Measured reasoning_tokens cannot exceed output_tokens');
+    }
+    if (usage.scope === 'turn' && !nonemptyString(usage.turn_id)) errors.push('Turn-scoped usage must include turn_id');
+    if (!['input_tokens', 'output_tokens', 'total_tokens'].some(field => Number.isSafeInteger(usage[field]) && usage[field] >= 0)) {
+      errors.push('Measured usage must include at least one exact token count');
+    }
+    if (Number.isSafeInteger(usage.input_tokens) && Number.isSafeInteger(usage.output_tokens) &&
+        Number.isSafeInteger(usage.total_tokens) &&
+        usage.total_tokens !== usage.input_tokens + usage.output_tokens) {
+      errors.push('Measured total_tokens must equal input_tokens plus output_tokens when all three are present');
+    }
+  }
+
+  if (usage.measurement === 'estimated') {
+    if (usage.scope !== 'context') errors.push('Estimated static context usage must use context scope');
+    if (!Number.isSafeInteger(usage.input_tokens) || usage.input_tokens < 0) errors.push('Estimated usage must include a non-negative input_tokens value');
+    if (!nonemptyString(usage.estimator)) errors.push('Estimated usage must name its estimator');
+    if (!pinnedRevision(usage.repository_ref)) errors.push('Estimated usage must identify a full pinned repository_ref');
+    if (!Array.isArray(usage.artifacts) || usage.artifacts.length === 0 || !usage.artifacts.every(nonemptyString)) {
+      errors.push('Estimated usage must list the measured artifact paths');
+    }
+    for (const field of ['cached_input_tokens', 'output_tokens', 'reasoning_tokens', 'total_tokens']) {
+      if (Number.isSafeInteger(usage[field])) errors.push('Static context estimates cannot claim runtime token field: ' + field);
+    }
+  }
+
+  if (usage.measurement === 'unavailable') {
+    if (!nonemptyString(usage.source)) errors.push('Unavailable usage must name the checked source or boundary');
+    if (!nonemptyString(usage.reason)) errors.push('Unavailable usage must explain why a value is unavailable');
+    for (const field of USAGE_TOKEN_FIELDS) {
+      if (Number.isSafeInteger(usage[field])) errors.push('Unavailable usage cannot contain a token count: ' + field);
+    }
+  }
+
+  const attribution = usage.context_attribution;
+  if (attribution !== undefined && (!attribution || typeof attribution !== 'object' || Array.isArray(attribution))) {
+    errors.push('Usage context_attribution must be an object');
+  } else if (attribution) {
+    if (attribution.primary_space !== undefined && !nonemptyString(attribution.primary_space)) errors.push('Usage primary_space must be a non-empty string');
+    if (attribution.route_id !== undefined && !nonemptyString(attribution.route_id)) errors.push('Usage route_id must be a non-empty string');
+    if (attribution.skill_id !== undefined && !nonemptyString(attribution.skill_id)) errors.push('Usage skill_id must be a non-empty string');
+    const knownSpace = taxonomyIncludes(taxonomy, 'spaces', attribution.primary_space);
+    if (attribution.primary_space && knownSpace === false) errors.push('Usage primary_space is not present in current orientation data: ' + attribution.primary_space);
+    if (attribution.route_id && !attribution.primary_space) errors.push('Usage route_id requires primary_space');
+    if (attribution.route_id && taxonomy?.routesBySpace) {
+      const routeIds = taxonomy.routesBySpace[attribution.primary_space];
+      if (!Array.isArray(routeIds) || !routeIds.includes(attribution.route_id)) {
+        errors.push('Usage route_id is not present in the selected current orientation route group: ' + attribution.route_id);
+      }
+    }
+    if (attribution.loaded_artifacts !== undefined &&
+        (!Array.isArray(attribution.loaded_artifacts) || !attribution.loaded_artifacts.every(item =>
+          nonemptyString(item) || (item && typeof item === 'object' && nonemptyString(item.path))))) {
+      errors.push('Usage loaded_artifacts must contain paths or objects with a path');
+    }
+  }
+  if (usage.provider_metadata !== undefined &&
+      (!usage.provider_metadata || typeof usage.provider_metadata !== 'object' || Array.isArray(usage.provider_metadata))) {
+    errors.push('Usage provider_metadata must be an object');
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+function appendUsageErrors(errors, usage, label, options = {}) {
+  const validation = validateUsage(usage, options);
+  for (const error of validation.errors) errors.push(label + ': ' + error);
+}
+
+export async function loadUsageTaxonomy() {
+  const orientationUrl = new URL('../content/site-orientation.json', import.meta.url);
+  const source = JSON.parse(await readFile(orientationUrl, 'utf8'));
+  const spaces = Object.keys(source.spaces || {});
+  const routesBySpace = {};
+  for (const space of spaces) {
+    const routeFile = source.spaces[space]?.route_file;
+    if (!nonemptyString(routeFile)) throw new Error('Orientation space is missing route_file: ' + space);
+    const groupUrl = new URL('../content/' + routeFile, import.meta.url);
+    const routeGroup = JSON.parse(await readFile(groupUrl, 'utf8'));
+    routesBySpace[space] = (routeGroup.routes || []).map(route => route.id).filter(nonemptyString);
+  }
+  return { spaces, routesBySpace };
+}
+
+export function validateCalibrationPair(record, { taxonomy } = {}) {
+  const errors = [];
+  if (!record || record.schema_version !== '1.0') errors.push('Calibration pair must use schema 1.0');
+  if (record?.record_type !== 'usage-calibration-pair') errors.push('Calibration pair has an invalid record_type');
+  for (const field of ['pair_id', 'task_class', 'model', 'surface']) {
+    if (!nonemptyString(record?.[field])) errors.push('Calibration pair is missing ' + field);
+  }
+  if (!pinnedRevision(record?.repository_ref)) errors.push('Calibration pair must identify a full pinned repository_ref');
+  for (const [field, measurement, scope] of [
+    ['estimated', 'estimated', 'context'],
+    ['measured', 'measured', 'turn']
+  ]) {
+    const usage = record?.[field];
+    const validation = validateUsage(usage, { taxonomy });
+    for (const error of validation.errors) errors.push(field + ': ' + error);
+    if (usage?.measurement !== measurement) errors.push(field + ' usage must be ' + measurement);
+    if (usage?.scope !== scope) errors.push(field + ' usage must use ' + scope + ' scope');
+    if (field === 'measured' && (!Number.isSafeInteger(usage?.input_tokens) || usage.input_tokens < 0)) {
+      errors.push('measured calibration usage must include a non-negative input_tokens value');
+    }
+    if (usage?.repository_ref !== record?.repository_ref) errors.push(field + ' usage must use the pair repository_ref');
+  }
+  const estimatedAttribution = record?.estimated?.context_attribution;
+  const measuredAttribution = record?.measured?.context_attribution;
+  if (estimatedAttribution && measuredAttribution &&
+      (estimatedAttribution.primary_space !== measuredAttribution.primary_space ||
+       estimatedAttribution.route_id !== measuredAttribution.route_id ||
+       estimatedAttribution.skill_id !== measuredAttribution.skill_id)) {
+    errors.push('Calibration pair estimated and measured usage must share route attribution');
+  }
+  return { valid: errors.length === 0, errors };
+}
+
+export function validateRunBundle(bundle, options = {}) {
+  const errors = [];
+  if (bundle?.usage !== undefined) {
+    appendUsageErrors(errors, bundle.usage, 'Run bundle usage', options);
+    if (!['run', 'context'].includes(bundle.usage?.scope)) errors.push('Run bundle usage must use run or context scope');
+  }
   if (!bundle || bundle.schema_version !== '1.0') errors.push('Run bundle must use schema 1.0');
   if (!bundle?.run_id) errors.push('Run bundle is missing run_id');
   for (const field of ['model', 'model_version', 'surface', 'repository_ref']) {
@@ -50,6 +211,10 @@ export function validateRunBundle(bundle) {
     ids.add(entry?.fixture_id);
     if (!entry?.mode || entry.outcome === undefined || entry.next_action === undefined) errors.push(`Run bundle result is missing response fields: ${entry?.fixture_id || '(missing)'}`);
     if (!OBSERVATION_RESULT_CLASSES.includes(entry?.result_class)) errors.push(`Run bundle result has an invalid result_class: ${entry?.fixture_id || '(missing)'}`);
+    if (entry?.usage !== undefined) {
+      appendUsageErrors(errors, entry.usage, 'Run bundle result ' + (entry?.fixture_id || '(missing)') + ' usage', options);
+      if (entry.usage?.scope !== 'turn') errors.push('Per-result usage must use turn scope: ' + (entry?.fixture_id || '(missing)'));
+    }
   }
   return { valid: errors.length === 0, errors };
 }
@@ -80,7 +245,8 @@ export function normalizeRunBundleResult(bundle, entry) {
       observer: bundle.observer || { persona: 'unknown', status: 'unavailable', independence: 'unknown' },
       conformance_verdict: entry.conformance_verdict || bundle.conformance_verdict || 'UNKNOWN'
     },
-    status: bundle.status || 'external-recorded'
+    status: bundle.status || 'external-recorded',
+    ...(entry.usage !== undefined ? { usage: entry.usage } : {})
   };
 }
 
@@ -112,9 +278,10 @@ export function validateCaseSet(payload) {
   return payload;
 }
 
-export function validateResult(result, cases) {
+export function validateResult(result, cases, options = {}) {
   const testCase = cases.cases.find(item => item.id === result?.fixture_id);
   const errors = [];
+  if (result?.usage !== undefined) appendUsageErrors(errors, result.usage, 'Result usage', options);
   if (!testCase) errors.push(`Unknown fixture_id: ${result?.fixture_id || '(missing)'}`);
   for (const field of REQUIRED_RESULT_FIELDS) {
     if (result?.[field] === undefined || result?.[field] === null || result?.[field] === '') errors.push(`Missing result field: ${field}`);
@@ -133,8 +300,8 @@ export function validateResult(result, cases) {
   return { valid: errors.length === 0, errors, testCase };
 }
 
-export function evaluateResult(result, cases) {
-  const validation = validateResult(result, cases);
+export function evaluateResult(result, cases, options = {}) {
+  const validation = validateResult(result, cases, options);
   if (!validation.testCase) return { ...validation, verdict: 'UNKNOWN', checks: [] };
   const testCase = validation.testCase;
   const checks = [];
@@ -190,7 +357,7 @@ export const RECIPE_COMPARABILITY = ['comparable', 'qualified', 'not-comparable'
 export const RECIPE_COMPARISON_REVIEW_STATUSES = ['pending-review', 'reviewed'];
 export const RECIPE_COMPARISON_PERSISTENCE = ['git-sanitized-evidence', 'supabase-operational-followup'];
 
-export function validateRecipeComparison(record) {
+export function validateRecipeComparison(record, options = {}) {
   const errors = [];
   if (!record || record.schema_version !== '1.0') errors.push('Recipe comparison must use schema 1.0');
   if (!record?.comparison_id) errors.push('Recipe comparison is missing comparison_id');
@@ -229,6 +396,7 @@ export function validateRecipeComparison(record) {
     if (!strategy?.tool) errors.push(`Recipe comparison strategy is missing tool: ${strategy?.strategy_id || '(missing)'}`);
     if (!Array.isArray(strategy?.procedure) || strategy.procedure.length === 0) errors.push(`Recipe comparison strategy is missing procedure: ${strategy?.strategy_id || '(missing)'}`);
     const observation = strategy?.observation;
+    if (observation?.usage !== undefined) appendUsageErrors(errors, observation.usage, 'Recipe comparison usage ' + (strategy?.strategy_id || '(missing)'), options);
     if (!OBSERVATION_RESULT_CLASSES.includes(observation?.result_class)) errors.push(`Recipe comparison strategy has invalid result_class: ${strategy?.strategy_id || '(missing)'}`);
     if (typeof observation?.validation_pass !== 'boolean') errors.push(`Recipe comparison strategy must record validation_pass: ${strategy?.strategy_id || '(missing)'}`);
     if (!observation?.friction) errors.push(`Recipe comparison strategy is missing friction: ${strategy?.strategy_id || '(missing)'}`);
@@ -272,8 +440,8 @@ export function validateRecipeComparison(record) {
   return { valid: errors.length === 0, errors };
 }
 
-export function reviewedRecipeComparisonConclusion(record) {
-  const validation = validateRecipeComparison(record);
+export function reviewedRecipeComparisonConclusion(record, options = {}) {
+  const validation = validateRecipeComparison(record, options);
   if (!validation.valid || record?.review?.status !== 'reviewed') {
     return {
       status: 'insufficient-evidence',
