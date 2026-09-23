@@ -20,6 +20,7 @@ Dispatch IDs are supervisor-assigned work-graph identities. The Codex collaborat
 | `CW44-P3-N1` | `CW44-P3-N1-D1` | `/root/cw44_runtime_eval` | One attempt; interrupted and continued under the same runtime identity; completed and accepted as bounded Phase 3 evidence. |
 | `CW44-P3-REHYDRATE-N1` | `CW44-P3-REHYDRATE-N1-D1` | `/root/cw44_recovery_rehydrate` | Separate context-free reconstruction audit; completed; reconstructed the checkpoint but did not take over or resume an interrupted runtime. |
 | `CW44-P4-N1` | `CW44-P4-N1-D1` | `/root/cw44_phase4_recovery` | Returned runtime identity was persisted before interruption; same identity resumed and completed; partial recovery evidence. |
+| `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D1` | pending | Allocated and persisted before dispatch; ready for controlled interruption test. |
 
 ## Phase 3 WorkNode — `CW44-P3-N1`
 
@@ -59,6 +60,16 @@ This shows that a fresh agent can reconstruct the prior run and recovery decisio
 5. The supervisor continued only `/root/cw44_phase4_recovery`. The child was instructed to disregard earlier child messages, re-fetch the saved/current sources, and perform a bounded read-only audit. It confirmed the persisted identity and interruption checkpoint, judged same-identity continuation safe, re-fetched the sources, and made no mutations. No replacement was created.
 
 This demonstrates a post-persistence interruption, source rehydration, and continuation of the same returned runtime identity. The collaboration API does not expose a provider-issued Dispatch ID. Supervisor-assigned graph Dispatch `CW44-P4-N1-D1` maps to the persisted runtime identity and observed lifecycle; it is not represented as a runtime-returned value. The separate no-history audit demonstrated reconstruction by another fresh agent, but did not itself send the continuation.
+
+
+## Cross-agent takeover WorkNode — `CW44-P4-TAKEOVER-N1`
+
+- **Objective:** demonstrate that a fresh agent can resume a bounded, read-only CW-44 recovery audit from the durable Work Order after its first Dispatch is interrupted, without the interrupted agent's transcript.
+- **Dependency:** existing Phase 4 same-identity recovery evidence; this node does not mutate Persona-Library sources.
+- **Route / boundary:** Codex collaboration child agents; read-only inspection of this Work Order, the Work Graph Skill, issue #197, and PR #200.
+- **Graph Dispatch D1:** `CW44-P4-TAKEOVER-N1-D1`, allocated before dispatch. Runtime identity and lifecycle will be persisted before interruption.
+- **Graph Dispatch D2:** reserved for a fresh agent only after D1 is durably marked interrupted and D2 is recorded as the next attempt.
+- **Current state:** D1 is allocated and ready; no agent has been dispatched yet.
 
 ## Change Impact Reconciliation
 
