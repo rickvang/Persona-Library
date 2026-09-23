@@ -6,7 +6,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "ownerType": "skill",
   "ownerId": "skill-work-graph-orchestration",
   "situation": "A substantial outcome spans several issues, branches, PRs, agents, or runtimes and Riley must decide dependencies, safe parallelism, authoritative attempts, gates, recovery, and completion.",
-  "expectedRoute": "Riley Morgan → Work graph orchestration → smallest capable execution routes → live evidence / review gates → Current Work and Work Order reconciliation",
+  "expectedRoute": "Riley Morgan → Work graph orchestration → smallest capable execution routes → live evidence / review gates → Current Work and applicable recovery-artifact reconciliation",
   "route": {
     "personaIds": ["ai-orchestrator"],
     "skillIds": ["skill-work-graph-orchestration", "skill-task-decomposition-and-routing", "skill-tool-and-context-design", "skill-failure-recovery-and-operational-judgment"],
@@ -19,7 +19,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   },
   "preconditions": [
     "One substantial outcome and stopping condition are known.",
-    "Current Work / Work Order checkpoints are available when the workstream already exists.",
+    "Current Work plus a linked Work Order when one exists, otherwise the smallest authoritative issue/PR/Verification Queue/domain-artifact checkpoint, is available when the workstream already exists.",
     "Current repository, issue, PR, and runtime references are available when those systems are involved.",
     "Execution permissions and available runtimes are known or can be checked before dispatch."
   ],
@@ -28,7 +28,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
     "Keep one authoritative active Dispatch per WorkNode.",
     "Prefer sequential work when dependencies or collision risk are unclear.",
     "Treat human, validation, review, and authorization conditions as explicit Gates.",
-    "Use Current Work as the durable cross-agent index, Work Order as detailed recovery state, and live systems as volatile authority.",
+    "Use Current Work as the durable cross-agent index, a Work Order when one exists or otherwise the smallest authoritative issue/PR/Verification Queue/domain artifact as detailed recovery state, and live systems as volatile authority.",
     "Keep runtime-specific syntax outside the portable Skill until repeated evidence justifies a dedicated recipe."
   ],
   "dont": [
@@ -76,7 +76,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
     "Completion is supported by node evidence and required Gates, then reconciled to durable state."
   ],
   "goodTrace": [
-    "Current Work + Work Order + live state → minimal WorkGraph → dependency/collision review → bounded Dispatches → evidence/Gates → explicit dispositions → reconciliation → stop"
+    "Current Work + applicable recovery artifact + live state → minimal WorkGraph → dependency/collision review → bounded Dispatches → evidence/Gates → explicit dispositions → reconciliation → stop"
   ],
   "antiPatterns": [
     "Spawning agents because capacity exists rather than because nodes are independent.",
@@ -108,6 +108,6 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   ],
   "confidence": "Working synthesis; one live supervised dispatch, same-identity interrupt/resume, and fresh-agent graph-level takeover of a bounded WorkNode from durable state without its interrupted attempt's transcript are evidenced. The representative Riley/Noor conformance case passes; provider-level Dispatch/session identity or runtime lifecycle controls remain unproven.",
   "status": "active",
-  "version": "1.0",
-  "updated": "2026-09-22"
+  "version": "1.1",
+  "updated": "2026-09-23"
 });
