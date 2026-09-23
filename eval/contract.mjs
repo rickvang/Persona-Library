@@ -174,6 +174,9 @@ export function validateCalibrationPair(record, { taxonomy } = {}) {
     for (const error of validation.errors) errors.push(field + ': ' + error);
     if (usage?.measurement !== measurement) errors.push(field + ' usage must be ' + measurement);
     if (usage?.scope !== scope) errors.push(field + ' usage must use ' + scope + ' scope');
+    if (field === 'measured' && (!Number.isSafeInteger(usage?.input_tokens) || usage.input_tokens < 0)) {
+      errors.push('measured calibration usage must include a non-negative input_tokens value');
+    }
     if (usage?.repository_ref !== record?.repository_ref) errors.push(field + ' usage must use the pair repository_ref');
   }
   const estimatedAttribution = record?.estimated?.context_attribution;
