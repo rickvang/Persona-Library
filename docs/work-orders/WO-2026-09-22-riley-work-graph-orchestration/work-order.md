@@ -41,7 +41,7 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 | 2. GitHub execution semantics | implemented / PR #199 | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill distinguishes bounded corrections from new Dispatch identity and defines collision/sequential fallback. |
 | 3. Runtime-aware dispatch | demonstrated / proof branch | A real supervised, read-only Codex child-agent path ran as `/root/cw44_runtime_eval`. Its bounded result and lifecycle are recorded in [runtime-dispatch-proof.md](runtime-dispatch-proof.md). The collaboration API exposed no separate Dispatch UUID, session, branch, or worktree for this run. |
 | 4. Recovery and resumption | partial; post-persistence same-identity recovery demonstrated | `CW44-P4-N1` persisted `/root/cw44_phase4_recovery` before interruption, re-read durable and live sources, and continued the same identity. A separate no-history agent reconstructed the earlier run and safe next action. A different agent taking over the interrupted runtime and runtime replacement/supersession were not exercised; the runtime exposes no separate Dispatch ID. |
-| 5. Validation and learning | in progress | Repository validation run #103 passed on commit `cffae1a3c5cc8c427432360107e3517ea2d06956`; recheck the PR head after this checkpoint update and complete the representative Riley conformance case. |
+| 5. Validation and learning | in progress | Change Impact Reconciliation is complete and Repository validation run #104 passed on checkpoint commit `c23ade6ddfe51c349276e85922f7af842195eed7`; complete the representative Riley conformance case and use the latest PR-head check for subsequent edits. |
 
 ## Non-goals
 
@@ -57,6 +57,8 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 [C13 | 2026-09-22] PR #200 is open for review. Repository validation run #103 passed on its then-current head `cffae1a3c5cc8c427432360107e3517ea2d06956`, including the generated-output check; the proof and Work Order checkpoint edits now need validation on the resulting PR head. The Cursor approval agent returned `APPROVED`, with no inline review threads at this checkpoint. Final Riley conformance remains pending, and issue #197 remains open. Phase 4 remains partial because no distinct-agent takeover or runtime replacement/supersession was exercised.
 
+[C14 | 2026-09-22] PR #200 remains open. Repository validation run #104 passed on checkpoint commit `c23ade6ddfe51c349276e85922f7af842195eed7`, including the generated-output check. The Work Graph scenario confidence is being aligned to the successful repository validation result. Final Riley conformance remains pending; issue #197 remains open. Phase 4 remains partial because no distinct-agent takeover or runtime replacement/supersession was exercised.
+
 ## Next action
 
-The read-only change-impact reconciliation and PR validation checkpoint are recorded in `runtime-dispatch-proof.md`. Continue review of open PR #200, verify checks on its current head, complete the representative Riley conformance review, and address scoped findings. Keep #197 open until all acceptance criteria pass; do not claim the untested runtime replacement path.
+The read-only change-impact reconciliation and PR validation evidence are recorded in `runtime-dispatch-proof.md`. Complete the representative Riley conformance review, address scoped findings, and inspect the latest checks and review feedback on open PR #200. Keep #197 open until all acceptance criteria pass; do not claim the untested runtime replacement path.
