@@ -1,6 +1,6 @@
 # Runtime Dispatch Proof — CW-44
 
-**Status:** Phase 3 demonstrated; one post-persistence interrupt and same-identity continuation demonstrated; full Phase 4 remains partial.
+**Status:** Phase 3 demonstrated; Phase 4 includes same-identity continuation and a fresh-agent, transcript-free takeover of a bounded WorkNode. Provider-level runtime lifecycle remains opaque; final Riley conformance is pending.
 **Work Order:** [WO-2026-09-22-riley-work-graph-orchestration](work-order.md)
 **Issue:** [#197 — Add Riley work-graph orchestration capability](https://github.com/rickvang/Persona-Library/issues/197) (open; keep open)
 
@@ -20,8 +20,8 @@ Dispatch IDs are supervisor-assigned work-graph identities. The Codex collaborat
 | `CW44-P3-N1` | `CW44-P3-N1-D1` | `/root/cw44_runtime_eval` | One attempt; interrupted and continued under the same runtime identity; completed and accepted as bounded Phase 3 evidence. |
 | `CW44-P3-REHYDRATE-N1` | `CW44-P3-REHYDRATE-N1-D1` | `/root/cw44_recovery_rehydrate` | Separate context-free reconstruction audit; completed; reconstructed the checkpoint but did not take over or resume an interrupted runtime. |
 | `CW44-P4-N1` | `CW44-P4-N1-D1` | `/root/cw44_phase4_recovery` | Returned runtime identity was persisted before interruption; same identity resumed and completed; partial recovery evidence. |
-| `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D1` | `/root/cw44_cross_takeover_d1` | Interrupted after identity persisted; supervisor confirmed prior status was running. |
-| `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D2` | `/root/cw44_cross_takeover_d2` | Running; fresh agent dispatched from durable state after D1 interruption. |
+| CW44-P4-TAKEOVER-N1 | CW44-P4-TAKEOVER-N1-D1 | `/root/cw44_cross_takeover_d1` | Interrupted after persisted identity; superseded at graph level by D2. |
+| CW44-P4-TAKEOVER-N1 | CW44-P4-TAKEOVER-N1-D2 | `/root/cw44_cross_takeover_d2` | Fresh agent completed the read-only takeover audit from durable state; accepted for this WorkNode. |
 
 ## Phase 3 WorkNode — `CW44-P3-N1`
 
@@ -70,7 +70,18 @@ This demonstrates a post-persistence interruption, source rehydration, and conti
 - **Route / boundary:** Codex collaboration child agents; read-only inspection of this Work Order, the Work Graph Skill, issue #197, and PR #200.
 - **Graph Dispatch D1:** `CW44-P4-TAKEOVER-N1-D1`, allocated before dispatch; returned runtime identity `/root/cw44_cross_takeover_d1` persisted while running.
 - **Graph Dispatch D2:** `CW44-P4-TAKEOVER-N1-D2`, allocated before dispatch; fresh runtime identity `/root/cw44_cross_takeover_d2` persisted while running.
-- **Current state:** D1 `/root/cw44_cross_takeover_d1` is interrupted (interrupt call returned `previous_status: running`). D2 `/root/cw44_cross_takeover_d2` is the sole authoritative active attempt; it was given only durable source references and must rehydrate without D1's transcript.
+- **Current state:** D1 `/root/cw44_cross_takeover_d1` is interrupted (interrupt call returned `previous_status: running`) and superseded at graph level. D2 `/root/cw44_cross_takeover_d2` was the sole authoritative active attempt and completed this bounded node.
+
+### Lifecycle and recovery evidence
+
+1. D1 was allocated and persisted as ready before dispatch (commit `ad477ef44c1374def9fc49567a8361e2c7890ccf`).
+2. D1 `/root/cw44_cross_takeover_d1` was observed running. Its returned identity and running state were persisted before interruption (commit `686d23c50add9d3f6b1372fca4d5e66f4237324a`).
+3. `collaboration.interrupt_agent` returned `previous_status: running`. The supervisor then marked D1 interrupted, allocated D2, and persisted that D2 was the next attempt (commit `8e1f9e5d47bb975c5ee8c381d274bc251273563e`).
+4. D2 `/root/cw44_cross_takeover_d2` was started with `fork_turns: none` and only durable source references. Its identity was recorded while it was running (commit `df7ee5463c29bede0a2b0365e0db9fa392b4a25d`).
+5. D2 re-fetched this Work Order/proof, the main Work Graph Skill, issue #197, and PR #200. It reconstructed the WorkNode objective, dependencies, read-only boundary, D1 interruption, and D2 authority without D1's transcript. It verified #197 and #200 remained open, run #113 succeeded on the then-current head, and both older review threads were resolved/outdated.
+6. D2 completed the bounded audit without mutations and returned a source-grounded acceptance-gap report. Its WorkNode disposition is accepted; D1 is superseded at the work-graph level.
+
+This demonstrates transcript-free, cross-agent recovery for the bounded WorkNode and graph-level replacement of D1 by D2. The collaboration API still exposes only agent names—not a provider Dispatch UUID, session ID, or runtime-level cancel/resume state—so the packet does not claim provider-level lifecycle control.
 
 ## Change Impact Reconciliation
 
@@ -78,21 +89,21 @@ This demonstrates a post-persistence interruption, source rehydration, and conti
 - **Initiating contract:** Work Graph Orchestration Skill (`external_execution`, `multi-agent-supervision`, reconciliation `change-impact-reconciliation`). One universal read-only reconciliation pass was run; no recursion.
 - **Scope checked:** CW-44 Current Work, this Work Order, issue #197, the Work Graph Skill, Skills orientation route, Work Graph operational-scenario source and index, `content/library-model.js`, `ARCHITECTURE.md`, `scripts/validate-content.mjs`, and the generated scenario bundle. Search was bounded to the declared route, named owners, and repository dependency guidance; it was not a full repository-wide relationship graph audit.
 - **Impacts:**
-  - Work Graph operational scenario — **qualifies / extends**, high confidence: live dispatch and a persisted-identity same-agent interrupt/resume are now evidenced; fresh-agent reconstruction is also evidenced. The scenario confidence and evidence list were updated. Its `candidate` evidence status remains pending final Riley conformance; distinct-agent takeover and runtime replacement/supersession also remain unproven.
+  - Work Graph operational scenario — **qualifies / extends**, high confidence: live dispatch, persisted-identity same-agent continuation, and a fresh agent taking over a separate interrupted WorkNode from durable state are evidenced. Its `candidate` evidence status remains pending final Riley conformance; provider-level runtime identity/lifecycle remains unavailable.
   - CW-44 Work Order and Current Work — **extends**, high confidence: durable checkpoints now link the proof and keep the work active.
   - Issue #197 — **qualifies**, high confidence: runtime proof advances Phases 3–4 but does not satisfy all acceptance criteria; it remains open.
   - Work Graph Skill, Skills route, scenario index, and canonical relationship model — **confirms / unrelated**, high confidence: no capability identity, route, owner, or typed relationship changed; no Skill or index update was needed.
 - **Required updates:** updated the Work Graph scenario evidence/confidence and the generated `dist/data/library-data.js` bundle; updated the Work Order and CW-44 checkpoint.
-- **Optional follow-up:** exercise a different-agent takeover and explicit runtime replacement/supersession only if a future live condition makes same-identity recovery unavailable or unsafe.
+- **Optional follow-up:** probe provider-issued Dispatch/session identity or runtime-level cancellation/replacement only if a future adapter exposes those capabilities; graph-level D1→D2 supersession is now evidenced.
 - **Unchanged checked:** Skill contract and relationships; Skills route and scenario index; issue acceptance checklist and open state; unrelated Persona, Tool, Operating Pack, and workflow sources were outside this bounded execution-record change.
 - **Generated outputs:** the scenario's generated data bundle was refreshed with the authored scenario. No page/module outputs were affected. Repository validation run #104 passed its build, authored/generated-content validation, repository tests, PR whitespace check, and generated-output check on checkpoint commit `c23ade6ddfe51c349276e85922f7af842195eed7`; the PR's latest-head check remains the authority for subsequent edits.
-- **Blockers and limits:** runtime returns an agent name but no separate stable Dispatch/session ID. A distinct-agent takeover and runtime replacement/supersession remain unproven. Final Riley conformance remains required; inspect the latest PR-head checks and any new review feedback.
+- **Blockers and limits:** the runtime returns agent names but no provider Dispatch/session UUID or runtime-level cancel/resume state. Graph-level cross-agent takeover and D1→D2 supersession are evidenced for a bounded read-only WorkNode. Final Riley conformance remains required; inspect the latest PR-head checks and any new review feedback.
 - **Next action:** complete the representative Riley conformance case, address any scoped review findings, and keep #197 open while checking the latest PR-head evidence.
 
 ## Remaining limits and next gates
 
-- A different agent taking over an interrupted runtime without any child transcript was not exercised; the fresh agent independently reconstructed the checkpoint and next action.
-- Runtime replacement/supersession was not exercised because same-identity continuation was available and safe. The repository-level Phase 2 proof in PR #199 covers correction versus new Dispatch semantics, but that does not substitute for a runtime replacement test.
-- Phase 3/4 proof does not complete CW-44 or #197. Final Riley conformance and transcript-independent takeover/runtime replacement evidence remain outstanding.
+- Fresh D2 took over this bounded WorkNode after D1 was interrupted. It reconstructed objective, dependencies, route, state, and evidence from the Work Order and live sources without D1's transcript. This demonstrates graph-level WorkNode recovery; D2 did not inspect hidden provider runtime state.
+- Graph-level replacement/supersession was exercised: D2 became authoritative after D1 was interrupted. Provider-level cancellation or runtime replacement remains untested because the collaboration API exposes no provider Dispatch/session identifier or lifecycle introspection.
+- Phase 3/4 evidence does not complete CW-44 or #197. Transcript-independent graph-level takeover is now demonstrated; the representative Riley conformance run remains outstanding.
 
 Following the repository's Mara Okoye placement review and Architecture guidance, keep this evidence in the existing CW-44 Work Order package. It adds no canonical Skill, Tool recipe, Persona, runtime package, or database. Keep #197 open.
