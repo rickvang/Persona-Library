@@ -38,16 +38,28 @@ The child independently re-fetched CW-44, this branch's Work Order and proof, th
 
 This demonstrates that a separate, transcript-free agent can reconstruct the prior run and its next recovery decision from Current Work, the Work Order, and live GitHub/runtime sources. It does **not** demonstrate resuming an interrupted runtime from the durable identifier: the original runtime was already completed when this audit ran.
 
+## Phase 4 recovery WorkNode packet — ready
+
+- **Node:** `CW44-P4-N1` (graph-local label; not a runtime-issued ID)
+- **Objective:** test one controlled, read-only child interruption after its returned runtime identity has been persisted, then reconstruct from durable sources and continue the same identity if supported.
+- **Dependencies:** `CW44-P3-N1` has bounded Phase 3 evidence; the context-free rehydration audit above reconstructed its state without prior child turns.
+- **Source checkpoint:** `main` `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 open; Work Order and this packet on `codex/cw44-runtime-dispatch-proof`; current Work and Skill re-fetch required immediately before dispatch.
+- **Route:** Codex child-agent runtime through `collaboration.spawn_agent`.
+- **Permission boundary:** read-only source review; no repository, branch, issue, PR, or Notion mutations by the child; keep #197 open.
+- **Evidence:** exact returned identity durably recorded before interruption; observed interrupted state; fresh source/runtime rehydration; same-identity continuation result or explicit disposition if continuation is unavailable.
+- **Current state:** ready; no active Dispatch for this node yet.
+
 ## Remaining Phase 4 gate
 
-A controlled durable-interruption test remains. It must:
-1. define a bounded recovery WorkNode and source checkpoint;
-2. start a fresh read-only child and persist its exact returned identity before interrupting it;
-3. interrupt only after the durable record is saved;
-4. re-read Current Work, Work Order, Skill, current `main` / issue, and live runtime state;
-5. resume the same identity if the live runtime supports it, or explicitly disposition it before creating a new identity.
+Start the bounded child only after re-reading Current Work, Work Order, packet, Skill, current `main`, issue #197, and live runtime state. Persist the exact returned identity in the packet and Work Order before interrupting. Then interrupt only after the record is saved, re-read those durable sources and live runtime state, and resume the same identity if supported. If it cannot be resumed safely, record its disposition before creating any new identity. Keep one authoritative Dispatch for this node.
 
-No new attempt should be created until the read-before-retry check passes. The test has not yet run.
+No new attempt should be created until the read-before-retry check passes. This controlled test has not yet run.
+
+## Placement and disposition
+
+Following the repository's Mara Okoye placement review and Architecture guidance, this evidence belongs in the existing CW-44 Work Order package. It adds no canonical Skill, Tool recipe, Persona, runtime package, or database.
+
+Phase 3 is demonstrated. Phase 4 is partial: another fresh agent reconstructed the saved run, but a post-persistence interrupted resume is still unproven. Repository validation, change-impact reconciliation, and final Riley conformance remain; keep #197 open.
 
 ## Placement and disposition
 
