@@ -39,8 +39,8 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 | 1. Capability and schema | implemented / PR #198 | Callable Skill, Riley application, workflow/guidance, relationships, Skills route, Operational Scenario, orientation registration, and focused validator are implemented. Repository validation run #97 passed all substantive gates on the corrected Phase 1 sources. |
 | 2. GitHub execution semantics | implemented / PR #199 | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill distinguishes bounded corrections from new Dispatch identity and defines collision/sequential fallback. |
 | 3. Runtime-aware dispatch | demonstrated / proof branch | A real supervised, read-only Codex child-agent path ran as `/root/cw44_runtime_eval`. Its bounded result and lifecycle are recorded in [runtime-dispatch-proof.md](runtime-dispatch-proof.md). The collaboration API exposed no separate Dispatch UUID, session, branch, or worktree for this run. |
-| 4. Recovery and resumption | interrupted; identity persisted before interruption | `collaboration.interrupt_agent` returned `previous_status: running` for `/root/cw44_phase4_recovery`; the live agent tree then showed `interrupted`. The runtime identity was saved in the proof packet and Work Order before interrupting. Next: rehydrate sources and live state, then continue this same identity if supported. |
-| 5. Validation and learning | planned | Run repository validation, a Riley conformance case, and change-impact reconciliation. |
+| 4. Recovery and resumption | partial; post-persistence same-identity recovery demonstrated | `CW44-P4-N1` persisted `/root/cw44_phase4_recovery` before interruption, re-read durable and live sources, and continued the same identity. A separate no-history agent reconstructed the earlier run and safe next action. A different agent taking over the interrupted runtime and runtime replacement/supersession were not exercised; the runtime exposes no separate Dispatch ID. |
+| 5. Validation and learning | pending | Run repository validation through the PR flow, change-impact reconciliation, and a representative Riley conformance case. |
 
 ## Non-goals
 
@@ -52,8 +52,8 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 ## Current checkpoint
 
-[C10 | 2026-09-22] Main checkpoint remains `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 remains open. `CW44-P4-N1` (`/root/cw44_phase4_recovery`) was interrupted after its returned agent identity had been saved in the proof packet and Work Order. `interrupt_agent` observed `previous_status: running`; the live agent listing then showed `interrupted`. The runtime exposed no separate Dispatch/session ID.
+[C11 | 2026-09-22] Phase 3 is demonstrated. The controlled Phase 4 node returned `/root/cw44_phase4_recovery`; that identity was recorded in the proof packet and Work Order before interruption. The supervisor observed `previous_status: running`, then the runtime as interrupted; after re-reading Current Work, durable Work Order/proof, Skill, current main, issue #197, and live runtime state, the supervisor continued the same identity. The child re-fetched sources and completed a read-only recovery audit. A second child started without prior task turns independently reconstructed the earlier saved run. Issue #197 remains open. Full Phase 4 is partial because the different-agent takeover and runtime replacement/supersession path were not exercised.
 
 ## Next action
 
-Re-fetch Current Work, Work Order, packet, Skill, current `main`, issue #197, and live runtime state. Resume `/root/cw44_phase4_recovery` from those saved identifiers if supported; do not create another identity unless the live state requires explicit supersession. Complete repository validation, change-impact reconciliation, and Riley conformance. Keep #197 open.
+Complete the read-only change-impact reconciliation and representative Riley conformance review. Open a reviewable PR for this scoped proof, then use the repository's PR checks/review as validation evidence. Fix scoped review findings if any; keep #197 open while any acceptance criteria remain. Do not claim full recovery or close the issue from this checkpoint.
