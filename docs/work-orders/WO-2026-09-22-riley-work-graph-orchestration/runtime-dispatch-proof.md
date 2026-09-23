@@ -1,6 +1,6 @@
 # Runtime Dispatch Proof — CW-44
 
-**Status:** Phase 3 runtime path demonstrated; context-free record reconstruction demonstrated; live durable interrupted-resume test remains.  
+**Status:** Phase 3 demonstrated; one post-persistence interrupt and same-identity continuation demonstrated; full Phase 4 remains partial.  
 **Work Order:** [WO-2026-09-22-riley-work-graph-orchestration](work-order.md)  
 **Issue:** [#197 — Add Riley work-graph orchestration capability](https://github.com/rickvang/Persona-Library/issues/197) (open; keep open)
 
@@ -9,60 +9,49 @@
 - Persona-Library `main`: `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`
 - Current Work: [CW-44 — Riley — work graph orchestration capability](https://app.notion.com/p/3e3cd82535ff81829d1aefd3731f6788)
 - Work Graph Skill: `.agents/skills/work-graph-orchestration/SKILL.md` (blob `e607621d1892a3cc62334d221dafc79611446905`)
-- Work Order at this checkpoint: `docs/work-orders/WO-2026-09-22-riley-work-graph-orchestration/work-order.md` (on this branch)
+- Durable recovery packet branch: `codex/cw44-runtime-dispatch-proof`
 
-## WorkNode packet
+## Phase 3 WorkNode — `CW44-P3-N1`
 
-- **Node:** `CW44-P3-N1` (graph-local label; not runtime-issued)
 - **Objective:** independently verify one bounded read-only runtime dispatch and its recovery references.
 - **Dependency:** Phases 1–2 merged; fresh `main` and issue #197 checked before dispatch.
 - **Route:** Codex child-agent runtime through `collaboration.spawn_agent`.
 - **Returned runtime identity:** `/root/cw44_runtime_eval`. The tool exposed no separate Dispatch UUID, thread/session ID, branch, or worktree for this read-only execution.
-- **Gates:** source re-fetch; read-only; no issue, branch, repository, or Notion mutations by the child; keep #197 open.
 - **Disposition:** accepted as bounded Phase 3 execution/evaluation evidence; this does not accept CW-44 or #197.
 
-## First live lifecycle
+The child fetched the Work Order, Skill, issue, and current `main`, returned a source-grounded checkpoint, was followed under the same identity, and was interrupted while running. The supervisor re-read Current Work, main, issue, Work Order, and Skill, then continued that same identity; the child re-fetched sources and completed. No replacement was created. At the time of this first interruption, however, the identity was absent from the durable records, so the supervisor supplied it from live context. This first recovery is not transcript-independent.
 
-1. Spawned one bounded child. It fetched the Work Order, Skill, issue #197, and current `main`, then returned a source-grounded checkpoint without evaluation or mutation.
-2. Continued the same returned identity with `collaboration.followup_task`; it re-fetched sources and reported a safe boundary.
-3. The supervisor interrupted that running turn. `collaboration.interrupt_agent` returned `previous_status: running`; the agent tree then showed the same identity as interrupted.
-4. The supervisor re-read Current Work, current `main`, issue #197, Work Order, Skill, and related branches, then continued `/root/cw44_runtime_eval`. The child re-fetched sources and completed the evaluation. No replacement was created.
+## Context-free rehydration audit
 
-This proves a live supervised child-agent route and an interruption followed by continuation on the same agent identity. **That first recovery was not transcript-independent:** CW-44 and the Work Order did not yet record the returned identity at the time of interruption, so the supervisor supplied it from live context.
+After the Phase 3 identity and lifecycle were recorded, a separate child was started with `fork_turns: none` and only durable-source references. Its returned identity was `/root/cw44_recovery_rehydrate`; no separate dispatch/session UUID was exposed.
 
-## Context-free rehydration
+It re-fetched CW-44, this branch's Work Order and proof, the main Skill, live `main`, issue #197, and collaboration runtime state. It reconstructed the P3 node, dependency, route, prior runtime identity, lifecycle, evidence gap, current issue state, and safe next action. It found the original runtime completed and made no mutations.
 
-After the runtime identity and first lifecycle were saved in this packet and the Work Order, a fresh child was started with `fork_turns: none` and only durable-source references. Its returned identity was `/root/cw44_recovery_rehydrate`; no separate dispatch/session UUID was exposed.
+This shows that a fresh agent can reconstruct the prior run and recovery decision without child transcripts. It did not itself resume an interrupted runtime.
 
-The child independently re-fetched CW-44, this branch's Work Order and proof, the main Skill, live `main`, issue #197, and collaboration runtime state. It reconstructed node `CW44-P3-N1`, its dependency and route, the prior runtime identity, the interruption/continuation history, the first cycle's evidence gap, current issue state, and the safe next action. It reported the original runtime as completed and did not mutate any source.
+## Phase 4 WorkNode — `CW44-P4-N1`
 
-This demonstrates that a separate, transcript-free agent can reconstruct the prior run and its next recovery decision from Current Work, the Work Order, and live GitHub/runtime sources. It does **not** demonstrate resuming an interrupted runtime from the durable identifier: the original runtime was already completed when this audit ran.
+- **Objective:** test one controlled, read-only child interruption after its returned runtime identity has been persisted, then rehydrate and continue the same identity if supported.
+- **Dependencies:** P3 evidence and the context-free rehydration audit above.
+- **Source checkpoint:** `main` `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 open; Current Work at checkpoint C09; this packet and Work Order on `codex/cw44-runtime-dispatch-proof`.
+- **Route / boundary:** Codex child-agent runtime; read-only source review; no repository, branch, issue, PR, or Notion mutations by the child.
+- **Returned runtime identity:** `/root/cw44_phase4_recovery`. The collaboration API exposed the agent name only, with no separate Dispatch UUID, session, branch, or worktree.
+- **Disposition:** accepted for this bounded recovery test. No replacement was created because the same identity resumed safely.
 
-## Phase 4 recovery WorkNode packet — ready
+### Lifecycle evidence
 
-- **Node:** `CW44-P4-N1` (graph-local label; not a runtime-issued ID)
-- **Objective:** test one controlled, read-only child interruption after its returned runtime identity has been persisted, then reconstruct from durable sources and continue the same identity if supported.
-- **Dependencies:** `CW44-P3-N1` has bounded Phase 3 evidence; the context-free rehydration audit above reconstructed its state without prior child turns.
-- **Source checkpoint:** `main` `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 open; Work Order and this packet on `codex/cw44-runtime-dispatch-proof`; current Work and Skill re-fetch required immediately before dispatch.
-- **Route:** Codex child-agent runtime through `collaboration.spawn_agent`.
-- **Permission boundary:** read-only source review; no repository, branch, issue, PR, or Notion mutations by the child; keep #197 open.
-- **Evidence:** exact returned identity durably recorded before interruption; observed interrupted state; fresh source/runtime rehydration; same-identity continuation result or explicit disposition if continuation is unavailable.
-- **Current state:** interrupted; returned runtime identity `/root/cw44_phase4_recovery` (agent name only; no separate Dispatch UUID/session/branch/worktree was exposed). The identity was recorded in the packet and Work Order before interruption. `collaboration.interrupt_agent` returned `previous_status: running`, and the subsequent live agent listing showed `interrupted`.
+1. Fresh source and live-state checks confirmed the node was ready. The child was spawned and observed running.
+2. Before interruption, the returned identity was written to this packet (commit `c605a0bb6c38e35f04709983f252cc007e2bd08e`) and the Work Order (commit `81e877ad08f982a763d129760d9640d011c4d11b`).
+3. `collaboration.interrupt_agent` returned `previous_status: running`; the next live agent listing showed `/root/cw44_phase4_recovery` interrupted.
+4. The supervisor then re-read Current Work, the Work Order and packet, main Skill, current `main`, issue #197, and live runtime state. At this recovery checkpoint, the durable branch tip was `13bf836c9726d54fcf1de6ee4d409c40e833ac42`, main remained `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`, and #197 was open.
+5. The supervisor continued only `/root/cw44_phase4_recovery`. The child was instructed to disregard earlier child messages, re-fetch the saved/current sources, and perform a bounded read-only audit. It confirmed the persisted identity and interruption checkpoint, judged same-identity continuation safe, re-fetched the sources, and made no mutations. No replacement was created.
 
-## Remaining Phase 4 gate
+This demonstrates a post-persistence interruption, source rehydration, and continuation of the same returned runtime identity. The collaboration API does not expose a separate stable Dispatch ID, so the proof can cite only the returned agent identity and observed lifecycle. The separate no-history audit demonstrated reconstruction by another fresh agent, but did not itself send the continuation.
 
-Start the bounded child only after re-reading Current Work, Work Order, packet, Skill, current `main`, issue #197, and live runtime state. Persist the exact returned identity in the packet and Work Order before interrupting. Then interrupt only after the record is saved, re-read those durable sources and live runtime state, and resume the same identity if supported. If it cannot be resumed safely, record its disposition before creating any new identity. Keep one authoritative Dispatch for this node.
+## Remaining limits and next gates
 
-No new attempt should be created until the read-before-retry check passes. This controlled test has not yet run.
+- A different agent taking over an interrupted runtime without any child transcript was not exercised; the fresh agent independently reconstructed the checkpoint and next action.
+- Runtime replacement/supersession was not exercised because same-identity continuation was available and safe. The repository-level Phase 2 proof in PR #199 covers correction versus new Dispatch semantics, but that does not substitute for a runtime replacement test.
+- Phase 3/4 proof does not complete CW-44 or #197. Repository validation, change-impact reconciliation, and final Riley conformance remain.
 
-## Placement and disposition
-
-Following the repository's Mara Okoye placement review and Architecture guidance, this evidence belongs in the existing CW-44 Work Order package. It adds no canonical Skill, Tool recipe, Persona, runtime package, or database.
-
-Phase 3 is demonstrated. Phase 4 is partial: another fresh agent reconstructed the saved run, but a post-persistence interrupted resume is still unproven. Repository validation, change-impact reconciliation, and final Riley conformance remain; keep #197 open.
-
-## Placement and disposition
-
-Following the repository's Mara Okoye placement review and Architecture guidance, this evidence belongs in the existing CW-44 Work Order package. It adds no canonical Skill, Tool recipe, Persona, runtime package, or database.
-
-Phase 3 is demonstrated. Phase 4 is partial: another fresh agent reconstructed the saved run, but a post-persistence interrupted resume is still unproven. Repository validation, change-impact reconciliation, and final Riley conformance remain; keep #197 open.
+Following the repository's Mara Okoye placement review and Architecture guidance, keep this evidence in the existing CW-44 Work Order package. It adds no canonical Skill, Tool recipe, Persona, runtime package, or database. Keep #197 open.
