@@ -481,7 +481,7 @@ For a browse, filter, compare, and detail surface, the focused path may use the 
 - Layout Lab comparison invalid: freeze one content fixture and rerun only the affected comparison.
 - Failed gate: return to the smallest responsible phase and update the active work record.
 - Unauthorized mutation: stop at proposal or draft and request the missing authorization and target.
-- Interrupted work: the small-change lane no longer applies; create or resume the Work Order, then continue from the last proven record and explicit next action.
+- Interrupted work: reassess whether the existing Current Work, pull request, and project/domain artifacts still contain enough state to resume safely. Create or resume a Work Order only when that recovery state is insufficient.
 - Historical comparison unavailable: mark parity unknown; do not downgrade current quality work solely because the old package is missing.
 
 ## Completion checklist
