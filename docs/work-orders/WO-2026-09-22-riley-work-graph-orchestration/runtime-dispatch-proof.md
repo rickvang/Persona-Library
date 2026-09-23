@@ -20,7 +20,7 @@ Dispatch IDs are supervisor-assigned work-graph identities. The Codex collaborat
 | `CW44-P3-N1` | `CW44-P3-N1-D1` | `/root/cw44_runtime_eval` | One attempt; interrupted and continued under the same runtime identity; completed and accepted as bounded Phase 3 evidence. |
 | `CW44-P3-REHYDRATE-N1` | `CW44-P3-REHYDRATE-N1-D1` | `/root/cw44_recovery_rehydrate` | Separate context-free reconstruction audit; completed; reconstructed the checkpoint but did not take over or resume an interrupted runtime. |
 | `CW44-P4-N1` | `CW44-P4-N1-D1` | `/root/cw44_phase4_recovery` | Returned runtime identity was persisted before interruption; same identity resumed and completed; partial recovery evidence. |
-| `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D1` | pending | Allocated and persisted before dispatch; ready for controlled interruption test. |
+| `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D1` | `/root/cw44_cross_takeover_d1` | Running; identity persisted before deliberate interruption. |
 
 ## Phase 3 WorkNode — `CW44-P3-N1`
 
@@ -67,9 +67,9 @@ This demonstrates a post-persistence interruption, source rehydration, and conti
 - **Objective:** demonstrate that a fresh agent can resume a bounded, read-only CW-44 recovery audit from the durable Work Order after its first Dispatch is interrupted, without the interrupted agent's transcript.
 - **Dependency:** existing Phase 4 same-identity recovery evidence; this node does not mutate Persona-Library sources.
 - **Route / boundary:** Codex collaboration child agents; read-only inspection of this Work Order, the Work Graph Skill, issue #197, and PR #200.
-- **Graph Dispatch D1:** `CW44-P4-TAKEOVER-N1-D1`, allocated before dispatch. Runtime identity and lifecycle will be persisted before interruption.
+- **Graph Dispatch D1:** `CW44-P4-TAKEOVER-N1-D1`, allocated before dispatch; returned runtime identity `/root/cw44_cross_takeover_d1` persisted while running.
 - **Graph Dispatch D2:** reserved for a fresh agent only after D1 is durably marked interrupted and D2 is recorded as the next attempt.
-- **Current state:** D1 is allocated and ready; no agent has been dispatched yet.
+- **Current state:** D1 `/root/cw44_cross_takeover_d1` was dispatched and observed running after the identity was durably written. It is now the single authoritative attempt pending a controlled interruption.
 
 ## Change Impact Reconciliation
 
