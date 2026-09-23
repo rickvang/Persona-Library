@@ -47,7 +47,7 @@ This demonstrates that a separate, transcript-free agent can reconstruct the pri
 - **Route:** Codex child-agent runtime through `collaboration.spawn_agent`.
 - **Permission boundary:** read-only source review; no repository, branch, issue, PR, or Notion mutations by the child; keep #197 open.
 - **Evidence:** exact returned identity durably recorded before interruption; observed interrupted state; fresh source/runtime rehydration; same-identity continuation result or explicit disposition if continuation is unavailable.
-- **Current state:** ready; no active Dispatch for this node yet.
+- **Current state:** running; returned runtime identity `/root/cw44_phase4_recovery` (agent name only; no separate Dispatch UUID/session/branch/worktree was exposed). This identity was returned by `collaboration.spawn_agent` and is recorded before interruption.
 
 ## Remaining Phase 4 gate
 
