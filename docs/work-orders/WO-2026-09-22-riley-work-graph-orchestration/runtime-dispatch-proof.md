@@ -50,25 +50,25 @@ This demonstrates a post-persistence interruption, source rehydration, and conti
 
 ## Change Impact Reconciliation
 
-- **Status:** complete for the bounded CW-44 evidence change. PR #200's Repository validation run #103 passed on commit `cffae1a3c5cc8c427432360107e3517ea2d06956`; the Cursor approval agent returned `APPROVED`. Final Riley conformance remains pending.
+- **Status:** complete for the bounded CW-44 evidence change. Repository validation run #104 passed on checkpoint commit `c23ade6ddfe51c349276e85922f7af842195eed7`. The PR review listing contains a Cursor `APPROVED` submission and no inline review threads were returned on the latest refresh. Final Riley conformance remains pending.
 - **Initiating contract:** Work Graph Orchestration Skill (`external_execution`, `multi-agent-supervision`, reconciliation `change-impact-reconciliation`). One universal read-only reconciliation pass was run; no recursion.
 - **Scope checked:** CW-44 Current Work, this Work Order, issue #197, the Work Graph Skill, Skills orientation route, Work Graph operational-scenario source and index, `content/library-model.js`, `ARCHITECTURE.md`, `scripts/validate-content.mjs`, and the generated scenario bundle. Search was bounded to the declared route, named owners, and repository dependency guidance; it was not a full repository-wide relationship graph audit.
 - **Impacts:**
-  - Work Graph operational scenario — **qualifies / extends**, high confidence: live dispatch and a persisted-identity same-agent interrupt/resume are now evidenced; fresh-agent reconstruction is also evidenced. The scenario confidence and evidence list were updated. Its `candidate` evidence status remains because repository validation and final conformance have not passed, and distinct-agent takeover/replacement remains unproven.
+  - Work Graph operational scenario — **qualifies / extends**, high confidence: live dispatch and a persisted-identity same-agent interrupt/resume are now evidenced; fresh-agent reconstruction is also evidenced. The scenario confidence and evidence list were updated. Its `candidate` evidence status remains pending final Riley conformance; distinct-agent takeover and runtime replacement/supersession also remain unproven.
   - CW-44 Work Order and Current Work — **extends**, high confidence: durable checkpoints now link the proof and keep the work active.
   - Issue #197 — **qualifies**, high confidence: runtime proof advances Phases 3–4 but does not satisfy all acceptance criteria; it remains open.
   - Work Graph Skill, Skills route, scenario index, and canonical relationship model — **confirms / unrelated**, high confidence: no capability identity, route, owner, or typed relationship changed; no Skill or index update was needed.
 - **Required updates:** updated the Work Graph scenario evidence/confidence and the generated `dist/data/library-data.js` bundle; updated the Work Order and CW-44 checkpoint.
 - **Optional follow-up:** exercise a different-agent takeover and explicit runtime replacement/supersession only if a future live condition makes same-identity recovery unavailable or unsafe.
 - **Unchanged checked:** Skill contract and relationships; Skills route and scenario index; issue acceptance checklist and open state; unrelated Persona, Tool, Operating Pack, and workflow sources were outside this bounded execution-record change.
-- **Generated outputs:** the scenario's generated data bundle was refreshed with the authored scenario. No page/module outputs were affected. Repository validation run #103 passed its build, authored/generated-content validation, repository tests, PR whitespace check, and generated-output check on commit `cffae1a3c5cc8c427432360107e3517ea2d06956`. This checkpoint edit requires checking the resulting PR head as well.
-- **Blockers and limits:** runtime returns an agent name but no separate stable Dispatch/session ID. The replacement path remains unproven. Final Riley conformance remains required; inspect the current PR head's checks and any new review feedback after this checkpoint edit.
-- **Next action:** continue review of open PR #200, verify checks on its current head, complete the Riley conformance case, and keep #197 open.
+- **Generated outputs:** the scenario's generated data bundle was refreshed with the authored scenario. No page/module outputs were affected. Repository validation run #104 passed its build, authored/generated-content validation, repository tests, PR whitespace check, and generated-output check on checkpoint commit `c23ade6ddfe51c349276e85922f7af842195eed7`; the PR's latest-head check remains the authority for subsequent edits.
+- **Blockers and limits:** runtime returns an agent name but no separate stable Dispatch/session ID. A distinct-agent takeover and runtime replacement/supersession remain unproven. Final Riley conformance remains required; inspect the latest PR-head checks and any new review feedback.
+- **Next action:** complete the representative Riley conformance case, address any scoped review findings, and keep #197 open while checking the latest PR-head evidence.
 
 ## Remaining limits and next gates
 
 - A different agent taking over an interrupted runtime without any child transcript was not exercised; the fresh agent independently reconstructed the checkpoint and next action.
 - Runtime replacement/supersession was not exercised because same-identity continuation was available and safe. The repository-level Phase 2 proof in PR #199 covers correction versus new Dispatch semantics, but that does not substitute for a runtime replacement test.
-- Phase 3/4 proof does not complete CW-44 or #197. Repository validation, change-impact reconciliation, and final Riley conformance remain.
+- Phase 3/4 proof does not complete CW-44 or #197. Final Riley conformance and transcript-independent takeover/runtime replacement evidence remain outstanding.
 
 Following the repository's Mara Okoye placement review and Architecture guidance, keep this evidence in the existing CW-44 Work Order package. It adds no canonical Skill, Tool recipe, Persona, runtime package, or database. Keep #197 open.
