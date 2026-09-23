@@ -2,10 +2,11 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { evaluateResult, loadCases, normalizeRunBundleResult, summarize, validateResult, validateRunBundle } from './contract.mjs';
+import { evaluateResult, loadCases, loadUsageTaxonomy, normalizeRunBundleResult, summarize, validateResult, validateRunBundle } from './contract.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cases = await loadCases();
+const usageTaxonomy = await loadUsageTaxonomy();
 const command = process.argv[2] || 'validate';
 
 if (command === 'validate') {
@@ -29,14 +30,14 @@ if (command === 'scan-results') {
   for (const entry of entries.filter(item => item.isFile() && item.name.endsWith('.json'))) {
     const payload = JSON.parse(await readFile(path.join(resultsDir, entry.name), 'utf8'));
     if (Array.isArray(payload.results)) {
-      const bundleCheck = validateRunBundle(payload);
+      const bundleCheck = validateRunBundle(payload, { taxonomy: usageTaxonomy });
       if (!bundleCheck.valid) {
         evaluations.push({ file: entry.name, bundle: true, verdict: 'UNKNOWN', errors: bundleCheck.errors });
         continue;
       }
       for (const bundleEntry of payload.results) {
         const result = normalizeRunBundleResult(payload, bundleEntry);
-        evaluations.push({ file: entry.name, fixture_id: result.fixture_id, run_id: payload.run_id, observation: result.observation, ...evaluateResult(result, cases) });
+        evaluations.push({ file: entry.name, fixture_id: result.fixture_id, run_id: payload.run_id, observation: result.observation, ...evaluateResult(result, cases, { taxonomy: usageTaxonomy }) });
       }
       continue;
     }
@@ -50,7 +51,7 @@ if (command === 'check-result-shape') {
   const resultPath = process.argv[3];
   if (!resultPath) throw new Error('Usage: node eval/run.mjs check-result-shape <result.json>');
   const result = JSON.parse(await readFile(path.resolve(resultPath), 'utf8'));
-  const check = validateResult(result, cases);
+  const check = validateResult(result, cases, { taxonomy: usageTaxonomy });
   console.log(JSON.stringify(check, null, 2));
   process.exit(check.valid ? 0 : 1);
 }

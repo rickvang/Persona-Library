@@ -87,3 +87,9 @@ Both strategies passed the same validation gate and used two remote calls. Manif
 Reviewed disposition: **conditional**. Use manifest-first when the Operational Scenario index exists and is current; keep code search as fallback when the index is unavailable, stale, or cannot represent the task. This is not a universal GitHub-search ranking.
 
 The sanitized proof is in `eval/results/recipe-comparisons/github-operational-scenario-retrieval-2026-09-21.json`.
+
+
+## Optional token-usage evidence
+
+A strategy observation may include the normalized usage object from the token-usage evidence contract in usage-telemetry.md. Keep it as a separate evidence dimension; do not turn token count into a hidden composite score or universal Tool ranking. Comparisons and reports must keep measured runtime usage, estimated repository context, and unavailable usage separate. A comparison with an optional usage object must still satisfy the same provenance and arithmetic checks as an evaluation run.
+
