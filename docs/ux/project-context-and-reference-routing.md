@@ -17,13 +17,13 @@ Use the repository layers this way:
 - The core quality baseline defines minimum expectations for material design work.
 - A project lens selects conditional guidance and gates.
 - A reference or example entry provides source, scope, observable pattern, tradeoffs, and limits.
-- The UX Work Order records the project profile, selected material, decisions, gate results, and next action.
+- For the full lifecycle, the UX Work Order records the project profile, selected material, decisions, gate results, and next action. For a qualifying repository small-change lane, the pull request is the active work record instead; an existing WorkNode remains in its active Work Graph.
 - The shared problem-context and collaboration Playbook coordinate multiple Personas only when shared state, attributable contributions, and handoffs are genuinely needed.
 - Decisions preserve durable alternatives and rationale.
 - Prototypes explore isolated alternatives.
 - Personas and Skills remain canonical records; this method references them rather than copying or merging them.
 
-A Work Order records authorization constraints. It never grants permission to edit, publish, execute a Tool, contact users, change access, or promote a prototype.
+The active work record (small-change pull request or Work Order) records authorization constraints. It never grants permission to edit, publish, execute a Tool, contact users, change access, or promote a prototype.
 
 ## Always-on quality baseline
 
@@ -44,7 +44,7 @@ The baseline is proportional. A focused change may inspect only affected slices,
 
 ## Project profile
 
-Create a compact profile before non-trivial design work. Use the existing Work Order or the Project Context Template.
+Create a compact profile before non-trivial design work. Use the small-change pull request when that lane applies; otherwise use the existing Work Order or the Project Context Template.
 
 Required fields:
 
@@ -83,14 +83,14 @@ A lens is a route, not a claim that the project has every characteristic in its 
 
 ## Intake and classification procedure
 
-1. Read the request, repository orientation, relevant Work Order, and existing project artifacts.
+1. Read the request, repository orientation, relevant active work record (Work Order or small-change pull request), and existing project artifacts.
 2. Identify the concrete user or operator job, intended output, and authorization boundary.
 3. Infer the smallest profile needed to select a route.
 4. Record inferred fields, sources, confidence, and unknowns.
 5. Select one primary lens and any justified secondary lens.
 6. Select the minimum relevant Personas, Skills, references, examples, and gates.
 7. Choose focused, feature, or consequential proportionality.
-8. Load selected reference IDs and routing rationale into the Work Order.
+8. Load selected reference IDs and routing rationale into the active work record.
 9. Run the relevant UX practice phases and record skipped gates with reasons.
 10. Revise the profile when new evidence changes type, risk, uncertainty, or workflow.
 11. Produce one concrete recommendation, decision, prototype, design packet, or action plan.
@@ -154,7 +154,7 @@ The project pack may contain:
 - examples and rejected directions relevant to the lens;
 - open contradictions, decisions, and unknowns.
 
-Keep project-specific observations in the Work Order or linked project artifact. Do not promote them to the shared library automatically.
+Keep project-specific observations in the active work record or linked project artifact. Do not promote them to the shared library automatically.
 
 ## Synthetic participant boundary
 
@@ -208,7 +208,7 @@ Route: Consequential plus multi-step operational lens. Map roles, permissions, i
 
 After a project:
 
-1. Keep the Work Order and project evidence separate from the shared catalog.
+1. Keep the active work record and project evidence separate from the shared catalog.
 2. Identify candidate lessons, examples, or anti-patterns.
 3. Check whether each candidate is generalizable beyond the project.
 4. Preserve source, scope, evidence status, tradeoffs, and limitations.

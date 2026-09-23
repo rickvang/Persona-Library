@@ -70,7 +70,7 @@
       "availability_source": "repo_local",
       "first_reads": [
         "Current Work row when the workstream already exists",
-        "linked Work Order",
+        "linked Work Order when one exists, otherwise the smallest authoritative issue / PR / Verification Queue / domain artifact",
         "current issue / PR / branch state when repository work is involved",
         "Riley Work graph orchestration Skill",
         "matching active operational scenario"

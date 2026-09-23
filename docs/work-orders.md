@@ -5,15 +5,15 @@ Status: repository-wide active-work packet and progress-record convention.
 
 ## Definition
 
-A Work Order is the current, project-scoped record for non-trivial work that is in progress. It combines the request, scope, responsible owner, evidence, decisions, phase status, gate results, handoffs, blockers, and next action so work can be resumed without replaying the entire conversation.
+A Work Order is an optional, project-scoped execution/recovery packet for work that needs durable state beyond its existing authoritative surfaces. It combines the request, scope, responsible owner, evidence, decisions, phase status, gate results, handoffs, blockers, and next action so work can be resumed without replaying the entire conversation.
 
-Use a Work Order for design, research, content, Persona, Skill, Tool, prototype, documentation, repository, and implementation work when the work has more than one meaningful step or can be interrupted and resumed.
+Use a Work Order when interruption, cross-agent handoff, multi-phase execution, or complex gates/evidence would otherwise require reconstructing state. Do **not** create one merely because work is non-trivial, semantically important, touches a shared schema or governance surface, or has more than one meaningful step when Current Work plus the relevant issue/PR and domain-specific artifact already preserve the state needed to resume it.
 
 A Work Order is not a transcript. Update it at the points that change what another person or agent needs to know.
 
 ## Artifact home and storage
 
-For non-trivial work whose authorized target is this repository, use the project-scoped artifact home:
+When a Work Order is warranted for work whose authorized target is this repository, use the project-scoped artifact home:
 
 docs/work-orders/<work-order-id>/
 
@@ -34,7 +34,19 @@ This is a recommended layout, not a requirement to create every file. Use only t
 
 When the authorized target is another repository or external project, use that target’s workspace and record its path or URL in the Work Order. Do not copy project artifacts into this repository by default.
 
-Do not create a package directory for a trivial change. Record that the artifact home was not warranted and why. Do not invent a Work Order ID or target path when the destination is unclear.
+Do not create a package directory when the work does not need a unique execution/recovery packet; see the small-change lane below. Do not invent a Work Order ID or target path when the destination is unclear.
+
+## Small-change lane
+
+A change qualifies for the small-change lane when its **existing authoritative surfaces already hold the durable state needed to resume and finish it**, so a separate Work Order would only duplicate that state. "Small" refers to the tracking/recovery footprint, not semantic importance, risk, file count, or whether the work touches a shared schema, Decision, or governance surface.
+
+A qualifying change often fits in one pull request or one session, but those are heuristics rather than hard gates. Shared-schema or governance changes may still use the lane when the relevant Current Work row, GitHub issue/PR, Decision, Verification Queue record, or other domain artifact already contains the plan, state, evidence boundary, and next action. Placement review, authorization, impact reconciliation, validation, and review requirements still apply.
+
+The lane needs **no separate Work Order package**. It also does not require creating a duplicate GitHub issue or Current Work row merely to compensate for the missing Work Order. Preserve an existing issue, Current Work row, WorkNode, or domain-specific record when that surface has its own reason to exist. The pull request may be the active repository record for a bounded change; a domain-specific record such as Verification Queue may own a longer-lived lifecycle independently.
+
+Small-change status reduces duplicate tracking artifacts; it does not remove existing orchestration. If the change is already a WorkNode in an active Riley Work Graph, keep that WorkNode and its authoritative Dispatch, dependencies and Gates, evidence requirements, and final disposition. If it is part of an existing Current Work workstream, keep that relationship until the active implementation work reaches its own completion boundary.
+
+Move to a dedicated Work Order as soon as the existing surfaces no longer carry enough recovery state—for example, interrupted cross-agent work with non-obvious accepted evidence, multi-phase execution whose gates cannot be reconstructed from the issue/PR/domain record, or a handoff that needs durable decisions and a resumable next action.
 
 ## Minimum contract
 
@@ -87,6 +99,8 @@ Keep entries concise. Add or revise an entry when one of these occurs:
 
 Do not log invented activity, synthetic answers as real observations, or repeated status messages that add no information.
 
+Commit progress entries with the related work rather than as separate commits. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state.
+
 ## Remote-tool efficiency and visible checkpoints
 
 For Tool-heavy Work Orders, use the reusable Tool-use guidance rather than treating every intermediate step as a new remote checkpoint. Gather the minimum sufficient remote state, record what would invalidate it, reuse it while still valid, batch related work, and validate at the cheapest layer that can answer the question. Refresh freshness-sensitive state before consequential mutations.
@@ -108,6 +122,7 @@ The Work Order is the active coordination layer. Link, rather than duplicate, th
 - A Decision records a durable choice, alternatives, rationale, tradeoffs, affected surfaces, and revisit condition.
 - A prototype explores a reversible alternative and remains isolated until explicit promotion.
 - An issue, pull request, or project tracker records implementation status and code review.
+- A Verification Queue or equivalent domain-specific verification record may own deferred validation after implementation Current Work closes; queued or unavailable verification does not by itself reopen or block completed implementation work, and a failed result creates or links new remediation work only when active coordination is needed.
 - A research record or source trail preserves actual participant, field, analytics, or document evidence.
 - A domain-specific template may extend the Work Order contract; see the [UX Work Order template](ux/ux-work-order-template.md).
 
@@ -115,21 +130,21 @@ Do not rename a specialized artifact to Work Order merely because it is linked f
 
 ## Riley cross-agent continuity
 
-For every substantial workstream, treat Riley Morgan / `ai-orchestrator` as the default durable orchestration owner unless the requester explicitly establishes another orchestration boundary. The selected Persona, Skill, Playbook, Tool path, or execution runtime may operate directly without an unnecessary Riley execution hop. Use the user's existing **Notion Current Work** database as the cross-thread/cross-agent index when that tracker is available. Do not create a second orchestration database for the same purpose. One Current Work row represents one substantial workstream; the linked Work Order remains the detailed project-scoped execution and recovery record.
+For every substantial workstream, treat Riley Morgan / `ai-orchestrator` as the default durable orchestration owner unless the requester explicitly establishes another orchestration boundary. The selected Persona, Skill, Playbook, Tool path, or execution runtime may operate directly without an unnecessary Riley execution hop. Use the user's existing **Notion Current Work** database as the cross-thread/cross-agent index when that tracker is available. Do not create a second orchestration database for the same purpose. One Current Work row represents one substantial workstream. A linked Work Order is optional and exists only when it adds unique detailed execution/recovery state that the issue/PR and domain artifacts do not already preserve.
 
 Use this state hierarchy:
 
 1. **Current Work** — concise cross-agent index: Work ID, current objective, owner or agent, Operating Route, optional Parent Work ID, next action, blocker, last checkpoint, and links to the authoritative work surfaces.
-2. **Work Order** — detailed execution/recovery state: scope, constraints, decisions, accepted evidence, phase and gate state, handoffs, validation, and resumable next action.
+2. **Work Order or authoritative domain artifact** — use a Work Order for unique detailed execution/recovery state; otherwise resume from the relevant issue/PR, Verification Queue record, Decision, project artifact, or other authoritative record that already owns that state.
 3. **Live systems** — freshness-sensitive operational authority: GitHub branch/PR head, CI, review threads, mergeability, deployments, permissions, and other state that can change independently of the checkpoint.
 
-**Resume order:** Current Work → linked Work Order → selectively refresh live systems whose state may have been invalidated. Reuse still-valid evidence instead of reconstructing the conversation or broadly refetching every source.
+**Resume order:** Current Work → linked Work Order when one exists, otherwise the smallest authoritative issue/PR/domain artifact → selectively refresh live systems whose state may have been invalidated. Reuse still-valid evidence instead of reconstructing the conversation or broadly refetching every source.
 
 **Riley reconciliation points:** workstream creation, material rerouting, cross-agent handoff, major blocker, and completion. At these boundaries, update the durable route and next action in Current Work; do not require an extra Riley runtime call when the selected operating route can continue directly.
 
 Update Current Work at material lifecycle or ownership transitions and whenever the next safe action materially changes. Do not use it as a mirror of every commit, check, review count, current SHA, mergeability result, or deployment event. **Do not mirror volatile live state** merely to make the tracker look complete; the Last Checkpoint should record the last proven state and the Next Action should name what must be refreshed before a consequential mutation.
 
-If an agent is interrupted, the next agent should be able to resume from the Current Work row and Work Order without replaying completed phases. Historical checkpoint facts remain reusable unless a named invalidation event makes them stale; current external state must still be refreshed at the boundary where freshness matters.
+If an agent is interrupted, the next agent should be able to resume from the Current Work row plus the linked Work Order **or** authoritative issue/PR/domain artifact without replaying completed phases. Create a Work Order at that point only if the existing surfaces are insufficient for reliable recovery. Historical checkpoint facts remain reusable unless a named invalidation event makes them stale; current external state must still be refreshed at the boundary where freshness matters.
 
 ## Handoff and recovery
 
@@ -158,10 +173,12 @@ A Work Order is complete only when:
 - the next action or explicit completion boundary is recorded;
 - when the Work Order or linked GitHub issue is already mirrored in an external active-work tracker, that linked tracker has been reconciled to the material lifecycle change and both systems have been verified before completion is reported.
 
-This reconciliation requirement applies only to an already-linked active-work tracker; it does not require creating one for otherwise trivial standalone work. Treat blocked, ready-for-review, complete, no-go, and cancelled transitions as material when stale mirrored state would misrepresent the work. GitHub-specific merge authorization and linked-issue completion semantics remain governed by the repository's pinned GitHub Tool contract.
+This reconciliation requirement applies only to an already-linked active-work tracker; it does not require creating one for otherwise lightweight standalone work or for deferred Verification Queue verification after the implementation workstream has closed. Treat blocked, ready-for-review, complete, no-go, and cancelled transitions as material when stale mirrored state would misrepresent the work. GitHub-specific merge authorization and linked-issue completion semantics remain governed by the repository's pinned GitHub Tool contract.
 
 A polished artifact, a handoff, or a full-looking checklist is not completion by itself.
 
 ## Archive lifecycle
 
 Active packages stay directly under `docs/work-orders/<work-order-id>/`. When a Work Order reaches a terminal status — `complete`, `no-go`, or `cancelled` — move the package to `docs/work-orders/archive/YYYY-MM/<work-order-id>/` using the month of the reliable terminal update. Archival is lifecycle classification, not deletion; archived packages are read-only historical evidence unless a later issue explicitly reopens or corrects them. Do not archive draft, active, blocked, or ready-for-review work.
+
+When merging the pull request is the last remaining repository step, record the terminal status and move the package in that pull request instead of opening an archive-only pull request; the archived record lands only when the work does.

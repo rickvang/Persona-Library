@@ -29,7 +29,7 @@ Do not use it for a single bounded task that one executor can complete directly,
 ## Source-of-truth hierarchy
 
 1. **Current Work** is the durable human-facing cross-thread/cross-agent index.
-2. **Work Order** is detailed project-scoped execution and recovery state.
+2. **Work Order or authoritative domain artifact** carries detailed execution/recovery state: use a Work Order when one exists; otherwise use the smallest issue/PR, Verification Queue record, Decision, project artifact, or other authoritative record that already owns that state.
 3. **Live systems** such as GitHub, CI, and the selected runtime are freshness-sensitive authority for volatile state.
 4. The **WorkGraph packet** is a compact supervisory representation derived from those sources; it is not a second orchestration database.
 
@@ -121,7 +121,7 @@ Every settled Dispatch receives a disposition:
 
 ## Operating procedure
 
-1. **Rehydrate.** Resolve the Current Work item, linked Work Order, current repository/source state, and any live execution references. Refresh volatile state only where it affects the next decision.
+1. **Rehydrate.** Resolve the Current Work item, the linked Work Order when one exists or otherwise the smallest authoritative issue/PR/Verification Queue/domain artifact, current repository/source state, and any live execution references. Refresh volatile state only where it affects the next decision.
 2. **Frame the graph.** State the outcome, stop condition, WorkNodes, dependencies, evidence, and required gates. Prefer the smallest graph that explains the work.
 3. **Check concurrency.** Identify file, schema, architecture, state, environment, and decision collisions. Remove fake parallelism and serialize uncertain overlap.
 4. **Resolve execution routes.** For each ready node, select the smallest capable Persona / Skill / Playbook / Tool / runtime. Verify access before claiming dispatch.
@@ -129,7 +129,7 @@ Every settled Dispatch receives a disposition:
 6. **Supervise by events and evidence.** Use runtime lifecycle signals when available, but verify completion through the WorkNode evidence contract. Do not poll without a freshness reason.
 7. **Handle gates and blockers.** Pause the affected node, preserve independent lanes when safe, and surface consequential human decisions instead of answering them on the user's behalf.
 8. **Recover safely.** On timeout, stale state, failure, or interruption, inspect the existing Dispatch and live references first. Establish from live evidence that it can no longer act on the node; if the adapter cannot establish this, pause or block the node instead of issuing a replacement. Every recovery recommendation must name the stable WorkNode, preserve each Dispatch as a separate historical attempt, and state which attempt (if any) remains the sole active authority. Distinguish Riley's graph-level disposition decision from runtime permission to stop/cancel an attempt and from any human approval gate. If authority, inactive-state evidence, or required approval is unknown or unsatisfied, hold the node and request what is missing. Resume the same Dispatch when safe; otherwise record its disposition and persist the new Dispatch ID before launch. After an upstream node completes on shared files, inspect the changed scope and rerun collision review before dispatching downstream work.
-9. **Review and reconcile.** Apply the relevant Playbook / Tool contract for review and consequential mutations. Update the Work Order and Current Work only at meaningful lifecycle boundaries.
+9. **Review and reconcile.** Apply the relevant Playbook / Tool contract for review and consequential mutations. Update Current Work and the applicable recovery artifact (including a Work Order when one exists) only at meaningful lifecycle boundaries.
 10. **Stop cleanly.** Accept, block, defer, supersede, or release every active node/dispatch; record the exact next action for anything unfinished.
 
 ## Execution-adapter contract
@@ -151,6 +151,8 @@ Treat adapter capabilities as runtime evidence, not assumptions. If a capability
 For repository work, a common mapping is:
 
 `issue or scoped workstream → WorkNode → Dispatch → branch/worktree/session → PR → validation/review Gate → disposition`
+
+A WorkNode may use the repository small-change lane when its existing authoritative surfaces already preserve enough durable state to resume it. That lane changes tracking artifacts, not orchestration membership: it does not remove the WorkNode or its authoritative Dispatch, dependencies / Gates, evidence, or disposition. A separate Work Order is unnecessary when Current Work plus the issue/PR and domain-specific artifact already own the required recovery state. Preserve existing Current Work or issue records when they have their own lifecycle; do not create duplicates merely because the Work Order is omitted.
 
 Use the repository's pinned GitHub operating contract for mutation classes, authorization, review, merge, and linked-issue completion. This Skill does not create merge permission.
 

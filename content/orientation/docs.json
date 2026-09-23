@@ -112,7 +112,7 @@
       "mutation_boundary": "authorized_update",
       "reconciliation": "change-impact-reconciliation",
       "non_triggers": [
-        "A trivial change that does not need a persistent packet",
+        "Work whose existing Current Work, issue/PR, and domain-specific artifacts already preserve sufficient execution/recovery state; use the small-change lane in docs/work-orders.md",
         "Using a Work Order as permission to mutate a target"
       ],
       "next_handoff": "Link specialized artifacts and record progress, decisions, findings, and next action."
