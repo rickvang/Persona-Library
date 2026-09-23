@@ -45,6 +45,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
     "Gather the minimum coherent source and live state before editing.",
     "Reuse still-valid evidence until a named freshness trigger occurs.",
     "Batch related mutations into reviewable checkpoints.",
+    "Edit, build, and validate in a clean working copy created from freshly fetched origin/main, then push coherent commits.",
     "Use repository/static validation before escalating to deployed-state verification.",
     "Refresh base/head/check/review/mergeability state immediately before merge."
   ],
@@ -58,8 +59,8 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "recommendedSequence": [
     "Read the issue, repository contract, relevant source, and current base in one bounded evidence pass.",
     "Define scope, success criteria, stale-state triggers, and validation layers.",
-    "Create or reuse the scoped branch, then batch coherent source changes.",
-    "Run the cheapest sufficient source/static validation; use GitHub CI for repository/build validation.",
+    "Create or reuse the scoped branch in a clean working copy, then batch coherent source changes.",
+    "Run the cheapest sufficient validation locally with the repository CI workflow commands; GitHub CI remains the required check.",
     "Open or update the pull request only when there is a coherent review checkpoint.",
     "Inspect the current PR head, checks, reviews, and threads; correct observed failures rather than speculative ones.",
     "Immediately before merge, refresh base/head, required checks, blocking review state, unresolved threads, mergeability, and linked-completion effects.",
@@ -107,6 +108,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "whyBad": [
     "No invalidation rule distinguishes stale state from reusable state.",
     "Writes and review checkpoints are fragmented instead of batched.",
+    "Without a working copy, every file change is a separate remote commit and only CI can reveal build or validation failures.",
     "Higher-cost deployment evidence is used before cheaper validation is exhausted.",
     "The agent keeps operating after useful evidence has stopped increasing."
   ],
@@ -118,6 +120,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "evidenceStatus": "validated",
   "evidence": [
     "DEC-018",
+    "DEC-024",
     "Issue #159 deployment/tool-call investigation",
     "Persona-Library GitHub operating contract",
     "Repeated repository implementation work through PR #184"

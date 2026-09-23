@@ -133,6 +133,12 @@ export function validateRileyContinuityContract({ agents, workOrders, riley, ril
   if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → Work Order → live-system hierarchy');
 }
 
+export function validateRepositoryWorkingCopyContract({ agents, workOrders }) {
+  if (!includesAll(agents, ['clean working copy', 'origin/main', 'required github checks', 'small-change lane'])) throw new Error('Root AGENTS must define the clean working-copy path, keep required GitHub checks, and route small changes to the small-change lane');
+  if (normalized(agents).includes('do not use a local checkout')) throw new Error('Root AGENTS must not restore the local-checkout ban');
+  if (!includesAll(workOrders, ['small-change lane', 'one pull request', 'checkpoint-only commit'])) throw new Error('Work Order guidance must define the small-change lane and batched progress commits');
+}
+
 export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }) {
   if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley work-graph validation requires the AI orchestrator Persona');
   const personaText = normalized([riley.behaviors, riley.needs, riley.skills, riley.implication].flat(Infinity).join(' '));
@@ -290,6 +296,7 @@ export async function validateGeneratedOutputs(context) {
     boundedRoute: context.routeGroups.get('playbooks').routes.find(route => route.id === 'bounded-parallel-implementation'),
     toolsPage: files.toolsPage
   });
+  validateRepositoryWorkingCopyContract({ agents: rootAgents, workOrders: workOrderContract });
   validateOperationalKnowledgeContract({
     operationalScenarios: context.data.operationalScenarios,
     operationalScenarioCatalog: context.data.operationalScenarioCatalog,

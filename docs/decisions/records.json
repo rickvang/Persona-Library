@@ -768,6 +768,25 @@
         "DEC-022"
       ],
       "revisit": "Operational Scenario volume, navigation, independent lifecycle, cross-owner reuse, or retrieval/index requirements can no longer be handled cleanly as relationships; or evidence shows agents routinely miss or misuse owner-scoped scenario retrieval."
+    },
+    {
+      "id": "DEC-024",
+      "status": "Applied",
+      "category": "Repository operating boundary",
+      "date": "2026-09-23",
+      "title": "Repository changes use a clean working copy, and small changes skip the Work Order",
+      "summary": "Agents make Persona-Library file changes in a clean working copy created from freshly fetched origin/main, validate locally before pushing, and batch progress commits. Small changes use a lighter lane in which the pull request is the record.",
+      "question": "How can agents avoid the per-file API commits and CI-only feedback caused by the GitHub-only rule while keeping GitHub authoritative for remote state?",
+      "decision": "Replace the ban on local checkouts, worktrees, local edits, and local Git with a clean working copy on a task branch created from freshly fetched origin/main. Agents build and validate there with the CI commands and commit only the files the change owns. GitHub stays authoritative for issues, pull requests, reviews, checks, and mergeability, and required GitHub checks still gate merge. Define a small-change lane: one pull request, one session, and no identity, Decision, shared-schema, or governance change. Small changes skip the Work Order package, the separate issue, and the Current Work row. Commit Work Order progress with the related work, and archive a completed Work Order in the pull request that finishes it.",
+      "rationale": "The GitHub-only rule from #104 prevented stale local state but forced agents to change files one API call at a time and to learn about failures only from CI. At d93a4c7, PR #200 had 50 single-file commits and 30 CI runs on its branch, PR #198 had 26 commits, PR #184 had 21, and main carries 10 hand-applied \"Generate Applications navigation\" commits. CI itself is fast (median 13 s across the 25 most recent runs), so the cost is agent turns and round trips. A working copy created from freshly fetched origin/main keeps the freshness protection without that cost, and the pinned GitHub Tool contract already treats local files as authoritative only for the checked-out tree.",
+      "alternatives": "Keep the ban and batch commits through the Git Data API; allow any existing checkout; drop Work Orders entirely; or change the reusable GitHub Tool contract. Rejected because they respectively still prevent local builds and validation, reintroduce stale-state risk, lose recovery state for interrupted multi-session work, or broaden a Persona-Library choice to every repository.",
+      "tradeoffs": "Agents must fetch before branching, rebase and re-validate when main moves, and avoid committing unrelated generated or local files. Local and CI validation can diverge if runtimes differ, so required GitHub checks remain the merge gate. Small changes leave a lighter record, so agents must move work into the full lifecycle when it grows.",
+      "affects": "AGENTS.md rules 10–12; ARCHITECTURE.md; docs/work-orders.md; docs/work-orders/README.md and archive README; content/orientation/docs.json and generated mirror; GitHub issue-implementation Operational Scenario and generated library data; repository validation; issue #203.",
+      "evidence": "Issue #203; commit counts on PRs #200, #198, and #184; the 25 most recent CI run durations on 2026-09-23; rickvang/tool-repo tools/github/ACCESS.md section 4 at 01198019e8f1520eb222dc6af2ec17bd81bc9c30; issue #196 first-pass audit.",
+      "qualifies": [
+        "DEC-018"
+      ],
+      "revisit": "Working copies cause stale-state merges or unrelated files in commits, local and CI validation diverge, small changes grow without moving to the full lifecycle, or commits per pull request and task time do not fall."
     }
   ]
 }

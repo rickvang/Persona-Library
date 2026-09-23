@@ -30,7 +30,7 @@ Do not create every file automatically. Use the smallest package that supports t
 - A project package does not grant permission to create, publish, execute, or change anything.
 - Keep synthetic participant responses, project assumptions, and unvalidated examples project-scoped.
 - If the target is another repository or external project, use its authorized workspace and record the destination in the Work Order.
-- For a trivial change, do not create a directory; record why it was not warranted.
+- For a small change, do not create a directory; see the small-change lane in [Work Orders](../work-orders.md).
 - Do not invent a Work Order ID or destination when the target is unclear.
 
 See [Work Orders](../work-orders.md) for the full contract.

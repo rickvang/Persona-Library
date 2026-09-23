@@ -7,7 +7,7 @@ Status: repository-wide active-work packet and progress-record convention.
 
 A Work Order is the current, project-scoped record for non-trivial work that is in progress. It combines the request, scope, responsible owner, evidence, decisions, phase status, gate results, handoffs, blockers, and next action so work can be resumed without replaying the entire conversation.
 
-Use a Work Order for design, research, content, Persona, Skill, Tool, prototype, documentation, repository, and implementation work when the work has more than one meaningful step or can be interrupted and resumed.
+Use a Work Order for design, research, content, Persona, Skill, Tool, prototype, documentation, repository, and implementation work when the work has more than one meaningful step or can be interrupted and resumed, unless it qualifies for the small-change lane below.
 
 A Work Order is not a transcript. Update it at the points that change what another person or agent needs to know.
 
@@ -34,7 +34,15 @@ This is a recommended layout, not a requirement to create every file. Use only t
 
 When the authorized target is another repository or external project, use that target’s workspace and record its path or URL in the Work Order. Do not copy project artifacts into this repository by default.
 
-Do not create a package directory for a trivial change. Record that the artifact home was not warranted and why. Do not invent a Work Order ID or target path when the destination is unclear.
+Do not create a package directory for a small change; see the small-change lane below. Do not invent a Work Order ID or target path when the destination is unclear.
+
+## Small-change lane
+
+A change is small when it fits in one pull request, is expected to finish in one session, and changes no Persona, Skill, Tool, Playbook, or Operating Pack identity, Decision, shared schema, or repository governance such as `AGENTS.md` or this contract.
+
+A small change needs no Work Order package, separate GitHub issue, or Current Work row. Its pull request is the record: state that the small-change lane applies, then give the scope, validation, and any follow-up. Validation, placement review, and authorization rules still apply.
+
+Move to the full lifecycle as soon as the work stops meeting these conditions, for example when it needs a second pull request, is interrupted, or widens in scope.
 
 ## Minimum contract
 
@@ -86,6 +94,8 @@ Keep entries concise. Add or revise an entry when one of these occurs:
 - a prototype, implementation, or validation result changes the next action.
 
 Do not log invented activity, synthetic answers as real observations, or repeated status messages that add no information.
+
+Commit progress entries with the related work rather than as separate commits. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state.
 
 ## Remote-tool efficiency and visible checkpoints
 
@@ -165,3 +175,5 @@ A polished artifact, a handoff, or a full-looking checklist is not completion by
 ## Archive lifecycle
 
 Active packages stay directly under `docs/work-orders/<work-order-id>/`. When a Work Order reaches a terminal status — `complete`, `no-go`, or `cancelled` — move the package to `docs/work-orders/archive/YYYY-MM/<work-order-id>/` using the month of the reliable terminal update. Archival is lifecycle classification, not deletion; archived packages are read-only historical evidence unless a later issue explicitly reopens or corrects them. Do not archive draft, active, blocked, or ready-for-review work.
+
+When merging the pull request is the last remaining repository step, record the terminal status and move the package in that pull request instead of opening an archive-only pull request; the archived record lands only when the work does.

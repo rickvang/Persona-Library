@@ -94,7 +94,7 @@ Every maintained skill declares a small change contract in its frontmatter: `ski
 
 Project context and reference routing is a Docs-owned method layered over the Work Order and UX practice. It selects tagged project lenses and reference IDs without duplicating canonical Personas, Skills, Tools, Playbooks, or project evidence. Project-specific assumptions stay in the Work Order or linked context artifact; only reviewed, generalizable lessons may be promoted to shared Docs.
 
-For non-trivial work authorized against this repository, the default project artifact home is docs/work-orders/<work-order-id>/. The Work Order indexes that package and records paths or URLs for specialized artifacts. External project work stays in the external target; trivial changes may record why a package was not warranted.
+For non-trivial work authorized against this repository, the default project artifact home is docs/work-orders/<work-order-id>/. The Work Order indexes that package and records paths or URLs for specialized artifacts. External project work stays in the external target; small changes use the small-change lane in `docs/work-orders.md`, where the pull request is the record.
 
 ## Repository placement and lifecycle
 

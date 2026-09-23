@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateRileyContinuityContract, validateRileyWorkGraphContract, validateVercelToolCatalogSurface } from './generated.mjs';
+import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateRepositoryWorkingCopyContract, validateRileyContinuityContract, validateRileyWorkGraphContract, validateVercelToolCatalogSurface } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -326,6 +326,16 @@ test('Riley continuity keeps universal Current Work orchestration, Work Orders, 
   assert.doesNotThrow(() => validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }));
   assert.throws(() => validateRileyContinuityContract({ agents, workOrders: workOrders.replace('Do not mirror volatile live state', 'Mirror all live state'), riley, rileyFlows }), /Work Order guidance/i);
   assert.throws(() => validateRileyContinuityContract({ agents: agents.replace('may operate directly', 'must route every execution through Riley'), workOrders, riley, rileyFlows }), /Root AGENTS/i);
+});
+
+
+test('Repository working copy and small-change lane replace the local-checkout ban', () => {
+  const agents = 'Make file changes in a clean working copy on a task branch created from freshly fetched origin/main. Local validation does not replace required GitHub checks. Small changes use the small-change lane in docs/work-orders.md.';
+  const workOrders = 'Small-change lane: a change is small when it fits in one pull request. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state.';
+  assert.doesNotThrow(() => validateRepositoryWorkingCopyContract({ agents, workOrders }));
+  assert.throws(() => validateRepositoryWorkingCopyContract({ agents: `${agents} Do not use a local checkout for repository work.`, workOrders }), /local-checkout ban/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ agents: agents.replace('clean working copy', 'checkout'), workOrders }), /Root AGENTS/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ agents, workOrders: workOrders.replace('checkpoint-only commit', 'commit') }), /Work Order guidance/);
 });
 
 
