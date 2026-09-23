@@ -332,12 +332,13 @@ test('Riley continuity keeps universal Current Work orchestration, Work Orders, 
 test('Repository working copy and small-change lane replace the local-checkout ban without bypassing Work Graph supervision', () => {
   const agents = 'Make file changes in a clean working copy on a task branch created from freshly fetched origin/main. Local validation does not replace required GitHub checks. Use a Work Order only for durable execution/recovery state not already held by domain-specific artifacts; otherwise use the small-change lane.';
   const workOrders = 'Small-change lane: existing authoritative surfaces already hold the durable state needed to resume the work. Small refers to tracking/recovery footprint, not importance. A Verification Queue can own deferred verification. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state. An active WorkNode keeps its authoritative Dispatch, Gates, evidence, and disposition.';
+  const architecture = 'Work Orders are optional repository-wide execution/recovery packets. Active Work Order packages stay in docs/work-orders when a dedicated execution/recovery packet is warranted.';
   const uxPractice = 'For the small-change lane, the pull request is the active work record. An active WorkNode keeps its Dispatch, Gate, evidence, and disposition.';
   const uxContextTemplate = 'Do not create this packet for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
-  const uxWorkOrderTemplate = 'Do not create this template for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
+  const uxWorkOrderTemplate = 'Use this template when a UX practice run needs a dedicated Work Order execution/recovery packet. Do not create this template for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode. When this template is warranted for repository work, keep the active Work Order under the artifact home.';
   const uxRouting = 'For the small-change lane, the pull request is the active work record and the WorkNode remains in the active Work Graph.';
   const docsReadme = 'Qualifying small repository change: the pull request may be the active repository record; preserve Current Work, Verification Queue records, and Work Graph membership when they have their own lifecycle.';
-  const args = { agents, workOrders, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme };
+  const args = { agents, workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme };
   assert.doesNotThrow(() => validateRepositoryWorkingCopyContract(args));
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: `${agents} Do not use a local checkout for repository work.` }), /local-checkout ban/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: agents.replace('clean working copy', 'checkout') }), /Root AGENTS/);
@@ -346,12 +347,15 @@ test('Repository working copy and small-change lane replace the local-checkout b
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('Verification Queue', 'work log') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('checkpoint-only commit', 'commit') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('WorkNode', 'task') }), /Work Order guidance/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, architecture: 'Work Orders are the repository-wide active-work packet and progress record for non-trivial work. Active non-trivial work stays in docs/work-orders/<work-order-id>/.' }), /Architecture/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxPractice: 'A focused small change requires a short work-order status.' }), /UX practice/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxContextTemplate: 'For a trivial change, record a short skip reason in the Work Order.' }), /UX Project Context template/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: `${workOrders} A change is small when it fits in one pull request and is expected to finish in one session.` }), /one-session small-change gate/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxPractice: `${uxPractice} Focused tier: short work-order status.` }), /UX practice must not restore/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxContextTemplate: `${uxContextTemplate} For a trivial change, record a short skip reason in the Work Order instead of creating a full packet.` }), /UX Project Context template must not restore/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxWorkOrderTemplate: `${uxWorkOrderTemplate} For a trivial change, a short note may state that a full work order was not warranted and why.` }), /UX Work Order template must not restore/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxWorkOrderTemplate: `${uxWorkOrderTemplate} Use this template as the active work packet for a non-trivial UX practice run.` }), /UX Work Order template must not restore automatic/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxWorkOrderTemplate: `${uxWorkOrderTemplate} For non-trivial work in this repository, keep the active Work Order and project-specific design artifacts under the artifact home.` }), /UX Work Order template must not route all non-trivial/);
 });
 
 

@@ -1,7 +1,7 @@
 
 # UX Work Order Template
 
-Use this template as the active work packet for a non-trivial UX practice run. It combines the initial request with concise progress records so another person or agent can resume the work. It is not a transcript, a research result, or permission to mutate an external system.
+Use this template when a UX practice run needs a dedicated Work Order execution/recovery packet. It combines the initial request with concise progress records so another person or agent can resume the work. It is not a transcript, a research result, or permission to mutate an external system.
 
 Do not create this template for a qualifying repository small-change-lane change. Its existing Current Work, pull request, issue, and domain-specific artifacts may be sufficient as the active record. If the change is already a WorkNode in an active Work Graph, preserve the WorkNode, Dispatch, Gate, evidence, and disposition contract without creating duplicate tracking artifacts. If work is interrupted or broadens, create or resume the full Work Order only when those existing surfaces no longer preserve enough execution/recovery state to resume safely.
 
@@ -32,7 +32,7 @@ Authorization is a constraint to record, not a permission granted by this docume
 - Current concrete deliverable:
 - Specialized artifact links:
 
-For non-trivial work in this repository, keep the active Work Order and project-specific design artifacts under the artifact home. Use only the files the project needs; the standard layout is described in [Work Orders](../work-orders.md).
+When this template is warranted for repository work, keep the active Work Order and project-specific design artifacts under the artifact home. Use only the files the project needs; the standard layout is described in [Work Orders](../work-orders.md).
 
 | Artifact ID | Type | Path or URL | Revision | Owner | Status | Evidence or authorization note |
 | --- | --- | --- | --- | --- | --- | --- |

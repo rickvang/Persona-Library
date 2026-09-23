@@ -133,20 +133,25 @@ export function validateRileyContinuityContract({ agents, workOrders, riley, ril
   if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → recovery artifact → live-system hierarchy');
 }
 
-export function validateRepositoryWorkingCopyContract({ agents, workOrders, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {
+export function validateRepositoryWorkingCopyContract({ agents, workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {
   if (!includesAll(agents, ['clean working copy', 'origin/main', 'required github checks', 'small-change lane', 'durable execution/recovery state', 'domain-specific artifacts'])) throw new Error('Root AGENTS must define the clean working-copy path, keep required GitHub checks, and make Work Orders conditional on unique recovery-state need');
   if (normalized(agents).includes('do not use a local checkout')) throw new Error('Root AGENTS must not restore the local-checkout ban');
   if (!includesAll(workOrders, ['small-change lane', 'existing authoritative surfaces', 'tracking/recovery footprint', 'verification queue', 'checkpoint-only commit', 'worknode', 'authoritative dispatch', 'gates', 'evidence', 'disposition'])) throw new Error('Work Order guidance must define the recovery-state-based lane, Verification Queue independence, batched progress commits, and preserve active Work Graph supervision');
+  if (!includesAll(architecture, ['optional repository-wide execution/recovery packets', 'active work order packages stay', 'dedicated execution/recovery packet is warranted'])) throw new Error('Architecture guidance must make Work Orders conditional on unique recovery-state need rather than non-triviality');
   if (!includesAll(uxPractice, ['small-change lane', 'pull request', 'active work record', 'worknode', 'dispatch', 'gate', 'evidence', 'disposition'])) throw new Error('UX practice must use the small-change pull request as the active work record without dropping Work Graph obligations');
   if (!includesAll(uxContextTemplate, ['small-change-lane', 'do not create this packet', 'pull request', 'worknode'])) throw new Error('UX Project Context template must defer qualifying small changes to the pull-request record');
-  if (!includesAll(uxWorkOrderTemplate, ['small-change-lane', 'do not create this template', 'pull request', 'worknode'])) throw new Error('UX Work Order template must not require a Work Order for the small-change lane');
+  if (!includesAll(uxWorkOrderTemplate, ['small-change-lane', 'do not create this template', 'pull request', 'worknode', 'needs a dedicated work order execution/recovery packet', 'when this template is warranted for repository work'])) throw new Error('UX Work Order template must make Work Order creation conditional on unique recovery-state need');
   if (!includesAll(uxRouting, ['small-change lane', 'pull request', 'active work record', 'worknode', 'work graph'])) throw new Error('UX routing guidance must align with the small-change lane and preserve Work Graph membership');
   if (!includesAll(docsReadme, ['qualifying small repository change', 'pull request', 'current work', 'verification queue', 'work graph'])) throw new Error('Documentation placement guidance must include the small-change authoritative-record boundary, Verification Queue continuity, and Work Graph preservation');
   const retiredSmallChangeRules = [
     [workOrders, 'is expected to finish in one session', 'Work Order guidance must not restore the one-session small-change gate'],
+    [architecture, 'work orders are the repository-wide active-work packet and progress record for non-trivial work', 'Architecture must not restore automatic Work Orders for non-trivial work'],
+    [architecture, 'active non-trivial work stays in docs/work-orders', 'Architecture placement guidance must not route all non-trivial work into Work Orders'],
     [uxPractice, 'short work-order status', 'UX practice must not restore the Work Order status requirement for focused small changes'],
     [uxContextTemplate, 'for a trivial change, record a short skip reason', 'UX Project Context template must not restore the Work Order skip note for small changes'],
-    [uxWorkOrderTemplate, 'full work order was not warranted', 'UX Work Order template must not restore the trivial-change Work Order note']
+    [uxWorkOrderTemplate, 'full work order was not warranted', 'UX Work Order template must not restore the trivial-change Work Order note'],
+    [uxWorkOrderTemplate, 'use this template as the active work packet for a non-trivial ux practice run', 'UX Work Order template must not restore automatic Work Orders for non-trivial UX work'],
+    [uxWorkOrderTemplate, 'for non-trivial work in this repository, keep the active work order', 'UX Work Order template must not route all non-trivial repository work into a Work Order']
   ];
   for (const [text, phrase, message] of retiredSmallChangeRules) if (normalized(text).includes(phrase)) throw new Error(message);
 }
@@ -279,9 +284,10 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
-  const [rootAgents, workOrderContract, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme] = await Promise.all([
+  const [rootAgents, workOrderContract, architecture, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme] = await Promise.all([
     context.readFile('AGENTS.md'),
     context.readFile('docs/work-orders.md'),
+    context.readFile('ARCHITECTURE.md'),
     context.readFile('docs/playbooks/bounded-parallel-implementation.md'),
     context.readFile('docs/operational-knowledge.md'),
     context.readFile('.agents/skills/tool-discovery-and-safe-execution/SKILL.md'),
@@ -316,6 +322,7 @@ export async function validateGeneratedOutputs(context) {
   validateRepositoryWorkingCopyContract({
     agents: rootAgents,
     workOrders: workOrderContract,
+    architecture,
     uxPractice,
     uxContextTemplate,
     uxWorkOrderTemplate,
