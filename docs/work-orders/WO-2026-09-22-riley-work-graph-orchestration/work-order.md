@@ -36,7 +36,7 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 | Phase | State | Evidence / next action |
 | --- | --- | --- |
-| 1. Capability and schema | in progress | Add callable Skill, Riley application, workflow/guidance, relationships, route, representative Operational Scenario, and focused validator. |
+| 1. Capability and schema | implemented / PR #198 | Callable Skill, Riley application, workflow/guidance, relationships, Skills route, Operational Scenario, orientation registration, and focused validator are implemented. Repository validation run #97 passed all substantive gates on the corrected Phase 1 sources. |
 | 2. GitHub execution semantics | planned | Reuse pinned GitHub contract; prove issue/node/dispatch/branch/PR mapping and collision fallback. |
 | 3. Runtime-aware dispatch | planned | Prove at least one current execution adapter without embedding provider syntax in the portable Skill. |
 | 4. Recovery and resumption | planned | Prove interrupted/stale dispatch recovery from durable identifiers and live state. |
@@ -52,8 +52,8 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 ## Current checkpoint
 
-[C01 | 2026-09-22] Issue #197 created from CW-44 research, placement resolved to a distinct Riley Skill that composes existing orchestration capabilities, branch created from current main, and Phase 1 implementation started.
+[C02 | 2026-09-22] Phase 1 foundation implemented in PR #198. Cursor approved; Codex review identified validator/scenario/generated-bundle/Work-Order issues. The first three were corrected, repository validation run #97 passed authored/generated validation, regression tests, whitespace, and generated-output freshness, and this checkpoint reconciles the remaining Work Order drift. Issue #197 remains open for runtime-aware dispatch and interrupted-recovery proof.
 
 ## Next action
 
-Finish the authored Phase 1 source changes, create a reviewable PR, use repository CI as the execution/validation surface, correct any generated-output or contract failures, and keep #197 open until the runtime and recovery proof phases are demonstrated.
+Land PR #198 after its post-reconciliation CI and review/merge preflight remain clean. Then continue #197 / CW-44 with Phase 2–4 proof work: GitHub node→dispatch→branch/PR semantics, at least one live supervised runtime dispatch when a suitable runtime is exposed, and interrupted/stale-dispatch recovery from durable identifiers rather than transcript memory.
