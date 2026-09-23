@@ -48,6 +48,23 @@ This shows that a fresh agent can reconstruct the prior run and recovery decisio
 
 This demonstrates a post-persistence interruption, source rehydration, and continuation of the same returned runtime identity. The collaboration API does not expose a separate stable Dispatch ID, so the proof can cite only the returned agent identity and observed lifecycle. The separate no-history audit demonstrated reconstruction by another fresh agent, but did not itself send the continuation.
 
+## Change Impact Reconciliation
+
+- **Status:** complete for the bounded CW-44 evidence change; the PR's repository validation and human review gates remain pending.
+- **Initiating contract:** Work Graph Orchestration Skill (`external_execution`, `multi-agent-supervision`, reconciliation `change-impact-reconciliation`). One universal read-only reconciliation pass was run; no recursion.
+- **Scope checked:** CW-44 Current Work, this Work Order, issue #197, the Work Graph Skill, Skills orientation route, Work Graph operational-scenario source and index, `content/library-model.js`, `ARCHITECTURE.md`, `scripts/validate-content.mjs`, and the generated scenario bundle. Search was bounded to the declared route, named owners, and repository dependency guidance; it was not a full repository-wide relationship graph audit.
+- **Impacts:**
+  - Work Graph operational scenario — **qualifies / extends**, high confidence: live dispatch and a persisted-identity same-agent interrupt/resume are now evidenced; fresh-agent reconstruction is also evidenced. The scenario confidence and evidence list were updated. Its `candidate` evidence status remains because repository validation and final conformance have not passed, and distinct-agent takeover/replacement remains unproven.
+  - CW-44 Work Order and Current Work — **extends**, high confidence: durable checkpoints now link the proof and keep the work active.
+  - Issue #197 — **qualifies**, high confidence: runtime proof advances Phases 3–4 but does not satisfy all acceptance criteria; it remains open.
+  - Work Graph Skill, Skills route, scenario index, and canonical relationship model — **confirms / unrelated**, high confidence: no capability identity, route, owner, or typed relationship changed; no Skill or index update was needed.
+- **Required updates:** updated the Work Graph scenario evidence/confidence and the generated `dist/data/library-data.js` bundle; updated the Work Order and CW-44 checkpoint.
+- **Optional follow-up:** exercise a different-agent takeover and explicit runtime replacement/supersession only if a future live condition makes same-identity recovery unavailable or unsafe.
+- **Unchanged checked:** Skill contract and relationships; Skills route and scenario index; issue acceptance checklist and open state; unrelated Persona, Tool, Operating Pack, and workflow sources were outside this bounded execution-record change.
+- **Generated outputs:** the scenario's generated data bundle was refreshed with the authored scenario. No page/module outputs were affected. GitHub CI has not run yet; it is the required repository validation check.
+- **Blockers and limits:** runtime returns an agent name but no separate stable Dispatch/session ID. The replacement path remains unproven. PR CI, review, and final Riley conformance are still required.
+- **Next action:** open the reviewable PR, inspect CI/review evidence, complete the Riley conformance case, and keep #197 open until all criteria pass.
+
 ## Remaining limits and next gates
 
 - A different agent taking over an interrupted runtime without any child transcript was not exercised; the fresh agent independently reconstructed the checkpoint and next action.
