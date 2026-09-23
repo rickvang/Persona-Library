@@ -37,9 +37,9 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 | Phase | State | Evidence / next action |
 | --- | --- | --- |
 | 1. Capability and schema | implemented / PR #198 | Callable Skill, Riley application, workflow/guidance, relationships, Skills route, Operational Scenario, orientation registration, and focused validator are implemented. Repository validation run #97 passed all substantive gates on the corrected Phase 1 sources. |
-| 2. GitHub execution semantics | implemented / proof branch | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill now distinguishes bounded corrections and CI/review events from a genuinely new Dispatch identity and defines collision/sequential fallback. |
-| 3. Runtime-aware dispatch | planned | Prove at least one current execution adapter without embedding provider syntax in the portable Skill. |
-| 4. Recovery and resumption | partial repository proof | PR #198 demonstrates read-before-retry through successive CI/review failures without duplicate branch/PR creation, plus post-merge issue-state reconciliation. A true interrupted child-runtime Dispatch replacement/resume remains unproven. |
+| 2. GitHub execution semantics | implemented / PR #199 | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill distinguishes bounded corrections from new Dispatch identity and defines collision/sequential fallback. |
+| 3. Runtime-aware dispatch | demonstrated / durable proof in progress | A real supervised, read-only Codex child-agent path ran as `/root/cw44_runtime_eval`; its bounded result is recorded in [runtime-dispatch-proof.md](runtime-dispatch-proof.md). The collaboration API exposed no separate Dispatch UUID, thread/session, branch, or worktree for this run. |
+| 4. Recovery and resumption | partial; transcript-independent gate pending | One interrupted turn was continued on the same agent identity after a fresh source read. However, that first interruption preceded persistence of the returned identity, so the supervisor supplied it from live context. A durable-record-only recovery/replacement test remains necessary. |
 | 5. Validation and learning | planned | Run repository validation, a Riley conformance case, and change-impact reconciliation. |
 
 ## Non-goals
@@ -52,8 +52,8 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 ## Current checkpoint
 
-[C03 | 2026-09-22] Phase 1 merged in PR #198 as `777144e3130f08b636ee231ec781696a18fe16a6`; final run #98 passed and all review threads were resolved. GitHub linked-completion closed #197 prematurely; Riley re-read live issue state and reopened it. Phase 2 now uses that real run as `github-execution-proof.md`, clarifying that commits/CI/review corrections stay inside one Dispatch while abandonment/supersession/reassignment creates a new Dispatch.
+[C07 | 2026-09-22] Current `main` is `577a830a6befc659f83844eaaa4fbe3c8cae9ef2`; issue #197 is open. The first live child-agent runtime was `/root/cw44_runtime_eval`, routed through `collaboration.spawn_agent`, then followed, interrupted while running, and continued on the same identity after source rehydration. Its read-only result supports Phase 3. The first recovery is explicitly limited because the runtime identity was not in durable records before that interruption. The new proof branch `codex/cw44-runtime-dispatch-proof` records the identity, sources, lifecycle, and limitation before a fresh recovery test.
 
 ## Next action
 
-Land the Phase 2 proof/contract refinement after repository validation and review. Then continue #197 / CW-44 with the remaining Phase 3–4 evidence: at least one live supervised child-runtime Dispatch when a suitable runtime is actually exposed, followed by a true interrupted/stale runtime resume or explicit supersession case from durable identifiers rather than transcript memory.
+Read the saved Work Order, runtime proof, and Skill together with fresh Current Work, issue/main, and live runtime state. Then test recovery without child transcript context: explicitly disposition the interrupted attempt before any replacement, dispatch one bounded read-only replacement only if the runtime reference cannot safely resume, record the newly returned identity, and preserve #197 as open. Complete repository validation, change-impact reconciliation, and Riley conformance before making any issue-completion claim.
