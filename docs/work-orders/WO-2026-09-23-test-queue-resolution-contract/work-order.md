@@ -59,29 +59,29 @@ Test Queue Status describes execution state. Decision describes what happens to 
 
 ### Phase 1 — Extend the queue contract
 
-- [ ] Add the six fields to the Test Queue database.
-- [ ] Define the Decision options: Pending, Close Issue, Additional Work, Requeue, Cancelled.
-- [ ] Document the distinction between execution Status and work Decision.
-- [ ] Preserve the distinction between Unavailable and Failed.
+- [x] Add the six fields to the Test Queue database.
+- [x] Define the Decision options: Pending, Close Issue, Additional Work, Requeue, Cancelled.
+- [x] Document the distinction between execution Status and work Decision.
+- [x] Preserve the distinction between Unavailable and Failed.
 
 ### Phase 2 — Migrate TQ-40-001
 
-- [ ] Add preconditions for metered OpenAI access, authorization, supported runtime path, and repository state.
-- [ ] Add the bounded procedure for capture, redaction, storage, validation, and review.
-- [ ] Add environment and implementation version metadata.
-- [ ] Add the resolution rule and set Decision to Pending.
-- [ ] Add reviewer and preserve existing pass/fail/requeue criteria.
+- [x] Add preconditions for metered OpenAI access, authorization, supported runtime path, and repository state.
+- [x] Add the bounded procedure for capture, redaction, storage, validation, and review.
+- [x] Add environment and implementation version metadata.
+- [x] Add the resolution rule and set Decision to Pending.
+- [x] Add reviewer and preserve existing pass/fail/requeue criteria.
 
 ### Phase 3 — Lifecycle and handoff
 
-- [ ] Define the state transition rules in the queue record guidance.
-- [ ] Require a linked owner and next action for Failed and Unavailable outcomes.
-- [ ] Keep Current Work to a compact queue pointer and status.
+- [x] Define the state transition rules in the queue record guidance.
+- [x] Require a linked owner and next action for Failed and Unavailable outcomes.
+- [x] Keep Current Work to a compact queue pointer and status.
 
 ### Phase 4 — Pilot review
 
-- [ ] Have a cold reader determine how to run TQ-40-001 and what each outcome means.
-- [ ] Record ambiguity as a schema or row correction.
+- [x] Have a cold reader determine how to run TQ-40-001 and what each outcome means.
+- [x] Record ambiguity as a schema or row correction.
 - [ ] Close issue #195 only after the measured-runtime row passes realtime review.
 
 ## Dependencies
@@ -96,10 +96,12 @@ Test Queue Status describes execution state. Decision describes what happens to 
 
 Current implementation evidence is sourced from the merged PR and repository checks. The measured-runtime sample is unknown and remains queued. No provider claim may be inferred from static estimates or unavailable subscription telemetry.
 
+The constrained cold-reader review is recorded in [validation.md](https://github.com/rickvang/Persona-Library/blob/codex/test-queue-resolution-contract/docs/work-orders/WO-2026-09-23-test-queue-resolution-contract/validation.md). The handoff contract passed; runtime proof was deliberately not run because this Work Order does not authorize a metered provider call.
+
 ## Stopping condition
 
 Stop after the queue schema and TQ-40-001 are self-contained, the cold-reader review is recorded, and the Work Order links the validation evidence. Leave issue #195 open until the measured-runtime acceptance criteria pass.
 
 ## Next action
 
-Apply Phase 1 to the Notion Test Queue schema, then migrate TQ-40-001 before requesting authorization for its metered run.
+Review this Work Order and [validation.md](https://github.com/rickvang/Persona-Library/blob/codex/test-queue-resolution-contract/docs/work-orders/WO-2026-09-23-test-queue-resolution-contract/validation.md) in the PR. After review, request separate explicit authorization for one bounded metered runtime sample; then record the result in TQ-40-001 and resolve #195 according to the contract.
