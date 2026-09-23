@@ -154,7 +154,7 @@ export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog
   const route = (skillsRoute?.routes || []).find(item => item.id === 'work-graph-orchestration');
   if (!route || route.target !== 'work-graph-orchestration' || route.package_path !== '.agents/skills/work-graph-orchestration') throw new Error('Skills orientation must route work-graph orchestration to the callable package');
 
-  if (!includesAll(skillPackage, ['one authoritative active dispatch per worknode', 'handoff', 'supervised delegation', 'parallelize only', 'read-before-retry', 'execution-adapter contract', 'does not persist a second canonical task database'])) throw new Error('Callable work-graph Skill is missing required orchestration invariants or adapter boundary');
+  if (!includesAll(skillPackage, ['one authoritative active dispatch per worknode', 'handoff', 'supervised delegation', 'parallelize only', 'read-before-retry', 'execution-adapter contract', 'does not persist a second canonical task database', 'bounded correction', 'not new dispatches', 'new dispatch identity', 'abandoned', 'superseded', 'reassigned'])) throw new Error('Callable work-graph Skill is missing required orchestration invariants, repository dispatch identity, or adapter boundary');
 }
 
 export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }) {
