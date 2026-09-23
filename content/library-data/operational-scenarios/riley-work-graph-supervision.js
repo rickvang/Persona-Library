@@ -104,9 +104,9 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
     "CW-44 external orchestration pattern review",
     "Persona-Library issue #197 implementation plan",
     "Existing Riley Current Work continuity and bounded-parallel implementation contracts",
-    "CW-44 runtime-dispatch-proof.md: live dispatch, context-free reconstruction, and same-identity interrupted resume"
+    "CW-44 runtime-dispatch-proof.md: live dispatch, context-free reconstruction, same-identity interrupt/resume, and fresh-agent takeover of an interrupted WorkNode from durable state without its transcript"
   ],
-  "confidence": "Working synthesis; one live supervised dispatch and same-identity interrupted resume are evidenced, and Repository validation run #104 passed on the recorded CW-44 checkpoint. Final Riley conformance, distinct-agent takeover, and runtime replacement/supersession remain unproven.",
+  "confidence": "Working synthesis; one live supervised dispatch, same-identity interrupt/resume, and fresh-agent graph-level takeover of a bounded WorkNode from durable state without its interrupted attempt's transcript are evidenced. Repository validation run #116 passed on the recorded CW-44 checkpoint. Final Riley conformance and provider-level Dispatch/session identity or runtime lifecycle controls remain unproven.",
   "status": "active",
   "version": "1.0",
   "updated": "2026-09-22"
