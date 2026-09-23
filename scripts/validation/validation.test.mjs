@@ -336,7 +336,7 @@ test('Repository working copy and small-change lane replace the local-checkout b
   const uxContextTemplate = 'Do not create this packet for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
   const uxWorkOrderTemplate = 'Do not create this template for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
   const uxRouting = 'For the small-change lane, the pull request is the active work record and the WorkNode remains in the active Work Graph.';
-  const docsReadme = 'Qualifying small repository change: the pull request is the record and an existing WorkNode remains in the Work Graph.';
+  const docsReadme = 'Qualifying small repository change: the pull request may be the active repository record; preserve Current Work, Test Queue records, and Work Graph membership when they have their own lifecycle.';
   const args = { agents, workOrders, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme };
   assert.doesNotThrow(() => validateRepositoryWorkingCopyContract(args));
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: `${agents} Do not use a local checkout for repository work.` }), /local-checkout ban/);
