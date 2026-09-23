@@ -13,9 +13,9 @@ This is a workflow/reference guide applied through existing Persona records. It 
 
 ## Artifact decision and boundaries
 
-The active work artifact is a project-scoped UX work order. It contains the request, scope, evidence, selected or generated participants, questions, decisions, phase status, gate results, handoffs, and next action.
+For work outside the repository small-change lane, the active work artifact is a project-scoped UX Work Order. A qualifying small change uses its pull request as the active work record instead. If that change is already a WorkNode in an active Work Graph, the pull-request record does not remove its WorkNode, Dispatch, Gate, evidence, or disposition obligations.
 
-The IA-to-UI traceability matrix remains a separate linked artifact. The work order records what happened and what needs to happen next; the matrix proves that the final design covers the important goals, content, structure, states, responsive rules, accessibility conditions, and acceptance criteria. Keeping them separate prevents a timeline from becoming a substitute for design coverage.
+The IA-to-UI traceability matrix remains a separate linked artifact. The active work record captures what happened and what needs to happen next; the matrix proves that the final design covers the important goals, content, structure, states, responsive rules, accessibility conditions, and acceptance criteria. Keeping them separate prevents a timeline from becoming a substitute for design coverage.
 
 Use the existing repository layers as follows:
 
@@ -25,7 +25,7 @@ Use the existing repository layers as follows:
 - The shared problem-context mechanism is used when multiple Personas genuinely need shared coordination.
 - Decisions preserve durable alternatives, rationale, tradeoffs, affected surfaces, and revisit conditions.
 - Change Impact Reconciliation checks downstream effects after a durable source, record, decision, prototype promotion, or generated artifact change.
-- A work order records authorization constraints but never grants permission for a mutation, publication, account action, or external communication.
+- The active work record (small-change pull request or Work Order) records authorization constraints but never grants permission for a mutation, publication, account action, or external communication.
 
 Relevant repository sources:
 
@@ -41,13 +41,13 @@ Relevant repository sources:
 
 ## Project context and reference routing
 
-Start non-trivial UX work with the [Project Context and Reference Routing method](project-context-and-reference-routing.md) and record the result in the [UX Work Order](ux-work-order-template.md).
+Start non-trivial UX work with the [Project Context and Reference Routing method](project-context-and-reference-routing.md). Record the result in the [UX Work Order](ux-work-order-template.md) unless the repository small-change lane applies; for a qualifying small change, keep the compact routing rationale in the pull request.
 
 The routing layer keeps the method adaptive:
 
 1. Infer the smallest project profile from the request and available sources.
 2. Select one primary project lens and only the conditional gates that fit.
-3. Load the relevant Persona, Skill, reference, and example IDs into the Work Order.
+3. Load the relevant Persona, Skill, reference, and example IDs into the active work record.
 4. Revise the route when evidence changes the project type, risk, uncertainty, or workflow.
 
 The universal quality baseline still applies. A focused route may reduce artifact breadth, but it may not silently omit a relevant state, accessibility condition, evidence limitation, or authorization boundary.
@@ -66,7 +66,7 @@ Use the practice for:
 - a design where visual polish has previously hidden structural or implementation weaknesses;
 - a high-consequence action, approval, publication, account, payment, privacy, or accessibility-sensitive flow.
 
-Use only the affected slices for a small change in a well-understood workflow. Record why the broader practice was not warranted.
+Use only the affected slices for a small change in a well-understood workflow. Record why the broader practice was not warranted in the active work record; when the small-change lane applies, that record is the pull request.
 
 Do not use this practice to:
 
@@ -102,7 +102,7 @@ Do not merge Camille Ortiz and Jordan Lee into an invented Expert UX Designer re
 - Use the smallest relevant Persona set. If several named Personas need shared state and handoffs, use the shared problem-context and collaboration Playbook.
 - If no relevant Persona exists, generate a temporary project-scoped synthetic participant as described in Phase 2. Do not add it to canonical library data by implication.
 
-Routing is conditional rather than a permanent lead assignment. A settled task may start with Camille; an unsettled task starts with Jordan. The work order records the actual owner and the reason.
+Routing is conditional rather than a permanent lead assignment. A settled task may start with Camille; an unsettled task starts with Jordan. The active work record records the actual owner and the reason.
 
 ## Proportionality
 
@@ -110,7 +110,7 @@ Choose a tier before design work begins.
 
 | Tier | Typical case | Required minimum |
 | --- | --- | --- |
-| focused | Small change in a known workflow. | Goal and affected task; existing content/evidence check; affected IA, visual, state, responsive, and accessibility review; focused implementation QA; short work-order status. |
+| focused | Small change in a known workflow. | Goal and affected task; existing content/evidence check; affected IA, visual, state, responsive, and accessibility review; focused implementation QA; short active-work status in the small-change pull request or Work Order. |
 | feature | New feature, flow, or uncertain structure. | Full contextual discovery, content fixture, IA artifact, visual and state design, risk-based prototype, evaluation record, traceability matrix, handoff, and QA. |
 | consequential | Irreversible, high-risk, multi-role, regulated, accessibility-sensitive, or system-wide change. | Feature tier plus real-user research when feasible, explicit permissions and recovery, Layout Lab for contested structure, broader accessibility and outcome checks, and named decision/reconciliation records. |
 
@@ -131,7 +131,7 @@ Start with the smallest useful statement of the work:
 - constraints, authorization boundary, and stopping condition;
 - proportionality tier and responsible owner.
 
-Deliver a work-order header and a one-paragraph problem frame. Name the outcome that will be handed off: a decision, IA model, prototype, design specification, implementation acceptance packet, or other concrete artifact.
+Deliver an active-work-record header and a one-paragraph problem frame. Use the pull request for the small-change lane and the Work Order otherwise. Name the outcome that will be handed off: a decision, IA model, prototype, design specification, implementation acceptance packet, or other concrete artifact.
 
 Decision criteria:
 
@@ -147,7 +147,7 @@ Anti-patterns:
 - Expanding the work because a template contains more fields.
 - Leaving authorization or the completion boundary implied.
 
-Gate: pass only when the work order identifies the task, scope, evidence status, owner, stopping condition, and minimum deliverable. Otherwise pause for clarification or record a no-go.
+Gate: pass only when the active work record identifies the task, scope, evidence status, owner, stopping condition, and minimum deliverable. Otherwise pause for clarification or record a no-go.
 
 ### 2. Contextual workflow and tool discovery
 
@@ -189,7 +189,7 @@ Temporary synthetic-participant path:
 - Require each answer to state its basis and label it synthetic_assumption, assumption, recommendation, or unknown.
 - Use the answers to expose missing states, terminology risks, competing priorities, and questions for real users.
 - Do not call the answers observed, validated, user feedback, demand, prevalence, satisfaction, task time, or stakeholder agreement.
-- Keep the generated profile in the work order or a linked project artifact. A permanent Persona requires a separate authorized creation decision and evidence review.
+- Keep the generated profile in the active work record or a linked project artifact. A permanent Persona requires a separate authorized creation decision and evidence review.
 
 A useful synthetic prompt has this shape:
 
@@ -367,7 +367,7 @@ Minimum checks:
 - every unknown has an owner or validation path;
 - no visual claim is supported only by preference.
 
-The matrix is not a substitute for the work order, and the work order is not a substitute for the matrix.
+The matrix is not a substitute for the active work record, and the active work record is not a substitute for the matrix.
 
 ## Worked examples
 
@@ -479,14 +479,14 @@ For a browse, filter, compare, and detail surface, the focused path may use the 
 - Conflicting workflow accounts: preserve both, identify the decision affected, and choose a reversible next step.
 - Missing tool or permission: record the requirement and safe fallback; do not claim execution.
 - Layout Lab comparison invalid: freeze one content fixture and rerun only the affected comparison.
-- Failed gate: return to the smallest responsible phase and update the work order.
+- Failed gate: return to the smallest responsible phase and update the active work record.
 - Unauthorized mutation: stop at proposal or draft and request the missing authorization and target.
-- Interrupted work: resume from the last work-order revision and explicit next action.
+- Interrupted work: the small-change lane no longer applies; create or resume the Work Order, then continue from the last proven record and explicit next action.
 - Historical comparison unavailable: mark parity unknown; do not downgrade current quality work solely because the old package is missing.
 
 ## Completion checklist
 
-- [ ] Work order has goal, scope, evidence status, owner, tier, authorization boundary, and stopping condition.
+- [ ] Active work record has goal, scope, evidence status, owner, tier, authorization boundary, and stopping condition.
 - [ ] Contextual workflow and tool discovery was run, or skipped with a reason.
 - [ ] Existing or generated participants are relevant and their evidence status is visible.
 - [ ] Generated participants are project-scoped and not treated as real users.

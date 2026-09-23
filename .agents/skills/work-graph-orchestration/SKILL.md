@@ -152,6 +152,8 @@ For repository work, a common mapping is:
 
 `issue or scoped workstream → WorkNode → Dispatch → branch/worktree/session → PR → validation/review Gate → disposition`
 
+A WorkNode may use the repository small-change lane when it qualifies. That lane changes tracking artifacts, not orchestration membership: it does not remove the WorkNode or its authoritative Dispatch, dependencies / Gates, evidence, or disposition. The pull request may be the node's execution record without creating a separate issue, Work Order, or Current Work row; the parent Work Graph keeps the supervisory context.
+
 Use the repository's pinned GitHub operating contract for mutation classes, authorization, review, merge, and linked-issue completion. This Skill does not create merge permission.
 
 Before parallel repository dispatch, confirm:

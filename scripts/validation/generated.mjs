@@ -133,10 +133,15 @@ export function validateRileyContinuityContract({ agents, workOrders, riley, ril
   if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → Work Order → live-system hierarchy');
 }
 
-export function validateRepositoryWorkingCopyContract({ agents, workOrders }) {
+export function validateRepositoryWorkingCopyContract({ agents, workOrders, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {
   if (!includesAll(agents, ['clean working copy', 'origin/main', 'required github checks', 'small-change lane'])) throw new Error('Root AGENTS must define the clean working-copy path, keep required GitHub checks, and route small changes to the small-change lane');
   if (normalized(agents).includes('do not use a local checkout')) throw new Error('Root AGENTS must not restore the local-checkout ban');
-  if (!includesAll(workOrders, ['small-change lane', 'one pull request', 'checkpoint-only commit'])) throw new Error('Work Order guidance must define the small-change lane and batched progress commits');
+  if (!includesAll(workOrders, ['small-change lane', 'one pull request', 'checkpoint-only commit', 'worknode', 'authoritative dispatch', 'gates', 'evidence', 'disposition'])) throw new Error('Work Order guidance must define the small-change lane, batched progress commits, and preserve active Work Graph supervision');
+  if (!includesAll(uxPractice, ['small-change lane', 'pull request', 'active work record', 'worknode', 'dispatch', 'gate', 'evidence', 'disposition'])) throw new Error('UX practice must use the small-change pull request as the active work record without dropping Work Graph obligations');
+  if (!includesAll(uxContextTemplate, ['small-change-lane', 'do not create this packet', 'pull request', 'worknode'])) throw new Error('UX Project Context template must defer qualifying small changes to the pull-request record');
+  if (!includesAll(uxWorkOrderTemplate, ['small-change-lane', 'do not create this template', 'pull request', 'worknode'])) throw new Error('UX Work Order template must not require a Work Order for the small-change lane');
+  if (!includesAll(uxRouting, ['small-change lane', 'pull request', 'active work record', 'worknode', 'work graph'])) throw new Error('UX routing guidance must align with the small-change lane and preserve Work Graph membership');
+  if (!includesAll(docsReadme, ['qualifying small repository change', 'pull request', 'worknode', 'work graph'])) throw new Error('Documentation placement guidance must include the small-change pull-request record and Work Graph boundary');
 }
 
 export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }) {
@@ -160,7 +165,7 @@ export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog
   const route = (skillsRoute?.routes || []).find(item => item.id === 'work-graph-orchestration');
   if (!route || route.target !== 'work-graph-orchestration' || route.package_path !== '.agents/skills/work-graph-orchestration') throw new Error('Skills orientation must route work-graph orchestration to the callable package');
 
-  if (!includesAll(skillPackage, ['one authoritative active dispatch per worknode', 'handoff', 'supervised delegation', 'parallelize only', 'read-before-retry', 'execution-adapter contract', 'does not persist a second canonical task database', 'bounded correction', 'not new dispatches', 'new dispatch identity', 'abandoned', 'superseded', 'reassigned'])) throw new Error('Callable work-graph Skill is missing required orchestration invariants, repository dispatch identity, or adapter boundary');
+  if (!includesAll(skillPackage, ['one authoritative active dispatch per worknode', 'handoff', 'supervised delegation', 'parallelize only', 'read-before-retry', 'execution-adapter contract', 'does not persist a second canonical task database', 'bounded correction', 'not new dispatches', 'new dispatch identity', 'abandoned', 'superseded', 'reassigned', 'small-change lane', 'tracking artifacts', 'orchestration membership'])) throw new Error('Callable work-graph Skill is missing required orchestration invariants, repository dispatch identity, small-change boundary, or adapter boundary');
 }
 
 export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }) {
@@ -267,13 +272,18 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
-  const [rootAgents, workOrderContract, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill] = await Promise.all([
+  const [rootAgents, workOrderContract, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme] = await Promise.all([
     context.readFile('AGENTS.md'),
     context.readFile('docs/work-orders.md'),
     context.readFile('docs/playbooks/bounded-parallel-implementation.md'),
     context.readFile('docs/operational-knowledge.md'),
     context.readFile('.agents/skills/tool-discovery-and-safe-execution/SKILL.md'),
-    context.readFile('.agents/skills/work-graph-orchestration/SKILL.md')
+    context.readFile('.agents/skills/work-graph-orchestration/SKILL.md'),
+    context.readFile('docs/ux/expert-ux-design-practice.md'),
+    context.readFile('docs/ux/project-context-template.md'),
+    context.readFile('docs/ux/ux-work-order-template.md'),
+    context.readFile('docs/ux/project-context-and-reference-routing.md'),
+    context.readFile('docs/README.md')
   ]);
   validateRileyContinuityContract({
     agents: rootAgents,
@@ -296,7 +306,15 @@ export async function validateGeneratedOutputs(context) {
     boundedRoute: context.routeGroups.get('playbooks').routes.find(route => route.id === 'bounded-parallel-implementation'),
     toolsPage: files.toolsPage
   });
-  validateRepositoryWorkingCopyContract({ agents: rootAgents, workOrders: workOrderContract });
+  validateRepositoryWorkingCopyContract({
+    agents: rootAgents,
+    workOrders: workOrderContract,
+    uxPractice,
+    uxContextTemplate,
+    uxWorkOrderTemplate,
+    uxRouting,
+    docsReadme
+  });
   validateOperationalKnowledgeContract({
     operationalScenarios: context.data.operationalScenarios,
     operationalScenarioCatalog: context.data.operationalScenarioCatalog,

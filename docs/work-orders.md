@@ -42,6 +42,8 @@ A change is small when it fits in one pull request, is expected to finish in one
 
 A small change needs no Work Order package, separate GitHub issue, or Current Work row. Its pull request is the record: state that the small-change lane applies, then give the scope, validation, and any follow-up. Validation, placement review, and authorization rules still apply.
 
+Small-change status reduces artifact overhead; it does not remove existing orchestration. If the change is already a WorkNode in an active Riley Work Graph, keep that WorkNode and its authoritative Dispatch, dependencies and Gates, evidence requirements, and final disposition. The parent Current Work / Work Order remains the durable orchestration context; do not create a second Work Order, Current Work row, or issue for the small node unless another rule requires it.
+
 Move to the full lifecycle as soon as the work stops meeting these conditions, for example when it needs a second pull request, is interrupted, or widens in scope.
 
 ## Minimum contract

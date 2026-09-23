@@ -1,8 +1,8 @@
 # Project Context Template
 
-Use this as a linked project-scoped artifact with the [UX Work Order](ux-work-order-template.md). It is a routing and evidence packet, not a transcript, user research result, Persona record, or permission grant.
+Use this as a linked project-scoped artifact with the [UX Work Order](ux-work-order-template.md) for work outside the repository small-change lane. It is a routing and evidence packet, not a transcript, user research result, Persona record, or permission grant.
 
-For a trivial change, record a short skip reason in the Work Order instead of creating a full packet.
+Do not create this packet for a qualifying small-change-lane change. The pull request is the active work record; if the change is already a WorkNode in an active Work Graph, preserve its WorkNode, Dispatch, Gate, evidence, and disposition obligations there instead of creating duplicate project-state artifacts.
 
 ## Header
 
@@ -79,7 +79,7 @@ An inferred value controls routing only. Do not present it as a verified require
 
 ## 4. Workflow and tool context
 
-Use for new, unfamiliar, or consequential work. For a known small change, record a skip reason.
+Use for new, unfamiliar, or consequential work. For a known small change outside the small-change lane, record a skip reason in the Work Order; for the small-change lane, record it in the pull request.
 
 | Step ID | Trigger or action | Information needed | Tool or system | Handoff or interruption | Failure or recovery | Evidence status |
 | --- | --- | --- | --- | --- | --- | --- |

@@ -3,7 +3,7 @@
 
 Use this template as the active work packet for a non-trivial UX practice run. It combines the initial request with concise progress records so another person or agent can resume the work. It is not a transcript, a research result, or permission to mutate an external system.
 
-For a trivial change, a short note may state that a full work order was not warranted and why.
+Do not create this template for a qualifying repository small-change-lane change. Its pull request is the active work record. If the change is already a WorkNode in an active Work Graph, preserve the WorkNode, Dispatch, Gate, evidence, and disposition contract without creating a second Work Order or Current Work row. If the work is interrupted or otherwise leaves the small-change lane, create or resume the full Work Order before continuing.
 
 ## Header
 
@@ -38,7 +38,7 @@ For non-trivial work in this repository, keep the active Work Order and project-
 | --- | --- | --- | --- | --- | --- | --- |
 | ART-001 | Work Order / context / evidence / IA / design / traceability / validation / prototype link |  |  |  | draft / active / reviewed / approved / blocked / complete |  |
 
-If the target is another authorized project, record that project’s path or URL instead. If the work is trivial, record why a project artifact home was not warranted. The Work Order records the destination and constraints; it does not grant permission to create or publish files.
+If the target is another authorized project, record that project’s path or URL instead. For work using this template, record why any expected project artifact home was not warranted. The Work Order records the destination and constraints; it does not grant permission to create or publish files.
 
 ## Project context and reference routing
 
@@ -128,7 +128,7 @@ State the task that must be traceable through content, IA, interaction, and acce
 
 ## 2. Contextual workflow and tool discovery
 
-Complete this section for new, unfamiliar, or consequential workflows. For a known small change, record a skip reason.
+Complete this section for new, unfamiliar, or consequential workflows. For a known, low-complexity change that is using the full lifecycle, record a skip reason.
 
 ### Research decision
 
