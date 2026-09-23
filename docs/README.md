@@ -10,8 +10,8 @@ This directory contains current, reusable guidance and project-scoped work recor
 | Callable repository Skill package | .agents/skills/<skill>/ | Keep the package namespace flat until loader support changes. |
 | Current reusable system or domain guidance | docs/<subject>/ | Keep current truth here; put rationale in Decisions. |
 | Durable Decision records | docs/decisions/records.json | Append the rationale, alternatives, affected surfaces, status, and revisit condition; `content/decisions-page.html` plus `scripts/build-decisions.mjs` generate the Decisions page from this single source. |
-| Active non-trivial project state | docs/work-orders/<id>/ | Keep one Work Order as the progress record and link specialized artifacts. |
-| Qualifying small repository change | pull request | Use the small-change lane: the pull request is the record, with no separate Work Order, issue, or Current Work row. If it is already a WorkNode in an active Work Graph, keep that graph membership and its Dispatch / Gate / evidence / disposition contract. |
+| Active project state needing unique recovery detail | docs/work-orders/<id>/ | Use a Work Order only when Current Work plus the issue/PR and domain artifact do not already preserve enough execution/recovery state. |
+| Qualifying small repository change | existing authoritative surfaces | Use the small-change lane when a separate Work Order would duplicate state already held by Current Work, the issue/PR, or a domain-specific artifact. A pull request may be the active repository record; preserve existing issues, Current Work, Test Queue records, and Work Graph membership when they have their own lifecycle. |
 | Terminal Work Order package | docs/work-orders/archive/YYYY-MM/<id>/ | Preserve history; archive only after a terminal status is recorded. |
 | Evaluation fixtures and results | eval/ | Record conditions and evidence without implying live provider capability. |
 | Isolated experiments | the existing prototype-owned path | Keep prototypes out of live records until explicit promotion. |
