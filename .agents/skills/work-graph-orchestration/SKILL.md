@@ -76,7 +76,7 @@ A Dispatch is one execution attempt for one WorkNode. Record:
 - last proven evidence;
 - disposition.
 
-Only one Dispatch may be authoritative for a node at a time. Retry or reassignment creates a new dispatch ID and explicitly supersedes or closes the previous attempt.
+Only one Dispatch may hold active authority for a node at a time; this is an ownership limit, not a limit on historical attempts. Keep every attempt under its own dispatch ID with its own lifecycle state and disposition. Before retry or reassignment, inspect live runtime state and record evidence that the prior attempt can no longer act on the node. Name who may stop or supersede it and whether human authorization is required; when required, name the approver and approval evidence. If the prior attempt's authority cannot be confirmed ended, or required approval evidence is absent, hold the node as blocked or waiting and do not dispatch a replacement. Otherwise, explicitly disposition the old Dispatch, then persist the new Dispatch ID before launching it.
 
 ### Gate
 
@@ -128,7 +128,7 @@ Every settled Dispatch receives a disposition:
 5. **Create bounded dispatches.** Give each executor one node, the minimum necessary context, a stop condition, expected evidence, and explicit permission boundary. Record returned IDs rather than predicting them.
 6. **Supervise by events and evidence.** Use runtime lifecycle signals when available, but verify completion through the WorkNode evidence contract. Do not poll without a freshness reason.
 7. **Handle gates and blockers.** Pause the affected node, preserve independent lanes when safe, and surface consequential human decisions instead of answering them on the user's behalf.
-8. **Recover safely.** On timeout, stale state, failure, or interruption, inspect the existing dispatch and live references first. Resume when safe; otherwise supersede and create a new dispatch.
+8. **Recover safely.** On timeout, stale state, failure, or interruption, inspect the existing Dispatch and live references first. Establish from live evidence that it can no longer act on the node; if the adapter cannot establish this, pause or block the node instead of issuing a replacement. Every recovery recommendation must name the stable WorkNode, preserve each Dispatch as a separate historical attempt, and state which attempt (if any) remains the sole active authority. Distinguish Riley's graph-level disposition decision from runtime permission to stop/cancel an attempt and from any human approval gate. If authority, inactive-state evidence, or required approval is unknown or unsatisfied, hold the node and request what is missing. Resume the same Dispatch when safe; otherwise record its disposition and persist the new Dispatch ID before launch. After an upstream node completes on shared files, inspect the changed scope and rerun collision review before dispatching downstream work.
 9. **Review and reconcile.** Apply the relevant Playbook / Tool contract for review and consequential mutations. Update the Work Order and Current Work only at meaningful lifecycle boundaries.
 10. **Stop cleanly.** Accept, block, defer, supersede, or release every active node/dispatch; record the exact next action for anything unfinished.
 
