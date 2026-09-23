@@ -81,6 +81,10 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 [C22 | 2026-09-22] The bounded change-impact review aligned the Operational Scenario's confidence statement with the Riley/Noor PASS in its authored source and generated bundle only. Scenario identity, status, route, and relationships stayed unchanged; the runtime proof and issue acceptance scope remain the linked evidence. Repository validation run #126 passed on prior proof-record head `8d3423f92cf4395f965e38401c1fa4919bcc555b`; the scenario and generated-output alignment plus this checkpoint require latest-head validation.
 
+
+
+[C23 | 2026-09-22] Repository validation run #129 failed only at `Verify generated output is committed`: the authored scenario said “without its interrupted attempt's transcript,” while the generated mirror said “without the interrupted attempt's transcript.” Authored-content validation, repository tests, and whitespace checks passed. The generated wording is now corrected to match the authored source; the previous latest-head failure remains recorded until a new run passes.
+
 ## Next action
 
-Verify the latest-head repository validation after C22, then refresh PR #200's head/base, checks, reviews and linked issue state, and merge only if all gates remain clear. After merge, reconcile issue #197 and Current Work, then move this terminal Work Order into `docs/work-orders/archive/2026-09/`. Provider-level runtime lifecycle remains unobservable.
+Verify the latest-head repository validation after C23, then refresh PR #200's head/base, checks, reviews and linked issue state, and merge only if all gates remain clear. After merge, reconcile issue #197 and Current Work, then move this terminal Work Order into `docs/work-orders/archive/2026-09/`. Provider-level runtime lifecycle remains unobservable.
