@@ -1,7 +1,7 @@
 # Runtime Dispatch Proof — CW-44
 
-**Status:** Phase 3 demonstrated; one post-persistence interrupt and same-identity continuation demonstrated; full Phase 4 remains partial.  
-**Work Order:** [WO-2026-09-22-riley-work-graph-orchestration](work-order.md)  
+**Status:** Phase 3 demonstrated; one post-persistence interrupt and same-identity continuation demonstrated; full Phase 4 remains partial.
+**Work Order:** [WO-2026-09-22-riley-work-graph-orchestration](work-order.md)
 **Issue:** [#197 — Add Riley work-graph orchestration capability](https://github.com/rickvang/Persona-Library/issues/197) (open; keep open)
 
 ## Source checkpoint
