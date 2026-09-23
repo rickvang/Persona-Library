@@ -1,8 +1,8 @@
 # Runtime Dispatch Proof — CW-44
 
-**Status:** Phase 3 demonstrated; Phase 4 includes same-identity continuation and a fresh-agent, transcript-free takeover of a bounded WorkNode. Provider-level runtime lifecycle remains opaque; final Riley conformance is pending.
+**Status:** Phase 3 demonstrated; Phase 4 includes same-identity continuation and a fresh-agent, transcript-free takeover of a bounded WorkNode. Riley/Noor conformance passed and CW-44 is complete. Provider-level runtime lifecycle remains opaque.
 **Work Order:** [WO-2026-09-22-riley-work-graph-orchestration](work-order.md)
-**Issue:** [#197 — Add Riley work-graph orchestration capability](https://github.com/rickvang/Persona-Library/issues/197) (open; keep open)
+**Issue:** [#197 — Add Riley work-graph orchestration capability](https://github.com/rickvang/Persona-Library/issues/197) (closed after all 10 acceptance criteria were verified)
 
 ## Source checkpoint
 
@@ -100,7 +100,7 @@ This demonstrates transcript-free, cross-agent recovery for the bounded WorkNode
 - **Blockers and limits:** the runtime returns agent names but no provider Dispatch/session UUID or runtime-level cancel/resume state. Graph-level cross-agent takeover and D1→D2 supersession are evidenced for a bounded read-only WorkNode. Final Riley conformance remains required; inspect the latest PR-head checks and any new review feedback.
 - **Next action:** complete the representative Riley conformance case, address any scoped review findings, and keep #197 open while checking the latest PR-head evidence.
 
-## Remaining limits and next gates
+## Remaining limits and next gates (recorded before final conformance)
 
 - Fresh D2 took over this bounded WorkNode after D1 was interrupted. It reconstructed objective, dependencies, route, state, and evidence from the Work Order and live sources without D1's transcript. This demonstrates graph-level WorkNode recovery; D2 did not inspect hidden provider runtime state.
 - Graph-level replacement/supersession was exercised: D2 became authoritative after D1 was interrupted. Provider-level cancellation or runtime replacement remains untested because the collaboration API exposes no provider Dispatch/session identifier or lifecycle introspection.
@@ -116,3 +116,13 @@ Following the repository's Mara Okoye placement review and Architecture guidance
 - **Independent observer:** a separate low-reasoning Noor observer reviewed the captured response and returned PASS. It cited the explicit three-item repository-owner review condition that addressed the prior REVIEW finding. The observer made no repository or runtime claims.
 - **Limits:** the Riley task inspected no live repository, CI, runtime, or browser state. Chrome had only `about:blank` and no target URL. Provider-issued Dispatch/session identity and runtime-level lifecycle controls remain unavailable; the demonstrated recovery contract is graph-level.
 - **Disposition:** focused Riley/Noor conformance passes. Overall CW-44 remains pending the updated PR-head validation, merge, and tracker reconciliation.
+
+
+## CW-44 closeout — 2026-09-22
+
+- PR #200 merged to `main` as `90fac9c8a96b1acbced8c78546ebc93697cad50a`.
+- Repository validation run [#131](https://github.com/rickvang/Persona-Library/actions/runs/35819255470) succeeded on final PR #200 head `3ee9c4febc99616b42d2d0d9dbe7ead0e78ad525`; prior run #129's generated-output mismatch was corrected.
+- Issue [#197](https://github.com/rickvang/Persona-Library/issues/197) is closed with all 10 acceptance criteria checked.
+- Riley/Noor conformance passed; the exact task and observer evidence are recorded in the checkpoints above.
+- Current Work CW-44 is Done / Reference. The complete Work Order package is archived at `docs/work-orders/archive/2026-09/WO-2026-09-22-riley-work-graph-orchestration/`.
+- Provider-issued Dispatch/session identity and runtime-level cancel/resume controls remain unavailable; this packet proves graph-level supervision and recovery only.
