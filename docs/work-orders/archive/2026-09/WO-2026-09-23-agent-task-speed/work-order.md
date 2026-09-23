@@ -32,7 +32,7 @@ Cut agent task time while GitHub stays the authority for remote state.
 1. **`AGENTS.md` rule 12:** replace the local-checkout ban with a clean working copy created from freshly fetched `origin/main`.
    - Required GitHub checks still gate merge.
    - When no working copy exists, the GitHub integration is still the path.
-2. **Small-change lane** in `docs/work-orders.md`: one pull request, one session, and no identity, Decision, shared-schema, or governance change. The pull request is the record.
+2. **Work-Order necessity / small-change lane** in `docs/work-orders.md`: create a Work Order only when existing Current Work, issue/PR, and domain-specific artifacts do not already preserve enough durable execution/recovery state. One PR or one session are heuristics rather than gates; shared-schema, Decision, or governance changes may use the lighter lane when their authoritative surfaces already own the required state.
 3. **Batched progress:**
    - Progress entries are committed with the related work.
    - Checkpoint-only commits are used only when an interruption would lose resumable state.
@@ -58,7 +58,7 @@ This is a repository-defined review using Mara Okoye's placement contract, not a
 - **Ownership:**
   - `AGENTS.md` owns the repository operating rule.
   - `docs/work-orders.md` owns the lane and the lifecycle.
-  - DEC-024 appends the rationale without rewriting DEC-018.
+  - DEC-024 appends the rationale, qualifies DEC-018 and the earlier Work-Order assumptions in DEC-021 / DEC-022, and preserves Work Orders where they add unique recovery state.
   - The GitHub issue-implementation Operational Scenario keeps its owner recipe.
 - **Pinned contract:** the `rickvang/tool-repo` GitHub contract is unchanged. Section 4 of its `ACCESS.md` already separates local truth from remote truth.
 
@@ -67,12 +67,13 @@ This is a repository-defined review using Mara Okoye's placement contract, not a
 | Surface | Classification | Disposition |
 |---|---|---|
 | `AGENTS.md` rules 10–12 | Extends and qualifies | Updated |
-| `docs/work-orders.md` use rule, lane, progress, archive | Extends | Updated |
+| `docs/work-orders.md` use rule, recovery-state lane, Test Queue boundary, progress, archive | Extends | Updated |
 | `docs/work-orders/README.md`, archive README, `ARCHITECTURE.md` | Qualifies the "trivial" wording | Updated |
 | `content/orientation/docs.json` `work-order-start` non-trigger | Qualifies | Updated; mirror regenerated |
 | GitHub issue-implementation Operational Scenario | Extends | Updated; `dist/data/library-data.js` regenerated |
 | DEC-018 | Qualified by DEC-024 | Unchanged; listed in DEC-024 `qualifies` |
-| DEC-019 standing authorization; DEC-021 and DEC-022 Current Work | Unrelated | Unchanged; a small change is not a substantial workstream |
+| DEC-021 / DEC-022 Work Order hierarchy | Qualified by DEC-024 | Current Work remains the durable cross-agent index; a Work Order is now explicitly optional when issue/PR/domain artifacts already preserve sufficient recovery state |
+| DEC-019 standing authorization | Unrelated | Unchanged |
 | Tool-use recipes that already allow a local checkout | Confirms | Unchanged |
 | Archived Work Orders | Unrelated | Historical; unchanged |
 
