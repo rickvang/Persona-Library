@@ -6,7 +6,8 @@
 - Orchestration owner: Riley Morgan / `ai-orchestrator`
 - Current Work: CW-44 — Riley — work graph orchestration capability
 - GitHub issue: #197 — Add Riley work-graph orchestration capability
-- Branch: `feat/issue-197-riley-work-graph-orchestration`
+- Phase 1 implementation branch: `feat/issue-197-riley-work-graph-orchestration`
+- Current proof branch: `codex/cw44-runtime-dispatch-proof`
 - Base at start: `c9b24363fd24ab63f7376fc4ff5a7106c6268ac2`
 - Request mode: update
 - Authorization: requester asked to kick off CW-44 with Riley; Persona-Library standing completion authorization applies to the scoped repository implementation unless later narrowed.
