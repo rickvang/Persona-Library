@@ -18,7 +18,7 @@ if (command === 'evaluate') {
   const resultPath = process.argv[3];
   if (!resultPath) throw new Error('Usage: node eval/run.mjs evaluate <result.json>');
   const result = JSON.parse(await readFile(path.resolve(resultPath), 'utf8'));
-  const evaluation = evaluateResult(result, cases);
+  const evaluation = evaluateResult(result, cases, { taxonomy: usageTaxonomy });
   console.log(JSON.stringify(evaluation, null, 2));
   process.exit(evaluation.verdict === 'PASS' ? 0 : 1);
 }
@@ -41,7 +41,7 @@ if (command === 'scan-results') {
       }
       continue;
     }
-    evaluations.push({ file: entry.name, fixture_id: payload.fixture_id, ...evaluateResult(payload, cases) });
+    evaluations.push({ file: entry.name, fixture_id: payload.fixture_id, ...evaluateResult(payload, cases, { taxonomy: usageTaxonomy }) });
   }
   console.log(JSON.stringify({ summary: summarize(evaluations), evaluations }, null, 2));
   process.exit(evaluations.some(item => item.verdict === 'REVIEW') ? 1 : 0);
