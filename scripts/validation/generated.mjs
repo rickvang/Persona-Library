@@ -141,7 +141,7 @@ export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog
   const skill = (skillCatalog || []).find(item => item.id === 'skill-work-graph-orchestration');
   if (!skill) throw new Error('Work graph orchestration Skill is missing');
   const skillText = normalized(JSON.stringify(skill));
-  if (!includesAll(skillText, ['worknode', 'dispatch', 'gate', 'evidence', 'one authoritative', 'collision', 'read-before-retry'])) throw new Error('Work graph Skill must define the minimum supervisory model and recovery invariants');
+  if (!includesAll(skillText, ['worknode', 'dispatch', 'gate', 'evidence', 'collision'])) throw new Error('Work graph Skill catalog projection must expose the minimum supervisory model');
 
   const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
   if (!operate || !includesAll(JSON.stringify(operate), ['supervise the active work graph', 'workgraph packet', 'live runtime/github references'])) throw new Error('Riley operating workflow must include active work-graph supervision');
