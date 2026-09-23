@@ -3,7 +3,7 @@
 
 Use this template as the active work packet for a non-trivial UX practice run. It combines the initial request with concise progress records so another person or agent can resume the work. It is not a transcript, a research result, or permission to mutate an external system.
 
-Do not create this template for a qualifying repository small-change-lane change. Its pull request is the active work record. If the change is already a WorkNode in an active Work Graph, preserve the WorkNode, Dispatch, Gate, evidence, and disposition contract without creating a second Work Order or Current Work row. If the work is interrupted or otherwise leaves the small-change lane, create or resume the full Work Order before continuing.
+Do not create this template for a qualifying repository small-change-lane change. Its existing Current Work, pull request, issue, and domain-specific artifacts may be sufficient as the active record. If the change is already a WorkNode in an active Work Graph, preserve the WorkNode, Dispatch, Gate, evidence, and disposition contract without creating duplicate tracking artifacts. If work is interrupted or broadens, create or resume the full Work Order only when those existing surfaces no longer preserve enough execution/recovery state to resume safely.
 
 ## Header
 
