@@ -132,6 +132,34 @@
           "source of truth"
         ]
       }
+    },
+    {
+      "id": "scenario-riley-work-graph-supervision",
+      "title": "Supervise several implementation lanes without losing authoritative ownership",
+      "ownerType": "skill",
+      "ownerId": "skill-work-graph-orchestration",
+      "status": "active",
+      "path": "content/library-data/operational-scenarios/riley-work-graph-supervision.js",
+      "match": {
+        "phrases": [
+          "orchestrate multiple agents",
+          "work graph",
+          "multiple branches and prs",
+          "coordinate current tasks",
+          "supervise delegated work"
+        ],
+        "keywords": [
+          "orchestration",
+          "agents",
+          "branches",
+          "pull requests",
+          "dependencies",
+          "parallel",
+          "dispatch",
+          "recovery",
+          "current work"
+        ]
+      }
     }
   ]
 }
