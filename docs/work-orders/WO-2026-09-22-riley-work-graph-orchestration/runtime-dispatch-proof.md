@@ -21,7 +21,7 @@ Dispatch IDs are supervisor-assigned work-graph identities. The Codex collaborat
 | `CW44-P3-REHYDRATE-N1` | `CW44-P3-REHYDRATE-N1-D1` | `/root/cw44_recovery_rehydrate` | Separate context-free reconstruction audit; completed; reconstructed the checkpoint but did not take over or resume an interrupted runtime. |
 | `CW44-P4-N1` | `CW44-P4-N1-D1` | `/root/cw44_phase4_recovery` | Returned runtime identity was persisted before interruption; same identity resumed and completed; partial recovery evidence. |
 | `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D1` | `/root/cw44_cross_takeover_d1` | Interrupted after identity persisted; supervisor confirmed prior status was running. |
-| `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D2` | pending | Allocated after D1 interruption and persisted before replacement dispatch. |
+| `CW44-P4-TAKEOVER-N1` | `CW44-P4-TAKEOVER-N1-D2` | `/root/cw44_cross_takeover_d2` | Running; fresh agent dispatched from durable state after D1 interruption. |
 
 ## Phase 3 WorkNode — `CW44-P3-N1`
 
@@ -69,8 +69,8 @@ This demonstrates a post-persistence interruption, source rehydration, and conti
 - **Dependency:** existing Phase 4 same-identity recovery evidence; this node does not mutate Persona-Library sources.
 - **Route / boundary:** Codex collaboration child agents; read-only inspection of this Work Order, the Work Graph Skill, issue #197, and PR #200.
 - **Graph Dispatch D1:** `CW44-P4-TAKEOVER-N1-D1`, allocated before dispatch; returned runtime identity `/root/cw44_cross_takeover_d1` persisted while running.
-- **Graph Dispatch D2:** `CW44-P4-TAKEOVER-N1-D2`, allocated and persisted after D1 interruption; ready for a fresh, transcript-free agent.
-- **Current state:** D1 `/root/cw44_cross_takeover_d1` is interrupted (interrupt call returned `previous_status: running`). D2 is the only authoritative active attempt and must rehydrate from this Work Order and live sources without D1's transcript.
+- **Graph Dispatch D2:** `CW44-P4-TAKEOVER-N1-D2`, allocated before dispatch; fresh runtime identity `/root/cw44_cross_takeover_d2` persisted while running.
+- **Current state:** D1 `/root/cw44_cross_takeover_d1` is interrupted (interrupt call returned `previous_status: running`). D2 `/root/cw44_cross_takeover_d2` is the sole authoritative active attempt; it was given only durable source references and must rehydrate without D1's transcript.
 
 ## Change Impact Reconciliation
 
