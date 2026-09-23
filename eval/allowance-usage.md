@@ -22,7 +22,7 @@ The first implementation accepts normalized observations from:
 
 The repository does not scrape private account UI. Adapters normalize captured values and provenance; they do not sign in, navigate settings, buy credits, use banked resets, or make API calls.
 
-OpenAI documents that included Work/Codex usage can depend on model, task complexity, context, reasoning, speed, and tools, and that applicable surfaces may share an allowance. It also documents that the usage dashboard can take a short time to update. Those product facts are reasons to record model/task metadata, update-lag caveats, and concurrent-usage caveats rather than infer a hidden exact ledger.
+OpenAI documents that included Work/Codex usage can depend on model, task complexity, context, reasoning, speed, and tools, and that applicable surfaces may share an allowance in [Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan%28.pdf). It also documents that the usage dashboard can take a short time to update in [How banked Codex resets work](https://help.openai.com/en/articles/20001498-how-banked-codex-resets-work). Those product facts are reasons to record model/task metadata, update-lag caveats, and concurrent-usage caveats rather than infer a hidden exact ledger.
 
 ## Snapshot shape
 
@@ -102,6 +102,15 @@ Each comparable window is classified independently:
 Do not coerce an unavailable or reset-crossing observation into a number. Do not treat `below_resolution` as zero consumption.
 
 ## Commands
+
+Create a local session from task metadata and a sanitized pre-task snapshot, then finish it with a post-task snapshot:
+
+```text
+node eval/allowance-usage.mjs start <task.json> <before-snapshot.json> <session.json>
+node eval/allowance-usage.mjs finish <session.json> <after-snapshot.json> <observation.json>
+```
+
+The session/observation paths are caller-selected; keeping them outside Git is appropriate until the final observation has been reviewed and explicitly authorized for repository evidence.
 
 Validate and classify one sanitized observation:
 

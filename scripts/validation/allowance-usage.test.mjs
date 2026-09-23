@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { buildAllowanceReport, computeAllowanceMeasurement, validateAllowanceObservation } from '../../eval/allowance-usage.mjs';
+import { buildAllowanceReport, completeAllowanceSession, computeAllowanceMeasurement, createAllowanceSession, validateAllowanceObservation } from '../../eval/allowance-usage.mjs';
 import { normalizeCodexStatusSnapshot } from '../../eval/adapters/codex-status.mjs';
 import { normalizeSettingsUsageSnapshot } from '../../eval/adapters/settings-usage.mjs';
 
@@ -13,6 +13,7 @@ const task = (overrides = {}) => ({
   reasoning_level: 'medium',
   orchestration: 'riley',
   route_id: 'skill-package-maintenance',
+  skill_id: 'persona-library-orientation',
   started_at: '2026-09-23T10:00:00Z',
   completed_at: '2026-09-23T10:05:00Z',
   ...overrides
@@ -95,6 +96,7 @@ test('report computes statistics only from clean comparable measured samples', (
   assert.equal(window.outcome_counts.below_resolution, 1);
   assert.equal(window.by_reasoning.medium.measured_delta.count, 1);
   assert.equal(window.by_reasoning.high.measured_delta.count, 1);
+  assert.equal(window.by_skill['persona-library-orientation'].measured_delta.count, 2);
 });
 
 test('Codex status adapter preserves observable units and provenance', () => {
@@ -123,9 +125,20 @@ test('Settings usage adapter preserves credits instead of relabeling them as tok
   assert.equal(normalized.windows[0].value, 120);
 });
 
-test('raw prompt or account identifiers are not required by the allowance contract', () => {
-  const record = observation(used(20), used(21));
-  assert.deepEqual(validateAllowanceObservation(record), { valid: true, errors: [] });
+test('start/finish helpers create a complete observation without private prompt data', () => {
+  const before = snapshot('2026-09-23T09:59:00Z', [remaining(80)]);
+  const session = createAllowanceSession({ task_id: 'session-task', task_class: 'review', surface: 'codex', model: 'test-model' }, before, { startedAt: '2026-09-23T10:00:00Z' });
+  const after = snapshot('2026-09-23T10:06:00Z', [remaining(78)]);
+  const record = completeAllowanceSession(session, after, { completedAt: '2026-09-23T10:05:00Z' });
+  assert.equal(computeAllowanceMeasurement(record).windows[0].delta, 2);
   assert.equal('prompt' in record, false);
   assert.equal('account_id' in record, false);
+});
+
+test('sensitive raw evidence fields are rejected rather than committed accidentally', () => {
+  const record = observation(used(20), used(21));
+  record.task.account_id = 'private-account';
+  const validation = validateAllowanceObservation(record);
+  assert.equal(validation.valid, false);
+  assert.ok(validation.errors.some(error => error.includes('account_id')));
 });

@@ -1,4 +1,4 @@
-import { readFile, readdir, stat } from 'node:fs/promises';
+import { readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,6 +8,18 @@ export const WINDOW_MODES = ['used', 'remaining'];
 const nonempty = value => typeof value === 'string' && value.trim().length > 0;
 const finiteNonnegative = value => typeof value === 'number' && Number.isFinite(value) && value >= 0;
 const validTime = value => nonempty(value) && !Number.isNaN(Date.parse(value));
+const FORBIDDEN_EVIDENCE_KEYS = new Set(['prompt', 'raw_prompt', 'account_id', 'project_id', 'api_key', 'credentials', 'conversation', 'conversation_text', 'raw_status', 'raw_trace']);
+
+function findForbiddenKeys(value, pathPrefix = '') {
+  if (!value || typeof value !== 'object') return [];
+  const errors = [];
+  for (const [key, child] of Object.entries(value)) {
+    const path = pathPrefix ? `${pathPrefix}.${key}` : key;
+    if (FORBIDDEN_EVIDENCE_KEYS.has(key)) errors.push(`Allowance evidence must not contain sensitive/raw field ${path}`);
+    errors.push(...findForbiddenKeys(child, path));
+  }
+  return errors;
+}
 
 function percentile(values, fraction) {
   if (!values.length) return null;
@@ -75,6 +87,7 @@ export function validateAllowanceObservation(observation) {
     const check = validateAllowanceSnapshot(snapshot);
     for (const error of check.errors) errors.push(`${name}: ${error}`);
   }
+  errors.push(...findForbiddenKeys(observation));
   const flags = observation.flags || {};
   for (const field of ['concurrent_usage_possible', 'update_lag_possible']) {
     if (flags[field] !== undefined && typeof flags[field] !== 'boolean') errors.push(`flags.${field} must be boolean when present`);
@@ -189,7 +202,8 @@ export function buildAllowanceReport(observations) {
       by_surface_model: groupStats(group, row => `${row.task.surface}/${row.task.model || '(unknown)'}`),
       by_reasoning: groupStats(group, row => row.task.reasoning_level || '(unknown)'),
       by_orchestration: groupStats(group, row => row.task.orchestration || '(unknown)'),
-      by_route: groupStats(group, row => row.task.route_id || '(unknown)')
+      by_route: groupStats(group, row => row.task.route_id || '(unknown)'),
+      by_skill: groupStats(group, row => row.task.skill_id || '(unknown)')
     };
   }
   return {
@@ -200,6 +214,43 @@ export function buildAllowanceReport(observations) {
     window_outcome_counts: outcomeCounts(rows),
     windows
   };
+}
+
+export function createAllowanceSession(taskInput, before, { startedAt } = {}) {
+  const beforeCheck = validateAllowanceSnapshot(before);
+  if (!beforeCheck.valid) throw new Error(beforeCheck.errors.join('; '));
+  if (!taskInput || typeof taskInput !== 'object') throw new Error('Task metadata must be an object.');
+  for (const field of ['task_id', 'task_class', 'surface']) if (!nonempty(taskInput[field])) throw new Error(`Task metadata requires ${field}`);
+  const task = { ...taskInput, started_at: taskInput.started_at || startedAt || new Date().toISOString() };
+  if (!validTime(task.started_at)) throw new Error('Task started_at must be an ISO-compatible timestamp.');
+  const session = {
+    schema_version: '1.0',
+    record_type: 'allowance-task-session',
+    task,
+    before,
+    flags: taskInput.flags || {}
+  };
+  delete session.task.flags;
+  const sensitive = findForbiddenKeys(session);
+  if (sensitive.length) throw new Error(sensitive.join('; '));
+  return session;
+}
+
+export function completeAllowanceSession(session, after, { completedAt } = {}) {
+  if (!session || session.record_type !== 'allowance-task-session') throw new Error('Allowance session must have record_type allowance-task-session.');
+  const afterCheck = validateAllowanceSnapshot(after);
+  if (!afterCheck.valid) throw new Error(afterCheck.errors.join('; '));
+  const observation = {
+    schema_version: '1.0',
+    record_type: 'allowance-task-observation',
+    task: { ...session.task, completed_at: session.task.completed_at || completedAt || new Date().toISOString() },
+    before: session.before,
+    after,
+    flags: session.flags || {}
+  };
+  const validation = validateAllowanceObservation(observation);
+  if (!validation.valid) throw new Error(validation.errors.join('; '));
+  return observation;
 }
 
 async function collectJsonFiles(target) {
@@ -227,6 +278,26 @@ export async function loadAllowanceObservations(targets) {
 const invoked = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (invoked) {
   const command = process.argv[2];
+  if (command === 'start') {
+    const [taskFile, beforeFile, sessionFile] = process.argv.slice(3);
+    if (!taskFile || !beforeFile || !sessionFile) throw new Error('Usage: node eval/allowance-usage.mjs start <task.json> <before-snapshot.json> <session.json>');
+    const taskInput = JSON.parse(await readFile(path.resolve(taskFile), 'utf8'));
+    const before = JSON.parse(await readFile(path.resolve(beforeFile), 'utf8'));
+    const session = createAllowanceSession(taskInput, before);
+    await writeFile(path.resolve(sessionFile), `${JSON.stringify(session, null, 2)}\n`, 'utf8');
+    console.log(JSON.stringify(session, null, 2));
+    process.exit(0);
+  }
+  if (command === 'finish') {
+    const [sessionFile, afterFile, observationFile] = process.argv.slice(3);
+    if (!sessionFile || !afterFile || !observationFile) throw new Error('Usage: node eval/allowance-usage.mjs finish <session.json> <after-snapshot.json> <observation.json>');
+    const session = JSON.parse(await readFile(path.resolve(sessionFile), 'utf8'));
+    const after = JSON.parse(await readFile(path.resolve(afterFile), 'utf8'));
+    const observation = completeAllowanceSession(session, after);
+    await writeFile(path.resolve(observationFile), `${JSON.stringify(observation, null, 2)}\n`, 'utf8');
+    console.log(JSON.stringify(computeAllowanceMeasurement(observation), null, 2));
+    process.exit(0);
+  }
   if (command === 'check') {
     const file = process.argv[3];
     if (!file) throw new Error('Usage: node eval/allowance-usage.mjs check <observation.json>');
@@ -242,5 +313,5 @@ if (invoked) {
     console.log(JSON.stringify({ source_files: loaded.files, ...buildAllowanceReport(loaded.observations) }, null, 2));
     process.exit(0);
   }
-  throw new Error('Usage: node eval/allowance-usage.mjs <check|report> ...');
+  throw new Error('Usage: node eval/allowance-usage.mjs <start|finish|check|report> ...');
 }
