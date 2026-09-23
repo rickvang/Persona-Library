@@ -41,7 +41,7 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 | 2. GitHub execution semantics | implemented / PR #199 | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill distinguishes bounded corrections from new Dispatch identity and defines collision/sequential fallback. |
 | 3. Runtime-aware dispatch | demonstrated / proof branch | A real supervised, read-only Codex child-agent path is recorded as supervisor-assigned graph Dispatch `CW44-P3-N1-D1` in [runtime-dispatch-proof.md](runtime-dispatch-proof.md); `/root/cw44_runtime_eval` is its runtime reference, and the collaboration API exposed no provider Dispatch UUID, session, branch, or worktree. |
 | 4. Recovery and resumption | demonstrated at graph level; provider lifecycle remains opaque | `runtime-dispatch-proof.md` records same-identity continuation after interruption and a fresh low-reasoning agent taking over a separately interrupted WorkNode from the durable Work Order with no child transcript. Supervisor-assigned D2 became authoritative after D1 interruption. The adapter exposes no provider Dispatch/session UUID or runtime-level cancel/resume state. |
-| 5. Validation and learning | conformance pass; final validation pending | Change Impact Reconciliation and lifecycle evidence are recorded. Riley's representative conformance response now has an independent Noor PASS; inspect the latest-head check after this checkpoint update, then merge and reconcile linked tracking. |
+| 5. Validation and learning | conformance pass; final validation pending | Change Impact Reconciliation now records the focused scenario-confidence update and generated mirror. Riley's representative conformance response has an independent Noor PASS; validate the latest head, then merge and reconcile linked tracking. |
 
 ## Non-goals
 
@@ -77,6 +77,10 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 [C21 | 2026-09-22] Repository validation run #125 passed on C20 head `3f78965f709dee3f4ccfc5af4eab4c1d0bc1597d`. This checkpoint records that result; inspect the validation triggered by C21 on the resulting branch head, then refresh review/linkage and merge #200 if all gates remain clear.
 
+
+
+[C22 | 2026-09-22] The bounded change-impact review aligned the Operational Scenario's confidence statement with the Riley/Noor PASS in its authored source and generated bundle only. Scenario identity, status, route, and relationships stayed unchanged; the runtime proof and issue acceptance scope remain the linked evidence. Repository validation run #126 passed on prior proof-record head `8d3423f92cf4395f965e38401c1fa4919bcc555b`; the scenario and generated-output alignment plus this checkpoint require latest-head validation.
+
 ## Next action
 
-Verify the latest-head repository validation triggered by C21, then refresh PR #200's current head/base, checks, reviews and linked issue state, and merge only if all gates remain clear. After merge, reconcile issue #197 and Current Work, then move this terminal Work Order into `docs/work-orders/archive/2026-09/`. Provider-level runtime lifecycle remains unobservable.
+Verify the latest-head repository validation after C22, then refresh PR #200's head/base, checks, reviews and linked issue state, and merge only if all gates remain clear. After merge, reconcile issue #197 and Current Work, then move this terminal Work Order into `docs/work-orders/archive/2026-09/`. Provider-level runtime lifecycle remains unobservable.
