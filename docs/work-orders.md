@@ -108,8 +108,8 @@ While the Verification Queue record is `Queued`, `Ready`, `Running`, `Review`, o
 Resolve the label as follows:
 
 - **Passed** — remove the label and close the source issue as completed when all remaining acceptance criteria are satisfied.
-- **Failed / Additional Work** — remove the label because the issue is no longer verification-only; create or link remediation Current Work when active coordination is needed, without automatically reopening the historical implementation workstream.
-- **Cancelled** — remove the label and reconcile the source issue to the explicit cancellation/product decision rather than implying successful verification.
+- **Failed / Additional Work** — remove the label because the issue is no longer verification-only as soon as the accepted result determines that additional implementation/remediation is required, whether or not remediation work has been activated yet. Create or link remediation Current Work when active coordination is needed, without automatically reopening the historical implementation workstream.
+- **Cancelled** — remove the label only when no other linked Verification Queue requirement remains pending. If another required verification is still Queued, Ready, Running, Review, or Unavailable, keep the label. Reconcile cancelled requirements to the explicit cancellation/product decision rather than implying successful verification.
 
 Do not apply this label to ordinary implementation-in-progress, generic blocked work, PR review, or issues that merely happen to have tests. Labels should add lifecycle information that GitHub's open/closed state does not already express.
 
