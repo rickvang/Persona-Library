@@ -40,9 +40,9 @@ Do not create a package directory when the work does not need a unique execution
 
 A change qualifies for the small-change lane when its **existing authoritative surfaces already hold the durable state needed to resume and finish it**, so a separate Work Order would only duplicate that state. "Small" refers to the tracking/recovery footprint, not semantic importance, risk, file count, or whether the work touches a shared schema, Decision, or governance surface.
 
-A qualifying change often fits in one pull request or one session, but those are heuristics rather than hard gates. Shared-schema or governance changes may still use the lane when the relevant Current Work row, GitHub issue/PR, Decision, Test Queue record, or other domain artifact already contains the plan, state, evidence boundary, and next action. Placement review, authorization, impact reconciliation, validation, and review requirements still apply.
+A qualifying change often fits in one pull request or one session, but those are heuristics rather than hard gates. Shared-schema or governance changes may still use the lane when the relevant Current Work row, GitHub issue/PR, Decision, Verification Queue record, or other domain artifact already contains the plan, state, evidence boundary, and next action. Placement review, authorization, impact reconciliation, validation, and review requirements still apply.
 
-The lane needs **no separate Work Order package**. It also does not require creating a duplicate GitHub issue or Current Work row merely to compensate for the missing Work Order. Preserve an existing issue, Current Work row, WorkNode, or domain-specific record when that surface has its own reason to exist. The pull request may be the active repository record for a bounded change; a domain-specific record such as Test Queue may own a longer-lived lifecycle independently.
+The lane needs **no separate Work Order package**. It also does not require creating a duplicate GitHub issue or Current Work row merely to compensate for the missing Work Order. Preserve an existing issue, Current Work row, WorkNode, or domain-specific record when that surface has its own reason to exist. The pull request may be the active repository record for a bounded change; a domain-specific record such as Verification Queue may own a longer-lived lifecycle independently.
 
 Small-change status reduces duplicate tracking artifacts; it does not remove existing orchestration. If the change is already a WorkNode in an active Riley Work Graph, keep that WorkNode and its authoritative Dispatch, dependencies and Gates, evidence requirements, and final disposition. If it is part of an existing Current Work workstream, keep that relationship until the active implementation work reaches its own completion boundary.
 
@@ -122,7 +122,7 @@ The Work Order is the active coordination layer. Link, rather than duplicate, th
 - A Decision records a durable choice, alternatives, rationale, tradeoffs, affected surfaces, and revisit condition.
 - A prototype explores a reversible alternative and remains isolated until explicit promotion.
 - An issue, pull request, or project tracker records implementation status and code review.
-- A Test Queue or equivalent domain-specific verification record may own deferred validation after implementation Current Work closes; queued or unavailable verification does not by itself reopen or block completed implementation work, and a failed result creates or links new remediation work only when active coordination is needed.
+- A Verification Queue or equivalent domain-specific verification record may own deferred validation after implementation Current Work closes; queued or unavailable verification does not by itself reopen or block completed implementation work, and a failed result creates or links new remediation work only when active coordination is needed.
 - A research record or source trail preserves actual participant, field, analytics, or document evidence.
 - A domain-specific template may extend the Work Order contract; see the [UX Work Order template](ux/ux-work-order-template.md).
 
@@ -135,7 +135,7 @@ For every substantial workstream, treat Riley Morgan / `ai-orchestrator` as the 
 Use this state hierarchy:
 
 1. **Current Work** — concise cross-agent index: Work ID, current objective, owner or agent, Operating Route, optional Parent Work ID, next action, blocker, last checkpoint, and links to the authoritative work surfaces.
-2. **Work Order or authoritative domain artifact** — use a Work Order for unique detailed execution/recovery state; otherwise resume from the relevant issue/PR, Test Queue record, Decision, project artifact, or other authoritative record that already owns that state.
+2. **Work Order or authoritative domain artifact** — use a Work Order for unique detailed execution/recovery state; otherwise resume from the relevant issue/PR, Verification Queue record, Decision, project artifact, or other authoritative record that already owns that state.
 3. **Live systems** — freshness-sensitive operational authority: GitHub branch/PR head, CI, review threads, mergeability, deployments, permissions, and other state that can change independently of the checkpoint.
 
 **Resume order:** Current Work → linked Work Order when one exists, otherwise the smallest authoritative issue/PR/domain artifact → selectively refresh live systems whose state may have been invalidated. Reuse still-valid evidence instead of reconstructing the conversation or broadly refetching every source.
@@ -173,7 +173,7 @@ A Work Order is complete only when:
 - the next action or explicit completion boundary is recorded;
 - when the Work Order or linked GitHub issue is already mirrored in an external active-work tracker, that linked tracker has been reconciled to the material lifecycle change and both systems have been verified before completion is reported.
 
-This reconciliation requirement applies only to an already-linked active-work tracker; it does not require creating one for otherwise lightweight standalone work or for deferred Test Queue verification after the implementation workstream has closed. Treat blocked, ready-for-review, complete, no-go, and cancelled transitions as material when stale mirrored state would misrepresent the work. GitHub-specific merge authorization and linked-issue completion semantics remain governed by the repository's pinned GitHub Tool contract.
+This reconciliation requirement applies only to an already-linked active-work tracker; it does not require creating one for otherwise lightweight standalone work or for deferred Verification Queue verification after the implementation workstream has closed. Treat blocked, ready-for-review, complete, no-go, and cancelled transitions as material when stale mirrored state would misrepresent the work. GitHub-specific merge authorization and linked-issue completion semantics remain governed by the repository's pinned GitHub Tool contract.
 
 A polished artifact, a handoff, or a full-looking checklist is not completion by itself.
 
