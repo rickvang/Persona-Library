@@ -67,7 +67,7 @@ This is a repository-defined review using Mara Okoye's placement contract, not a
 | Surface | Classification | Disposition |
 |---|---|---|
 | `AGENTS.md` rules 10–12 | Extends and qualifies | Updated |
-| `docs/work-orders.md` use rule, recovery-state lane, Test Queue boundary, progress, archive | Extends | Updated |
+| `docs/work-orders.md` use rule, recovery-state lane, Verification Queue boundary, progress, archive | Extends | Updated |
 | `docs/work-orders/README.md`, archive README, `ARCHITECTURE.md` | Qualifies the "trivial" wording | Updated |
 | `content/orientation/docs.json` `work-order-start` non-trigger | Qualifies | Updated; mirror regenerated |
 | GitHub issue-implementation Operational Scenario | Extends | Updated; `dist/data/library-data.js` regenerated |
@@ -85,7 +85,7 @@ This is a repository-defined review using Mara Okoye's placement contract, not a
 
 Before the recovery-state refinement, local validation on the implementation tree (rebased onto `a1c2977`) passed the build, content validation, 40-test CI set, and `git diff --check`. The contract was then corrected after #205 / TQ-40-001 exposed that the original one-session/no-shared-schema definition still over-created Work Orders.
 
-The updated validator now also rejects an automatic non-trivial-work trigger and requires the recovery-state boundary plus Test Queue independence. **Latest-head GitHub CI is the required validation for this corrected revision; the earlier local result is historical evidence only.**
+The updated validator now also rejects an automatic non-trivial-work trigger and requires the recovery-state boundary plus Verification Queue independence. **Latest-head GitHub CI is the required validation for this corrected revision; the earlier local result is historical evidence only.**
 
 The final review commit adds a guard: validation fails if the retired one-session gate or the old UX Work Order sentences return.
 
