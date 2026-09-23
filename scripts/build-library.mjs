@@ -113,12 +113,31 @@ const primarySitePages = [
 for (const relativePath of primarySitePages) {
   const filePath = path.join(root, relativePath);
   let html = await readFile(filePath, 'utf8');
-  if (html.includes('href="job-tracker.html"')) continue;
-  const updated = html.replace(
-    /(<a href="playbooks\.html"[^>]*>Playbooks<\/a>)/,
-    '$1<a href="job-tracker.html">Applications</a>'
-  );
-  if (updated === html) throw new Error(`Could not add Applications navigation to ${relativePath}`);
+  const nav = html.match(/(<nav\b[^>]*aria-label="Primary"[^>]*>)([\s\S]*?)(<\/nav>)/);
+  if (!nav) throw new Error('Could not find primary navigation in ' + relativePath);
+
+  let links = nav[2];
+  let applicationLink = links.match(/<a href="job-tracker\.html"[^>]*>Applications<\/a>/)?.[0];
+  if (!applicationLink) {
+    const withApplication = links.replace(
+      /(<a href="playbooks\.html"[^>]*>Playbooks<\/a>)/,
+      '$1<a href="job-tracker.html">Applications</a>'
+    );
+    if (withApplication === links) throw new Error('Could not add Applications navigation to ' + relativePath);
+    links = withApplication;
+    applicationLink = links.match(/<a href="job-tracker\.html"[^>]*>Applications<\/a>/)?.[0];
+  }
+
+  links = links.replace(applicationLink, '');
+  const divider = /<span aria-hidden="true"[^>]*><\/span>/;
+  if (!divider.test(links)) throw new Error('Could not find navigation divider in ' + relativePath);
+  links = links.replace(divider, '$&' + applicationLink);
+
+  const updated = html.replace(nav[0], nav[1] + links + nav[3]);
+  if (updated === html) {
+    console.log('Applications navigation already follows the divider -> ' + relativePath);
+    continue;
+  }
   await writeFile(filePath, updated, 'utf8');
-  console.log(`Added Applications navigation -> ${relativePath}`);
+  console.log('Positioned Applications after the navigation divider -> ' + relativePath);
 }
