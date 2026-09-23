@@ -107,3 +107,12 @@ This demonstrates transcript-free, cross-agent recovery for the bounded WorkNode
 - Phase 3/4 evidence does not complete CW-44 or #197. Transcript-independent graph-level takeover is now demonstrated; the representative Riley conformance run remains outstanding.
 
 Following the repository's Mara Okoye placement review and Architecture guidance, keep this evidence in the existing CW-44 Work Order package. It adds no canonical Skill, Tool recipe, Persona, runtime package, or database. Keep #197 open.
+
+
+## Riley / Noor conformance checkpoint — 2026-09-22
+
+- **Riley run:** fresh projectless Codex task `01a0cc74-146a-7d52-878c-7693e490fa4d`, archived after its response was captured. It used Riley Morgan / `ai-orchestrator` with Work Graph Orchestration at low reasoning; the configured default model was used without an override, and the exact model is not exposed in the task record.
+- **Observed result:** WorkNode B stays blocked across distinct historical Dispatch attempts with at most one active authority. A/C are independent; B waits for A and requires a post-A collision review. The response separates graph disposition, runtime stop/cancel authority, and repository-owner approval. It makes approval contingent on inspecting the prior attempt's inactivity evidence, changed files, terminal CI state, and recording approval; unknown or running CI is not terminal.
+- **Independent observer:** a separate low-reasoning Noor observer reviewed the captured response and returned PASS. It cited the explicit three-item repository-owner review condition that addressed the prior REVIEW finding. The observer made no repository or runtime claims.
+- **Limits:** the Riley task inspected no live repository, CI, runtime, or browser state. Chrome had only `about:blank` and no target URL. Provider-issued Dispatch/session identity and runtime-level lifecycle controls remain unavailable; the demonstrated recovery contract is graph-level.
+- **Disposition:** focused Riley/Noor conformance passes. Overall CW-44 remains pending the updated PR-head validation, merge, and tracker reconciliation.
