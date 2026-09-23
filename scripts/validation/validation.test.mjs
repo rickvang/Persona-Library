@@ -330,8 +330,8 @@ test('Riley continuity keeps universal Current Work orchestration, Work Orders, 
 
 
 test('Repository working copy and small-change lane replace the local-checkout ban without bypassing Work Graph supervision', () => {
-  const agents = 'Make file changes in a clean working copy on a task branch created from freshly fetched origin/main. Local validation does not replace required GitHub checks. Small changes use the small-change lane in docs/work-orders.md.';
-  const workOrders = 'Small-change lane: a change is small when it fits in one pull request. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state. An active WorkNode keeps its authoritative Dispatch, Gates, evidence, and disposition.';
+  const agents = 'Make file changes in a clean working copy on a task branch created from freshly fetched origin/main. Local validation does not replace required GitHub checks. Use a Work Order only for durable execution/recovery state not already held by domain-specific artifacts; otherwise use the small-change lane.';
+  const workOrders = 'Small-change lane: existing authoritative surfaces already hold the durable state needed to resume the work. Small refers to tracking/recovery footprint, not importance. A Test Queue can own deferred verification. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state. An active WorkNode keeps its authoritative Dispatch, Gates, evidence, and disposition.';
   const uxPractice = 'For the small-change lane, the pull request is the active work record. An active WorkNode keeps its Dispatch, Gate, evidence, and disposition.';
   const uxContextTemplate = 'Do not create this packet for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
   const uxWorkOrderTemplate = 'Do not create this template for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
@@ -341,6 +341,9 @@ test('Repository working copy and small-change lane replace the local-checkout b
   assert.doesNotThrow(() => validateRepositoryWorkingCopyContract(args));
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: `${agents} Do not use a local checkout for repository work.` }), /local-checkout ban/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: agents.replace('clean working copy', 'checkout') }), /Root AGENTS/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: agents.replace('durable execution/recovery state', 'all non-trivial work') }), /Root AGENTS/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('tracking/recovery footprint', 'one session') }), /Work Order guidance/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('Test Queue', 'work log') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('checkpoint-only commit', 'commit') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('WorkNode', 'task') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxPractice: 'A focused small change requires a short work-order status.' }), /UX practice/);
@@ -371,9 +374,9 @@ test('Riley work graph contract keeps one authoritative dispatch, evidence gates
     dont:['Do not infer completion from idle or self-report.','Do not create a second authoritative task database.']
   }];
   const skillsRoute = {routes:[{id:'work-graph-orchestration',target:'work-graph-orchestration',package_path:'.agents/skills/work-graph-orchestration'}]};
-  const skillPackage = 'Keep one authoritative active Dispatch per WorkNode. Distinguish handoff from supervised delegation. Parallelize only collision-safe work. Recovery is read-before-retry. Use the Execution-adapter contract. This Skill does not persist a second canonical task database. A bounded correction stays in the same attempt: CI runs and review events are not new Dispatches. Create a new Dispatch identity only when the attempt is abandoned, superseded, or reassigned. The small-change lane changes tracking artifacts, not orchestration membership.';
+  const skillPackage = 'Keep one authoritative active Dispatch per WorkNode. Distinguish handoff from supervised delegation. Parallelize only collision-safe work. Recovery is read-before-retry. Use the Execution-adapter contract. This Skill does not persist a second canonical task database. A bounded correction stays in the same attempt: CI runs and review events are not new Dispatches. Create a new Dispatch identity only when the attempt is abandoned, superseded, or reassigned. The small-change lane changes tracking artifacts, not orchestration membership, when existing records already hold enough recovery state.';
   assert.doesNotThrow(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }));
   assert.throws(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage: skillPackage.replace('one authoritative active Dispatch per WorkNode', 'several active attempts per WorkNode') }), /Callable work-graph Skill/i);
   assert.throws(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage: skillPackage.replace('CI runs and review events are not new Dispatches', 'Every CI run creates a new Dispatch') }), /Callable work-graph Skill/i);
-  assert.throws(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage: skillPackage.replace('small-change lane changes tracking artifacts, not orchestration membership', 'small changes are not tracked') }), /Callable work-graph Skill/i);
+  assert.throws(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage: skillPackage.replace('small-change lane changes tracking artifacts, not orchestration membership, when existing records already hold enough recovery state', 'small changes are not tracked') }), /Callable work-graph Skill/i);
 });
