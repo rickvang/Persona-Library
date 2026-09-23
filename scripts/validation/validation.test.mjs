@@ -331,19 +331,19 @@ test('Riley continuity keeps universal Current Work orchestration, Work Orders, 
 
 test('Repository working copy and small-change lane replace the local-checkout ban without bypassing Work Graph supervision', () => {
   const agents = 'Make file changes in a clean working copy on a task branch created from freshly fetched origin/main. Local validation does not replace required GitHub checks. Use a Work Order only for durable execution/recovery state not already held by domain-specific artifacts; otherwise use the small-change lane.';
-  const workOrders = 'Small-change lane: existing authoritative surfaces already hold the durable state needed to resume the work. Small refers to tracking/recovery footprint, not importance. A Test Queue can own deferred verification. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state. An active WorkNode keeps its authoritative Dispatch, Gates, evidence, and disposition.';
+  const workOrders = 'Small-change lane: existing authoritative surfaces already hold the durable state needed to resume the work. Small refers to tracking/recovery footprint, not importance. A Verification Queue can own deferred verification. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state. An active WorkNode keeps its authoritative Dispatch, Gates, evidence, and disposition.';
   const uxPractice = 'For the small-change lane, the pull request is the active work record. An active WorkNode keeps its Dispatch, Gate, evidence, and disposition.';
   const uxContextTemplate = 'Do not create this packet for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
   const uxWorkOrderTemplate = 'Do not create this template for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode.';
   const uxRouting = 'For the small-change lane, the pull request is the active work record and the WorkNode remains in the active Work Graph.';
-  const docsReadme = 'Qualifying small repository change: the pull request may be the active repository record; preserve Current Work, Test Queue records, and Work Graph membership when they have their own lifecycle.';
+  const docsReadme = 'Qualifying small repository change: the pull request may be the active repository record; preserve Current Work, Verification Queue records, and Work Graph membership when they have their own lifecycle.';
   const args = { agents, workOrders, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme };
   assert.doesNotThrow(() => validateRepositoryWorkingCopyContract(args));
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: `${agents} Do not use a local checkout for repository work.` }), /local-checkout ban/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: agents.replace('clean working copy', 'checkout') }), /Root AGENTS/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: agents.replace('durable execution/recovery state', 'all non-trivial work') }), /Root AGENTS/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('tracking/recovery footprint', 'one session') }), /Work Order guidance/);
-  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('Test Queue', 'work log') }), /Work Order guidance/);
+  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('Verification Queue', 'work log') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('checkpoint-only commit', 'commit') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('WorkNode', 'task') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, uxPractice: 'A focused small change requires a short work-order status.' }), /UX practice/);
