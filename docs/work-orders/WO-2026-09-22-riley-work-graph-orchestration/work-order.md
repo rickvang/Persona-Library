@@ -73,6 +73,10 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 [C20 | 2026-09-22] The fresh projectless Riley conformance task `01a0cc74-146a-7d52-878c-7693e490fa4d` completed and was archived. It used the configured default model (exact model unavailable in task metadata) at low reasoning. Riley explicitly kept the approval Gate unsatisfied until the repository owner inspects evidence that the prior attempt can no longer act, its changed files, and its terminal CI state, then records approval; unknown or running CI is not terminal. A separate independent Noor observer child agent (`/root/noor_cw44_review`, `gpt-6-luna`, low reasoning) reviewed the captured response and returned PASS, resolving C19's REVIEW finding. No live repository, CI, runtime, or browser inspection was claimed; Chrome remained `about:blank` without a target URL. PR #200 and issue #197 remain open. Repository validation run #123 passed on pre-checkpoint head `914b70ee724e92ae0e03a16864f9c97f3d9af7f8`; this conformance-record update needs latest-head validation before merge.
 
+
+
+[C21 | 2026-09-22] Repository validation run #125 passed on C20 head `3f78965f709dee3f4ccfc5af4eab4c1d0bc1597d`. This checkpoint records that result; inspect the validation triggered by C21 on the resulting branch head, then refresh review/linkage and merge #200 if all gates remain clear.
+
 ## Next action
 
-Inspect the validation triggered by this checkpoint update, refresh PR #200's current head/base, checks, reviews and linked issue state, and merge only if all gates remain clear. After merge, reconcile issue #197 and Current Work, then move this terminal Work Order into `docs/work-orders/archive/2026-09/`. Provider-level runtime lifecycle remains unobservable.
+Verify the latest-head repository validation triggered by C21, then refresh PR #200's current head/base, checks, reviews and linked issue state, and merge only if all gates remain clear. After merge, reconcile issue #197 and Current Work, then move this terminal Work Order into `docs/work-orders/archive/2026-09/`. Provider-level runtime lifecycle remains unobservable.
