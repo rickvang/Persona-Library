@@ -1,7 +1,7 @@
 # Work Order — Riley work-graph orchestration
 
 - Work Order ID: WO-2026-09-22-riley-work-graph-orchestration
-- Status: active
+- Status: complete
 - Requester: repository owner
 - Orchestration owner: Riley Morgan / `ai-orchestrator`
 - Current Work: CW-44 — Riley — work graph orchestration capability
@@ -41,7 +41,7 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 | 2. GitHub execution semantics | implemented / PR #199 | `github-execution-proof.md` reconstructs PR #198 as a real WorkNode→Dispatch→branch/PR→CI/review Gate→disposition case. Skill distinguishes bounded corrections from new Dispatch identity and defines collision/sequential fallback. |
 | 3. Runtime-aware dispatch | demonstrated / proof branch | A real supervised, read-only Codex child-agent path is recorded as supervisor-assigned graph Dispatch `CW44-P3-N1-D1` in [runtime-dispatch-proof.md](runtime-dispatch-proof.md); `/root/cw44_runtime_eval` is its runtime reference, and the collaboration API exposed no provider Dispatch UUID, session, branch, or worktree. |
 | 4. Recovery and resumption | demonstrated at graph level; provider lifecycle remains opaque | `runtime-dispatch-proof.md` records same-identity continuation after interruption and a fresh low-reasoning agent taking over a separately interrupted WorkNode from the durable Work Order with no child transcript. Supervisor-assigned D2 became authoritative after D1 interruption. The adapter exposes no provider Dispatch/session UUID or runtime-level cancel/resume state. |
-| 5. Validation and learning | conformance pass; final validation pending | Change Impact Reconciliation now records the focused scenario-confidence update and generated mirror. Riley's representative conformance response has an independent Noor PASS; validate the latest head, then merge and reconcile linked tracking. |
+| 5. Validation and learning | complete / PR #200 merged | Riley/Noor conformance passed. Latest-head Repository validation run #131 succeeded on PR #200 head `3ee9c4febc99616b42d2d0d9dbe7ead0e78ad525`; issue #197 closed with all 10 acceptance criteria checked; Current Work is Done / Reference. This Work Order package is archived under `docs/work-orders/archive/2026-09/`. Provider-level Dispatch/session identity and lifecycle controls remain outside the adapter. |
 
 ## Non-goals
 
@@ -85,6 +85,8 @@ CW-44 compared Herdr, Maestro, Vicoa, Orca, Vigilante, Orloj, and FluxRoute. Reu
 
 [C23 | 2026-09-22] Repository validation run #129 failed only at `Verify generated output is committed`: the authored scenario said “without its interrupted attempt's transcript,” while the generated mirror said “without the interrupted attempt's transcript.” Authored-content validation, repository tests, and whitespace checks passed. The generated wording is now corrected to match the authored source; the previous latest-head failure remains recorded until a new run passes.
 
+[C24 | 2026-09-22 11:58 pm] CW-44 implementation and tracker closeout are complete. PR #200 merged to `main` as `90fac9c8a96b1acbced8c78546ebc93697cad50a`; issue #197 is closed with all 10 acceptance criteria checked; repository validation run #131 succeeded on final PR #200 head `3ee9c4febc99616b42d2d0d9dbe7ead0e78ad525`; Riley/Noor conformance passed. Current Work is Done / Reference. The three-file Work Order package is archived at `docs/work-orders/archive/2026-09/WO-2026-09-22-riley-work-graph-orchestration/`. Provider-issued Dispatch/session identity and runtime-level lifecycle controls remain unavailable in the adapter.
+
 ## Next action
 
-Verify the latest-head repository validation after C23, then refresh PR #200's head/base, checks, reviews and linked issue state, and merge only if all gates remain clear. After merge, reconcile issue #197 and Current Work, then move this terminal Work Order into `docs/work-orders/archive/2026-09/`. Provider-level runtime lifecycle remains unobservable.
+None. CW-44 is complete and this Work Order is archived. Provider-level runtime identity and lifecycle remain adapter limitations documented above; any future capability investigation is a separate workstream.
