@@ -158,6 +158,24 @@ test('route and space attribution is checked against the current taxonomy', () =
   assert.ok(validateUsage(unknownRoute, { taxonomy }).errors.some(error => error.includes('current orientation route group')));
 });
 
+test('calibration pairs require measured input tokens for signed error calculations', () => {
+  const pair = {
+    schema_version: '1.0',
+    record_type: 'usage-calibration-pair',
+    pair_id: 'pair-missing-input',
+    task_class: 'docs',
+    repository_ref: revision,
+    surface: 'api',
+    model: 'model-a',
+    estimated: estimatedUsage(80),
+    measured: measuredUsage(100, 10, 'turn-missing-input')
+  };
+  delete pair.measured.input_tokens;
+  const validation = validateCalibrationPair(pair, { taxonomy });
+  assert.equal(validation.valid, false);
+  assert.ok(validation.errors.some(error => error.includes('measured calibration usage must include a non-negative input_tokens value')));
+});
+
 test('OpenAI Responses adapter normalizes only returned usage fields', () => {
   const usage = normalizeOpenAIResponseUsage({
     id: 'resp_123',
