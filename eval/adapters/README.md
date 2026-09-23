@@ -12,4 +12,3 @@ Provider integrations that make requests or connect to runtimes belong here only
 ## Token-usage adapters
 
 A surface adapter may normalize token counts only from metadata returned directly by that runtime. openai-responses.mjs accepts a completed OpenAI Responses API response object and reads only its usage fields and response identity. It does not make requests, read credentials, or retain prompts or traces. If usage is absent, the adapter returns unavailable evidence. Do not label subscription allowance, static context estimates, or inferred counts as measured API usage.
-

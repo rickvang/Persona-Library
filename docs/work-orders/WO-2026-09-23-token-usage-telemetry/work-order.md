@@ -1,12 +1,12 @@
 # WO-2026-09-23-token-usage-telemetry
 
-Status: ready-for-review  
-Created: 2026-09-23  
-Last updated: 2026-09-23  
-Requester: Rick  
-Current owner: Riley Morgan / ai-orchestrator  
-Request mode: update  
-Authorized target: Persona-Library issue #195  
+- Status: ready-for-review
+- Created: 2026-09-23
+- Last updated: 2026-09-23
+- Requester: Rick
+- Current owner: Riley Morgan / ai-orchestrator
+- Request mode: update
+- Authorized target: Persona-Library issue #195
 Artifact home: docs/work-orders/WO-2026-09-23-token-usage-telemetry/
 
 ## Request and outcome
