@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateRileyContinuityContract, validateVercelToolCatalogSurface } from './generated.mjs';
+import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateRileyContinuityContract, validateRileyWorkGraphContract, validateVercelToolCatalogSurface } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -326,4 +326,33 @@ test('Riley continuity keeps universal Current Work orchestration, Work Orders, 
   assert.doesNotThrow(() => validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }));
   assert.throws(() => validateRileyContinuityContract({ agents, workOrders: workOrders.replace('Do not mirror volatile live state', 'Mirror all live state'), riley, rileyFlows }), /Work Order guidance/i);
   assert.throws(() => validateRileyContinuityContract({ agents: agents.replace('may operate directly', 'must route every execution through Riley'), workOrders, riley, rileyFlows }), /Root AGENTS/i);
+});
+
+
+test('Riley work graph contract keeps one authoritative dispatch, evidence gates, and read-before-retry recovery', () => {
+  const riley = {
+    id:'ai-orchestrator',
+    behaviors:['Builds a minimal work graph and keeps one authoritative dispatch per node while distinguishing handoff from supervised delegation.'],
+    needs:['Stable WorkNode, Dispatch, Gate, evidence, and disposition identity.'],
+    skills:['Work graph orchestration — synthesized'],
+    implication:'Use read-before-retry recovery before replacement work.'
+  };
+  const rileyFlows = [{title:'Operate and improve the system',activities:[['Supervise the active work graph','During multi-lane execution','Coherent progress','Dispatch drift','WorkGraph packet + live runtime/GitHub references']]}];
+  const skillCatalog = [{
+    id:'skill-work-graph-orchestration',
+    name:'Work graph orchestration',
+    profiles:[{definition:'Keep one authoritative WorkNode Dispatch with Gate and evidence.'}],
+    guidance:{operation:{moves:['Run collision review and read-before-retry recovery.']}}
+  }];
+  const operationalScenarioCatalog = [{
+    id:'scenario-riley-work-graph-supervision',
+    ownerId:'skill-work-graph-orchestration',
+    status:'active',
+    sequence:['Keep one authoritative Dispatch.','Read current state before retrying.'],
+    dont:['Do not infer completion from idle or self-report.','Do not create a second authoritative task database.']
+  }];
+  const skillsRoute = {routes:[{id:'work-graph-orchestration',target:'work-graph-orchestration',package_path:'.agents/skills/work-graph-orchestration'}]};
+  const skillPackage = 'Keep one authoritative active Dispatch per WorkNode. Distinguish handoff from supervised delegation. Parallelize only collision-safe work. Recovery is read-before-retry. Use the Execution-adapter contract. This Skill does not persist a second canonical task database.';
+  assert.doesNotThrow(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }));
+  assert.throws(() => validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage: skillPackage.replace('one authoritative active Dispatch per WorkNode', 'several active attempts per WorkNode') }), /Callable work-graph Skill/i);
 });

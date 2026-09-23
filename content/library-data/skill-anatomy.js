@@ -17,6 +17,10 @@ Object.assign(window.PersonaLibraryDataFragments, {
     {from:'skill-interface-hierarchy-and-visual-communication',to:'unit-hierarchy-validation',type:'built-from'},
     {from:'unit-visual-emphasis',to:'skill-accessibility-and-inclusive-design',type:'supports'},
     {from:'unit-semantic-grouping',to:'skill-interaction-design-and-information-architecture',type:'supports'},
+    {from:'skill-work-graph-orchestration',to:'skill-agent-workflow-architecture',type:'related-to'},
+    {from:'skill-work-graph-orchestration',to:'skill-task-decomposition-and-routing',type:'related-to'},
+    {from:'skill-work-graph-orchestration',to:'skill-tool-and-context-design',type:'related-to'},
+    {from:'skill-work-graph-orchestration',to:'skill-failure-recovery-and-operational-judgment',type:'related-to'},
     {from:'skill-interface-hierarchy-and-visual-communication',to:'skill-contextual-visual-judgment-and-composition',type:'related-to'}
   ]
 });

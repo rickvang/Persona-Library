@@ -133,6 +133,30 @@ export function validateRileyContinuityContract({ agents, workOrders, riley, ril
   if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → Work Order → live-system hierarchy');
 }
 
+export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }) {
+  if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley work-graph validation requires the AI orchestrator Persona');
+  const personaText = normalized([riley.behaviors, riley.needs, riley.skills, riley.implication].flat(Infinity).join(' '));
+  if (!includesAll(personaText, ['work graph', 'authoritative dispatch', 'supervised delegation', 'read-before-retry'])) throw new Error('Riley Persona must expose work-graph supervision, dispatch authority, delegation, and recovery semantics');
+
+  const skill = (skillCatalog || []).find(item => item.id === 'skill-work-graph-orchestration');
+  if (!skill) throw new Error('Work graph orchestration Skill is missing');
+  const skillText = normalized(JSON.stringify(skill));
+  if (!includesAll(skillText, ['worknode', 'dispatch', 'gate', 'evidence', 'collision'])) throw new Error('Work graph Skill catalog projection must expose the minimum supervisory model');
+
+  const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
+  if (!operate || !includesAll(JSON.stringify(operate), ['supervise the active work graph', 'workgraph packet', 'live runtime/github references'])) throw new Error('Riley operating workflow must include active work-graph supervision');
+
+  const scenario = (operationalScenarioCatalog || []).find(item => item.id === 'scenario-riley-work-graph-supervision');
+  if (!scenario || scenario.ownerId !== 'skill-work-graph-orchestration' || scenario.status !== 'active') throw new Error('Work graph orchestration Operational Scenario is missing or inactive');
+  const scenarioText = normalized(JSON.stringify(scenario));
+  if (!includesAll(scenarioText, ['one authoritative dispatch', 'read current state before retrying', 'do not infer completion', 'do not create a second authoritative task database'])) throw new Error('Work graph Operational Scenario must preserve authority, recovery, evidence, and state-boundary rules');
+
+  const route = (skillsRoute?.routes || []).find(item => item.id === 'work-graph-orchestration');
+  if (!route || route.target !== 'work-graph-orchestration' || route.package_path !== '.agents/skills/work-graph-orchestration') throw new Error('Skills orientation must route work-graph orchestration to the callable package');
+
+  if (!includesAll(skillPackage, ['one authoritative active dispatch per worknode', 'handoff', 'supervised delegation', 'parallelize only', 'read-before-retry', 'execution-adapter contract', 'does not persist a second canonical task database'])) throw new Error('Callable work-graph Skill is missing required orchestration invariants or adapter boundary');
+}
+
 export function validateGitHubGovernanceContract({ agents, workOrders, boundedPlaybook, boundedRoute, toolsPage }) {
   const pin = String(agents || '').match(/rickvang\/tool-repo\/blob\/([0-9a-f]{40})\/tools\/github\/AGENTS\.md/i);
   if (!pin) throw new Error('Persona-Library must pin an exact GitHub Tool contract revision');
@@ -237,18 +261,27 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
-  const [rootAgents, workOrderContract, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill] = await Promise.all([
+  const [rootAgents, workOrderContract, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill] = await Promise.all([
     context.readFile('AGENTS.md'),
     context.readFile('docs/work-orders.md'),
     context.readFile('docs/playbooks/bounded-parallel-implementation.md'),
     context.readFile('docs/operational-knowledge.md'),
-    context.readFile('.agents/skills/tool-discovery-and-safe-execution/SKILL.md')
+    context.readFile('.agents/skills/tool-discovery-and-safe-execution/SKILL.md'),
+    context.readFile('.agents/skills/work-graph-orchestration/SKILL.md')
   ]);
   validateRileyContinuityContract({
     agents: rootAgents,
     workOrders: workOrderContract,
     riley: context.data.personas.find(persona => persona.id === 'ai-orchestrator'),
     rileyFlows: context.data.flowLibrary?.['ai-orchestrator'] || []
+  });
+  validateRileyWorkGraphContract({
+    riley: context.data.personas.find(persona => persona.id === 'ai-orchestrator'),
+    rileyFlows: context.data.flowLibrary?.['ai-orchestrator'] || [],
+    skillCatalog: context.data.skillCatalog,
+    operationalScenarioCatalog: context.data.operationalScenarioCatalog,
+    skillsRoute: context.routeGroups.get('skills'),
+    skillPackage: workGraphSkill
   });
   validateGitHubGovernanceContract({
     agents: rootAgents,

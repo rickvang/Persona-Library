@@ -50,6 +50,41 @@
       "next_handoff": "Use the Persona-specific adapter, then the universal impact pass when required."
     },
     {
+      "id": "work-graph-orchestration",
+      "request": "Supervise a substantial outcome across multiple work nodes, execution lanes, dependencies, gates, recovery paths, and completion evidence",
+      "modes": [
+        "plan",
+        "update",
+        "external_execution"
+      ],
+      "primary_space": "skills",
+      "secondary_spaces": [
+        "personas",
+        "playbooks",
+        "tools",
+        "docs"
+      ],
+      "target": "work-graph-orchestration",
+      "artifact_kind": "callable_skill",
+      "package_path": ".agents/skills/work-graph-orchestration",
+      "availability_source": "repo_local",
+      "first_reads": [
+        "Current Work row when the workstream already exists",
+        "linked Work Order",
+        "current issue / PR / branch state when repository work is involved",
+        "Riley Work graph orchestration Skill",
+        "matching active operational scenario"
+      ],
+      "mutation_boundary": "external_execution",
+      "reconciliation": "change-impact-reconciliation",
+      "non_triggers": [
+        "One bounded task that one executor can complete directly",
+        "A one-way handoff where Riley no longer supervises the outcome",
+        "Parallelism requested only because multiple agents are available"
+      ],
+      "next_handoff": "Use the smallest capable execution route for each ready WorkNode; keep provider-specific procedure in the relevant Tool/runtime layer and reconcile durable state only at meaningful lifecycle boundaries."
+    },
+    {
       "id": "skill-formation",
       "request": "Form a reusable capability from distinct Persona perspectives",
       "modes": [
