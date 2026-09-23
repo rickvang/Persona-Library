@@ -789,6 +789,25 @@
         "DEC-022"
       ],
       "revisit": "Working copies cause stale-state merges or unrelated files in commits; local and CI validation diverge; agents cannot reliably decide when existing surfaces provide sufficient recovery state; work repeatedly becomes unresumable without a Work Order; duplicate Work Orders continue to mirror issue/Current Work/Verification Queue state; or commits per pull request and task time do not fall."
+    },
+    {
+      "id": "DEC-025",
+      "status": "Applied",
+      "category": "Issue lifecycle boundary",
+      "date": "2026-09-23",
+      "title": "Verification-only issues use an explicit pending-verification label",
+      "summary": "Keep source GitHub issues open after implementation only when an independent Verification Queue gate remains, and mark that state with `status: verification-pending` until verification resolves or new implementation work is required.",
+      "question": "How should GitHub distinguish an issue whose implementation is complete but whose final acceptance still depends on independently owned Verification Queue evidence?",
+      "decision": "Use `status: verification-pending` as a lifecycle label, not an issue type. Apply it only when implementation is complete, implementation Current Work/Work Orders can close, and one or more linked Verification Queue records are the sole remaining acceptance gate. Keep it while required verification remains Queued, Ready, Running, Review, or Unavailable. Remove it when all required verification passes and the source issue closes, when cancellation leaves no required verification pending, or when a failed verification establishes that additional implementation/remediation is required.",
+      "rationale": "GitHub's open/closed state cannot distinguish active implementation from deferred independent verification. Without an explicit lifecycle signal, completed implementation issues look unfinished and agents may reopen Current Work or create duplicate recovery artifacts. The Verification Queue already owns procedure, evidence, retry state, and result, so a lightweight source-issue label adds visibility without duplicating that lifecycle.",
+      "alternatives": "Close the source issue when implementation merges; keep it open with no label; use a generic blocked/review label; create a new issue type or separate tracking database. Rejected because they respectively hide unfinished acceptance, obscure why the issue is open, misclassify independent verification, or duplicate existing Verification Queue ownership.",
+      "tradeoffs": "The repository gains one status label and a transition rule that agents must reconcile with Verification Queue outcomes. Multi-verification issues require checking whether any required verification remains pending before removing the label. In return, implementation completion and acceptance completion remain distinct without keeping historical implementation workstreams artificially active.",
+      "affects": "GitHub issue lifecycle guidance in AGENTS.md and docs/work-orders.md; Verification Queue handoff/closeout behavior; issue #195 as the first application; future source issues with independently deferred verification.",
+      "evidence": "Issue #195 after PR #202; Verification Queue VQ-1; issue #205 lifecycle contract; issue #208 Verification Queue architecture; requester direction on 2026-09-23 to identify and process this issue state consistently.",
+      "qualifies": [
+        "DEC-024"
+      ],
+      "revisit": "The label is applied inconsistently, creates ambiguity with GitHub issue types or Projects, GitHub gains a native state that expresses verification-only work cleanly, or Verification Queue lifecycle ownership changes."
     }
   ]
 }

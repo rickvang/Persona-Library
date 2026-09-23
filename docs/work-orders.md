@@ -85,6 +85,34 @@ Use the smallest lifecycle that makes status unambiguous:
 
 A status change should state the reason and the next action or completion boundary.
 
+## GitHub verification-pending label
+
+Use the GitHub label `status: verification-pending` only when the implementation portion of a source issue is complete and the issue remains open solely because independently owned Verification Queue evidence is still required. The label describes issue lifecycle state; it is not an issue type and it does not replace the Verification Queue record.
+
+Apply the label only when all of these are true:
+
+- the implementation deliverable is merged or otherwise complete at its legitimate boundary;
+- any implementation Current Work / Work Order can close without losing the remaining verification procedure;
+- one or more linked Verification Queue records own the remaining acceptance evidence, procedure, result, and retry state;
+- no active implementation or remediation work remains on the source issue.
+
+At that transition:
+
+1. Add `status: verification-pending` to the source GitHub issue.
+2. Mark already-satisfied implementation acceptance criteria complete; leave only genuinely verification-dependent criteria unchecked.
+3. Link the authoritative Verification Queue record and the implementation revision/evidence needed to run it.
+4. Keep implementation Current Work / Work Orders closed when their own completion boundary has been reached.
+
+While the Verification Queue record is `Queued`, `Ready`, `Running`, `Review`, or `Unavailable`, the label may remain because verification is still the sole unresolved issue gate.
+
+Resolve the label as follows:
+
+- **Passed** — remove the label and close the source issue as completed when all remaining acceptance criteria are satisfied.
+- **Failed / Additional Work** — remove the label because the issue is no longer verification-only as soon as the accepted result determines that additional implementation/remediation is required, whether or not remediation work has been activated yet. Create or link remediation Current Work when active coordination is needed, without automatically reopening the historical implementation workstream.
+- **Cancelled** — remove the label only when no other linked Verification Queue requirement remains pending. If another required verification is still Queued, Ready, Running, Review, or Unavailable, keep the label. Reconcile cancelled requirements to the explicit cancellation/product decision rather than implying successful verification.
+
+Do not apply this label to ordinary implementation-in-progress, generic blocked work, PR review, or issues that merely happen to have tests. Labels should add lifecycle information that GitHub's open/closed state does not already express.
+
 ## Progress updates
 
 Keep entries concise. Add or revise an entry when one of these occurs:
