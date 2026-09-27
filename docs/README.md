@@ -2,6 +2,8 @@
 
 This directory contains current, reusable guidance and project-scoped work records. Choose a destination by ownership and lifecycle before creating a file.
 
+> **Looking for the overall human mental model?** Start with [How Persona Workspace works](https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md). This document is maintainer guidance for placing files *inside Persona-Library*; it does not redefine cross-repository ownership or require a human to understand the agent routing machinery.
+
 ## Where things live
 
 | Artifact | Destination | Rule |
