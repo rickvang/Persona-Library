@@ -1,6 +1,6 @@
 # Cold-start activation footprint
 
-Issue: #213  
+Issue: #213
 Measurement: authored text character counts; token-equivalent figures are **estimates** using characters ÷ 4, not measured runtime or subscription usage.
 
 | Activation surface | Before | After |
