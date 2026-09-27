@@ -2,7 +2,7 @@
 
 - **Work Order ID:** WO-2026-09-08-onboarding-routing
 - **GitHub issue:** [#41](https://github.com/rickvang/Persona-Library/issues/41)
-- **Status:** Complete pending merge
+- Status: complete
 - **Scope:** Add a unified request-to-system map and distinguish Persona-applied, library-management, orchestration, governance, and tool-safety Skill layers.
 
 ## Authorization and boundaries
