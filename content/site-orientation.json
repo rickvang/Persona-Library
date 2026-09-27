@@ -143,9 +143,9 @@
         ],
         "entry": "AGENTS.md → content/site-orientation.json → one route group → selected capability or records → reconciliation",
         "semantic_bootstrap_required": true
-      },
-      "mixed_escalation_rule": "A task may begin on the repository-plumbing path while it is mechanical. Before it changes canonical library meaning, identity, relationships, Decisions, or semantic routing, load the library-semantic bootstrap and continue through the relevant route group. Selecting the short path never changes mutation authorization or validation requirements."
-    }
+      }
+    },
+    "mixed_escalation_rule": "A task may begin on the repository-plumbing path while it is mechanical. Before it changes canonical library meaning, identity, relationships, Decisions, or semantic routing, load the library-semantic bootstrap and continue through the relevant route group. Selecting the short path never changes mutation authorization or validation requirements."
   },
   "creation_gate": {
     "owner": "Mara Okoye",
