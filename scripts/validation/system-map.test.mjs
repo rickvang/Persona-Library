@@ -52,17 +52,29 @@ test('System Map Site consumes persona-workspace authority rather than a copied 
   ]);
 
   assert.match(page, /raw\.githubusercontent\.com\/rickvang\/persona-workspace\/main\/system-map\/generated\/work-coordination\.json/);
-  assert.match(page, /known-explicit|Coverage:/i);
+  assert.match(page, /raw\.githubusercontent\.com\/rickvang\/persona-workspace\/main\/system-map\/generated\/repository-ownership\.json/);
+  assert.match(page, /Repository ownership<\/strong>[\s\S]*Available/);
   assert.match(page, /Not mapped yet/);
   assert.match(page, /aria-live="polite"/);
   assert.match(page, /System Map/);
-  assert.doesNotMatch(page, /concept:current-work|edge:concept:/);
-  assert.doesNotMatch(client, /concept:current-work|edge:concept:/);
-  assert.match(client, /fetch\(graphUrl/);
+  assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|edge:concept:/);
+  assert.doesNotMatch(client, /concept:current-work|repository:rickvang\/portfolio|edge:concept:/);
+  assert.match(client, /lensConfigs/);
+  assert.match(client, /repository-ownership/);
+  assert.match(client, /fetch\(config\.graphUrl/);
+  assert.match(client, /complete-for-scope/);
   assert.match(client, /Expand one level/);
   assert.match(client, /Collapse branch/);
   assert.match(client, /What explicitly depends on this/);
   assert.match(build, /"system-map\.html"/);
   assert.match(build, /client\/system-map-graph\.mjs/);
   assert.match(build, /client\/system-map\.mjs/);
+});
+
+
+test('System Map provenance also resolves the Repository Ownership registry source', () => {
+  assert.equal(
+    sourceUrl({ kind: 'repo-file', locator: 'rickvang/persona-workspace:repositories.json', selector: 'repositories' }),
+    'https://github.com/rickvang/persona-workspace/blob/main/repositories.json'
+  );
 });
