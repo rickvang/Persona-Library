@@ -6,7 +6,8 @@ This Work Order tracks the Ecolab application packet. It is not a submission aut
 
 - Work Order ID: WO-2026-09-09-ecolab-ux-lead
 - Title: ATS-first Ecolab UX Lead application packet
-- Status: ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-09
 - Last updated: 2026-09-09
 - Requester: user

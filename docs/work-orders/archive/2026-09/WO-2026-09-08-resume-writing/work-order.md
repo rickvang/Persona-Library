@@ -6,7 +6,8 @@ A project-scoped work packet for evidence-grounded resume writing. This file tra
 
 - Work Order ID: WO-2026-09-08-resume-writing
 - Title: ATS-first resume application packet with optional human-facing rendering
-- Status: ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-08
 - Last updated: 2026-09-15
 - Requester: user

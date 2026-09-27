@@ -1,6 +1,6 @@
 # Work Order — library-data modularization
-
-- Status: active
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Issue: #106 — Behavior-preserving modularization of `content/library-data.js` after IA cleanup
 - Repository: `rickvang/Persona-Library`
 - Base: `main` at `968b5db8823e3de2a61cd5d4036409d85c87dd2f` after PR #109 merged

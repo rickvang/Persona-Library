@@ -6,7 +6,8 @@ This Work Order tracks the application packet for UnitedHealthcare requisition 2
 
 - Work Order ID: WO-2026-09-09-uhg-senior-ux-engineer
 - Title: ATS-first UnitedHealthcare Senior UX Engineer application packet
-- Status: ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-09
 - Last updated: 2026-09-09
 - Requester: user

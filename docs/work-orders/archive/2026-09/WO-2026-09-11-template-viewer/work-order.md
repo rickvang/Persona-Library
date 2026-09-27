@@ -2,7 +2,8 @@
 
 - Work Order ID: WO-2026-09-11-template-viewer
 - Title: Add a focused viewer for cataloged Templates
-- Status: ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-11
 - Last updated: 2026-09-11
 - Requester: repository user
