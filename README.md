@@ -18,7 +18,7 @@ This repository contains the source and generated output for the Persona Library
 
 - docs/README.md — concise placement, lifecycle, and generated-output guidance.
 - docs/playbooks/ — current reusable Playbook guidance.
-- docs/internal/skill-rebuild/ — historical rebuild plans and comparison evidence.
+- docs/internal/skill-rebuild/ — concise reconstruction history plus preserved golden/comparison evidence; completed implementation plans are not current guidance.
 - docs/work-orders/ — active Work Order packages; terminal packages are archived below docs/work-orders/archive/YYYY-MM/.
 
 ## Work tracking
