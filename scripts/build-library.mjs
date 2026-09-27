@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDecisionsPage } from './build-decisions.mjs';
@@ -39,6 +39,9 @@ const libraryDataSources = [
   'content/library-data.js'
 ];
 
+await rm(path.join(root, 'dist'), { recursive: true, force: true });
+console.log('Cleared dist/ before rebuilding generated Site output');
+
 const libraryDataOutput = path.join(root, 'dist/data/library-data.js');
 await mkdir(path.dirname(libraryDataOutput), { recursive: true });
 const libraryDataBundle = (
@@ -49,6 +52,31 @@ const libraryDataBundle = (
 ).join('\n\n');
 await writeFile(libraryDataOutput, `${libraryDataBundle.replace(/\n+$/, '')}\n`, 'utf8');
 console.log(`Built ${libraryDataSources.length} authored library data sources -> dist/data/library-data.js`);
+
+const authoredSitePages = [
+  "activity-views.html",
+  "guide.html",
+  "index.html",
+  "job-search.html",
+  "operating-packs.html",
+  "playbooks.html",
+  "portfolio-layout-lab.html",
+  "prototyping.html",
+  "skill-views.html",
+  "skills.html",
+  "template.html",
+  "templates.html",
+  "tool-views.html",
+  "tool.html",
+  "tools.html",
+  "workflow-canvas.html"
+];
+
+const publishedSiteDocs = [
+  ['docs/job-search/application-context-and-review.md', 'dist/docs/application-context-and-review.md'],
+  ['docs/job-search/application-tracker-contract.md', 'dist/docs/application-tracker-contract.md'],
+  ['docs/job-search/job-ledger-contract.md', 'dist/docs/job-ledger-contract.md']
+];
 
 const files = [
   ['content/library-model.js', 'dist/data/library-model.js'],
@@ -65,6 +93,8 @@ const files = [
   ['client/canvas-intent.js', 'dist/js/canvas-intent.js'],
   ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js'],
   ['content/job-tracker-page.html', 'dist/job-tracker.html'],
+  ...authoredSitePages.map((name) => [`content/site-pages/${name}`, `dist/${name}`]),
+  ...publishedSiteDocs,
   ...routeFiles.map((routeFile) => [`content/${routeFile}`, `dist/data/${routeFile}`])
 ];
 
