@@ -2,7 +2,6 @@ import {
   validateGraph,
   indexGraph,
   rootNodeIds,
-  directNeighbors,
   visibleNodeIds,
   findPath,
   sourceUrl,
@@ -14,8 +13,21 @@ const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character =>
 }[character]));
 
 const root = document.querySelector('[data-system-map]');
-const graphUrl = root?.dataset.graphUrl;
-const sourcePageUrl = root?.dataset.sourcePage;
+
+const lensConfigs = {
+  'work-coordination': {
+    label: 'Work & coordination',
+    graphUrl: root?.dataset.graphWorkCoordinationUrl,
+    sourceUrl: root?.dataset.sourceWorkCoordinationUrl
+  },
+  'repository-ownership': {
+    label: 'Repository ownership',
+    graphUrl: root?.dataset.graphRepositoryOwnershipUrl,
+    sourceUrl: root?.dataset.sourceRepositoryOwnershipUrl
+  }
+};
+
+const graphCache = new Map();
 
 const state = {
   graph: null,
@@ -35,11 +47,19 @@ const elements = {
   pathResult: document.getElementById('path-result'),
   reset: document.getElementById('map-reset'),
   lens: document.getElementById('map-lens'),
-  liveRegion: document.getElementById('map-live-region')
+  liveRegion: document.getElementById('map-live-region'),
+  sourceLink: document.getElementById('map-graph-source-link'),
+  error: document.getElementById('map-error'),
+  errorMessage: document.getElementById('map-error-message'),
+  sourceFallback: document.getElementById('map-source-fallback')
 };
 
 function announce(message) {
   elements.liveRegion.textContent = message;
+}
+
+function currentLensConfig() {
+  return lensConfigs[state.lens] || null;
 }
 
 function selectedNode() {
@@ -50,12 +70,21 @@ function relationshipLabel(value) {
   return String(value || '').replaceAll('-', ' ');
 }
 
+function coverageDescription() {
+  if (!state.graph) return '';
+  if (state.graph.coverage === 'complete-for-scope') {
+    return 'Complete for this lens scope; it does not imply exhaustive downstream impact.';
+  }
+  return 'Known-explicit coverage, not exhaustive impact analysis.';
+}
+
 function renderStatus() {
   if (!state.graph) return;
+  const config = currentLensConfig();
   elements.status.innerHTML = `
     <span class="status-dot" aria-hidden="true"></span>
-    <strong>Live derived view</strong>
-    <span>${escapeHtml(state.graph.nodes.length)} nodes · ${escapeHtml(state.graph.edges.length)} explicit relationships</span>
+    <strong>${escapeHtml(config?.label || 'Derived view')}</strong>
+    <span>${escapeHtml(state.graph.nodes.length)} nodes · ${escapeHtml(state.graph.edges.length)} relationships</span>
     <span class="coverage">Coverage: ${escapeHtml(state.graph.coverage)}</span>
   `;
 }
@@ -140,7 +169,7 @@ function renderDetails() {
       ${incoming.length
         ? `<ul class="relationship-list">${incoming.map(edge => edgeSummary(edge, 'incoming')).join('')}</ul>`
         : '<p class="quiet">No explicit incoming relationships in this lens.</p>'}
-      <p class="coverage-note">This is known-explicit coverage, not exhaustive impact analysis.</p>
+      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
     </section>
 
     <section class="detail-section source-detail">
@@ -250,6 +279,51 @@ function findSelectedPath() {
   announce(state.path ? 'Explicit path shown.' : 'No explicit path found in this lens.');
 }
 
+function showLoadError(error, config) {
+  elements.status.innerHTML = '<strong>System Map unavailable</strong>';
+  elements.explorer.hidden = true;
+  elements.error.hidden = false;
+  elements.errorMessage.textContent = error.message;
+  if (config?.sourceUrl) elements.sourceFallback.href = config.sourceUrl;
+}
+
+async function loadLens(lens) {
+  const config = lensConfigs[lens];
+  if (!config?.graphUrl) {
+    elements.lens.value = state.lens;
+    announce('That lens is not mapped yet.');
+    return;
+  }
+
+  elements.status.innerHTML = `<strong>Loading ${escapeHtml(config.label)}…</strong>`;
+  elements.error.hidden = true;
+
+  try {
+    let graph = graphCache.get(lens);
+    if (!graph) {
+      const response = await fetch(config.graphUrl, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Could not load the System Map (${response.status}).`);
+      graph = validateGraph(await response.json());
+      graphCache.set(lens, graph);
+    }
+
+    state.lens = lens;
+    state.graph = graph;
+    state.selectedId = null;
+    state.expanded.clear();
+    state.path = null;
+    elements.lens.value = lens;
+    elements.sourceLink.href = config.sourceUrl;
+    elements.sourceFallback.href = config.sourceUrl;
+    renderPathControls();
+    elements.explorer.hidden = false;
+    render();
+    announce(`${config.label} lens loaded.`);
+  } catch (error) {
+    showLoadError(error, config);
+  }
+}
+
 function bindEvents() {
   root.addEventListener('click', event => {
     const select = event.target.closest('[data-select-node]');
@@ -263,29 +337,9 @@ function bindEvents() {
   elements.reset.addEventListener('click', reset);
   document.getElementById('find-path').addEventListener('click', findSelectedPath);
   elements.lens.addEventListener('change', () => {
-    if (elements.lens.value !== 'work-coordination') {
-      elements.lens.value = 'work-coordination';
-      announce('That lens is not mapped yet.');
-    }
+    loadLens(elements.lens.value);
   });
 }
 
-async function load() {
-  if (!graphUrl) throw new Error('System Map source URL is not configured.');
-  const response = await fetch(graphUrl, { cache: 'no-store' });
-  if (!response.ok) throw new Error(`Could not load the System Map (${response.status}).`);
-  state.graph = validateGraph(await response.json());
-  renderPathControls();
-  bindEvents();
-  elements.explorer.hidden = false;
-  render();
-}
-
-load().catch(error => {
-  elements.status.innerHTML = '<strong>System Map unavailable</strong>';
-  elements.explorer.hidden = true;
-  document.getElementById('map-error').hidden = false;
-  document.getElementById('map-error-message').textContent = error.message;
-  const link = document.getElementById('map-source-fallback');
-  if (sourcePageUrl) link.href = sourcePageUrl;
-});
+bindEvents();
+loadLens('work-coordination');

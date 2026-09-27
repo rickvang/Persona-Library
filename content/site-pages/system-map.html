@@ -134,18 +134,20 @@
   </section>
 
   <main class="page" data-system-map
-    data-graph-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
-    data-source-page="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json">
+    data-graph-work-coordination-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
+    data-source-work-coordination-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json"
+    data-graph-repository-ownership-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/repository-ownership.json"
+    data-source-repository-ownership-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/repository-ownership.json">
 
     <div class="source-strip">
       <strong>Authority boundary</strong>
-      <span>This page reads the generated graph directly from <code>persona-workspace</code>. It does not own or edit graph facts. Coverage is <code>known-explicit</code>, not exhaustive impact analysis.</span>
-      <a href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open graph source ↗</a>
+      <span>This page reads each selected generated graph directly from <code>persona-workspace</code>. It does not own or edit graph facts; coverage is shown per lens.</span>
+      <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open graph source ↗</a>
     </div>
 
     <section class="lens-grid" aria-label="System Map lenses">
       <article class="lens available"><strong>Work &amp; coordination</strong><p>Work surfaces, orchestration, truth classes, and live-authority boundaries.</p><span class="lens-status">Available</span></article>
-      <article class="lens"><strong>Repository ownership</strong><p>Repository placement and ownership relationships arrive in a later graph domain.</p><span class="lens-status">Not mapped yet</span></article>
+      <article class="lens available"><strong>Repository ownership</strong><p>Workspace membership, repository role, local instructions, ownership scope, and mutation boundaries.</p><span class="lens-status">Available</span></article>
       <article class="lens"><strong>Persona / Skill</strong><p>Identity and application relationships remain in their canonical library sources for now.</p><span class="lens-status">Not mapped yet</span></article>
       <article class="lens"><strong>Source / generated</strong><p>Authored-source and generated-output relationships are not in this lens yet.</p><span class="lens-status">Not mapped yet</span></article>
       <article class="lens"><strong>Runtime / infrastructure</strong><p>Live operational state stays with GitHub, CI, Vercel, and runtime authorities.</p><span class="lens-status">Not mapped yet</span></article>
@@ -155,7 +157,7 @@
       <label for="map-lens">View</label>
       <select id="map-lens">
         <option value="work-coordination">Work &amp; coordination</option>
-        <option value="repository-ownership">Repository ownership — not mapped yet</option>
+        <option value="repository-ownership">Repository ownership</option>
         <option value="persona-skill">Persona / Skill — not mapped yet</option>
         <option value="source-generated">Source / generated — not mapped yet</option>
         <option value="runtime">Runtime / infrastructure — not mapped yet</option>
