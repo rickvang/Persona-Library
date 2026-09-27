@@ -1,7 +1,8 @@
 # Work Order: Local Video Inspection Skill
 
 - ID: `WO-2026-09-17-local-video-inspection-skill`
-- Status: ready for review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-17
 - Updated: 2026-09-17
 - Requester: repository owner

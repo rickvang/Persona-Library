@@ -1,8 +1,8 @@
 # WO-2026-09-17-related-repository-workspace
 
 ## Status
-
-- Status: active
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-17
 - Last updated: 2026-09-17
 - Requester: repository owner
