@@ -45,10 +45,10 @@ Before role alignment and drafting, read the private candidate standing-decision
 
 Use the repository's existing job-search contract:
 
-- [Job search implementation plan](../../job-search/implementation.md)
-- [Application Packet Work Order template](../../job-search/application-work-order-template.md)
-- [Repository Work Order convention](../../work-orders.md)
-- [Project-context and reference routing](../../ux/project-context-and-reference-routing.md)
+- [Job search implementation plan](../../../../job-search/implementation.md)
+- [Application Packet Work Order template](../../../../job-search/application-work-order-template.md)
+- [Repository Work Order convention](../../../../work-orders.md)
+- [Project-context and reference routing](../../../../ux/project-context-and-reference-routing.md)
 
 Suggested review routing uses existing records only:
 
