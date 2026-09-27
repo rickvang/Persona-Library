@@ -24,6 +24,11 @@ const lensConfigs = {
     label: 'Repository ownership',
     graphUrl: root?.dataset.graphRepositoryOwnershipUrl,
     sourceUrl: root?.dataset.sourceRepositoryOwnershipUrl
+  },
+  'persona-skill': {
+    label: 'Persona / Skill',
+    graphUrl: root?.dataset.graphPersonaSkillUrl,
+    sourceUrl: root?.dataset.sourcePersonaSkillUrl
   }
 };
 
