@@ -2,6 +2,8 @@
 
 ## Current boundary
 
+**Human/system boundary:** Persona Workspace owns the plain-language cross-repository mental model. Persona-Library owns the technical semantic architecture documented here. Human orientation may summarize this repository as “system knowledge,” but that summary does not replace the source-of-truth, routing, validation, or lifecycle contracts below.
+
 The library remains a static Site. Persona content is the source of truth; the browser page is a renderer of that content.
 
 ```text
