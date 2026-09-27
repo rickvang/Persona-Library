@@ -48,4 +48,6 @@ When a selected Skill or Tool-use recipe has a matching active Operational Scena
 
 ## Shared Persona Workspace
 
+The canonical human explanation of the wider system is [How Persona Workspace works](https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md). Keep this file optimized for repository execution; do not duplicate the whole-workspace human model here. The human model never overrides this repository's local authority or mutation boundaries.
+
 When opened from [Persona Workspace](https://github.com/rickvang/persona-workspace), use the parent only for cross-repository discovery and coordination. Its generated repository map identifies sibling entrypoints and ownership; this repository's local instructions remain authoritative for work here. Workspace visibility is not cross-repository write permission.
