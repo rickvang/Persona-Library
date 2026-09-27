@@ -30,6 +30,8 @@ For substantial cross-thread or cross-agent work, follow [docs/work-orders.md](d
 
 ## Repository execution and validation
 
+**Current-state search boundary:** ordinary repository discovery and code/content search must exclude `docs/work-orders/archive/**`. Include that archive only when the task explicitly needs historical, provenance, incident, or recovery evidence. Archived Work Orders are evidence, not current ownership or current-state authority.
+
 For repository work, `rickvang/Persona-Library` is canonical unless the requester names another target. Start from fresh `main` on a focused branch in a clean working copy when one is available; otherwise use the connected GitHub integration. GitHub remains authoritative for remote state.
 
 Use `.github/workflows/repository-validation.yml` as the executable validation contract. Run the narrowest sufficient checks while iterating, then the repository-required build/validation/tests before completion. Required GitHub checks still govern merge readiness.
