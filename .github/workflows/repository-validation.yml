@@ -35,7 +35,7 @@ jobs:
         run: node scripts/validate-content.mjs
 
       - name: Run repository validation tests
-        run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-git-deployment.test.mjs scripts/validation/seen-job-store.test.mjs scripts/validation/recipe-comparison.test.mjs scripts/validation/token-usage.test.mjs scripts/validation/allowance-usage.test.mjs
+        run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-git-deployment.test.mjs scripts/validation/seen-job-store.test.mjs scripts/validation/recipe-comparison.test.mjs scripts/validation/token-usage.test.mjs scripts/validation/allowance-usage.test.mjs scripts/validation/generated-output-cleanliness.test.mjs
 
       - name: Check committed whitespace for pull request
         if: github.event_name == 'pull_request'
@@ -46,4 +46,4 @@ jobs:
         run: git diff --check "${{ github.event.before }}..${{ github.sha }}"
 
       - name: Verify generated output is committed
-        run: git diff --exit-code -- dist
+        run: node scripts/check-generated-output.mjs
