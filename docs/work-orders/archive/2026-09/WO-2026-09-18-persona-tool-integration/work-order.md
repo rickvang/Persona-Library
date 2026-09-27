@@ -2,7 +2,8 @@
 
 - **Work Order ID:** WO-2026-09-18-persona-tool-integration
 - **Title:** Integrate Tool-use review into Persona creation workflow
-- **Status:** ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - **Created:** 2026-09-18
 - **Last updated:** 2026-09-18
 - **Requester:** repository owner

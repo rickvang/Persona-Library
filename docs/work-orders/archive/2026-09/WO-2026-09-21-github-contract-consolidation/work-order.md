@@ -1,7 +1,8 @@
 # Work Order — GitHub authorization contract consolidation
 
 - Work Order ID: WO-2026-09-21-github-contract-consolidation
-- Status: active
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-21
 - Last updated: 2026-09-21
 - Requester: repository user

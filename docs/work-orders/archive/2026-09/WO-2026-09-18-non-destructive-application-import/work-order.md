@@ -1,5 +1,8 @@
 # WO-2026-09-18-non-destructive-application-import
 
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
+
 - Created: 2026-09-18
 - Requester: repository owner
 - Current owner: Persona Library product surface

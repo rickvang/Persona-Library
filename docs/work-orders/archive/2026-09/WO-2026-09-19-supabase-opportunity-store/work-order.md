@@ -2,7 +2,8 @@
 
 - Work Order ID: `WO-2026-09-19-supabase-opportunity-store`
 - Title: Supabase-backed opportunity persistence and catalog projection foundation
-- Status: active follow-up
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-19
 - Last updated: 2026-09-21
 - Requester: repository owner

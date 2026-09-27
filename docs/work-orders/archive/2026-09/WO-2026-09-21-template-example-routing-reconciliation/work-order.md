@@ -1,7 +1,8 @@
 # Work Order — Refresh Web App Design System Template provenance after example-routing merge
 
 - Work Order ID: `WO-2026-09-21-template-example-routing-reconciliation`
-- Status: active
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-21
 - Last updated: 2026-09-21
 - Issue: https://github.com/rickvang/Persona-Library/issues/137
