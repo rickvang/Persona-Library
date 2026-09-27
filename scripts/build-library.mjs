@@ -64,6 +64,7 @@ const authoredSitePages = [
   "prototyping.html",
   "skill-views.html",
   "skills.html",
+  "system-map.html",
   "template.html",
   "templates.html",
   "tool-views.html",
@@ -91,6 +92,8 @@ const files = [
   ['client/template-preview.js', 'dist/js/template-preview.js'],
   ['client/canvas-graph.js', 'dist/js/canvas-graph.js'],
   ['client/canvas-intent.js', 'dist/js/canvas-intent.js'],
+  ['client/system-map-graph.mjs', 'dist/js/system-map-graph.mjs'],
+  ['client/system-map.mjs', 'dist/js/system-map.mjs'],
   ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js'],
   ['content/job-tracker-page.html', 'dist/job-tracker.html'],
   ...authoredSitePages.map((name) => [`content/site-pages/${name}`, `dist/${name}`]),
@@ -136,6 +139,7 @@ const primarySitePages = [
   'dist/job-search.html',
   'dist/job-tracker.html',
   'dist/guide.html',
+  'dist/system-map.html',
   'dist/decisions.html',
   'dist/prototyping.html'
 ];
@@ -147,6 +151,23 @@ for (const relativePath of primarySitePages) {
   if (!nav) throw new Error('Could not find primary navigation in ' + relativePath);
 
   let links = nav[2];
+
+  let systemMapLink = links.match(/<a href="system-map\.html"[^>]*>System Map<\/a>/)?.[0];
+  if (!systemMapLink) {
+    const withSystemMap = links.replace(
+      /(<a href="guide\.html"[^>]*>Docs<\/a>)/,
+      '$1<a href="system-map.html">System Map</a>'
+    );
+    if (withSystemMap === links) throw new Error('Could not add System Map navigation to ' + relativePath);
+    links = withSystemMap;
+    systemMapLink = links.match(/<a href="system-map\.html"[^>]*>System Map<\/a>/)?.[0];
+  }
+
+  links = links.replace(systemMapLink, '');
+  const divider = /<span aria-hidden="true"[^>]*><\/span>/;
+  if (!divider.test(links)) throw new Error('Could not find navigation divider in ' + relativePath);
+  links = links.replace(divider, systemMapLink + '$&');
+
   let applicationLink = links.match(/<a href="job-tracker\.html"[^>]*>Applications<\/a>/)?.[0];
   if (!applicationLink) {
     const withApplication = links.replace(
@@ -159,15 +180,13 @@ for (const relativePath of primarySitePages) {
   }
 
   links = links.replace(applicationLink, '');
-  const divider = /<span aria-hidden="true"[^>]*><\/span>/;
-  if (!divider.test(links)) throw new Error('Could not find navigation divider in ' + relativePath);
   links = links.replace(divider, '$&' + applicationLink);
 
   const updated = html.replace(nav[0], nav[1] + links + nav[3]);
   if (updated === html) {
-    console.log('Applications navigation already follows the divider -> ' + relativePath);
+    console.log('Primary navigation already normalized -> ' + relativePath);
     continue;
   }
   await writeFile(filePath, updated, 'utf8');
-  console.log('Positioned Applications after the navigation divider -> ' + relativePath);
+  console.log('Normalized primary navigation -> ' + relativePath);
 }
