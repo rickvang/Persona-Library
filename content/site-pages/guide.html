@@ -76,23 +76,26 @@
     <p class="crumbs"><a href="index.html">Personas</a> / Docs</p>
     <p class="eyebrow">Reference guide</p>
     <h1>Docs</h1>
-    <p class="hero-copy">A practical reference for researching personas, defining the skills behind their work, using Operating Packs for domain context, finding reusable Templates, composing playbooks, and keeping the system current.</p>
+    <p class="hero-copy">A practical reference for understanding how Persona-Library fits into the wider workspace, using its reusable knowledge, and maintaining the system when deeper technical detail is actually needed.</p>
   </section>
   <div class="docs-layout">
     <nav class="sidebar" aria-label="Guide sections">
       <p class="sidebar-label">On this page</p>
       <a href="#start">Start here</a>
-      <a href="#agent-orientation">Agent orientation</a>
-      <a href="#routing-map">System routing map</a>
+      <a href="#system-overview">How the system fits together</a>
+      <a href="#create">Use the library</a>
       <a href="#operating-packs">Operating Packs</a>
       <a href="#templates">Templates</a>
-      <a href="#mental-model">Mental model</a>
+      <a href="#library-model">Library knowledge model</a>
+      <a href="#work-coordination">Work &amp; coordination</a>
       <a href="#docs-vs-decisions">Docs vs Decisions</a>
       <a href="#playbooks">Playbooks</a><a href="#application-context">Application context and reviews</a>
       <a href="#create">Create a persona</a>
       <a href="#research-only">Research only</a>
       <a href="#update">Update a persona</a>
       <a href="#output">What you’ll get</a>
+      <a href="#agent-orientation">Advanced: agent orientation</a>
+      <a href="#routing-map">Advanced: system routing map</a>
       <a href="#persona-skills">Persona skills</a>
       <a href="#skill-authoring">Skill authoring</a>
       <a href="#persona-reconciliation">Reconciliation</a>
@@ -110,34 +113,36 @@
     <article>
       <section class="article-section" id="start">
         <h2>Start here</h2>
-        <p class="lede">For most new personas, use this prompt. Replace the bracketed parts if you have them; otherwise the research will use a cross-industry default.</p>
-        <div class="prompt-card">
-          <div class="prompt-meta"><h3>Create and add a persona</h3><span class="tag">Recommended</span></div>
-          <p>Research the role, map its activities and workflows, then add it to Personas.</p>
-          <pre id="prompt-create">Create a well-researched persona for a [role] in [industry or context] and add it to Personas.</pre>
-          <button class="copy" data-copy-id="prompt-create">Copy prompt</button>
+        <p class="lede">Choose the level that matches what you are trying to do. You can use Persona-Library without understanding its agent or routing machinery.</p>
+        <div class="prompt-list">
+          <div class="prompt-card">
+            <div class="prompt-meta"><h3>Understand the system</h3><span class="tag">Human orientation</span></div>
+            <p>Start with the four questions that explain where work belongs, where truth lives, and how much coordination it needs.</p>
+            <a class="back" href="#system-overview">How the system fits together →</a>
+          </div>
+          <div class="prompt-card">
+            <div class="prompt-meta"><h3>Use the library</h3><span class="tag">Everyday work</span></div>
+            <p>Research or update Personas, Skills, Operating Packs, Templates, Tools, and Playbooks without learning the underlying agent machinery first.</p>
+            <a class="back" href="#create">Start with Persona work →</a>
+          </div>
+          <div class="prompt-card">
+            <div class="prompt-meta"><h3>Maintain the system</h3><span class="tag">Advanced</span></div>
+            <p>Load agent orientation, routing, activation, reconciliation, and package contracts only when you are changing or diagnosing those mechanisms.</p>
+            <a class="back" href="#agent-orientation">Open agent &amp; maintainer guidance →</a>
+          </div>
         </div>
-        <div class="note"><p><strong>You don’t need to say “use the skill.”</strong> The persona-research method is intended to activate automatically when the request is clearly about researching or creating a persona.</p></div>
       </section>
 
-      <section class="article-section" id="agent-orientation">
-        <h2>Agent orientation</h2>
-         <p class="lede">Before working with this system, load the orientation bootstrap, choose the smallest primary space, and read only that space’s route group. Together they give an agent the smallest useful route through Personas, Skills, Operating Packs, Templates, Tools, Playbooks, Docs, Decisions, and Prototyping.</p>
-        <div class="prompt-card">
-          <div class="prompt-meta"><h3>Activation prompt</h3><span class="tag">Recommended</span></div>
-          <p>Use this at the start of a session or task when the agent does not already know the system.</p>
-          <pre id="prompt-orientation">Use $persona-library-orientation before working with the Personas system. Load the orientation bootstrap, classify my request, identify the smallest primary space, read its route group, state what you will and will not update, then proceed with the smallest useful action.</pre>
-          <button class="copy" data-copy-id="prompt-orientation">Copy activation prompt</button>
-        </div>
-         <table class="mini-table"><thead><tr><th>Space</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td>Personas</td><td>Role lenses, workflows, activities, priorities, tools, skills, and evidence.</td><td>Temporary experiments or broad coordination.</td></tr><tr><td>Skills</td><td>Reusable capabilities, operating loops, quality signals, and persona applications.</td><td>Tool credentials or one-off task instructions.</td></tr><tr><td>Operating Packs</td><td>Domain or project context, rules, standards, conventions, procedures, references, and validation guidance.</td><td>Portable Skill judgment, Playbook orchestration, Tool execution, or unverified external availability.</td></tr><tr><td>Templates</td><td>Reusable starting artifacts, scaffolds, applicability, source evidence, and lifecycle context.</td><td>Generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output.</td></tr><tr><td>Tools</td><td>Capabilities, scope, permissions, availability, recipes, and lessons.</td><td>Assuming access is configured or executing without authorization.</td></tr><tr><td>Playbooks</td><td>Multi-persona outcomes, stages, handoffs, shared state, and quality gates.</td><td>Duplicating the underlying persona, Skill, pack, or Template definitions.</td></tr><tr><td>Docs</td><td>Current definitions, instructions, boundaries, and examples.</td><td>Unsettled alternatives or hidden history.</td></tr><tr><td>Decisions</td><td>Durable choices, rationale, tradeoffs, affected surfaces, and revisit conditions.</td><td>Silent rewrites of the current truth.</td></tr><tr><td>Prototyping</td><td>Isolated alternatives and persona concepts being tested.</td><td>Live records or production dependencies.</td></tbody></table>
-        <div class="note"><p><strong>Default behavior:</strong> read first, classify the request, state assumptions and scope, and remain read-only unless the requester explicitly authorizes a durable update. Finish with outcome, evidence or checks, limitations or blockers, and next action.</p></div>
-        <section class="routing-map" id="routing-map">
-          <h3>System routing map</h3>
-          <p>Choose the smallest route for the request. A layer identifies what kind of capability is being used; it does not grant permission and not every request needs a Skill.</p>
-           <table class="mini-table"><thead><tr><th>Need</th><th>Start with</th><th>Layer or artifact</th></tr></thead><tbody><tr><td>Research or maintain a Persona</td><td><code>$persona-research</code></td><td>Library management</td></tr><tr><td>Define Persona capabilities</td><td><code>$persona-skills</code></td><td>Library management</td></tr><tr><td>Research operating context</td><td><code>$operating-pack-research</code></td><td>Library management</td></tr><tr><td>Compose an Operating Pack</td><td><code>$operating-pack-composer</code></td><td>Library management</td></tr><tr><td>Reconcile a pack change</td><td><code>$operating-pack-reconciliation</code></td><td>Governance</td></tr><tr><td>Research or evaluate a Template</td><td><code>$template-research</code></td><td>Library management</td></tr><tr><td>Compose a Template</td><td><code>$template-composer</code></td><td>Library management</td></tr><tr><td>Reconcile a Template change</td><td><code>$template-reconciliation</code></td><td>Governance</td></tr><tr><td>Consult multiple Personas</td><td><code>$persona-panel-orchestration</code></td><td>Orchestration</td></tr><tr><td>Create or update a callable Skill package</td><td><code>$pl-skill-creator</code></td><td>Package authoring</td></tr><tr><td>Resolve or safely use a Tool</td><td><code>$tool-discovery-and-safe-execution</code></td><td>Tool safety</td></tr><tr><td>Compare a layout in isolation</td><td><code>$layout-lab</code></td><td>Persona-applied prototype</td></tr><tr><td>Review downstream effects</td><td><code>$change-impact-reconciliation</code></td><td>Governance</td></tr><tr><td>Run resume or application work</td><td>Job-search Docs and active Work Order</td><td>Workflow</td></tr><tr><td>Coordinate bounded parallel implementation</td><td>Bounded Parallel Implementation Playbook</td><td>Playbook</td></tr></tbody></table>
-          <div class="note"><p>Verify the current repository package or runtime catalog before invoking a named Skill. A Persona <code>skillLibrary</code> entry, plan, issue, URL, or documentation mention describes a route; it does not prove a callable package exists.</p></div>
-        </section>
-          <div class="source-callout"><div><h3>Machine-readable source</h3><p>The canonical bootstrap and route groups are generated into the Site so another agent or environment can load the same orientation contract selectively.</p></div><a class="back" href="data/site-orientation.json">Open orientation bootstrap →</a></div>
+      <section class="article-section" id="system-overview">
+        <h2>How the system fits together</h2>
+        <p class="lede">For normal work, use four questions: <strong>Place → Work → Truth → Coordination</strong>. This is the human-facing model; deeper agent and routing machinery comes later.</p>
+        <table class="mini-table"><thead><tr><th>Question</th><th>Use it to decide</th></tr></thead><tbody>
+          <tr><td>Place</td><td>Where does this belong? Persona-Library owns system knowledge; product repositories own their products; portable packages and reusable assets stay with their owning repositories.</td></tr>
+          <tr><td>Work</td><td>What are we changing? Think product work, system knowledge, or system plumbing before choosing a route.</td></tr>
+          <tr><td>Truth</td><td>Where is the authoritative answer? Durable truth lives in canonical repository artifacts, work truth in Current Work and issue/PR context, and live truth in GitHub, CI, Vercel, runtime, or other live systems.</td></tr>
+          <tr><td>Coordination</td><td>How much structure is needed? Start with an issue/PR, add Current Work for substantial continuity, use a Work Order only for unique recovery state, and use Riley + Work Graph only for genuinely multi-lane work.</td></tr>
+        </tbody></table>
+        <div class="source-callout"><div><h3>Canonical Workspace guide</h3><p>This page summarizes the model for Persona-Library. The full cross-repository explanation lives in Persona Workspace so the Site does not become a second source of truth.</p></div><a class="back" href="https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md">Open How Persona Workspace works →</a></div>
       </section>
 
       <section class="article-section" id="operating-packs">
@@ -324,11 +329,25 @@
         <div class="source-callout"><div><h3>Use this exact request</h3><p>Ask me to check a named source or find an authoritative one, explain what it contributes, and add it to the persona’s Resources section.</p></div><button class="copy" data-copy-id="prompt-source">Copy source request</button></div>
       </section>
 
-      <section class="article-section" id="mental-model">
-        <h2>The mental model</h2>
-        <p class="lede">The site has reusable knowledge layers and separate working-record layers. Each has one job, so larger workflows can compose existing material without turning every use case into a new kind of record.</p>
+      <section class="article-section" id="library-model">
+        <h2>Library knowledge model</h2>
+        <p class="lede">This is the internal knowledge model for Persona-Library—not the overall Workspace mental model. Each reusable layer has one job so larger workflows can compose existing material without inventing a new record type for every use case.</p>
         <table class="mini-table"><thead><tr><th>Layer</th><th>What it answers</th></tr></thead><tbody><tr><td>Persona</td><td>Who is operating, in what lifecycle, context, and state?</td></tr><tr><td>Skill</td><td>What portable capability is needed, and how can quality be recognized?</td></tr><tr><td>Operating Pack</td><td>What contextual rules, standards, procedures, and validation guidance govern the work?</td></tr><tr><td>Template</td><td>What reusable starting artifact or scaffold should the work begin from?</td></tr><tr><td>Persona tool requirement</td><td>Which capability does an activity need, what is the preferred path, and what is the safe fallback?</td></tr><tr><td>Tool-use recipe</td><td>How is that capability performed for a specific task in a specific tool?</td></tr><tr><td>Persona workflow</td><td>How does that person perform a meaningful flow of activities?</td></tr><tr><td>Playbook</td><td>How do several personas, skills, packs, templates, recipes, workflows, artifacts, and gates coordinate toward an outcome?</td></tr><tr><td>Tool record</td><td>What capability, scope, access path, permission, fallback, and evidence does a tool provide?</td></tr><tr><td>Prototyping</td><td>Which structure or interaction direction should be tested before it becomes current?</td></tr><tr><td>Decision</td><td>What choice is durable, why was it made, and what does it affect?</td></tr></tbody></table>
          <div class="note"><p><strong>Keep the distinction clear:</strong> Personas are lenses, Skills are portable capabilities, Operating Packs provide contextual rules, Templates provide starting structure, Tool-use recipes make capabilities practical, workflows describe how a Persona works, and Playbooks coordinate reusable material toward an outcome.</p></div>
+      </section>
+
+      <section class="article-section" id="work-coordination">
+        <h2>Work and coordination</h2>
+        <p class="lede">These surfaces are a progression, not competing trackers. Use only the amount of coordination the work actually needs.</p>
+        <table class="mini-table"><thead><tr><th>Surface</th><th>Human question</th><th>Use it when</th></tr></thead><tbody>
+          <tr><td>GitHub issue / PR</td><td>What bounded change are we implementing?</td><td>The work can be scoped, reviewed, and completed in the owning repository.</td></tr>
+          <tr><td>Current Work</td><td>What substantial work is still in motion, and what should happen next?</td><td>The work needs continuity across conversations, agents, or multiple repository actions.</td></tr>
+          <tr><td>Work Order</td><td>What unique recovery context would otherwise be lost?</td><td>Another agent could not safely resume from Current Work + issue/PR + domain artifacts alone.</td></tr>
+          <tr><td>Riley + Work Graph</td><td>How do several independent or dependent execution lanes fit together?</td><td>The work has real concurrency, sequencing, dependency, or recovery needs.</td></tr>
+          <tr><td>Verification Queue</td><td>What evidence must be checked later?</td><td>Verification depends on future usage, environment state, or another deferred condition.</td></tr>
+          <tr><td>Live system</td><td>What is true right now?</td><td>You need current PR, CI, deployment, runtime, permission, or service state. Ask GitHub, Vercel, the runtime, or the relevant live system directly.</td></tr>
+        </tbody></table>
+        <div class="note"><p><strong>Working rule:</strong> trackers preserve intent and continuity; live systems preserve volatile operational truth. Do not keep completed implementation open just because a separate later verification still exists.</p></div>
       </section>
 
       <section class="article-section" id="docs-vs-decisions">
@@ -338,6 +357,26 @@
         <div class="note"><p><strong>Working rule:</strong> Prototyping explores. Decisions archive. Docs contain the current truth. Link a prototype to its decision record, and link the decision back to the Docs section or product surface it changed.</p></div>
         <ul class="rule-list"><li><strong>Use Docs for orientation</strong><span>Someone should be able to learn the system or complete a task without reading the entire history.</span></li><li><strong>Use Prototyping for comparison</strong><span>Keep alternatives visible while the structure is unsettled, without implying that any option is current truth.</span></li><li><strong>Use Decisions for trust</strong><span>Someone should be able to understand the tradeoff, see what was applied, and know what could cause the choice to change.</span></li><li><strong>Keep one canonical explanation</strong><span>Do not copy whole sections between spaces. Point from the current Docs rule to its decision record when context matters.</span></li></ul>
         <div class="source-callout"><div><h3>Status flows</h3><p>Prototypes move <strong>Active → Selected → Archived</strong>. Decisions move <strong>Proposed → Decided → Applied → Superseded</strong>. Use <strong>Parked</strong> for a useful idea intentionally deferred.</p></div><a class="back" href="decisions.html">Open Decisions →</a></div>
+      </section>
+
+      <section class="article-section" id="agent-orientation">
+        <h2>Advanced: agent &amp; maintainer orientation</h2>
+         <p class="lede">Use this section when you are maintaining or diagnosing the agent-facing system. Ordinary Persona-Library use does not require understanding the orientation bootstrap, route groups, or activation machinery.</p>
+        <div class="prompt-card">
+          <div class="prompt-meta"><h3>Activation prompt</h3><span class="tag">Recommended</span></div>
+          <p>Use this at the start of a session or task when the agent does not already know the system.</p>
+          <pre id="prompt-orientation">Use $persona-library-orientation before working with the Personas system. Load the orientation bootstrap, classify my request, identify the smallest primary space, read its route group, state what you will and will not update, then proceed with the smallest useful action.</pre>
+          <button class="copy" data-copy-id="prompt-orientation">Copy activation prompt</button>
+        </div>
+         <table class="mini-table"><thead><tr><th>Space</th><th>Use it for</th><th>Do not use it for</th></tr></thead><tbody><tr><td>Personas</td><td>Role lenses, workflows, activities, priorities, tools, skills, and evidence.</td><td>Temporary experiments or broad coordination.</td></tr><tr><td>Skills</td><td>Reusable capabilities, operating loops, quality signals, and persona applications.</td><td>Tool credentials or one-off task instructions.</td></tr><tr><td>Operating Packs</td><td>Domain or project context, rules, standards, conventions, procedures, references, and validation guidance.</td><td>Portable Skill judgment, Playbook orchestration, Tool execution, or unverified external availability.</td></tr><tr><td>Templates</td><td>Reusable starting artifacts, scaffolds, applicability, source evidence, and lifecycle context.</td><td>Generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output.</td></tr><tr><td>Tools</td><td>Capabilities, scope, permissions, availability, recipes, and lessons.</td><td>Assuming access is configured or executing without authorization.</td></tr><tr><td>Playbooks</td><td>Multi-persona outcomes, stages, handoffs, shared state, and quality gates.</td><td>Duplicating the underlying persona, Skill, pack, or Template definitions.</td></tr><tr><td>Docs</td><td>Current definitions, instructions, boundaries, and examples.</td><td>Unsettled alternatives or hidden history.</td></tr><tr><td>Decisions</td><td>Durable choices, rationale, tradeoffs, affected surfaces, and revisit conditions.</td><td>Silent rewrites of the current truth.</td></tr><tr><td>Prototyping</td><td>Isolated alternatives and persona concepts being tested.</td><td>Live records or production dependencies.</td></tbody></table>
+        <div class="note"><p><strong>Default behavior:</strong> read first, classify the request, state assumptions and scope, and remain read-only unless the requester explicitly authorizes a durable update. Finish with outcome, evidence or checks, limitations or blockers, and next action.</p></div>
+        <section class="routing-map" id="routing-map">
+          <h3>System routing map</h3>
+          <p>Choose the smallest route for the request. A layer identifies what kind of capability is being used; it does not grant permission and not every request needs a Skill.</p>
+           <table class="mini-table"><thead><tr><th>Need</th><th>Start with</th><th>Layer or artifact</th></tr></thead><tbody><tr><td>Research or maintain a Persona</td><td><code>$persona-research</code></td><td>Library management</td></tr><tr><td>Define Persona capabilities</td><td><code>$persona-skills</code></td><td>Library management</td></tr><tr><td>Research operating context</td><td><code>$operating-pack-research</code></td><td>Library management</td></tr><tr><td>Compose an Operating Pack</td><td><code>$operating-pack-composer</code></td><td>Library management</td></tr><tr><td>Reconcile a pack change</td><td><code>$operating-pack-reconciliation</code></td><td>Governance</td></tr><tr><td>Research or evaluate a Template</td><td><code>$template-research</code></td><td>Library management</td></tr><tr><td>Compose a Template</td><td><code>$template-composer</code></td><td>Library management</td></tr><tr><td>Reconcile a Template change</td><td><code>$template-reconciliation</code></td><td>Governance</td></tr><tr><td>Consult multiple Personas</td><td><code>$persona-panel-orchestration</code></td><td>Orchestration</td></tr><tr><td>Create or update a callable Skill package</td><td><code>$pl-skill-creator</code></td><td>Package authoring</td></tr><tr><td>Resolve or safely use a Tool</td><td><code>$tool-discovery-and-safe-execution</code></td><td>Tool safety</td></tr><tr><td>Compare a layout in isolation</td><td><code>$layout-lab</code></td><td>Persona-applied prototype</td></tr><tr><td>Review downstream effects</td><td><code>$change-impact-reconciliation</code></td><td>Governance</td></tr><tr><td>Run resume or application work</td><td>Job-search Docs and active Work Order</td><td>Workflow</td></tr><tr><td>Coordinate bounded parallel implementation</td><td>Bounded Parallel Implementation Playbook</td><td>Playbook</td></tr></tbody></table>
+          <div class="note"><p>Verify the current repository package or runtime catalog before invoking a named Skill. A Persona <code>skillLibrary</code> entry, plan, issue, URL, or documentation mention describes a route; it does not prove a callable package exists.</p></div>
+        </section>
+          <div class="source-callout"><div><h3>Machine-readable source</h3><p>The canonical bootstrap and route groups are generated into the Site so another agent or environment can load the same orientation contract selectively.</p></div><a class="back" href="data/site-orientation.json">Open orientation bootstrap →</a></div>
       </section>
 
       <section class="article-section" id="playbooks">
