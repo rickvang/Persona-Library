@@ -2,6 +2,15 @@
 
 This repository contains the source and generated output for the Persona Library Site.
 
+## Human orientation
+
+Persona-Library is the **system-knowledge repository** inside the wider Persona Workspace. It owns detailed Persona-system meaning, relationships, routing, documentation, Decisions, Playbooks, repository-local callable Skills, and the generated Site contract.
+
+For the whole Workspace mental model—**Place → Work → Truth → Coordination**—start with [How Persona Workspace works](https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md). You do **not** need to understand route groups, activation metadata, reconciliation adapters, Operational Scenarios, or harness internals to decide where ordinary work belongs.
+
+Use this repository's README, architecture, Guide, and agent instructions only when you need Persona-Library-specific detail.
+
+
 ## What is included
 
 - `content/` — the authored persona, skill, operating pack, Template, tool, playbook, and orientation data.
@@ -11,8 +20,8 @@ This repository contains the source and generated output for the Persona Library
 - `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
 - `docs/job-search/implementation.md` — the job-search workspace scope and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.
-- `content/site-orientation.json` — the machine-readable bootstrap for request, space, Skill-layer, artifact, and mutation routing.
-- `content/orientation/` — selectively loaded route groups keyed by the existing primary spaces.
+- `content/site-orientation.json` — maintainer/agent machine-readable routing bootstrap; it is not required for basic human Workspace orientation.
+- `content/orientation/` — selectively loaded agent/maintainer route groups keyed by the existing primary spaces.
 
 ## Documentation and placement
 
