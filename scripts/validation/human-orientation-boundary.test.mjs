@@ -16,7 +16,7 @@ test('Persona-Library points humans upward without duplicating the Workspace mod
   assert.match(readme, /## Human orientation/);
   assert.ok(readme.includes(workspaceHumanModel));
   assert.match(readme, /system-knowledge repository/);
-  assert.match(readme, /do not need to understand route groups, activation metadata, reconciliation adapters, Operational Scenarios, or harness internals/);
+  assert.match(readme, /do \*\*not\*\* need to understand route groups, activation metadata, reconciliation adapters, Operational Scenarios, or harness internals/);
 
   assert.ok(docs.includes(workspaceHumanModel));
   assert.match(docs, /maintainer guidance for placing files \*inside Persona-Library\*/);
