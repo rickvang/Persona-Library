@@ -1,1 +1,1 @@
-globalThis.PersonaLibraryJobTrackerConfig = Object.freeze({"mode":"local","supabaseUrl":"","publishableKey":"","schema":"app"});\n
+globalThis.PersonaLibraryJobTrackerConfig = Object.freeze({"mode":"local","supabaseUrl":"","publishableKey":"","schema":"app"});
