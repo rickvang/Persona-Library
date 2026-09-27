@@ -4,7 +4,7 @@
 
 - Work Order ID: `WO-2026-09-08-conformance-observability`
 - Title: Implement Issues #37 and #43
-- Status: complete (implementation scope)
+- Status: complete
 - Created: 2026-09-08
 - Requester: rickvang
 - Implementation owner: Codex
