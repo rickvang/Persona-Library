@@ -21,7 +21,7 @@ test('public Docs progressively disclose the human model before agent machinery'
     assert.ok(coordination > library, 'work/coordination should follow Library knowledge model');
     assert.ok(agent > coordination, 'agent orientation must come after human-facing mental models');
 
-    const topLevelIds = [...html.matchAll(/^\\s{6}<section class="article-section" id="([^"]+)">/gm)].map(match => match[1]);
+    const topLevelIds = [...html.matchAll(/<section class="article-section" id="([^"]+)">/g)].map(match => match[1]);
     assert.deepEqual(topLevelIds.slice(0, 15), [
       'start', 'system-overview', 'create', 'research-only', 'update', 'output',
       'operating-packs', 'templates', 'library-model', 'work-coordination',
