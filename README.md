@@ -51,4 +51,4 @@ node eval/isolated-persona-skill.mjs validate
 node eval/isolated-persona-skill.mjs matrix --personas all --skills all
 ```
 
-The `dist` directory is generated publishable Site output configured in `.openai/hosting.json`; never hand-edit it. Rebuild from authored `content/` and `client/` with `node scripts/build-library.mjs`.
+The `dist` directory is generated publishable Site output configured in `.openai/hosting.json`; never hand-edit it. Rebuild from authored `content/`, `client/`, and published source docs with `node scripts/build-library.mjs`. Static Site page shells live in `content/site-pages/`; job-search Site docs are authored under `docs/job-search/` and copied into `dist/docs/`.
