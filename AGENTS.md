@@ -16,7 +16,7 @@ Use the shortest relevant path:
 2. For library-semantic work, read the selected primary space's `route_file` from `content/orientation/`, then read only the relevant route and linked records. Repository-plumbing work skips this semantic route step unless it reaches the mixed-work escalation condition.
 3. Treat the default mode as read-only.
 4. Keep prototype records isolated from live Personas, Skills, Tools, Playbooks, and production workflows.
-5. Before creating a durable record, space, file, or generated artifact, route placement and boundary questions through Mara Okoye’s knowledge-systems review.
+5. Use `docs/README.md`'s placement table and gate directly when artifact kind, canonical owner, destination pattern, lifecycle, and source-of-truth boundary are already clear. Escalate to Mara Okoye’s knowledge-systems review when ownership is ambiguous, a new artifact class/top-level space/semantic identity is introduced, destinations compete, lifecycle/source-of-truth conflicts remain, or a cross-repository/taxonomy boundary changes. Regenerating known build output from an established authored source does not itself require Mara review.
 6. Append durable rationale to Decisions instead of silently rewriting history.
 7. Read the selected skill’s `change_mode`, `change_domain`, and `reconciliation` metadata. After a source, record, Decision, prototype promotion, or generated artifact changes, follow that contract and run `$change-impact-reconciliation` when required; keep it read-only unless the requested scope authorizes updates.
 8. For a multi-Persona build, create or load a named `problem-context` and use the collaboration Playbook; keep contributions attributable and require a concrete solution-quality gate before completion.
