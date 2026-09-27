@@ -112,7 +112,40 @@
       "historical",
       "unavailable"
     ],
-    "route_group_rule": "After selecting a primary space, read only its declared route_file before selecting a route."
+    "route_group_rule": "After selecting a primary space, read only its declared route_file before selecting a route.",
+    "work_paths": {
+      "repository-plumbing": {
+        "label": "Repository plumbing",
+        "use_when": "The primary target is repository mechanics and the change does not alter canonical Persona-Library meaning.",
+        "examples": [
+          "CI or workflow maintenance",
+          "build-script maintenance",
+          "generated-output reproducibility",
+          "repository hygiene",
+          "documentation-link repair",
+          "straightforward file-lifecycle cleanup"
+        ],
+        "entry": "AGENTS.md → target file or architecture contract → applicable Tool / Operational Scenario → validation",
+        "semantic_bootstrap_required": false
+      },
+      "library-semantic": {
+        "label": "Library semantic",
+        "use_when": "The change alters canonical Persona-Library meaning, identity, relationships, semantic routing, Decisions, or governed library records.",
+        "examples": [
+          "Persona records",
+          "Skill identity, profile, or relationships",
+          "Tool identity or recipe",
+          "Template catalog relationships",
+          "Playbook identity or orchestration",
+          "Operating Pack relationships",
+          "Decisions",
+          "semantic routing"
+        ],
+        "entry": "AGENTS.md → content/site-orientation.json → one route group → selected capability or records → reconciliation",
+        "semantic_bootstrap_required": true
+      },
+      "mixed_escalation_rule": "A task may begin on the repository-plumbing path while it is mechanical. Before it changes canonical library meaning, identity, relationships, Decisions, or semantic routing, load the library-semantic bootstrap and continue through the relevant route group. Selecting the short path never changes mutation authorization or validation requirements."
+    }
   },
   "creation_gate": {
     "owner": "Mara Okoye",
