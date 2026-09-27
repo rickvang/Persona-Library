@@ -53,14 +53,17 @@ test('System Map Site consumes persona-workspace authority rather than a copied 
 
   assert.match(page, /raw\.githubusercontent\.com\/rickvang\/persona-workspace\/main\/system-map\/generated\/work-coordination\.json/);
   assert.match(page, /raw\.githubusercontent\.com\/rickvang\/persona-workspace\/main\/system-map\/generated\/repository-ownership\.json/);
+  assert.match(page, /data\/system-map\/persona-skill\.json/);
   assert.match(page, /Repository ownership<\/strong>[\s\S]*Available/);
+  assert.match(page, /Persona \/ Skill<\/strong>[\s\S]*Available/);
   assert.match(page, /Not mapped yet/);
   assert.match(page, /aria-live="polite"/);
   assert.match(page, /System Map/);
-  assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|edge:concept:/);
-  assert.doesNotMatch(client, /concept:current-work|repository:rickvang\/portfolio|edge:concept:/);
+  assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
+  assert.doesNotMatch(client, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.match(client, /lensConfigs/);
   assert.match(client, /repository-ownership/);
+  assert.match(client, /persona-skill/);
   assert.match(client, /fetch\(config\.graphUrl/);
   assert.match(client, /complete-for-scope/);
   assert.match(client, /Expand one level/);
@@ -69,6 +72,7 @@ test('System Map Site consumes persona-workspace authority rather than a copied 
   assert.match(build, /"system-map\.html"/);
   assert.match(build, /client\/system-map-graph\.mjs/);
   assert.match(build, /client\/system-map\.mjs/);
+  assert.match(build, /buildPersonaSkillSystemMap/);
 });
 
 

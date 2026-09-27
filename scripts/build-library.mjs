@@ -2,6 +2,7 @@ import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDecisionsPage } from './build-decisions.mjs';
+import { buildPersonaSkillSystemMap } from './build-persona-skill-system-map.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const orientation = JSON.parse(await readFile(path.join(root, 'content/site-orientation.json'), 'utf8'));
@@ -190,3 +191,6 @@ for (const relativePath of primarySitePages) {
   await writeFile(filePath, updated, 'utf8');
   console.log('Normalized primary navigation -> ' + relativePath);
 }
+
+const personaSkillGraph = await buildPersonaSkillSystemMap(root);
+console.log('Built Persona / Skill System Map -> ' + personaSkillGraph.nodes.length + ' nodes / ' + personaSkillGraph.edges.length + ' edges');
