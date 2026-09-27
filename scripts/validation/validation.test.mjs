@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { buildValidationIndexes } from './context.mjs';
-import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validateRepositoryWorkingCopyContract, validateRileyContinuityContract, validateRileyWorkGraphContract, validateVercelToolCatalogSurface } from './generated.mjs';
+import { playbookCatalogCard, validateApplicationWorkflowTrackerGuidance, validateGitHubGovernanceContract, validateJobApplicationTrackerContract, validateJobSearchRoutingCase, validateJobSearchRoutingContract, validatePolicyOwnershipContract, validateRepositoryWorkingCopyContract, validateRileyContinuityContract, validateRileyWorkGraphContract, validateVercelToolCatalogSurface } from './generated.mjs';
 import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { validateSkills } from './skills.mjs';
@@ -103,9 +103,18 @@ test('Vercel canonical Tool record stays linked to its recipe and Tools surface'
   assert.throws(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements, toolsPage: toolsPage.replace('data-tool-id="tool-vercel"', '') }), /Tools page/i);
 });
 
+test('root policy validation checks activation pointers while delegated owners carry behavior', () => {
+  const agents = 'Treat the default mode as read-only. Policy ownership: docs/policy-ownership.md.';
+  const policyOwners = 'Root AGENTS.md is the activation surface and is not required to duplicate delegated policy. Owners: content/site-orientation.json; docs/README.md; docs/work-orders.md; .agents/skills/work-graph-orchestration/SKILL.md; docs/operational-knowledge.md; content/library-data/operational-scenarios/index.json; pinned tools/github/AGENTS.md; scripts/build-library.mjs; scripts/check-generated-output.mjs. A delegated pointer does not grant permission.';
+  assert.doesNotThrow(() => validatePolicyOwnershipContract({ agents, policyOwners }));
+  assert.doesNotThrow(() => validatePolicyOwnershipContract({ agents: agents.replace('Policy ownership:', 'Repository policy map:'), policyOwners }));
+  assert.throws(() => validatePolicyOwnershipContract({ agents: 'Treat the default mode as read-only.', policyOwners }), /policy-owner index/i);
+  assert.throws(() => validatePolicyOwnershipContract({ agents, policyOwners: policyOwners.replace('docs/work-orders.md', 'docs/other.md') }), /canonical delegated owner/i);
+});
+
 test('GitHub governance semantics stay owned by the pinned Tool contract while Persona-Library supplies standing completion authorization', () => {
   const pin = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
-  const agents = `Follow https://github.com/rickvang/tool-repo/blob/${pin}/tools/github/AGENTS.md for GitHub mutation classes, authorization, and linked-issue completion semantics. Persona-Library standing completion authorization applies when the requester says implement, fix, build, or complete; do not merge, PR only, or leave for review overrides it.`;
+  const agents = `Follow https://github.com/rickvang/tool-repo/blob/${pin}/tools/github/AGENTS.md. Persona-Library standing completion authorization applies when the requester says implement, fix, build, or complete; do not merge, PR only, or leave for review overrides it.`;
   const workOrders = 'For GitHub merge authorization and linked-issue completion semantics, follow the pinned GitHub Tool contract. A Work Order records standing completion authorization without inventing a second confirmation gate; do not merge, PR only, and leave for review are explicit overrides.';
   const boundedPlaybook = 'Use the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics. The Merge gate recognizes standing completion authorization from the current requester instruction or target-repository contract; green review does not create authorization by itself.';
   const boundedRoute = { next_handoff: 'Apply the pinned GitHub Tool contract for merge authorization and linked-issue completion semantics. Standing completion authorization is a valid Authorizer source after fresh preflight; green review does not create authorization.' };
@@ -319,20 +328,17 @@ test('Playbook identity is validated before the shared Playbook ID index is trus
 
 
 test('Riley continuity keeps universal Current Work orchestration, Work Orders, and volatile live state in distinct roles', () => {
-  const agents = 'For every substantial workstream, Riley is the default durable orchestration owner. The selected operating route may operate directly without an unnecessary Riley execution hop. Use Notion Current Work with Operating Route and optional Parent Work ID. Do not mirror volatile GitHub state; refresh live systems when freshness requires it.';
   const workOrders = 'For every substantial workstream Riley is the default durable orchestration owner and the selected route may operate directly. Current Work records Operating Route and Parent Work ID, a Work Order or authoritative domain artifact owns detailed recovery, and live systems own volatile authority. Resume order: Current Work → recovery artifact → selective refresh. Do not mirror volatile live state.';
   const riley = { id:'ai-orchestrator', behaviors:['Resumes substantial linked work from the Current Work checkpoint before broad rediscovery','Treats every substantial Current Work workstream as Riley-governed while allowing the selected route to execute directly'], needs:['A durable cross-agent workstream index linked to the smallest authoritative recovery artifact, including a Work Order when one adds unique state'], implication:'For every substantial Current Work workstream, use Operating Route and Parent Work ID when applicable; allow the selected route to execute directly. Use Current Work as the cross-agent index, a Work Order when one exists or otherwise the smallest authoritative issue/PR/Verification Queue/domain artifact as detailed recovery state, and live systems as freshness-sensitive authority; resume before broad rediscovery.' };
   const rileyFlows = [{title:'Operate and improve the system',activities:[['Resume and checkpoint substantial work','At material transition','Continuity','Reconstruction','Current Work + linked Work Order when one exists, otherwise authoritative recovery artifact (representative)'],['Reconcile durable orchestration state','At creation/reroute/handoff/blocker/completion','Continuity','Route drift','Operating Route + Parent Work ID']]}];
-  assert.doesNotThrow(() => validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }));
-  assert.throws(() => validateRileyContinuityContract({ agents, workOrders: workOrders.replace('Do not mirror volatile live state', 'Mirror all live state'), riley, rileyFlows }), /Work Order guidance/i);
-  assert.throws(() => validateRileyContinuityContract({ agents: agents.replace('may operate directly', 'must route every execution through Riley'), workOrders, riley, rileyFlows }), /Root AGENTS/i);
-  assert.throws(() => validateRileyContinuityContract({ agents, workOrders, riley: {...riley, implication:riley.implication.replace('a Work Order when one exists or otherwise the smallest authoritative issue/PR/Verification Queue/domain artifact', 'the Work Order')}, rileyFlows }), /optional Work Order/i);
-  assert.throws(() => validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows:[{...rileyFlows[0],activities:[['Resume and checkpoint substantial work','At material transition','Continuity','Reconstruction','Current Work + linked Work Order (representative)'],rileyFlows[0].activities[1]]}] }), /conditional recovery-artifact/i);
+  assert.doesNotThrow(() => validateRileyContinuityContract({ workOrders, riley, rileyFlows }));
+  assert.throws(() => validateRileyContinuityContract({ workOrders: workOrders.replace('Do not mirror volatile live state', 'Mirror all live state'), riley, rileyFlows }), /Work Order guidance/i);
+  assert.throws(() => validateRileyContinuityContract({ workOrders, riley: {...riley, implication:riley.implication.replace('a Work Order when one exists or otherwise the smallest authoritative issue/PR/Verification Queue/domain artifact', 'the Work Order')}, rileyFlows }), /optional Work Order/i);
+  assert.throws(() => validateRileyContinuityContract({ workOrders, riley, rileyFlows:[{...rileyFlows[0],activities:[['Resume and checkpoint substantial work','At material transition','Continuity','Reconstruction','Current Work + linked Work Order (representative)'],rileyFlows[0].activities[1]]}] }), /conditional recovery-artifact/i);
 });
 
 
 test('Repository working copy and small-change lane replace the local-checkout ban without bypassing Work Graph supervision', () => {
-  const agents = 'Make file changes in a clean working copy on a task branch created from freshly fetched origin/main. Local validation does not replace required GitHub checks. Use a Work Order only for durable execution/recovery state not already held by domain-specific artifacts; otherwise use the small-change lane.';
   const workOrders = 'Small-change lane: existing authoritative surfaces already hold the durable state needed to resume the work. Small refers to tracking/recovery footprint, not importance. A Verification Queue can own deferred verification. Push a checkpoint-only commit only when an interruption would otherwise lose resumable state. An active WorkNode keeps its authoritative Dispatch, Gates, evidence, and disposition.';
   const architecture = 'Work Orders are optional repository-wide execution/recovery packets. Active Work Order packages stay in docs/work-orders when a dedicated execution/recovery packet is warranted.';
   const uxPractice = 'For the small-change lane, the pull request is the active work record. An active WorkNode keeps its Dispatch, Gate, evidence, and disposition.';
@@ -340,11 +346,8 @@ test('Repository working copy and small-change lane replace the local-checkout b
   const uxWorkOrderTemplate = 'Use this template when a UX practice run needs a dedicated Work Order execution/recovery packet. Do not create this template for a qualifying small-change-lane change. Use the pull request and preserve the WorkNode. When this template is warranted for repository work, keep the active Work Order under the artifact home.';
   const uxRouting = 'For the small-change lane, the pull request is the active work record and the WorkNode remains in the active Work Graph.';
   const docsReadme = 'Qualifying small repository change: the pull request may be the active repository record; preserve Current Work, Verification Queue records, and Work Graph membership when they have their own lifecycle.';
-  const args = { agents, workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme };
+  const args = { workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme };
   assert.doesNotThrow(() => validateRepositoryWorkingCopyContract(args));
-  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: `${agents} Do not use a local checkout for repository work.` }), /local-checkout ban/);
-  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: agents.replace('clean working copy', 'checkout') }), /Root AGENTS/);
-  assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, agents: agents.replace('durable execution/recovery state', 'all non-trivial work') }), /Root AGENTS/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('tracking/recovery footprint', 'one session') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('Verification Queue', 'work log') }), /Work Order guidance/);
   assert.throws(() => validateRepositoryWorkingCopyContract({ ...args, workOrders: workOrders.replace('checkpoint-only commit', 'commit') }), /Work Order guidance/);

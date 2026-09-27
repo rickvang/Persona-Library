@@ -65,7 +65,24 @@ export function validateWebArchitecturePersonaContract({ personas, flowLibrary, 
 }
 
 
-export function validateOperationalKnowledgeContract({ operationalScenarios, operationalScenarioCatalog, operationalScenarioIndex, toolUseRecipes, skillCatalog, model, orientation, toolsRoute, skillsRoute, agents, contract, toolSkill }) {
+export function validatePolicyOwnershipContract({ agents, policyOwners }) {
+  if (!includesAll(agents, ['docs/policy-ownership.md', 'default mode as read-only'])) throw new Error('Root AGENTS must activate the policy-owner index and preserve the minimal read-only safety boundary');
+  const requiredOwners = [
+    'content/site-orientation.json',
+    'docs/readme.md',
+    'docs/work-orders.md',
+    '.agents/skills/work-graph-orchestration/skill.md',
+    'docs/operational-knowledge.md',
+    'content/library-data/operational-scenarios/index.json',
+    'tools/github/agents.md',
+    'scripts/build-library.mjs',
+    'scripts/check-generated-output.mjs'
+  ];
+  if (!includesAll(policyOwners, requiredOwners)) throw new Error('Repository policy-owner index is missing a canonical delegated owner');
+  if (!includesAll(policyOwners, ['activation surface', 'not required to duplicate', 'does not grant permission'])) throw new Error('Repository policy-owner index must preserve activation-only root semantics and authorization boundaries');
+}
+
+export function validateOperationalKnowledgeContract({ operationalScenarios, operationalScenarioCatalog, operationalScenarioIndex, toolUseRecipes, skillCatalog, model, orientation, toolsRoute, skillsRoute, contract, toolSkill }) {
   const expectedIds = ['scenario-github-issue-implementation','scenario-vercel-deployed-state-verification','scenario-architecture-proportionate-decision','scenario-frontend-runtime-boundary','scenario-application-data-source-of-truth'];
   const allowedEvidence = new Set(['candidate','reviewed','validated']);
   if (!Array.isArray(operationalScenarios) || !Array.isArray(operationalScenarioCatalog) || operationalScenarios.length < expectedIds.length) throw new Error('Operational Scenario source/catalog is missing');
@@ -116,26 +133,22 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
   if (model.findOperationalScenarios('verify deployed preview in Vercel',{limit:1})[0]?.id !== 'scenario-vercel-deployed-state-verification') throw new Error('Vercel matcher failed');
   if (!model.findOperationalScenarios('do we need a database or CMS for this content',{limit:2}).some(item=>item.id==='scenario-application-data-source-of-truth')) throw new Error('Application/data matcher failed');
   if (orientation.spaces['operational-knowledge'] || orientation.spaces['knowledge-base']) throw new Error('Issue #185 must not create a top-level operational knowledge space');
-  if (!includesAll(agents,['active operational scenario','operational-scenarios/index.json','load only the selected scenario body','do not fetch every scenario body','never overrides authorization'])) throw new Error('AGENTS targeted Operational Scenario retrieval rule missing');
   if (!includesAll(JSON.stringify(toolsRoute),['matching active operational scenario','stop when evidence is sufficient'])) throw new Error('Tools route operational scenario rule missing');
   if (!includesAll(JSON.stringify(skillsRoute),['matching active operational scenarios owned by the selected skill'])) throw new Error('Skills route operational scenario rule missing');
   if (!includesAll(contract,['relationships owned by an existing skill or tool-use recipe','operational-scenarios/index.json','do not fetch every scenario body','generated bundle is not the agent retrieval surface','evidence lifecycle','.golden.md','never grants permission'])) throw new Error('Operational knowledge targeted-retrieval contract incomplete');
   if (!includesAll(toolSkill,['active operational scenario','smallest matching scenario','never grants permission'])) throw new Error('Tool discovery Skill scenario rule missing');
 }
 
-export function validateRileyContinuityContract({ agents, workOrders, riley, rileyFlows }) {
+export function validateRileyContinuityContract({ workOrders, riley, rileyFlows }) {
   if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley AI orchestrator record is missing');
   const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
   if (!includesAll(personaText, ['current work', 'work order when one exists', 'verification queue', 'recovery artifact', 'live systems', 'broad rediscovery', 'every substantial current work workstream', 'operating route', 'parent work id', 'execute directly'])) throw new Error('Riley must declare universal durable Current Work orchestration with an optional Work Order / authoritative recovery-artifact hierarchy while preserving direct execution');
   const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
   if (!operate || !includesAll(JSON.stringify(operate), ['resume and checkpoint substantial work', 'work order when one exists', 'authoritative recovery artifact', 'reconcile durable orchestration state', 'operating route', 'parent work id'])) throw new Error('Riley operating workflow must include conditional recovery-artifact checkpoint/resume and durable orchestration reconciliation behavior');
-  if (!includesAll(agents, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'do not mirror volatile', 'refresh live systems'])) throw new Error('Root AGENTS must make Riley the default durable orchestration owner without forcing an extra execution hop');
   if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → recovery artifact → live-system hierarchy');
 }
 
-export function validateRepositoryWorkingCopyContract({ agents, workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {
-  if (!includesAll(agents, ['clean working copy', 'origin/main', 'required github checks', 'small-change lane', 'durable execution/recovery state', 'domain-specific artifacts'])) throw new Error('Root AGENTS must define the clean working-copy path, keep required GitHub checks, and make Work Orders conditional on unique recovery-state need');
-  if (normalized(agents).includes('do not use a local checkout')) throw new Error('Root AGENTS must not restore the local-checkout ban');
+export function validateRepositoryWorkingCopyContract({ workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {
   if (!includesAll(workOrders, ['small-change lane', 'existing authoritative surfaces', 'tracking/recovery footprint', 'verification queue', 'checkpoint-only commit', 'worknode', 'authoritative dispatch', 'gates', 'evidence', 'disposition'])) throw new Error('Work Order guidance must define the recovery-state-based lane, Verification Queue independence, batched progress commits, and preserve active Work Graph supervision');
   if (!includesAll(architecture, ['optional repository-wide execution/recovery packets', 'active work order packages stay', 'dedicated execution/recovery packet is warranted'])) throw new Error('Architecture guidance must make Work Orders conditional on unique recovery-state need rather than non-triviality');
   if (!includesAll(uxPractice, ['small-change lane', 'pull request', 'active work record', 'worknode', 'dispatch', 'gate', 'evidence', 'disposition'])) throw new Error('UX practice must use the small-change pull request as the active work record without dropping Work Graph obligations');
@@ -186,7 +199,6 @@ export function validateGitHubGovernanceContract({ agents, workOrders, boundedPl
   const pin = String(agents || '').match(/rickvang\/tool-repo\/blob\/([0-9a-f]{40})\/tools\/github\/AGENTS\.md/i);
   if (!pin) throw new Error('Persona-Library must pin an exact GitHub Tool contract revision');
   if (pin[1].toLowerCase() === '94acc6082e941439d2ee532f1b1b091cd42eb923') throw new Error('Persona-Library must pin the post-split GitHub Tool contract');
-  if (!includesAll(agents, ['github mutation classes', 'linked-issue completion semantics'])) throw new Error('Root AGENTS must defer GitHub mutation and linked-issue completion semantics to the pinned Tool contract');
   if (!includesAll(agents, ['standing completion authorization', 'implement', 'fix', 'build', 'complete', 'do not merge', 'pr only', 'leave for review'])) throw new Error('Root AGENTS must define scoped standing completion authorization and explicit requester overrides');
   if (!includesAll(workOrders, ['pinned github tool contract', 'merge authorization', 'linked-issue completion semantics'])) throw new Error('Work Order guidance must defer GitHub mutation semantics to the pinned Tool contract');
   if (!includesAll(workOrders, ['standing completion authorization', 'second confirmation gate', 'do not merge', 'pr only', 'leave for review'])) throw new Error('Work Order guidance must record repository standing authorization and task-level overrides without inventing a second confirmation gate');
@@ -286,8 +298,9 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
-  const [rootAgents, workOrderContract, architecture, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme] = await Promise.all([
+  const [rootAgents, policyOwners, workOrderContract, architecture, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme] = await Promise.all([
     context.readFile('AGENTS.md'),
+    context.readFile('docs/policy-ownership.md'),
     context.readFile('docs/work-orders.md'),
     context.readFile('ARCHITECTURE.md'),
     context.readFile('docs/playbooks/bounded-parallel-implementation.md'),
@@ -300,8 +313,8 @@ export async function validateGeneratedOutputs(context) {
     context.readFile('docs/ux/project-context-and-reference-routing.md'),
     context.readFile('docs/README.md')
   ]);
+  validatePolicyOwnershipContract({ agents: rootAgents, policyOwners });
   validateRileyContinuityContract({
-    agents: rootAgents,
     workOrders: workOrderContract,
     riley: context.data.personas.find(persona => persona.id === 'ai-orchestrator'),
     rileyFlows: context.data.flowLibrary?.['ai-orchestrator'] || []
@@ -322,7 +335,6 @@ export async function validateGeneratedOutputs(context) {
     toolsPage: files.toolsPage
   });
   validateRepositoryWorkingCopyContract({
-    agents: rootAgents,
     workOrders: workOrderContract,
     architecture,
     uxPractice,
@@ -341,7 +353,6 @@ export async function validateGeneratedOutputs(context) {
     orientation: context.orientation,
     toolsRoute: context.routeGroups.get('tools'),
     skillsRoute: context.routeGroups.get('skills'),
-    agents: rootAgents,
     contract: operationalKnowledgeContract,
     toolSkill: toolDiscoverySkill
   });
