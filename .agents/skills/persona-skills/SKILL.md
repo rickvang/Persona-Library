@@ -88,6 +88,8 @@ Use this decision order:
 
 Similar wording is not proof of duplication. Compare triggers, decisions, outputs, quality signals, workflow reach, and boundary before merging or splitting identities.
 
+For this repository, `skillLibrary[personaId]` is the authored **Persona application** surface and the derived `skillCatalog` is the shared identity surface. Repeated names should normalize to one stable Skill ID while their application profiles remain distinct. Do not introduce a second authored core record, delete an application definition, or replace role-specific triggers/workflows/actions/evidence merely to reduce text size. First prove that the candidate semantics are genuinely portable and that the change removes ambiguity rather than adding another source of truth.
+
 ## Source-change handling
 
 For a new source or changed record:
