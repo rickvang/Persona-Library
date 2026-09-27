@@ -10,17 +10,10 @@ const valid = new Set(['draft', 'active', 'blocked', 'ready-for-review', 'comple
 const terminal = new Set(['complete', 'no-go', 'cancelled']);
 const activeStates = new Set(['draft', 'active', 'blocked', 'ready-for-review']);
 
-function rawStatusOf(file) {
+function statusOf(file) {
   const source = readFileSync(file, 'utf8');
   const match = source.match(/^\s*-\s*(?:\*\*)?Status(?:\*\*)?:\s*`?([^`\n]+?)`?\s*$/im);
   return match?.[1]?.trim().toLowerCase() || null;
-}
-
-function canonicalArchivedStatus(raw) {
-  if (!raw) return null;
-  if (valid.has(raw)) return raw;
-  const legacyTerminal = raw.match(/^(complete|no-go|cancelled)\b/);
-  return legacyTerminal?.[1] || raw;
 }
 
 test('Work Order lifecycle stays valid across active and archived namespaces', () => {
@@ -29,7 +22,7 @@ test('Work Order lifecycle stays valid across active and archived namespaces', (
 
   for (const entry of activePackages) {
     const file = path.join(workOrdersRoot, entry.name, 'work-order.md');
-    const status = rawStatusOf(file);
+    const status = statusOf(file);
     assert.ok(status, `${entry.name} is missing Status`);
     assert.ok(valid.has(status), `${entry.name} has invalid Status: ${status}`);
     assert.ok(!terminal.has(status), `${entry.name} is terminal but remains in the active namespace`);
@@ -40,11 +33,10 @@ test('Work Order lifecycle stays valid across active and archived namespaces', (
     const monthRoot = path.join(archiveRoot, month.name);
     for (const entry of readdirSync(monthRoot, { withFileTypes: true }).filter(item => item.isDirectory())) {
       const file = path.join(monthRoot, entry.name, 'work-order.md');
-      const rawStatus = rawStatusOf(file);
-      const status = canonicalArchivedStatus(rawStatus);
-      assert.ok(rawStatus, `${month.name}/${entry.name} is missing Status`);
-      assert.ok(valid.has(status), `${month.name}/${entry.name} has invalid Status: ${rawStatus}`);
-      assert.ok(!activeStates.has(status), `${month.name}/${entry.name} is archived but claims active lifecycle state: ${rawStatus}`);
+      const status = statusOf(file);
+      assert.ok(status, `${month.name}/${entry.name} is missing Status`);
+      assert.ok(valid.has(status), `${month.name}/${entry.name} has invalid Status: ${status}`);
+      assert.ok(!activeStates.has(status), `${month.name}/${entry.name} is archived but claims active lifecycle state: ${status}`);
     }
   }
 });
