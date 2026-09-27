@@ -40,7 +40,7 @@ Use declared, inspectable sources of dependency:
 - Declared source-to-output provenance for generated modules and pages.
 - Named references in the initiating change and relevant repository guidance.
 
-Repository search can discover candidates but does not prove an exhaustive graph. Bound the review by the identified scope, state what was searched, report known direct and indirect dependents, and disclose incomplete dependency visibility. Never manufacture an edge because two records use similar words.
+Repository search can discover candidates but does not prove an exhaustive graph. For ordinary current-state impact review, exclude `docs/work-orders/archive/**` so historical packets do not outrank current canonical owners. Include archived Work Orders only when the requested scope explicitly requires historical, provenance, incident, or recovery evidence, and label that evidence as historical. Bound the review by the identified scope, state what was searched, report known direct and indirect dependents, and disclose incomplete dependency visibility. Never manufacture an edge because two records use similar words.
 
 ## Impact classification
 
