@@ -166,9 +166,7 @@ for (const relativePath of primarySitePages) {
   links = links.replace(systemMapLink, '');
   const divider = /<span aria-hidden="true"[^>]*><\/span>/;
   if (!divider.test(links)) throw new Error('Could not find navigation divider in ' + relativePath);
-  links = links.replace(divider, systemMapLink + '  let links = nav[2];
-  let applicationLink = links.match(/<a href="job-tracker\.html"[^>]*>Applications<\/a>/)?.[0];
-');
+  links = links.replace(divider, systemMapLink + '$&');
 
   let applicationLink = links.match(/<a href="job-tracker\.html"[^>]*>Applications<\/a>/)?.[0];
   if (!applicationLink) {
@@ -182,17 +180,13 @@ for (const relativePath of primarySitePages) {
   }
 
   links = links.replace(applicationLink, '');
-  links = links.replace(divider, '  links = links.replace(applicationLink, '');
-  const divider = /<span aria-hidden="true"[^>]*><\/span>/;
-  if (!divider.test(links)) throw new Error('Could not find navigation divider in ' + relativePath);
   links = links.replace(divider, '$&' + applicationLink);
-' + applicationLink);
 
   const updated = html.replace(nav[0], nav[1] + links + nav[3]);
   if (updated === html) {
-    console.log('Applications navigation already follows the divider -> ' + relativePath);
+    console.log('Primary navigation already normalized -> ' + relativePath);
     continue;
   }
   await writeFile(filePath, updated, 'utf8');
-  console.log('Positioned Applications after the navigation divider -> ' + relativePath);
+  console.log('Normalized primary navigation -> ' + relativePath);
 }
