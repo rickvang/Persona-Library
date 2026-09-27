@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive, provenance-backed view of the Persona Workspace system." />
+  <title>System Map — Personas</title>
+  <style>
+    :root {
+      --ink:#101827; --muted:#617083; --night:#08111f; --paper:#f5f4ef; --card:#fffefa;
+      --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; --blue:#92bdf2;
+      --deep:#234f68; --soft:#eef1ec;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink); background:var(--paper);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); }
+    a { color:inherit; }
+    button, select { font:inherit; }
+    button { cursor:pointer; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:18px clamp(20px,5vw,72px); color:#fff; background:var(--night); }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.03em; text-decoration:none; }
+    .mark { width:26px; height:26px; display:grid; place-items:center; border-radius:7px; color:var(--night); background:var(--coral); font-size:11px; font-weight:900; }
+    .topnav { display:flex; gap:20px; color:#bfcbd8; font-size:13px; flex-wrap:wrap; justify-content:flex-end; }
+    .topnav a { text-decoration:none; }
+    .topnav a[aria-current="page"] { color:#fff; }
+    .hero { padding:48px clamp(20px,8vw,120px) 42px; color:#fff; background:var(--night); }
+    .crumbs { margin:0 0 24px; color:#9cabbc; font-size:13px; }
+    .crumbs a { color:#cbd5df; text-underline-offset:3px; }
+    .eyebrow { margin:0 0 12px; color:#26705f; font-size:11px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }
+    .hero .eyebrow { color:var(--mint); }
+    h1 { max-width:900px; margin:0; font-size:clamp(38px,6vw,68px); line-height:1; letter-spacing:-.06em; }
+    .hero-copy { max-width:760px; margin:20px 0 0; color:#c2ccd8; font-size:16px; line-height:1.6; }
+    .page { max-width:1380px; margin:0 auto; padding:28px clamp(20px,5vw,72px) 72px; }
+    .source-strip { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin-bottom:20px; padding:14px 16px; border:1px solid #c8d8d1; border-radius:13px; background:#eff9f5; font-size:13px; }
+    .source-strip strong { font-size:12px; text-transform:uppercase; letter-spacing:.07em; }
+    .source-strip a { color:var(--deep); font-weight:800; text-underline-offset:3px; }
+    .lens-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:24px; }
+    .lens { min-height:116px; padding:14px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
+    .lens strong { display:block; font-size:14px; }
+    .lens p { margin:7px 0 0; color:var(--muted); font-size:12px; line-height:1.45; }
+    .lens.available { border-color:#8bc7b6; background:#effaf6; }
+    .lens-status { display:inline-block; margin-top:11px; padding:4px 7px; border-radius:999px; background:#e3e7e1; color:#657166; font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
+    .available .lens-status { color:#1f6554; background:#cdeee4; }
+    .map-toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; padding:12px 14px; border:1px solid var(--line); border-radius:13px; background:var(--card); }
+    .map-toolbar label { font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+    .map-toolbar select { min-width:190px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; }
+    .map-toolbar button, .expand-button { padding:8px 11px; border:1px solid var(--deep); border-radius:9px; color:#fff; background:var(--deep); font-size:12px; font-weight:800; }
+    .map-toolbar .ghost, .branch-toggle { color:var(--deep); background:#fff; }
+    .spacer { flex:1; }
+    .map-status { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; color:var(--muted); font-size:12px; }
+    .status-dot { width:8px; height:8px; border-radius:50%; background:#2a8a6d; }
+    .coverage { padding:4px 7px; border-radius:999px; color:#665622; background:#f7e9b5; font-weight:800; }
+    .workspace { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr); gap:16px; align-items:start; }
+    .map-panel, .detail-panel, .path-panel { border:1px solid var(--line); border-radius:17px; background:var(--card); }
+    .panel-head { padding:16px 17px 10px; }
+    .panel-head h2 { margin:0; font-size:20px; letter-spacing:-.035em; }
+    .panel-head p { margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.5; }
+    .map-nodes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:8px 16px 18px; }
+    .map-node { position:relative; border:1px solid var(--line); border-radius:13px; background:#fbfcf8; overflow:hidden; }
+    .map-node.selected { border-color:var(--deep); box-shadow:0 0 0 2px rgba(35,79,104,.12); }
+    .map-node.in-path { background:#fff8dc; border-color:#dac27e; }
+    .node-select { display:block; width:100%; padding:13px 13px 9px; border:0; text-align:left; color:var(--ink); background:transparent; }
+    .node-select:focus-visible, .branch-toggle:focus-visible, .relationship-link:focus-visible, button:focus-visible, select:focus-visible { outline:2px solid var(--coral); outline-offset:2px; }
+    .node-kicker { display:block; margin-bottom:5px; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    .node-select strong { display:block; font-size:15px; line-height:1.3; }
+    .node-meta { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
+    .branch-toggle { margin:0 12px 12px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; font-size:11px; font-weight:800; }
+    .path-marker { position:absolute; right:9px; top:8px; color:#745b14; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
+    .detail-panel { min-height:420px; padding:18px; }
+    .detail-head { display:flex; justify-content:space-between; gap:16px; align-items:start; padding-bottom:16px; border-bottom:1px solid var(--line); }
+    .detail-head h2, .empty-detail h2 { margin:0; font-size:27px; letter-spacing:-.045em; }
+    .node-id { margin:6px 0 0; color:var(--muted); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; }
+    .detail-section { padding:16px 0; border-bottom:1px solid var(--line); }
+    .detail-section:last-child { border-bottom:0; padding-bottom:0; }
+    .detail-section h3 { margin:0 0 9px; font-size:13px; }
+    .relationship-list { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
+    .relationship-list li { padding:10px; border:1px solid var(--line); border-radius:10px; background:#fafaf6; }
+    .relationship-link { display:flex; flex-wrap:wrap; gap:6px; width:100%; padding:0; border:0; text-align:left; color:var(--ink); background:transparent; }
+    .relationship-link span { color:var(--muted); font-size:11px; text-transform:capitalize; }
+    .relationship-link strong { font-size:12px; }
+    .provenance-line { display:flex; justify-content:space-between; gap:10px; margin-top:7px; color:var(--muted); font-size:10px; }
+    .provenance-line a, .source-link { color:var(--deep); font-weight:800; text-underline-offset:3px; }
+    .quiet, .coverage-note { color:var(--muted); font-size:12px; line-height:1.5; }
+    .coverage-note { margin:10px 0 0; }
+    .source-detail dl { display:grid; grid-template-columns:90px 1fr; gap:7px 10px; margin:0 0 12px; font-size:11px; }
+    .source-detail dt { color:var(--muted); font-weight:800; }
+    .source-detail dd { margin:0; overflow-wrap:anywhere; }
+    .path-panel { margin-top:16px; padding:16px; }
+    .path-controls { display:flex; flex-wrap:wrap; gap:8px; align-items:end; }
+    .field { display:grid; gap:5px; min-width:210px; flex:1; }
+    .field label { color:var(--muted); font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
+    .field select { width:100%; padding:8px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; }
+    .path-controls button { padding:8px 11px; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:12px; font-weight:800; }
+    .path-caption { margin:14px 0 8px; color:var(--muted); font-size:11px; font-weight:800; }
+    .path-list { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none; }
+    .path-list li { padding:7px 9px; border-radius:999px; background:#fff1c7; font-size:11px; font-weight:800; }
+    .path-list li + li::before { content:"→"; margin-right:6px; color:#8d742c; }
+    .error-box { padding:24px; border:1px solid #e2b5a7; border-radius:14px; background:#fff0eb; }
+    .error-box h2 { margin:0 0 7px; }
+    .error-box p { color:#6d4b43; line-height:1.5; }
+    .error-box a { color:var(--deep); font-weight:800; }
+    .sr-only { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+    @media (max-width:980px) {
+      .lens-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .workspace { grid-template-columns:1fr; }
+      .detail-panel { min-height:0; }
+    }
+    @media (max-width:620px) {
+      .topbar { align-items:flex-start; flex-direction:column; }
+      .topnav { gap:12px 16px; }
+      .hero { padding-top:36px; }
+      .lens-grid, .map-nodes { grid-template-columns:1fr; }
+      .map-toolbar { align-items:stretch; }
+      .map-toolbar select { width:100%; }
+      .spacer { display:none; }
+      .detail-head { flex-direction:column; }
+      .expand-button { width:100%; }
+      .provenance-line { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Persona Library</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html">Docs</a><a href="system-map.html" aria-current="page">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+
+  <section class="hero">
+    <p class="crumbs"><a href="guide.html">Docs</a> / System Map</p>
+    <p class="eyebrow">Persona Workspace</p>
+    <h1>Explore the system without memorizing the harness.</h1>
+    <p class="hero-copy">Start with a small view, expand only the branch you need, inspect explicit dependencies, trace a path, and open the canonical source behind every represented fact.</p>
+  </section>
+
+  <main class="page" data-system-map
+    data-graph-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
+    data-source-page="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json">
+
+    <div class="source-strip">
+      <strong>Authority boundary</strong>
+      <span>This page reads the generated graph directly from <code>persona-workspace</code>. It does not own or edit graph facts.</span>
+      <a href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open graph source ↗</a>
+    </div>
+
+    <section class="lens-grid" aria-label="System Map lenses">
+      <article class="lens available"><strong>Work &amp; coordination</strong><p>Work surfaces, orchestration, truth classes, and live-authority boundaries.</p><span class="lens-status">Available</span></article>
+      <article class="lens"><strong>Repository ownership</strong><p>Repository placement and ownership relationships arrive in a later graph domain.</p><span class="lens-status">Not mapped yet</span></article>
+      <article class="lens"><strong>Persona / Skill</strong><p>Identity and application relationships remain in their canonical library sources for now.</p><span class="lens-status">Not mapped yet</span></article>
+      <article class="lens"><strong>Source / generated</strong><p>Authored-source and generated-output relationships are not in this lens yet.</p><span class="lens-status">Not mapped yet</span></article>
+      <article class="lens"><strong>Runtime / infrastructure</strong><p>Live operational state stays with GitHub, CI, Vercel, and runtime authorities.</p><span class="lens-status">Not mapped yet</span></article>
+    </section>
+
+    <div class="map-toolbar">
+      <label for="map-lens">View</label>
+      <select id="map-lens">
+        <option value="work-coordination">Work &amp; coordination</option>
+        <option value="repository-ownership">Repository ownership — not mapped yet</option>
+        <option value="persona-skill">Persona / Skill — not mapped yet</option>
+        <option value="source-generated">Source / generated — not mapped yet</option>
+        <option value="runtime">Runtime / infrastructure — not mapped yet</option>
+      </select>
+      <button class="ghost" type="button" id="map-reset">Reset overview</button>
+      <span class="spacer"></span>
+      <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
+    </div>
+
+    <section id="map-error" class="error-box" hidden>
+      <h2>System Map unavailable</h2>
+      <p id="map-error-message">The derived graph could not be loaded.</p>
+      <a id="map-source-fallback" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open the authoritative graph directly ↗</a>
+    </section>
+
+    <div id="map-explorer" hidden>
+      <section class="workspace">
+        <section class="map-panel" aria-labelledby="explorer-heading">
+          <div class="panel-head">
+            <h2 id="explorer-heading">Visible branch</h2>
+            <p>The overview begins with graph roots. Expand a node to reveal its direct explicit neighbors; collapse it to return to the smaller view.</p>
+          </div>
+          <div id="map-nodes" class="map-nodes"></div>
+        </section>
+
+        <aside id="map-details" class="detail-panel" aria-live="polite">
+          <div class="empty-detail">
+            <p class="eyebrow">Inspect a node</p>
+            <h2>Select any visible concept</h2>
+            <p>Details show explicit incoming and outgoing relationships plus their canonical provenance.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="path-panel" aria-labelledby="path-heading">
+        <div class="panel-head" style="padding:0 0 12px">
+          <h2 id="path-heading">Show a path</h2>
+          <p>Find the shortest path through known explicit relationships. Direction is ignored for path-finding; each relationship keeps its original direction in the graph.</p>
+        </div>
+        <div class="path-controls">
+          <div class="field"><label for="path-from">From</label><select id="path-from"></select></div>
+          <div class="field"><label for="path-to">To</label><select id="path-to"></select></div>
+          <button type="button" id="find-path">Find path</button>
+        </div>
+        <div id="path-result"><p class="quiet">Choose two nodes to show the shortest explicit path between them.</p></div>
+      </section>
+    </div>
+
+    <p id="map-live-region" class="sr-only" aria-live="polite"></p>
+  </main>
+
+  <script type="module" src="js/system-map.mjs"></script>
+</body>
+</html>
