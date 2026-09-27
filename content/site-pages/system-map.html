@@ -137,7 +137,9 @@
     data-graph-work-coordination-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
     data-source-work-coordination-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json"
     data-graph-repository-ownership-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/repository-ownership.json"
-    data-source-repository-ownership-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/repository-ownership.json">
+    data-source-repository-ownership-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/repository-ownership.json"
+    data-graph-persona-skill-url="data/system-map/persona-skill.json"
+    data-source-persona-skill-url="https://github.com/rickvang/Persona-Library/blob/main/dist/data/system-map/persona-skill.json">
 
     <div class="source-strip">
       <strong>Authority boundary</strong>
@@ -148,7 +150,7 @@
     <section class="lens-grid" aria-label="System Map lenses">
       <article class="lens available"><strong>Work &amp; coordination</strong><p>Work surfaces, orchestration, truth classes, and live-authority boundaries.</p><span class="lens-status">Available</span></article>
       <article class="lens available"><strong>Repository ownership</strong><p>Workspace membership, repository role, local instructions, ownership scope, and mutation boundaries.</p><span class="lens-status">Available</span></article>
-      <article class="lens"><strong>Persona / Skill</strong><p>Identity and application relationships remain in their canonical library sources for now.</p><span class="lens-status">Not mapped yet</span></article>
+      <article class="lens available"><strong>Persona / Skill</strong><p>Stable Skill identities, distinct Persona applications, guidance, and explicit Skill relationships.</p><span class="lens-status">Available</span></article>
       <article class="lens"><strong>Source / generated</strong><p>Authored-source and generated-output relationships are not in this lens yet.</p><span class="lens-status">Not mapped yet</span></article>
       <article class="lens"><strong>Runtime / infrastructure</strong><p>Live operational state stays with GitHub, CI, Vercel, and runtime authorities.</p><span class="lens-status">Not mapped yet</span></article>
     </section>
@@ -158,7 +160,7 @@
       <select id="map-lens">
         <option value="work-coordination">Work &amp; coordination</option>
         <option value="repository-ownership">Repository ownership</option>
-        <option value="persona-skill">Persona / Skill — not mapped yet</option>
+        <option value="persona-skill">Persona / Skill</option>
         <option value="source-generated">Source / generated — not mapped yet</option>
         <option value="runtime">Runtime / infrastructure — not mapped yet</option>
       </select>
