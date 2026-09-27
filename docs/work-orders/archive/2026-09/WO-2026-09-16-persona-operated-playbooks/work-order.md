@@ -4,7 +4,8 @@
 
 - Work Order ID: WO-2026-09-16-persona-operated-playbooks
 - Title: Establish Persona-operated Playbooks and add a Job Search Orchestrator
-- Status: ready-for-merge
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-16
 - Last updated: 2026-09-16
 - Requester: user

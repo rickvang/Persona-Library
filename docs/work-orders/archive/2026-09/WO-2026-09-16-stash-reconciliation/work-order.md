@@ -1,6 +1,6 @@
 # Work Order: Reconcile historical stashes against current main
-
-- **Status:** ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - **GitHub issue:** [#115](https://github.com/rickvang/Persona-Library/issues/115)
 - **Branch:** `codex/issue-115-stash-reconciliation`
 - **Base:** `8f77c24ec63f063a801943fc6d5d4f3009b666c7` (`origin/main`)

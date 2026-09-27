@@ -1,7 +1,8 @@
 # Work Order — Restore orchestrator-first default routing
 
 - Work Order ID: `WO-2026-09-15-orchestrator-first-routing`
-- Status: ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Created: 2026-09-15
 - Last updated: 2026-09-15
 - Issue: https://github.com/rickvang/Persona-Library/issues/111

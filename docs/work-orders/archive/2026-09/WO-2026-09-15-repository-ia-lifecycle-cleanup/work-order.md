@@ -1,6 +1,6 @@
 # Issue #103 information-architecture and lifecycle audit
-
-- Status: ready-for-review
+- Status: complete
+- Lifecycle disposition: archived 2026-09-27 after linked repository work was verified terminal; retained as historical evidence.
 - Issue: https://github.com/rickvang/Persona-Library/issues/103
 - Base: 09ded617e7fbec4ae15f5aa45d468e07314fc4d3
 - Branch: reconcile/issue-103-ia-lifecycle
