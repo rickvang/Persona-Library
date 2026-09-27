@@ -3,14 +3,14 @@
   "site": "Personas",
   "purpose": "A structured library of personas, reusable skills, operating packs, templates, tools, playbooks, documentation, decisions, and safe prototypes.",
   "default_entry": "guide.html#agent-orientation",
-  "bootstrap_rule": "Read this bootstrap before interpreting a Persona-Library request. Classify the mode and primary space, load that space route group, then select the smallest relevant route and linked record.",
+  "bootstrap_rule": "Library-semantic routing only: choose one primary space, load that route_file, then read the smallest selected route and linked records. Repository-plumbing work uses the short path in AGENTS.md unless it reaches the mixed-work escalation rule.",
   "request_modes": {
     "answer": "Explain or recommend without changing durable records.",
-    "research": "Gather and synthesize evidence; keep confidence and sources visible.",
-    "plan": "Describe scope, dependencies, risks, and next actions without implementing.",
-    "prototype": "Create or compare a reversible experiment outside live records.",
-    "update": "Modify an existing live record only after explicit authorization and scoped impact review.",
-    "consult": "Use one or more named personas independently, then synthesize agreement, disagreement, assumptions, and next action."
+    "research": "Gather and synthesize evidence with sources and uncertainty.",
+    "plan": "Define scope, dependencies, risks, and next actions without implementation.",
+    "prototype": "Explore a reversible experiment outside live records.",
+    "update": "Change an identified live target only within authorized scope.",
+    "consult": "Use named perspectives and synthesize agreement, disagreement, assumptions, and next action."
   },
   "spaces": {
     "personas": {
@@ -202,60 +202,14 @@
       "change_domain",
       "reconciliation"
     ],
-    "routing": {
-      "read_only": "Skip reconciliation unless a durable artifact is created or an impact review is requested.",
-      "prototype": "Check isolation and live-record leakage only; do not reconcile prototype content as live truth.",
-      "source_update": "Invoke $change-impact-reconciliation before the final handoff.",
-      "record_update": "Invoke $change-impact-reconciliation before the final handoff.",
-      "artifact_generation": "Invoke $change-impact-reconciliation before the final handoff.",
-      "external_execution": "Invoke it when execution creates a durable usage record, lesson, recipe, or artifact.",
-      "reconciliation_adapter": "Run the domain adapter first, then one universal pass without recursion."
-    },
-    "default": "Missing metadata means safest read-only behavior and an explicit contract gap; metadata never authorizes a write."
+    "default": "Metadata routes reconciliation behavior; it never authorizes a write. Missing metadata means safest read-only handling and an explicit contract gap."
   },
-  "default_process": [
-    "Classify the request and desired outcome.",
-    "Identify the relevant space and read its minimum linked records.",
-    "For a new durable addition, use the documented placement gate; escalate to Mara before mutation only when the ownership, destination, lifecycle, or semantic boundary is ambiguous.",
-    "Build a compact context packet: goal, artifacts, constraints, tools, permissions, and success criteria.",
-    "Ask a scoped multiple-choice question only when ambiguity would materially change the work; otherwise state the default assumption.",
-    "Choose answer, research, plan, prototype, consult, or authorized update.",
-    "Make the smallest useful and reversible step.",
-    "Validate against the request, relevant quality signals, realistic variation, and affected surfaces.",
-    "Return outcome, assumptions, evidence, limitations, and the smallest next action."
-  ],
-  "mutation_policy": {
-    "default": "Read-only",
-    "live_update_requires": [
-      "explicit user authorization",
-      "identified target records",
-      "documented placement gate for new durable additions, with Mara review when escalation conditions apply",
-      "scoped impact review",
-      "validation after change"
-    ],
-    "prototype_update_requires": [
-      "prototype scope",
-      "isolated identifier beginning with proto-persona- when applicable",
-      "test scenarios",
-      "no live-record dependency"
-    ],
-    "decision_update_requires": [
-      "append-only rationale",
-      "affected surfaces",
-      "revisit condition"
-    ]
-  },
-  "response_contract": [
-    "outcome",
-    "mode used",
-    "assumptions",
-    "evidence or checks",
-    "limitations or blockers",
-    "next action"
-  ],
-  "activation": {
-    "explicit_prompt": "Use $persona-library-orientation before working with the Personas system.",
-    "repository_instruction": "Before modifying this project, read content/site-orientation.json and follow its routing and mutation rules.",
-    "site_instruction": "Open Docs → Agent orientation before working with the Site; use the manifest as the system map."
+  "contract_refs": {
+    "root": "AGENTS.md",
+    "policy_owners": "docs/policy-ownership.md",
+    "placement": "docs/README.md",
+    "work_recovery": "docs/work-orders.md",
+    "operational_knowledge": "docs/operational-knowledge.md",
+    "validation": ".github/workflows/repository-validation.yml"
   }
 }

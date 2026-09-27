@@ -44,8 +44,7 @@
       "package_path": ".agents/skills/persona-library-orientation",
       "availability_source": "repo_local",
       "first_reads": [
-        "AGENTS.md",
-        "content/site-orientation.json"
+        "docs/policy-ownership.md"
       ],
       "mutation_boundary": "read_only",
       "reconciliation": "skip",
@@ -72,8 +71,6 @@
       "package_path": "AGENTS.md and content/site-orientation.json",
       "availability_source": "documentation_only",
       "first_reads": [
-        "AGENTS.md",
-        "content/site-orientation.json",
         "ARCHITECTURE.md",
         "relevant current guide"
       ],
@@ -140,7 +137,6 @@
       "package_path": ".agents/skills/change-impact-reconciliation",
       "availability_source": "repo_local",
       "first_reads": [
-        "content/site-orientation.json",
         "content/library-model.js",
         "content/library-data.js",
         "ARCHITECTURE.md",
@@ -176,7 +172,6 @@
       "package_path": "eval/",
       "availability_source": "repo_local",
       "first_reads": [
-        "content/site-orientation.json",
         "eval/cases.json",
         "active Work Order",
         "relevant Persona, Skill, and Tool records"

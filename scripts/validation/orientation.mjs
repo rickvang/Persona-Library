@@ -1,13 +1,13 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 
-const UNIVERSAL_ORIENTATION_FIELDS = ['site', 'purpose', 'default_entry', 'bootstrap_rule', 'request_modes', 'creation_gate', 'skill_contract', 'default_process', 'mutation_policy', 'response_contract', 'activation'];
+const UNIVERSAL_ORIENTATION_FIELDS = ['site', 'purpose', 'default_entry', 'bootstrap_rule', 'request_modes', 'creation_gate', 'skill_contract', 'contract_refs'];
 const EXPECTED_ROUTE_IDS = ['system-orientation', 'persona-research', 'persona-capability-maintenance', 'work-graph-orchestration', 'persona-consultation', 'persona-reconciliation', 'skill-formation', 'skill-package-maintenance', 'operating-pack-catalog', 'operating-pack-research', 'operating-pack-composition', 'operating-pack-reconciliation', 'template-catalog', 'template-library-stewardship', 'template-research', 'template-composition', 'template-reconciliation', 'playbook-composition', 'multi-persona-collaboration', 'bounded-parallel-implementation', 'template-lifecycle', 'tool-resolution', 'tool-record-maintenance', 'docs-and-onboarding', 'decision-record', 'prototype-comparison', 'workflow-canvas-intent', 'work-order-start', 'cross-space-reconciliation', 'conformance-evaluation', 'isolated-persona-skill-testing', 'local-video-inspection', 'resume-template-semantic-mapping', 'resume-application-work'];
 
 export async function validateOrientation(context) {
   const { orientation, routeGroups, requiredSpaces, root } = context;
-  if (orientation.schema_version !== '2.0' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 4 || !orientation.skill_contract.routing?.source_update?.includes('$change-impact-reconciliation') || !Array.isArray(orientation.default_process) || orientation.default_process.length < 5 || orientation.mutation_policy?.default?.toLowerCase() !== 'read-only' || !Array.isArray(orientation.response_contract) || orientation.response_contract.length < 4 || !orientation.activation?.explicit_prompt?.includes('$persona-library-orientation') || !orientation.routing || !orientation.routing.skill_layers || !Array.isArray(orientation.routing.artifact_kinds) || !Array.isArray(orientation.routing.availability_sources) || Object.hasOwn(orientation.routing, 'routes') || !orientation.routing.route_group_rule) {
-    throw new Error('Orientation bootstrap is missing required universal policy or route-group fields');
+  if (orientation.schema_version !== '2.0' || orientation.site !== 'Personas' || !orientation.bootstrap_rule || !orientation.spaces || !orientation.request_modes || !orientation.skill_contract || !Array.isArray(orientation.skill_contract.required_metadata) || orientation.skill_contract.required_metadata.length !== 4 || !orientation.contract_refs?.policy_owners || !orientation.contract_refs?.work_recovery || !orientation.contract_refs?.validation || !orientation.routing || !orientation.routing.skill_layers || !Array.isArray(orientation.routing.artifact_kinds) || !Array.isArray(orientation.routing.availability_sources) || Object.hasOwn(orientation.routing, 'routes') || !orientation.routing.route_group_rule) {
+    throw new Error('Orientation bootstrap is missing required compact routing, contract-reference, or route-group fields');
   }
 
   for (const space of requiredSpaces) {
@@ -24,6 +24,7 @@ export async function validateOrientation(context) {
   const routeIds = new Set();
   const routedPackagePaths = new Set();
   const routes = requiredSpaces.flatMap(space => routeGroups.get(space).routes);
+  for (const route of routes) if (route.first_reads?.some(read => read === 'AGENTS.md' || read === 'content/site-orientation.json')) throw new Error(`Orientation route must not reread already-activated root/bootstrap: ${route.id}`);
   for (const route of routes) {
     if (!route.id || routeIds.has(route.id) || !route.request || !Array.isArray(route.modes) || !route.modes.length || !requiredSpaces.includes(route.primary_space) || !Array.isArray(route.secondary_spaces) || !route.target || !allowedArtifactKinds.has(route.artifact_kind) || !allowedAvailabilitySources.has(route.availability_source) || !Array.isArray(route.first_reads) || !route.first_reads.length || !route.mutation_boundary || !route.reconciliation || !Array.isArray(route.non_triggers) || !route.non_triggers.length || !route.next_handoff) {
       throw new Error(`Invalid or incomplete orientation route: ${route.id || '(missing)'}`);
