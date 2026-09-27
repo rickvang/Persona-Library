@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDecisionsPage } from './build-decisions.mjs';
@@ -39,6 +39,9 @@ const libraryDataSources = [
   'content/library-data.js'
 ];
 
+await rm(path.join(root, 'dist'), { recursive: true, force: true });
+console.log('Cleared dist/ before rebuilding generated Site output');
+
 const libraryDataOutput = path.join(root, 'dist/data/library-data.js');
 await mkdir(path.dirname(libraryDataOutput), { recursive: true });
 const libraryDataBundle = (
@@ -71,6 +74,7 @@ const authoredSitePages = [
 
 const publishedSiteDocs = [
   ['docs/job-search/application-context-and-review.md', 'dist/docs/application-context-and-review.md'],
+  ['docs/job-search/application-tracker-contract.md', 'dist/docs/application-tracker-contract.md'],
   ['docs/job-search/job-ledger-contract.md', 'dist/docs/job-ledger-contract.md']
 ];
 
