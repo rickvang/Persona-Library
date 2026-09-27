@@ -6,15 +6,15 @@ Treat the **default mode as read-only** until the requested scope authorizes a m
 
 ## Choose the shortest activation path
 
-- **Repository-plumbing:** use for CI/workflow maintenance, build scripts, generated-output reproducibility, repository hygiene, documentation-link repair, and straightforward file lifecycle work whose target is already clear. Go directly to the target file or architecture contract, the applicable Tool / Operational Scenario when needed, and repository validation.
-- **Library-semantic:** use for Persona records, Skill identity/profile/relationships, Tool identity/recipes, Template catalog relationships, Playbook identity/orchestration, Operating Pack relationships, Decisions, semantic routing, or other canonical library meaning. Read `content/site-orientation.json`, choose one primary space, then load only that route group and the selected records/capability.
+- **repository-plumbing:** use for CI/workflow maintenance, build scripts, generated-output reproducibility, repository hygiene, documentation-link repair, and straightforward file lifecycle work whose target is already clear. Go directly to the target file or architecture contract, the applicable Tool / Operational Scenario when needed, and repository validation.
+- **library-semantic:** use for Persona records, Skill identity/profile/relationships, Tool identity/recipes, Template catalog relationships, Playbook identity/orchestration, Operating Pack relationships, Decisions, semantic routing, or other canonical library meaning. Read `content/site-orientation.json`, choose one primary space, then load only that route group and the selected records/capability.
 - **Mixed work:** a task may start as plumbing, but **escalate to the library-semantic path** before changing canonical library meaning, identity, relationships, Decisions, or semantic routing.
 
 Selecting the plumbing path never changes mutation authorization or validation requirements.
 
 ## Placement and semantic integrity
 
-Use the [documentation placement table and gate](docs/README.md) directly when artifact kind, canonical owner, destination pattern, lifecycle, and source-of-truth boundary are already clear. **Escalate to Mara Okoye** when ownership is ambiguous, a new artifact class/top-level space/semantic identity is introduced, destinations compete, lifecycle/source-of-truth conflict remains, or a cross-repository/taxonomy boundary changes. Regenerating known output from an established source does not itself require Mara review.
+Use the documented placement table and gate directly (`docs/README.md`) when artifact kind, canonical owner, destination pattern, lifecycle, and source-of-truth boundary are already clear. **Escalate to Mara Okoye** when ownership is ambiguous, a new artifact class/top-level space/semantic identity is introduced, destinations compete, lifecycle/source-of-truth conflict remains, or a cross-repository/taxonomy boundary changes. Regenerating known output from an established source does not itself require Mara review.
 
 For semantic work, preserve prototype isolation and append durable rationale to Decisions rather than rewriting history. Read the selected Skill's `change_mode`, `change_domain`, and `reconciliation` metadata; run `$change-impact-reconciliation` when that contract requires it. Metadata and routing never grant write authority.
 
