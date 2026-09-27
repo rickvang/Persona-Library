@@ -1,14 +1,19 @@
 # Personas system orientation
 
 
-Before modifying this project, read `content/site-orientation.json` as the small bootstrap. Classify the request, select the smallest relevant primary space, then read only that space's declared route group and linked records.
+Before modifying this project, choose the smallest activation path. Use the **repository-plumbing** path for repository mechanics whose target is already obvious; use the **library-semantic** path for changes to Persona-Library meaning, identities, relationships, semantic routing, Decisions, or other canonical library records. Repository-plumbing work may go directly from this file to the target file/architecture contract, applicable Tool or Operational Scenario, and validation. Library-semantic work reads `content/site-orientation.json`, selects the smallest relevant primary space, then reads only that space's declared route group and linked records. If plumbing work begins to change canonical library meaning, escalate to the library-semantic path before that semantic change.
 
 
 Use the shortest relevant path:
 
+- **Repository plumbing:** CI/workflow maintenance, build scripts, generated-output reproducibility, repository hygiene, documentation-link repair, and straightforward file-lifecycle cleanup when no canonical library meaning changes.
+- **Library semantic:** Persona records, Skill identity/profile/relationships, Tool identity/recipes, Template catalog relationships, Playbook identity/orchestration, Operating Pack relationships, Decisions, semantic routing, and other canonical library meaning.
+- **Mixed work:** start on the plumbing path only while the work remains mechanical; before changing any canonical semantic record, relationship, Decision, or semantic route, load the semantic bootstrap and continue through the relevant route group.
 
-1. Classify the request as answer, research, plan, prototype, update, or consult.
-2. Read the selected primary space's `route_file` from `content/orientation/`, then read only the relevant route and linked records.
+
+
+1. Choose repository-plumbing or library-semantic using the boundary above. For library-semantic work, also classify the request as answer, research, plan, prototype, update, or consult.
+2. For library-semantic work, read the selected primary space's `route_file` from `content/orientation/`, then read only the relevant route and linked records. Repository-plumbing work skips this semantic route step unless it reaches the mixed-work escalation condition.
 3. Treat the default mode as read-only.
 4. Keep prototype records isolated from live Personas, Skills, Tools, Playbooks, and production workflows.
 5. Before creating a durable record, space, file, or generated artifact, route placement and boundary questions through Mara Okoye’s knowledge-systems review.
@@ -34,4 +39,4 @@ For work inside Persona-Library, this repository's local instructions remain aut
 ## Bootstrap handoff
 
 
-`content/site-orientation.json` is the canonical bootstrap and route-group index. It contains the universal contract, request modes, primary-space choices, and each space's `route_file`; the route groups contain route IDs, first reads, boundaries, availability distinctions, and reconciliation handoffs. Read the bootstrap first, select one primary space, load that group's file, and then load the smallest relevant route and linked records. Do not load unrelated route groups.
+`content/site-orientation.json` is the canonical **library-semantic** bootstrap and route-group index. It contains request modes, primary-space choices, and each space's `route_file`; the route groups contain route IDs, first reads, boundaries, availability distinctions, and reconciliation handoffs. On the library-semantic path, read the bootstrap, select one primary space, load that group's file, and then load the smallest relevant route and linked records. Repository-plumbing work does not load this bootstrap merely to perform mechanical repository maintenance; it escalates here before any canonical semantic change. Do not load unrelated route groups.
