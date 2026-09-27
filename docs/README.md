@@ -15,7 +15,9 @@ This directory contains current, reusable guidance and project-scoped work recor
 | Terminal Work Order package | docs/work-orders/archive/YYYY-MM/<id>/ | Preserve history; archive only after a terminal status is recorded. |
 | Evaluation fixtures and results | eval/ | Record conditions and evidence without implying live provider capability. |
 | Isolated experiments | the existing prototype-owned path | Keep prototypes out of live records until explicit promotion. |
-| Generated Site output | dist/ | Build output only; never hand-edit. |
+| Authored static Site page shell | content/site-pages/ | Edit the stable route source here; the build publishes it to the matching top-level `dist/*.html` path. |
+| Published job-search Site doc | docs/job-search/ | Keep the canonical Markdown here; the build copies selected published docs into `dist/docs/`. |
+| Generated Site output | dist/ | Disposable build output only; never hand-edit. |
 | Temporary or scratch material | uncommitted temporary workspace | Do not commit by default. |
 | External-project artifact | its authorized external repository/system | Link or reference it; do not copy it into Persona-Library for convenience. |
 
