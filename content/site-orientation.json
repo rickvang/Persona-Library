@@ -150,7 +150,7 @@
   "creation_gate": {
     "owner": "Mara Okoye",
     "role": "Knowledge systems architect",
-    "purpose": "Check whether a proposed durable addition belongs in an existing record, relationship, workflow, recipe, space, or file, and resolve the current canonical source owner before the domain skill mutates the system.",
+    "purpose": "Resolve placement when ownership, destination, lifecycle, or semantic boundaries are genuinely ambiguous; obvious extensions inside an established owner use the documented placement table/gate directly.",
     "applies_to": [
       "Personas",
       "Skills",
@@ -167,7 +167,33 @@
       "Confirm the exact destination and file placement, record the closest alternatives, and preserve unresolved taxonomy questions.",
       "Hand the placement result to the smallest domain skill only after the boundary is clear; a placement review does not authorize a write. After an authorized durable source or structural change, follow the selected change contract and run $change-impact-reconciliation when required."
     ],
-    "required_before": "Any authorized creation or promotion of a durable record, space, file, or generated artifact."
+    "required_before": "Mara review is required only for cases matching escalate_when. Direct-placement cases still complete the placement gate, authorization checks, and any required change-impact reconciliation.",
+    "direct_when": [
+      "artifact kind is known",
+      "canonical owner is known",
+      "existing destination pattern is established",
+      "lifecycle or archive rule is known",
+      "no competing source of truth exists",
+      "no new top-level structure, artifact class, or semantic concept is introduced"
+    ],
+    "escalate_when": [
+      "canonical ownership is ambiguous",
+      "a new artifact class is introduced",
+      "a new top-level directory or space is proposed",
+      "a new Persona, Skill, Tool, Template, or Playbook identity is proposed",
+      "cross-repository ownership would transfer",
+      "a semantic boundary or taxonomy would change",
+      "multiple plausible destinations compete",
+      "a lifecycle or source-of-truth conflict remains unresolved"
+    ],
+    "direct_examples": [
+      "Add a focused validator test beside the existing validation suite when that suite clearly owns it.",
+      "Regenerate dist output from an already-established authored source."
+    ],
+    "escalation_examples": [
+      "Decide whether a new reusable artifact belongs in Persona-Library or a sibling repository.",
+      "Introduce a new top-level semantic space or new canonical Persona/Skill/Tool/Template/Playbook identity."
+    ]
   },
   "skill_contract": {
     "required_metadata": [
@@ -190,7 +216,7 @@
   "default_process": [
     "Classify the request and desired outcome.",
     "Identify the relevant space and read its minimum linked records.",
-    "For a new durable record, space, file, or artifact, run the Mara creation gate before domain research or mutation.",
+    "For a new durable addition, use the documented placement gate; escalate to Mara before mutation only when the ownership, destination, lifecycle, or semantic boundary is ambiguous.",
     "Build a compact context packet: goal, artifacts, constraints, tools, permissions, and success criteria.",
     "Ask a scoped multiple-choice question only when ambiguity would materially change the work; otherwise state the default assumption.",
     "Choose answer, research, plan, prototype, consult, or authorized update.",
@@ -203,7 +229,7 @@
     "live_update_requires": [
       "explicit user authorization",
       "identified target records",
-      "Mara placement and boundary review for new durable additions",
+      "documented placement gate for new durable additions, with Mara review when escalation conditions apply",
       "scoped impact review",
       "validation after change"
     ],
