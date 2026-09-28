@@ -96,9 +96,9 @@ function stepNode(nodes, script, selector) {
   });
 }
 
-export async function deriveSourceGeneratedGraph(root = rootDir) {
+export async function deriveSourceGeneratedGraph(root = rootDir, { buildSourceOverride = null } = {}) {
   const buildPath = 'scripts/build-library.mjs';
-  const buildSource = await readText(root, buildPath);
+  const buildSource = buildSourceOverride ?? await readText(root, buildPath);
   const orientation = await readJson(root, 'content/site-orientation.json');
   const scenarioIndex = await readJson(root, 'content/library-data/operational-scenarios/index.json');
   const nodes = [{
@@ -243,9 +243,9 @@ function contractValueNode(nodes, kind, value, source) {
   return id;
 }
 
-export async function deriveAgentRuntimeGraph(root = rootDir) {
+export async function deriveAgentRuntimeGraph(root = rootDir, { orientationOverride = null } = {}) {
   const orientationPath = 'content/site-orientation.json';
-  const orientation = await readJson(root, orientationPath);
+  const orientation = orientationOverride ?? await readJson(root, orientationPath);
   const nodes = [{
     id: 'view:agent-runtime',
     label: 'Agent / runtime',
