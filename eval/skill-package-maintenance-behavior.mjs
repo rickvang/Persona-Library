@@ -60,8 +60,8 @@ function classifyPrompt(prompt) {
   else if (scopeApproved) scopePosture = 'approved';
 
   let packagePosture = 'new-approved';
-  if (!activate) packagePosture = 'not-applicable';
-  else if (placementAmbiguous) packagePosture = 'ambiguous';
+  if (placementAmbiguous) packagePosture = 'ambiguous';
+  else if (!activate) packagePosture = 'not-applicable';
   else if (packageReferencedUnverified) packagePosture = 'referenced-unverified';
   else if (packageExisting) packagePosture = 'existing';
 
@@ -69,7 +69,7 @@ function classifyPrompt(prompt) {
   if (placementAmbiguous) placementPosture = 'escalate-mara';
 
   let authorizationPosture = 'missing';
-  if (!activate) authorizationPosture = 'not-applicable';
+  if (!activate && !placementAmbiguous) authorizationPosture = 'not-applicable';
   else if (repositoryOnly) authorizationPosture = 'repository-only';
   else if (explicitAuthorization) authorizationPosture = 'explicit';
   else if (readOnly) authorizationPosture = 'read-only';
