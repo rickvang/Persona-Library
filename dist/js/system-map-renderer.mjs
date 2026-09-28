@@ -196,6 +196,10 @@ function stylesheet() {
     {
       selector: '.dimmed',
       style: { 'opacity': 0.18 }
+    },
+    {
+      selector: '.filtered-out',
+      style: { 'opacity': 0.1 }
     }
   ];
 }
@@ -222,7 +226,7 @@ export class SystemMapRenderer {
     this.cy.fit(this.cy.elements(), padding);
   }
 
-  render({ graph, visibleIds, selectedId = null, path = null }) {
+  render({ graph, visibleIds, selectedId = null, path = null, filters = {} }) {
     const elements = rendererElements(graph, visibleIds);
     const signature = topologySignature(graph, elements);
     const topologyChanged = signature !== this.signature;
@@ -265,20 +269,41 @@ export class SystemMapRenderer {
       this.fit();
     }
 
-    this.applyState({ selectedId, path });
+    this.applyState({ selectedId, path, filters });
   }
 
-  applyState({ selectedId = null, path = null } = {}) {
+  applyState({ selectedId = null, path = null, filters = {} } = {}) {
     if (!this.cy) return;
 
-    this.cy.elements().removeClass('selected neighbor path dimmed outgoing-highlight incoming-highlight');
+    this.cy.elements().removeClass('selected neighbor path dimmed filtered-out outgoing-highlight incoming-highlight');
+
+    const nodeType = String(filters.nodeType || '');
+    const relationship = String(filters.relationship || '');
+
+    if (nodeType) {
+      this.cy.nodes().forEach(node => {
+        if (node.data('type') !== nodeType) node.addClass('filtered-out');
+      });
+      this.cy.edges().forEach(edge => {
+        if (edge.source().hasClass('filtered-out') || edge.target().hasClass('filtered-out')) {
+          edge.addClass('filtered-out');
+        }
+      });
+    }
+
+    if (relationship) {
+      const matchingEdges = this.cy.edges().filter(edge => edge.data('relationship') === relationship);
+      const matchingNodes = matchingEdges.connectedNodes();
+      this.cy.edges().difference(matchingEdges).addClass('filtered-out');
+      this.cy.nodes().difference(matchingNodes).addClass('filtered-out');
+    }
 
     const selected = selectedId ? this.cy.getElementById(selectedId) : this.cy.collection();
     const pathNodeIds = new Set(path?.nodes || []);
     const pathEdgeIds = new Set(path?.edges || []);
 
     if (selected && !selected.empty()) {
-      selected.addClass('selected');
+      selected.removeClass('filtered-out').addClass('selected');
       const connectedEdges = selected.connectedEdges();
       connectedEdges.connectedNodes().addClass('neighbor');
       connectedEdges.forEach(edge => {
@@ -299,11 +324,11 @@ export class SystemMapRenderer {
 
     for (const id of pathNodeIds) {
       const node = this.cy.getElementById(id);
-      if (!node.empty()) node.removeClass('dimmed').addClass('path');
+      if (!node.empty()) node.removeClass('dimmed filtered-out').addClass('path');
     }
     for (const id of pathEdgeIds) {
       const edge = this.cy.getElementById(id);
-      if (!edge.empty()) edge.removeClass('dimmed').addClass('path');
+      if (!edge.empty()) edge.removeClass('dimmed filtered-out').addClass('path');
     }
   }
 }
