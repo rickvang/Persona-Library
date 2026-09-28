@@ -1,0 +1,234 @@
+{
+  "schema_version": "1.0",
+  "experiment": "phase-9-agent-context-integration",
+  "estimator": "utf8-byte-count-divided-by-four",
+  "estimator_formula": "ceil(UTF-8 bytes / 4) per route condition",
+  "graph_source": "dist/data/system-map/agent-runtime.agent.json",
+  "canonical_routing_changed": false,
+  "fixtures": [
+    {
+      "id": "docs-system-orientation",
+      "route_id": "system-orientation",
+      "primary_space": "docs",
+      "rationale": "Read-oriented route with policy-owner selection and a read-only boundary.",
+      "control": {
+        "utf8_bytes": 31864,
+        "rough_tokens": 7966,
+        "correct": true,
+        "dimensions": {
+          "routing_target": true,
+          "change_contract": true,
+          "reconciliation": true,
+          "mutation_execution_boundary": true,
+          "source_tool_selection": true,
+          "missed_exceptions": true,
+          "validation_completion": true,
+          "recovery_live_state_boundary": true
+        },
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/docs.json",
+          ".agents/skills/persona-library-orientation/SKILL.md"
+        ]
+      },
+      "experimental": {
+        "utf8_bytes": 12622,
+        "rough_tokens": 3156,
+        "correct": true,
+        "dimensions": {
+          "routing_target": true,
+          "change_contract": true,
+          "reconciliation": true,
+          "mutation_execution_boundary": true,
+          "source_tool_selection": true,
+          "missed_exceptions": true,
+          "validation_completion": true,
+          "recovery_live_state_boundary": true
+        },
+        "artifacts": [
+          "AGENTS.md#minimum-boundary",
+          "dist/data/system-map/agent-runtime.agent.json#bounded:system-orientation",
+          "content/orientation/docs.json#canonical-exceptions:system-orientation",
+          ".agents/skills/persona-library-orientation/SKILL.md"
+        ],
+        "graph_fragment": {
+          "nodes": 13,
+          "edges": 12,
+          "provenance_entries": 25
+        },
+        "retained_exception_fields": [
+          "availability_source",
+          "first_reads",
+          "mutation_boundary",
+          "non_triggers",
+          "next_handoff",
+          "space_do_not"
+        ]
+      },
+      "delta": {
+        "utf8_bytes": -19242,
+        "rough_tokens": -4810,
+        "percent": -60.4
+      },
+      "adoption_candidate": true
+    },
+    {
+      "id": "tools-tool-resolution",
+      "route_id": "tool-resolution",
+      "primary_space": "tools",
+      "rationale": "External-execution route that must preserve availability, permission, and live-runtime boundaries.",
+      "control": {
+        "utf8_bytes": 32899,
+        "rough_tokens": 8225,
+        "correct": true,
+        "dimensions": {
+          "routing_target": true,
+          "change_contract": true,
+          "reconciliation": true,
+          "mutation_execution_boundary": true,
+          "source_tool_selection": true,
+          "missed_exceptions": true,
+          "validation_completion": true,
+          "recovery_live_state_boundary": true
+        },
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/tools.json",
+          ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+        ]
+      },
+      "experimental": {
+        "utf8_bytes": 23335,
+        "rough_tokens": 5834,
+        "correct": true,
+        "dimensions": {
+          "routing_target": true,
+          "change_contract": true,
+          "reconciliation": true,
+          "mutation_execution_boundary": true,
+          "source_tool_selection": true,
+          "missed_exceptions": true,
+          "validation_completion": true,
+          "recovery_live_state_boundary": true
+        },
+        "artifacts": [
+          "AGENTS.md#minimum-boundary",
+          "dist/data/system-map/agent-runtime.agent.json#bounded:tool-resolution",
+          "content/orientation/tools.json#canonical-exceptions:tool-resolution",
+          ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+        ],
+        "graph_fragment": {
+          "nodes": 13,
+          "edges": 12,
+          "provenance_entries": 25
+        },
+        "retained_exception_fields": [
+          "availability_source",
+          "first_reads",
+          "mutation_boundary",
+          "non_triggers",
+          "next_handoff",
+          "space_do_not"
+        ]
+      },
+      "delta": {
+        "utf8_bytes": -9564,
+        "rough_tokens": -2391,
+        "percent": -29.1
+      },
+      "adoption_candidate": true
+    },
+    {
+      "id": "templates-template-composition",
+      "route_id": "template-composition",
+      "primary_space": "templates",
+      "rationale": "Artifact-generation route with source/provenance checks and Template-specific reconciliation.",
+      "control": {
+        "utf8_bytes": 29240,
+        "rough_tokens": 7310,
+        "correct": true,
+        "dimensions": {
+          "routing_target": true,
+          "change_contract": true,
+          "reconciliation": true,
+          "mutation_execution_boundary": true,
+          "source_tool_selection": true,
+          "missed_exceptions": true,
+          "validation_completion": true,
+          "recovery_live_state_boundary": true
+        },
+        "artifacts": [
+          "AGENTS.md",
+          "content/site-orientation.json",
+          "content/orientation/templates.json",
+          ".agents/skills/template-composer/SKILL.md"
+        ]
+      },
+      "experimental": {
+        "utf8_bytes": 14489,
+        "rough_tokens": 3623,
+        "correct": true,
+        "dimensions": {
+          "routing_target": true,
+          "change_contract": true,
+          "reconciliation": true,
+          "mutation_execution_boundary": true,
+          "source_tool_selection": true,
+          "missed_exceptions": true,
+          "validation_completion": true,
+          "recovery_live_state_boundary": true
+        },
+        "artifacts": [
+          "AGENTS.md#minimum-boundary",
+          "dist/data/system-map/agent-runtime.agent.json#bounded:template-composition",
+          "content/orientation/templates.json#canonical-exceptions:template-composition",
+          ".agents/skills/template-composer/SKILL.md"
+        ],
+        "graph_fragment": {
+          "nodes": 13,
+          "edges": 12,
+          "provenance_entries": 25
+        },
+        "retained_exception_fields": [
+          "availability_source",
+          "first_reads",
+          "mutation_boundary",
+          "non_triggers",
+          "next_handoff",
+          "space_do_not"
+        ]
+      },
+      "delta": {
+        "utf8_bytes": -14751,
+        "rough_tokens": -3687,
+        "percent": -50.4
+      },
+      "adoption_candidate": true
+    }
+  ],
+  "aggregate": {
+    "control": {
+      "utf8_bytes": 94003,
+      "rough_tokens": 23501
+    },
+    "experimental": {
+      "utf8_bytes": 50446,
+      "rough_tokens": 12613
+    },
+    "delta": {
+      "utf8_bytes": -43557,
+      "rough_tokens": -10888,
+      "percent": -46.3
+    },
+    "experimental_correct": true,
+    "adoption_candidates": 3
+  },
+  "limitations": [
+    "Static UTF-8/4 estimates are not observed provider token usage.",
+    "Correctness measures deterministic contract preservation, not subjective model response quality.",
+    "Only three representative callable-Skill routes are sampled.",
+    "The experiment does not change canonical routing or authority."
+  ]
+}
