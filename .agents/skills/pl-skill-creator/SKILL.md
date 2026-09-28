@@ -26,6 +26,26 @@ Do not use it for discovering Persona capabilities (`persona-skills`), forming a
 
 ## Required preflight
 
+1. Treat root `AGENTS.md` as already activated; do not reread it merely to run this Skill.
+2. Prefer `dist/data/agent-context/skill-package-maintenance.json` for an explicit reusable callable Skill package creation/update request when approved scope, package target, and mutation authorization are already clear.
+3. Use the bundle only when:
+   - `schema_version` is `persona-library.agent-context/v0.1`;
+   - `route_id` is `skill-package-maintenance`;
+   - `primary_space` is `skills`;
+   - `package_path` is `.agents/skills/pl-skill-creator`;
+   - its space index contains exactly the Skills space and canonical route file;
+   - the graph fragment contains the explicit `skill-package-maintenance → pl-skill-creator` route edge;
+   - every included graph node/edge has provenance;
+   - the graph retains the live-runtime exclusion boundary;
+   - retained exception fields and the graph-declared change contract are present.
+4. When valid, use the bundle's route exceptions and graph-declared change contract instead of rereading the full semantic bootstrap and complete Skills route group solely to reconstruct `skill-package-maintenance`.
+5. If the bundle is missing, unreadable, malformed, route/package mismatched, provenance-incomplete, or lacks the Skills-space/live-runtime boundary, fall back to the canonical path: read `content/site-orientation.json`, select Skills, read `content/orientation/skills.json`, then select `skill-package-maintenance`.
+6. A generated bundle never supplies approved scope, an existing package's current content, a Skill contract, a relevant issue/plan, Template relationships, placement authority, mutation authorization, runtime availability, permissions, or current repository state. Refresh those from their canonical/current sources whenever they can change the decision.
+7. `change_mode: artifact_generation` describes the downstream work class; it does not grant permission to create/update a package, generated output, catalog record, route, or external runtime.
+8. Preserve the existing placement gate for a new durable package/file/reference and the existing `change-impact-reconciliation` handoff after authorized durable changes.
+
+The generated bundle is derived routing context, not Skill/package truth. Canonical Skill packages and records, current approved scope, placement decisions, mutation authorization, repository state, validation, and reconciliation remain authoritative.
+
 1. Read the orientation bootstrap and repository contract, then load the relevant `skills` route group. Identify the request mode, target package, authorization, success criteria, and affected surfaces.
 2. Check the existing package, routes, aliases, capability catalog, related workflows, Tool-use recipes, and current runtime requirements before proposing a new identity.
 3. Separate the canonical reusable capability from Persona-specific applications, workflow methods, and Tool recipes.

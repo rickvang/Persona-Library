@@ -1,0 +1,1789 @@
+{
+  "schema_version": "1.0",
+  "evaluation": "skill-package-maintenance-behavioral-parity",
+  "fixture_source": "eval/fixtures/skill-package-maintenance-behavior.json",
+  "methodology": "deterministic fixed-prompt route and authority fixtures; not subjective LLM response quality",
+  "canonical_routing_changed": false,
+  "fixtures": [
+    {
+      "id": "authorized-update-existing-package",
+      "prompt": "Update the existing reusable callable Skill package pl-skill-creator using the approved scope in issue #253. I authorize the package changes.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      },
+      "control": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 35052,
+          "rough_tokens": 8763
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/skill-package-maintenance.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 28725,
+          "rough_tokens": 7182
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "approved-plan-readonly",
+      "prompt": "Using the approved Skill package scope and existing package, plan the update but do not change any files.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      },
+      "control": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 35052,
+          "rough_tokens": 8763
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/skill-package-maintenance.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 28725,
+          "rough_tokens": 7182
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "new-package-placement-ambiguous",
+      "prompt": "The reusable capability is approved, but I am not sure whether it should be a new callable Skill package or an extension of an existing record.",
+      "expected": {
+        "activate_package_maintenance": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "ambiguous",
+        "placement_posture": "escalate-mara",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      },
+      "control": {
+        "activate_package_maintenance": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "ambiguous",
+        "placement_posture": "escalate-mara",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json"
+          ],
+          "utf8_bytes": 27491,
+          "rough_tokens": 6873
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "ambiguous",
+        "placement_posture": "escalate-mara",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json"
+          ],
+          "utf8_bytes": 27491,
+          "rough_tokens": 6873
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "one-off-document-non-trigger",
+      "prompt": "Write one project-specific instruction document. Do not turn it into a reusable Skill package.",
+      "expected": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "docs",
+        "primary_space": "skills",
+        "scope_posture": "one-off",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "not-applicable",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      },
+      "control": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "docs",
+        "primary_space": "skills",
+        "scope_posture": "one-off",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "not-applicable",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json"
+          ],
+          "utf8_bytes": 27491,
+          "rough_tokens": 6873
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "docs",
+        "primary_space": "skills",
+        "scope_posture": "one-off",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "not-applicable",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json"
+          ],
+          "utf8_bytes": 27491,
+          "rough_tokens": 6873
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "persona-application-non-trigger",
+      "prompt": "Apply the existing capability to Camille for this Persona workflow; do not change the reusable callable Skill.",
+      "expected": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "persona-capability-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "persona-application",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "not-applicable",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      },
+      "control": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "persona-capability-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "persona-application",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "not-applicable",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json"
+          ],
+          "utf8_bytes": 27491,
+          "rough_tokens": 6873
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "persona-capability-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "persona-application",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "not-applicable",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json"
+          ],
+          "utf8_bytes": 27491,
+          "rough_tokens": 6873
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "missing-mutation-authorization",
+      "prompt": "The reusable Skill package scope is approved and the existing package is identified. Show me what should change, but I have not authorized edits.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "answer",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      },
+      "control": {
+        "activate_package_maintenance": true,
+        "mode": "answer",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 35052,
+          "rough_tokens": 8763
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": true,
+        "mode": "answer",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/skill-package-maintenance.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 28725,
+          "rough_tokens": 7182
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "runtime-availability-unverified",
+      "prompt": "Update the approved existing Skill package, but the target runtime availability, permissions, and installation state have not been verified. I authorize only the repository package update.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "repository-only",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      },
+      "control": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "repository-only",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 35052,
+          "rough_tokens": 8763
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "repository-only",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/skill-package-maintenance.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 28725,
+          "rough_tokens": 7182
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "generated-output-direct-edit-blocked",
+      "prompt": "The approved existing Skill package needs an update. I authorize it, and also hand-edit the generated dist output directly.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "build-from-source",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      },
+      "control": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "build-from-source",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 35052,
+          "rough_tokens": 8763
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "build-from-source",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/skill-package-maintenance.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 28725,
+          "rough_tokens": 7182
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "documented-package-not-availability",
+      "prompt": "The reusable Skill scope is approved and a README mentions the package, but current package files and runtime availability are unverified. Plan the next safe check only.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "referenced-unverified",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change"
+      },
+      "control": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "referenced-unverified",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/skills.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 35052,
+          "rough_tokens": 8763
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "referenced-unverified",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "approved scope",
+            "existing package",
+            "skill contract",
+            "relevant plan or issue",
+            "related Template records"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "One-off issue, document, workflow, or Persona application work",
+            "A documented mention without an approved reusable capability"
+          ],
+          "next_handoff": "Run package validation and reconcile affected catalog, docs, and generated surfaces.",
+          "space_do_not": [
+            "Do not create a skill when a relationship, workflow, recipe, or persona application is sufficient."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/skill-package-maintenance.json",
+            ".agents/skills/pl-skill-creator/SKILL.md"
+          ],
+          "utf8_bytes": 28725,
+          "rough_tokens": 7182
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_package_maintenance": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "scope_posture": true,
+            "package_posture": true,
+            "placement_posture": true,
+            "authorization_posture": true,
+            "mutation_allowed": true,
+            "bundle_grants_write": true,
+            "generated_output_posture": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "change_mode_preserved": true,
+          "reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_mutation_without_authority": true,
+          "ambiguous_placement_blocks_mutation": true,
+          "one_off_not_promoted": true,
+          "persona_application_not_promoted": true,
+          "generated_output_source_first": true,
+          "live_state_external": true,
+          "reconciliation_when_mutated": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_package_maintenance": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "scope_posture": true,
+          "package_posture": true,
+          "placement_posture": true,
+          "authorization_posture": true,
+          "mutation_allowed": true,
+          "bundle_grants_write": true,
+          "generated_output_posture": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    }
+  ],
+  "aggregate": {
+    "fixture_count": 9,
+    "activated_fixture_count": 6,
+    "passed": 9,
+    "failed": 0,
+    "all_pass": true,
+    "preferred_context_utf8_bytes": 172350,
+    "control_context_utf8_bytes": 210312,
+    "preferred_context_rough_tokens": 43088,
+    "control_context_rough_tokens": 52578,
+    "preferred_delta_utf8_bytes": -37962,
+    "preferred_delta_percent": -18.1
+  },
+  "limitations": [
+    "The evaluator is fixture-scoped and is not a general-purpose natural-language router.",
+    "Passing deterministic parity does not establish subjective model response quality.",
+    "The fixtures validate authority and routing posture; they do not create approved scope, package evidence, placement approval, or live runtime availability.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed provider token usage."
+  ]
+}

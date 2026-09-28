@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "migration": "skill-package-maintenance-graph-backed-context",
+  "estimator": "utf8-byte-count-divided-by-four",
+  "estimator_formula": "ceil(UTF-8 bytes / 4)",
+  "canonical_route_records_changed": false,
+  "preferred_path": {
+    "artifacts": [
+      "AGENTS.md",
+      "dist/data/agent-context/skill-package-maintenance.json",
+      ".agents/skills/pl-skill-creator/SKILL.md"
+    ],
+    "utf8_bytes": 28725,
+    "rough_tokens": 7182
+  },
+  "canonical_fallback": {
+    "artifacts": [
+      "AGENTS.md",
+      "content/site-orientation.json",
+      "content/orientation/skills.json",
+      ".agents/skills/pl-skill-creator/SKILL.md"
+    ],
+    "utf8_bytes": 35052,
+    "rough_tokens": 8763
+  },
+  "deltas": {
+    "preferred_vs_current_fallback": {
+      "utf8_bytes": -6327,
+      "rough_tokens": -1581,
+      "percent": -18.1
+    }
+  },
+  "exit_gate": {
+    "minimum_context_reduction_percent": 10,
+    "context_gate_pass": true,
+    "route_selection_file_reads": {
+      "control": 2,
+      "preferred": 1
+    },
+    "completion_file_reads": {
+      "control": 3,
+      "preferred": 2
+    },
+    "static_artifacts_loaded": {
+      "control": 4,
+      "preferred": 3
+    },
+    "artifact_count_increase": false
+  },
+  "bundle": {
+    "utf8_bytes": 13633,
+    "rough_tokens": 3409,
+    "graph_nodes": 13,
+    "graph_edges": 12,
+    "provenance_entries": 25,
+    "space_entries": 1,
+    "route_id": "skill-package-maintenance",
+    "primary_space": "skills",
+    "package_path": ".agents/skills/pl-skill-creator",
+    "mutation_boundary": "authorized_update",
+    "change_mode": "artifact_generation",
+    "reconciliation": "change-impact-reconciliation",
+    "live_state_embedded": false
+  },
+  "interpretation": [
+    "The preferred-path metric retains the full root AGENTS.md because the repository harness may activate it automatically.",
+    "The Skill-package bundle uses the ordinary one-space v0.1 graph shape; no route-specific schema or generator special case is required.",
+    "Approved scope, existing-package content, placement decisions, mutation authorization, runtime availability, permissions, and current repository state remain external and are never serialized into the bundle.",
+    "The preferred path removes one route-selection read, one completion read, and one static artifact while preserving the canonical Skills fallback.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed model or subscription usage."
+  ]
+}

@@ -30,6 +30,13 @@ const ROUTES = [
     route_group: 'content/orientation/tools.json',
     skill: '.agents/skills/tool-discovery-and-safe-execution/SKILL.md',
     bundle: 'dist/data/agent-context/tool-resolution.json'
+  },
+  {
+    route_id: 'skill-package-maintenance',
+    primary_space: 'skills',
+    route_group: 'content/orientation/skills.json',
+    skill: '.agents/skills/pl-skill-creator/SKILL.md',
+    bundle: 'dist/data/agent-context/skill-package-maintenance.json'
   }
 ];
 
