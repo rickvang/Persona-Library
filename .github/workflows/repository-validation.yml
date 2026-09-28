@@ -35,7 +35,7 @@ jobs:
         run: node scripts/validate-content.mjs
 
       - name: Run repository validation tests
-        run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-git-deployment.test.mjs scripts/validation/seen-job-store.test.mjs scripts/validation/recipe-comparison.test.mjs scripts/validation/token-usage.test.mjs scripts/validation/allowance-usage.test.mjs scripts/validation/routing-paths.test.mjs scripts/validation/placement-gate.test.mjs scripts/validation/generated-output-cleanliness.test.mjs scripts/validation/activation-footprint.test.mjs scripts/validation/work-order-lifecycle.test.mjs scripts/validation/historical-docs.test.mjs scripts/validation/skill-identity-normalization.test.mjs scripts/validation/human-orientation-boundary.test.mjs scripts/validation/site-human-ia.test.mjs scripts/validation/system-map.test.mjs scripts/validation/persona-skill-system-map.test.mjs scripts/validation/technical-system-map.test.mjs scripts/validation/system-map-context-experiment.test.mjs scripts/validation/agent-context-bundle.test.mjs scripts/validation/template-composition-bundle.test.mjs scripts/validation/tool-resolution-bundle.test.mjs scripts/validation/system-orientation-behavior.test.mjs scripts/validation/template-composition-migration.test.mjs scripts/validation/tool-resolution-migration.test.mjs scripts/validation/agent-context-timing-benchmark.test.mjs scripts/validation/agent-context-consolidation.test.mjs scripts/validation/archive-search-boundary.test.mjs
+        run: node --test scripts/validation/validation.test.mjs scripts/validation/vercel-git-deployment.test.mjs scripts/validation/seen-job-store.test.mjs scripts/validation/recipe-comparison.test.mjs scripts/validation/token-usage.test.mjs scripts/validation/allowance-usage.test.mjs scripts/validation/routing-paths.test.mjs scripts/validation/placement-gate.test.mjs scripts/validation/generated-output-cleanliness.test.mjs scripts/validation/activation-footprint.test.mjs scripts/validation/work-order-lifecycle.test.mjs scripts/validation/historical-docs.test.mjs scripts/validation/skill-identity-normalization.test.mjs scripts/validation/human-orientation-boundary.test.mjs scripts/validation/site-human-ia.test.mjs scripts/validation/system-map.test.mjs scripts/validation/persona-skill-system-map.test.mjs scripts/validation/technical-system-map.test.mjs scripts/validation/system-map-context-experiment.test.mjs scripts/validation/agent-context-bundle.test.mjs scripts/validation/template-composition-bundle.test.mjs scripts/validation/tool-resolution-bundle.test.mjs scripts/validation/skill-package-maintenance-bundle.test.mjs scripts/validation/system-orientation-behavior.test.mjs scripts/validation/template-composition-migration.test.mjs scripts/validation/tool-resolution-migration.test.mjs scripts/validation/skill-package-maintenance-migration.test.mjs scripts/validation/agent-context-timing-benchmark.test.mjs scripts/validation/agent-context-consolidation.test.mjs scripts/validation/archive-search-boundary.test.mjs
 
       - name: Protect Phase 9 canonical routing control
         if: github.event_name == 'pull_request' && github.head_ref == 'codex/phase-9-agent-context-experiment'
@@ -67,6 +67,12 @@ jobs:
 
       - name: Validate Tool resolution behavioral parity report
         run: node eval/tool-resolution-behavior.mjs --check
+
+      - name: Validate Skill package maintenance migration report
+        run: node eval/skill-package-maintenance-migration.mjs --check
+
+      - name: Validate Skill package maintenance behavioral parity report
+        run: node eval/skill-package-maintenance-behavior.mjs --check
 
       - name: Benchmark graph-backed activation timing
         run: node eval/agent-context-timing-benchmark.mjs --json --warmup=30 --iterations=250
@@ -120,6 +126,16 @@ jobs:
           changed="$(git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" -- content/site-orientation.json content/orientation/)"
           if [ -n "$changed" ]; then
             echo "Phase E must not mutate canonical bootstrap or route-group records:"
+            echo "$changed"
+            exit 1
+          fi
+
+      - name: Protect issue #253 canonical route records
+        if: github.event_name == 'pull_request' && github.head_ref == 'codex/issue-253-skill-package-context'
+        run: |
+          changed="$(git diff --name-only "${{ github.event.pull_request.base.sha }}...HEAD" -- content/site-orientation.json content/orientation/)"
+          if [ -n "$changed" ]; then
+            echo "Issue #253 must not mutate canonical bootstrap or route-group records:"
             echo "$changed"
             exit 1
           fi
