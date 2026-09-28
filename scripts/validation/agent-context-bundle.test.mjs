@@ -120,12 +120,12 @@ test('orientation Skill explicitly prefers bundle and preserves canonical read-o
     read('AGENTS.md')
   ]);
 
-  assert.match(skill, /dist\\/data\\/agent-context\\/system-orientation\\.json/);
-  assert.match(skill, /fall back to the canonical current path/);
-  assert.match(skill, /content\\/site-orientation\\.json/);
-  assert.match(skill, /content\\/orientation\\/docs\\.json/);
-  assert.match(skill, /stay read-only/i);
-  assert.match(skill, /generated bundle is a derived context projection, not a source of truth/i);
+  assert.ok(skill.includes('dist/data/agent-context/system-orientation.json'));
+  assert.ok(skill.includes('fall back to the canonical current path'));
+  assert.ok(skill.includes('content/site-orientation.json'));
+  assert.ok(skill.includes('content/orientation/docs.json'));
+  assert.ok(skill.toLowerCase().includes('stay read-only'));
+  assert.ok(skill.toLowerCase().includes('generated bundle is a derived context projection, not a source of truth'));
   assert.ok(skill.includes('Goal:\nMode: answer | research | plan | prototype | update | consult\nPrimary space:'));
 
   assert.ok(agents.includes('explicit Persona-Library system-orientation/navigation request'));
