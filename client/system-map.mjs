@@ -55,6 +55,9 @@ const state = {
   selectedId: null,
   expanded: new Set(),
   path: null,
+  focusPath: null,
+  typeFilter: '',
+  relationshipFilter: '',
   lens: 'work-coordination'
 };
 
@@ -70,6 +73,11 @@ const elements = {
   reset: document.getElementById('map-reset'),
   fit: document.getElementById('map-fit'),
   fitInline: document.getElementById('map-fit-inline'),
+  search: document.getElementById('map-search'),
+  searchGo: document.getElementById('map-search-go'),
+  searchOptions: document.getElementById('map-search-options'),
+  typeFilter: document.getElementById('map-type-filter'),
+  relationshipFilter: document.getElementById('map-relationship-filter'),
   lens: document.getElementById('map-lens'),
   liveRegion: document.getElementById('map-live-region'),
   sourceLink: document.getElementById('map-graph-source-link'),
@@ -95,6 +103,108 @@ function selectedNode() {
 
 function relationshipLabel(value) {
   return String(value || '').replaceAll('-', ' ');
+}
+
+function activeVisualPath() {
+  return state.path || state.focusPath;
+}
+
+function nearestRootPath(targetId) {
+  if (!state.graph) return null;
+  let best = null;
+  for (const rootId of rootNodeIds(state.graph)) {
+    const candidate = findPath(state.graph, rootId, targetId);
+    if (!candidate) continue;
+    if (!best || candidate.edges.length < best.edges.length) best = candidate;
+  }
+  return best;
+}
+
+function searchNode(query) {
+  const value = String(query || '').trim().toLowerCase();
+  if (!value || !state.graph) return null;
+  const nodes = state.graph.nodes.slice().sort((a, b) => a.label.localeCompare(b.label));
+  return nodes.find(node => node.id.toLowerCase() === value)
+    || nodes.find(node => node.label.toLowerCase() === value)
+    || nodes.find(node => node.label.toLowerCase().startsWith(value))
+    || nodes.find(node => node.label.toLowerCase().includes(value) || node.id.toLowerCase().includes(value))
+    || null;
+}
+
+function updateUrlState() {
+  if (!state.graph || !globalThis.history?.replaceState) return;
+  const url = new URL(globalThis.location.href);
+  url.searchParams.set('lens', state.lens);
+  if (state.selectedId) url.searchParams.set('node', state.selectedId);
+  else url.searchParams.delete('node');
+
+  if (state.path && elements.pathFrom.value && elements.pathTo.value) {
+    url.searchParams.set('from', elements.pathFrom.value);
+    url.searchParams.set('to', elements.pathTo.value);
+  } else {
+    url.searchParams.delete('from');
+    url.searchParams.delete('to');
+  }
+
+  if (state.typeFilter) url.searchParams.set('type', state.typeFilter);
+  else url.searchParams.delete('type');
+
+  if (state.relationshipFilter) url.searchParams.set('relationship', state.relationshipFilter);
+  else url.searchParams.delete('relationship');
+
+  globalThis.history.replaceState(null, '', url);
+}
+
+function populateExploreControls() {
+  const nodeTypes = [...new Set(state.graph.nodes.map(node => node.type))].sort();
+  const relationships = [...new Set(state.graph.edges.map(edge => edge.relationship))].sort();
+  const nodes = state.graph.nodes.slice().sort((a, b) => a.label.localeCompare(b.label));
+
+  elements.searchOptions.innerHTML = nodes
+    .map(node => `<option value="${escapeHtml(node.label)}"></option>`)
+    .join('');
+
+  elements.typeFilter.innerHTML = '<option value="">All visible types</option>'
+    + nodeTypes.map(type => `<option value="${escapeHtml(type)}">${escapeHtml(nodeTypeLabel(type))}</option>`).join('');
+  elements.relationshipFilter.innerHTML = '<option value="">All visible relationships</option>'
+    + relationships.map(relationship => `<option value="${escapeHtml(relationship)}">${escapeHtml(relationshipLabel(relationship))}</option>`).join('');
+
+  elements.typeFilter.disabled = false;
+  elements.relationshipFilter.disabled = false;
+  elements.typeFilter.value = state.typeFilter;
+  elements.relationshipFilter.value = state.relationshipFilter;
+}
+
+function restoreUrlState() {
+  const params = new URLSearchParams(globalThis.location.search);
+  const nodeId = params.get('node');
+  const from = params.get('from');
+  const to = params.get('to');
+  const type = params.get('type');
+  const relationship = params.get('relationship');
+
+  if (type && state.graph.nodes.some(node => node.type === type)) state.typeFilter = type;
+  if (relationship && state.graph.edges.some(edge => edge.relationship === relationship)) state.relationshipFilter = relationship;
+
+  if (nodeId && state.graph.nodes.some(node => node.id === nodeId)) {
+    state.selectedId = nodeId;
+    state.focusPath = nearestRootPath(nodeId);
+    elements.search.value = state.graph.nodes.find(node => node.id === nodeId)?.label || nodeId;
+  }
+
+  if (
+    from && to &&
+    state.graph.nodes.some(node => node.id === from) &&
+    state.graph.nodes.some(node => node.id === to)
+  ) {
+    state.path = findPath(state.graph, from, to);
+    state.focusPath = null;
+    elements.pathFrom.value = from;
+    elements.pathTo.value = to;
+  }
+
+  elements.typeFilter.value = state.typeFilter;
+  elements.relationshipFilter.value = state.relationshipFilter;
 }
 
 function coverageDescription() {
@@ -125,7 +235,9 @@ function ensureRenderer() {
 
 function currentVisibleIds() {
   const visible = visibleNodeIds(state.graph, state.expanded);
-  if (state.path) state.path.nodes.forEach(id => visible.add(id));
+  const visualPath = activeVisualPath();
+  if (visualPath) visualPath.nodes.forEach(id => visible.add(id));
+  if (state.selectedId) visible.add(state.selectedId);
   return visible;
 }
 
@@ -277,7 +389,11 @@ function renderGraph() {
       graph: state.graph,
       visibleIds: visible,
       selectedId: state.selectedId,
-      path: state.path
+      path: activeVisualPath(),
+      filters: {
+        nodeType: state.typeFilter,
+        relationship: state.relationshipFilter
+      }
     });
     return;
   }
@@ -310,6 +426,7 @@ function render() {
 function selectNode(id) {
   state.selectedId = id;
   render();
+  updateUrlState();
   announce(`Selected ${selectedNode()?.label || id}.`);
 }
 
@@ -325,9 +442,16 @@ function reset() {
   state.selectedId = null;
   state.expanded = initialExpandedIds(state.graph);
   state.path = null;
+  state.focusPath = null;
+  state.typeFilter = '';
+  state.relationshipFilter = '';
   elements.pathFrom.value = '';
   elements.pathTo.value = '';
+  elements.search.value = '';
+  elements.typeFilter.value = '';
+  elements.relationshipFilter.value = '';
   render();
+  updateUrlState();
   announce('System Map reset to the bounded overview.');
 }
 
@@ -351,11 +475,38 @@ function findSelectedPath() {
     return;
   }
   state.path = findPath(state.graph, from, to);
+  state.focusPath = null;
   render();
+  updateUrlState();
   if (state.path) {
     requestAnimationFrame(() => ensureRenderer()?.fit());
   }
   announce(state.path ? 'Explicit path shown.' : 'No explicit path found in this lens.');
+}
+
+function focusSearchResult() {
+  const node = searchNode(elements.search.value);
+  if (!node) {
+    announce('No matching System Map node found.');
+    return;
+  }
+
+  state.selectedId = node.id;
+  state.path = null;
+  state.focusPath = nearestRootPath(node.id);
+  elements.search.value = node.label;
+  render();
+  updateUrlState();
+  requestAnimationFrame(() => ensureRenderer()?.fit());
+  announce(`Focused ${node.label}.`);
+}
+
+function applyFilters() {
+  state.typeFilter = elements.typeFilter.value;
+  state.relationshipFilter = elements.relationshipFilter.value;
+  render();
+  updateUrlState();
+  announce('Graph filters updated.');
 }
 
 function showLoadError(error, config) {
@@ -366,7 +517,7 @@ function showLoadError(error, config) {
   if (config?.sourceUrl) elements.sourceFallback.href = config.sourceUrl;
 }
 
-async function loadLens(lens) {
+async function loadLens(lens, { restoreUrl = false } = {}) {
   const config = lensConfigs[lens];
   if (!config?.graphUrl) {
     elements.lens.value = state.lens;
@@ -391,12 +542,19 @@ async function loadLens(lens) {
     state.selectedId = null;
     state.expanded = initialExpandedIds(graph);
     state.path = null;
+    state.focusPath = null;
+    state.typeFilter = '';
+    state.relationshipFilter = '';
+    elements.search.value = '';
     elements.lens.value = lens;
     elements.sourceLink.href = config.sourceUrl;
     elements.sourceFallback.href = config.sourceUrl;
     renderPathControls();
+    populateExploreControls();
+    if (restoreUrl) restoreUrlState();
     elements.explorer.hidden = false;
     render();
+    updateUrlState();
     announce(`${config.label} lens loaded.`);
   } catch (error) {
     showLoadError(error, config);
@@ -416,6 +574,15 @@ function bindEvents() {
   elements.reset.addEventListener('click', reset);
   elements.fit.addEventListener('click', fitGraph);
   elements.fitInline.addEventListener('click', fitGraph);
+  elements.searchGo.addEventListener('click', focusSearchResult);
+  elements.search.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      focusSearchResult();
+    }
+  });
+  elements.typeFilter.addEventListener('change', applyFilters);
+  elements.relationshipFilter.addEventListener('change', applyFilters);
   document.getElementById('find-path').addEventListener('click', findSelectedPath);
   elements.lens.addEventListener('change', () => {
     loadLens(elements.lens.value);
@@ -423,4 +590,6 @@ function bindEvents() {
 }
 
 bindEvents();
-loadLens('work-coordination');
+const initialParams = new URLSearchParams(globalThis.location.search);
+const initialLens = lensConfigs[initialParams.get('lens')] ? initialParams.get('lens') : 'work-coordination';
+loadLens(initialLens, { restoreUrl: true });
