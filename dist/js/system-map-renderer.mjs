@@ -194,6 +194,23 @@ function stylesheet() {
       }
     },
     {
+      selector: 'edge.exact-edge',
+      style: {
+        'line-color': '#d5563a',
+        'target-arrow-color': '#d5563a',
+        'width': 5,
+        'opacity': 1,
+        'label': 'data(label)',
+        'font-size': 10,
+        'font-weight': 800,
+        'color': '#7e301f',
+        'text-background-color': '#fffefa',
+        'text-background-opacity': 0.98,
+        'text-background-padding': 4,
+        'text-rotation': 'autorotate'
+      }
+    },
+    {
       selector: '.dimmed',
       style: { 'opacity': 0.18 }
     },
@@ -226,7 +243,7 @@ export class SystemMapRenderer {
     this.cy.fit(this.cy.elements(), padding);
   }
 
-  render({ graph, visibleIds, selectedId = null, path = null, filters = {}, layoutDirection = 'vertical' }) {
+  render({ graph, visibleIds, selectedId = null, path = null, highlightedEdgeId = null, filters = {}, layoutDirection = 'vertical' }) {
     const elements = rendererElements(graph, visibleIds);
     const signature = topologySignature(graph, elements);
     const topologyChanged = signature !== this.signature;
@@ -272,13 +289,13 @@ export class SystemMapRenderer {
       this.fit();
     }
 
-    this.applyState({ selectedId, path, filters });
+    this.applyState({ selectedId, path, highlightedEdgeId, filters });
   }
 
-  applyState({ selectedId = null, path = null, filters = {} } = {}) {
+  applyState({ selectedId = null, path = null, highlightedEdgeId = null, filters = {} } = {}) {
     if (!this.cy) return;
 
-    this.cy.elements().removeClass('selected neighbor path dimmed filtered-out outgoing-highlight incoming-highlight');
+    this.cy.elements().removeClass('selected neighbor path exact-edge dimmed filtered-out outgoing-highlight incoming-highlight');
 
     const nodeType = String(filters.nodeType || '');
     const relationship = String(filters.relationship || '');
@@ -333,6 +350,14 @@ export class SystemMapRenderer {
     for (const id of pathEdgeIds) {
       const edge = this.cy.getElementById(id);
       if (!edge.empty()) edge.removeClass('dimmed filtered-out').addClass('path');
+    }
+
+    if (highlightedEdgeId) {
+      const edge = this.cy.getElementById(highlightedEdgeId);
+      if (!edge.empty()) {
+        edge.removeClass('dimmed filtered-out').addClass('exact-edge');
+        edge.connectedNodes().removeClass('dimmed filtered-out');
+      }
     }
   }
 }
