@@ -269,10 +269,51 @@ export class SystemMapRenderer {
     this.cy.fit(this.cy.elements(), padding);
   }
 
-  render({ graph, visibleIds, selectedId = null, path = null, highlightedEdgeId = null, filters = {}, layoutDirection = 'vertical' }) {
+  focus(id, { padding = 96 } = {}) {
+    if (!this.cy || !id) return;
+    const node = this.cy.getElementById(id);
+    if (node.empty()) return;
+    this.cy.fit(node.closedNeighborhood(), padding);
+  }
+
+  getViewport() {
+    if (!this.cy) return null;
+    return {
+      zoom: this.cy.zoom(),
+      pan: { ...this.cy.pan() }
+    };
+  }
+
+  restoreViewport(viewport) {
+    if (!this.cy || !viewport) return;
+    if (Number.isFinite(viewport.zoom)) this.cy.zoom(viewport.zoom);
+    if (viewport.pan && Number.isFinite(viewport.pan.x) && Number.isFinite(viewport.pan.y)) {
+      this.cy.pan(viewport.pan);
+    }
+  }
+
+  render({
+    graph,
+    visibleIds,
+    selectedId = null,
+    path = null,
+    highlightedEdgeId = null,
+    filters = {},
+    layoutDirection = 'vertical',
+    preserveViewport = false,
+    anchorNodeId = null,
+    fitOnTopologyChange = true
+  }) {
     const elements = rendererElements(graph, visibleIds);
     const signature = topologySignature(graph, elements);
     const topologyChanged = signature !== this.signature;
+    const previousViewport = preserveViewport ? this.getViewport() : null;
+    const anchorBefore = preserveViewport && anchorNodeId && this.cy
+      ? this.cy.getElementById(anchorNodeId)
+      : null;
+    const anchorRenderedBefore = anchorBefore && !anchorBefore.empty()
+      ? anchorBefore.renderedPosition()
+      : null;
 
     if (!this.cy) {
       this.cy = this.cytoscapeFactory({
@@ -312,7 +353,22 @@ export class SystemMapRenderer {
           ? (_node, position) => ({ x: position.y, y: position.x })
           : undefined
       }).run();
-      this.fit();
+
+      if (preserveViewport && previousViewport) {
+        this.restoreViewport(previousViewport);
+        if (anchorNodeId && anchorRenderedBefore) {
+          const anchorAfter = this.cy.getElementById(anchorNodeId);
+          if (!anchorAfter.empty()) {
+            const anchorRenderedAfter = anchorAfter.renderedPosition();
+            this.cy.panBy({
+              x: anchorRenderedBefore.x - anchorRenderedAfter.x,
+              y: anchorRenderedBefore.y - anchorRenderedAfter.y
+            });
+          }
+        }
+      } else if (fitOnTopologyChange) {
+        this.fit();
+      }
     }
 
     this.applyState({ selectedId, path, highlightedEdgeId, filters });

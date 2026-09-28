@@ -133,45 +133,162 @@
     .error-box p { color:#6d4b43; line-height:1.5; }
     .error-box a { color:var(--deep); font-weight:800; }
     .sr-only { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+    /* Investigation workspace refinement */
+    .topbar { position:sticky; top:0; z-index:30; min-height:48px; padding:10px 18px; }
+    .topnav { gap:14px; flex-wrap:nowrap; font-size:12px; }
+    .page { max-width:none; padding:12px 16px 28px; }
+    .workspace-header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:10px; }
+    .workspace-title { display:flex; align-items:baseline; gap:10px; min-width:0; }
+    .workspace-title .eyebrow { margin:0; white-space:nowrap; }
+    .workspace-title h1 { margin:0; font-size:22px; line-height:1.1; letter-spacing:-.035em; }
+    .authority-note { position:relative; color:var(--muted); font-size:11px; }
+    .authority-note summary { cursor:pointer; color:var(--deep); font-weight:850; }
+    .authority-note[open] { max-width:520px; padding:9px 11px; border:1px solid var(--line); border-radius:10px; background:var(--card); }
+    .authority-note p { margin:8px 0; line-height:1.45; }
+    .authority-note a { color:var(--deep); font-weight:800; text-underline-offset:3px; }
+
+    .command-bar { position:sticky; top:48px; z-index:25; display:grid; gap:8px; margin-bottom:10px; padding:9px 10px; border:1px solid var(--line); border-radius:12px; background:rgba(255,254,250,.96); backdrop-filter:blur(12px); box-shadow:0 8px 24px rgba(16,24,39,.04); }
+    .navigation-row { display:flex; align-items:center; gap:10px; min-width:0; }
+    .exploration-trail { display:flex; align-items:center; gap:6px; min-width:0; overflow:hidden; color:var(--muted); font-size:11px; white-space:nowrap; }
+    .exploration-trail span { overflow:hidden; text-overflow:ellipsis; max-width:180px; }
+    .exploration-trail .current { color:var(--ink); font-weight:800; }
+    .command-row { display:flex; align-items:end; gap:8px; min-width:0; }
+    .compact-field { display:grid; gap:3px; min-width:0; }
+    .compact-field label { color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+    .compact-field select, .compact-field input, .question-panel select, .question-panel textarea { width:100%; min-width:0; padding:7px 9px; border:1px solid var(--line); border-radius:8px; color:var(--ink); background:#fff; }
+    .lens-field { width:min(250px,23vw); }
+    .search-field { flex:1; min-width:220px; }
+    .search-row { grid-template-columns:minmax(0,1fr) auto; }
+    .search-row button, .compact-button, .filter-menu summary, .selection-actions button, .question-panel button { padding:7px 9px; border:1px solid #b9c4ca; border-radius:8px; color:var(--deep); background:#fff; font-size:11px; font-weight:850; }
+    .compact-button:disabled { opacity:.4; cursor:not-allowed; }
+    .filter-menu { position:relative; }
+    .filter-menu summary { list-style:none; cursor:pointer; white-space:nowrap; }
+    .filter-menu summary::-webkit-details-marker { display:none; }
+    .filter-popover { position:absolute; right:0; top:calc(100% + 6px); z-index:40; display:grid; gap:9px; width:300px; padding:11px; border:1px solid var(--line); border-radius:10px; background:var(--card); box-shadow:0 18px 45px rgba(16,24,39,.14); }
+    .map-status { min-height:18px; gap:6px 10px; font-size:10px; }
+    .coverage { padding:2px 6px; }
+
+    .workspace { grid-template-columns:minmax(0,1fr) minmax(300px,360px); gap:12px; align-items:start; }
+    .map-panel, .detail-panel, .question-panel, .path-panel { border-radius:13px; }
+    .map-panel { min-width:0; overflow:hidden; }
+    .map-panel-head { display:flex; align-items:center; justify-content:space-between; padding:10px 12px 7px; }
+    .map-panel-head h2 { font-size:15px; }
+    .map-panel-head p { max-width:760px; margin-top:3px; font-size:10px; }
+    .graph-frame { position:relative; margin:0 10px 10px; border-radius:11px; }
+    .graph-tools { min-height:34px; padding:6px 8px; }
+    .graph-tools button { padding:5px 8px; }
+    .selection-actions { display:flex; align-items:center; gap:6px; min-height:42px; padding:6px 8px; border-bottom:1px solid var(--line); background:#f7faf8; }
+    .selection-actions[hidden] { display:none; }
+    .selection-label { display:grid; gap:1px; min-width:0; margin-right:auto; }
+    .selection-label strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; }
+    .selection-label span { color:var(--muted); font-size:9px; }
+    .selection-actions button[aria-pressed="true"] { color:#fff; background:var(--deep); border-color:var(--deep); }
+    .graph-legend { padding:6px 8px; }
+    .graph-canvas { height:calc(100vh - 270px); min-height:510px; }
+    .keyboard-nav summary { padding:8px 10px; }
+
+    .inspector-rail { position:sticky; top:154px; display:grid; gap:10px; max-height:calc(100vh - 170px); overflow:auto; overscroll-behavior:contain; padding-right:2px; }
+    .detail-panel { min-height:0; padding:13px; }
+    .detail-head { align-items:center; padding-bottom:11px; }
+    .detail-head h2, .empty-detail h2 { font-size:20px; }
+    .connection-count, .section-heading > span, .evidence-state { flex:none; padding:3px 6px; border-radius:999px; color:var(--muted); background:#eef1ec; font-size:9px; font-weight:850; }
+    .detail-section { padding:12px 0; }
+    .detail-section h3 { margin-bottom:7px; font-size:12px; }
+    .detail-copy { margin:0; color:#344252; font-size:11px; line-height:1.55; }
+    .section-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:7px; }
+    .section-heading h3, .question-panel h2 { margin:0; }
+    .relationship-groups { display:grid; gap:6px; }
+    .relationship-group { border:1px solid var(--line); border-radius:9px; background:#fafaf6; overflow:hidden; }
+    .relationship-group summary { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 9px; cursor:pointer; color:#344252; font-size:10px; font-weight:850; text-transform:capitalize; }
+    .relationship-group summary strong { min-width:22px; padding:2px 5px; border-radius:999px; text-align:center; background:#edf0eb; font-size:9px; }
+    .relationship-list { gap:0; border-top:1px solid var(--line); }
+    .relationship-list li { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; align-items:center; padding:7px 9px; border:0; border-bottom:1px solid #e5e8e2; border-radius:0; background:#fffefa; }
+    .relationship-list li:last-child { border-bottom:0; }
+    .relationship-link { display:grid; gap:2px; }
+    .relationship-link strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:10px; }
+    .relationship-link span { font-size:9px; }
+    .edge-highlight-button { padding:4px 6px; font-size:9px; }
+    .connection-direction { display:grid; gap:6px; margin-top:9px; }
+    .connection-direction > strong { color:var(--muted); font-size:9px; letter-spacing:.06em; text-transform:uppercase; }
+    .relationship-evidence { padding:10px; border:1px solid #efc4b8; border-radius:10px; background:#fff7f3; }
+    .relationship-statement { display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin:0 0 9px; font-size:10px; }
+    .relationship-statement span { color:var(--muted); }
+    .relationship-evidence dl, .source-detail dl { display:grid; grid-template-columns:74px 1fr; gap:5px 8px; margin:0 0 9px; font-size:10px; }
+    .relationship-evidence dt, .source-detail dt { color:var(--muted); font-weight:800; }
+    .relationship-evidence dd, .source-detail dd { margin:0; overflow-wrap:anywhere; }
+    .branch-actions { display:flex; flex-wrap:wrap; gap:6px; min-width:0; }
+    .expand-button, .show-more-button { padding:6px 8px; font-size:10px; }
+    .provenance-detail { border-bottom:0; }
+    .provenance-detail summary { cursor:pointer; color:var(--deep); font-size:11px; font-weight:850; }
+    .provenance-detail .source-detail { padding-top:9px; }
+
+    .question-panel { padding:13px; border:1px solid var(--line); background:var(--card); }
+    .question-panel .eyebrow { margin-bottom:4px; }
+    .question-panel h2 { font-size:15px; letter-spacing:-.025em; }
+    .question-panel label { display:block; margin:9px 0 4px; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+    .question-panel textarea { resize:vertical; min-height:68px; line-height:1.45; }
+    .question-panel button { width:100%; margin-top:7px; color:#fff; background:var(--deep); border-color:var(--deep); }
+    .context-summary { margin:6px 0 0; color:var(--muted); font-size:9px; font-weight:800; }
+    .context-preview { margin-top:8px; border-top:1px solid var(--line); padding-top:8px; }
+    .context-preview summary { cursor:pointer; color:var(--deep); font-size:10px; font-weight:850; }
+    .context-preview pre { max-height:260px; margin:8px 0 0; padding:9px; overflow:auto; border-radius:8px; background:#0f1722; color:#d8e0e8; font:9px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+
+    .path-panel { margin-top:10px; padding:0; background:var(--card); }
+    .path-panel > summary { padding:9px 12px; cursor:pointer; color:var(--deep); font-size:11px; font-weight:850; }
+    .path-body { padding:0 12px 12px; }
     @media (max-width:980px) {
-      .lens-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .command-bar { position:relative; top:auto; }
+      .command-row { flex-wrap:wrap; }
+      .lens-field { width:240px; }
+      .search-field { min-width:280px; }
       .workspace { grid-template-columns:1fr; }
+      .inspector-rail { position:static; max-height:none; overflow:visible; grid-template-columns:minmax(0,1fr) minmax(280px,.7fr); }
       .detail-panel { min-height:0; }
+      .graph-canvas { height:62vh; min-height:480px; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
     }
     @media (max-width:620px) {
-      .topbar { align-items:flex-start; flex-direction:column; }
-      .topnav { gap:12px 16px; }
-      .hero { padding-top:36px; }
-      .lens-grid, .map-nodes { grid-template-columns:1fr; }
-      .map-toolbar { align-items:stretch; }
-      .map-toolbar select { width:100%; }
-      .spacer { display:none; }
-      .detail-head { flex-direction:column; }
+      .topbar { align-items:center; flex-direction:row; }
+      .topnav { margin-left:auto; gap:10px; }
+      .page { padding:9px 10px 22px; }
+      .workspace-header { align-items:flex-start; }
+      .workspace-title { display:grid; gap:2px; }
+      .workspace-title h1 { font-size:19px; }
+      .authority-note[open] { max-width:58vw; }
+      .command-row { align-items:stretch; }
+      .lens-field, .search-field { width:100%; min-width:100%; }
+      .compact-button, .filter-menu { flex:1; }
+      .filter-menu summary { text-align:center; }
+      .filter-popover { position:fixed; left:10px; right:10px; top:160px; width:auto; }
+      .map-status { display:none; }
+      .exploration-trail span { max-width:110px; }
+      .map-panel-head p { display:none; }
+      .graph-frame { margin:0 6px 6px; }
+      .graph-tools { align-items:center; flex-direction:row; }
+      .graph-tools span { font-size:9px; }
+      .selection-actions { flex-wrap:wrap; }
+      .selection-label { width:100%; }
+      .graph-legend { gap:6px 9px; overflow-x:auto; flex-wrap:nowrap; }
+      .graph-canvas { min-height:430px; height:62vh; }
+      .inspector-rail { grid-template-columns:1fr; }
+      .detail-head { align-items:flex-start; flex-direction:column; }
+      .relationship-list li { grid-template-columns:minmax(0,1fr); }
+      .edge-highlight-button { justify-self:start; }
       .branch-actions { width:100%; }
-      .expand-button, .show-more-button { width:100%; }
-      .graph-canvas { min-height:440px; height:62vh; }
-      .graph-tools { align-items:flex-start; flex-direction:column; }
-      .graph-legend { gap:7px 10px; }
-      .explore-toolbar { grid-template-columns:1fr; }
-      .provenance-line { flex-direction:column; }
+      .expand-button, .show-more-button { flex:1; }
+      .map-nodes { grid-template-columns:1fr; }
+      .path-controls { display:grid; }
+      .field { min-width:0; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="mark">PL</span><span>Persona Library</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html">Docs</a><a href="system-map.html" aria-current="page">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+    <nav class="topnav" aria-label="Primary"><a href="guide.html">Docs</a><a href="system-map.html" aria-current="page">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a></nav>
   </header>
-
-  <section class="hero">
-    <p class="crumbs"><a href="guide.html">Docs</a> / System Map</p>
-    <p class="eyebrow">Persona Workspace</p>
-    <h1>Explore the system without memorizing the harness.</h1>
-    <p class="hero-copy">Start with a small view, expand only the branch you need, inspect explicit dependencies, trace a path, and open the canonical source behind every represented fact.</p>
-  </section>
 
   <main class="page" data-system-map
     data-graph-work-coordination-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
@@ -185,53 +302,65 @@
     data-graph-agent-runtime-url="data/system-map/agent-runtime.json"
     data-source-agent-runtime-url="https://github.com/rickvang/Persona-Library/blob/main/dist/data/system-map/agent-runtime.json">
 
-    <div class="source-strip">
-      <strong>Authority boundary</strong>
-      <span>This page reads each selected generated graph from its canonical owner. Cross-repository lenses come from <code>persona-workspace</code>; Persona-Library generates its domain and technical lenses from canonical local contracts. The explorer does not own or edit graph facts.</span>
-      <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open graph source ↗</a>
-    </div>
-
-    <section class="lens-grid" aria-label="System Map lenses">
-      <article class="lens available"><strong>Work &amp; coordination</strong><p>Work surfaces, orchestration, truth classes, and live-authority boundaries.</p><span class="lens-status">Available</span></article>
-      <article class="lens available"><strong>Repository ownership</strong><p>Workspace membership, repository role, local instructions, ownership scope, and mutation boundaries.</p><span class="lens-status">Available</span></article>
-      <article class="lens available"><strong>Persona / Skill</strong><p>Stable Skill identities, distinct Persona applications, guidance, and explicit Skill relationships.</p><span class="lens-status">Available</span></article>
-      <article class="lens available"><strong>Source / generated</strong><p>Advanced traceability from authored inputs and build steps to generated <code>dist/</code> artifacts and their cleanliness check.</p><span class="lens-status">Available · advanced</span></article>
-      <article class="lens available"><strong>Agent / runtime</strong><p>Advanced static routing from repository dispatch through spaces, routes, callable Skills, change contracts, and validation. Live state stays external.</p><span class="lens-status">Available · advanced</span></article>
+    <section class="workspace-header" aria-labelledby="system-map-title">
+      <div class="workspace-title">
+        <p class="eyebrow">Interactive system view</p>
+        <h1 id="system-map-title">Persona Workspace</h1>
+      </div>
+      <details class="authority-note">
+        <summary>Graph authority</summary>
+        <p>This workspace reads generated graph projections from their canonical owners. It never edits graph facts, ownership, provenance, or live runtime state.</p>
+        <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open current graph source ↗</a>
+      </details>
     </section>
 
-    <div class="map-toolbar">
-      <label for="map-lens">View</label>
-      <select id="map-lens">
-        <option value="work-coordination">Work &amp; coordination</option>
-        <option value="repository-ownership">Repository ownership</option>
-        <option value="persona-skill">Persona / Skill</option>
-        <option value="source-generated">Source / generated · advanced</option>
-        <option value="agent-runtime">Agent / runtime · advanced</option>
-      </select>
-      <button class="ghost" type="button" id="map-reset">Reset overview</button>
-      <button class="ghost" type="button" id="map-fit">Fit graph</button>
-      <span class="spacer"></span>
-      <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
-    </div>
+    <section class="command-bar" aria-label="System Map workspace controls">
+      <div class="navigation-row">
+        <button class="ghost compact-button" type="button" id="map-back" disabled>← Back</button>
+        <nav id="map-trail" class="exploration-trail" aria-label="Exploration trail"><span class="current">Overview</span></nav>
+      </div>
 
-    <div class="explore-toolbar" aria-label="Graph exploration controls">
-      <div class="explore-field">
-        <label for="map-search">Find a node</label>
-        <div class="search-row">
-          <input id="map-search" list="map-search-options" type="search" placeholder="Search label or stable ID" autocomplete="off" />
-          <button type="button" id="map-search-go">Focus</button>
+      <div class="command-row">
+        <div class="compact-field lens-field">
+          <label for="map-lens">View</label>
+          <select id="map-lens">
+            <option value="work-coordination">Work &amp; coordination</option>
+            <option value="repository-ownership">Repository ownership</option>
+            <option value="persona-skill">Persona / Skill</option>
+            <option value="source-generated">Source / generated · advanced</option>
+            <option value="agent-runtime">Agent / runtime · advanced</option>
+          </select>
         </div>
-        <datalist id="map-search-options"></datalist>
+
+        <div class="compact-field search-field">
+          <label for="map-search">Find</label>
+          <div class="search-row">
+            <input id="map-search" list="map-search-options" type="search" placeholder="Node or stable ID" autocomplete="off" />
+            <button type="button" id="map-search-go">Focus</button>
+          </div>
+          <datalist id="map-search-options"></datalist>
+        </div>
+
+        <details class="filter-menu">
+          <summary>Filters</summary>
+          <div class="filter-popover">
+            <div class="compact-field">
+              <label for="map-type-filter">Node type</label>
+              <select id="map-type-filter" disabled><option value="">All visible types</option></select>
+            </div>
+            <div class="compact-field">
+              <label for="map-relationship-filter">Relationship</label>
+              <select id="map-relationship-filter" disabled><option value="">All visible relationships</option></select>
+            </div>
+          </div>
+        </details>
+
+        <button class="ghost compact-button" type="button" id="map-fit">Fit</button>
+        <button class="ghost compact-button" type="button" id="map-reset">Reset</button>
       </div>
-      <div class="explore-field">
-        <label for="map-type-filter">Node type</label>
-        <select id="map-type-filter" disabled><option value="">All visible types</option></select>
-      </div>
-      <div class="explore-field">
-        <label for="map-relationship-filter">Relationship</label>
-        <select id="map-relationship-filter" disabled><option value="">All visible relationships</option></select>
-      </div>
-    </div>
+
+      <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
+    </section>
 
     <section id="map-error" class="error-box" hidden>
       <h2>System Map unavailable</h2>
@@ -242,15 +371,18 @@
     <div id="map-explorer" hidden>
       <section class="workspace">
         <section class="map-panel" aria-labelledby="explorer-heading">
-          <div class="panel-head">
-            <h2 id="explorer-heading">Graph explorer</h2>
-            <p>Pan, zoom, select a node, and expand only the branch you need. Small lenses reveal one level automatically; dense lenses stay collapsed until you choose where to go.</p>
+          <div class="panel-head map-panel-head">
+            <div>
+              <h2 id="explorer-heading">Map</h2>
+              <p>Select first. Inspect, expand, and focus are separate actions so exploration does not unexpectedly rearrange the workspace.</p>
+            </div>
           </div>
           <div class="graph-frame">
             <div class="graph-tools" aria-label="Graph controls">
-              <button type="button" id="map-fit-inline">Fit visible graph</button>
-              <span>Drag to pan · scroll or pinch to zoom · select a node to inspect its explicit relationships.</span>
+              <button type="button" id="map-fit-inline">Fit visible</button>
+              <span>Drag to pan · scroll or pinch to zoom</span>
             </div>
+            <div id="map-selection-actions" class="selection-actions" aria-label="Selected node actions" hidden></div>
             <div class="graph-legend" aria-label="Graph state legend">
               <span class="legend-item"><span class="legend-swatch selected" aria-hidden="true"></span>Selected node</span>
               <span class="legend-item"><span class="legend-swatch neighbor" aria-hidden="true"></span>Connected node</span>
@@ -266,27 +398,56 @@
           </div>
         </section>
 
-        <aside id="map-details" class="detail-panel" aria-live="polite">
-          <div class="empty-detail">
-            <p class="eyebrow">Inspect a node</p>
-            <h2>Select any visible concept</h2>
-            <p>Details show explicit incoming and outgoing relationships plus their canonical provenance.</p>
-          </div>
+        <aside class="inspector-rail" aria-label="System Map inspector and question context">
+          <section id="map-details" class="detail-panel" aria-live="polite">
+            <div class="empty-detail">
+              <p class="eyebrow">Inspector</p>
+              <h2>Select a node</h2>
+              <p>Select a map item first. You can then inspect its relationships, expand its direct context, or focus the graph around it.</p>
+            </div>
+          </section>
+
+          <section class="question-panel" aria-labelledby="question-heading">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Ask with context</p>
+                <h2 id="question-heading">Prepare a grounded question</h2>
+              </div>
+            </div>
+            <label for="map-question">Question</label>
+            <textarea id="map-question" rows="3" placeholder="What do you want the assistant to explain about this area?"></textarea>
+            <label for="map-question-scope">Included context</label>
+            <select id="map-question-scope">
+              <option value="selected">Selected item + visible direct relationships</option>
+              <option value="path">Current focus / path</option>
+              <option value="visible">Entire visible area</option>
+            </select>
+            <p id="map-question-context-summary" class="context-summary">0 nodes · 0 relationships</p>
+            <button type="button" id="map-copy-question">Copy question + context</button>
+            <p id="map-copy-status" class="quiet" aria-live="polite">The handoff includes stable map IDs, provenance, coverage, and evidence boundaries.</p>
+            <details class="context-preview">
+              <summary>Preview portable context</summary>
+              <pre id="map-question-preview"></pre>
+            </details>
+          </section>
         </aside>
       </section>
 
-      <section class="path-panel" aria-labelledby="path-heading">
-        <div class="panel-head" style="padding:0 0 12px">
-          <h2 id="path-heading">Show a path</h2>
-          <p>Find the shortest path through known explicit relationships. Direction is ignored for path-finding; each relationship keeps its original direction in the graph.</p>
+      <details class="path-panel">
+        <summary>Trace an explicit path</summary>
+        <div class="path-body" aria-labelledby="path-heading">
+          <div class="panel-head" style="padding:0 0 12px">
+            <h2 id="path-heading">Shortest known path</h2>
+            <p>Direction is ignored only while finding the path; each represented relationship keeps its canonical direction and provenance.</p>
+          </div>
+          <div class="path-controls">
+            <div class="field"><label for="path-from">From</label><select id="path-from"></select></div>
+            <div class="field"><label for="path-to">To</label><select id="path-to"></select></div>
+            <button type="button" id="find-path">Find path</button>
+          </div>
+          <div id="path-result"><p class="quiet">Choose two nodes to show the shortest explicit path between them.</p></div>
         </div>
-        <div class="path-controls">
-          <div class="field"><label for="path-from">From</label><select id="path-from"></select></div>
-          <div class="field"><label for="path-to">To</label><select id="path-to"></select></div>
-          <button type="button" id="find-path">Find path</button>
-        </div>
-        <div id="path-result"><p class="quiet">Choose two nodes to show the shortest explicit path between them.</p></div>
-      </section>
+      </details>
     </div>
 
     <p id="map-live-region" class="sr-only" aria-live="polite"></p>
