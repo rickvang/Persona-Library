@@ -163,15 +163,11 @@
 <body>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="mark">PL</span><span>Persona Library</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html">Docs</a><a href="system-map.html" aria-current="page">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+    <nav class="topnav" aria-label="Primary">
+      <a href="guide.html">Docs</a>
+      <a href="system-map.html" aria-current="page">System Map</a>
+    </nav>
   </header>
-
-  <section class="hero">
-    <p class="crumbs"><a href="guide.html">Docs</a> / System Map</p>
-    <p class="eyebrow">Persona Workspace</p>
-    <h1>Explore the system without memorizing the harness.</h1>
-    <p class="hero-copy">Start with a small view, expand only the branch you need, inspect explicit dependencies, trace a path, and open the canonical source behind every represented fact.</p>
-  </section>
 
   <main class="page" data-system-map
     data-graph-work-coordination-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
@@ -185,53 +181,65 @@
     data-graph-agent-runtime-url="data/system-map/agent-runtime.json"
     data-source-agent-runtime-url="https://github.com/rickvang/Persona-Library/blob/main/dist/data/system-map/agent-runtime.json">
 
-    <div class="source-strip">
-      <strong>Authority boundary</strong>
-      <span>This page reads each selected generated graph from its canonical owner. Cross-repository lenses come from <code>persona-workspace</code>; Persona-Library generates its domain and technical lenses from canonical local contracts. The explorer does not own or edit graph facts.</span>
-      <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open graph source ↗</a>
-    </div>
-
-    <section class="lens-grid" aria-label="System Map lenses">
-      <article class="lens available"><strong>Work &amp; coordination</strong><p>Work surfaces, orchestration, truth classes, and live-authority boundaries.</p><span class="lens-status">Available</span></article>
-      <article class="lens available"><strong>Repository ownership</strong><p>Workspace membership, repository role, local instructions, ownership scope, and mutation boundaries.</p><span class="lens-status">Available</span></article>
-      <article class="lens available"><strong>Persona / Skill</strong><p>Stable Skill identities, distinct Persona applications, guidance, and explicit Skill relationships.</p><span class="lens-status">Available</span></article>
-      <article class="lens available"><strong>Source / generated</strong><p>Advanced traceability from authored inputs and build steps to generated <code>dist/</code> artifacts and their cleanliness check.</p><span class="lens-status">Available · advanced</span></article>
-      <article class="lens available"><strong>Agent / runtime</strong><p>Advanced static routing from repository dispatch through spaces, routes, callable Skills, change contracts, and validation. Live state stays external.</p><span class="lens-status">Available · advanced</span></article>
+    <section class="workspace-header" aria-labelledby="system-map-title">
+      <div class="workspace-title">
+        <p class="eyebrow">Interactive system view</p>
+        <h1 id="system-map-title">Persona Workspace</h1>
+      </div>
+      <details class="authority-note">
+        <summary>Graph authority</summary>
+        <p>This workspace reads generated graph projections from their canonical owners. It never edits graph facts, ownership, provenance, or live runtime state.</p>
+        <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open current graph source ↗</a>
+      </details>
     </section>
 
-    <div class="map-toolbar">
-      <label for="map-lens">View</label>
-      <select id="map-lens">
-        <option value="work-coordination">Work &amp; coordination</option>
-        <option value="repository-ownership">Repository ownership</option>
-        <option value="persona-skill">Persona / Skill</option>
-        <option value="source-generated">Source / generated · advanced</option>
-        <option value="agent-runtime">Agent / runtime · advanced</option>
-      </select>
-      <button class="ghost" type="button" id="map-reset">Reset overview</button>
-      <button class="ghost" type="button" id="map-fit">Fit graph</button>
-      <span class="spacer"></span>
-      <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
-    </div>
+    <section class="command-bar" aria-label="System Map workspace controls">
+      <div class="navigation-row">
+        <button class="ghost compact-button" type="button" id="map-back" disabled>← Back</button>
+        <nav id="map-trail" class="exploration-trail" aria-label="Exploration trail"><span class="current">Overview</span></nav>
+      </div>
 
-    <div class="explore-toolbar" aria-label="Graph exploration controls">
-      <div class="explore-field">
-        <label for="map-search">Find a node</label>
-        <div class="search-row">
-          <input id="map-search" list="map-search-options" type="search" placeholder="Search label or stable ID" autocomplete="off" />
-          <button type="button" id="map-search-go">Focus</button>
+      <div class="command-row">
+        <div class="compact-field lens-field">
+          <label for="map-lens">View</label>
+          <select id="map-lens">
+            <option value="work-coordination">Work &amp; coordination</option>
+            <option value="repository-ownership">Repository ownership</option>
+            <option value="persona-skill">Persona / Skill</option>
+            <option value="source-generated">Source / generated · advanced</option>
+            <option value="agent-runtime">Agent / runtime · advanced</option>
+          </select>
         </div>
-        <datalist id="map-search-options"></datalist>
+
+        <div class="compact-field search-field">
+          <label for="map-search">Find</label>
+          <div class="search-row">
+            <input id="map-search" list="map-search-options" type="search" placeholder="Node or stable ID" autocomplete="off" />
+            <button type="button" id="map-search-go">Focus</button>
+          </div>
+          <datalist id="map-search-options"></datalist>
+        </div>
+
+        <details class="filter-menu">
+          <summary>Filters</summary>
+          <div class="filter-popover">
+            <div class="compact-field">
+              <label for="map-type-filter">Node type</label>
+              <select id="map-type-filter" disabled><option value="">All visible types</option></select>
+            </div>
+            <div class="compact-field">
+              <label for="map-relationship-filter">Relationship</label>
+              <select id="map-relationship-filter" disabled><option value="">All visible relationships</option></select>
+            </div>
+          </div>
+        </details>
+
+        <button class="ghost compact-button" type="button" id="map-fit">Fit</button>
+        <button class="ghost compact-button" type="button" id="map-reset">Reset</button>
       </div>
-      <div class="explore-field">
-        <label for="map-type-filter">Node type</label>
-        <select id="map-type-filter" disabled><option value="">All visible types</option></select>
-      </div>
-      <div class="explore-field">
-        <label for="map-relationship-filter">Relationship</label>
-        <select id="map-relationship-filter" disabled><option value="">All visible relationships</option></select>
-      </div>
-    </div>
+
+      <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
+    </section>
 
     <section id="map-error" class="error-box" hidden>
       <h2>System Map unavailable</h2>
@@ -242,15 +250,18 @@
     <div id="map-explorer" hidden>
       <section class="workspace">
         <section class="map-panel" aria-labelledby="explorer-heading">
-          <div class="panel-head">
-            <h2 id="explorer-heading">Graph explorer</h2>
-            <p>Pan, zoom, select a node, and expand only the branch you need. Small lenses reveal one level automatically; dense lenses stay collapsed until you choose where to go.</p>
+          <div class="panel-head map-panel-head">
+            <div>
+              <h2 id="explorer-heading">Map</h2>
+              <p>Select first. Inspect, expand, and focus are separate actions so exploration does not unexpectedly rearrange the workspace.</p>
+            </div>
           </div>
           <div class="graph-frame">
             <div class="graph-tools" aria-label="Graph controls">
-              <button type="button" id="map-fit-inline">Fit visible graph</button>
-              <span>Drag to pan · scroll or pinch to zoom · select a node to inspect its explicit relationships.</span>
+              <button type="button" id="map-fit-inline">Fit visible</button>
+              <span>Drag to pan · scroll or pinch to zoom</span>
             </div>
+            <div id="map-selection-actions" class="selection-actions" aria-label="Selected node actions" hidden></div>
             <div class="graph-legend" aria-label="Graph state legend">
               <span class="legend-item"><span class="legend-swatch selected" aria-hidden="true"></span>Selected node</span>
               <span class="legend-item"><span class="legend-swatch neighbor" aria-hidden="true"></span>Connected node</span>
@@ -266,27 +277,56 @@
           </div>
         </section>
 
-        <aside id="map-details" class="detail-panel" aria-live="polite">
-          <div class="empty-detail">
-            <p class="eyebrow">Inspect a node</p>
-            <h2>Select any visible concept</h2>
-            <p>Details show explicit incoming and outgoing relationships plus their canonical provenance.</p>
-          </div>
+        <aside class="inspector-rail" aria-label="System Map inspector and question context">
+          <section id="map-details" class="detail-panel" aria-live="polite">
+            <div class="empty-detail">
+              <p class="eyebrow">Inspector</p>
+              <h2>Select a node</h2>
+              <p>Select a map item first. You can then inspect its relationships, expand its direct context, or focus the graph around it.</p>
+            </div>
+          </section>
+
+          <section class="question-panel" aria-labelledby="question-heading">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Ask with context</p>
+                <h2 id="question-heading">Prepare a grounded question</h2>
+              </div>
+            </div>
+            <label for="map-question">Question</label>
+            <textarea id="map-question" rows="3" placeholder="What do you want the assistant to explain about this area?"></textarea>
+            <label for="map-question-scope">Included context</label>
+            <select id="map-question-scope">
+              <option value="selected">Selected item + visible direct relationships</option>
+              <option value="path">Current focus / path</option>
+              <option value="visible">Entire visible area</option>
+            </select>
+            <p id="map-question-context-summary" class="context-summary">0 nodes · 0 relationships</p>
+            <button type="button" id="map-copy-question">Copy question + context</button>
+            <p id="map-copy-status" class="quiet" aria-live="polite">The handoff includes stable map IDs, provenance, coverage, and evidence boundaries.</p>
+            <details class="context-preview">
+              <summary>Preview portable context</summary>
+              <pre id="map-question-preview"></pre>
+            </details>
+          </section>
         </aside>
       </section>
 
-      <section class="path-panel" aria-labelledby="path-heading">
-        <div class="panel-head" style="padding:0 0 12px">
-          <h2 id="path-heading">Show a path</h2>
-          <p>Find the shortest path through known explicit relationships. Direction is ignored for path-finding; each relationship keeps its original direction in the graph.</p>
+      <details class="path-panel">
+        <summary>Trace an explicit path</summary>
+        <div class="path-body" aria-labelledby="path-heading">
+          <div class="panel-head" style="padding:0 0 12px">
+            <h2 id="path-heading">Shortest known path</h2>
+            <p>Direction is ignored only while finding the path; each represented relationship keeps its canonical direction and provenance.</p>
+          </div>
+          <div class="path-controls">
+            <div class="field"><label for="path-from">From</label><select id="path-from"></select></div>
+            <div class="field"><label for="path-to">To</label><select id="path-to"></select></div>
+            <button type="button" id="find-path">Find path</button>
+          </div>
+          <div id="path-result"><p class="quiet">Choose two nodes to show the shortest explicit path between them.</p></div>
         </div>
-        <div class="path-controls">
-          <div class="field"><label for="path-from">From</label><select id="path-from"></select></div>
-          <div class="field"><label for="path-to">To</label><select id="path-to"></select></div>
-          <button type="button" id="find-path">Find path</button>
-        </div>
-        <div id="path-result"><p class="quiet">Choose two nodes to show the shortest explicit path between them.</p></div>
-      </section>
+      </details>
     </div>
 
     <p id="map-live-region" class="sr-only" aria-live="polite"></p>
