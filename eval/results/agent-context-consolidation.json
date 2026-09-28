@@ -9,21 +9,21 @@
     "bulk_migration_authorized": false
   },
   "summary": {
-    "migrated_routes": 3,
-    "behavioral_fixtures": 30,
-    "behavioral_passed": 30,
+    "migrated_routes": 4,
+    "behavioral_fixtures": 39,
+    "behavioral_passed": 39,
     "behavioral_failed": 0,
     "base_context": {
-      "control_utf8_bytes": 102704,
-      "preferred_utf8_bytes": 88387,
-      "delta_utf8_bytes": -14317,
-      "delta_percent": -13.9
+      "control_utf8_bytes": 137756,
+      "preferred_utf8_bytes": 117112,
+      "delta_utf8_bytes": -20644,
+      "delta_percent": -15
     },
     "activated_behavior_context": {
-      "control_utf8_bytes": 812229,
-      "preferred_utf8_bytes": 720221,
-      "delta_utf8_bytes": -92008,
-      "delta_percent": -11.3
+      "control_utf8_bytes": 1022541,
+      "preferred_utf8_bytes": 892571,
+      "delta_utf8_bytes": -129970,
+      "delta_percent": -12.7
     },
     "deterministic_work": {
       "control_completion_file_reads_per_route": 3,
@@ -34,19 +34,19 @@
       "static_artifact_reduction_percent": -25
     },
     "observed_timing_p50_average_delta_percent": {
-      "route_selection": -28.6,
-      "first_useful_action": -18.1,
-      "deterministic_completion": -17.8
+      "route_selection": -24.3,
+      "first_useful_action": -13.7,
+      "deterministic_completion": -14.2
     }
   },
   "timing_evidence": {
     "source": {
       "repository": "rickvang/Persona-Library",
-      "pull_request": 252,
-      "workflow_run_id": 36370534216,
-      "workflow_run_number": 255,
-      "job_id": 108765743767,
-      "commit_sha": "613d45e6b7399494200b5f12476629328b93b1bd"
+      "pull_request": 257,
+      "workflow_run_id": 36427873923,
+      "workflow_run_number": 266,
+      "job_id": 108946227662,
+      "commit_sha": "5029035c041bf6c2fcd1b187f1627a6fa90b7e8c"
     },
     "benchmark": "agent-context-deterministic-activation-timing",
     "measured_scope": "repository-side activation only",
@@ -59,8 +59,8 @@
     "warmup_iterations": 30,
     "measured_iterations_per_path": 250,
     "interpretation": [
-      "All three preferred paths were faster at p50 for route selection, first useful action, and deterministic activation completion in the observed CI run.",
-      "All three preferred paths also had lower p95 timing, but the magnitude varied and remains subject to runner/filesystem noise.",
+      "All four preferred paths were faster at p50 for route selection, first useful action, and deterministic activation completion in the observed CI run.",
+      "Observed p95 timing was mixed across routes and stages; runner/filesystem noise makes wall-clock timing supporting evidence rather than a hard gate.",
       "The deterministic one-file-read and one-artifact reductions are stronger evidence than sub-millisecond wall-clock differences.",
       "These timings do not measure model generation or end-user response latency."
     ]
@@ -86,19 +86,19 @@
       "timing": {
         "control": {
           "route_selection": {
-            "p50_ms": 0.4334,
-            "p95_ms": 0.5816,
-            "mean_ms": 0.4446
+            "p50_ms": 0.3769,
+            "p95_ms": 0.5724,
+            "mean_ms": 0.3919
           },
           "first_useful_action": {
-            "p50_ms": 0.6387,
-            "p95_ms": 0.8735,
-            "mean_ms": 0.6517
+            "p50_ms": 0.5383,
+            "p95_ms": 0.8129,
+            "mean_ms": 0.5688
           },
           "deterministic_completion": {
-            "p50_ms": 0.6822,
-            "p95_ms": 0.9351,
-            "mean_ms": 0.6999
+            "p50_ms": 0.597,
+            "p95_ms": 0.903,
+            "mean_ms": 0.6288
           },
           "route_selection_file_reads": 2,
           "first_useful_action_file_reads": 3,
@@ -108,19 +108,19 @@
         },
         "preferred": {
           "route_selection": {
-            "p50_ms": 0.3147,
-            "p95_ms": 0.446,
-            "mean_ms": 0.3309
+            "p50_ms": 0.3019,
+            "p95_ms": 0.512,
+            "mean_ms": 0.3385
           },
           "first_useful_action": {
-            "p50_ms": 0.5202,
-            "p95_ms": 0.6968,
-            "mean_ms": 0.5379
+            "p50_ms": 0.4923,
+            "p95_ms": 0.7755,
+            "mean_ms": 0.5247
           },
           "deterministic_completion": {
-            "p50_ms": 0.5556,
-            "p95_ms": 0.7571,
-            "mean_ms": 0.5777
+            "p50_ms": 0.5351,
+            "p95_ms": 0.8643,
+            "mean_ms": 0.5726
           },
           "route_selection_file_reads": 1,
           "first_useful_action_file_reads": 2,
@@ -129,9 +129,9 @@
           "context_bytes": 27028
         },
         "deltas": {
-          "route_selection_p50_percent": -27.4,
-          "first_useful_action_p50_percent": -18.6,
-          "deterministic_completion_p50_percent": -18.6,
+          "route_selection_p50_percent": -19.9,
+          "first_useful_action_p50_percent": -8.5,
+          "deterministic_completion_p50_percent": -10.4,
           "completion_file_reads": -1,
           "static_artifacts_loaded": -1,
           "context_bytes": -7511,
@@ -159,19 +159,19 @@
       "timing": {
         "control": {
           "route_selection": {
-            "p50_ms": 0.4096,
-            "p95_ms": 0.5204,
-            "mean_ms": 0.4231
+            "p50_ms": 0.3706,
+            "p95_ms": 0.5355,
+            "mean_ms": 0.3861
           },
           "first_useful_action": {
-            "p50_ms": 0.598,
-            "p95_ms": 0.7463,
-            "mean_ms": 0.616
+            "p50_ms": 0.535,
+            "p95_ms": 0.7085,
+            "mean_ms": 0.5508
           },
           "deterministic_completion": {
-            "p50_ms": 0.6425,
-            "p95_ms": 0.8057,
-            "mean_ms": 0.661
+            "p50_ms": 0.5856,
+            "p95_ms": 0.7845,
+            "mean_ms": 0.6075
           },
           "route_selection_file_reads": 2,
           "first_useful_action_file_reads": 3,
@@ -181,19 +181,19 @@
         },
         "preferred": {
           "route_selection": {
-            "p50_ms": 0.2967,
-            "p95_ms": 0.3928,
-            "mean_ms": 0.3075
+            "p50_ms": 0.2763,
+            "p95_ms": 0.3869,
+            "mean_ms": 0.3007
           },
           "first_useful_action": {
-            "p50_ms": 0.4936,
-            "p95_ms": 0.6725,
-            "mean_ms": 0.5129
+            "p50_ms": 0.4544,
+            "p95_ms": 0.8199,
+            "mean_ms": 0.5025
           },
           "deterministic_completion": {
-            "p50_ms": 0.5309,
-            "p95_ms": 0.7266,
-            "mean_ms": 0.5524
+            "p50_ms": 0.4988,
+            "p95_ms": 0.8967,
+            "mean_ms": 0.551
           },
           "route_selection_file_reads": 1,
           "first_useful_action_file_reads": 2,
@@ -202,9 +202,9 @@
           "context_bytes": 28038
         },
         "deltas": {
-          "route_selection_p50_percent": -27.6,
-          "first_useful_action_p50_percent": -17.5,
-          "deterministic_completion_p50_percent": -17.4,
+          "route_selection_p50_percent": -25.4,
+          "first_useful_action_p50_percent": -15.1,
+          "deterministic_completion_p50_percent": -14.8,
           "completion_file_reads": -1,
           "static_artifacts_loaded": -1,
           "context_bytes": -4654,
@@ -232,19 +232,19 @@
       "timing": {
         "control": {
           "route_selection": {
-            "p50_ms": 0.3865,
-            "p95_ms": 0.4803,
-            "mean_ms": 0.4
+            "p50_ms": 0.346,
+            "p95_ms": 0.4062,
+            "mean_ms": 0.349
           },
           "first_useful_action": {
-            "p50_ms": 0.5751,
-            "p95_ms": 0.7039,
-            "mean_ms": 0.5931
+            "p50_ms": 0.5081,
+            "p95_ms": 0.5851,
+            "mean_ms": 0.5084
           },
           "deterministic_completion": {
-            "p50_ms": 0.6192,
-            "p95_ms": 0.7759,
-            "mean_ms": 0.6455
+            "p50_ms": 0.566,
+            "p95_ms": 0.6702,
+            "mean_ms": 0.5681
           },
           "route_selection_file_reads": 2,
           "first_useful_action_file_reads": 3,
@@ -254,19 +254,19 @@
         },
         "preferred": {
           "route_selection": {
-            "p50_ms": 0.2678,
-            "p95_ms": 0.3658,
-            "mean_ms": 0.2831
+            "p50_ms": 0.2503,
+            "p95_ms": 0.3197,
+            "mean_ms": 0.2559
           },
           "first_useful_action": {
-            "p50_ms": 0.471,
-            "p95_ms": 0.629,
-            "mean_ms": 0.5052
+            "p50_ms": 0.4243,
+            "p95_ms": 0.6819,
+            "mean_ms": 0.452
           },
           "deterministic_completion": {
-            "p50_ms": 0.5107,
-            "p95_ms": 0.7019,
-            "mean_ms": 0.5531
+            "p50_ms": 0.475,
+            "p95_ms": 0.7308,
+            "mean_ms": 0.5055
           },
           "route_selection_file_reads": 1,
           "first_useful_action_file_reads": 2,
@@ -275,13 +275,86 @@
           "context_bytes": 33321
         },
         "deltas": {
-          "route_selection_p50_percent": -30.7,
-          "first_useful_action_p50_percent": -18.1,
-          "deterministic_completion_p50_percent": -17.5,
+          "route_selection_p50_percent": -27.7,
+          "first_useful_action_p50_percent": -16.5,
+          "deterministic_completion_p50_percent": -16.1,
           "completion_file_reads": -1,
           "static_artifacts_loaded": -1,
           "context_bytes": -2152,
           "context_percent": -6.1
+        }
+      }
+    },
+    {
+      "route_id": "skill-package-maintenance",
+      "context": {
+        "control_utf8_bytes": 35052,
+        "preferred_utf8_bytes": 28725,
+        "delta_utf8_bytes": -6327,
+        "delta_percent": -18.1,
+        "control_rough_tokens": 8763,
+        "preferred_rough_tokens": 7182
+      },
+      "behavior": {
+        "fixtures": 9,
+        "passed": 9,
+        "failed": 0,
+        "activated_fixtures": 6,
+        "context_delta_percent": -18.1
+      },
+      "timing": {
+        "control": {
+          "route_selection": {
+            "p50_ms": 0.3424,
+            "p95_ms": 0.4143,
+            "mean_ms": 0.3517
+          },
+          "first_useful_action": {
+            "p50_ms": 0.4971,
+            "p95_ms": 0.6811,
+            "mean_ms": 0.5132
+          },
+          "deterministic_completion": {
+            "p50_ms": 0.5488,
+            "p95_ms": 0.73,
+            "mean_ms": 0.5644
+          },
+          "route_selection_file_reads": 2,
+          "first_useful_action_file_reads": 3,
+          "completion_file_reads": 3,
+          "static_artifacts_loaded": 4,
+          "context_bytes": 35052
+        },
+        "preferred": {
+          "route_selection": {
+            "p50_ms": 0.2588,
+            "p95_ms": 0.2837,
+            "mean_ms": 0.2618
+          },
+          "first_useful_action": {
+            "p50_ms": 0.4233,
+            "p95_ms": 0.577,
+            "mean_ms": 0.4343
+          },
+          "deterministic_completion": {
+            "p50_ms": 0.4642,
+            "p95_ms": 0.6343,
+            "mean_ms": 0.4762
+          },
+          "route_selection_file_reads": 1,
+          "first_useful_action_file_reads": 2,
+          "completion_file_reads": 2,
+          "static_artifacts_loaded": 3,
+          "context_bytes": 28725
+        },
+        "deltas": {
+          "route_selection_p50_percent": -24.4,
+          "first_useful_action_p50_percent": -14.8,
+          "deterministic_completion_p50_percent": -15.4,
+          "completion_file_reads": -1,
+          "static_artifacts_loaded": -1,
+          "context_bytes": -6327,
+          "context_percent": -18.1
         }
       }
     }
@@ -326,14 +399,26 @@
         "eval/tool-resolution-behavior.md",
         "scripts/validation/tool-resolution-bundle.test.mjs",
         "scripts/validation/tool-resolution-migration.test.mjs"
+      ],
+      "skill-package-maintenance": [
+        "eval/skill-package-maintenance-migration.mjs",
+        "eval/results/skill-package-maintenance-migration.json",
+        "eval/skill-package-maintenance-migration.md",
+        "eval/fixtures/skill-package-maintenance-behavior.json",
+        "eval/skill-package-maintenance-behavior.mjs",
+        "eval/results/skill-package-maintenance-behavior.json",
+        "eval/skill-package-maintenance-behavior.md",
+        "scripts/validation/skill-package-maintenance-bundle.test.mjs",
+        "scripts/validation/skill-package-maintenance-migration.test.mjs"
       ]
     },
     "route_specific_surface_counts": {
       "system-orientation": 8,
       "template-composition": 9,
-      "tool-resolution": 9
+      "tool-resolution": 9,
+      "skill-package-maintenance": 9
     },
-    "route_specific_surface_total": 26,
+    "route_specific_surface_total": 35,
     "recurring_costs": [
       "Each migrated route needs route-specific behavioral fixtures and safety assertions; those cannot be inferred safely from the generic bundle contract.",
       "Root dispatcher growth mechanically changes every migrated route context metric and requires report refreshes.",
@@ -357,7 +442,7 @@
   "rollout_guidance": {
     "recommendation": "Use graph-backed activation selectively for routes that meet the eligibility criteria; do not bulk-migrate all routes.",
     "existing_tool_resolution_exception": "tool-resolution remains accepted at 6.1% because it served the live-state proof, reduces one read/artifact, and has positive observed timing; future routes below 10% need additional real usage evidence.",
-    "next_route_policy": "Any fourth route requires a new separately approved issue with pre-migration context/read baseline and eligibility review.",
+    "next_route_policy": "A fifth route requires a new separately approved issue with pre-migration context/read baseline and eligibility review.",
     "schema_policy": "Keep persona-library.agent-context/v0.1. Do not create v0.2 until a future eligible route proves a required field cannot be derived within v0.1."
   },
   "limitations": [
