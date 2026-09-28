@@ -22,12 +22,27 @@ Do not activate for canonical Tool catalog maintenance, credential configuration
 
 ## Required preflight
 
-1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `tools` route group.
-2. Express the required capability, goal, artifact, scope, risk, and success criteria before selecting a vendor or connector.
-3. Inspect the Tools, connectors, MCPs, workspaces, and permissions actually exposed by the current requester runtime. Do not infer availability, credentials, or approval from repository documentation.
-4. Identify the intended mode: catalog/planning (read-only), bounded read-only probe, authorized side-effecting action, or durable usage/lesson/artifact recording.
-5. Record the requested workspace, authorization, approval status, fallback, and verification method. If any material value is unknown, report it before execution.
-6. If the selected Tool-use recipe has an active Operational Scenario, load only the smallest matching scenario and apply its concrete do/don't, sequence, freshness, stop, escalation, and recovery guidance. Scenario guidance never grants permission or replaces current Tool/runtime evidence.
+1. Treat root `AGENTS.md` as already activated; do not reread it merely to run this Skill.
+2. Prefer `dist/data/agent-context/tool-resolution.json` for explicit Tool/capability resolution or bounded execution-planning requests.
+3. Use the bundle only when:
+   - `schema_version` is `persona-library.agent-context/v0.1`;
+   - `route_id` is `tool-resolution`;
+   - `primary_space` is `tools`;
+   - `package_path` is `.agents/skills/tool-discovery-and-safe-execution`;
+   - its space index contains exactly the Tools space and canonical route file;
+   - the graph fragment contains the explicit `tool-resolution → tool-discovery-and-safe-execution` route edge;
+   - every included graph node/edge has provenance;
+   - the graph retains the live-runtime exclusion boundary;
+   - retained exception fields are present.
+4. When valid, use the bundle's route exceptions and graph-declared change contract instead of rereading the full semantic bootstrap and complete Tools route group solely to reconstruct `tool-resolution`.
+5. If the bundle is missing, unreadable, malformed, route/package mismatched, provenance-incomplete, or lacks the Tools-space/live-runtime boundary, fall back to the canonical path: read `content/site-orientation.json`, select Tools, read `content/orientation/tools.json`, then select `tool-resolution`.
+6. Express the required capability, goal, artifact, scope, risk, and success criteria before selecting a vendor or connector.
+7. Inspect the Tools, connectors, MCPs, workspaces, permissions, and approval state actually exposed by the current requester runtime. **The generated bundle never establishes availability, credentials, permission, workspace, target, approval, or execution success.**
+8. Identify the intended mode: catalog/planning (read-only), bounded read-only probe, authorized side-effecting action, or durable usage/lesson/artifact recording.
+9. Record the requested workspace, authorization, approval status, fallback, and verification method. If any material value is unknown, report it before execution.
+10. If the selected Tool-use recipe has an active Operational Scenario, load only the smallest matching scenario and apply its concrete do/don't, sequence, freshness, stop, escalation, and recovery guidance. Scenario guidance never grants permission or replaces current Tool/runtime evidence.
+
+The generated bundle is derived routing context, not live Tool truth. Canonical Tool records, current runtime exposure, credentials, permission, workspace, approval, execution results, repository validation, and reconciliation remain authoritative in their native sources.
 
 ## Availability states
 
