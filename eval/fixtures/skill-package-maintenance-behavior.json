@@ -1,0 +1,177 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Fixed skill-package-maintenance migration scenarios. Deterministic routing/authority parity only; not subjective model-quality evaluation.",
+  "fixtures": [
+    {
+      "id": "authorized-update-existing-package",
+      "prompt": "Update the existing reusable callable Skill package pl-skill-creator using the approved scope in issue #253. I authorize the package changes.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      }
+    },
+    {
+      "id": "approved-plan-readonly",
+      "prompt": "Using the approved Skill package scope and existing package, plan the update but do not change any files.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      }
+    },
+    {
+      "id": "new-package-placement-ambiguous",
+      "prompt": "The reusable capability is approved, but I am not sure whether it should be a new callable Skill package or an extension of an existing record.",
+      "expected": {
+        "activate_package_maintenance": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "ambiguous",
+        "placement_posture": "escalate-mara",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      }
+    },
+    {
+      "id": "one-off-document-non-trigger",
+      "prompt": "Write one project-specific instruction document. Do not turn it into a reusable Skill package.",
+      "expected": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "docs",
+        "primary_space": "skills",
+        "scope_posture": "one-off",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "explicit",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      }
+    },
+    {
+      "id": "persona-application-non-trigger",
+      "prompt": "Apply the existing capability to Camille for this Persona workflow; do not change the reusable callable Skill.",
+      "expected": {
+        "activate_package_maintenance": false,
+        "mode": "update",
+        "selected_route": "persona-capability-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "persona-application",
+        "package_posture": "not-applicable",
+        "placement_posture": "not-applicable",
+        "authorization_posture": "explicit",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "not-applicable",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      }
+    },
+    {
+      "id": "missing-mutation-authorization",
+      "prompt": "The reusable Skill package scope is approved and the existing package is identified. Show me what should change, but I have not authorized edits.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "answer",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "missing",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change"
+      }
+    },
+    {
+      "id": "runtime-availability-unverified",
+      "prompt": "Update the approved existing Skill package, but the target runtime availability, permissions, and installation state have not been verified. I authorize only the repository package update.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "repository-only",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      }
+    },
+    {
+      "id": "generated-output-direct-edit-blocked",
+      "prompt": "The approved existing Skill package needs an update. I authorize it, and also hand-edit the generated dist output directly.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "update",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "existing",
+        "placement_posture": "established",
+        "authorization_posture": "explicit",
+        "mutation_allowed": true,
+        "bundle_grants_write": false,
+        "generated_output_posture": "build-from-source",
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      }
+    },
+    {
+      "id": "documented-package-not-availability",
+      "prompt": "A README mentions a reusable Skill package, but current package files and runtime availability are unverified. Plan the next safe check only.",
+      "expected": {
+        "activate_package_maintenance": true,
+        "mode": "plan",
+        "selected_route": "skill-package-maintenance",
+        "primary_space": "skills",
+        "scope_posture": "approved",
+        "package_posture": "referenced-unverified",
+        "placement_posture": "established",
+        "authorization_posture": "read-only",
+        "mutation_allowed": false,
+        "bundle_grants_write": false,
+        "generated_output_posture": "source-first",
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change"
+      }
+    }
+  ]
+}
