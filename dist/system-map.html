@@ -51,11 +51,18 @@
     .map-status { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; color:var(--muted); font-size:12px; }
     .status-dot { width:8px; height:8px; border-radius:50%; background:#2a8a6d; }
     .coverage { padding:4px 7px; border-radius:999px; color:#665622; background:#f7e9b5; font-weight:800; }
-    .workspace { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr); gap:16px; align-items:start; }
+    .workspace { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr); gap:16px; align-items:start; }
     .map-panel, .detail-panel, .path-panel { border:1px solid var(--line); border-radius:17px; background:var(--card); }
     .panel-head { padding:16px 17px 10px; }
     .panel-head h2 { margin:0; font-size:20px; letter-spacing:-.035em; }
     .panel-head p { margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.5; }
+    .graph-frame { margin:8px 16px 18px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:linear-gradient(180deg,#fbfcf9 0%,#f4f6f2 100%); }
+    .graph-tools { display:flex; align-items:center; gap:10px; min-height:42px; padding:8px 10px; border-bottom:1px solid var(--line); background:rgba(255,254,250,.9); }
+    .graph-tools button { padding:6px 9px; border:1px solid #b9c4ca; border-radius:8px; color:var(--deep); background:#fff; font-size:11px; font-weight:800; }
+    .graph-tools span { color:var(--muted); font-size:10px; line-height:1.4; }
+    .graph-canvas { width:100%; height:min(68vh,720px); min-height:520px; background-image:radial-gradient(circle at 1px 1px,rgba(35,79,104,.08) 1px,transparent 0); background-size:22px 22px; }
+    .graph-canvas[hidden] { display:none; }
+    .map-nodes[hidden] { display:none; }
     .map-nodes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:8px 16px 18px; }
     .map-node { position:relative; border:1px solid var(--line); border-radius:13px; background:#fbfcf8; overflow:hidden; }
     .map-node.selected { border-color:var(--deep); box-shadow:0 0 0 2px rgba(35,79,104,.12); }
@@ -116,6 +123,8 @@
       .spacer { display:none; }
       .detail-head { flex-direction:column; }
       .expand-button { width:100%; }
+      .graph-canvas { min-height:440px; height:62vh; }
+      .graph-tools { align-items:flex-start; flex-direction:column; }
       .provenance-line { flex-direction:column; }
     }
   </style>
@@ -169,6 +178,7 @@
         <option value="agent-runtime">Agent / runtime · advanced</option>
       </select>
       <button class="ghost" type="button" id="map-reset">Reset overview</button>
+      <button class="ghost" type="button" id="map-fit">Fit graph</button>
       <span class="spacer"></span>
       <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
     </div>
@@ -183,10 +193,17 @@
       <section class="workspace">
         <section class="map-panel" aria-labelledby="explorer-heading">
           <div class="panel-head">
-            <h2 id="explorer-heading">Visible branch</h2>
-            <p>The overview begins with graph roots. Expand a node to reveal its direct explicit neighbors; collapse it to return to the smaller view.</p>
+            <h2 id="explorer-heading">Graph explorer</h2>
+            <p>Pan, zoom, select a node, and expand only the branch you need. Small lenses reveal one level automatically; dense lenses stay collapsed until you choose where to go.</p>
           </div>
-          <div id="map-nodes" class="map-nodes"></div>
+          <div class="graph-frame">
+            <div class="graph-tools" aria-label="Graph controls">
+              <button type="button" id="map-fit-inline">Fit visible graph</button>
+              <span>Drag to pan · scroll or pinch to zoom · select a node to inspect its explicit relationships.</span>
+            </div>
+            <div id="map-canvas" class="graph-canvas" role="img" aria-label="Interactive System Map graph"></div>
+            <div id="map-node-fallback" class="map-nodes" hidden aria-label="System Map textual fallback"></div>
+          </div>
         </section>
 
         <aside id="map-details" class="detail-panel" aria-live="polite">
@@ -215,6 +232,7 @@
     <p id="map-live-region" class="sr-only" aria-live="polite"></p>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.3/dist/cytoscape.min.js"></script>
   <script type="module" src="js/system-map.mjs"></script>
 </body>
 </html>
