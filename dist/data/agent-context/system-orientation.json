@@ -1,0 +1,328 @@
+{
+  "schema_version": "persona-library.agent-context/v0.1",
+  "route_id": "system-orientation",
+  "primary_space": "docs",
+  "package_path": ".agents/skills/persona-library-orientation",
+  "source_graph": {
+    "view": "agent-runtime",
+    "version": "system-map.agent/v0.1",
+    "scope": "domain:agent-runtime",
+    "coverage": "complete-for-scope"
+  },
+  "graph_fragment": {
+    "version": "system-map.agent/v0.1",
+    "view": "agent-runtime",
+    "scope": "domain:agent-runtime",
+    "coverage": "complete-for-scope",
+    "nodes": [
+      {
+        "id": "agent:repository-dispatcher",
+        "label": "Repository dispatcher",
+        "type": "agent-dispatcher"
+      },
+      {
+        "id": "boundary:live-runtime-state",
+        "label": "Live runtime state stays external",
+        "type": "runtime-boundary"
+      },
+      {
+        "id": "contract:change-domain:personas-system",
+        "label": "change domain: personas-system",
+        "type": "skill-contract-value"
+      },
+      {
+        "id": "contract:change-mode:read_only",
+        "label": "change mode: read_only",
+        "type": "skill-contract-value"
+      },
+      {
+        "id": "contract:reconciliation:skip",
+        "label": "reconciliation: skip",
+        "type": "skill-contract-value"
+      },
+      {
+        "id": "contract:skill-layer:library_management",
+        "label": "skill layer: library_management",
+        "type": "skill-contract-value"
+      },
+      {
+        "id": "route-group:docs",
+        "label": "Docs routes",
+        "type": "route-group"
+      },
+      {
+        "id": "route:system-orientation",
+        "label": "system-orientation",
+        "type": "routing-route"
+      },
+      {
+        "id": "routing:orientation-bootstrap",
+        "label": "Orientation bootstrap",
+        "type": "routing-bootstrap"
+      },
+      {
+        "id": "skill-package:.agents/skills/persona-library-orientation",
+        "label": "persona-library-orientation",
+        "type": "callable-skill-package"
+      },
+      {
+        "id": "space:docs",
+        "label": "Docs",
+        "type": "primary-space"
+      },
+      {
+        "id": "validation:repository-validation",
+        "label": "Repository validation",
+        "type": "validation-boundary"
+      },
+      {
+        "id": "view:agent-runtime",
+        "label": "Agent / runtime",
+        "type": "view-root"
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge:agent:repository-dispatcher--loads-for-semantic-work--routing:orientation-bootstrap",
+        "from": "agent:repository-dispatcher",
+        "to": "routing:orientation-bootstrap",
+        "relationship": "loads-for-semantic-work"
+      },
+      {
+        "id": "edge:agent:repository-dispatcher--uses-validation-contract--validation:repository-validation",
+        "from": "agent:repository-dispatcher",
+        "to": "validation:repository-validation",
+        "relationship": "uses-validation-contract"
+      },
+      {
+        "id": "edge:route-group:docs--contains--route:system-orientation",
+        "from": "route-group:docs",
+        "to": "route:system-orientation",
+        "relationship": "contains"
+      },
+      {
+        "id": "edge:route:system-orientation--routes-to--skill-package:.agents/skills/persona-library-orientation",
+        "from": "route:system-orientation",
+        "to": "skill-package:.agents/skills/persona-library-orientation",
+        "relationship": "routes-to"
+      },
+      {
+        "id": "edge:routing:orientation-bootstrap--declares-space--space:docs",
+        "from": "routing:orientation-bootstrap",
+        "to": "space:docs",
+        "relationship": "declares-space"
+      },
+      {
+        "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-change-domain--contract:change-domain:personas-system",
+        "from": "skill-package:.agents/skills/persona-library-orientation",
+        "to": "contract:change-domain:personas-system",
+        "relationship": "declares-change-domain"
+      },
+      {
+        "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-change-mode--contract:change-mode:read_only",
+        "from": "skill-package:.agents/skills/persona-library-orientation",
+        "to": "contract:change-mode:read_only",
+        "relationship": "declares-change-mode"
+      },
+      {
+        "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-reconciliation--contract:reconciliation:skip",
+        "from": "skill-package:.agents/skills/persona-library-orientation",
+        "to": "contract:reconciliation:skip",
+        "relationship": "declares-reconciliation"
+      },
+      {
+        "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-skill-layer--contract:skill-layer:library_management",
+        "from": "skill-package:.agents/skills/persona-library-orientation",
+        "to": "contract:skill-layer:library_management",
+        "relationship": "declares-skill-layer"
+      },
+      {
+        "id": "edge:space:docs--uses-route-group--route-group:docs",
+        "from": "space:docs",
+        "to": "route-group:docs",
+        "relationship": "uses-route-group"
+      },
+      {
+        "id": "edge:view:agent-runtime--contains--agent:repository-dispatcher",
+        "from": "view:agent-runtime",
+        "to": "agent:repository-dispatcher",
+        "relationship": "contains"
+      },
+      {
+        "id": "edge:view:agent-runtime--excludes-live-state--boundary:live-runtime-state",
+        "from": "view:agent-runtime",
+        "to": "boundary:live-runtime-state",
+        "relationship": "excludes-live-state"
+      }
+    ],
+    "provenance": {
+      "agent:repository-dispatcher": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Choose the shortest activation path"
+      },
+      "boundary:live-runtime-state": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "GitHub, CI, review, deployment, permissions, and runtime state"
+      },
+      "contract:change-domain:personas-system": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      },
+      "contract:change-mode:read_only": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      },
+      "contract:reconciliation:skip": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      },
+      "contract:skill-layer:library_management": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      },
+      "route-group:docs": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "root"
+      },
+      "route:system-orientation": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=system-orientation]"
+      },
+      "routing:orientation-bootstrap": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "root"
+      },
+      "skill-package:.agents/skills/persona-library-orientation": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter"
+      },
+      "space:docs": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.docs"
+      },
+      "validation:repository-validation": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.github/workflows/repository-validation.yml",
+        "selector": "jobs.validate"
+      },
+      "view:agent-runtime": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Choose the shortest activation path"
+      },
+      "edge:agent:repository-dispatcher--loads-for-semantic-work--routing:orientation-bootstrap": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "library-semantic"
+      },
+      "edge:agent:repository-dispatcher--uses-validation-contract--validation:repository-validation": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Repository execution and validation"
+      },
+      "edge:route-group:docs--contains--route:system-orientation": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=system-orientation]"
+      },
+      "edge:route:system-orientation--routes-to--skill-package:.agents/skills/persona-library-orientation": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=system-orientation].package_path"
+      },
+      "edge:routing:orientation-bootstrap--declares-space--space:docs": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.docs"
+      },
+      "edge:skill-package:.agents/skills/persona-library-orientation--declares-change-domain--contract:change-domain:personas-system": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      },
+      "edge:skill-package:.agents/skills/persona-library-orientation--declares-change-mode--contract:change-mode:read_only": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      },
+      "edge:skill-package:.agents/skills/persona-library-orientation--declares-reconciliation--contract:reconciliation:skip": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      },
+      "edge:skill-package:.agents/skills/persona-library-orientation--declares-skill-layer--contract:skill-layer:library_management": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      },
+      "edge:space:docs--uses-route-group--route-group:docs": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.docs.route_file"
+      },
+      "edge:view:agent-runtime--contains--agent:repository-dispatcher": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Choose the shortest activation path"
+      },
+      "edge:view:agent-runtime--excludes-live-state--boundary:live-runtime-state": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Durable work and recovery"
+      }
+    }
+  },
+  "exceptions": {
+    "availability_source": "repo_local",
+    "first_reads": [
+      "docs/policy-ownership.md"
+    ],
+    "mutation_boundary": "read_only",
+    "non_triggers": [
+      "Unrelated coding, writing, research, or general questions"
+    ],
+    "next_handoff": "Select the smallest space and downstream capability after orientation.",
+    "space_do_not": [
+      "Do not use Docs to hide unresolved alternatives or decision history."
+    ]
+  },
+  "contract": {
+    "skill_layer": "library_management",
+    "change_mode": "read_only",
+    "change_domain": "personas-system",
+    "reconciliation": "skip"
+  },
+  "canonical_sources": [
+    {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:AGENTS.md",
+      "selector": "Choose the shortest activation path / live-state boundary"
+    },
+    {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.docs"
+    },
+    {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "routes[id=system-orientation]"
+    },
+    {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+      "selector": "frontmatter"
+    }
+  ]
+}
