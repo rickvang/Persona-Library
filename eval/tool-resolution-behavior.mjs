@@ -99,7 +99,8 @@ function behaviorFor(fixture) {
   const sideEffect = sideEffectRequested(prompt);
 
   let permissionPosture = 'not-applicable';
-  if (activate && availability.selected_candidate === 'verified-alternate') permissionPosture = 'verified-alternate';
+  if (activate && availability.availability_state === 'No Tool needed') permissionPosture = 'not-applicable';
+  else if (activate && availability.selected_candidate === 'verified-alternate') permissionPosture = 'verified-alternate';
   else if (activate) permissionPosture = live.permission_verified ? 'verified' : 'unverified';
 
   let targetPosture = 'catalog-record';
