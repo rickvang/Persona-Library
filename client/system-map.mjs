@@ -1031,13 +1031,15 @@ function showLoadError(error, config) {
   if (config?.sourceUrl) elements.sourceFallback.href = config.sourceUrl;
 }
 
-async function loadLens(lens, { restoreUrl = false } = {}) {
+async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, rememberCurrent = true } = {}) {
   const config = lensConfigs[lens];
   if (!config?.graphUrl) {
     elements.lens.value = state.lens;
     announce('That lens is not mapped yet.');
     return;
   }
+
+  if (rememberCurrent && state.graph && state.lens !== lens) saveCurrentLensState();
 
   elements.status.innerHTML = `<strong>Loading ${escapeHtml(config.label)}…</strong>`;
   elements.error.hidden = true;
@@ -1058,6 +1060,7 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
     state.expansionLimits = new Map();
     state.path = null;
     state.focusPath = null;
+    state.focusId = null;
     state.highlightedEdgeId = null;
     state.typeFilter = '';
     state.relationshipFilter = '';
@@ -1067,11 +1070,16 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
     elements.sourceFallback.href = config.sourceUrl;
     renderPathControls();
     populateExploreControls();
+    const savedView = viewSnapshot || (!restoreUrl ? lensViewStates.get(lens) : null);
+    if (savedView) applyViewSnapshot(savedView);
     if (restoreUrl) restoreUrlState();
     elements.explorer.hidden = false;
-    render();
+    render({ fitOnTopologyChange: !savedView?.viewport });
+    if (savedView?.viewport) {
+      requestAnimationFrame(() => ensureRenderer()?.restoreViewport(savedView.viewport));
+    }
     updateUrlState();
-    announce(`${config.label} lens loaded.`);
+    announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
   } catch (error) {
     showLoadError(error, config);
   }
@@ -1079,6 +1087,16 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
 
 function bindEvents() {
   root.addEventListener('click', event => {
+    const inspect = event.target.closest('[data-inspect-selected]');
+    if (inspect) {
+      inspectSelectedNode();
+      return;
+    }
+    const focus = event.target.closest('[data-focus-selected]');
+    if (focus) {
+      focusSelectedNode(focus.dataset.focusSelected);
+      return;
+    }
     const edgeHighlight = event.target.closest('[data-highlight-edge]');
     if (edgeHighlight) {
       highlightEdge(edgeHighlight.dataset.highlightEdge);
@@ -1097,6 +1115,7 @@ function bindEvents() {
     const expand = event.target.closest('[data-toggle-expand]');
     if (expand) toggleExpanded(expand.dataset.toggleExpand);
   });
+  elements.back?.addEventListener('click', goBack);
   elements.reset.addEventListener('click', reset);
   elements.fit.addEventListener('click', fitGraph);
   elements.fitInline.addEventListener('click', fitGraph);
@@ -1110,8 +1129,12 @@ function bindEvents() {
   elements.typeFilter.addEventListener('change', applyFilters);
   elements.relationshipFilter.addEventListener('change', applyFilters);
   document.getElementById('find-path').addEventListener('click', findSelectedPath);
-  elements.lens.addEventListener('change', () => {
-    loadLens(elements.lens.value);
+  elements.questionScope?.addEventListener('change', renderQuestionContext);
+  elements.question?.addEventListener('input', renderQuestionContext);
+  elements.questionCopy?.addEventListener('click', copyQuestionHandoff);
+  elements.lens.addEventListener('change', async () => {
+    pushNavigationCheckpoint();
+    await loadLens(elements.lens.value);
   });
 }
 
