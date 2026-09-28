@@ -390,12 +390,29 @@ function currentVisibleIds() {
     if (edge) seedIds.push(edge.from, edge.to);
   }
 
-  return boundedVisibleNodeIds(
+  const visible = boundedVisibleNodeIds(
     state.graph,
     state.expanded,
     state.expansionLimits,
     { seedIds }
   );
+
+  if (!state.focusId) return visible;
+
+  const focused = new Set([state.focusId]);
+  const rootPath = nearestRootPath(state.focusId);
+  for (const id of rootPath?.nodes || []) focused.add(id);
+  for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, DEFAULT_BRANCH_CHUNK)) {
+    focused.add(node.id);
+  }
+  if (state.highlightedEdgeId) {
+    const edge = state.graph.edges.find(item => item.id === state.highlightedEdgeId);
+    if (edge) {
+      focused.add(edge.from);
+      focused.add(edge.to);
+    }
+  }
+  return focused;
 }
 
 function renderStatus() {
