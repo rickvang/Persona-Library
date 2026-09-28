@@ -56,6 +56,9 @@ const lensConfigs = {
 };
 
 const graphCache = new Map();
+const lensViewStates = new Map();
+const navigationStack = [];
+const MAX_NAVIGATION_HISTORY = 24;
 
 const state = {
   graph: null,
@@ -64,6 +67,7 @@ const state = {
   expansionLimits: new Map(),
   path: null,
   focusPath: null,
+  focusId: null,
   highlightedEdgeId: null,
   typeFilter: '',
   relationshipFilter: '',
@@ -73,6 +77,10 @@ const state = {
 const elements = {
   status: document.getElementById('map-status'),
   explorer: document.getElementById('map-explorer'),
+  back: document.getElementById('map-back'),
+  trail: document.getElementById('map-trail'),
+  selectionActions: document.getElementById('map-selection-actions'),
+  explorerHeading: document.getElementById('explorer-heading'),
   canvas: document.getElementById('map-canvas'),
   graphFallback: document.getElementById('map-node-fallback'),
   keyboardNav: document.getElementById('map-keyboard-nav'),
@@ -93,7 +101,13 @@ const elements = {
   sourceLink: document.getElementById('map-graph-source-link'),
   error: document.getElementById('map-error'),
   errorMessage: document.getElementById('map-error-message'),
-  sourceFallback: document.getElementById('map-source-fallback')
+  sourceFallback: document.getElementById('map-source-fallback'),
+  question: document.getElementById('map-question'),
+  questionScope: document.getElementById('map-question-scope'),
+  questionSummary: document.getElementById('map-question-context-summary'),
+  questionPreview: document.getElementById('map-question-preview'),
+  questionCopy: document.getElementById('map-copy-question'),
+  questionCopyStatus: document.getElementById('map-copy-status')
 };
 
 let renderer = null;
@@ -109,6 +123,99 @@ function currentLensConfig() {
 
 function selectedNode() {
   return state.graph?.nodes.find(node => node.id === state.selectedId) || null;
+}
+
+function clonePath(path) {
+  return path ? { nodes: [...path.nodes], edges: [...path.edges] } : null;
+}
+
+function captureViewSnapshot() {
+  return {
+    lens: state.lens,
+    selectedId: state.selectedId,
+    expanded: [...state.expanded],
+    expansionLimits: [...state.expansionLimits.entries()],
+    path: clonePath(state.path),
+    focusPath: clonePath(state.focusPath),
+    focusId: state.focusId,
+    highlightedEdgeId: state.highlightedEdgeId,
+    typeFilter: state.typeFilter,
+    relationshipFilter: state.relationshipFilter,
+    search: elements.search?.value || '',
+    pathFrom: elements.pathFrom?.value || '',
+    pathTo: elements.pathTo?.value || '',
+    viewport: renderer?.getViewport?.() || null
+  };
+}
+
+function validPath(path) {
+  if (!path || !state.graph) return null;
+  const nodeIds = new Set(state.graph.nodes.map(node => node.id));
+  const edgeIds = new Set(state.graph.edges.map(edge => edge.id));
+  if (!path.nodes.every(id => nodeIds.has(id)) || !path.edges.every(id => edgeIds.has(id))) return null;
+  return clonePath(path);
+}
+
+function applyViewSnapshot(snapshot) {
+  if (!snapshot || !state.graph) return;
+  const nodeIds = new Set(state.graph.nodes.map(node => node.id));
+  const edgeIds = new Set(state.graph.edges.map(edge => edge.id));
+  state.selectedId = nodeIds.has(snapshot.selectedId) ? snapshot.selectedId : null;
+  state.expanded = new Set((snapshot.expanded || []).filter(id => nodeIds.has(id)));
+  state.expansionLimits = new Map(
+    (snapshot.expansionLimits || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.path = validPath(snapshot.path);
+  state.focusPath = validPath(snapshot.focusPath);
+  state.focusId = nodeIds.has(snapshot.focusId) ? snapshot.focusId : null;
+  state.highlightedEdgeId = edgeIds.has(snapshot.highlightedEdgeId) ? snapshot.highlightedEdgeId : null;
+  state.typeFilter = state.graph.nodes.some(node => node.type === snapshot.typeFilter) ? snapshot.typeFilter : '';
+  state.relationshipFilter = state.graph.edges.some(edge => edge.relationship === snapshot.relationshipFilter)
+    ? snapshot.relationshipFilter
+    : '';
+  elements.search.value = snapshot.search || '';
+  elements.pathFrom.value = nodeIds.has(snapshot.pathFrom) ? snapshot.pathFrom : '';
+  elements.pathTo.value = nodeIds.has(snapshot.pathTo) ? snapshot.pathTo : '';
+  elements.typeFilter.value = state.typeFilter;
+  elements.relationshipFilter.value = state.relationshipFilter;
+}
+
+function saveCurrentLensState() {
+  if (!state.graph) return;
+  lensViewStates.set(state.lens, captureViewSnapshot());
+}
+
+function pushNavigationCheckpoint() {
+  if (!state.graph) return;
+  const snapshot = captureViewSnapshot();
+  const last = navigationStack.at(-1);
+  const key = item => [
+    item?.lens,
+    item?.selectedId,
+    item?.focusId,
+    item?.highlightedEdgeId,
+    item?.path?.nodes?.join('>')
+  ].join('|');
+  if (key(last) === key(snapshot)) return;
+  navigationStack.push(snapshot);
+  if (navigationStack.length > MAX_NAVIGATION_HISTORY) navigationStack.shift();
+}
+
+function snapshotLabel(snapshot) {
+  const graph = graphCache.get(snapshot?.lens);
+  const node = graph?.nodes.find(item => item.id === snapshot?.selectedId);
+  return node?.label || lensConfigs[snapshot?.lens]?.label || 'Overview';
+}
+
+function renderTrail() {
+  if (!elements.trail || !elements.back) return;
+  elements.back.disabled = navigationStack.length === 0;
+  const recent = navigationStack.slice(-3).map(snapshot => snapshotLabel(snapshot));
+  const current = selectedNode()?.label || currentLensConfig()?.label || 'Overview';
+  const labels = [...recent, current].filter((label, index, all) => index === 0 || label !== all[index - 1]);
+  elements.trail.innerHTML = labels
+    .map((label, index) => `<span class="${index === labels.length - 1 ? 'current' : ''}">${escapeHtml(label)}</span>`)
+    .join('<span aria-hidden="true">›</span>');
 }
 
 function relationshipLabel(value) {
@@ -165,6 +272,9 @@ function updateUrlState() {
   if (state.highlightedEdgeId) url.searchParams.set('edge', state.highlightedEdgeId);
   else url.searchParams.delete('edge');
 
+  if (state.focusId) url.searchParams.set('focus', state.focusId);
+  else url.searchParams.delete('focus');
+
   globalThis.history.replaceState(null, '', url);
 }
 
@@ -196,6 +306,7 @@ function restoreUrlState() {
   const type = params.get('type');
   const relationship = params.get('relationship');
   const edgeId = params.get('edge');
+  const focusId = params.get('focus');
 
   if (type && state.graph.nodes.some(node => node.type === type)) state.typeFilter = type;
   if (relationship && state.graph.edges.some(edge => edge.relationship === relationship)) state.relationshipFilter = relationship;
@@ -205,6 +316,12 @@ function restoreUrlState() {
     state.selectedId = nodeId;
     state.focusPath = nearestRootPath(nodeId);
     elements.search.value = state.graph.nodes.find(node => node.id === nodeId)?.label || nodeId;
+  }
+
+  if (focusId && state.graph.nodes.some(node => node.id === focusId)) {
+    state.focusId = focusId;
+    if (!state.selectedId) state.selectedId = focusId;
+    state.focusPath = nearestRootPath(focusId);
   }
 
   if (
@@ -273,12 +390,32 @@ function currentVisibleIds() {
     if (edge) seedIds.push(edge.from, edge.to);
   }
 
-  return boundedVisibleNodeIds(
+  const visible = boundedVisibleNodeIds(
     state.graph,
     state.expanded,
     state.expansionLimits,
     { seedIds }
   );
+
+  if (!state.focusId) return visible;
+
+  const focused = new Set([state.focusId]);
+  const rootPath = nearestRootPath(state.focusId);
+  for (const id of rootPath?.nodes || []) focused.add(id);
+  const focusLimit = state.expanded.has(state.focusId)
+    ? Number(state.expansionLimits.get(state.focusId) ?? DEFAULT_BRANCH_CHUNK)
+    : DEFAULT_BRANCH_CHUNK;
+  for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, focusLimit)) {
+    focused.add(node.id);
+  }
+  if (state.highlightedEdgeId) {
+    const edge = state.graph.edges.find(item => item.id === state.highlightedEdgeId);
+    if (edge) {
+      focused.add(edge.from);
+      focused.add(edge.to);
+    }
+  }
+  return focused;
 }
 
 function renderStatus() {
@@ -307,27 +444,82 @@ function edgeSummary(edge, direction) {
   const index = indexGraph(state.graph);
   const otherId = direction === 'outgoing' ? edge.to : edge.from;
   const other = index.nodes.get(otherId);
-  const source = sourceUrl(edge.source);
   const highlighted = state.highlightedEdgeId === edge.id;
   return `
     <li class="${highlighted ? 'relationship-selected' : ''}">
       <button class="relationship-link" type="button" data-select-node="${escapeHtml(other.id)}">
-        <span>${escapeHtml(relationshipLabel(edge.relationship))}</span>
         <strong>${escapeHtml(other.label)}</strong>
+        <span>${escapeHtml(nodeTypeLabel(other.type))}</span>
       </button>
-      <div class="relationship-actions">
-        <button
-          class="edge-highlight-button"
-          type="button"
-          data-highlight-edge="${escapeHtml(edge.id)}"
-          aria-pressed="${highlighted}"
-        >${highlighted ? 'Edge highlighted' : 'Highlight edge'}</button>
-      </div>
-      <div class="provenance-line">
-        <span>${escapeHtml(edge.source?.selector || 'Source')}</span>
-        ${source ? `<a href="${escapeHtml(source)}" target="_blank" rel="noreferrer">Open source ↗</a>` : ''}
-      </div>
+      <button
+        class="edge-highlight-button"
+        type="button"
+        data-highlight-edge="${escapeHtml(edge.id)}"
+        aria-pressed="${highlighted}"
+      >${highlighted ? 'Evidence shown' : 'Inspect relationship'}</button>
     </li>
+  `;
+}
+
+function groupedRelationships(edges, direction, emptyMessage) {
+  if (!edges.length) return `<p class="quiet">${escapeHtml(emptyMessage)}</p>`;
+  const groups = new Map();
+  for (const edge of edges) {
+    if (!groups.has(edge.relationship)) groups.set(edge.relationship, []);
+    groups.get(edge.relationship).push(edge);
+  }
+  return `
+    <div class="relationship-groups">
+      ${[...groups.entries()]
+        .sort(([a], [b]) => relationshipLabel(a).localeCompare(relationshipLabel(b)))
+        .map(([relationship, items]) => `
+          <details class="relationship-group" ${items.length <= 4 ? 'open' : ''}>
+            <summary>
+              <span>${escapeHtml(relationshipLabel(relationship))}</span>
+              <strong>${items.length}</strong>
+            </summary>
+            <ul class="relationship-list">${items
+              .slice()
+              .sort((a, b) => {
+                const index = indexGraph(state.graph);
+                const aId = direction === 'outgoing' ? a.to : a.from;
+                const bId = direction === 'outgoing' ? b.to : b.from;
+                return (index.nodes.get(aId)?.label || aId).localeCompare(index.nodes.get(bId)?.label || bId);
+              })
+              .map(edge => edgeSummary(edge, direction))
+              .join('')}</ul>
+          </details>
+        `).join('')}
+    </div>
+  `;
+}
+
+function highlightedEdgeEvidence() {
+  const edge = state.graph?.edges.find(item => item.id === state.highlightedEdgeId);
+  if (!edge) return '';
+  const index = indexGraph(state.graph);
+  const from = index.nodes.get(edge.from);
+  const to = index.nodes.get(edge.to);
+  const source = sourceUrl(edge.source);
+  return `
+    <section class="detail-section relationship-evidence">
+      <div class="section-heading">
+        <h3>Relationship evidence</h3>
+        <span class="evidence-state">Selected edge</span>
+      </div>
+      <p class="relationship-statement">
+        <strong>${escapeHtml(from?.label || edge.from)}</strong>
+        <span>${escapeHtml(relationshipLabel(edge.relationship))}</span>
+        <strong>${escapeHtml(to?.label || edge.to)}</strong>
+      </p>
+      <dl>
+        <dt>Edge ID</dt><dd>${escapeHtml(edge.id)}</dd>
+        <dt>Derivation</dt><dd>${escapeHtml(edge.derivation || 'Unavailable')}</dd>
+        <dt>Source</dt><dd>${escapeHtml(edge.source?.locator || 'Unavailable')}</dd>
+        <dt>Selector</dt><dd>${escapeHtml(edge.source?.selector || 'Unavailable')}</dd>
+      </dl>
+      ${source ? `<a class="source-link" href="${escapeHtml(source)}" target="_blank" rel="noreferrer">Open relationship source ↗</a>` : ''}
+    </section>
   `;
 }
 
@@ -336,9 +528,9 @@ function renderDetails() {
   if (!node) {
     elements.details.innerHTML = `
       <div class="empty-detail">
-        <p class="eyebrow">Inspect a node</p>
-        <h2>Select any visible concept</h2>
-        <p>Details show explicit incoming and outgoing relationships plus their canonical provenance.</p>
+        <p class="eyebrow">Inspector</p>
+        <h2>Select a node</h2>
+        <p>Selection is separate from expansion and focus. Choose a node first, then decide whether to inspect, expand its direct relationships, or focus the map around it.</p>
       </div>
     `;
     return;
@@ -348,23 +540,60 @@ function renderDetails() {
   const incoming = index.incoming.get(node.id);
   const outgoing = index.outgoing.get(node.id);
   const ownership = outgoing.filter(edge => edge.relationship === 'owns' || edge.relationship.startsWith('owns-'));
+  const outgoingConnections = outgoing.filter(edge => !ownership.includes(edge));
   const nodeSource = sourceUrl(node.source);
   const expansion = expansionInfo(node.id);
   const expandLabel = expansion.expanded
     ? 'Collapse branch'
     : expansion.total > DEFAULT_BRANCH_CHUNK
       ? `Expand first ${DEFAULT_BRANCH_CHUNK} of ${expansion.total}`
-      : 'Expand one level';
+      : `Expand ${expansion.total} direct connection${expansion.total === 1 ? '' : 's'}`;
 
   elements.details.innerHTML = `
     <div class="detail-head">
       <div>
         <p class="eyebrow">${escapeHtml(nodeTypeLabel(node.type))}</p>
-        <h2>${escapeHtml(node.label)}</h2>
+        <h2 tabindex="-1">${escapeHtml(node.label)}</h2>
         <p class="node-id">${escapeHtml(node.id)}</p>
-        ${expansion.expanded && expansion.total > DEFAULT_BRANCH_CHUNK
-          ? `<p class="branch-progress">${expansion.revealed} of ${expansion.total} direct neighbors visible</p>`
-          : ''}
+      </div>
+      <span class="connection-count">${incoming.length} in · ${outgoing.length} out</span>
+    </div>
+
+    <section class="detail-section">
+      <h3>What is this?</h3>
+      <p class="detail-copy">This lens represents <strong>${escapeHtml(node.label)}</strong> as <strong>${escapeHtml(nodeTypeLabel(node.type))}</strong>. Its recorded owner is <code>${escapeHtml(node.owner || 'Unavailable')}</code>.</p>
+    </section>
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>What belongs here?</h3>
+        <span>${ownership.length} explicit</span>
+      </div>
+      ${groupedRelationships(ownership, 'outgoing', 'No explicit ownership relationship is represented in this lens.')}
+    </section>
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>How does it connect?</h3>
+        <span>${incoming.length + outgoingConnections.length} relationships</span>
+      </div>
+      <div class="connection-direction">
+        <strong>Outgoing</strong>
+        ${groupedRelationships(outgoingConnections, 'outgoing', 'No other explicit outgoing relationships.')}
+      </div>
+      <div class="connection-direction">
+        <strong>Incoming</strong>
+        ${groupedRelationships(incoming, 'incoming', 'No explicit incoming relationships in this lens.')}
+      </div>
+      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
+    </section>
+
+    ${highlightedEdgeEvidence()}
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>Explore this area</h3>
+        <span>${expansion.total} direct</span>
       </div>
       <div class="branch-actions">
         <button class="expand-button" type="button" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expansion.expanded}">
@@ -373,40 +602,26 @@ function renderDetails() {
         ${expansion.hasMore
           ? `<button class="show-more-button" type="button" data-show-more="${escapeHtml(node.id)}">Show ${expansion.nextCount} more</button>`
           : ''}
+        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">
+          Focus on this area
+        </button>
       </div>
-    </div>
-
-    <section class="detail-section">
-      <h3>What this owns</h3>
-      ${ownership.length
-        ? `<ul class="relationship-list">${ownership.map(edge => edgeSummary(edge, 'outgoing')).join('')}</ul>`
-        : '<p class="quiet">No explicit ownership relationship is represented in this lens.</p>'}
+      ${expansion.expanded && expansion.total > DEFAULT_BRANCH_CHUNK
+        ? `<p class="branch-progress">${expansion.revealed} of ${expansion.total} direct neighbors revealed</p>`
+        : ''}
     </section>
 
-    <section class="detail-section">
-      <h3>Outgoing relationships</h3>
-      ${outgoing.length
-        ? `<ul class="relationship-list">${outgoing.map(edge => edgeSummary(edge, 'outgoing')).join('')}</ul>`
-        : '<p class="quiet">No explicit outgoing relationships.</p>'}
-    </section>
-
-    <section class="detail-section">
-      <h3>What explicitly depends on this</h3>
-      ${incoming.length
-        ? `<ul class="relationship-list">${incoming.map(edge => edgeSummary(edge, 'incoming')).join('')}</ul>`
-        : '<p class="quiet">No explicit incoming relationships in this lens.</p>'}
-      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
-    </section>
-
-    <section class="detail-section source-detail">
-      <h3>Provenance</h3>
-      <dl>
-        <dt>Derivation</dt><dd>${escapeHtml(node.derivation)}</dd>
-        <dt>Source</dt><dd>${escapeHtml(node.source?.locator || 'Unavailable')}</dd>
-        <dt>Selector</dt><dd>${escapeHtml(node.source?.selector || 'Unavailable')}</dd>
-      </dl>
-      ${nodeSource ? `<a class="source-link" href="${escapeHtml(nodeSource)}" target="_blank" rel="noreferrer">Open canonical source ↗</a>` : ''}
-    </section>
+    <details class="detail-section provenance-detail">
+      <summary>Where is its source?</summary>
+      <div class="source-detail">
+        <dl>
+          <dt>Derivation</dt><dd>${escapeHtml(node.derivation)}</dd>
+          <dt>Source</dt><dd>${escapeHtml(node.source?.locator || 'Unavailable')}</dd>
+          <dt>Selector</dt><dd>${escapeHtml(node.source?.selector || 'Unavailable')}</dd>
+        </dl>
+        ${nodeSource ? `<a class="source-link" href="${escapeHtml(nodeSource)}" target="_blank" rel="noreferrer">Open canonical source ↗</a>` : ''}
+      </div>
+    </details>
   `;
 }
 
@@ -448,7 +663,7 @@ function renderFallbackNodes(visible) {
     }).join('');
 }
 
-function renderGraph() {
+function renderGraph({ preserveViewport = false, anchorNodeId = null, fitOnTopologyChange = true } = {}) {
   const visible = currentVisibleIds();
   const activeRenderer = ensureRenderer();
 
@@ -466,7 +681,10 @@ function renderGraph() {
         nodeType: state.typeFilter,
         relationship: state.relationshipFilter
       },
-      layoutDirection: currentLensConfig()?.layoutDirection || 'vertical'
+      layoutDirection: currentLensConfig()?.layoutDirection || 'vertical',
+      preserveViewport,
+      anchorNodeId,
+      fitOnTopologyChange
     });
     return;
   }
@@ -488,28 +706,169 @@ function renderPath() {
   `;
 }
 
-function render() {
+function renderSelectionActions() {
+  if (!elements.selectionActions) return;
+  const node = selectedNode();
+  if (!node) {
+    elements.selectionActions.hidden = true;
+    elements.selectionActions.innerHTML = '';
+    return;
+  }
+  const expansion = expansionInfo(node.id);
+  const expandText = expansion.expanded
+    ? 'Collapse'
+    : expansion.total > DEFAULT_BRANCH_CHUNK
+      ? `Expand +${Math.min(DEFAULT_BRANCH_CHUNK, expansion.total)} of ${expansion.total}`
+      : `Expand +${expansion.total}`;
+  elements.selectionActions.hidden = false;
+  elements.selectionActions.innerHTML = `
+    <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
+    <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
+    <button type="button" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expansion.expanded}">${escapeHtml(expandText)}</button>
+    <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
+  `;
+}
+
+function contextForQuestion(scope) {
+  const visible = currentVisibleIds();
+  const index = indexGraph(state.graph);
+  const nodeIds = new Set();
+  const edgeIds = new Set();
+
+  const addEdge = edge => {
+    edgeIds.add(edge.id);
+    nodeIds.add(edge.from);
+    nodeIds.add(edge.to);
+  };
+
+  if (scope === 'visible') {
+    for (const id of visible) nodeIds.add(id);
+    for (const edge of state.graph.edges) {
+      if (visible.has(edge.from) && visible.has(edge.to)) addEdge(edge);
+    }
+  } else if (scope === 'path') {
+    const path = activeVisualPath();
+    for (const id of path?.nodes || []) nodeIds.add(id);
+    for (const id of path?.edges || []) {
+      const edge = state.graph.edges.find(item => item.id === id);
+      if (edge) addEdge(edge);
+    }
+    if (state.selectedId) nodeIds.add(state.selectedId);
+  } else if (state.selectedId) {
+    nodeIds.add(state.selectedId);
+    const direct = [
+      ...(index.incoming.get(state.selectedId) || []),
+      ...(index.outgoing.get(state.selectedId) || [])
+    ];
+    for (const edge of direct) {
+      const otherId = edge.from === state.selectedId ? edge.to : edge.from;
+      if (visible.has(otherId)) addEdge(edge);
+    }
+  }
+
+  const nodes = [...nodeIds]
+    .map(id => index.nodes.get(id))
+    .filter(Boolean)
+    .sort((a, b) => a.label.localeCompare(b.label));
+  const edges = [...edgeIds]
+    .map(id => state.graph.edges.find(edge => edge.id === id))
+    .filter(Boolean)
+    .sort((a, b) => a.id.localeCompare(b.id));
+
+  return { nodes, edges };
+}
+
+function buildQuestionHandoff() {
+  if (!state.graph) return '';
+  const scope = elements.questionScope?.value || 'selected';
+  const context = contextForQuestion(scope);
+  const question = elements.question?.value.trim() || '[Add your question here]';
+  const nodeLines = context.nodes.map(node => {
+    const source = sourceUrl(node.source);
+    return `- NODE ${node.id} | ${node.label} | type=${node.type} | owner=${node.owner || 'unknown'} | source=${source || node.source?.locator || 'unavailable'} | selector=${node.source?.selector || 'unavailable'}`;
+  });
+  const edgeLines = context.edges.map(edge => {
+    const source = sourceUrl(edge.source);
+    return `- EDGE ${edge.id} | ${edge.from} --${edge.relationship}--> ${edge.to} | source=${source || edge.source?.locator || 'unavailable'} | selector=${edge.source?.selector || 'unavailable'}`;
+  });
+
+  return [
+    'Question:',
+    question,
+    '',
+    'System Map context:',
+    `Lens: ${currentLensConfig()?.label || state.lens}`,
+    `Graph scope: ${state.graph.scope}`,
+    `Coverage: ${state.graph.coverage}`,
+    `Context selection: ${scope}`,
+    `Included: ${context.nodes.length} nodes, ${context.edges.length} relationships`,
+    '',
+    'Included map items:',
+    ...(nodeLines.length ? nodeLines : ['- No nodes included.']),
+    '',
+    'Included relationships:',
+    ...(edgeLines.length ? edgeLines : ['- No relationships included.']),
+    '',
+    'Evidence boundary:',
+    '- This is a static, provenance-backed System Map projection, not a live execution trace.',
+    '- Missing evidence is unknown, not proof that an action or route was skipped.',
+    '- Do not infer reasoning quality, route compliance, or tool use unless supported by retrieved evidence.',
+    '',
+    'Answer requirements:',
+    '- Cite relevant map node/edge IDs and their source records.',
+    '- Keep observed/source-backed facts, inferences, hypotheses, and unknowns distinguishable.',
+    '- Identify any additional evidence needed to answer reliably.'
+  ].join('\n');
+}
+
+function renderQuestionContext() {
+  if (!elements.questionPreview || !elements.questionSummary) return;
+  const scope = elements.questionScope?.value || 'selected';
+  const context = contextForQuestion(scope);
+  elements.questionSummary.textContent = `${context.nodes.length} nodes · ${context.edges.length} relationships · ${state.graph.coverage}`;
+  elements.questionPreview.textContent = buildQuestionHandoff();
+}
+
+async function copyQuestionHandoff() {
+  const handoff = buildQuestionHandoff();
+  if (!handoff) return;
+  try {
+    await navigator.clipboard.writeText(handoff);
+    elements.questionCopyStatus.textContent = 'Copied. Paste this into the assistant you want to use.';
+    announce('Question and explicit System Map context copied.');
+  } catch {
+    elements.questionCopyStatus.textContent = 'Clipboard unavailable. Select and copy the preview below.';
+    announce('Clipboard unavailable; question context remains visible in the preview.');
+  }
+}
+
+function render(options = {}) {
   renderStatus();
-  renderGraph();
+  renderGraph(options);
   renderDetails();
   renderPath();
+  renderSelectionActions();
+  renderTrail();
+  renderQuestionContext();
 }
 
 function selectNode(id) {
+  if (state.selectedId !== id) pushNavigationCheckpoint();
   state.selectedId = id;
+  state.focusId = null;
   state.highlightedEdgeId = null;
-  render();
+  render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`Selected ${selectedNode()?.label || id}.`);
+  announce(`Selected ${selectedNode()?.label || id}. Inspect, expand, or focus this area.`);
 }
 
 function highlightEdge(id) {
   const edge = state.graph?.edges.find(item => item.id === id);
   if (!edge) return;
   state.highlightedEdgeId = state.highlightedEdgeId === id ? null : id;
-  render();
+  render({ preserveViewport: true, anchorNodeId: state.selectedId, fitOnTopologyChange: false });
   updateUrlState();
-  announce(state.highlightedEdgeId ? `Highlighted ${relationshipLabel(edge.relationship)} relationship.` : 'Relationship highlight cleared.');
+  announce(state.highlightedEdgeId ? `Showing evidence for ${relationshipLabel(edge.relationship)} relationship.` : 'Relationship evidence cleared.');
 }
 
 function toggleExpanded(id) {
@@ -521,8 +880,10 @@ function toggleExpanded(id) {
     state.expansionLimits.set(id, DEFAULT_BRANCH_CHUNK);
   }
   state.selectedId = id;
-  render();
-  announce(`${state.expanded.has(id) ? 'Expanded' : 'Collapsed'} ${selectedNode()?.label || id}.`);
+  state.focusId = null;
+  render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+  updateUrlState();
+  announce(`${state.expanded.has(id) ? 'Expanded' : 'Collapsed'} ${selectedNode()?.label || id} without resetting the viewport.`);
 }
 
 function showMoreNeighbors(id) {
@@ -533,16 +894,41 @@ function showMoreNeighbors(id) {
   const next = Math.min(total, current + DEFAULT_BRANCH_CHUNK);
   state.expansionLimits.set(id, next);
   state.selectedId = id;
-  render();
-  announce(`Showing ${next} of ${total} direct neighbors for ${selectedNode()?.label || id}.`);
+  render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+  updateUrlState();
+  announce(`Showing ${next} of ${total} direct neighbors for ${selectedNode()?.label || id} without resetting the viewport.`);
+}
+
+function focusSelectedNode(id = state.selectedId) {
+  if (!id || !state.graph.nodes.some(node => node.id === id)) return;
+  pushNavigationCheckpoint();
+  state.selectedId = id;
+  state.focusId = id;
+  state.path = null;
+  state.focusPath = nearestRootPath(id);
+  state.highlightedEdgeId = null;
+  render({ fitOnTopologyChange: true });
+  updateUrlState();
+  requestAnimationFrame(() => ensureRenderer()?.focus(id));
+  announce(`Focused the map around ${selectedNode()?.label || id} and its bounded direct context.`);
+}
+
+function inspectSelectedNode() {
+  const heading = elements.details?.querySelector('h2');
+  if (!heading) return;
+  heading.focus({ preventScroll: true });
+  elements.details.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  announce(`Inspector focused for ${selectedNode()?.label || 'selected node'}.`);
 }
 
 function reset() {
+  pushNavigationCheckpoint();
   state.selectedId = null;
   state.expanded = initialExpandedIds(state.graph);
   state.expansionLimits = new Map();
   state.path = null;
   state.focusPath = null;
+  state.focusId = null;
   state.highlightedEdgeId = null;
   state.typeFilter = '';
   state.relationshipFilter = '';
@@ -575,8 +961,10 @@ function findSelectedPath() {
     announce('Choose both a start and end node.');
     return;
   }
+  pushNavigationCheckpoint();
   state.path = findPath(state.graph, from, to);
   state.focusPath = null;
+  state.focusId = null;
   state.highlightedEdgeId = null;
   render();
   updateUrlState();
@@ -593,15 +981,41 @@ function focusSearchResult() {
     return;
   }
 
+  pushNavigationCheckpoint();
   state.selectedId = node.id;
   state.path = null;
   state.focusPath = nearestRootPath(node.id);
+  state.focusId = node.id;
   state.highlightedEdgeId = null;
   elements.search.value = node.label;
   render();
   updateUrlState();
-  requestAnimationFrame(() => ensureRenderer()?.fit());
+  requestAnimationFrame(() => ensureRenderer()?.focus(node.id));
   announce(`Focused ${node.label}.`);
+}
+
+async function restoreNavigationSnapshot(snapshot) {
+  if (!snapshot) return;
+  if (snapshot.lens !== state.lens) {
+    await loadLens(snapshot.lens, { viewSnapshot: snapshot, rememberCurrent: false });
+    return;
+  }
+  applyViewSnapshot(snapshot);
+  render({ fitOnTopologyChange: !snapshot.viewport });
+  if (snapshot.viewport) requestAnimationFrame(() => ensureRenderer()?.restoreViewport(snapshot.viewport));
+  updateUrlState();
+}
+
+async function goBack() {
+  const snapshot = navigationStack.pop();
+  if (!snapshot) {
+    announce('No earlier exploration state is available.');
+    renderTrail();
+    return;
+  }
+  saveCurrentLensState();
+  await restoreNavigationSnapshot(snapshot);
+  announce(`Returned to ${snapshotLabel(snapshot)}.`);
 }
 
 function applyFilters() {
@@ -620,13 +1034,15 @@ function showLoadError(error, config) {
   if (config?.sourceUrl) elements.sourceFallback.href = config.sourceUrl;
 }
 
-async function loadLens(lens, { restoreUrl = false } = {}) {
+async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, rememberCurrent = true } = {}) {
   const config = lensConfigs[lens];
   if (!config?.graphUrl) {
     elements.lens.value = state.lens;
     announce('That lens is not mapped yet.');
     return;
   }
+
+  if (rememberCurrent && state.graph && state.lens !== lens) saveCurrentLensState();
 
   elements.status.innerHTML = `<strong>Loading ${escapeHtml(config.label)}…</strong>`;
   elements.error.hidden = true;
@@ -647,6 +1063,7 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
     state.expansionLimits = new Map();
     state.path = null;
     state.focusPath = null;
+    state.focusId = null;
     state.highlightedEdgeId = null;
     state.typeFilter = '';
     state.relationshipFilter = '';
@@ -656,11 +1073,16 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
     elements.sourceFallback.href = config.sourceUrl;
     renderPathControls();
     populateExploreControls();
+    const savedView = viewSnapshot || (!restoreUrl ? lensViewStates.get(lens) : null);
+    if (savedView) applyViewSnapshot(savedView);
     if (restoreUrl) restoreUrlState();
     elements.explorer.hidden = false;
-    render();
+    render({ fitOnTopologyChange: !savedView?.viewport });
+    if (savedView?.viewport) {
+      requestAnimationFrame(() => ensureRenderer()?.restoreViewport(savedView.viewport));
+    }
     updateUrlState();
-    announce(`${config.label} lens loaded.`);
+    announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
   } catch (error) {
     showLoadError(error, config);
   }
@@ -668,6 +1090,16 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
 
 function bindEvents() {
   root.addEventListener('click', event => {
+    const inspect = event.target.closest('[data-inspect-selected]');
+    if (inspect) {
+      inspectSelectedNode();
+      return;
+    }
+    const focus = event.target.closest('[data-focus-selected]');
+    if (focus) {
+      focusSelectedNode(focus.dataset.focusSelected);
+      return;
+    }
     const edgeHighlight = event.target.closest('[data-highlight-edge]');
     if (edgeHighlight) {
       highlightEdge(edgeHighlight.dataset.highlightEdge);
@@ -686,6 +1118,7 @@ function bindEvents() {
     const expand = event.target.closest('[data-toggle-expand]');
     if (expand) toggleExpanded(expand.dataset.toggleExpand);
   });
+  elements.back?.addEventListener('click', goBack);
   elements.reset.addEventListener('click', reset);
   elements.fit.addEventListener('click', fitGraph);
   elements.fitInline.addEventListener('click', fitGraph);
@@ -699,8 +1132,12 @@ function bindEvents() {
   elements.typeFilter.addEventListener('change', applyFilters);
   elements.relationshipFilter.addEventListener('change', applyFilters);
   document.getElementById('find-path').addEventListener('click', findSelectedPath);
-  elements.lens.addEventListener('change', () => {
-    loadLens(elements.lens.value);
+  elements.questionScope?.addEventListener('change', renderQuestionContext);
+  elements.question?.addEventListener('input', renderQuestionContext);
+  elements.questionCopy?.addEventListener('click', copyQuestionHandoff);
+  elements.lens.addEventListener('change', async () => {
+    pushNavigationCheckpoint();
+    await loadLens(elements.lens.value);
   });
 }
 
