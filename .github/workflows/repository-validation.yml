@@ -53,6 +53,9 @@ jobs:
       - name: Validate graph-backed agent context bundles
         run: node scripts/build-agent-context-bundles.mjs --check
 
+      - name: Validate system-orientation migration report
+        run: node eval/system-orientation-migration.mjs --check
+
       - name: Protect Phase A canonical route records
         if: github.event_name == 'pull_request' && github.head_ref == 'codex/issue-243-system-orientation-migration'
         run: |
