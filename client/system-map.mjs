@@ -69,6 +69,7 @@ const elements = {
   pathResult: document.getElementById('path-result'),
   reset: document.getElementById('map-reset'),
   fit: document.getElementById('map-fit'),
+  fitInline: document.getElementById('map-fit-inline'),
   lens: document.getElementById('map-lens'),
   liveRegion: document.getElementById('map-live-region'),
   sourceLink: document.getElementById('map-graph-source-link'),
@@ -414,6 +415,7 @@ function bindEvents() {
   });
   elements.reset.addEventListener('click', reset);
   elements.fit.addEventListener('click', fitGraph);
+  elements.fitInline.addEventListener('click', fitGraph);
   document.getElementById('find-path').addEventListener('click', findSelectedPath);
   elements.lens.addEventListener('change', () => {
     loadLens(elements.lens.value);
