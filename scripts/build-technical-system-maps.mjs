@@ -186,6 +186,36 @@ export async function deriveSourceGeneratedGraph(root = rootDir) {
     }
   }
 
+  const authoredSources = nodes.filter(node => node.type === 'authored-source');
+  const authoredGroup = 'view:authored-sources';
+  nodeOnce(nodes, {
+    id: authoredGroup,
+    label: 'Authored sources',
+    type: 'view-group',
+    owner: OWNER,
+    derivation: 'contract-derived',
+    source: sourceRef(buildPath, 'generated Site build contract')
+  });
+  addEdge(edges, 'view:source-generated', authoredGroup, 'contains', 'contract-derived', sourceRef(buildPath, 'generated Site build contract'));
+  const sourceGroups = new Set();
+  for (const source of authoredSources) {
+    const top = source.label.split('/')[0] || 'other';
+    const groupId = 'source-group:' + top;
+    if (!sourceGroups.has(groupId)) {
+      sourceGroups.add(groupId);
+      nodeOnce(nodes, {
+        id: groupId,
+        label: top + '/',
+        type: 'view-group',
+        owner: OWNER,
+        derivation: 'contract-derived',
+        source: sourceRef(buildPath, 'generated Site build contract')
+      });
+      addEdge(edges, authoredGroup, groupId, 'contains', 'contract-derived', sourceRef(buildPath, 'generated Site build contract'));
+    }
+    addEdge(edges, groupId, source.id, 'contains', 'contract-derived', source.source);
+  }
+
   const outputs = nodes.filter(node => node.type === 'generated-artifact');
   for (const output of outputs) {
     addEdge(edges, output.id, 'validation:generated-output-cleanliness', 'validated-by', 'contract-derived', sourceRef(validationPath, 'dist cleanliness scope'));
