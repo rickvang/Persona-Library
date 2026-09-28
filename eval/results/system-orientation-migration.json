@@ -10,8 +10,8 @@
       "dist/data/agent-context/system-orientation.json",
       ".agents/skills/persona-library-orientation/SKILL.md"
     ],
-    "utf8_bytes": 26189,
-    "rough_tokens": 6548
+    "utf8_bytes": 26606,
+    "rough_tokens": 6652
   },
   "canonical_fallback": {
     "artifacts": [
@@ -20,8 +20,8 @@
       "content/orientation/docs.json",
       ".agents/skills/persona-library-orientation/SKILL.md"
     ],
-    "utf8_bytes": 33700,
-    "rough_tokens": 8425
+    "utf8_bytes": 34117,
+    "rough_tokens": 8530
   },
   "phase9_control_baseline": {
     "utf8_bytes": 31864,
@@ -30,13 +30,13 @@
   "deltas": {
     "preferred_vs_current_fallback": {
       "utf8_bytes": -7511,
-      "rough_tokens": -1877,
-      "percent": -22.3
+      "rough_tokens": -1878,
+      "percent": -22
     },
     "preferred_vs_phase9_control": {
-      "utf8_bytes": -5675,
-      "rough_tokens": -1418,
-      "percent": -17.8
+      "utf8_bytes": -5258,
+      "rough_tokens": -1314,
+      "percent": -16.5
     }
   },
   "bundle": {

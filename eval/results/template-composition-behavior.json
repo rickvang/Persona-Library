@@ -1,0 +1,2163 @@
+{
+  "schema_version": "1.0",
+  "evaluation": "template-composition-behavioral-parity",
+  "fixture_source": "eval/fixtures/template-composition-behavior.json",
+  "methodology": "deterministic fixed-prompt route and authority fixtures; not subjective LLM response quality",
+  "canonical_routing_changed": false,
+  "fixtures": [
+    {
+      "id": "authorized-create-from-accepted-research",
+      "prompt": "Using the accepted Template research proposal and verified source provenance, create the project-local onboarding starter at projects/acme/onboarding.md. I authorize changes to that target only.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 32270,
+          "rough_tokens": 8068
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/template-composition.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 27616,
+          "rough_tokens": 6904
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "authorized-adapt-existing-starter",
+      "prompt": "Using the accepted Template research result, adapt the existing project starter at projects/acme/brief.md. Its source and provenance are verified, and I authorize this target.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "adapt-existing",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "adapt-existing",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 32270,
+          "rough_tokens": 8068
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "adapt-existing",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/template-composition.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 27616,
+          "rough_tokens": 6904
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "plan-without-write",
+      "prompt": "Using the accepted Template research proposal and verified provenance, plan how to compose a project starter at projects/acme/review.md, but do not change any files.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "plan",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "read-only-plan",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": true,
+        "mode": "plan",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "read-only-plan",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 32270,
+          "rough_tokens": 8068
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": true,
+        "mode": "plan",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "read-only-plan",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/template-composition.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 27616,
+          "rough_tokens": 6904
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "missing-accepted-research",
+      "prompt": "Create a reusable design-critique Template. We have not researched existing Template candidates yet.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unknown",
+        "target_posture": "not-ready",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unknown",
+        "target_posture": "not-ready",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unknown",
+        "target_posture": "not-ready",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "ambiguous-source-provenance",
+      "prompt": "Adapt this external Template into a project starter, but its source path and revision are not verified yet. The project target is authorized.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unverified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unverified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unverified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "ambiguous-target-ownership",
+      "prompt": "The accepted Template research is complete and provenance is verified, but I am not sure whether the new starter belongs in Persona-Library or the project repository.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "ambiguous",
+        "placement": "escalate-mara",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "ambiguous",
+        "placement": "escalate-mara",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "ambiguous",
+        "placement": "escalate-mara",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "project-starter-no-promotion",
+      "prompt": "Using accepted Template research and verified provenance, create the authorized project-specific starter at projects/acme/kickoff.md. Keep it local; do not promote it to the reusable catalog.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local-explicit",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local-explicit",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 32270,
+          "rough_tokens": 8068
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local-explicit",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/template-composition.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 27616,
+          "rough_tokens": 6904
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "canonical-publication-chain",
+      "prompt": "Using the accepted Template research and verified source, publish the approved reusable Template into the canonical catalog and Site. I authorize the scoped publication target.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "canonical-publication",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "canonical-approved",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": true
+      },
+      "control": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "canonical-publication",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "canonical-approved",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": true,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 32270,
+          "rough_tokens": 8068
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "canonical-publication",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "canonical-approved",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": true,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/template-composition.json",
+            ".agents/skills/template-composer/SKILL.md"
+          ],
+          "utf8_bytes": 27616,
+          "rough_tokens": 6904
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "external-source-availability-unknown",
+      "prompt": "The accepted research names an external Template repository, but current access, fetch, install, and render availability have not been verified. Plan the next safe step only.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "plan",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "availability-unverified",
+        "target_posture": "read-only-plan",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": false,
+        "mode": "plan",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "availability-unverified",
+        "target_posture": "read-only-plan",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": false,
+        "mode": "plan",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "availability-unverified",
+        "target_posture": "read-only-plan",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "template-catalog-lookup-non-trigger",
+      "prompt": "Show me the existing resume Templates in the Persona-Library catalog and their recorded sources.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "template-catalog",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "catalog-record-only",
+        "target_posture": "read-only",
+        "placement": "not-applicable",
+        "reuse_posture": "catalog-inspection",
+        "promotion_posture": "not-applicable",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      },
+      "control": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "template-catalog",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "catalog-record-only",
+        "target_posture": "read-only",
+        "placement": "not-applicable",
+        "reuse_posture": "catalog-inspection",
+        "promotion_posture": "not-applicable",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "template-catalog",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "catalog-record-only",
+        "target_posture": "read-only",
+        "placement": "not-applicable",
+        "reuse_posture": "catalog-inspection",
+        "promotion_posture": "not-applicable",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "accepted Template research proposal",
+            "existing Template candidates",
+            "artifact boundary and target location",
+            "source/provenance and relevant Persona, Skill, Operating Pack, Playbook, and Tool context"
+          ],
+          "mutation_boundary": "authorized_update",
+          "non_triggers": [
+            "Recreating an available Template without checking the catalog",
+            "Embedding generic methodology, permissions, or orchestration into a starting artifact",
+            "Promoting every project-specific starter into the canonical catalog"
+          ],
+          "next_handoff": "Create the smallest useful starter, validate its boundary and provenance, then run template-reconciliation.",
+          "space_do_not": [
+            "Do not store generic expertise, Operating Pack rules, Tool permissions, Playbook orchestration, or project output merely because it originated from a Template.",
+            "Do not treat repository existence or catalog presence as proof that an individual external Template exists or that the runtime can access it.",
+            "Keep project-specific starters local until evidence supports promotion and reconcile material Template changes across affected spaces."
+          ]
+        },
+        "change_mode": "artifact_generation",
+        "reconciliation": "template-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 25927,
+          "rough_tokens": 6482
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_composition": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "accepted_research_present": true,
+            "source_posture": true,
+            "target_posture": true,
+            "placement": true,
+            "reuse_posture": true,
+            "promotion_posture": true,
+            "bundle_grants_write": true,
+            "execution_allowed": true,
+            "runtime_posture": true,
+            "reconciliation_handoff": true,
+            "universal_reconciliation_passes": true,
+            "publication_chain_required": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "route_change_mode_preserved": true,
+          "route_reconciliation_preserved": true,
+          "bundle_never_grants_write": true,
+          "no_unverified_source_execution": true,
+          "no_ambiguous_target_execution": true,
+          "no_silent_promotion": true,
+          "publication_chain_when_canonical": true,
+          "reconciliation_when_execution": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_composition": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "accepted_research_present": true,
+          "source_posture": true,
+          "target_posture": true,
+          "placement": true,
+          "reuse_posture": true,
+          "promotion_posture": true,
+          "bundle_grants_write": true,
+          "execution_allowed": true,
+          "runtime_posture": true,
+          "reconciliation_handoff": true,
+          "universal_reconciliation_passes": true,
+          "publication_chain_required": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    }
+  ],
+  "aggregate": {
+    "fixture_count": 10,
+    "activated_fixture_count": 5,
+    "passed": 10,
+    "failed": 0,
+    "all_pass": true,
+    "preferred_context_utf8_bytes": 138080,
+    "control_context_utf8_bytes": 161350,
+    "preferred_context_rough_tokens": 34520,
+    "control_context_rough_tokens": 40338,
+    "preferred_delta_utf8_bytes": -23270,
+    "preferred_delta_percent": -14.4
+  },
+  "limitations": [
+    "The evaluator is deliberately fixture-scoped and is not a general-purpose natural-language router.",
+    "Passing deterministic route behavior does not establish subjective model response quality.",
+    "The fixtures validate evidence posture; they do not manufacture or verify an external Template source.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed provider token usage."
+  ]
+}

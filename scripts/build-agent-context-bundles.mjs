@@ -7,7 +7,7 @@ import { deriveAgentRuntimeGraph } from './build-technical-system-maps.mjs';
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = 'rickvang/Persona-Library';
 const SCHEMA_VERSION = 'persona-library.agent-context/v0.1';
-const MIGRATED_ROUTE_IDS = ['system-orientation'];
+const MIGRATED_ROUTE_IDS = ['system-orientation', 'template-composition'];
 const REQUIRED_EXCEPTION_FIELDS = [
   'availability_source',
   'first_reads',
@@ -133,13 +133,36 @@ function routeExceptions(group, route) {
   };
 }
 
-function compactSpaceIndex(orientation) {
-  return Object.entries(orientation.spaces || {}).map(([id, space]) => ({
+function compactSpaceIndex(orientation, primarySpace, routeId) {
+  const entries = Object.entries(orientation.spaces || {});
+  const selected = routeId === 'system-orientation'
+    ? entries
+    : entries.filter(([id]) => id === primarySpace);
+
+  return selected.map(([id, space]) => ({
     id,
     label: space.label,
     answers: space.answers,
     route_file: space.route_file
   }));
+}
+
+function canonicalSourcesForRoute(canonical, contract) {
+  const sources = [
+    sourceRef('AGENTS.md', 'Choose the shortest activation path / live-state boundary'),
+    sourceRef('content/site-orientation.json', 'spaces.' + canonical.spaceId),
+    sourceRef(canonical.routeFile, 'routes[id=' + canonical.route.id + ']'),
+    sourceRef(canonical.route.package_path + '/SKILL.md', 'frontmatter')
+  ];
+
+  if (contract.reconciliation && !['skip', 'change-impact-reconciliation'].includes(contract.reconciliation)) {
+    sources.push(sourceRef(
+      '.agents/skills/' + contract.reconciliation + '/SKILL.md',
+      'frontmatter / downstream reconciliation contract'
+    ));
+  }
+
+  return sources;
 }
 
 function graphContract(fragment, packagePath) {
@@ -270,15 +293,10 @@ export async function deriveAgentContextBundle(root = rootDir, routeId = 'system
       coverage: fragment.coverage
     },
     graph_fragment: fragment,
-    space_index: compactSpaceIndex(canonical.orientation),
+    space_index: compactSpaceIndex(canonical.orientation, canonical.route.primary_space, canonical.route.id),
     exceptions,
     contract,
-    canonical_sources: [
-      sourceRef('AGENTS.md', 'Choose the shortest activation path / live-state boundary'),
-      sourceRef('content/site-orientation.json', 'spaces.' + canonical.spaceId),
-      sourceRef(canonical.routeFile, 'routes[id=' + canonical.route.id + ']'),
-      sourceRef(canonical.route.package_path + '/SKILL.md', 'frontmatter')
-    ]
+    canonical_sources: canonicalSourcesForRoute(canonical, contract)
   };
 
   return { ...payload, payload_checksum: payloadChecksum(payload) };
