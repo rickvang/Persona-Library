@@ -7,7 +7,7 @@ import { deriveAgentRuntimeGraph } from './build-technical-system-maps.mjs';
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = 'rickvang/Persona-Library';
 const SCHEMA_VERSION = 'persona-library.agent-context/v0.1';
-const MIGRATED_ROUTE_IDS = ['system-orientation', 'template-composition'];
+const MIGRATED_ROUTE_IDS = ['system-orientation', 'template-composition', 'tool-resolution'];
 const REQUIRED_EXCEPTION_FIELDS = [
   'availability_source',
   'first_reads',
@@ -83,17 +83,26 @@ function boundedFragment(graph, { spaceId, route }) {
 
   const routeNode = 'route:' + route.id;
   const packageNode = 'skill-package:' + route.package_path;
-  const ids = new Set([
-    'view:agent-runtime',
-    'agent:repository-dispatcher',
-    'routing:orientation-bootstrap',
-    'space:' + spaceId,
-    'route-group:' + spaceId,
-    routeNode,
-    packageNode,
-    'validation:repository-validation',
-    'boundary:live-runtime-state'
-  ]);
+  const ids = new Set(route.id === 'tool-resolution'
+    ? [
+        'view:agent-runtime',
+        'agent:repository-dispatcher',
+        routeNode,
+        packageNode,
+        'validation:repository-validation',
+        'boundary:live-runtime-state'
+      ]
+    : [
+        'view:agent-runtime',
+        'agent:repository-dispatcher',
+        'routing:orientation-bootstrap',
+        'space:' + spaceId,
+        'route-group:' + spaceId,
+        routeNode,
+        packageNode,
+        'validation:repository-validation',
+        'boundary:live-runtime-state'
+      ]);
 
   for (const edge of outgoing.get(packageNode) || []) {
     if (edge.relationship.startsWith('declares-')) ids.add(edge.to);
@@ -155,7 +164,7 @@ function canonicalSourcesForRoute(canonical, contract) {
     sourceRef(canonical.route.package_path + '/SKILL.md', 'frontmatter')
   ];
 
-  if (contract.reconciliation && !['skip', 'change-impact-reconciliation'].includes(contract.reconciliation)) {
+  if (contract.reconciliation && contract.reconciliation !== 'skip') {
     sources.push(sourceRef(
       '.agents/skills/' + contract.reconciliation + '/SKILL.md',
       'frontmatter / downstream reconciliation contract'
