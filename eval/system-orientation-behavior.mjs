@@ -424,8 +424,7 @@ function markdown(report) {
     '',
     '## Limitations',
     '',
-    ...report.limitations.map(item => '- ' + item),
-    ''
+    ...report.limitations.map(item => '- ' + item)
   );
   return lines.join('\n');
 }
