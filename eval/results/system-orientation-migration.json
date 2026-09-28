@@ -10,8 +10,8 @@
       "dist/data/agent-context/system-orientation.json",
       ".agents/skills/persona-library-orientation/SKILL.md"
     ],
-    "utf8_bytes": 23714,
-    "rough_tokens": 5929
+    "utf8_bytes": 26189,
+    "rough_tokens": 6548
   },
   "canonical_fallback": {
     "artifacts": [
@@ -20,8 +20,8 @@
       "content/orientation/docs.json",
       ".agents/skills/persona-library-orientation/SKILL.md"
     ],
-    "utf8_bytes": 33363,
-    "rough_tokens": 8341
+    "utf8_bytes": 33700,
+    "rough_tokens": 8425
   },
   "phase9_control_baseline": {
     "utf8_bytes": 31864,
@@ -29,19 +29,19 @@
   },
   "deltas": {
     "preferred_vs_current_fallback": {
-      "utf8_bytes": -9649,
-      "rough_tokens": -2412,
-      "percent": -28.9
+      "utf8_bytes": -7511,
+      "rough_tokens": -1877,
+      "percent": -22.3
     },
     "preferred_vs_phase9_control": {
-      "utf8_bytes": -8150,
-      "rough_tokens": -2037,
-      "percent": -25.6
+      "utf8_bytes": -5675,
+      "rough_tokens": -1418,
+      "percent": -17.8
     }
   },
   "bundle": {
-    "utf8_bytes": 12865,
-    "rough_tokens": 3217,
+    "utf8_bytes": 15003,
+    "rough_tokens": 3751,
     "graph_nodes": 13,
     "graph_edges": 12,
     "provenance_entries": 25,
@@ -54,8 +54,9 @@
   },
   "interpretation": [
     "The preferred-path metric retains the full root AGENTS.md because the repository harness may activate it automatically.",
-    "Savings therefore come from avoiding the full semantic bootstrap plus complete Docs route-group reread after system-orientation is selected.",
-    "The fallback is intentionally larger than the pre-migration Phase 9 baseline because the migrated Skill now contains explicit preference and fallback instructions.",
+    "The migrated bundle now includes a compact nine-space index so system-orientation can choose the smallest semantic space without rereading the full bootstrap.",
+    "Savings still come from avoiding the full semantic bootstrap plus complete Docs route-group reread after system-orientation is selected.",
+    "The fallback is intentionally larger than the pre-migration Phase 9 baseline because the migrated Skill contains explicit preference, compact-space, placement, and fallback instructions.",
     "Rough-token estimates are static UTF-8/4 approximations, not observed model or subscription usage."
   ]
 }

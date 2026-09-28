@@ -1,0 +1,1578 @@
+{
+  "schema_version": "1.0",
+  "evaluation": "system-orientation-behavioral-parity",
+  "fixture_source": "eval/fixtures/system-orientation-behavior.json",
+  "methodology": "deterministic route-level prompt fixtures; not subjective LLM response quality",
+  "canonical_routing_changed": false,
+  "preferred_bundle_schema": "persona-library.agent-context/v0.1",
+  "fixtures": [
+    {
+      "id": "basic-system-explanation",
+      "prompt": "How does Persona-Library decide between Personas, Skills, Tools, Templates, Playbooks, and Docs?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "not-applicable",
+        "handoff_target": "docs-and-onboarding",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      },
+      "control": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "not-applicable",
+        "handoff_target": "docs-and-onboarding",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "How does Persona-Library decide between Personas, Skills, Tools, Templates, Playbooks, and Docs?",
+          "mode": "answer",
+          "primary_space": "docs",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "docs"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "docs-and-onboarding"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/docs.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md"
+          ],
+          "utf8_bytes": 36074,
+          "rough_tokens": 9019
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "not-applicable",
+        "handoff_target": "docs-and-onboarding",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "How does Persona-Library decide between Personas, Skills, Tools, Templates, Playbooks, and Docs?",
+          "mode": "answer",
+          "primary_space": "docs",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "docs"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "docs-and-onboarding"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/system-orientation.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md"
+          ],
+          "utf8_bytes": 28563,
+          "rough_tokens": 7141
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "clear-template-placement",
+      "prompt": "Where should a reusable starting artifact or scaffold live in Persona-Library?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "direct",
+        "handoff_target": "direct-placement",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      },
+      "control": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "direct",
+        "handoff_target": "direct-placement",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Where should a reusable starting artifact or scaffold live in Persona-Library?",
+          "mode": "answer",
+          "primary_space": "templates",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "templates"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "direct-placement"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/docs.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/templates.json",
+            "docs/README.md"
+          ],
+          "utf8_bytes": 51065,
+          "rough_tokens": 12767
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "direct",
+        "handoff_target": "direct-placement",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Where should a reusable starting artifact or scaffold live in Persona-Library?",
+          "mode": "answer",
+          "primary_space": "templates",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "templates"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "direct-placement"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/system-orientation.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/templates.json",
+            "docs/README.md"
+          ],
+          "utf8_bytes": 43554,
+          "rough_tokens": 10889
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "ambiguous-template-playbook-placement",
+      "prompt": "I have a new reusable artifact that could be a Template or a Playbook and I'm not sure who owns it. Where should it live?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "escalate-mara",
+        "handoff_target": "mara-placement-review",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      },
+      "control": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "escalate-mara",
+        "handoff_target": "mara-placement-review",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "I have a new reusable artifact that could be a Template or a Playbook and I'm not sure who owns it. Where should it live?",
+          "mode": "answer",
+          "primary_space": "docs",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "placement question",
+            "existing semantic owners"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "mara-placement-review"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/docs.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "docs/README.md"
+          ],
+          "utf8_bytes": 42611,
+          "rough_tokens": 10653
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "escalate-mara",
+        "handoff_target": "mara-placement-review",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "I have a new reusable artifact that could be a Template or a Playbook and I'm not sure who owns it. Where should it live?",
+          "mode": "answer",
+          "primary_space": "docs",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "placement question",
+            "existing semantic owners"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "mara-placement-review"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/system-orientation.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "docs/README.md"
+          ],
+          "utf8_bytes": 35100,
+          "rough_tokens": 8775
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "unrelated-repository-plumbing",
+      "prompt": "Fix the CI whitespace check in this repository.",
+      "expected": {
+        "activate": false,
+        "mode": "update",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "repository-plumbing",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      },
+      "control": {
+        "activate": false,
+        "mode": "update",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "repository-plumbing",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": null,
+        "context": {
+          "artifacts": [
+            "AGENTS.md"
+          ],
+          "utf8_bytes": 6664,
+          "rough_tokens": 1666
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": false,
+        "mode": "update",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "repository-plumbing",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": null,
+        "context": {
+          "artifacts": [
+            "AGENTS.md"
+          ],
+          "utf8_bytes": 6664,
+          "rough_tokens": 1666
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "unrelated-general-writing",
+      "prompt": "Write a short thank-you note for a colleague.",
+      "expected": {
+        "activate": false,
+        "mode": "answer",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "non-system-request",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      },
+      "control": {
+        "activate": false,
+        "mode": "answer",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "non-system-request",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": null,
+        "context": {
+          "artifacts": [
+            "AGENTS.md"
+          ],
+          "utf8_bytes": 6664,
+          "rough_tokens": 1666
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": false,
+        "mode": "answer",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "non-system-request",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": null,
+        "context": {
+          "artifacts": [
+            "AGENTS.md"
+          ],
+          "utf8_bytes": 6664,
+          "rough_tokens": 1666
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "unavailable-downstream-capability",
+      "prompt": "Navigate me to Template composition, but assume the template-composer downstream package is unavailable in this runtime.",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "not-applicable",
+        "handoff_target": "template-composition",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": true
+      },
+      "control": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "not-applicable",
+        "handoff_target": "template-composition",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": true,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Navigate me to Template composition, but assume the template-composer downstream package is unavailable in this runtime.",
+          "mode": "answer",
+          "primary_space": "templates",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "templates"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [
+            "live runtime availability is unknown until current evidence is checked"
+          ],
+          "next_action_smallest_handoff": "template-composition"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/docs.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 44528,
+          "rough_tokens": 11132
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "not-applicable",
+        "handoff_target": "template-composition",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": true,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Navigate me to Template composition, but assume the template-composer downstream package is unavailable in this runtime.",
+          "mode": "answer",
+          "primary_space": "templates",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "templates"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [
+            "live runtime availability is unknown until current evidence is checked"
+          ],
+          "next_action_smallest_handoff": "template-composition"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/system-orientation.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/templates.json"
+          ],
+          "utf8_bytes": 37017,
+          "rough_tokens": 9255
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "update-persona-intent",
+      "prompt": "Update the Riley Persona record to include a new responsibility, and tell me the correct route first.",
+      "expected": {
+        "activate": true,
+        "mode": "update",
+        "selected_route": "system-orientation",
+        "primary_space": "personas",
+        "placement": "not-applicable",
+        "handoff_target": "persona-research",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "downstream_authorization_required": true
+      },
+      "control": {
+        "activate": true,
+        "mode": "update",
+        "selected_route": "system-orientation",
+        "primary_space": "personas",
+        "placement": "not-applicable",
+        "handoff_target": "persona-research",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": true,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Update the Riley Persona record to include a new responsibility, and tell me the correct route first.",
+          "mode": "update",
+          "primary_space": "personas",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "personas"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "persona-research"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/docs.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/personas.json"
+          ],
+          "utf8_bytes": 40159,
+          "rough_tokens": 10040
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "downstream_authorization_required": true,
+            "limitation_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": true,
+        "mode": "update",
+        "selected_route": "system-orientation",
+        "primary_space": "personas",
+        "placement": "not-applicable",
+        "handoff_target": "persona-research",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": true,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Update the Riley Persona record to include a new responsibility, and tell me the correct route first.",
+          "mode": "update",
+          "primary_space": "personas",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "personas"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [],
+          "next_action_smallest_handoff": "persona-research"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/system-orientation.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/personas.json"
+          ],
+          "utf8_bytes": 32648,
+          "rough_tokens": 8162
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "downstream_authorization_required": true,
+            "limitation_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "live-tool-availability",
+      "prompt": "Can you use Figma right now, and where in Persona-Library should I look for the Tool capability and fallback?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "tools",
+        "placement": "not-applicable",
+        "handoff_target": "tool-resolution",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false
+      },
+      "control": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "tools",
+        "placement": "not-applicable",
+        "handoff_target": "tool-resolution",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Can you use Figma right now, and where in Persona-Library should I look for the Tool capability and fallback?",
+          "mode": "answer",
+          "primary_space": "tools",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "tools"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [
+            "live runtime availability is unknown until current evidence is checked"
+          ],
+          "next_action_smallest_handoff": "tool-resolution"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/docs.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/tools.json"
+          ],
+          "utf8_bytes": 39095,
+          "rough_tokens": 9774
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "tools",
+        "placement": "not-applicable",
+        "handoff_target": "tool-resolution",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false,
+        "downstream_authorization_required": false,
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "docs/policy-ownership.md"
+          ],
+          "mutation_boundary": "read_only",
+          "non_triggers": [
+            "Unrelated coding, writing, research, or general questions"
+          ],
+          "next_handoff": "Select the smallest space and downstream capability after orientation.",
+          "space_do_not": [
+            "Do not use Docs to hide unresolved alternatives or decision history."
+          ]
+        },
+        "packet_complete": true,
+        "space_resolvable": true,
+        "packet": {
+          "goal": "Can you use Figma right now, and where in Persona-Library should I look for the Tool capability and fallback?",
+          "mode": "answer",
+          "primary_space": "tools",
+          "secondary_spaces": [],
+          "artifacts_in_scope": [
+            "system-orientation",
+            "tools"
+          ],
+          "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
+          "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
+          "material_assumptions_or_unknowns": [
+            "live runtime availability is unknown until current evidence is checked"
+          ],
+          "next_action_smallest_handoff": "tool-resolution"
+        },
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/system-orientation.json",
+            ".agents/skills/persona-library-orientation/SKILL.md",
+            "docs/policy-ownership.md",
+            "content/orientation/tools.json"
+          ],
+          "utf8_bytes": 31584,
+          "rough_tokens": 7896
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate": true,
+            "mode": true,
+            "selected_route": true,
+            "primary_space": true,
+            "placement": true,
+            "handoff_target": true,
+            "orientation_write_authorized": true,
+            "downstream_execution_claim": true,
+            "live_evidence_required": true,
+            "static_runtime_availability_claim": true,
+            "limitation_required": true,
+            "downstream_authorization_required": true
+          }
+        },
+        "safety": {
+          "no_orientation_write_authority": true,
+          "no_pretend_execution": true,
+          "no_static_runtime_claim": true,
+          "live_evidence_when_required": true,
+          "packet_complete_when_activated": true,
+          "selected_space_resolvable": true,
+          "exceptions_preserved": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate": true,
+          "mode": true,
+          "selected_route": true,
+          "primary_space": true,
+          "placement": true,
+          "handoff_target": true,
+          "orientation_write_authorized": true,
+          "downstream_execution_claim": true,
+          "live_evidence_required": true,
+          "static_runtime_availability_claim": true,
+          "limitation_required": true,
+          "downstream_authorization_required": true,
+          "retained_exceptions": true,
+          "packet_complete": true
+        }
+      },
+      "pass": true
+    }
+  ],
+  "aggregate": {
+    "fixture_count": 8,
+    "activated_fixture_count": 6,
+    "passed": 8,
+    "failed": 0,
+    "all_pass": true,
+    "preferred_context_utf8_bytes": 208466,
+    "control_context_utf8_bytes": 253532,
+    "preferred_context_rough_tokens": 52117,
+    "control_context_rough_tokens": 63383,
+    "preferred_delta_utf8_bytes": -45066,
+    "preferred_delta_percent": -17.8
+  },
+  "limitations": [
+    "The evaluator is intentionally fixture-scoped and is not a general-purpose natural-language router.",
+    "Passing deterministic route behavior does not establish subjective model response quality.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed provider token usage.",
+    "Live runtime availability is represented only as a requirement to obtain current evidence; this evaluation does not assert actual Tool or connector availability."
+  ]
+}

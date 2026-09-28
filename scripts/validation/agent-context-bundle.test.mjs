@@ -36,6 +36,26 @@ test('system-orientation bundle is a fresh deterministic projection of canonical
   assert.equal(outputs.get(bundlePath), JSON.stringify(fresh, null, 2) + '\n');
 });
 
+test('system-orientation bundle carries only the compact canonical space index needed for downstream selection', async () => {
+  const [bundle, orientation] = await Promise.all([
+    deriveAgentContextBundle(root, 'system-orientation'),
+    read('content/site-orientation.json').then(JSON.parse)
+  ]);
+
+  const expected = Object.entries(orientation.spaces).map(([id, space]) => ({
+    id,
+    label: space.label,
+    answers: space.answers,
+    route_file: space.route_file
+  }));
+
+  assert.deepEqual(bundle.space_index, expected);
+  assert.equal(bundle.space_index.length, 9);
+  for (const space of bundle.space_index) {
+    assert.deepEqual(Object.keys(space), ['id', 'label', 'answers', 'route_file']);
+  }
+});
+
 test('system-orientation bundle preserves route exceptions and Skill contract', async () => {
   const [bundle, docs, skill] = await Promise.all([
     deriveAgentContextBundle(root, 'system-orientation'),

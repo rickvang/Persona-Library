@@ -283,6 +283,62 @@
       }
     }
   },
+  "space_index": [
+    {
+      "id": "personas",
+      "label": "Personas",
+      "answers": "Who is operating, in what lifecycle, context, and state, and how do they work?",
+      "route_file": "orientation/personas.json"
+    },
+    {
+      "id": "skills",
+      "label": "Skills",
+      "answers": "What reusable capability is needed, how does it operate, and how can quality be recognized?",
+      "route_file": "orientation/skills.json"
+    },
+    {
+      "id": "operating-packs",
+      "label": "Operating Packs",
+      "answers": "What operating context, standards, conventions, procedures, references, and validation guidance apply when working in this domain or project?",
+      "route_file": "orientation/operating-packs.json"
+    },
+    {
+      "id": "templates",
+      "label": "Templates",
+      "answers": "What reusable starting artifact or scaffold should this work begin from?",
+      "route_file": "orientation/templates.json"
+    },
+    {
+      "id": "tools",
+      "label": "Tools",
+      "answers": "What capability, scope, permission, fallback, and evidence does a tool or MCP provide?",
+      "route_file": "orientation/tools.json"
+    },
+    {
+      "id": "playbooks",
+      "label": "Playbooks",
+      "answers": "What operating surface should a Persona use to coordinate stages, participants, shared state, handoffs, quality gates, recovery, and learning toward an outcome?",
+      "route_file": "orientation/playbooks.json"
+    },
+    {
+      "id": "docs",
+      "label": "Docs",
+      "answers": "What is currently true, how should the system be used, and what are the boundaries?",
+      "route_file": "orientation/docs.json"
+    },
+    {
+      "id": "decisions",
+      "label": "Decisions",
+      "answers": "What durable choice was made, why, what alternatives were considered, and what could cause revision?",
+      "route_file": "orientation/decisions.json"
+    },
+    {
+      "id": "prototyping",
+      "label": "Prototyping",
+      "answers": "What alternative structure, interaction, or persona concept should be tested before commitment?",
+      "route_file": "orientation/prototyping.json"
+    }
+  ],
   "exceptions": {
     "availability_source": "repo_local",
     "first_reads": [
@@ -325,5 +381,5 @@
       "selector": "frontmatter"
     }
   ],
-  "payload_checksum": "77a8e5f61c383024"
+  "payload_checksum": "d74979ec056a4fce"
 }

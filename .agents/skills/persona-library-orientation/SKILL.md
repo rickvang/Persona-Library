@@ -28,9 +28,9 @@ Do not use it merely for repository plumbing whose target is already clear. Root
    - the graph fragment includes the explicit `system-orientation → persona-library-orientation` route edge;
    - every included graph node/edge has provenance;
    - the retained exception fields are present.
-4. When the bundle is valid, use its `exceptions.first_reads`, mutation boundary, non-triggers, next handoff, space `do_not`, and graph-declared change contract. Do **not** reread the full semantic bootstrap or the complete Docs route group merely to reconstruct the same route.
-5. If the bundle is missing, unreadable, malformed, route/package-mismatched, or provenance-incomplete, fall back to the canonical current path: read `content/site-orientation.json`, select Docs, read `content/orientation/docs.json`, then select `system-orientation`. Stay read-only while falling back.
-6. Read the selected route's minimum `first_reads` and linked records after either path resolves the route.
+4. When the bundle is valid, use its compact `space_index` to choose the smallest primary semantic space, then load only that space's declared `route_file` when a downstream route must be selected. Use the bundle's `exceptions.first_reads`, mutation boundary, non-triggers, next handoff, space `do_not`, and graph-declared change contract. Do **not** reread the full semantic bootstrap or the complete Docs route group merely to reconstruct `system-orientation`.
+5. If the bundle is missing, unreadable, malformed, route/package-mismatched, provenance-incomplete, or lacks a usable space index, fall back to the canonical current path: read `content/site-orientation.json`, select Docs, read `content/orientation/docs.json`, then select `system-orientation`. Stay read-only while falling back.
+6. Read the selected route's minimum `first_reads` and linked records after either path resolves the route. For a new durable placement question, also read `docs/README.md` and apply its direct-placement versus Mara-escalation gate.
 7. Verify actual Tool/Skill/runtime availability when execution depends on it. A generated bundle, documentation, URL, or catalog record is not proof of runtime access.
 8. If both the bundle and canonical fallback sources are unavailable, report the gap and stay read-only rather than inventing missing taxonomy or capability.
 
