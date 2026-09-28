@@ -79,7 +79,6 @@ function exceptions(group, route) {
     first_reads:route.first_reads,
     mutation_boundary:route.mutation_boundary,
     non_triggers:route.non_triggers,
-    space_do_not:spaceDoNot,
     next_handoff:route.next_handoff,
     space_do_not:group.space?.do_not || []
   };
@@ -105,6 +104,7 @@ function oracle(route, skillSource, spaceDoNot) {
     availability_source:route.availability_source,
     first_reads:route.first_reads,
     non_triggers:route.non_triggers,
+    space_do_not:spaceDoNot,
     next_handoff:route.next_handoff,
     validation_source:VALIDATION,
     live_state_external:true
