@@ -84,8 +84,9 @@ export async function buildSystemOrientationMigrationReport() {
     },
     interpretation: [
       'The preferred-path metric retains the full root AGENTS.md because the repository harness may activate it automatically.',
-      'Savings therefore come from avoiding the full semantic bootstrap plus complete Docs route-group reread after system-orientation is selected.',
-      'The fallback is intentionally larger than the pre-migration Phase 9 baseline because the migrated Skill now contains explicit preference and fallback instructions.',
+      'The migrated bundle now includes a compact nine-space index so system-orientation can choose the smallest semantic space without rereading the full bootstrap.',
+      'Savings still come from avoiding the full semantic bootstrap plus complete Docs route-group reread after system-orientation is selected.',
+      'The fallback is intentionally larger than the pre-migration Phase 9 baseline because the migrated Skill contains explicit preference, compact-space, placement, and fallback instructions.',
       'Rough-token estimates are static UTF-8/4 approximations, not observed model or subscription usage.'
     ]
   };
