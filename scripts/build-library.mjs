@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { buildDecisionsPage } from './build-decisions.mjs';
 import { buildPersonaSkillSystemMap } from './build-persona-skill-system-map.mjs';
 import { buildTechnicalSystemMaps } from './build-technical-system-maps.mjs';
+import { buildAgentContextBundles } from './build-agent-context-bundles.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const orientation = JSON.parse(await readFile(path.join(root, 'content/site-orientation.json'), 'utf8'));
@@ -199,3 +200,6 @@ console.log('Built Persona / Skill System Map -> ' + personaSkillGraph.nodes.len
 const technicalMaps = await buildTechnicalSystemMaps(root);
 console.log('Built Source/generated System Map -> ' + technicalMaps.sourceGraph.nodes.length + ' nodes / ' + technicalMaps.sourceGraph.edges.length + ' edges');
 console.log('Built Agent/runtime System Map -> ' + technicalMaps.runtimeGraph.nodes.length + ' nodes / ' + technicalMaps.runtimeGraph.edges.length + ' edges');
+
+const agentContextBundles = await buildAgentContextBundles(root);
+console.log('Built graph-backed agent context bundles -> ' + agentContextBundles.size + ' route(s)');
