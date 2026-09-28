@@ -46,29 +46,14 @@
         "type": "skill-contract-value"
       },
       {
-        "id": "route-group:tools",
-        "label": "Tools routes",
-        "type": "route-group"
-      },
-      {
         "id": "route:tool-resolution",
         "label": "tool-resolution",
         "type": "routing-route"
       },
       {
-        "id": "routing:orientation-bootstrap",
-        "label": "Orientation bootstrap",
-        "type": "routing-bootstrap"
-      },
-      {
         "id": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
         "label": "tool-discovery-and-safe-execution",
         "type": "callable-skill-package"
-      },
-      {
-        "id": "space:tools",
-        "label": "Tools",
-        "type": "primary-space"
       },
       {
         "id": "validation:repository-validation",
@@ -83,34 +68,16 @@
     ],
     "edges": [
       {
-        "id": "edge:agent:repository-dispatcher--loads-for-semantic-work--routing:orientation-bootstrap",
-        "from": "agent:repository-dispatcher",
-        "to": "routing:orientation-bootstrap",
-        "relationship": "loads-for-semantic-work"
-      },
-      {
         "id": "edge:agent:repository-dispatcher--uses-validation-contract--validation:repository-validation",
         "from": "agent:repository-dispatcher",
         "to": "validation:repository-validation",
         "relationship": "uses-validation-contract"
       },
       {
-        "id": "edge:route-group:tools--contains--route:tool-resolution",
-        "from": "route-group:tools",
-        "to": "route:tool-resolution",
-        "relationship": "contains"
-      },
-      {
         "id": "edge:route:tool-resolution--routes-to--skill-package:.agents/skills/tool-discovery-and-safe-execution",
         "from": "route:tool-resolution",
         "to": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
         "relationship": "routes-to"
-      },
-      {
-        "id": "edge:routing:orientation-bootstrap--declares-space--space:tools",
-        "from": "routing:orientation-bootstrap",
-        "to": "space:tools",
-        "relationship": "declares-space"
       },
       {
         "id": "edge:skill-package:.agents/skills/tool-discovery-and-safe-execution--declares-change-domain--contract:change-domain:tools",
@@ -135,12 +102,6 @@
         "from": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
         "to": "contract:skill-layer:tool_safety",
         "relationship": "declares-skill-layer"
-      },
-      {
-        "id": "edge:space:tools--uses-route-group--route-group:tools",
-        "from": "space:tools",
-        "to": "route-group:tools",
-        "relationship": "uses-route-group"
       },
       {
         "id": "edge:view:agent-runtime--contains--agent:repository-dispatcher",
@@ -186,30 +147,15 @@
         "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
         "selector": "frontmatter.skill_layer"
       },
-      "route-group:tools": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
-        "selector": "root"
-      },
       "route:tool-resolution": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/orientation/tools.json",
         "selector": "routes[id=tool-resolution]"
       },
-      "routing:orientation-bootstrap": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:content/site-orientation.json",
-        "selector": "root"
-      },
       "skill-package:.agents/skills/tool-discovery-and-safe-execution": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
         "selector": "frontmatter"
-      },
-      "space:tools": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:content/site-orientation.json",
-        "selector": "spaces.tools"
       },
       "validation:repository-validation": {
         "kind": "repo-file",
@@ -221,30 +167,15 @@
         "locator": "rickvang/Persona-Library:AGENTS.md",
         "selector": "Choose the shortest activation path"
       },
-      "edge:agent:repository-dispatcher--loads-for-semantic-work--routing:orientation-bootstrap": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:AGENTS.md",
-        "selector": "library-semantic"
-      },
       "edge:agent:repository-dispatcher--uses-validation-contract--validation:repository-validation": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:AGENTS.md",
         "selector": "Repository execution and validation"
       },
-      "edge:route-group:tools--contains--route:tool-resolution": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
-        "selector": "routes[id=tool-resolution]"
-      },
       "edge:route:tool-resolution--routes-to--skill-package:.agents/skills/tool-discovery-and-safe-execution": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/orientation/tools.json",
         "selector": "routes[id=tool-resolution].package_path"
-      },
-      "edge:routing:orientation-bootstrap--declares-space--space:tools": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:content/site-orientation.json",
-        "selector": "spaces.tools"
       },
       "edge:skill-package:.agents/skills/tool-discovery-and-safe-execution--declares-change-domain--contract:change-domain:tools": {
         "kind": "repo-file",
@@ -265,11 +196,6 @@
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
         "selector": "frontmatter.skill_layer"
-      },
-      "edge:space:tools--uses-route-group--route-group:tools": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:content/site-orientation.json",
-        "selector": "spaces.tools.route_file"
       },
       "edge:view:agent-runtime--contains--agent:repository-dispatcher": {
         "kind": "repo-file",
@@ -344,5 +270,5 @@
       "selector": "frontmatter / downstream reconciliation contract"
     }
   ],
-  "payload_checksum": "a48b573dcd116cf9"
+  "payload_checksum": "ae36b52e105960c9"
 }
