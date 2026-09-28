@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "migration": "system-orientation-graph-backed-context",
+  "estimator": "utf8-byte-count-divided-by-four",
+  "estimator_formula": "ceil(UTF-8 bytes / 4)",
+  "canonical_route_records_changed": false,
+  "preferred_path": {
+    "artifacts": [
+      "AGENTS.md",
+      "dist/data/agent-context/system-orientation.json",
+      ".agents/skills/persona-library-orientation/SKILL.md"
+    ],
+    "utf8_bytes": 23672,
+    "rough_tokens": 5918
+  },
+  "canonical_fallback": {
+    "artifacts": [
+      "AGENTS.md",
+      "content/site-orientation.json",
+      "content/orientation/docs.json",
+      ".agents/skills/persona-library-orientation/SKILL.md"
+    ],
+    "utf8_bytes": 33363,
+    "rough_tokens": 8341
+  },
+  "phase9_control_baseline": {
+    "utf8_bytes": 31864,
+    "rough_tokens": 7966
+  },
+  "deltas": {
+    "preferred_vs_current_fallback": {
+      "utf8_bytes": -9691,
+      "rough_tokens": -2423,
+      "percent": -29
+    },
+    "preferred_vs_phase9_control": {
+      "utf8_bytes": -8192,
+      "rough_tokens": -2048,
+      "percent": -25.7
+    }
+  },
+  "bundle": {
+    "utf8_bytes": 12823,
+    "rough_tokens": 3206,
+    "graph_nodes": 13,
+    "graph_edges": 12,
+    "provenance_entries": 25,
+    "route_id": "system-orientation",
+    "primary_space": "docs",
+    "package_path": ".agents/skills/persona-library-orientation",
+    "mutation_boundary": "read_only",
+    "change_mode": "read_only",
+    "reconciliation": "skip"
+  },
+  "interpretation": [
+    "The preferred-path metric retains the full root AGENTS.md because the repository harness may activate it automatically.",
+    "Savings therefore come from avoiding the full semantic bootstrap plus complete Docs route-group reread after system-orientation is selected.",
+    "The fallback is intentionally larger than the pre-migration Phase 9 baseline because the migrated Skill now contains explicit preference and fallback instructions.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed model or subscription usage."
+  ]
+}
