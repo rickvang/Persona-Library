@@ -23,6 +23,11 @@ const ROUTES = [
     id: 'tool-resolution',
     migration: 'eval/results/tool-resolution-migration.json',
     behavior: 'eval/results/tool-resolution-behavior.json'
+  },
+  {
+    id: 'skill-package-maintenance',
+    migration: 'eval/results/skill-package-maintenance-migration.json',
+    behavior: 'eval/results/skill-package-maintenance-behavior.json'
   }
 ];
 
@@ -65,6 +70,17 @@ const ROUTE_SPECIFIC_SURFACES = {
     'eval/tool-resolution-behavior.md',
     'scripts/validation/tool-resolution-bundle.test.mjs',
     'scripts/validation/tool-resolution-migration.test.mjs'
+  ],
+  'skill-package-maintenance': [
+    'eval/skill-package-maintenance-migration.mjs',
+    'eval/results/skill-package-maintenance-migration.json',
+    'eval/skill-package-maintenance-migration.md',
+    'eval/fixtures/skill-package-maintenance-behavior.json',
+    'eval/skill-package-maintenance-behavior.mjs',
+    'eval/results/skill-package-maintenance-behavior.json',
+    'eval/skill-package-maintenance-behavior.md',
+    'scripts/validation/skill-package-maintenance-bundle.test.mjs',
+    'scripts/validation/skill-package-maintenance-migration.test.mjs'
   ]
 };
 
@@ -197,8 +213,8 @@ export async function buildAgentContextConsolidation() {
       warmup_iterations: timingObserved.benchmark.warmup_iterations,
       measured_iterations_per_path: timingObserved.benchmark.measured_iterations_per_path,
       interpretation: [
-        'All three preferred paths were faster at p50 for route selection, first useful action, and deterministic activation completion in the observed CI run.',
-        'All three preferred paths also had lower p95 timing, but the magnitude varied and remains subject to runner/filesystem noise.',
+        'All four preferred paths were faster at p50 for route selection, first useful action, and deterministic activation completion in the observed CI run.',
+        'All four preferred paths also had lower p95 timing, but the magnitude varied and remains subject to runner/filesystem noise.',
         'The deterministic one-file-read and one-artifact reductions are stronger evidence than sub-millisecond wall-clock differences.',
         'These timings do not measure model generation or end-user response latency.'
       ]
@@ -233,7 +249,7 @@ export async function buildAgentContextConsolidation() {
     rollout_guidance: {
       recommendation: 'Use graph-backed activation selectively for routes that meet the eligibility criteria; do not bulk-migrate all routes.',
       existing_tool_resolution_exception: 'tool-resolution remains accepted at 6.1% because it served the live-state proof, reduces one read/artifact, and has positive observed timing; future routes below 10% need additional real usage evidence.',
-      next_route_policy: 'Any fourth route requires a new separately approved issue with pre-migration context/read baseline and eligibility review.',
+      next_route_policy: 'A fifth route requires a new separately approved issue with pre-migration context/read baseline and eligibility review.',
       schema_policy: 'Keep persona-library.agent-context/v0.1. Do not create v0.2 until a future eligible route proves a required field cannot be derived within v0.1.'
     },
     limitations: [
@@ -256,7 +272,7 @@ function markdown(report) {
     '',
     '**Selective rollout.** Keep persona-library.agent-context/v0.1 as a supported selective routing primitive. Do not bulk-migrate routes.',
     '',
-    '## Three-route evidence',
+    '## Four-route evidence',
     '',
     '| Route | Base context delta | Fixtures | Route selection p50 | First useful action p50 | Completion p50 | Reads | Artifacts |',
     '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |'
@@ -305,7 +321,7 @@ function markdown(report) {
     '## Architecture decision',
     '',
     '- Keep persona-library.agent-context/v0.1; no v0.2 is justified yet.',
-    '- Any fourth route requires a separate issue and eligibility audit.',
+    '- A fifth route requires a separate issue and eligibility audit.',
     '- New candidates should normally save at least 10% base static context and one route-side read. Routes in the 5–10% range need separate high-frequency/latency evidence.',
     '- No bulk migration is authorized.',
     '',
