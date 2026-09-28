@@ -34,7 +34,7 @@
       "static_artifact_reduction_percent": -25
     },
     "observed_timing_p50_average_delta_percent": {
-      "route_selection": -24.3,
+      "route_selection": -24.4,
       "first_useful_action": -13.7,
       "deterministic_completion": -14.2
     }
