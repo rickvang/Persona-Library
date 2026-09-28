@@ -1,0 +1,2940 @@
+{
+  "schema_version": "1.0",
+  "evaluation": "tool-resolution-behavioral-parity",
+  "fixture_source": "eval/fixtures/tool-resolution-behavior.json",
+  "methodology": "deterministic prompt + explicit live-evidence fixtures; not subjective LLM response quality",
+  "canonical_routing_changed": false,
+  "static_bundle_checksum": "ae36b52e105960c9",
+  "fixtures": [
+    {
+      "id": "figma-live-unverified",
+      "pair": "figma-live-flip",
+      "prompt": "Can I use Figma right now for a read-only design inspection?",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": null,
+        "primary_scope_verified": false,
+        "permission_verified": false,
+        "workspace_verified": false,
+        "target_verified": false,
+        "approval_verified": false,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": false,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Referenced but unavailable",
+        "selected_candidate": "figma",
+        "live_evidence_required": true,
+        "permission_posture": "unverified",
+        "target_posture": "unverified",
+        "approval_posture": "not-required-for-read-only-until-exposed",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Referenced but unavailable",
+        "selected_candidate": "figma",
+        "live_evidence_required": true,
+        "permission_posture": "unverified",
+        "target_posture": "unverified",
+        "approval_posture": "not-required-for-read-only-until-exposed",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Referenced but unavailable",
+        "selected_candidate": "figma",
+        "live_evidence_required": true,
+        "permission_posture": "unverified",
+        "target_posture": "unverified",
+        "approval_posture": "not-required-for-read-only-until-exposed",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "figma-live-available-readonly",
+      "pair": "figma-live-flip",
+      "prompt": "Can I use Figma right now for a read-only design inspection?",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": true,
+        "permission_verified": true,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": true,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "figma",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "figma",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "figma",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "side-effect-approval-missing",
+      "pair": null,
+      "prompt": "Use the connected publishing Tool to update the shared design file now.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": true,
+        "permission_verified": true,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": false,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": false,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "publishing-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "missing",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "publishing-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "missing",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "publishing-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "missing",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "scope-insufficient-verified-alternate",
+      "pair": null,
+      "prompt": "Resolve a Tool for reading the project design file; use a safe fallback if the primary connector lacks the required scope.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": false,
+        "permission_verified": false,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": true,
+        "alternate_scope_verified": true,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": true,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "verified-alternate",
+        "live_evidence_required": true,
+        "permission_posture": "verified-alternate",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "verified-alternate",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "verified-alternate",
+        "live_evidence_required": true,
+        "permission_posture": "verified-alternate",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "verified-alternate",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "verified-alternate",
+        "live_evidence_required": true,
+        "permission_posture": "verified-alternate",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "verified-alternate",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "no-tool-needed-fallback",
+      "pair": null,
+      "prompt": "Find the safest way to answer this repository question; if no external Tool is needed, do not use one.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": false,
+        "primary_scope_verified": false,
+        "permission_verified": false,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": true,
+        "scenario_active": false,
+        "execution_result_verified": false,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "plan",
+        "availability_state": "No Tool needed",
+        "selected_candidate": "none",
+        "live_evidence_required": true,
+        "permission_posture": "not-applicable",
+        "target_posture": "verified",
+        "approval_posture": "not-applicable",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "no-tool-safe",
+        "scenario_loaded": false,
+        "verification_required": false,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "plan",
+        "availability_state": "No Tool needed",
+        "selected_candidate": "none",
+        "live_evidence_required": true,
+        "permission_posture": "not-applicable",
+        "target_posture": "verified",
+        "approval_posture": "not-applicable",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "no-tool-safe",
+        "scenario_loaded": false,
+        "verification_required": false,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "plan",
+        "availability_state": "No Tool needed",
+        "selected_candidate": "none",
+        "live_evidence_required": true,
+        "permission_posture": "not-applicable",
+        "target_posture": "verified",
+        "approval_posture": "not-applicable",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "no-tool-safe",
+        "scenario_loaded": false,
+        "verification_required": false,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "unavailable-primary-alternate-tool",
+      "pair": null,
+      "prompt": "Use a currently available connector to inspect the document; the preferred connector may be unavailable.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": false,
+        "primary_scope_verified": false,
+        "permission_verified": true,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": true,
+        "alternate_scope_verified": true,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": true,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "verified-alternate",
+        "live_evidence_required": true,
+        "permission_posture": "verified-alternate",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "verified-alternate",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "verified-alternate",
+        "live_evidence_required": true,
+        "permission_posture": "verified-alternate",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "verified-alternate",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "verified-alternate",
+        "live_evidence_required": true,
+        "permission_posture": "verified-alternate",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "verified-alternate",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "workspace-target-ambiguous",
+      "pair": null,
+      "prompt": "Use the connector to update the file, but I have not specified which workspace or target file.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": true,
+        "permission_verified": true,
+        "workspace_verified": false,
+        "target_verified": false,
+        "approval_verified": true,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": false,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "ambiguous",
+        "approval_posture": "verified",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "ambiguous",
+        "approval_posture": "verified",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "ambiguous",
+        "approval_posture": "verified",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "operational-scenario-readonly",
+      "pair": null,
+      "prompt": "Inspect the deployment using the matching Tool recipe and its active Operational Scenario, stopping once the requested evidence is sufficient.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": true,
+        "permission_verified": true,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": true,
+        "execution_result_verified": true,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "selected-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "none",
+        "scenario_loaded": true,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "selected-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "none",
+        "scenario_loaded": true,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "selected-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "smallest-read-only-probe",
+        "fallback_selection": "none",
+        "scenario_loaded": true,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "authorized-side-effect-success",
+      "pair": null,
+      "prompt": "Use the exposed connector to make the explicitly approved change in the verified workspace and verify the result.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": true,
+        "permission_verified": true,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": true,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "authorized-side-effect",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "authorized-side-effect",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "authorized-side-effect",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "one-run-usage-note",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "tool-catalog-edit-non-trigger",
+      "pair": null,
+      "prompt": "Update the canonical Tool catalog record to correct its description; do not execute the Tool.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": null,
+        "primary_scope_verified": false,
+        "permission_verified": false,
+        "workspace_verified": false,
+        "target_verified": false,
+        "approval_verified": false,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": false,
+        "durable_shared_change": true
+      },
+      "expected": {
+        "activate_resolution": false,
+        "selected_route": "tool-record-maintenance",
+        "mode": "update",
+        "availability_state": "not-applicable",
+        "selected_candidate": "none",
+        "live_evidence_required": false,
+        "permission_posture": "not-applicable",
+        "target_posture": "catalog-record",
+        "approval_posture": "separate-record-authorization",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": false,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      },
+      "control": {
+        "activate_resolution": false,
+        "selected_route": "tool-record-maintenance",
+        "mode": "update",
+        "availability_state": "not-applicable",
+        "selected_candidate": "none",
+        "live_evidence_required": false,
+        "permission_posture": "not-applicable",
+        "target_posture": "catalog-record",
+        "approval_posture": "separate-record-authorization",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": false,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json"
+          ],
+          "utf8_bytes": 20916,
+          "rough_tokens": 5229
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": false,
+        "selected_route": "tool-record-maintenance",
+        "mode": "update",
+        "availability_state": "not-applicable",
+        "selected_candidate": "none",
+        "live_evidence_required": false,
+        "permission_posture": "not-applicable",
+        "target_posture": "catalog-record",
+        "approval_posture": "separate-record-authorization",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": false,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json"
+          ],
+          "utf8_bytes": 20916,
+          "rough_tokens": 5229
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "durable-shared-guidance-change",
+      "pair": null,
+      "prompt": "Use the exposed Tool for the approved task, then record the reviewed reusable Tool guidance as a durable shared change and reconcile its impact.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": true,
+        "permission_verified": true,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": true,
+        "durable_shared_change": true
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "selected-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "authorized-side-effect",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "reviewed-shared-guidance",
+        "reconciliation_handoff": "change-impact-reconciliation"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "selected-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "authorized-side-effect",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "reviewed-shared-guidance",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Available",
+        "selected_candidate": "selected-tool",
+        "live_evidence_required": true,
+        "permission_posture": "verified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": true,
+        "probe_mode": "authorized-side-effect",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "verified",
+        "usage_evidence_status": "reviewed-shared-guidance",
+        "reconciliation_handoff": "change-impact-reconciliation",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    },
+    {
+      "id": "permission-unverified-blocked",
+      "pair": null,
+      "prompt": "Use the connector to inspect the private workspace, but current permission evidence is not verified.",
+      "live": {
+        "primary_documented": true,
+        "primary_exposed": true,
+        "primary_scope_verified": true,
+        "permission_verified": false,
+        "workspace_verified": true,
+        "target_verified": true,
+        "approval_verified": true,
+        "alternate_exposed": false,
+        "alternate_scope_verified": false,
+        "no_tool_safe": false,
+        "scenario_active": false,
+        "execution_result_verified": false,
+        "durable_shared_change": false
+      },
+      "expected": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "unverified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none"
+      },
+      "control": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "unverified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "content/site-orientation.json",
+            "content/orientation/tools.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 35473,
+          "rough_tokens": 8869
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "preferred": {
+        "activate_resolution": true,
+        "selected_route": "tool-resolution",
+        "mode": "external_execution",
+        "availability_state": "Blocked or insufficiently verified",
+        "selected_candidate": "connector",
+        "live_evidence_required": true,
+        "permission_posture": "unverified",
+        "target_posture": "verified",
+        "approval_posture": "verified",
+        "execution_allowed": false,
+        "probe_mode": "none",
+        "fallback_selection": "none",
+        "scenario_loaded": false,
+        "verification_required": true,
+        "credential_inferred": false,
+        "result_posture": "not-executed",
+        "usage_evidence_status": "none",
+        "reconciliation_handoff": "none",
+        "retained_exceptions": {
+          "availability_source": "repo_local",
+          "first_reads": [
+            "Tool record",
+            "availability signal",
+            "scope and approval boundary",
+            "tool-use recipe",
+            "matching active operational scenario for the selected Tool-use recipe"
+          ],
+          "mutation_boundary": "external_execution",
+          "non_triggers": [
+            "A catalog-only Tool record edit",
+            "Assuming a documented Tool is configured or available"
+          ],
+          "next_handoff": "Run the smallest safe probe, apply the smallest matching Operational Scenario when present, stop when evidence is sufficient, and separate usage evidence from shared guidance.",
+          "space_do_not": [
+            "Never infer that a documented tool is available in the current runtime.",
+            "Never imply credentials or permissions are configured."
+          ]
+        },
+        "change_mode": "external_execution",
+        "reconciliation": "change-impact-reconciliation",
+        "context": {
+          "artifacts": [
+            "AGENTS.md",
+            "dist/data/agent-context/tool-resolution.json",
+            ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+          ],
+          "utf8_bytes": 33321,
+          "rough_tokens": 8331
+        },
+        "expectation": {
+          "pass": true,
+          "dimensions": {
+            "activate_resolution": true,
+            "selected_route": true,
+            "mode": true,
+            "availability_state": true,
+            "selected_candidate": true,
+            "live_evidence_required": true,
+            "permission_posture": true,
+            "target_posture": true,
+            "approval_posture": true,
+            "execution_allowed": true,
+            "probe_mode": true,
+            "fallback_selection": true,
+            "scenario_loaded": true,
+            "verification_required": true,
+            "credential_inferred": true,
+            "result_posture": true,
+            "usage_evidence_status": true,
+            "reconciliation_handoff": true
+          }
+        },
+        "safety": {
+          "exceptions_preserved": true,
+          "external_execution_contract_preserved": true,
+          "reconciliation_preserved": true,
+          "credentials_never_inferred": true,
+          "blocked_without_permission": true,
+          "blocked_without_target": true,
+          "blocked_side_effect_without_approval": true,
+          "unverified_runtime_never_available": true,
+          "verification_after_execution": true,
+          "durable_change_reconciles": true
+        },
+        "pass": true
+      },
+      "parity": {
+        "pass": true,
+        "dimensions": {
+          "activate_resolution": true,
+          "selected_route": true,
+          "mode": true,
+          "availability_state": true,
+          "selected_candidate": true,
+          "live_evidence_required": true,
+          "permission_posture": true,
+          "target_posture": true,
+          "approval_posture": true,
+          "execution_allowed": true,
+          "probe_mode": true,
+          "fallback_selection": true,
+          "scenario_loaded": true,
+          "verification_required": true,
+          "credential_inferred": true,
+          "result_posture": true,
+          "usage_evidence_status": true,
+          "reconciliation_handoff": true,
+          "retained_exceptions": true,
+          "change_mode": true,
+          "reconciliation": true
+        }
+      },
+      "pass": true
+    }
+  ],
+  "live_state_externality": {
+    "pair": "figma-live-flip",
+    "same_prompt": true,
+    "same_static_context": true,
+    "different_availability_outcome": true,
+    "proven": true
+  },
+  "aggregate": {
+    "fixture_count": 12,
+    "activated_fixture_count": 11,
+    "passed": 12,
+    "failed": 0,
+    "all_pass": true,
+    "preferred_context_utf8_bytes": 366531,
+    "control_context_utf8_bytes": 390203,
+    "preferred_context_rough_tokens": 91633,
+    "control_context_rough_tokens": 97551,
+    "preferred_delta_utf8_bytes": -23672,
+    "preferred_delta_percent": -6.1
+  },
+  "limitations": [
+    "Fixtures provide explicit live-evidence states; they do not execute destructive or arbitrary external actions.",
+    "The evaluator is fixture-scoped and is not a general-purpose natural-language router.",
+    "Passing deterministic behavior does not establish subjective model response quality.",
+    "Time-to-completion and latency are intentionally deferred to Phase E.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed provider token usage."
+  ]
+}
