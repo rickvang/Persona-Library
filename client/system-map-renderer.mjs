@@ -226,7 +226,7 @@ export class SystemMapRenderer {
     this.cy.fit(this.cy.elements(), padding);
   }
 
-  render({ graph, visibleIds, selectedId = null, path = null, filters = {} }) {
+  render({ graph, visibleIds, selectedId = null, path = null, filters = {}, layoutDirection = 'vertical' }) {
     const elements = rendererElements(graph, visibleIds);
     const signature = topologySignature(graph, elements);
     const topologyChanged = signature !== this.signature;
@@ -264,7 +264,10 @@ export class SystemMapRenderer {
         nodeDimensionsIncludeLabels: true,
         spacingFactor: elements.length > 90 ? 0.92 : 1.12,
         padding: 42,
-        animate: false
+        animate: false,
+        transform: layoutDirection === 'horizontal'
+          ? (_node, position) => ({ x: position.y, y: position.x })
+          : undefined
       }).run();
       this.fit();
     }
@@ -305,7 +308,8 @@ export class SystemMapRenderer {
     if (selected && !selected.empty()) {
       selected.removeClass('filtered-out').addClass('selected');
       const connectedEdges = selected.connectedEdges();
-      connectedEdges.connectedNodes().addClass('neighbor');
+      connectedEdges.removeClass('filtered-out');
+      connectedEdges.connectedNodes().removeClass('filtered-out').addClass('neighbor');
       connectedEdges.forEach(edge => {
         if (edge.source().id() === selectedId) edge.addClass('outgoing-highlight');
         if (edge.target().id() === selectedId) edge.addClass('incoming-highlight');
