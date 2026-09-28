@@ -7,10 +7,10 @@ test('activation benchmark covers all migrated routes and preserves deterministi
 
   assert.equal(report.benchmark, 'agent-context-deterministic-activation-timing');
   assert.equal(report.measured_scope, 'repository-side activation only');
-  assert.equal(report.routes.length, 3);
+  assert.equal(report.routes.length, 4);
   assert.deepEqual(
     report.routes.map(item => item.route_id),
-    ['system-orientation', 'template-composition', 'tool-resolution']
+    ['system-orientation', 'template-composition', 'tool-resolution', 'skill-package-maintenance']
   );
 
   for (const route of report.routes) {
