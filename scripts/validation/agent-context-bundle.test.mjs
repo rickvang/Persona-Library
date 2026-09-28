@@ -32,7 +32,7 @@ test('system-orientation bundle is a fresh deterministic projection of canonical
   assert.deepEqual(validateAgentContextBundle(committed, expected), []);
 
   const outputs = await expectedAgentContextBundleOutputs(root);
-  assert.deepEqual([...outputs.keys()], [bundlePath, 'dist/data/agent-context/template-composition.json']);
+  assert.deepEqual([...outputs.keys()], [bundlePath, 'dist/data/agent-context/template-composition.json', 'dist/data/agent-context/tool-resolution.json']);
   assert.equal(outputs.get(bundlePath), JSON.stringify(fresh, null, 2) + '\n');
 });
 
