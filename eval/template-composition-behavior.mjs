@@ -37,11 +37,11 @@ function classifyPrompt(prompt) {
   const availabilityUnknown = /current access, fetch, install, and render availability have not been verified/.test(text);
   const ambiguousTarget = /not sure whether .* belongs|persona-library or the project repository/.test(text);
   const acceptedResearch = /accepted template research|accepted research/.test(text);
-  const sourceVerified = /verified source provenance|source and provenance are verified|verified provenance|verified source/.test(text);
+  const sourceVerified = /verified source provenance|source and provenance are verified|verified provenance|provenance is verified|verified source/.test(text);
   const canonicalPublication = /publish the approved reusable template|canonical catalog and site/.test(text);
   const explicitNoPromotion = /do not promote|keep it local/.test(text);
   const adaptExisting = /adapt the existing project starter/.test(text);
-  const explicitAuthorization = /i authorize|target is authorized|authorize this target/.test(text);
+  const explicitAuthorization = /i authorize|target is authorized|authorize this target|authorized project-specific starter/.test(text);
   const readOnlyPlan = mode === 'plan';
 
   let selectedRoute = 'template-composition';
@@ -78,8 +78,8 @@ function classifyPrompt(prompt) {
   if (catalogLookup) promotionPosture = 'not-applicable';
   else if (canonicalPublication) promotionPosture = 'canonical-approved';
   else if (explicitNoPromotion) promotionPosture = 'project-local-explicit';
-  else if (activateComposition && !readOnlyPlan) promotionPosture = 'project-local';
-  else if (activateComposition && readOnlyPlan) promotionPosture = 'project-local';
+  else if (/project starter|project-local|project-specific starter/.test(text)) promotionPosture = 'project-local';
+  else if (activateComposition) promotionPosture = 'project-local';
 
   const runtimePosture = (ambiguousSource || availabilityUnknown)
     ? 'current-evidence-required'
