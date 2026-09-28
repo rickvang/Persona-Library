@@ -10,6 +10,8 @@ import {
   sourceUrl
 } from '../../client/system-map-graph.mjs';
 import {
+  DEFAULT_BRANCH_CHUNK,
+  boundedVisibleNodeIds,
   initialExpandedIds,
   rendererElements
 } from '../../client/system-map-renderer.mjs';
@@ -57,6 +59,28 @@ test('System Map renderer derives bounded view state without introducing graph f
     edges: Array.from({ length: 30 }, (_, index) => ({ ...graph.edges[0], id: 'dense-edge:' + index, from: 'a:one', to: 'dense:' + index }))
   };
   assert.equal(initialExpandedIds(dense).size, 0, 'dense roots should stay collapsed by default');
+
+  const firstChunk = boundedVisibleNodeIds(
+    dense,
+    new Set(['a:one']),
+    new Map([['a:one', DEFAULT_BRANCH_CHUNK]])
+  );
+  assert.equal(firstChunk.size, DEFAULT_BRANCH_CHUNK + 1, 'manual expansion should reveal one bounded neighbor chunk plus the root');
+
+  const allNeighbors = boundedVisibleNodeIds(
+    dense,
+    new Set(['a:one']),
+    new Map([['a:one', 48]])
+  );
+  assert.equal(allNeighbors.size, 31, 'show-more state may reveal the remaining canonical neighbors');
+
+  const seededTarget = boundedVisibleNodeIds(
+    dense,
+    new Set(),
+    new Map(),
+    { seedIds: ['dense:29'] }
+  );
+  assert.ok(seededTarget.has('dense:29'), 'search/path focus may reveal a canonical target outside the current chunk');
 });
 
 test('System Map provenance resolves repository files without copying source content', () => {
@@ -96,6 +120,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /class="graph-legend"/);
   assert.match(page, /Exact relationship/);
   assert.match(page, /prefers-reduced-motion/);
+  assert.match(page, /branch-progress/);
+  assert.match(page, /show-more-button/);
   assert.match(page, /id="map-type-filter"/);
   assert.match(page, /id="map-relationship-filter"/);
   assert.match(page, /System Map/);
@@ -111,6 +137,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /typeFilter/);
   assert.match(client, /highlightedEdgeId/);
   assert.match(client, /data-highlight-edge/);
+  assert.match(client, /DEFAULT_BRANCH_CHUNK/);
+  assert.match(client, /boundedVisibleNodeIds/);
+  assert.match(client, /data-show-more/);
+  assert.match(client, /showMoreNeighbors/);
   assert.match(client, /url\.searchParams\.set\('edge'/);
   assert.match(client, /layoutDirection: 'horizontal'/);
   assert.match(client, /layoutDirection: 'vertical'/);
@@ -122,6 +152,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /cytoscapeFactory/);
   assert.match(renderer, /breadthfirst/);
   assert.match(renderer, /rendererElements/);
+  assert.match(renderer, /boundedVisibleNodeIds/);
+  assert.match(renderer, /DEFAULT_BRANCH_CHUNK = 24/);
   assert.match(renderer, /filtered-out/);
   assert.match(renderer, /filters = \{\}/);
   assert.match(renderer, /highlightedEdgeId = null/);
