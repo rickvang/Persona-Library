@@ -324,5 +324,6 @@
       "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
       "selector": "frontmatter"
     }
-  ]
+  ],
+  "payload_checksum": "77a8e5f61c383024"
 }
