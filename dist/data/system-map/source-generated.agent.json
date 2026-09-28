@@ -70,6 +70,11 @@
       "type": "authored-source"
     },
     {
+      "id": "file:client/system-map-renderer.mjs",
+      "label": "client/system-map-renderer.mjs",
+      "type": "authored-source"
+    },
+    {
       "id": "file:client/system-map.mjs",
       "label": "client/system-map.mjs",
       "type": "authored-source"
@@ -545,6 +550,11 @@
       "type": "generated-artifact"
     },
     {
+      "id": "file:dist/js/system-map-renderer.mjs",
+      "label": "dist/js/system-map-renderer.mjs",
+      "type": "generated-artifact"
+    },
+    {
       "id": "file:dist/js/system-map.mjs",
       "label": "dist/js/system-map.mjs",
       "type": "generated-artifact"
@@ -858,6 +868,12 @@
       "relationship": "generates"
     },
     {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map-renderer.mjs",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/js/system-map-renderer.mjs",
+      "relationship": "generates"
+    },
+    {
       "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map.mjs",
       "from": "build-step:scripts/build-library.mjs",
       "to": "file:dist/js/system-map.mjs",
@@ -1059,6 +1075,12 @@
       "id": "edge:file:client/system-map-graph.mjs--copied-to--file:dist/js/system-map-graph.mjs",
       "from": "file:client/system-map-graph.mjs",
       "to": "file:dist/js/system-map-graph.mjs",
+      "relationship": "copied-to"
+    },
+    {
+      "id": "edge:file:client/system-map-renderer.mjs--copied-to--file:dist/js/system-map-renderer.mjs",
+      "from": "file:client/system-map-renderer.mjs",
+      "to": "file:dist/js/system-map-renderer.mjs",
       "relationship": "copied-to"
     },
     {
@@ -1632,6 +1654,12 @@
       "relationship": "validated-by"
     },
     {
+      "id": "edge:file:dist/js/system-map-renderer.mjs--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/js/system-map-renderer.mjs",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by"
+    },
+    {
       "id": "edge:file:dist/js/system-map.mjs--validated-by--validation:generated-output-cleanliness",
       "from": "file:dist/js/system-map.mjs",
       "to": "validation:generated-output-cleanliness",
@@ -1797,6 +1825,12 @@
       "id": "edge:source-group:client--contains--file:client/system-map-graph.mjs",
       "from": "source-group:client",
       "to": "file:client/system-map-graph.mjs",
+      "relationship": "contains"
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/system-map-renderer.mjs",
+      "from": "source-group:client",
+      "to": "file:client/system-map-renderer.mjs",
       "relationship": "contains"
     },
     {
@@ -2264,6 +2298,11 @@
       "selector": "files copy contract"
     },
     "file:client/system-map-graph.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
+    "file:client/system-map-renderer.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
@@ -2743,6 +2782,11 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
+    "file:dist/js/system-map-renderer.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
     "file:dist/js/system-map.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
@@ -3023,6 +3067,11 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
+    "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map-renderer.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
     "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
@@ -3189,6 +3238,11 @@
       "selector": "files copy contract"
     },
     "edge:file:client/system-map-graph.mjs--copied-to--file:dist/js/system-map-graph.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
+    "edge:file:client/system-map-renderer.mjs--copied-to--file:dist/js/system-map-renderer.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
@@ -3668,6 +3722,11 @@
       "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
       "selector": "dist cleanliness scope"
     },
+    "edge:file:dist/js/system-map-renderer.mjs--validated-by--validation:generated-output-cleanliness": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+      "selector": "dist cleanliness scope"
+    },
     "edge:file:dist/js/system-map.mjs--validated-by--validation:generated-output-cleanliness": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
@@ -3804,6 +3863,11 @@
       "selector": "files copy contract"
     },
     "edge:source-group:client--contains--file:client/system-map-graph.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
+    "edge:source-group:client--contains--file:client/system-map-renderer.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"

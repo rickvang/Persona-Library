@@ -7,6 +7,10 @@ import {
   sourceUrl,
   nodeTypeLabel
 } from './system-map-graph.mjs';
+import {
+  SystemMapRenderer,
+  initialExpandedIds
+} from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -18,28 +22,33 @@ const lensConfigs = {
   'work-coordination': {
     label: 'Work & coordination',
     graphUrl: root?.dataset.graphWorkCoordinationUrl,
-    sourceUrl: root?.dataset.sourceWorkCoordinationUrl
+    sourceUrl: root?.dataset.sourceWorkCoordinationUrl,
+    layoutDirection: 'horizontal'
   },
   'repository-ownership': {
     label: 'Repository ownership',
     graphUrl: root?.dataset.graphRepositoryOwnershipUrl,
-    sourceUrl: root?.dataset.sourceRepositoryOwnershipUrl
+    sourceUrl: root?.dataset.sourceRepositoryOwnershipUrl,
+    layoutDirection: 'vertical'
   },
   'persona-skill': {
     label: 'Persona / Skill',
     graphUrl: root?.dataset.graphPersonaSkillUrl,
-    sourceUrl: root?.dataset.sourcePersonaSkillUrl
+    sourceUrl: root?.dataset.sourcePersonaSkillUrl,
+    layoutDirection: 'vertical'
   },
   'source-generated': {
     label: 'Source / generated',
     graphUrl: root?.dataset.graphSourceGeneratedUrl,
     sourceUrl: root?.dataset.sourceSourceGeneratedUrl,
+    layoutDirection: 'horizontal',
     coverageNote: 'Complete for explicit current build mappings; not exhaustive repository dependency analysis.'
   },
   'agent-runtime': {
     label: 'Agent / runtime',
     graphUrl: root?.dataset.graphAgentRuntimeUrl,
     sourceUrl: root?.dataset.sourceAgentRuntimeUrl,
+    layoutDirection: 'horizontal',
     coverageNote: 'Complete for declared static routing contracts; it does not report live Tool, connector, permission, deployment, or model availability.'
   }
 };
@@ -51,18 +60,30 @@ const state = {
   selectedId: null,
   expanded: new Set(),
   path: null,
+  focusPath: null,
+  typeFilter: '',
+  relationshipFilter: '',
   lens: 'work-coordination'
 };
 
 const elements = {
   status: document.getElementById('map-status'),
   explorer: document.getElementById('map-explorer'),
-  nodeList: document.getElementById('map-nodes'),
+  canvas: document.getElementById('map-canvas'),
+  graphFallback: document.getElementById('map-node-fallback'),
+  keyboardNav: document.getElementById('map-keyboard-nav'),
   details: document.getElementById('map-details'),
   pathFrom: document.getElementById('path-from'),
   pathTo: document.getElementById('path-to'),
   pathResult: document.getElementById('path-result'),
   reset: document.getElementById('map-reset'),
+  fit: document.getElementById('map-fit'),
+  fitInline: document.getElementById('map-fit-inline'),
+  search: document.getElementById('map-search'),
+  searchGo: document.getElementById('map-search-go'),
+  searchOptions: document.getElementById('map-search-options'),
+  typeFilter: document.getElementById('map-type-filter'),
+  relationshipFilter: document.getElementById('map-relationship-filter'),
   lens: document.getElementById('map-lens'),
   liveRegion: document.getElementById('map-live-region'),
   sourceLink: document.getElementById('map-graph-source-link'),
@@ -70,6 +91,9 @@ const elements = {
   errorMessage: document.getElementById('map-error-message'),
   sourceFallback: document.getElementById('map-source-fallback')
 };
+
+let renderer = null;
+let rendererUnavailable = false;
 
 function announce(message) {
   elements.liveRegion.textContent = message;
@@ -87,6 +111,108 @@ function relationshipLabel(value) {
   return String(value || '').replaceAll('-', ' ');
 }
 
+function activeVisualPath() {
+  return state.path || state.focusPath;
+}
+
+function nearestRootPath(targetId) {
+  if (!state.graph) return null;
+  let best = null;
+  for (const rootId of rootNodeIds(state.graph)) {
+    const candidate = findPath(state.graph, rootId, targetId);
+    if (!candidate) continue;
+    if (!best || candidate.edges.length < best.edges.length) best = candidate;
+  }
+  return best;
+}
+
+function searchNode(query) {
+  const value = String(query || '').trim().toLowerCase();
+  if (!value || !state.graph) return null;
+  const nodes = state.graph.nodes.slice().sort((a, b) => a.label.localeCompare(b.label));
+  return nodes.find(node => node.id.toLowerCase() === value)
+    || nodes.find(node => node.label.toLowerCase() === value)
+    || nodes.find(node => node.label.toLowerCase().startsWith(value))
+    || nodes.find(node => node.label.toLowerCase().includes(value) || node.id.toLowerCase().includes(value))
+    || null;
+}
+
+function updateUrlState() {
+  if (!state.graph || !globalThis.history?.replaceState) return;
+  const url = new URL(globalThis.location.href);
+  url.searchParams.set('lens', state.lens);
+  if (state.selectedId) url.searchParams.set('node', state.selectedId);
+  else url.searchParams.delete('node');
+
+  if (state.path && elements.pathFrom.value && elements.pathTo.value) {
+    url.searchParams.set('from', elements.pathFrom.value);
+    url.searchParams.set('to', elements.pathTo.value);
+  } else {
+    url.searchParams.delete('from');
+    url.searchParams.delete('to');
+  }
+
+  if (state.typeFilter) url.searchParams.set('type', state.typeFilter);
+  else url.searchParams.delete('type');
+
+  if (state.relationshipFilter) url.searchParams.set('relationship', state.relationshipFilter);
+  else url.searchParams.delete('relationship');
+
+  globalThis.history.replaceState(null, '', url);
+}
+
+function populateExploreControls() {
+  const nodeTypes = [...new Set(state.graph.nodes.map(node => node.type))].sort();
+  const relationships = [...new Set(state.graph.edges.map(edge => edge.relationship))].sort();
+  const nodes = state.graph.nodes.slice().sort((a, b) => a.label.localeCompare(b.label));
+
+  elements.searchOptions.innerHTML = nodes
+    .map(node => `<option value="${escapeHtml(node.label)}"></option>`)
+    .join('');
+
+  elements.typeFilter.innerHTML = '<option value="">All visible types</option>'
+    + nodeTypes.map(type => `<option value="${escapeHtml(type)}">${escapeHtml(nodeTypeLabel(type))}</option>`).join('');
+  elements.relationshipFilter.innerHTML = '<option value="">All visible relationships</option>'
+    + relationships.map(relationship => `<option value="${escapeHtml(relationship)}">${escapeHtml(relationshipLabel(relationship))}</option>`).join('');
+
+  elements.typeFilter.disabled = false;
+  elements.relationshipFilter.disabled = false;
+  elements.typeFilter.value = state.typeFilter;
+  elements.relationshipFilter.value = state.relationshipFilter;
+}
+
+function restoreUrlState() {
+  const params = new URLSearchParams(globalThis.location.search);
+  const nodeId = params.get('node');
+  const from = params.get('from');
+  const to = params.get('to');
+  const type = params.get('type');
+  const relationship = params.get('relationship');
+
+  if (type && state.graph.nodes.some(node => node.type === type)) state.typeFilter = type;
+  if (relationship && state.graph.edges.some(edge => edge.relationship === relationship)) state.relationshipFilter = relationship;
+
+  if (nodeId && state.graph.nodes.some(node => node.id === nodeId)) {
+    state.selectedId = nodeId;
+    state.focusPath = nearestRootPath(nodeId);
+    elements.search.value = state.graph.nodes.find(node => node.id === nodeId)?.label || nodeId;
+  }
+
+  if (
+    from && to &&
+    state.graph.nodes.some(node => node.id === from) &&
+    state.graph.nodes.some(node => node.id === to)
+  ) {
+    state.path = findPath(state.graph, from, to);
+    state.focusPath = null;
+    elements.pathFrom.value = from;
+    elements.pathTo.value = to;
+  }
+
+  elements.typeFilter.value = state.typeFilter;
+  elements.relationshipFilter.value = state.relationshipFilter;
+}
+
 function coverageDescription() {
   if (!state.graph) return '';
   if (state.graph.coverage === 'complete-for-scope') {
@@ -95,13 +221,40 @@ function coverageDescription() {
   return 'Known-explicit coverage, not exhaustive impact analysis.';
 }
 
+function ensureRenderer() {
+  if (renderer || rendererUnavailable) return renderer;
+  if (typeof globalThis.cytoscape !== 'function') {
+    rendererUnavailable = true;
+    return null;
+  }
+  try {
+    renderer = new SystemMapRenderer({
+      container: elements.canvas,
+      cytoscapeFactory: globalThis.cytoscape,
+      onSelect: selectNode
+    });
+  } catch {
+    rendererUnavailable = true;
+  }
+  return renderer;
+}
+
+function currentVisibleIds() {
+  const visible = visibleNodeIds(state.graph, state.expanded);
+  const visualPath = activeVisualPath();
+  if (visualPath) visualPath.nodes.forEach(id => visible.add(id));
+  if (state.selectedId) visible.add(state.selectedId);
+  return visible;
+}
+
 function renderStatus() {
   if (!state.graph) return;
   const config = currentLensConfig();
+  const visible = currentVisibleIds();
   elements.status.innerHTML = `
     <span class="status-dot" aria-hidden="true"></span>
     <strong>${escapeHtml(config?.label || 'Derived view')}</strong>
-    <span>${escapeHtml(state.graph.nodes.length)} nodes · ${escapeHtml(state.graph.edges.length)} relationships</span>
+    <span>${escapeHtml(visible.size)} visible · ${escapeHtml(state.graph.nodes.length)} total nodes · ${escapeHtml(state.graph.edges.length)} relationships</span>
     <span class="coverage">Coverage: ${escapeHtml(state.graph.coverage)}</span>
   `;
 }
@@ -201,15 +354,12 @@ function renderDetails() {
   `;
 }
 
-function renderNodes() {
-  const visible = visibleNodeIds(state.graph, state.expanded);
-  if (state.path) state.path.nodes.forEach(id => visible.add(id));
+function renderFallbackNodes(visible) {
   const roots = new Set(rootNodeIds(state.graph));
   const pathNodes = new Set(state.path?.nodes || []);
-  const pathEdges = new Set(state.path?.edges || []);
   const index = indexGraph(state.graph);
 
-  elements.nodeList.innerHTML = state.graph.nodes
+  elements.graphFallback.innerHTML = state.graph.nodes
     .filter(node => visible.has(node.id))
     .sort((a, b) => {
       const aRoot = roots.has(a.id) ? 0 : 1;
@@ -217,25 +367,47 @@ function renderNodes() {
       return aRoot - bRoot || a.label.localeCompare(b.label);
     })
     .map(node => {
-      const outgoing = index.outgoing.get(node.id);
-      const incoming = index.incoming.get(node.id);
-      const connectedPathEdges = [...outgoing, ...incoming].filter(edge => pathEdges.has(edge.id));
       const selected = state.selectedId === node.id;
       const expanded = state.expanded.has(node.id);
       return `
-        <article class="map-node ${selected ? 'selected' : ''} ${pathNodes.has(node.id) ? 'in-path' : ''}" data-node-card="${escapeHtml(node.id)}">
+        <article class="map-node ${selected ? 'selected' : ''} ${pathNodes.has(node.id) ? 'in-path' : ''}">
           <button type="button" class="node-select" data-select-node="${escapeHtml(node.id)}" aria-pressed="${selected}">
             <span class="node-kicker">${escapeHtml(nodeTypeLabel(node.type))}</span>
             <strong>${escapeHtml(node.label)}</strong>
-            <span class="node-meta">${incoming.length} in · ${outgoing.length} out</span>
+            <span class="node-meta">${index.incoming.get(node.id).length} in · ${index.outgoing.get(node.id).length} out</span>
           </button>
           <button type="button" class="branch-toggle" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expanded}">
             ${expanded ? 'Collapse' : 'Expand'}
           </button>
-          ${connectedPathEdges.length ? '<span class="path-marker">On selected path</span>' : ''}
         </article>
       `;
     }).join('');
+}
+
+function renderGraph() {
+  const visible = currentVisibleIds();
+  const activeRenderer = ensureRenderer();
+
+  renderFallbackNodes(visible);
+
+  if (activeRenderer) {
+    elements.canvas.hidden = false;
+    activeRenderer.render({
+      graph: state.graph,
+      visibleIds: visible,
+      selectedId: state.selectedId,
+      path: activeVisualPath(),
+      filters: {
+        nodeType: state.typeFilter,
+        relationship: state.relationshipFilter
+      },
+      layoutDirection: currentLensConfig()?.layoutDirection || 'vertical'
+    });
+    return;
+  }
+
+  elements.canvas.hidden = true;
+  elements.keyboardNav.open = true;
 }
 
 function renderPath() {
@@ -253,7 +425,7 @@ function renderPath() {
 
 function render() {
   renderStatus();
-  renderNodes();
+  renderGraph();
   renderDetails();
   renderPath();
 }
@@ -261,6 +433,7 @@ function render() {
 function selectNode(id) {
   state.selectedId = id;
   render();
+  updateUrlState();
   announce(`Selected ${selectedNode()?.label || id}.`);
 }
 
@@ -274,12 +447,29 @@ function toggleExpanded(id) {
 
 function reset() {
   state.selectedId = null;
-  state.expanded.clear();
+  state.expanded = initialExpandedIds(state.graph);
   state.path = null;
+  state.focusPath = null;
+  state.typeFilter = '';
+  state.relationshipFilter = '';
   elements.pathFrom.value = '';
   elements.pathTo.value = '';
+  elements.search.value = '';
+  elements.typeFilter.value = '';
+  elements.relationshipFilter.value = '';
   render();
-  announce('System Map reset to the simple overview.');
+  updateUrlState();
+  announce('System Map reset to the bounded overview.');
+}
+
+function fitGraph() {
+  const activeRenderer = ensureRenderer();
+  if (activeRenderer) {
+    activeRenderer.fit();
+    announce('Visible graph fitted to the viewport.');
+  } else {
+    announce('Graph renderer unavailable; textual fallback remains active.');
+  }
 }
 
 function findSelectedPath() {
@@ -292,8 +482,38 @@ function findSelectedPath() {
     return;
   }
   state.path = findPath(state.graph, from, to);
+  state.focusPath = null;
   render();
+  updateUrlState();
+  if (state.path) {
+    requestAnimationFrame(() => ensureRenderer()?.fit());
+  }
   announce(state.path ? 'Explicit path shown.' : 'No explicit path found in this lens.');
+}
+
+function focusSearchResult() {
+  const node = searchNode(elements.search.value);
+  if (!node) {
+    announce('No matching System Map node found.');
+    return;
+  }
+
+  state.selectedId = node.id;
+  state.path = null;
+  state.focusPath = nearestRootPath(node.id);
+  elements.search.value = node.label;
+  render();
+  updateUrlState();
+  requestAnimationFrame(() => ensureRenderer()?.fit());
+  announce(`Focused ${node.label}.`);
+}
+
+function applyFilters() {
+  state.typeFilter = elements.typeFilter.value;
+  state.relationshipFilter = elements.relationshipFilter.value;
+  render();
+  updateUrlState();
+  announce('Graph filters updated.');
 }
 
 function showLoadError(error, config) {
@@ -304,7 +524,7 @@ function showLoadError(error, config) {
   if (config?.sourceUrl) elements.sourceFallback.href = config.sourceUrl;
 }
 
-async function loadLens(lens) {
+async function loadLens(lens, { restoreUrl = false } = {}) {
   const config = lensConfigs[lens];
   if (!config?.graphUrl) {
     elements.lens.value = state.lens;
@@ -327,14 +547,21 @@ async function loadLens(lens) {
     state.lens = lens;
     state.graph = graph;
     state.selectedId = null;
-    state.expanded.clear();
+    state.expanded = initialExpandedIds(graph);
     state.path = null;
+    state.focusPath = null;
+    state.typeFilter = '';
+    state.relationshipFilter = '';
+    elements.search.value = '';
     elements.lens.value = lens;
     elements.sourceLink.href = config.sourceUrl;
     elements.sourceFallback.href = config.sourceUrl;
     renderPathControls();
+    populateExploreControls();
+    if (restoreUrl) restoreUrlState();
     elements.explorer.hidden = false;
     render();
+    updateUrlState();
     announce(`${config.label} lens loaded.`);
   } catch (error) {
     showLoadError(error, config);
@@ -352,6 +579,17 @@ function bindEvents() {
     if (expand) toggleExpanded(expand.dataset.toggleExpand);
   });
   elements.reset.addEventListener('click', reset);
+  elements.fit.addEventListener('click', fitGraph);
+  elements.fitInline.addEventListener('click', fitGraph);
+  elements.searchGo.addEventListener('click', focusSearchResult);
+  elements.search.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      focusSearchResult();
+    }
+  });
+  elements.typeFilter.addEventListener('change', applyFilters);
+  elements.relationshipFilter.addEventListener('change', applyFilters);
   document.getElementById('find-path').addEventListener('click', findSelectedPath);
   elements.lens.addEventListener('change', () => {
     loadLens(elements.lens.value);
@@ -359,4 +597,6 @@ function bindEvents() {
 }
 
 bindEvents();
-loadLens('work-coordination');
+const initialParams = new URLSearchParams(globalThis.location.search);
+const initialLens = lensConfigs[initialParams.get('lens')] ? initialParams.get('lens') : 'work-coordination';
+loadLens(initialLens, { restoreUrl: true });
