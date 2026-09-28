@@ -89,6 +89,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /id="map-canvas"/);
   assert.match(page, /id="map-fit"/);
   assert.match(page, /id="map-node-fallback"/);
+  assert.match(page, /id="map-keyboard-nav"/);
+  assert.match(page, /Keyboard node navigator/);
+  assert.match(page, /equivalent textual way to inspect and expand/);
   assert.match(page, /id="map-search"/);
   assert.match(page, /id="map-type-filter"/);
   assert.match(page, /id="map-relationship-filter"/);
@@ -103,6 +106,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /URLSearchParams/);
   assert.match(client, /relationshipFilter/);
   assert.match(client, /typeFilter/);
+  assert.match(client, /renderFallbackNodes\(visible\)/);
+  assert.match(client, /keyboardNav\.open = true/);
+  assert.doesNotMatch(client, /graphFallback\.hidden = true/);
   assert.match(renderer, /cytoscapeFactory/);
   assert.match(renderer, /breadthfirst/);
   assert.match(renderer, /rendererElements/);
