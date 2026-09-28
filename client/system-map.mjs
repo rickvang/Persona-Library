@@ -56,6 +56,9 @@ const lensConfigs = {
 };
 
 const graphCache = new Map();
+const lensViewStates = new Map();
+const navigationStack = [];
+const MAX_NAVIGATION_HISTORY = 24;
 
 const state = {
   graph: null,
@@ -64,6 +67,7 @@ const state = {
   expansionLimits: new Map(),
   path: null,
   focusPath: null,
+  focusId: null,
   highlightedEdgeId: null,
   typeFilter: '',
   relationshipFilter: '',
@@ -73,6 +77,10 @@ const state = {
 const elements = {
   status: document.getElementById('map-status'),
   explorer: document.getElementById('map-explorer'),
+  back: document.getElementById('map-back'),
+  trail: document.getElementById('map-trail'),
+  selectionActions: document.getElementById('map-selection-actions'),
+  explorerHeading: document.getElementById('explorer-heading'),
   canvas: document.getElementById('map-canvas'),
   graphFallback: document.getElementById('map-node-fallback'),
   keyboardNav: document.getElementById('map-keyboard-nav'),
@@ -93,7 +101,13 @@ const elements = {
   sourceLink: document.getElementById('map-graph-source-link'),
   error: document.getElementById('map-error'),
   errorMessage: document.getElementById('map-error-message'),
-  sourceFallback: document.getElementById('map-source-fallback')
+  sourceFallback: document.getElementById('map-source-fallback'),
+  question: document.getElementById('map-question'),
+  questionScope: document.getElementById('map-question-scope'),
+  questionSummary: document.getElementById('map-question-context-summary'),
+  questionPreview: document.getElementById('map-question-preview'),
+  questionCopy: document.getElementById('map-copy-question'),
+  questionCopyStatus: document.getElementById('map-copy-status')
 };
 
 let renderer = null;
@@ -109,6 +123,99 @@ function currentLensConfig() {
 
 function selectedNode() {
   return state.graph?.nodes.find(node => node.id === state.selectedId) || null;
+}
+
+function clonePath(path) {
+  return path ? { nodes: [...path.nodes], edges: [...path.edges] } : null;
+}
+
+function captureViewSnapshot() {
+  return {
+    lens: state.lens,
+    selectedId: state.selectedId,
+    expanded: [...state.expanded],
+    expansionLimits: [...state.expansionLimits.entries()],
+    path: clonePath(state.path),
+    focusPath: clonePath(state.focusPath),
+    focusId: state.focusId,
+    highlightedEdgeId: state.highlightedEdgeId,
+    typeFilter: state.typeFilter,
+    relationshipFilter: state.relationshipFilter,
+    search: elements.search?.value || '',
+    pathFrom: elements.pathFrom?.value || '',
+    pathTo: elements.pathTo?.value || '',
+    viewport: renderer?.getViewport?.() || null
+  };
+}
+
+function validPath(path) {
+  if (!path || !state.graph) return null;
+  const nodeIds = new Set(state.graph.nodes.map(node => node.id));
+  const edgeIds = new Set(state.graph.edges.map(edge => edge.id));
+  if (!path.nodes.every(id => nodeIds.has(id)) || !path.edges.every(id => edgeIds.has(id))) return null;
+  return clonePath(path);
+}
+
+function applyViewSnapshot(snapshot) {
+  if (!snapshot || !state.graph) return;
+  const nodeIds = new Set(state.graph.nodes.map(node => node.id));
+  const edgeIds = new Set(state.graph.edges.map(edge => edge.id));
+  state.selectedId = nodeIds.has(snapshot.selectedId) ? snapshot.selectedId : null;
+  state.expanded = new Set((snapshot.expanded || []).filter(id => nodeIds.has(id)));
+  state.expansionLimits = new Map(
+    (snapshot.expansionLimits || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.path = validPath(snapshot.path);
+  state.focusPath = validPath(snapshot.focusPath);
+  state.focusId = nodeIds.has(snapshot.focusId) ? snapshot.focusId : null;
+  state.highlightedEdgeId = edgeIds.has(snapshot.highlightedEdgeId) ? snapshot.highlightedEdgeId : null;
+  state.typeFilter = state.graph.nodes.some(node => node.type === snapshot.typeFilter) ? snapshot.typeFilter : '';
+  state.relationshipFilter = state.graph.edges.some(edge => edge.relationship === snapshot.relationshipFilter)
+    ? snapshot.relationshipFilter
+    : '';
+  elements.search.value = snapshot.search || '';
+  elements.pathFrom.value = nodeIds.has(snapshot.pathFrom) ? snapshot.pathFrom : '';
+  elements.pathTo.value = nodeIds.has(snapshot.pathTo) ? snapshot.pathTo : '';
+  elements.typeFilter.value = state.typeFilter;
+  elements.relationshipFilter.value = state.relationshipFilter;
+}
+
+function saveCurrentLensState() {
+  if (!state.graph) return;
+  lensViewStates.set(state.lens, captureViewSnapshot());
+}
+
+function pushNavigationCheckpoint() {
+  if (!state.graph) return;
+  const snapshot = captureViewSnapshot();
+  const last = navigationStack.at(-1);
+  const key = item => [
+    item?.lens,
+    item?.selectedId,
+    item?.focusId,
+    item?.highlightedEdgeId,
+    item?.path?.nodes?.join('>')
+  ].join('|');
+  if (key(last) === key(snapshot)) return;
+  navigationStack.push(snapshot);
+  if (navigationStack.length > MAX_NAVIGATION_HISTORY) navigationStack.shift();
+}
+
+function snapshotLabel(snapshot) {
+  const graph = graphCache.get(snapshot?.lens);
+  const node = graph?.nodes.find(item => item.id === snapshot?.selectedId);
+  return node?.label || lensConfigs[snapshot?.lens]?.label || 'Overview';
+}
+
+function renderTrail() {
+  if (!elements.trail || !elements.back) return;
+  elements.back.disabled = navigationStack.length === 0;
+  const recent = navigationStack.slice(-3).map(snapshot => snapshotLabel(snapshot));
+  const current = selectedNode()?.label || currentLensConfig()?.label || 'Overview';
+  const labels = [...recent, current].filter((label, index, all) => index === 0 || label !== all[index - 1]);
+  elements.trail.innerHTML = labels
+    .map((label, index) => `<span class="${index === labels.length - 1 ? 'current' : ''}">${escapeHtml(label)}</span>`)
+    .join('<span aria-hidden="true">›</span>');
 }
 
 function relationshipLabel(value) {
