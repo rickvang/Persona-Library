@@ -1,8 +1,11 @@
 import {
+  directNeighbors,
   indexGraph,
   rootNodeIds,
   visibleNodeIds
 } from './system-map-graph.mjs';
+
+export const DEFAULT_BRANCH_CHUNK = 24;
 
 function readableRelationship(value) {
   return String(value || '').replaceAll('-', ' ');
@@ -24,6 +27,29 @@ export function initialExpandedIds(graph, { maxVisible = 24 } = {}) {
   const expanded = new Set(roots);
   const firstLevel = visibleNodeIds(graph, expanded);
   return firstLevel.size <= maxVisible ? expanded : new Set();
+}
+
+export function boundedVisibleNodeIds(
+  graph,
+  expandedIds = [],
+  expansionLimits = new Map(),
+  { chunkSize = DEFAULT_BRANCH_CHUNK, seedIds = [] } = {}
+) {
+  const knownIds = new Set(graph.nodes.map(node => node.id));
+  const visible = new Set(rootNodeIds(graph));
+
+  for (const id of seedIds) {
+    if (knownIds.has(id)) visible.add(id);
+  }
+
+  for (const id of expandedIds) {
+    if (!visible.has(id)) continue;
+    const limitValue = Number(expansionLimits?.get?.(id) ?? chunkSize);
+    const limit = Number.isFinite(limitValue) && limitValue > 0 ? Math.floor(limitValue) : chunkSize;
+    for (const node of directNeighbors(graph, id).nodes.slice(0, limit)) visible.add(node.id);
+  }
+
+  return visible;
 }
 
 export function rendererElements(graph, visibleIds) {
