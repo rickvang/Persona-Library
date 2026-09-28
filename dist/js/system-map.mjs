@@ -7,6 +7,10 @@ import {
   sourceUrl,
   nodeTypeLabel
 } from './system-map-graph.mjs';
+import {
+  SystemMapRenderer,
+  initialExpandedIds
+} from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
   '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -57,12 +61,15 @@ const state = {
 const elements = {
   status: document.getElementById('map-status'),
   explorer: document.getElementById('map-explorer'),
-  nodeList: document.getElementById('map-nodes'),
+  canvas: document.getElementById('map-canvas'),
+  graphFallback: document.getElementById('map-node-fallback'),
   details: document.getElementById('map-details'),
   pathFrom: document.getElementById('path-from'),
   pathTo: document.getElementById('path-to'),
   pathResult: document.getElementById('path-result'),
   reset: document.getElementById('map-reset'),
+  fit: document.getElementById('map-fit'),
+  fitInline: document.getElementById('map-fit-inline'),
   lens: document.getElementById('map-lens'),
   liveRegion: document.getElementById('map-live-region'),
   sourceLink: document.getElementById('map-graph-source-link'),
@@ -70,6 +77,9 @@ const elements = {
   errorMessage: document.getElementById('map-error-message'),
   sourceFallback: document.getElementById('map-source-fallback')
 };
+
+let renderer = null;
+let rendererUnavailable = false;
 
 function announce(message) {
   elements.liveRegion.textContent = message;
@@ -95,13 +105,38 @@ function coverageDescription() {
   return 'Known-explicit coverage, not exhaustive impact analysis.';
 }
 
+function ensureRenderer() {
+  if (renderer || rendererUnavailable) return renderer;
+  if (typeof globalThis.cytoscape !== 'function') {
+    rendererUnavailable = true;
+    return null;
+  }
+  try {
+    renderer = new SystemMapRenderer({
+      container: elements.canvas,
+      cytoscapeFactory: globalThis.cytoscape,
+      onSelect: selectNode
+    });
+  } catch {
+    rendererUnavailable = true;
+  }
+  return renderer;
+}
+
+function currentVisibleIds() {
+  const visible = visibleNodeIds(state.graph, state.expanded);
+  if (state.path) state.path.nodes.forEach(id => visible.add(id));
+  return visible;
+}
+
 function renderStatus() {
   if (!state.graph) return;
   const config = currentLensConfig();
+  const visible = currentVisibleIds();
   elements.status.innerHTML = `
     <span class="status-dot" aria-hidden="true"></span>
     <strong>${escapeHtml(config?.label || 'Derived view')}</strong>
-    <span>${escapeHtml(state.graph.nodes.length)} nodes · ${escapeHtml(state.graph.edges.length)} relationships</span>
+    <span>${escapeHtml(visible.size)} visible · ${escapeHtml(state.graph.nodes.length)} total nodes · ${escapeHtml(state.graph.edges.length)} relationships</span>
     <span class="coverage">Coverage: ${escapeHtml(state.graph.coverage)}</span>
   `;
 }
@@ -201,15 +236,12 @@ function renderDetails() {
   `;
 }
 
-function renderNodes() {
-  const visible = visibleNodeIds(state.graph, state.expanded);
-  if (state.path) state.path.nodes.forEach(id => visible.add(id));
+function renderFallbackNodes(visible) {
   const roots = new Set(rootNodeIds(state.graph));
   const pathNodes = new Set(state.path?.nodes || []);
-  const pathEdges = new Set(state.path?.edges || []);
   const index = indexGraph(state.graph);
 
-  elements.nodeList.innerHTML = state.graph.nodes
+  elements.graphFallback.innerHTML = state.graph.nodes
     .filter(node => visible.has(node.id))
     .sort((a, b) => {
       const aRoot = roots.has(a.id) ? 0 : 1;
@@ -217,25 +249,42 @@ function renderNodes() {
       return aRoot - bRoot || a.label.localeCompare(b.label);
     })
     .map(node => {
-      const outgoing = index.outgoing.get(node.id);
-      const incoming = index.incoming.get(node.id);
-      const connectedPathEdges = [...outgoing, ...incoming].filter(edge => pathEdges.has(edge.id));
       const selected = state.selectedId === node.id;
       const expanded = state.expanded.has(node.id);
       return `
-        <article class="map-node ${selected ? 'selected' : ''} ${pathNodes.has(node.id) ? 'in-path' : ''}" data-node-card="${escapeHtml(node.id)}">
+        <article class="map-node ${selected ? 'selected' : ''} ${pathNodes.has(node.id) ? 'in-path' : ''}">
           <button type="button" class="node-select" data-select-node="${escapeHtml(node.id)}" aria-pressed="${selected}">
             <span class="node-kicker">${escapeHtml(nodeTypeLabel(node.type))}</span>
             <strong>${escapeHtml(node.label)}</strong>
-            <span class="node-meta">${incoming.length} in · ${outgoing.length} out</span>
+            <span class="node-meta">${index.incoming.get(node.id).length} in · ${index.outgoing.get(node.id).length} out</span>
           </button>
           <button type="button" class="branch-toggle" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expanded}">
             ${expanded ? 'Collapse' : 'Expand'}
           </button>
-          ${connectedPathEdges.length ? '<span class="path-marker">On selected path</span>' : ''}
         </article>
       `;
     }).join('');
+}
+
+function renderGraph() {
+  const visible = currentVisibleIds();
+  const activeRenderer = ensureRenderer();
+
+  if (activeRenderer) {
+    elements.canvas.hidden = false;
+    elements.graphFallback.hidden = true;
+    activeRenderer.render({
+      graph: state.graph,
+      visibleIds: visible,
+      selectedId: state.selectedId,
+      path: state.path
+    });
+    return;
+  }
+
+  elements.canvas.hidden = true;
+  elements.graphFallback.hidden = false;
+  renderFallbackNodes(visible);
 }
 
 function renderPath() {
@@ -253,7 +302,7 @@ function renderPath() {
 
 function render() {
   renderStatus();
-  renderNodes();
+  renderGraph();
   renderDetails();
   renderPath();
 }
@@ -274,12 +323,22 @@ function toggleExpanded(id) {
 
 function reset() {
   state.selectedId = null;
-  state.expanded.clear();
+  state.expanded = initialExpandedIds(state.graph);
   state.path = null;
   elements.pathFrom.value = '';
   elements.pathTo.value = '';
   render();
-  announce('System Map reset to the simple overview.');
+  announce('System Map reset to the bounded overview.');
+}
+
+function fitGraph() {
+  const activeRenderer = ensureRenderer();
+  if (activeRenderer) {
+    activeRenderer.fit();
+    announce('Visible graph fitted to the viewport.');
+  } else {
+    announce('Graph renderer unavailable; textual fallback remains active.');
+  }
 }
 
 function findSelectedPath() {
@@ -293,6 +352,9 @@ function findSelectedPath() {
   }
   state.path = findPath(state.graph, from, to);
   render();
+  if (state.path) {
+    requestAnimationFrame(() => ensureRenderer()?.fit());
+  }
   announce(state.path ? 'Explicit path shown.' : 'No explicit path found in this lens.');
 }
 
@@ -327,7 +389,7 @@ async function loadLens(lens) {
     state.lens = lens;
     state.graph = graph;
     state.selectedId = null;
-    state.expanded.clear();
+    state.expanded = initialExpandedIds(graph);
     state.path = null;
     elements.lens.value = lens;
     elements.sourceLink.href = config.sourceUrl;
@@ -352,6 +414,8 @@ function bindEvents() {
     if (expand) toggleExpanded(expand.dataset.toggleExpand);
   });
   elements.reset.addEventListener('click', reset);
+  elements.fit.addEventListener('click', fitGraph);
+  elements.fitInline.addEventListener('click', fitGraph);
   document.getElementById('find-path').addEventListener('click', findSelectedPath);
   elements.lens.addEventListener('change', () => {
     loadLens(elements.lens.value);
