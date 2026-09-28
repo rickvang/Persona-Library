@@ -1,14 +1,16 @@
 import {
   validateGraph,
+  directNeighbors,
   indexGraph,
   rootNodeIds,
-  visibleNodeIds,
   findPath,
   sourceUrl,
   nodeTypeLabel
 } from './system-map-graph.mjs';
 import {
+  DEFAULT_BRANCH_CHUNK,
   SystemMapRenderer,
+  boundedVisibleNodeIds,
   initialExpandedIds
 } from './system-map-renderer.mjs';
 
@@ -59,6 +61,7 @@ const state = {
   graph: null,
   selectedId: null,
   expanded: new Set(),
+  expansionLimits: new Map(),
   path: null,
   focusPath: null,
   highlightedEdgeId: null,
@@ -219,6 +222,21 @@ function restoreUrlState() {
   elements.relationshipFilter.value = state.relationshipFilter;
 }
 
+function expansionInfo(id) {
+  const neighbors = directNeighbors(state.graph, id).nodes;
+  const total = neighbors.length;
+  const limit = Math.min(total, Number(state.expansionLimits.get(id) ?? DEFAULT_BRANCH_CHUNK));
+  const expanded = state.expanded.has(id);
+  const revealed = expanded ? limit : 0;
+  return {
+    expanded,
+    total,
+    revealed,
+    hasMore: expanded && revealed < total,
+    nextCount: Math.min(DEFAULT_BRANCH_CHUNK, Math.max(0, total - revealed))
+  };
+}
+
 function coverageDescription() {
   if (!state.graph) return '';
   if (state.graph.coverage === 'complete-for-scope') {
@@ -246,18 +264,21 @@ function ensureRenderer() {
 }
 
 function currentVisibleIds() {
-  const visible = visibleNodeIds(state.graph, state.expanded);
+  const seedIds = [];
   const visualPath = activeVisualPath();
-  if (visualPath) visualPath.nodes.forEach(id => visible.add(id));
-  if (state.selectedId) visible.add(state.selectedId);
+  if (visualPath) seedIds.push(...visualPath.nodes);
+  if (state.selectedId) seedIds.push(state.selectedId);
   if (state.highlightedEdgeId) {
     const edge = state.graph.edges.find(item => item.id === state.highlightedEdgeId);
-    if (edge) {
-      visible.add(edge.from);
-      visible.add(edge.to);
-    }
+    if (edge) seedIds.push(edge.from, edge.to);
   }
-  return visible;
+
+  return boundedVisibleNodeIds(
+    state.graph,
+    state.expanded,
+    state.expansionLimits,
+    { seedIds }
+  );
 }
 
 function renderStatus() {
@@ -328,7 +349,12 @@ function renderDetails() {
   const outgoing = index.outgoing.get(node.id);
   const ownership = outgoing.filter(edge => edge.relationship === 'owns' || edge.relationship.startsWith('owns-'));
   const nodeSource = sourceUrl(node.source);
-  const expanded = state.expanded.has(node.id);
+  const expansion = expansionInfo(node.id);
+  const expandLabel = expansion.expanded
+    ? 'Collapse branch'
+    : expansion.total > DEFAULT_BRANCH_CHUNK
+      ? `Expand first ${DEFAULT_BRANCH_CHUNK} of ${expansion.total}`
+      : 'Expand one level';
 
   elements.details.innerHTML = `
     <div class="detail-head">
@@ -336,10 +362,18 @@ function renderDetails() {
         <p class="eyebrow">${escapeHtml(nodeTypeLabel(node.type))}</p>
         <h2>${escapeHtml(node.label)}</h2>
         <p class="node-id">${escapeHtml(node.id)}</p>
+        ${expansion.expanded && expansion.total > DEFAULT_BRANCH_CHUNK
+          ? `<p class="branch-progress">${expansion.revealed} of ${expansion.total} direct neighbors visible</p>`
+          : ''}
       </div>
-      <button class="expand-button" type="button" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expanded}">
-        ${expanded ? 'Collapse branch' : 'Expand one level'}
-      </button>
+      <div class="branch-actions">
+        <button class="expand-button" type="button" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expansion.expanded}">
+          ${escapeHtml(expandLabel)}
+        </button>
+        ${expansion.hasMore
+          ? `<button class="show-more-button" type="button" data-show-more="${escapeHtml(node.id)}">Show ${expansion.nextCount} more</button>`
+          : ''}
+      </div>
     </div>
 
     <section class="detail-section">
@@ -390,7 +424,12 @@ function renderFallbackNodes(visible) {
     })
     .map(node => {
       const selected = state.selectedId === node.id;
-      const expanded = state.expanded.has(node.id);
+      const expansion = expansionInfo(node.id);
+      const compactLabel = expansion.expanded
+        ? 'Collapse'
+        : expansion.total > DEFAULT_BRANCH_CHUNK
+          ? `Expand ${DEFAULT_BRANCH_CHUNK}/${expansion.total}`
+          : 'Expand';
       return `
         <article class="map-node ${selected ? 'selected' : ''} ${pathNodes.has(node.id) ? 'in-path' : ''}">
           <button type="button" class="node-select" data-select-node="${escapeHtml(node.id)}" aria-pressed="${selected}">
@@ -398,9 +437,12 @@ function renderFallbackNodes(visible) {
             <strong>${escapeHtml(node.label)}</strong>
             <span class="node-meta">${index.incoming.get(node.id).length} in · ${index.outgoing.get(node.id).length} out</span>
           </button>
-          <button type="button" class="branch-toggle" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expanded}">
-            ${expanded ? 'Collapse' : 'Expand'}
+          <button type="button" class="branch-toggle" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expansion.expanded}">
+            ${escapeHtml(compactLabel)}
           </button>
+          ${expansion.hasMore
+            ? `<button type="button" class="branch-toggle branch-more" data-show-more="${escapeHtml(node.id)}">Show ${expansion.nextCount} more</button>`
+            : ''}
         </article>
       `;
     }).join('');
@@ -471,16 +513,34 @@ function highlightEdge(id) {
 }
 
 function toggleExpanded(id) {
-  if (state.expanded.has(id)) state.expanded.delete(id);
-  else state.expanded.add(id);
+  if (state.expanded.has(id)) {
+    state.expanded.delete(id);
+    state.expansionLimits.delete(id);
+  } else {
+    state.expanded.add(id);
+    state.expansionLimits.set(id, DEFAULT_BRANCH_CHUNK);
+  }
   state.selectedId = id;
   render();
   announce(`${state.expanded.has(id) ? 'Expanded' : 'Collapsed'} ${selectedNode()?.label || id}.`);
 }
 
+function showMoreNeighbors(id) {
+  const total = directNeighbors(state.graph, id).nodes.length;
+  if (!total) return;
+  state.expanded.add(id);
+  const current = Number(state.expansionLimits.get(id) ?? DEFAULT_BRANCH_CHUNK);
+  const next = Math.min(total, current + DEFAULT_BRANCH_CHUNK);
+  state.expansionLimits.set(id, next);
+  state.selectedId = id;
+  render();
+  announce(`Showing ${next} of ${total} direct neighbors for ${selectedNode()?.label || id}.`);
+}
+
 function reset() {
   state.selectedId = null;
   state.expanded = initialExpandedIds(state.graph);
+  state.expansionLimits = new Map();
   state.path = null;
   state.focusPath = null;
   state.highlightedEdgeId = null;
@@ -584,6 +644,7 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
     state.graph = graph;
     state.selectedId = null;
     state.expanded = initialExpandedIds(graph);
+    state.expansionLimits = new Map();
     state.path = null;
     state.focusPath = null;
     state.highlightedEdgeId = null;
@@ -615,6 +676,11 @@ function bindEvents() {
     const select = event.target.closest('[data-select-node]');
     if (select) {
       selectNode(select.dataset.selectNode);
+      return;
+    }
+    const showMore = event.target.closest('[data-show-more]');
+    if (showMore) {
+      showMoreNeighbors(showMore.dataset.showMore);
       return;
     }
     const expand = event.target.closest('[data-toggle-expand]');
