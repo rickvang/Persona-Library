@@ -106,6 +106,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /URLSearchParams/);
   assert.match(client, /relationshipFilter/);
   assert.match(client, /typeFilter/);
+  assert.match(client, /layoutDirection: 'horizontal'/);
+  assert.match(client, /layoutDirection: 'vertical'/);
+  assert.match(renderer, /layoutDirection = 'vertical'/);
+  assert.match(renderer, /transform: layoutDirection === 'horizontal'/);
   assert.match(client, /renderFallbackNodes\(visible\)/);
   assert.match(client, /keyboardNav\.open = true/);
   assert.doesNotMatch(client, /graphFallback\.hidden = true/);
