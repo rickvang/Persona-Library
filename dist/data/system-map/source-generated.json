@@ -1528,6 +1528,42 @@
       }
     },
     {
+      "id": "source-group:client",
+      "label": "client/",
+      "type": "view-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
+      }
+    },
+    {
+      "id": "source-group:content",
+      "label": "content/",
+      "type": "view-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
+      }
+    },
+    {
+      "id": "source-group:docs",
+      "label": "docs/",
+      "type": "view-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
+      }
+    },
+    {
       "id": "validation:generated-output-cleanliness",
       "label": "Generated output cleanliness",
       "type": "validation-boundary",
@@ -1537,6 +1573,18 @@
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
         "selector": "assertGeneratedOutputClean"
+      }
+    },
+    {
+      "id": "view:authored-sources",
+      "label": "Authored sources",
+      "type": "view-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
       }
     },
     {
@@ -3702,6 +3750,846 @@
       }
     },
     {
+      "id": "edge:source-group:client--contains--file:client/canvas-graph.js",
+      "from": "source-group:client",
+      "to": "file:client/canvas-graph.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/canvas-intent.js",
+      "from": "source-group:client",
+      "to": "file:client/canvas-intent.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/job-tracker-import.js",
+      "from": "source-group:client",
+      "to": "file:client/job-tracker-import.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/job-tracker-store.js",
+      "from": "source-group:client",
+      "to": "file:client/job-tracker-store.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/job-tracker.js",
+      "from": "source-group:client",
+      "to": "file:client/job-tracker.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/library-state.js",
+      "from": "source-group:client",
+      "to": "file:client/library-state.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/library-ui.js",
+      "from": "source-group:client",
+      "to": "file:client/library-ui.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/seen-job-store.js",
+      "from": "source-group:client",
+      "to": "file:client/seen-job-store.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/system-map-graph.mjs",
+      "from": "source-group:client",
+      "to": "file:client/system-map-graph.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/system-map.mjs",
+      "from": "source-group:client",
+      "to": "file:client/system-map.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/template-preview.js",
+      "from": "source-group:client",
+      "to": "file:client/template-preview.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/decisions-page.html",
+      "from": "source-group:content",
+      "to": "file:content/decisions-page.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
+        "selector": "content/decisions-page.html -> dist/decisions.html"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/job-tracker-page.html",
+      "from": "source-group:content",
+      "to": "file:content/job-tracker-page.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/catalogs.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/catalogs.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/operational-scenarios/application-data-source-of-truth.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/operational-scenarios/application-data-source-of-truth.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/operational-scenarios/architecture-proportionate-decision.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/operational-scenarios/architecture-proportionate-decision.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/operational-scenarios/frontend-runtime-boundary.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/operational-scenarios/frontend-runtime-boundary.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/operational-scenarios/github-issue-implementation.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/operational-scenarios/github-issue-implementation.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/operational-scenarios/riley-work-graph-supervision.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/operational-scenarios/riley-work-graph-supervision.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/operational-scenarios/vercel-deployed-state-verification.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/operational-scenarios/vercel-deployed-state-verification.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/personas-career.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/personas-career.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/personas-core.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/personas-core.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/personas-systems.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/personas-systems.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/skill-anatomy.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/skill-anatomy.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/skill-guidance.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/skill-guidance.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/skill-practice.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/skill-practice.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/skills-core.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/skills-core.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/skills-specialists.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/skills-specialists.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/tool-integration.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/tool-integration.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/workflows-career.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/workflows-career.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/workflows-core.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/workflows-core.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/workflows-operations.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/workflows-operations.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-data/workflows-systems.js",
+      "from": "source-group:content",
+      "to": "file:content/library-data/workflows-systems.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "libraryDataSources -> dist/data/library-data.js"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/library-model.js",
+      "from": "source-group:content",
+      "to": "file:content/library-model.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/decisions.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/decisions.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/docs.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/docs.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/operating-packs.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/operating-packs.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/personas.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/personas.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/playbooks.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/playbooks.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/prototyping.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/prototyping.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/skills.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/skills.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/templates.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/templates.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/orientation/tools.json",
+      "from": "source-group:content",
+      "to": "file:content/orientation/tools.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/prototypes/workflow-canvas.js",
+      "from": "source-group:content",
+      "to": "file:content/prototypes/workflow-canvas.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-orientation.json",
+      "from": "source-group:content",
+      "to": "file:content/site-orientation.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/activity-views.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/activity-views.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/guide.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/guide.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/index.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/index.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/job-search.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/job-search.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/operating-packs.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/operating-packs.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/playbooks.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/playbooks.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/portfolio-layout-lab.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/portfolio-layout-lab.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/prototyping.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/prototyping.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/skill-views.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/skill-views.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/skills.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/skills.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/system-map.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/system-map.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/template.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/template.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/templates.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/templates.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/tool-views.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/tool-views.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/tool.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/tool.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/tools.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/tools.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/workflow-canvas.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/workflow-canvas.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:docs--contains--file:docs/decisions/records.json",
+      "from": "source-group:docs",
+      "to": "file:docs/decisions/records.json",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
+        "selector": "docs/decisions/records.json -> dist/decisions.html"
+      }
+    },
+    {
+      "id": "edge:source-group:docs--contains--file:docs/job-search/application-context-and-review.md",
+      "from": "source-group:docs",
+      "to": "file:docs/job-search/application-context-and-review.md",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:docs--contains--file:docs/job-search/application-tracker-contract.md",
+      "from": "source-group:docs",
+      "to": "file:docs/job-search/application-tracker-contract.md",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:docs--contains--file:docs/job-search/job-ledger-contract.md",
+      "from": "source-group:docs",
+      "to": "file:docs/job-search/job-ledger-contract.md",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:view:authored-sources--contains--source-group:client",
+      "from": "view:authored-sources",
+      "to": "source-group:client",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
+      }
+    },
+    {
+      "id": "edge:view:authored-sources--contains--source-group:content",
+      "from": "view:authored-sources",
+      "to": "source-group:content",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
+      }
+    },
+    {
+      "id": "edge:view:authored-sources--contains--source-group:docs",
+      "from": "view:authored-sources",
+      "to": "source-group:docs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
+      }
+    },
+    {
       "id": "edge:view:source-generated--contains--build-step:scripts/build-decisions.mjs",
       "from": "view:source-generated",
       "to": "build-step:scripts/build-decisions.mjs",
@@ -3759,6 +4647,18 @@
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
         "selector": "assertGeneratedOutputClean"
+      }
+    },
+    {
+      "id": "edge:view:source-generated--contains--view:authored-sources",
+      "from": "view:source-generated",
+      "to": "view:authored-sources",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "generated Site build contract"
       }
     }
   ]
