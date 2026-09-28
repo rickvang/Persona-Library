@@ -25,7 +25,7 @@
         "activate": true,
         "mode": "answer",
         "selected_route": "system-orientation",
-        "primary_space": "templates",
+        "primary_space": "docs",
         "placement": "not-applicable",
         "handoff_target": "docs-and-onboarding",
         "orientation_write_authorized": false,
@@ -53,11 +53,11 @@
         "packet": {
           "goal": "How does Persona-Library decide between Personas, Skills, Tools, Templates, Playbooks, and Docs?",
           "mode": "answer",
-          "primary_space": "templates",
+          "primary_space": "docs",
           "secondary_spaces": [],
           "artifacts_in_scope": [
             "system-orientation",
-            "templates"
+            "docs"
           ],
           "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
           "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
@@ -70,19 +70,18 @@
             "content/site-orientation.json",
             "content/orientation/docs.json",
             ".agents/skills/persona-library-orientation/SKILL.md",
-            "docs/policy-ownership.md",
-            "content/orientation/templates.json"
+            "docs/policy-ownership.md"
           ],
-          "utf8_bytes": 44528,
-          "rough_tokens": 11132
+          "utf8_bytes": 36074,
+          "rough_tokens": 9019
         },
         "expectation": {
-          "pass": false,
+          "pass": true,
           "dimensions": {
             "activate": true,
             "mode": true,
             "selected_route": true,
-            "primary_space": false,
+            "primary_space": true,
             "placement": true,
             "handoff_target": true,
             "orientation_write_authorized": true,
@@ -102,13 +101,13 @@
           "selected_space_resolvable": true,
           "exceptions_preserved": true
         },
-        "pass": false
+        "pass": true
       },
       "preferred": {
         "activate": true,
         "mode": "answer",
         "selected_route": "system-orientation",
-        "primary_space": "templates",
+        "primary_space": "docs",
         "placement": "not-applicable",
         "handoff_target": "docs-and-onboarding",
         "orientation_write_authorized": false,
@@ -136,11 +135,11 @@
         "packet": {
           "goal": "How does Persona-Library decide between Personas, Skills, Tools, Templates, Playbooks, and Docs?",
           "mode": "answer",
-          "primary_space": "templates",
+          "primary_space": "docs",
           "secondary_spaces": [],
           "artifacts_in_scope": [
             "system-orientation",
-            "templates"
+            "docs"
           ],
           "boundary_permission": "read-only orientation; downstream mutation or execution requires separate authority",
           "success_criteria": "route to the smallest valid owner without inventing taxonomy, write authority, or live availability",
@@ -152,19 +151,18 @@
             "AGENTS.md",
             "dist/data/agent-context/system-orientation.json",
             ".agents/skills/persona-library-orientation/SKILL.md",
-            "docs/policy-ownership.md",
-            "content/orientation/templates.json"
+            "docs/policy-ownership.md"
           ],
-          "utf8_bytes": 37017,
-          "rough_tokens": 9255
+          "utf8_bytes": 28563,
+          "rough_tokens": 7141
         },
         "expectation": {
-          "pass": false,
+          "pass": true,
           "dimensions": {
             "activate": true,
             "mode": true,
             "selected_route": true,
-            "primary_space": false,
+            "primary_space": true,
             "placement": true,
             "handoff_target": true,
             "orientation_write_authorized": true,
@@ -184,7 +182,7 @@
           "selected_space_resolvable": true,
           "exceptions_preserved": true
         },
-        "pass": false
+        "pass": true
       },
       "parity": {
         "pass": true,
@@ -205,7 +203,7 @@
           "packet_complete": true
         }
       },
-      "pass": false
+      "pass": true
     },
     {
       "id": "clear-template-placement",
@@ -1561,15 +1559,15 @@
   "aggregate": {
     "fixture_count": 8,
     "activated_fixture_count": 6,
-    "passed": 7,
-    "failed": 1,
-    "all_pass": false,
-    "preferred_context_utf8_bytes": 216920,
-    "control_context_utf8_bytes": 261986,
-    "preferred_context_rough_tokens": 54230,
-    "control_context_rough_tokens": 65497,
+    "passed": 8,
+    "failed": 0,
+    "all_pass": true,
+    "preferred_context_utf8_bytes": 208466,
+    "control_context_utf8_bytes": 253532,
+    "preferred_context_rough_tokens": 52117,
+    "control_context_rough_tokens": 63383,
     "preferred_delta_utf8_bytes": -45066,
-    "preferred_delta_percent": -17.2
+    "preferred_delta_percent": -17.8
   },
   "limitations": [
     "The evaluator is intentionally fixture-scoped and is not a general-purpose natural-language router.",
