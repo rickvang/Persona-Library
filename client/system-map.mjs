@@ -916,8 +916,9 @@ function focusSelectedNode(id = state.selectedId) {
 function inspectSelectedNode() {
   const heading = elements.details?.querySelector('h2');
   if (!heading) return;
+  const reducedMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   heading.focus({ preventScroll: true });
-  elements.details.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  elements.details.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
   announce(`Inspector focused for ${selectedNode()?.label || 'selected node'}.`);
 }
 
