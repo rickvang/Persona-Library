@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Fixed natural-language scenarios for deterministic system-orientation behavioral parity. These fixtures test routing/authority contracts, not subjective model response quality.",
+  "fixtures": [
+    {
+      "id": "basic-system-explanation",
+      "prompt": "How does Persona-Library decide between Personas, Skills, Tools, Templates, Playbooks, and Docs?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "not-applicable",
+        "handoff_target": "docs-and-onboarding",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      }
+    },
+    {
+      "id": "clear-template-placement",
+      "prompt": "Where should a reusable starting artifact or scaffold live in Persona-Library?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "direct",
+        "handoff_target": "direct-placement",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      }
+    },
+    {
+      "id": "ambiguous-template-playbook-placement",
+      "prompt": "I have a new reusable artifact that could be a Template or a Playbook and I'm not sure who owns it. Where should it live?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "docs",
+        "placement": "escalate-mara",
+        "handoff_target": "mara-placement-review",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      }
+    },
+    {
+      "id": "unrelated-repository-plumbing",
+      "prompt": "Fix the CI whitespace check in this repository.",
+      "expected": {
+        "activate": false,
+        "mode": "update",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "repository-plumbing",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      }
+    },
+    {
+      "id": "unrelated-general-writing",
+      "prompt": "Write a short thank-you note for a colleague.",
+      "expected": {
+        "activate": false,
+        "mode": "answer",
+        "selected_route": null,
+        "primary_space": null,
+        "placement": "not-applicable",
+        "handoff_target": "non-system-request",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false
+      }
+    },
+    {
+      "id": "unavailable-downstream-capability",
+      "prompt": "Navigate me to Template composition, but assume the template-composer downstream package is unavailable in this runtime.",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "templates",
+        "placement": "not-applicable",
+        "handoff_target": "template-composition",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": true
+      }
+    },
+    {
+      "id": "update-persona-intent",
+      "prompt": "Update the Riley Persona record to include a new responsibility, and tell me the correct route first.",
+      "expected": {
+        "activate": true,
+        "mode": "update",
+        "selected_route": "system-orientation",
+        "primary_space": "personas",
+        "placement": "not-applicable",
+        "handoff_target": "persona-research",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": false,
+        "static_runtime_availability_claim": false,
+        "downstream_authorization_required": true
+      }
+    },
+    {
+      "id": "live-tool-availability",
+      "prompt": "Can you use Figma right now, and where in Persona-Library should I look for the Tool capability and fallback?",
+      "expected": {
+        "activate": true,
+        "mode": "answer",
+        "selected_route": "system-orientation",
+        "primary_space": "tools",
+        "placement": "not-applicable",
+        "handoff_target": "tool-resolution",
+        "orientation_write_authorized": false,
+        "downstream_execution_claim": false,
+        "live_evidence_required": true,
+        "static_runtime_availability_claim": false,
+        "limitation_required": false
+      }
+    }
+  ]
+}
