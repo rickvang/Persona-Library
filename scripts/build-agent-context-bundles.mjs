@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,10 +29,6 @@ async function readText(root, relativePath) {
 
 async function readJson(root, relativePath) {
   return JSON.parse(await readText(root, relativePath));
-}
-
-function stableHash(value) {
-  return createHash('sha256').update(JSON.stringify(value)).digest('hex');
 }
 
 function agentView(graph) {
@@ -163,7 +158,6 @@ export function validateAgentContextBundle(bundle, expected = {}) {
   }
   if (!bundle.contract || typeof bundle.contract !== 'object') errors.push('contract is required');
   if (!Array.isArray(bundle.canonical_sources) || bundle.canonical_sources.length < 4) errors.push('canonical_sources are incomplete');
-  if (typeof bundle.content_hash !== 'string' || !/^[a-f0-9]{64}$/.test(bundle.content_hash)) errors.push('content_hash is invalid');
 
   if (expected.route_id && bundle.route_id !== expected.route_id) errors.push('route_id mismatch');
   if (expected.primary_space && bundle.primary_space !== expected.primary_space) errors.push('primary_space mismatch');
@@ -187,11 +181,6 @@ export function validateAgentContextBundle(bundle, expected = {}) {
     if (unrelatedRoutes.length) errors.push('graph fragment contains unrelated route nodes');
   } else if (bundle.graph_fragment) {
     errors.push('graph_fragment provenance is required');
-  }
-
-  if (bundle.content_hash) {
-    const { content_hash, ...payload } = bundle;
-    if (stableHash(payload) !== content_hash) errors.push('content_hash does not match bundle payload');
   }
 
   return errors;
@@ -253,7 +242,7 @@ export async function deriveAgentContextBundle(root = rootDir, routeId = 'system
     ]
   };
 
-  return { ...payload, content_hash: stableHash(payload) };
+  return payload;
 }
 
 export async function expectedAgentContextBundleOutputs(root = rootDir) {
