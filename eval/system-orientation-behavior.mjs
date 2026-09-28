@@ -40,7 +40,7 @@ function modeFromPrompt(prompt) {
 function classifyPrompt(prompt) {
   const text = prompt.toLowerCase();
   const mode = modeFromPrompt(prompt);
-  const repoPlumbing = /(ci|workflow|whitespace check|build script|repository hygiene)/.test(text);
+  const repoPlumbing = /(\bci\b|\bworkflow\b|whitespace check|build script|repository hygiene)/.test(text);
   const semanticSignal = /(persona-library|persona library|persona record|riley persona|template|playbook|figma|tool capability|reusable starting artifact|scaffold)/.test(text);
   const generalNonSystem = /(thank-you note|thank you note|colleague)/.test(text);
   const activate = semanticSignal && !repoPlumbing && !generalNonSystem;
