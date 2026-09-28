@@ -103,6 +103,20 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /data\/system-map\/persona-skill\.json/);
   assert.match(page, /data\/system-map\/source-generated\.json/);
   assert.match(page, /data\/system-map\/agent-runtime\.json/);
+  assert.match(page, /id="map-overview"/);
+  assert.match(page, /<option value="overview">System overview<\/option>/);
+  assert.match(page, /How the Persona Workspace fits together/);
+  assert.match(page, /these five areas are navigation only/);
+  assert.match(page, /How agents get oriented/);
+  assert.match(page, /Personas &amp; capabilities/);
+  assert.match(page, /Work &amp; verification/);
+  assert.match(page, /Repositories &amp; ownership/);
+  assert.match(page, /Sources &amp; generated outputs/);
+  assert.match(page, /data-open-lens="agent-runtime"/);
+  assert.match(page, /data-open-lens="persona-skill"/);
+  assert.match(page, /data-open-lens="work-coordination"/);
+  assert.match(page, /data-open-lens="repository-ownership"/);
+  assert.match(page, /data-open-lens="source-generated"/);
   assert.match(page, /<option value="repository-ownership">Repository ownership<\/option>/);
   assert.match(page, /<option value="persona-skill">Persona \/ Skill<\/option>/);
   assert.match(page, /<option value="source-generated">Source \/ generated · advanced<\/option>/);
@@ -122,6 +136,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /id="map-back"/);
   assert.match(page, /id="map-trail"/);
   assert.match(page, /id="map-selection-actions"/);
+  assert.match(page, /id="explorer-lens-label"/);
+  assert.match(page, /id="explorer-description"/);
   assert.match(page, /class="inspector-rail"/);
   assert.match(page, /id="map-question"/);
   assert.match(page, /id="map-question-scope"/);
@@ -137,6 +153,15 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.doesNotMatch(client, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.match(client, /lensConfigs/);
+  assert.match(client, /humanTitle: 'How agents get oriented'/);
+  assert.match(client, /humanTitle: 'Personas & capabilities'/);
+  assert.match(client, /humanTitle: 'Work & verification'/);
+  assert.match(client, /humanTitle: 'Repositories & ownership'/);
+  assert.match(client, /humanTitle: 'Sources & generated outputs'/);
+  assert.match(client, /mode: 'overview'/);
+  assert.match(client, /showOverview/);
+  assert.match(client, /setGraphControlsVisible/);
+  assert.match(client, /data-open-lens/);
   assert.match(client, /SystemMapRenderer/);
   assert.match(client, /initialExpandedIds/);
   assert.match(client, /nearestRootPath/);
@@ -157,6 +182,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /url\.searchParams\.set\('edge'/);
   assert.match(client, /url\.searchParams\.set\('focus'/);
   assert.match(client, /buildQuestionHandoff/);
+  assert.match(client, /Area:/);
+  assert.match(client, /Technical lens:/);
   assert.match(client, /Missing evidence is unknown/);
   assert.match(client, /data-focus-selected/);
   assert.match(client, /groupedRelationships/);
@@ -199,9 +226,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(build, /client\/system-map\.mjs/);
   assert.match(build, /buildPersonaSkillSystemMap/);
   assert.match(build, /buildTechnicalSystemMaps/);
-  assert.match(client, /initialLens/);
-  assert.match(client, /loadLens\(initialLens, \{ restoreUrl: true \}\)/);
+  assert.match(client, /requestedLens/);
+  assert.match(client, /if \(requestedLens && lensConfigs\[requestedLens\]\)/);
+  assert.match(client, /showOverview\(\{ rememberCurrent: false \}\)/);
+  assert.match(client, /url\.searchParams\.set\('lens', 'overview'\)/);
   assert.doesNotMatch(page + client + renderer, /file:content\/library-data\.js|route:tool-resolution|skill-package:\.agents\/skills\/tool-discovery-and-safe-execution/);
+  assert.doesNotMatch(page + client + renderer, /overview-node:|overview-edge:|relationship:overview/);
 });
 
 
