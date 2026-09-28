@@ -79,6 +79,7 @@ function exceptions(group, route) {
     first_reads:route.first_reads,
     mutation_boundary:route.mutation_boundary,
     non_triggers:route.non_triggers,
+    space_do_not:spaceDoNot,
     next_handoff:route.next_handoff,
     space_do_not:group.space?.do_not || []
   };
@@ -91,7 +92,7 @@ function contractValue(part, packageId, relationship) {
   return edge.to.startsWith(prefix) ? edge.to.slice(prefix.length) : null;
 }
 
-function oracle(route, skillSource) {
+function oracle(route, skillSource, spaceDoNot) {
   return {
     primary_space:route.primary_space,
     route_id:route.id,
@@ -128,6 +129,7 @@ function graphFacts(fixture, part, kept) {
     availability_source:kept.availability_source,
     first_reads:kept.first_reads,
     non_triggers:kept.non_triggers,
+    space_do_not:kept.space_do_not,
     next_handoff:kept.next_handoff,
     validation_source:part.edges.some(edge => edge.from === 'agent:repository-dispatcher' && edge.to === 'validation:repository-validation' && edge.relationship === 'uses-validation-contract') ? VALIDATION : null,
     live_state_external:part.edges.some(edge => edge.from === 'view:agent-runtime' && edge.to === 'boundary:live-runtime-state' && edge.relationship === 'excludes-live-state')
@@ -141,7 +143,7 @@ function dimensions(expected, actual) {
     reconciliation:same([actual.route_reconciliation,actual.skill_reconciliation],[expected.route_reconciliation,expected.skill_reconciliation]),
     mutation_execution_boundary:same(actual.mutation_boundary,expected.mutation_boundary),
     source_tool_selection:same([actual.availability_source,actual.first_reads],[expected.availability_source,expected.first_reads]),
-    missed_exceptions:same(actual.non_triggers,expected.non_triggers),
+    missed_exceptions:same([actual.non_triggers,actual.space_do_not],[expected.non_triggers,expected.space_do_not]),
     validation_completion:same([actual.validation_source,actual.next_handoff],[expected.validation_source,expected.next_handoff]),
     recovery_live_state_boundary:same(actual.live_state_external,expected.live_state_external)
   };
@@ -220,7 +222,7 @@ export async function buildExperiment() {
     if (route.primary_space !== fixture.space || route.package_path !== fixture.skill || route.artifact_kind !== 'callable_skill') throw new Error('Fixture drift: ' + fixture.id);
     const part = fragment(graph, fixture);
     const kept = exceptions(group, route);
-    const expected = oracle(route, skillSource);
+    const expected = oracle(route, skillSource, group.space?.do_not || []);
     const actual = graphFacts(fixture, part, kept);
     const controlDimensions = dimensions(expected, expected);
     const experimentalDimensions = dimensions(expected, actual);
