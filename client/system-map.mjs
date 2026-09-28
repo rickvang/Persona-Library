@@ -22,28 +22,33 @@ const lensConfigs = {
   'work-coordination': {
     label: 'Work & coordination',
     graphUrl: root?.dataset.graphWorkCoordinationUrl,
-    sourceUrl: root?.dataset.sourceWorkCoordinationUrl
+    sourceUrl: root?.dataset.sourceWorkCoordinationUrl,
+    layoutDirection: 'horizontal'
   },
   'repository-ownership': {
     label: 'Repository ownership',
     graphUrl: root?.dataset.graphRepositoryOwnershipUrl,
-    sourceUrl: root?.dataset.sourceRepositoryOwnershipUrl
+    sourceUrl: root?.dataset.sourceRepositoryOwnershipUrl,
+    layoutDirection: 'vertical'
   },
   'persona-skill': {
     label: 'Persona / Skill',
     graphUrl: root?.dataset.graphPersonaSkillUrl,
-    sourceUrl: root?.dataset.sourcePersonaSkillUrl
+    sourceUrl: root?.dataset.sourcePersonaSkillUrl,
+    layoutDirection: 'vertical'
   },
   'source-generated': {
     label: 'Source / generated',
     graphUrl: root?.dataset.graphSourceGeneratedUrl,
     sourceUrl: root?.dataset.sourceSourceGeneratedUrl,
+    layoutDirection: 'horizontal',
     coverageNote: 'Complete for explicit current build mappings; not exhaustive repository dependency analysis.'
   },
   'agent-runtime': {
     label: 'Agent / runtime',
     graphUrl: root?.dataset.graphAgentRuntimeUrl,
     sourceUrl: root?.dataset.sourceAgentRuntimeUrl,
+    layoutDirection: 'horizontal',
     coverageNote: 'Complete for declared static routing contracts; it does not report live Tool, connector, permission, deployment, or model availability.'
   }
 };
@@ -395,7 +400,8 @@ function renderGraph() {
       filters: {
         nodeType: state.typeFilter,
         relationship: state.relationshipFilter
-      }
+      },
+      layoutDirection: currentLensConfig()?.layoutDirection || 'vertical'
     });
     return;
   }
