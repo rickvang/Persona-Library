@@ -236,11 +236,45 @@
     .path-panel { margin-top:10px; padding:0; background:var(--card); }
     .path-panel > summary { padding:9px 12px; cursor:pointer; color:var(--deep); font-size:11px; font-weight:850; }
     .path-body { padding:0 12px 12px; }
+    .system-overview { min-height:calc(100vh - 150px); padding:clamp(18px,3vw,36px); border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg,#fbfcf9 0%,#f1f4ef 100%); overflow:hidden; }
+    .system-overview[hidden] { display:none; }
+    .overview-intro { max-width:760px; margin:0 auto 26px; text-align:center; }
+    .overview-intro .eyebrow { margin-bottom:7px; }
+    .overview-intro h2 { margin:0; font-size:clamp(24px,3vw,38px); letter-spacing:-.045em; }
+    .overview-intro > p { margin:10px auto 0; color:var(--muted); font-size:13px; line-height:1.55; }
+    .overview-boundary { display:inline-block; padding:6px 9px; border-radius:8px; background:#eef1ec; font-size:10px !important; }
+    .overview-root { position:relative; z-index:2; max-width:480px; margin:0 auto; padding:18px 20px; border:1px solid #8cb4aa; border-radius:14px; text-align:center; background:#eff9f5; box-shadow:0 8px 24px rgba(35,79,104,.06); }
+    .overview-root-kicker { display:block; margin-bottom:4px; color:#26705f; font-size:9px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    .overview-root strong { display:block; font-size:20px; letter-spacing:-.03em; }
+    .overview-root p { margin:7px 0 0; color:#4f6370; font-size:11px; line-height:1.5; }
+    .overview-branch { width:1px; height:32px; margin:0 auto; background:#aeb9b5; }
+    .overview-areas { position:relative; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+    .overview-areas::before { content:""; position:absolute; left:10%; right:10%; top:-17px; height:1px; background:#aeb9b5; }
+    .overview-area { position:relative; min-height:220px; padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:0 5px 18px rgba(16,24,39,.035); }
+    .overview-area::before { content:""; position:absolute; left:50%; top:-17px; width:1px; height:17px; background:#aeb9b5; }
+    .overview-area-head { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+    .overview-number { display:block; margin-bottom:5px; color:#8b98a4; font:800 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .overview-area h3 { margin:0; font-size:14px; line-height:1.25; letter-spacing:-.025em; }
+    .overview-area > p { margin:11px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }
+    .overview-open { flex:none; display:grid; place-items:center; width:30px; height:30px; padding:0; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:19px; line-height:1; }
+    .overview-open:hover { transform:translateY(-1px); box-shadow:0 5px 12px rgba(35,79,104,.16); }
+    .overview-area-meta { display:grid; gap:2px; margin-top:14px; padding-top:10px; border-top:1px solid var(--line); }
+    .overview-area-meta span { color:var(--muted); font-size:8px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+    .overview-area-meta strong { font-size:10px; }
+    .overview-caveat { color:#78662c !important; }
+    .overview-howto { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 14px; margin-top:20px; padding:10px 12px; border-top:1px solid var(--line); color:var(--muted); font-size:10px; }
+    .overview-howto strong { color:var(--ink); }
+    .overview-howto b { color:var(--deep); }
+    .lens-kicker { margin:0 0 3px !important; color:#71808d !important; font-size:9px !important; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
+
     @media (max-width:980px) {
       .command-bar { position:relative; top:auto; }
       .command-row { flex-wrap:wrap; }
       .lens-field { width:240px; }
       .search-field { min-width:280px; }
+      .overview-areas { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .overview-areas::before, .overview-area::before { display:none; }
+      .overview-branch { height:18px; }
       .workspace { grid-template-columns:1fr; }
       .inspector-rail { position:static; max-height:none; overflow:visible; grid-template-columns:minmax(0,1fr) minmax(280px,.7fr); }
       .detail-panel { min-height:0; }
@@ -254,6 +288,15 @@
       .topnav { margin-left:auto; gap:10px; }
       .page { padding:9px 10px 22px; }
       .workspace-header { align-items:flex-start; }
+      .system-overview { padding:18px 12px; }
+      .overview-intro { margin-bottom:18px; text-align:left; }
+      .overview-intro h2 { font-size:25px; }
+      .overview-boundary { display:block; }
+      .overview-root { text-align:left; }
+      .overview-branch { display:none; }
+      .overview-areas { grid-template-columns:1fr; margin-top:10px; }
+      .overview-area { min-height:0; }
+      .overview-howto { justify-content:flex-start; }
       .workspace-title { display:grid; gap:2px; }
       .workspace-title h1 { font-size:19px; }
       .authority-note[open] { max-width:58vw; }
@@ -324,6 +367,7 @@
         <div class="compact-field lens-field">
           <label for="map-lens">View</label>
           <select id="map-lens">
+            <option value="overview">System overview</option>
             <option value="work-coordination">Work &amp; coordination</option>
             <option value="repository-ownership">Repository ownership</option>
             <option value="persona-skill">Persona / Skill</option>
@@ -332,7 +376,7 @@
           </select>
         </div>
 
-        <div class="compact-field search-field">
+        <div class="compact-field search-field" data-graph-only>
           <label for="map-search">Find</label>
           <div class="search-row">
             <input id="map-search" list="map-search-options" type="search" placeholder="Node or stable ID" autocomplete="off" />
@@ -341,7 +385,7 @@
           <datalist id="map-search-options"></datalist>
         </div>
 
-        <details class="filter-menu">
+        <details class="filter-menu" data-graph-only>
           <summary>Filters</summary>
           <div class="filter-popover">
             <div class="compact-field">
@@ -355,11 +399,99 @@
           </div>
         </details>
 
-        <button class="ghost compact-button" type="button" id="map-fit">Fit</button>
-        <button class="ghost compact-button" type="button" id="map-reset">Reset</button>
+        <button class="ghost compact-button" type="button" id="map-fit" data-graph-only>Fit</button>
+        <button class="ghost compact-button" type="button" id="map-reset" data-graph-only>Reset</button>
       </div>
 
       <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
+    </section>
+
+    <section id="map-overview" class="system-overview" aria-labelledby="overview-heading">
+      <div class="overview-intro">
+        <p class="eyebrow">Start here</p>
+        <h2 id="overview-heading">How the Persona Workspace fits together</h2>
+        <p>This map helps you understand the system before you inspect its implementation details. Start with one of the five areas below, then open its provenance-backed graph and expand only what you need.</p>
+        <p class="overview-boundary"><strong>Important:</strong> these five areas are navigation only. They do not create new system facts or relationships.</p>
+      </div>
+
+      <div class="overview-root">
+        <span class="overview-root-kicker">Whole system</span>
+        <strong>Persona Workspace</strong>
+        <p>Coordinates how agents orient, find relevant capabilities and sources, work across repositories, and verify changes.</p>
+      </div>
+
+      <div class="overview-branch" aria-hidden="true"></div>
+
+      <div class="overview-areas">
+        <article class="overview-area">
+          <div class="overview-area-head">
+            <div>
+              <span class="overview-number">01</span>
+              <h3>How agents get oriented</h3>
+            </div>
+            <button type="button" class="overview-open" data-open-lens="agent-runtime" aria-label="Explore how agents get oriented"><span aria-hidden="true">+</span></button>
+          </div>
+          <p>Follow the declared path from repository instructions through spaces and routes to callable Skills.</p>
+          <div class="overview-area-meta"><span>Technical view</span><strong>Agent / runtime</strong></div>
+          <p class="overview-caveat">Static routing only; live tools, permissions, deployments, and models stay external.</p>
+        </article>
+
+        <article class="overview-area">
+          <div class="overview-area-head">
+            <div>
+              <span class="overview-number">02</span>
+              <h3>Personas &amp; capabilities</h3>
+            </div>
+            <button type="button" class="overview-open" data-open-lens="persona-skill" aria-label="Explore personas and capabilities"><span aria-hidden="true">+</span></button>
+          </div>
+          <p>See stable Skill identities, persona-specific applications, guidance, and explicit capability relationships.</p>
+          <div class="overview-area-meta"><span>Technical view</span><strong>Persona / Skill</strong></div>
+        </article>
+
+        <article class="overview-area">
+          <div class="overview-area-head">
+            <div>
+              <span class="overview-number">03</span>
+              <h3>Work &amp; verification</h3>
+            </div>
+            <button type="button" class="overview-open" data-open-lens="work-coordination" aria-label="Explore work and verification"><span aria-hidden="true">+</span></button>
+          </div>
+          <p>See work surfaces, orchestration, verification, truth classes, and the boundaries around live operational authority.</p>
+          <div class="overview-area-meta"><span>Technical view</span><strong>Work &amp; coordination</strong></div>
+        </article>
+
+        <article class="overview-area">
+          <div class="overview-area-head">
+            <div>
+              <span class="overview-number">04</span>
+              <h3>Repositories &amp; ownership</h3>
+            </div>
+            <button type="button" class="overview-open" data-open-lens="repository-ownership" aria-label="Explore repositories and ownership"><span aria-hidden="true">+</span></button>
+          </div>
+          <p>See which repositories belong to the workspace, what each owns, and where local instruction and mutation boundaries live.</p>
+          <div class="overview-area-meta"><span>Technical view</span><strong>Repository ownership</strong></div>
+        </article>
+
+        <article class="overview-area">
+          <div class="overview-area-head">
+            <div>
+              <span class="overview-number">05</span>
+              <h3>Sources &amp; generated outputs</h3>
+            </div>
+            <button type="button" class="overview-open" data-open-lens="source-generated" aria-label="Explore sources and generated outputs"><span aria-hidden="true">+</span></button>
+          </div>
+          <p>Trace authored inputs and build steps into generated outputs while keeping generated artifacts separate from authored truth.</p>
+          <div class="overview-area-meta"><span>Technical view</span><strong>Source / generated</strong></div>
+        </article>
+      </div>
+
+      <div class="overview-howto">
+        <strong>Inside an area</strong>
+        <span>Select a node to understand it.</span>
+        <span><b>Expand +N</b> reveals direct recorded connections.</span>
+        <span><b>Focus</b> isolates a bounded local view.</span>
+        <span><b>Back</b> returns through your exploration.</span>
+      </div>
     </section>
 
     <section id="map-error" class="error-box" hidden>
@@ -373,8 +505,9 @@
         <section class="map-panel" aria-labelledby="explorer-heading">
           <div class="panel-head map-panel-head">
             <div>
+              <p class="lens-kicker" id="explorer-lens-label">Technical view</p>
               <h2 id="explorer-heading">Map</h2>
-              <p>Select first. Inspect, expand, and focus are separate actions so exploration does not unexpectedly rearrange the workspace.</p>
+              <p id="explorer-description">Select first. Inspect, expand, and focus are separate actions so exploration does not unexpectedly rearrange the workspace.</p>
             </div>
           </div>
           <div class="graph-frame">
