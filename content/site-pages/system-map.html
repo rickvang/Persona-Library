@@ -69,6 +69,10 @@
     .graph-canvas { width:100%; height:min(68vh,720px); min-height:520px; background-image:radial-gradient(circle at 1px 1px,rgba(35,79,104,.08) 1px,transparent 0); background-size:22px 22px; }
     .graph-canvas[hidden] { display:none; }
     .map-nodes[hidden] { display:none; }
+    .keyboard-nav { border-top:1px solid var(--line); background:#fffefa; }
+    .keyboard-nav summary { padding:10px 12px; color:var(--deep); font-size:11px; font-weight:850; cursor:pointer; }
+    .keyboard-nav > p { margin:0; padding:0 12px 8px; color:var(--muted); font-size:10px; line-height:1.45; }
+    .keyboard-nav .map-nodes { padding-top:4px; }
     .map-nodes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:8px 16px 18px; }
     .map-node { position:relative; border:1px solid var(--line); border-radius:13px; background:#fbfcf8; overflow:hidden; }
     .map-node.selected { border-color:var(--deep); box-shadow:0 0 0 2px rgba(35,79,104,.12); }
@@ -228,7 +232,11 @@
               <span>Drag to pan · scroll or pinch to zoom · select a node to inspect its explicit relationships.</span>
             </div>
             <div id="map-canvas" class="graph-canvas" role="img" aria-label="Interactive System Map graph"></div>
-            <div id="map-node-fallback" class="map-nodes" hidden aria-label="System Map textual fallback"></div>
+            <details id="map-keyboard-nav" class="keyboard-nav">
+              <summary>Keyboard node navigator</summary>
+              <p>Use the focusable node and branch controls below as an equivalent textual way to inspect and expand the visible graph.</p>
+              <div id="map-node-fallback" class="map-nodes" aria-label="System Map keyboard node navigator"></div>
+            </details>
           </div>
         </section>
 
