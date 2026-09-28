@@ -29,6 +29,18 @@ const lensConfigs = {
     label: 'Persona / Skill',
     graphUrl: root?.dataset.graphPersonaSkillUrl,
     sourceUrl: root?.dataset.sourcePersonaSkillUrl
+  },
+  'source-generated': {
+    label: 'Source / generated',
+    graphUrl: root?.dataset.graphSourceGeneratedUrl,
+    sourceUrl: root?.dataset.sourceSourceGeneratedUrl,
+    coverageNote: 'Complete for explicit current build mappings; not exhaustive repository dependency analysis.'
+  },
+  'agent-runtime': {
+    label: 'Agent / runtime',
+    graphUrl: root?.dataset.graphAgentRuntimeUrl,
+    sourceUrl: root?.dataset.sourceAgentRuntimeUrl,
+    coverageNote: 'Complete for declared static routing contracts; it does not report live Tool, connector, permission, deployment, or model availability.'
   }
 };
 
@@ -78,7 +90,7 @@ function relationshipLabel(value) {
 function coverageDescription() {
   if (!state.graph) return '';
   if (state.graph.coverage === 'complete-for-scope') {
-    return 'Complete for this lens scope; it does not imply exhaustive downstream impact.';
+    return currentLensConfig()?.coverageNote || 'Complete for this lens scope; it does not imply exhaustive downstream impact.';
   }
   return 'Known-explicit coverage, not exhaustive impact analysis.';
 }

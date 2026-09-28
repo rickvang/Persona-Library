@@ -44,7 +44,7 @@ test('System Map provenance resolves repository files without copying source con
   );
 });
 
-test('System Map Site consumes persona-workspace authority rather than a copied graph', async () => {
+test('System Map Site consumes domain-owned graphs without copying graph facts into presentation', async () => {
   const [page, client, build] = await Promise.all([
     fs.readFile(new URL('../../content/site-pages/system-map.html', import.meta.url), 'utf8'),
     fs.readFile(new URL('../../client/system-map.mjs', import.meta.url), 'utf8'),
@@ -54,9 +54,13 @@ test('System Map Site consumes persona-workspace authority rather than a copied 
   assert.match(page, /raw\.githubusercontent\.com\/rickvang\/persona-workspace\/main\/system-map\/generated\/work-coordination\.json/);
   assert.match(page, /raw\.githubusercontent\.com\/rickvang\/persona-workspace\/main\/system-map\/generated\/repository-ownership\.json/);
   assert.match(page, /data\/system-map\/persona-skill\.json/);
+  assert.match(page, /data\/system-map\/source-generated\.json/);
+  assert.match(page, /data\/system-map\/agent-runtime\.json/);
   assert.match(page, /Repository ownership<\/strong>[\s\S]*Available/);
   assert.match(page, /Persona \/ Skill<\/strong>[\s\S]*Available/);
-  assert.match(page, /Not mapped yet/);
+  assert.match(page, /Source \/ generated<\/strong>[\s\S]*Available · advanced/);
+  assert.match(page, /Agent \/ runtime<\/strong>[\s\S]*Available · advanced/);
+  assert.doesNotMatch(page, /Not mapped yet/);
   assert.match(page, /aria-live="polite"/);
   assert.match(page, /System Map/);
   assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
@@ -64,6 +68,9 @@ test('System Map Site consumes persona-workspace authority rather than a copied 
   assert.match(client, /lensConfigs/);
   assert.match(client, /repository-ownership/);
   assert.match(client, /persona-skill/);
+  assert.match(client, /source-generated/);
+  assert.match(client, /agent-runtime/);
+  assert.match(client, /does not report live Tool, connector, permission, deployment, or model availability/);
   assert.match(client, /fetch\(config\.graphUrl/);
   assert.match(client, /complete-for-scope/);
   assert.match(client, /Expand one level/);
@@ -73,6 +80,9 @@ test('System Map Site consumes persona-workspace authority rather than a copied 
   assert.match(build, /client\/system-map-graph\.mjs/);
   assert.match(build, /client\/system-map\.mjs/);
   assert.match(build, /buildPersonaSkillSystemMap/);
+  assert.match(build, /buildTechnicalSystemMaps/);
+  assert.match(client, /loadLens\('work-coordination'\)/);
+  assert.doesNotMatch(page + client, /file:content\/library-data\.js|route:tool-resolution|skill-package:\.agents\/skills\/tool-discovery-and-safe-execution/);
 });
 
 
