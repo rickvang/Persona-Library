@@ -1,0 +1,226 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Fixed Template-composition migration scenarios. Deterministic routing/authority parity only; not subjective model-quality evaluation.",
+  "fixtures": [
+    {
+      "id": "authorized-create-from-accepted-research",
+      "prompt": "Using the accepted Template research proposal and verified source provenance, create the project-local onboarding starter at projects/acme/onboarding.md. I authorize changes to that target only.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "authorized-adapt-existing-starter",
+      "prompt": "Using the accepted Template research result, adapt the existing project starter at projects/acme/brief.md. Its source and provenance are verified, and I authorize this target.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "adapt-existing",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "plan-without-write",
+      "prompt": "Using the accepted Template research proposal and verified provenance, plan how to compose a project starter at projects/acme/review.md, but do not change any files.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "plan",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "read-only-plan",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "missing-accepted-research",
+      "prompt": "Create a reusable design-critique Template. We have not researched existing Template candidates yet.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unknown",
+        "target_posture": "not-ready",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "ambiguous-source-provenance",
+      "prompt": "Adapt this external Template into a project starter, but its source path and revision are not verified yet. The project target is authorized.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "update",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "unverified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "project-local",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "ambiguous-target-ownership",
+      "prompt": "The accepted Template research is complete and provenance is verified, but I am not sure whether the new starter belongs in Persona-Library or the project repository.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "placement-review",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "ambiguous",
+        "placement": "escalate-mara",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "project-starter-no-promotion",
+      "prompt": "Using accepted Template research and verified provenance, create the authorized project-specific starter at projects/acme/kickoff.md. Keep it local; do not promote it to the reusable catalog.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "established-target",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "project-local-explicit",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "canonical-publication-chain",
+      "prompt": "Using the accepted Template research and verified source, publish the approved reusable Template into the canonical catalog and Site. I authorize the scoped publication target.",
+      "expected": {
+        "activate_composition": true,
+        "mode": "update",
+        "selected_route": "template-composition",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "verified",
+        "target_posture": "explicit-authorized",
+        "placement": "canonical-publication",
+        "reuse_posture": "check-catalog-then-compose",
+        "promotion_posture": "canonical-approved",
+        "bundle_grants_write": false,
+        "execution_allowed": true,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "template-reconciliation",
+        "universal_reconciliation_passes": 1,
+        "publication_chain_required": true
+      }
+    },
+    {
+      "id": "external-source-availability-unknown",
+      "prompt": "The accepted research names an external Template repository, but current access, fetch, install, and render availability have not been verified. Plan the next safe step only.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "plan",
+        "selected_route": "template-research",
+        "primary_space": "templates",
+        "accepted_research_present": true,
+        "source_posture": "availability-unverified",
+        "target_posture": "read-only-plan",
+        "placement": "not-ready",
+        "reuse_posture": "research-before-compose",
+        "promotion_posture": "undecided",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "current-evidence-required",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      }
+    },
+    {
+      "id": "template-catalog-lookup-non-trigger",
+      "prompt": "Show me the existing resume Templates in the Persona-Library catalog and their recorded sources.",
+      "expected": {
+        "activate_composition": false,
+        "mode": "answer",
+        "selected_route": "template-catalog",
+        "primary_space": "templates",
+        "accepted_research_present": false,
+        "source_posture": "catalog-record-only",
+        "target_posture": "read-only",
+        "placement": "not-applicable",
+        "reuse_posture": "catalog-inspection",
+        "promotion_posture": "not-applicable",
+        "bundle_grants_write": false,
+        "execution_allowed": false,
+        "runtime_posture": "no-static-availability-claim",
+        "reconciliation_handoff": "none-until-change",
+        "universal_reconciliation_passes": 0,
+        "publication_chain_required": false
+      }
+    }
+  ]
+}
