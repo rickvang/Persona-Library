@@ -7,7 +7,7 @@ import { deriveAgentRuntimeGraph } from './build-technical-system-maps.mjs';
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = 'rickvang/Persona-Library';
 const SCHEMA_VERSION = 'persona-library.agent-context/v0.1';
-const MIGRATED_ROUTE_IDS = ['system-orientation', 'template-composition'];
+const MIGRATED_ROUTE_IDS = ['system-orientation', 'template-composition', 'tool-resolution'];
 const REQUIRED_EXCEPTION_FIELDS = [
   'availability_source',
   'first_reads',
