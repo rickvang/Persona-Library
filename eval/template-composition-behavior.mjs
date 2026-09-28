@@ -67,7 +67,7 @@ function classifyPrompt(prompt) {
   if (catalogLookup) placement = 'not-applicable';
   else if (ambiguousTarget) placement = 'escalate-mara';
   else if (canonicalPublication) placement = 'canonical-publication';
-  else if (activateComposition) placement = 'established-target';
+  else if (explicitAuthorization || activateComposition) placement = 'established-target';
 
   let reusePosture = 'check-catalog-then-compose';
   if (catalogLookup) reusePosture = 'catalog-inspection';
