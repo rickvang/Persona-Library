@@ -58,6 +58,7 @@ test('system-orientation bundle preserves route exceptions and Skill contract', 
   assert.equal(bundle.contract.change_mode, frontmatterValue(skill, 'change_mode'));
   assert.equal(bundle.contract.change_domain, frontmatterValue(skill, 'change_domain'));
   assert.equal(bundle.contract.reconciliation, frontmatterValue(skill, 'reconciliation'));
+  assert.equal(bundle.contract.reconciliation, route.reconciliation);
   assert.equal(bundle.exceptions.mutation_boundary, 'read_only');
   assert.equal(bundle.contract.change_mode, 'read_only');
 });
@@ -125,11 +126,11 @@ test('orientation Skill explicitly prefers bundle and preserves canonical read-o
   assert.match(skill, /content\\/orientation\\/docs\\.json/);
   assert.match(skill, /stay read-only/i);
   assert.match(skill, /generated bundle is a derived context projection, not a source of truth/i);
-  assert.match(skill, /Goal:\\nS[^\\n]*\\nMode: answer \\\ research \\\ plan \\\ prototype \\\ update \\\ consult\\nPrimary space:/);
+  assert.ok(skill.includes('Goal:\nMode: answer | research | plan | prototype | update | consult\nPrimary space:'));
 
-  assert.match(agents, /explicit Persona-Library system-orientation\\/navigation request/);
-  assert.match(agents, /invoke `$persona-library-orientation` directly/);
-  assert.match(agents, /Other semantic work reads `content\\/site-orientation\\.json`/);
+  assert.ok(agents.includes('explicit Persona-Library system-orientation/navigation request'));
+  assert.ok(agents.includes('invoke `$persona-library-orientation` directly'));
+  assert.ok(agents.includes('Other semantic work reads `content/site-orientation.json`'));
 });
 
 test('system-orientation migration does not alter unrelated canonical route groups', async () => {
