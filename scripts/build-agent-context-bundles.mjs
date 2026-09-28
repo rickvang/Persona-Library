@@ -133,6 +133,15 @@ function routeExceptions(group, route) {
   };
 }
 
+function compactSpaceIndex(orientation) {
+  return Object.entries(orientation.spaces || {}).map(([id, space]) => ({
+    id,
+    label: space.label,
+    answers: space.answers,
+    route_file: space.route_file
+  }));
+}
+
 function graphContract(fragment, packagePath) {
   const packageId = 'skill-package:' + packagePath;
   const value = relationship => {
@@ -168,6 +177,17 @@ export function validateAgentContextBundle(bundle, expected = {}) {
     }
   }
   if (!bundle.contract || typeof bundle.contract !== 'object') errors.push('contract is required');
+  if (!Array.isArray(bundle.space_index) || !bundle.space_index.length) {
+    errors.push('space_index is required');
+  } else {
+    const ids = new Set();
+    for (const space of bundle.space_index) {
+      if (!space?.id || !space?.label || !space?.answers || !space?.route_file) errors.push('space_index entry is incomplete');
+      if (ids.has(space.id)) errors.push('space_index contains duplicate space ' + space.id);
+      ids.add(space.id);
+    }
+    if (!ids.has(bundle.primary_space)) errors.push('space_index does not include primary_space');
+  }
   if (!Array.isArray(bundle.canonical_sources) || bundle.canonical_sources.length < 4) errors.push('canonical_sources are incomplete');
 
   if (typeof bundle.payload_checksum !== 'string' || !/^[a-f0-9]{16}$/.test(bundle.payload_checksum)) {
@@ -250,6 +270,7 @@ export async function deriveAgentContextBundle(root = rootDir, routeId = 'system
       coverage: fragment.coverage
     },
     graph_fragment: fragment,
+    space_index: compactSpaceIndex(canonical.orientation),
     exceptions,
     contract,
     canonical_sources: [
