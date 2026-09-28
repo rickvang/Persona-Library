@@ -31,4 +31,3 @@ Across activated fixtures, preferred context is **-17.8%** versus control (-4506
 - Passing deterministic route behavior does not establish subjective model response quality.
 - Rough-token estimates are static UTF-8/4 approximations, not observed provider token usage.
 - Live runtime availability is represented only as a requirement to obtain current evidence; this evaluation does not assert actual Tool or connector availability.
-
