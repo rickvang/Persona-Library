@@ -93,6 +93,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /Keyboard node navigator/);
   assert.match(page, /equivalent textual way to inspect and expand/);
   assert.match(page, /id="map-search"/);
+  assert.match(page, /class="graph-legend"/);
+  assert.match(page, /Exact relationship/);
+  assert.match(page, /prefers-reduced-motion/);
   assert.match(page, /id="map-type-filter"/);
   assert.match(page, /id="map-relationship-filter"/);
   assert.match(page, /System Map/);
@@ -106,6 +109,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /URLSearchParams/);
   assert.match(client, /relationshipFilter/);
   assert.match(client, /typeFilter/);
+  assert.match(client, /highlightedEdgeId/);
+  assert.match(client, /data-highlight-edge/);
+  assert.match(client, /url\.searchParams\.set\('edge'/);
   assert.match(client, /layoutDirection: 'horizontal'/);
   assert.match(client, /layoutDirection: 'vertical'/);
   assert.match(renderer, /layoutDirection = 'vertical'/);
@@ -118,6 +124,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /rendererElements/);
   assert.match(renderer, /filtered-out/);
   assert.match(renderer, /filters = \{\}/);
+  assert.match(renderer, /highlightedEdgeId = null/);
+  assert.match(renderer, /exact-edge/);
   assert.match(client, /repository-ownership/);
   assert.match(client, /persona-skill/);
   assert.match(client, /source-generated/);
