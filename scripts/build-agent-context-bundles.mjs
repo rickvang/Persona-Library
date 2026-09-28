@@ -23,6 +23,17 @@ const sourceRef = (file, selector) => ({
   selector
 });
 
+function payloadChecksum(value) {
+  const text = JSON.stringify(value);
+  let hash = 0xcbf29ce484222325n;
+  const prime = 0x100000001b3n;
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= BigInt(text.charCodeAt(index));
+    hash = BigInt.asUintN(64, hash * prime);
+  }
+  return hash.toString(16).padStart(16, '0');
+}
+
 async function readText(root, relativePath) {
   return readFile(path.join(root, relativePath), 'utf8');
 }
@@ -159,6 +170,13 @@ export function validateAgentContextBundle(bundle, expected = {}) {
   if (!bundle.contract || typeof bundle.contract !== 'object') errors.push('contract is required');
   if (!Array.isArray(bundle.canonical_sources) || bundle.canonical_sources.length < 4) errors.push('canonical_sources are incomplete');
 
+  if (typeof bundle.payload_checksum !== 'string' || !/^[a-f0-9]{16}$/.test(bundle.payload_checksum)) {
+    errors.push('payload_checksum is invalid');
+  } else {
+    const { payload_checksum, ...payload } = bundle;
+    if (payloadChecksum(payload) !== payload_checksum) errors.push('payload_checksum does not match bundle payload');
+  }
+
   if (expected.route_id && bundle.route_id !== expected.route_id) errors.push('route_id mismatch');
   if (expected.primary_space && bundle.primary_space !== expected.primary_space) errors.push('primary_space mismatch');
   if (expected.package_path && bundle.package_path !== expected.package_path) errors.push('package_path mismatch');
@@ -242,7 +260,7 @@ export async function deriveAgentContextBundle(root = rootDir, routeId = 'system
     ]
   };
 
-  return payload;
+  return { ...payload, payload_checksum: payloadChecksum(payload) };
 }
 
 export async function expectedAgentContextBundleOutputs(root = rootDir) {
