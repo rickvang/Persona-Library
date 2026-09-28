@@ -66,6 +66,7 @@ const elements = {
   explorer: document.getElementById('map-explorer'),
   canvas: document.getElementById('map-canvas'),
   graphFallback: document.getElementById('map-node-fallback'),
+  keyboardNav: document.getElementById('map-keyboard-nav'),
   details: document.getElementById('map-details'),
   pathFrom: document.getElementById('path-from'),
   pathTo: document.getElementById('path-to'),
@@ -382,9 +383,10 @@ function renderGraph() {
   const visible = currentVisibleIds();
   const activeRenderer = ensureRenderer();
 
+  renderFallbackNodes(visible);
+
   if (activeRenderer) {
     elements.canvas.hidden = false;
-    elements.graphFallback.hidden = true;
     activeRenderer.render({
       graph: state.graph,
       visibleIds: visible,
@@ -399,8 +401,7 @@ function renderGraph() {
   }
 
   elements.canvas.hidden = true;
-  elements.graphFallback.hidden = false;
-  renderFallbackNodes(visible);
+  elements.keyboardNav.open = true;
 }
 
 function renderPath() {
