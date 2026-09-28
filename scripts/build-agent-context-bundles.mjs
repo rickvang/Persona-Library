@@ -155,7 +155,7 @@ function canonicalSourcesForRoute(canonical, contract) {
     sourceRef(canonical.route.package_path + '/SKILL.md', 'frontmatter')
   ];
 
-  if (contract.reconciliation && !['skip', 'change-impact-reconciliation'].includes(contract.reconciliation)) {
+  if (contract.reconciliation && contract.reconciliation !== 'skip') {
     sources.push(sourceRef(
       '.agents/skills/' + contract.reconciliation + '/SKILL.md',
       'frontmatter / downstream reconciliation contract'
