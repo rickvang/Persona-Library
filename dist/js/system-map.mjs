@@ -61,6 +61,7 @@ const state = {
   expanded: new Set(),
   path: null,
   focusPath: null,
+  highlightedEdgeId: null,
   typeFilter: '',
   relationshipFilter: '',
   lens: 'work-coordination'
@@ -158,6 +159,9 @@ function updateUrlState() {
   if (state.relationshipFilter) url.searchParams.set('relationship', state.relationshipFilter);
   else url.searchParams.delete('relationship');
 
+  if (state.highlightedEdgeId) url.searchParams.set('edge', state.highlightedEdgeId);
+  else url.searchParams.delete('edge');
+
   globalThis.history.replaceState(null, '', url);
 }
 
@@ -188,9 +192,11 @@ function restoreUrlState() {
   const to = params.get('to');
   const type = params.get('type');
   const relationship = params.get('relationship');
+  const edgeId = params.get('edge');
 
   if (type && state.graph.nodes.some(node => node.type === type)) state.typeFilter = type;
   if (relationship && state.graph.edges.some(edge => edge.relationship === relationship)) state.relationshipFilter = relationship;
+  if (edgeId && state.graph.edges.some(edge => edge.id === edgeId)) state.highlightedEdgeId = edgeId;
 
   if (nodeId && state.graph.nodes.some(node => node.id === nodeId)) {
     state.selectedId = nodeId;
@@ -244,6 +250,13 @@ function currentVisibleIds() {
   const visualPath = activeVisualPath();
   if (visualPath) visualPath.nodes.forEach(id => visible.add(id));
   if (state.selectedId) visible.add(state.selectedId);
+  if (state.highlightedEdgeId) {
+    const edge = state.graph.edges.find(item => item.id === state.highlightedEdgeId);
+    if (edge) {
+      visible.add(edge.from);
+      visible.add(edge.to);
+    }
+  }
   return visible;
 }
 
@@ -274,12 +287,21 @@ function edgeSummary(edge, direction) {
   const otherId = direction === 'outgoing' ? edge.to : edge.from;
   const other = index.nodes.get(otherId);
   const source = sourceUrl(edge.source);
+  const highlighted = state.highlightedEdgeId === edge.id;
   return `
-    <li>
+    <li class="${highlighted ? 'relationship-selected' : ''}">
       <button class="relationship-link" type="button" data-select-node="${escapeHtml(other.id)}">
         <span>${escapeHtml(relationshipLabel(edge.relationship))}</span>
         <strong>${escapeHtml(other.label)}</strong>
       </button>
+      <div class="relationship-actions">
+        <button
+          class="edge-highlight-button"
+          type="button"
+          data-highlight-edge="${escapeHtml(edge.id)}"
+          aria-pressed="${highlighted}"
+        >${highlighted ? 'Edge highlighted' : 'Highlight edge'}</button>
+      </div>
       <div class="provenance-line">
         <span>${escapeHtml(edge.source?.selector || 'Source')}</span>
         ${source ? `<a href="${escapeHtml(source)}" target="_blank" rel="noreferrer">Open source ↗</a>` : ''}
@@ -397,6 +419,7 @@ function renderGraph() {
       visibleIds: visible,
       selectedId: state.selectedId,
       path: activeVisualPath(),
+      highlightedEdgeId: state.highlightedEdgeId,
       filters: {
         nodeType: state.typeFilter,
         relationship: state.relationshipFilter
@@ -432,9 +455,19 @@ function render() {
 
 function selectNode(id) {
   state.selectedId = id;
+  state.highlightedEdgeId = null;
   render();
   updateUrlState();
   announce(`Selected ${selectedNode()?.label || id}.`);
+}
+
+function highlightEdge(id) {
+  const edge = state.graph?.edges.find(item => item.id === id);
+  if (!edge) return;
+  state.highlightedEdgeId = state.highlightedEdgeId === id ? null : id;
+  render();
+  updateUrlState();
+  announce(state.highlightedEdgeId ? `Highlighted ${relationshipLabel(edge.relationship)} relationship.` : 'Relationship highlight cleared.');
 }
 
 function toggleExpanded(id) {
@@ -450,6 +483,7 @@ function reset() {
   state.expanded = initialExpandedIds(state.graph);
   state.path = null;
   state.focusPath = null;
+  state.highlightedEdgeId = null;
   state.typeFilter = '';
   state.relationshipFilter = '';
   elements.pathFrom.value = '';
@@ -483,6 +517,7 @@ function findSelectedPath() {
   }
   state.path = findPath(state.graph, from, to);
   state.focusPath = null;
+  state.highlightedEdgeId = null;
   render();
   updateUrlState();
   if (state.path) {
@@ -501,6 +536,7 @@ function focusSearchResult() {
   state.selectedId = node.id;
   state.path = null;
   state.focusPath = nearestRootPath(node.id);
+  state.highlightedEdgeId = null;
   elements.search.value = node.label;
   render();
   updateUrlState();
@@ -550,6 +586,7 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
     state.expanded = initialExpandedIds(graph);
     state.path = null;
     state.focusPath = null;
+    state.highlightedEdgeId = null;
     state.typeFilter = '';
     state.relationshipFilter = '';
     elements.search.value = '';
@@ -570,6 +607,11 @@ async function loadLens(lens, { restoreUrl = false } = {}) {
 
 function bindEvents() {
   root.addEventListener('click', event => {
+    const edgeHighlight = event.target.closest('[data-highlight-edge]');
+    if (edgeHighlight) {
+      highlightEdge(edgeHighlight.dataset.highlightEdge);
+      return;
+    }
     const select = event.target.closest('[data-select-node]');
     if (select) {
       selectNode(select.dataset.selectNode);
