@@ -402,7 +402,10 @@ function currentVisibleIds() {
   const focused = new Set([state.focusId]);
   const rootPath = nearestRootPath(state.focusId);
   for (const id of rootPath?.nodes || []) focused.add(id);
-  for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, DEFAULT_BRANCH_CHUNK)) {
+  const focusLimit = state.expanded.has(state.focusId)
+    ? Number(state.expansionLimits.get(state.focusId) ?? DEFAULT_BRANCH_CHUNK)
+    : DEFAULT_BRANCH_CHUNK;
+  for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, focusLimit)) {
     focused.add(node.id);
   }
   if (state.highlightedEdgeId) {
