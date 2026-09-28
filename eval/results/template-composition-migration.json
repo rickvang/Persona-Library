@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "migration": "template-composition-graph-backed-context",
+  "estimator": "utf8-byte-count-divided-by-four",
+  "estimator_formula": "ceil(UTF-8 bytes / 4)",
+  "canonical_route_records_changed": false,
+  "preferred_path": {
+    "artifacts": [
+      "AGENTS.md",
+      "dist/data/agent-context/template-composition.json",
+      ".agents/skills/template-composer/SKILL.md"
+    ],
+    "utf8_bytes": 27616,
+    "rough_tokens": 6904
+  },
+  "canonical_fallback": {
+    "artifacts": [
+      "AGENTS.md",
+      "content/site-orientation.json",
+      "content/orientation/templates.json",
+      ".agents/skills/template-composer/SKILL.md"
+    ],
+    "utf8_bytes": 32270,
+    "rough_tokens": 8068
+  },
+  "phase9_control_baseline": {
+    "utf8_bytes": 29240,
+    "rough_tokens": 7310
+  },
+  "deltas": {
+    "preferred_vs_current_fallback": {
+      "utf8_bytes": -4654,
+      "rough_tokens": -1164,
+      "percent": -14.4
+    },
+    "preferred_vs_phase9_control": {
+      "utf8_bytes": -1624,
+      "rough_tokens": -406,
+      "percent": -5.6
+    }
+  },
+  "bundle": {
+    "utf8_bytes": 14164,
+    "rough_tokens": 3541,
+    "graph_nodes": 13,
+    "graph_edges": 12,
+    "provenance_entries": 25,
+    "space_entries": 1,
+    "route_id": "template-composition",
+    "primary_space": "templates",
+    "package_path": ".agents/skills/template-composer",
+    "mutation_boundary": "authorized_update",
+    "change_mode": "artifact_generation",
+    "reconciliation": "template-reconciliation"
+  },
+  "interpretation": [
+    "The preferred-path metric retains the full root AGENTS.md because the repository harness may activate it automatically.",
+    "The Template-composition bundle carries only the Templates-space entry, not the nine-space system-orientation index.",
+    "The bundle does not contain accepted research, Template candidates, external-source evidence, target authorization, or canonical Template records.",
+    "Real savings are lower than the Phase 9 theoretical result because the migrated Template Composer now carries explicit readiness, fallback, authority, publication, and reconciliation boundaries.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed model or subscription usage."
+  ]
+}
