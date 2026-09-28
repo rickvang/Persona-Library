@@ -214,7 +214,7 @@ export async function buildAgentContextConsolidation() {
       measured_iterations_per_path: timingObserved.benchmark.measured_iterations_per_path,
       interpretation: [
         'All four preferred paths were faster at p50 for route selection, first useful action, and deterministic activation completion in the observed CI run.',
-        'All four preferred paths also had lower p95 timing, but the magnitude varied and remains subject to runner/filesystem noise.',
+        'Observed p95 timing was mixed across routes and stages; runner/filesystem noise makes wall-clock timing supporting evidence rather than a hard gate.',
         'The deterministic one-file-read and one-artifact reductions are stronger evidence than sub-millisecond wall-clock differences.',
         'These timings do not measure model generation or end-user response latency.'
       ]
