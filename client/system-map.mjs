@@ -23,24 +23,32 @@ const root = document.querySelector('[data-system-map]');
 const lensConfigs = {
   'work-coordination': {
     label: 'Work & coordination',
+    humanTitle: 'Work & verification',
+    description: 'See work surfaces, orchestration, verification, truth classes, and the boundaries around live operational authority.',
     graphUrl: root?.dataset.graphWorkCoordinationUrl,
     sourceUrl: root?.dataset.sourceWorkCoordinationUrl,
     layoutDirection: 'horizontal'
   },
   'repository-ownership': {
     label: 'Repository ownership',
+    humanTitle: 'Repositories & ownership',
+    description: 'See which repositories belong to the workspace, what each owns, and where local instruction and mutation boundaries live.',
     graphUrl: root?.dataset.graphRepositoryOwnershipUrl,
     sourceUrl: root?.dataset.sourceRepositoryOwnershipUrl,
     layoutDirection: 'vertical'
   },
   'persona-skill': {
     label: 'Persona / Skill',
+    humanTitle: 'Personas & capabilities',
+    description: 'See stable Skill identities, persona-specific applications, guidance, and explicit capability relationships.',
     graphUrl: root?.dataset.graphPersonaSkillUrl,
     sourceUrl: root?.dataset.sourcePersonaSkillUrl,
     layoutDirection: 'vertical'
   },
   'source-generated': {
     label: 'Source / generated',
+    humanTitle: 'Sources & generated outputs',
+    description: 'Trace authored inputs and build steps into generated outputs while keeping generated artifacts separate from authored truth.',
     graphUrl: root?.dataset.graphSourceGeneratedUrl,
     sourceUrl: root?.dataset.sourceSourceGeneratedUrl,
     layoutDirection: 'horizontal',
@@ -48,6 +56,8 @@ const lensConfigs = {
   },
   'agent-runtime': {
     label: 'Agent / runtime',
+    humanTitle: 'How agents get oriented',
+    description: 'Follow the declared path from repository instructions through semantic spaces and routes to callable Skills. Live runtime state remains external.',
     graphUrl: root?.dataset.graphAgentRuntimeUrl,
     sourceUrl: root?.dataset.sourceAgentRuntimeUrl,
     layoutDirection: 'horizontal',
@@ -71,16 +81,21 @@ const state = {
   highlightedEdgeId: null,
   typeFilter: '',
   relationshipFilter: '',
-  lens: 'work-coordination'
+  lens: 'overview',
+  mode: 'overview'
 };
 
 const elements = {
   status: document.getElementById('map-status'),
+  overview: document.getElementById('map-overview'),
   explorer: document.getElementById('map-explorer'),
   back: document.getElementById('map-back'),
   trail: document.getElementById('map-trail'),
   selectionActions: document.getElementById('map-selection-actions'),
   explorerHeading: document.getElementById('explorer-heading'),
+  explorerDescription: document.getElementById('explorer-description'),
+  explorerLensLabel: document.getElementById('explorer-lens-label'),
+  graphOnly: [...root.querySelectorAll('[data-graph-only]')],
   canvas: document.getElementById('map-canvas'),
   graphFallback: document.getElementById('map-node-fallback'),
   keyboardNav: document.getElementById('map-keyboard-nav'),
@@ -131,6 +146,7 @@ function clonePath(path) {
 
 function captureViewSnapshot() {
   return {
+    mode: 'graph',
     lens: state.lens,
     selectedId: state.selectedId,
     expanded: [...state.expanded],
@@ -186,10 +202,16 @@ function saveCurrentLensState() {
 }
 
 function pushNavigationCheckpoint() {
-  if (!state.graph) return;
-  const snapshot = captureViewSnapshot();
+  const snapshot = state.mode === 'overview'
+    ? { mode: 'overview', lens: 'overview' }
+    : state.graph
+      ? captureViewSnapshot()
+      : null;
+  if (!snapshot) return;
+
   const last = navigationStack.at(-1);
   const key = item => [
+    item?.mode,
     item?.lens,
     item?.selectedId,
     item?.focusId,
@@ -202,16 +224,19 @@ function pushNavigationCheckpoint() {
 }
 
 function snapshotLabel(snapshot) {
+  if (snapshot?.mode === 'overview' || snapshot?.lens === 'overview') return 'System overview';
   const graph = graphCache.get(snapshot?.lens);
   const node = graph?.nodes.find(item => item.id === snapshot?.selectedId);
-  return node?.label || lensConfigs[snapshot?.lens]?.label || 'Overview';
+  return node?.label || lensConfigs[snapshot?.lens]?.humanTitle || lensConfigs[snapshot?.lens]?.label || 'Overview';
 }
 
 function renderTrail() {
   if (!elements.trail || !elements.back) return;
   elements.back.disabled = navigationStack.length === 0;
   const recent = navigationStack.slice(-3).map(snapshot => snapshotLabel(snapshot));
-  const current = selectedNode()?.label || currentLensConfig()?.label || 'Overview';
+  const current = state.mode === 'overview'
+    ? 'System overview'
+    : selectedNode()?.label || currentLensConfig()?.humanTitle || currentLensConfig()?.label || 'System overview';
   const labels = [...recent, current].filter((label, index, all) => index === 0 || label !== all[index - 1]);
   elements.trail.innerHTML = labels
     .map((label, index) => `<span class="${index === labels.length - 1 ? 'current' : ''}">${escapeHtml(label)}</span>`)
@@ -249,8 +274,19 @@ function searchNode(query) {
 }
 
 function updateUrlState() {
-  if (!state.graph || !globalThis.history?.replaceState) return;
+  if (!globalThis.history?.replaceState) return;
   const url = new URL(globalThis.location.href);
+
+  if (state.mode === 'overview') {
+    url.searchParams.set('lens', 'overview');
+    for (const key of ['node', 'from', 'to', 'type', 'relationship', 'edge', 'focus']) {
+      url.searchParams.delete(key);
+    }
+    globalThis.history.replaceState(null, '', url);
+    return;
+  }
+
+  if (!state.graph) return;
   url.searchParams.set('lens', state.lens);
   if (state.selectedId) url.searchParams.set('node', state.selectedId);
   else url.searchParams.delete('node');
@@ -797,7 +833,8 @@ function buildQuestionHandoff() {
     question,
     '',
     'System Map context:',
-    `Lens: ${currentLensConfig()?.label || state.lens}`,
+    `Area: ${currentLensConfig()?.humanTitle || currentLensConfig()?.label || state.lens}`,
+    `Technical lens: ${currentLensConfig()?.label || state.lens}`,
     `Graph scope: ${state.graph.scope}`,
     `Coverage: ${state.graph.coverage}`,
     `Context selection: ${scope}`,
@@ -997,7 +1034,11 @@ function focusSearchResult() {
 
 async function restoreNavigationSnapshot(snapshot) {
   if (!snapshot) return;
-  if (snapshot.lens !== state.lens) {
+  if (snapshot.mode === 'overview' || snapshot.lens === 'overview') {
+    showOverview({ rememberCurrent: false });
+    return;
+  }
+  if (snapshot.lens !== state.lens || state.mode !== 'graph') {
     await loadLens(snapshot.lens, { viewSnapshot: snapshot, rememberCurrent: false });
     return;
   }
@@ -1027,6 +1068,35 @@ function applyFilters() {
   announce('Graph filters updated.');
 }
 
+function setGraphControlsVisible(visible) {
+  for (const element of elements.graphOnly) element.hidden = !visible;
+}
+
+function showOverview({ rememberCurrent = true } = {}) {
+  if (rememberCurrent && state.mode === 'graph' && state.graph) saveCurrentLensState();
+
+  state.mode = 'overview';
+  state.lens = 'overview';
+  state.graph = null;
+  state.selectedId = null;
+  state.focusId = null;
+  state.path = null;
+  state.focusPath = null;
+  state.highlightedEdgeId = null;
+
+  elements.error.hidden = true;
+  elements.explorer.hidden = true;
+  elements.overview.hidden = false;
+  elements.lens.value = 'overview';
+  elements.sourceLink.hidden = true;
+  setGraphControlsVisible(false);
+  elements.status.innerHTML = '<span class="status-dot" aria-hidden="true"></span><strong>System overview</strong><span>Choose an area to open its provenance-backed graph.</span>';
+
+  renderTrail();
+  updateUrlState();
+  announce('System overview shown. Choose one of five areas to explore.');
+}
+
 function showLoadError(error, config) {
   elements.status.innerHTML = '<strong>System Map unavailable</strong>';
   elements.explorer.hidden = true;
@@ -1043,7 +1113,7 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     return;
   }
 
-  if (rememberCurrent && state.graph && state.lens !== lens) saveCurrentLensState();
+  if (rememberCurrent && state.mode === 'graph' && state.graph && state.lens !== lens) saveCurrentLensState();
 
   elements.status.innerHTML = `<strong>Loading ${escapeHtml(config.label)}…</strong>`;
   elements.error.hidden = true;
@@ -1057,6 +1127,7 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
       graphCache.set(lens, graph);
     }
 
+    state.mode = 'graph';
     state.lens = lens;
     state.graph = graph;
     state.selectedId = null;
@@ -1070,8 +1141,14 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     state.relationshipFilter = '';
     elements.search.value = '';
     elements.lens.value = lens;
+    elements.overview.hidden = true;
+    elements.sourceLink.hidden = false;
     elements.sourceLink.href = config.sourceUrl;
     elements.sourceFallback.href = config.sourceUrl;
+    elements.explorerHeading.textContent = config.humanTitle || config.label;
+    elements.explorerDescription.textContent = config.description || 'Select a node to inspect its explicit relationships.';
+    elements.explorerLensLabel.textContent = `Technical view · ${config.label}`;
+    setGraphControlsVisible(true);
     renderPathControls();
     populateExploreControls();
     const savedView = viewSnapshot || (!restoreUrl ? lensViewStates.get(lens) : null);
@@ -1091,6 +1168,12 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
 
 function bindEvents() {
   root.addEventListener('click', event => {
+    const openLens = event.target.closest('[data-open-lens]');
+    if (openLens) {
+      pushNavigationCheckpoint();
+      loadLens(openLens.dataset.openLens);
+      return;
+    }
     const inspect = event.target.closest('[data-inspect-selected]');
     if (inspect) {
       inspectSelectedNode();
@@ -1138,11 +1221,19 @@ function bindEvents() {
   elements.questionCopy?.addEventListener('click', copyQuestionHandoff);
   elements.lens.addEventListener('change', async () => {
     pushNavigationCheckpoint();
+    if (elements.lens.value === 'overview') {
+      showOverview();
+      return;
+    }
     await loadLens(elements.lens.value);
   });
 }
 
 bindEvents();
 const initialParams = new URLSearchParams(globalThis.location.search);
-const initialLens = lensConfigs[initialParams.get('lens')] ? initialParams.get('lens') : 'work-coordination';
-loadLens(initialLens, { restoreUrl: true });
+const requestedLens = initialParams.get('lens');
+if (requestedLens && lensConfigs[requestedLens]) {
+  loadLens(requestedLens, { restoreUrl: true });
+} else {
+  showOverview({ rememberCurrent: false });
+}
