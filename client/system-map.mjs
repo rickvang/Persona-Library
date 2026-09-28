@@ -272,6 +272,9 @@ function updateUrlState() {
   if (state.highlightedEdgeId) url.searchParams.set('edge', state.highlightedEdgeId);
   else url.searchParams.delete('edge');
 
+  if (state.focusId) url.searchParams.set('focus', state.focusId);
+  else url.searchParams.delete('focus');
+
   globalThis.history.replaceState(null, '', url);
 }
 
@@ -303,6 +306,7 @@ function restoreUrlState() {
   const type = params.get('type');
   const relationship = params.get('relationship');
   const edgeId = params.get('edge');
+  const focusId = params.get('focus');
 
   if (type && state.graph.nodes.some(node => node.type === type)) state.typeFilter = type;
   if (relationship && state.graph.edges.some(edge => edge.relationship === relationship)) state.relationshipFilter = relationship;
@@ -312,6 +316,12 @@ function restoreUrlState() {
     state.selectedId = nodeId;
     state.focusPath = nearestRootPath(nodeId);
     elements.search.value = state.graph.nodes.find(node => node.id === nodeId)?.label || nodeId;
+  }
+
+  if (focusId && state.graph.nodes.some(node => node.id === focusId)) {
+    state.focusId = focusId;
+    if (!state.selectedId) state.selectedId = focusId;
+    state.focusPath = nearestRootPath(focusId);
   }
 
   if (
