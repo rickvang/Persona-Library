@@ -47,6 +47,12 @@
     .map-toolbar select { min-width:190px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; }
     .map-toolbar button, .expand-button { padding:8px 11px; border:1px solid var(--deep); border-radius:9px; color:#fff; background:var(--deep); font-size:12px; font-weight:800; }
     .map-toolbar .ghost, .branch-toggle { color:var(--deep); background:#fff; }
+    .explore-toolbar { display:grid; grid-template-columns:minmax(240px,1.4fr) minmax(180px,.8fr) minmax(200px,1fr); gap:10px; margin-bottom:14px; padding:12px 14px; border:1px solid var(--line); border-radius:13px; background:var(--card); }
+    .explore-field { display:grid; gap:5px; min-width:0; }
+    .explore-field label { color:var(--muted); font-size:10px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+    .explore-field input, .explore-field select { width:100%; min-width:0; padding:9px 10px; border:1px solid var(--line); border-radius:8px; color:var(--ink); background:#fff; }
+    .search-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; }
+    .search-row button { padding:8px 11px; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:11px; font-weight:800; }
     .spacer { flex:1; }
     .map-status { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; color:var(--muted); font-size:12px; }
     .status-dot { width:8px; height:8px; border-radius:50%; background:#2a8a6d; }
@@ -125,6 +131,7 @@
       .expand-button { width:100%; }
       .graph-canvas { min-height:440px; height:62vh; }
       .graph-tools { align-items:flex-start; flex-direction:column; }
+      .explore-toolbar { grid-template-columns:1fr; }
       .provenance-line { flex-direction:column; }
     }
   </style>
@@ -181,6 +188,25 @@
       <button class="ghost" type="button" id="map-fit">Fit graph</button>
       <span class="spacer"></span>
       <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
+    </div>
+
+    <div class="explore-toolbar" aria-label="Graph exploration controls">
+      <div class="explore-field">
+        <label for="map-search">Find a node</label>
+        <div class="search-row">
+          <input id="map-search" list="map-search-options" type="search" placeholder="Search label or stable ID" autocomplete="off" />
+          <button type="button" id="map-search-go">Focus</button>
+        </div>
+        <datalist id="map-search-options"></datalist>
+      </div>
+      <div class="explore-field">
+        <label for="map-type-filter">Node type</label>
+        <select id="map-type-filter" disabled><option value="">All visible types</option></select>
+      </div>
+      <div class="explore-field">
+        <label for="map-relationship-filter">Relationship</label>
+        <select id="map-relationship-filter" disabled><option value="">All visible relationships</option></select>
+      </div>
     </div>
 
     <section id="map-error" class="error-box" hidden>
