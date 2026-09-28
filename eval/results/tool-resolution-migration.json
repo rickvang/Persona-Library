@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "migration": "tool-resolution-graph-backed-context",
+  "estimator": "utf8-byte-count-divided-by-four",
+  "estimator_formula": "ceil(UTF-8 bytes / 4)",
+  "canonical_route_records_changed": false,
+  "preferred_path": {
+    "artifacts": [
+      "AGENTS.md",
+      "dist/data/agent-context/tool-resolution.json",
+      ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+    ],
+    "utf8_bytes": 33321,
+    "rough_tokens": 8331
+  },
+  "canonical_fallback": {
+    "artifacts": [
+      "AGENTS.md",
+      "content/site-orientation.json",
+      "content/orientation/tools.json",
+      ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
+    ],
+    "utf8_bytes": 35473,
+    "rough_tokens": 8869
+  },
+  "phase9_control_baseline": {
+    "utf8_bytes": 32899,
+    "rough_tokens": 8225
+  },
+  "deltas": {
+    "preferred_vs_current_fallback": {
+      "utf8_bytes": -2152,
+      "rough_tokens": -538,
+      "percent": -6.1
+    },
+    "preferred_vs_phase9_control": {
+      "utf8_bytes": 422,
+      "rough_tokens": 106,
+      "percent": 1.3
+    }
+  },
+  "bundle": {
+    "utf8_bytes": 11233,
+    "rough_tokens": 2809,
+    "graph_nodes": 10,
+    "graph_edges": 8,
+    "provenance_entries": 18,
+    "space_entries": 1,
+    "route_id": "tool-resolution",
+    "primary_space": "tools",
+    "package_path": ".agents/skills/tool-discovery-and-safe-execution",
+    "mutation_boundary": "external_execution",
+    "change_mode": "external_execution",
+    "reconciliation": "change-impact-reconciliation",
+    "live_state_embedded": false
+  },
+  "interpretation": [
+    "The preferred-path metric retains the full root AGENTS.md because the repository harness may activate it automatically.",
+    "The Tool bundle deliberately omits bootstrap, space, and route-group graph traversal already resolved by direct dispatch; its one-entry space_index preserves Tools ownership.",
+    "The bundle keeps route→Skill, Skill contract, live-runtime exclusion, validation, and reconciliation provenance.",
+    "Current availability, credentials, permission, workspace, target, approval, and execution results remain external and are never serialized into the bundle.",
+    "Rough-token estimates are static UTF-8/4 approximations, not observed model or subscription usage."
+  ]
+}
