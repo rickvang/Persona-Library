@@ -441,27 +441,82 @@ function edgeSummary(edge, direction) {
   const index = indexGraph(state.graph);
   const otherId = direction === 'outgoing' ? edge.to : edge.from;
   const other = index.nodes.get(otherId);
-  const source = sourceUrl(edge.source);
   const highlighted = state.highlightedEdgeId === edge.id;
   return `
     <li class="${highlighted ? 'relationship-selected' : ''}">
       <button class="relationship-link" type="button" data-select-node="${escapeHtml(other.id)}">
-        <span>${escapeHtml(relationshipLabel(edge.relationship))}</span>
         <strong>${escapeHtml(other.label)}</strong>
+        <span>${escapeHtml(nodeTypeLabel(other.type))}</span>
       </button>
-      <div class="relationship-actions">
-        <button
-          class="edge-highlight-button"
-          type="button"
-          data-highlight-edge="${escapeHtml(edge.id)}"
-          aria-pressed="${highlighted}"
-        >${highlighted ? 'Edge highlighted' : 'Highlight edge'}</button>
-      </div>
-      <div class="provenance-line">
-        <span>${escapeHtml(edge.source?.selector || 'Source')}</span>
-        ${source ? `<a href="${escapeHtml(source)}" target="_blank" rel="noreferrer">Open source ↗</a>` : ''}
-      </div>
+      <button
+        class="edge-highlight-button"
+        type="button"
+        data-highlight-edge="${escapeHtml(edge.id)}"
+        aria-pressed="${highlighted}"
+      >${highlighted ? 'Evidence shown' : 'Inspect relationship'}</button>
     </li>
+  `;
+}
+
+function groupedRelationships(edges, direction, emptyMessage) {
+  if (!edges.length) return `<p class="quiet">${escapeHtml(emptyMessage)}</p>`;
+  const groups = new Map();
+  for (const edge of edges) {
+    if (!groups.has(edge.relationship)) groups.set(edge.relationship, []);
+    groups.get(edge.relationship).push(edge);
+  }
+  return `
+    <div class="relationship-groups">
+      ${[...groups.entries()]
+        .sort(([a], [b]) => relationshipLabel(a).localeCompare(relationshipLabel(b)))
+        .map(([relationship, items]) => `
+          <details class="relationship-group" ${items.length <= 4 ? 'open' : ''}>
+            <summary>
+              <span>${escapeHtml(relationshipLabel(relationship))}</span>
+              <strong>${items.length}</strong>
+            </summary>
+            <ul class="relationship-list">${items
+              .slice()
+              .sort((a, b) => {
+                const index = indexGraph(state.graph);
+                const aId = direction === 'outgoing' ? a.to : a.from;
+                const bId = direction === 'outgoing' ? b.to : b.from;
+                return (index.nodes.get(aId)?.label || aId).localeCompare(index.nodes.get(bId)?.label || bId);
+              })
+              .map(edge => edgeSummary(edge, direction))
+              .join('')}</ul>
+          </details>
+        `).join('')}
+    </div>
+  `;
+}
+
+function highlightedEdgeEvidence() {
+  const edge = state.graph?.edges.find(item => item.id === state.highlightedEdgeId);
+  if (!edge) return '';
+  const index = indexGraph(state.graph);
+  const from = index.nodes.get(edge.from);
+  const to = index.nodes.get(edge.to);
+  const source = sourceUrl(edge.source);
+  return `
+    <section class="detail-section relationship-evidence">
+      <div class="section-heading">
+        <h3>Relationship evidence</h3>
+        <span class="evidence-state">Selected edge</span>
+      </div>
+      <p class="relationship-statement">
+        <strong>${escapeHtml(from?.label || edge.from)}</strong>
+        <span>${escapeHtml(relationshipLabel(edge.relationship))}</span>
+        <strong>${escapeHtml(to?.label || edge.to)}</strong>
+      </p>
+      <dl>
+        <dt>Edge ID</dt><dd>${escapeHtml(edge.id)}</dd>
+        <dt>Derivation</dt><dd>${escapeHtml(edge.derivation || 'Unavailable')}</dd>
+        <dt>Source</dt><dd>${escapeHtml(edge.source?.locator || 'Unavailable')}</dd>
+        <dt>Selector</dt><dd>${escapeHtml(edge.source?.selector || 'Unavailable')}</dd>
+      </dl>
+      ${source ? `<a class="source-link" href="${escapeHtml(source)}" target="_blank" rel="noreferrer">Open relationship source ↗</a>` : ''}
+    </section>
   `;
 }
 
@@ -470,9 +525,9 @@ function renderDetails() {
   if (!node) {
     elements.details.innerHTML = `
       <div class="empty-detail">
-        <p class="eyebrow">Inspect a node</p>
-        <h2>Select any visible concept</h2>
-        <p>Details show explicit incoming and outgoing relationships plus their canonical provenance.</p>
+        <p class="eyebrow">Inspector</p>
+        <h2>Select a node</h2>
+        <p>Selection is separate from expansion and focus. Choose a node first, then decide whether to inspect, expand its direct relationships, or focus the map around it.</p>
       </div>
     `;
     return;
@@ -482,23 +537,60 @@ function renderDetails() {
   const incoming = index.incoming.get(node.id);
   const outgoing = index.outgoing.get(node.id);
   const ownership = outgoing.filter(edge => edge.relationship === 'owns' || edge.relationship.startsWith('owns-'));
+  const outgoingConnections = outgoing.filter(edge => !ownership.includes(edge));
   const nodeSource = sourceUrl(node.source);
   const expansion = expansionInfo(node.id);
   const expandLabel = expansion.expanded
     ? 'Collapse branch'
     : expansion.total > DEFAULT_BRANCH_CHUNK
       ? `Expand first ${DEFAULT_BRANCH_CHUNK} of ${expansion.total}`
-      : 'Expand one level';
+      : `Expand ${expansion.total} direct connection${expansion.total === 1 ? '' : 's'}`;
 
   elements.details.innerHTML = `
     <div class="detail-head">
       <div>
         <p class="eyebrow">${escapeHtml(nodeTypeLabel(node.type))}</p>
-        <h2>${escapeHtml(node.label)}</h2>
+        <h2 tabindex="-1">${escapeHtml(node.label)}</h2>
         <p class="node-id">${escapeHtml(node.id)}</p>
-        ${expansion.expanded && expansion.total > DEFAULT_BRANCH_CHUNK
-          ? `<p class="branch-progress">${expansion.revealed} of ${expansion.total} direct neighbors visible</p>`
-          : ''}
+      </div>
+      <span class="connection-count">${incoming.length} in · ${outgoing.length} out</span>
+    </div>
+
+    <section class="detail-section">
+      <h3>What is this?</h3>
+      <p class="detail-copy">This lens represents <strong>${escapeHtml(node.label)}</strong> as <strong>${escapeHtml(nodeTypeLabel(node.type))}</strong>. Its recorded owner is <code>${escapeHtml(node.owner || 'Unavailable')}</code>.</p>
+    </section>
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>What belongs here?</h3>
+        <span>${ownership.length} explicit</span>
+      </div>
+      ${groupedRelationships(ownership, 'outgoing', 'No explicit ownership relationship is represented in this lens.')}
+    </section>
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>How does it connect?</h3>
+        <span>${incoming.length + outgoingConnections.length} relationships</span>
+      </div>
+      <div class="connection-direction">
+        <strong>Outgoing</strong>
+        ${groupedRelationships(outgoingConnections, 'outgoing', 'No other explicit outgoing relationships.')}
+      </div>
+      <div class="connection-direction">
+        <strong>Incoming</strong>
+        ${groupedRelationships(incoming, 'incoming', 'No explicit incoming relationships in this lens.')}
+      </div>
+      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
+    </section>
+
+    ${highlightedEdgeEvidence()}
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>Explore this area</h3>
+        <span>${expansion.total} direct</span>
       </div>
       <div class="branch-actions">
         <button class="expand-button" type="button" data-toggle-expand="${escapeHtml(node.id)}" aria-expanded="${expansion.expanded}">
@@ -507,40 +599,26 @@ function renderDetails() {
         ${expansion.hasMore
           ? `<button class="show-more-button" type="button" data-show-more="${escapeHtml(node.id)}">Show ${expansion.nextCount} more</button>`
           : ''}
+        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">
+          Focus on this area
+        </button>
       </div>
-    </div>
-
-    <section class="detail-section">
-      <h3>What this owns</h3>
-      ${ownership.length
-        ? `<ul class="relationship-list">${ownership.map(edge => edgeSummary(edge, 'outgoing')).join('')}</ul>`
-        : '<p class="quiet">No explicit ownership relationship is represented in this lens.</p>'}
+      ${expansion.expanded && expansion.total > DEFAULT_BRANCH_CHUNK
+        ? `<p class="branch-progress">${expansion.revealed} of ${expansion.total} direct neighbors revealed</p>`
+        : ''}
     </section>
 
-    <section class="detail-section">
-      <h3>Outgoing relationships</h3>
-      ${outgoing.length
-        ? `<ul class="relationship-list">${outgoing.map(edge => edgeSummary(edge, 'outgoing')).join('')}</ul>`
-        : '<p class="quiet">No explicit outgoing relationships.</p>'}
-    </section>
-
-    <section class="detail-section">
-      <h3>What explicitly depends on this</h3>
-      ${incoming.length
-        ? `<ul class="relationship-list">${incoming.map(edge => edgeSummary(edge, 'incoming')).join('')}</ul>`
-        : '<p class="quiet">No explicit incoming relationships in this lens.</p>'}
-      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
-    </section>
-
-    <section class="detail-section source-detail">
-      <h3>Provenance</h3>
-      <dl>
-        <dt>Derivation</dt><dd>${escapeHtml(node.derivation)}</dd>
-        <dt>Source</dt><dd>${escapeHtml(node.source?.locator || 'Unavailable')}</dd>
-        <dt>Selector</dt><dd>${escapeHtml(node.source?.selector || 'Unavailable')}</dd>
-      </dl>
-      ${nodeSource ? `<a class="source-link" href="${escapeHtml(nodeSource)}" target="_blank" rel="noreferrer">Open canonical source ↗</a>` : ''}
-    </section>
+    <details class="detail-section provenance-detail">
+      <summary>Where is its source?</summary>
+      <div class="source-detail">
+        <dl>
+          <dt>Derivation</dt><dd>${escapeHtml(node.derivation)}</dd>
+          <dt>Source</dt><dd>${escapeHtml(node.source?.locator || 'Unavailable')}</dd>
+          <dt>Selector</dt><dd>${escapeHtml(node.source?.selector || 'Unavailable')}</dd>
+        </dl>
+        ${nodeSource ? `<a class="source-link" href="${escapeHtml(nodeSource)}" target="_blank" rel="noreferrer">Open canonical source ↗</a>` : ''}
+      </div>
+    </details>
   `;
 }
 
