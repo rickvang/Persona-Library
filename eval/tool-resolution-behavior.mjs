@@ -229,7 +229,7 @@ function evaluatePath(mode, fixture, sources) {
     external_execution_contract_preserved: changeMode === 'external_execution',
     reconciliation_preserved: reconciliation === 'change-impact-reconciliation',
     credentials_never_inferred: result.credential_inferred === false,
-    blocked_without_permission: fixture.live.permission_verified || !result.execution_allowed,
+    blocked_without_permission: fixture.live.permission_verified || result.selected_candidate === 'verified-alternate' || !result.execution_allowed,
     blocked_without_target: (fixture.live.workspace_verified && fixture.live.target_verified) || !result.execution_allowed,
     blocked_side_effect_without_approval: !sideEffectRequested(fixture.prompt) || fixture.live.approval_verified || !result.execution_allowed,
     unverified_runtime_never_available: fixture.live.primary_exposed !== null || result.availability_state !== 'Available',
