@@ -83,17 +83,26 @@ function boundedFragment(graph, { spaceId, route }) {
 
   const routeNode = 'route:' + route.id;
   const packageNode = 'skill-package:' + route.package_path;
-  const ids = new Set([
-    'view:agent-runtime',
-    'agent:repository-dispatcher',
-    'routing:orientation-bootstrap',
-    'space:' + spaceId,
-    'route-group:' + spaceId,
-    routeNode,
-    packageNode,
-    'validation:repository-validation',
-    'boundary:live-runtime-state'
-  ]);
+  const ids = new Set(route.id === 'tool-resolution'
+    ? [
+        'view:agent-runtime',
+        'agent:repository-dispatcher',
+        routeNode,
+        packageNode,
+        'validation:repository-validation',
+        'boundary:live-runtime-state'
+      ]
+    : [
+        'view:agent-runtime',
+        'agent:repository-dispatcher',
+        'routing:orientation-bootstrap',
+        'space:' + spaceId,
+        'route-group:' + spaceId,
+        routeNode,
+        packageNode,
+        'validation:repository-validation',
+        'boundary:live-runtime-state'
+      ]);
 
   for (const edge of outgoing.get(packageNode) || []) {
     if (edge.relationship.startsWith('declares-')) ids.add(edge.to);
