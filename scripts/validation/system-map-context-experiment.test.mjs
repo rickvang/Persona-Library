@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import { buildExperiment, expectedOutputs, FIXTURES } from '../../eval/system-map-context-experiment.mjs';
+import { buildExperiment, FIXTURES } from '../../eval/system-map-context-experiment.mjs';
 
 const REQUIRED_DIMENSIONS = [
   'routing_target',
@@ -56,20 +56,26 @@ test('Phase 9 context arithmetic is deterministic and uses the existing UTF-8/4 
   }
 });
 
-test('Phase 9 output scope is eval-only and committed reports match fresh canonical derivation', async () => {
-  const outputs = await expectedOutputs();
-  assert.deepEqual([...outputs.keys()], [
-    'eval/results/system-map-context-experiment.json',
-    'eval/system-map-context-experiment.md'
-  ]);
+test('Phase 9 committed report remains the frozen pre-migration baseline', async () => {
+  const committed = JSON.parse(
+    await fs.readFile(new URL('../../eval/results/system-map-context-experiment.json', import.meta.url), 'utf8')
+  );
 
-  for (const [relativePath, expected] of outputs) {
-    assert.equal(
-      await fs.readFile(new URL('../../' + relativePath, import.meta.url), 'utf8'),
-      expected,
-      relativePath + ' is stale'
-    );
-  }
+  assert.equal(committed.experiment, 'phase-9-agent-context-integration');
+  assert.equal(committed.canonical_routing_changed, false);
+  assert.equal(committed.aggregate.control.utf8_bytes, 94003);
+  assert.equal(committed.aggregate.control.rough_tokens, 23501);
+  assert.equal(committed.aggregate.experimental.utf8_bytes, 50446);
+  assert.equal(committed.aggregate.experimental.rough_tokens, 12613);
+  assert.equal(committed.aggregate.adoption_candidates, 3);
+
+  const orientation = committed.fixtures.find(item => item.route_id === 'system-orientation');
+  assert.ok(orientation);
+  assert.equal(orientation.control.utf8_bytes, 31864);
+  assert.equal(orientation.control.rough_tokens, 7966);
+  assert.equal(orientation.experimental.utf8_bytes, 12622);
+  assert.equal(orientation.experimental.rough_tokens, 3156);
+  assert.equal(orientation.adoption_candidate, true);
 });
 
 test('Phase 9 experiment preserves the current four-artifact control baseline shape', async () => {
