@@ -70,7 +70,7 @@
         "scope_posture": "one-off",
         "package_posture": "not-applicable",
         "placement_posture": "not-applicable",
-        "authorization_posture": "explicit",
+        "authorization_posture": "not-applicable",
         "mutation_allowed": false,
         "bundle_grants_write": false,
         "generated_output_posture": "not-applicable",
@@ -89,7 +89,7 @@
         "scope_posture": "persona-application",
         "package_posture": "not-applicable",
         "placement_posture": "not-applicable",
-        "authorization_posture": "explicit",
+        "authorization_posture": "not-applicable",
         "mutation_allowed": false,
         "bundle_grants_write": false,
         "generated_output_posture": "not-applicable",
@@ -156,7 +156,7 @@
     },
     {
       "id": "documented-package-not-availability",
-      "prompt": "A README mentions a reusable Skill package, but current package files and runtime availability are unverified. Plan the next safe check only.",
+      "prompt": "The reusable Skill scope is approved and a README mentions the package, but current package files and runtime availability are unverified. Plan the next safe check only.",
       "expected": {
         "activate_package_maintenance": true,
         "mode": "plan",
