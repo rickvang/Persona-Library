@@ -9,6 +9,10 @@ import {
   findPath,
   sourceUrl
 } from '../../client/system-map-graph.mjs';
+import {
+  initialExpandedIds,
+  rendererElements
+} from '../../client/system-map-renderer.mjs';
 
 const graph = {
   version: 'system-map.graph/v0.1',
@@ -37,6 +41,24 @@ test('System Map graph helpers support progressive disclosure and paths', () => 
   });
 });
 
+test('System Map renderer derives bounded view state without introducing graph facts', () => {
+  assert.deepEqual([...initialExpandedIds(graph)], ['a:one']);
+  const visible = visibleNodeIds(graph, initialExpandedIds(graph));
+  const elements = rendererElements(graph, visible);
+  const nodeIds = elements.filter(item => item.group === 'nodes').map(item => item.data.id).sort();
+  const edgeIds = elements.filter(item => item.group === 'edges').map(item => item.data.id).sort();
+  assert.deepEqual(nodeIds, ['a:one', 'a:two']);
+  assert.deepEqual(edgeIds, ['edge:a:one--connects--a:two']);
+  assert.ok(elements.every(item => graph.nodes.some(node => node.id === item.data.id) || graph.edges.some(edge => edge.id === item.data.id)));
+
+  const dense = {
+    ...graph,
+    nodes: [graph.nodes[0], ...Array.from({ length: 30 }, (_, index) => ({ ...graph.nodes[1], id: 'dense:' + index, label: 'Dense ' + index }))],
+    edges: Array.from({ length: 30 }, (_, index) => ({ ...graph.edges[0], id: 'dense-edge:' + index, from: 'a:one', to: 'dense:' + index }))
+  };
+  assert.equal(initialExpandedIds(dense).size, 0, 'dense roots should stay collapsed by default');
+});
+
 test('System Map provenance resolves repository files without copying source content', () => {
   assert.equal(
     sourceUrl(graph.nodes[0].source),
@@ -45,9 +67,10 @@ test('System Map provenance resolves repository files without copying source con
 });
 
 test('System Map Site consumes domain-owned graphs without copying graph facts into presentation', async () => {
-  const [page, client, build] = await Promise.all([
+  const [page, client, renderer, build] = await Promise.all([
     fs.readFile(new URL('../../content/site-pages/system-map.html', import.meta.url), 'utf8'),
     fs.readFile(new URL('../../client/system-map.mjs', import.meta.url), 'utf8'),
+    fs.readFile(new URL('../../client/system-map-renderer.mjs', import.meta.url), 'utf8'),
     fs.readFile(new URL('../../scripts/build-library.mjs', import.meta.url), 'utf8')
   ]);
 
@@ -62,10 +85,19 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /Agent \/ runtime<\/strong>[\s\S]*Available · advanced/);
   assert.doesNotMatch(page, /Not mapped yet/);
   assert.match(page, /aria-live="polite"/);
+  assert.match(page, /cdn\.jsdelivr\.net\/npm\/cytoscape@3\.34\.3\/dist\/cytoscape\.min\.js/);
+  assert.match(page, /id="map-canvas"/);
+  assert.match(page, /id="map-fit"/);
+  assert.match(page, /id="map-node-fallback"/);
   assert.match(page, /System Map/);
   assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.doesNotMatch(client, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.match(client, /lensConfigs/);
+  assert.match(client, /SystemMapRenderer/);
+  assert.match(client, /initialExpandedIds/);
+  assert.match(renderer, /cytoscapeFactory/);
+  assert.match(renderer, /breadthfirst/);
+  assert.match(renderer, /rendererElements/);
   assert.match(client, /repository-ownership/);
   assert.match(client, /persona-skill/);
   assert.match(client, /source-generated/);
@@ -78,11 +110,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /What explicitly depends on this/);
   assert.match(build, /"system-map\.html"/);
   assert.match(build, /client\/system-map-graph\.mjs/);
+  assert.match(build, /client\/system-map-renderer\.mjs/);
   assert.match(build, /client\/system-map\.mjs/);
   assert.match(build, /buildPersonaSkillSystemMap/);
   assert.match(build, /buildTechnicalSystemMaps/);
   assert.match(client, /loadLens\('work-coordination'\)/);
-  assert.doesNotMatch(page + client, /file:content\/library-data\.js|route:tool-resolution|skill-package:\.agents\/skills\/tool-discovery-and-safe-execution/);
+  assert.doesNotMatch(page + client + renderer, /file:content\/library-data\.js|route:tool-resolution|skill-package:\.agents\/skills\/tool-discovery-and-safe-execution/);
 });
 
 
