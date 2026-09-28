@@ -89,15 +89,25 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /id="map-canvas"/);
   assert.match(page, /id="map-fit"/);
   assert.match(page, /id="map-node-fallback"/);
+  assert.match(page, /id="map-search"/);
+  assert.match(page, /id="map-type-filter"/);
+  assert.match(page, /id="map-relationship-filter"/);
   assert.match(page, /System Map/);
   assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.doesNotMatch(client, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.match(client, /lensConfigs/);
   assert.match(client, /SystemMapRenderer/);
   assert.match(client, /initialExpandedIds/);
+  assert.match(client, /nearestRootPath/);
+  assert.match(client, /updateUrlState/);
+  assert.match(client, /URLSearchParams/);
+  assert.match(client, /relationshipFilter/);
+  assert.match(client, /typeFilter/);
   assert.match(renderer, /cytoscapeFactory/);
   assert.match(renderer, /breadthfirst/);
   assert.match(renderer, /rendererElements/);
+  assert.match(renderer, /filtered-out/);
+  assert.match(renderer, /filters = \{\}/);
   assert.match(client, /repository-ownership/);
   assert.match(client, /persona-skill/);
   assert.match(client, /source-generated/);
@@ -114,7 +124,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(build, /client\/system-map\.mjs/);
   assert.match(build, /buildPersonaSkillSystemMap/);
   assert.match(build, /buildTechnicalSystemMaps/);
-  assert.match(client, /loadLens\('work-coordination'\)/);
+  assert.match(client, /initialLens/);
+  assert.match(client, /loadLens\(initialLens, \{ restoreUrl: true \}\)/);
   assert.doesNotMatch(page + client + renderer, /file:content\/library-data\.js|route:tool-resolution|skill-package:\.agents\/skills\/tool-discovery-and-safe-execution/);
 });
 
