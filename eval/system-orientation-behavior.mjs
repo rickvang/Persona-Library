@@ -65,8 +65,9 @@ function classifyPrompt(prompt) {
   const placementQuestion = /(where should|where .* live|where does .* belong)/.test(text);
   const ambiguousPlacement = /(template or a playbook|template or playbook|not sure who owns|multiple plausible|new top-level)/.test(text);
 
+  const systemOverview = /(how does persona-library|how does persona library|decide between)/.test(text);
   let primarySpace = 'docs';
-  if (ambiguousPlacement) primarySpace = 'docs';
+  if (systemOverview || ambiguousPlacement) primarySpace = 'docs';
   else if (/(persona record|riley persona)/.test(text)) primarySpace = 'personas';
   else if (/(template|reusable starting artifact|scaffold)/.test(text)) primarySpace = 'templates';
   else if (/(figma|tool capability|connector|mcp)/.test(text)) primarySpace = 'tools';
