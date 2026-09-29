@@ -309,6 +309,9 @@ function renderTrail() {
         : `<button type="button" class="trail-link" data-location-node="${escapeHtml(node.id)}">${escapeHtml(node.label)}</button>`
     ])
   ].join('');
+  requestAnimationFrame(() => {
+    elements.trail.scrollLeft = elements.trail.scrollWidth;
+  });
 }
 
 function relationshipLabel(value) {
@@ -1558,6 +1561,9 @@ async function restoreNavigationSnapshot(snapshot) {
   }
   if (snapshot.lens !== state.lens || state.mode !== 'graph') {
     await loadLens(snapshot.lens, { viewSnapshot: snapshot, rememberCurrent: false });
+    if (!usesViewportFittedWorkspace() && Number.isFinite(snapshot.documentScrollY)) {
+      globalThis.scrollTo({ top: snapshot.documentScrollY, left: 0, behavior: 'auto' });
+    }
     return;
   }
   applyViewSnapshot(snapshot);
@@ -1702,6 +1708,9 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
       elements.inspectorRail.scrollTop = savedView.inspectorScrollTop;
     }
     normalizeGraphDocumentScroll();
+    if (!usesViewportFittedWorkspace() && Number.isFinite(savedView?.documentScrollY)) {
+      globalThis.scrollTo({ top: savedView.documentScrollY, left: 0, behavior: 'auto' });
+    }
     updateUrlState();
     announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
   } catch (error) {
