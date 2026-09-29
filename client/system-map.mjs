@@ -923,6 +923,31 @@ function renderFallbackNodes(visible) {
     })
     .map(node => {
       const selected = state.selectedId === node.id;
+
+      if (state.lens === 'agent-runtime') {
+        const contents = semanticRevealInfo(node.id, 'contents');
+        const connections = semanticRevealInfo(node.id, 'connections');
+        return `
+          <article class="map-node ${selected ? 'selected' : ''} ${pathNodes.has(node.id) ? 'in-path' : ''}">
+            <button type="button" class="node-select" data-select-node="${escapeHtml(node.id)}" aria-pressed="${selected}">
+              <span class="node-kicker">${escapeHtml(nodeTypeLabel(node.type))}</span>
+              <strong>${escapeHtml(node.label)}</strong>
+              <span class="node-meta">${contents.total} contents · ${connections.total} connections</span>
+            </button>
+            ${contents.total ? `
+              <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
+                ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+              </button>
+            ` : ''}
+            ${connections.total ? `
+              <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
+                ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+              </button>
+            ` : ''}
+          </article>
+        `;
+      }
+
       const expansion = expansionInfo(node.id);
       const compactLabel = expansion.expanded
         ? 'Collapse'
@@ -998,13 +1023,36 @@ function renderSelectionActions() {
     elements.selectionActions.innerHTML = '';
     return;
   }
+
+  elements.selectionActions.hidden = false;
+
+  if (state.lens === 'agent-runtime') {
+    const contents = semanticRevealInfo(node.id, 'contents');
+    const connections = semanticRevealInfo(node.id, 'connections');
+    elements.selectionActions.innerHTML = `
+      <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
+      <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
+      ${contents.total ? `
+        <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
+          ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+        </button>
+      ` : ''}
+      ${connections.total ? `
+        <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
+          ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+        </button>
+      ` : ''}
+      <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
+    `;
+    return;
+  }
+
   const expansion = expansionInfo(node.id);
   const expandText = expansion.expanded
     ? 'Collapse'
     : expansion.total > DEFAULT_BRANCH_CHUNK
       ? `Expand +${Math.min(DEFAULT_BRANCH_CHUNK, expansion.total)} of ${expansion.total}`
       : `Expand +${expansion.total}`;
-  elements.selectionActions.hidden = false;
   elements.selectionActions.innerHTML = `
     <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
     <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
