@@ -368,6 +368,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /class="graph-legend"/);
   assert.match(page, /Exact relationship/);
   assert.match(page, /prefers-reduced-motion/);
+  assert.match(page, /page\.graph-mode/);
+  assert.match(page, /100dvh/);
+  assert.match(page, /semantic-progress/);
+  assert.match(page, /aria-label="Exploration path"/);
   assert.match(page, /branch-progress/);
   assert.match(page, /show-more-button/);
   assert.match(page, /id="map-type-filter"/);
@@ -390,6 +394,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /nearestRootPath/);
   assert.match(client, /lensViewStates/);
   assert.match(client, /navigationStack/);
+  assert.match(client, /explorationTrail/);
+  assert.match(client, /recordExplorationLocation/);
+  assert.match(client, /data-location-node/);
+  assert.match(client, /data-location-overview/);
   assert.match(client, /captureViewSnapshot/);
   assert.match(client, /applyViewSnapshot/);
   assert.match(client, /updateUrlState/);
@@ -411,6 +419,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /data-focus-selected/);
   assert.match(client, /semanticNeighborGroups/);
   assert.match(client, /semanticRevealInfo/);
+  assert.match(client, /semanticRangeText/);
+  assert.match(client, /semanticPageLabel/);
+  assert.match(client, /pageSemanticReveal/);
+  assert.match(client, /contentOffsets/);
+  assert.match(client, /connectionOffsets/);
+  assert.match(client, /data-show-previous-connections/);
   assert.match(client, /data-toggle-contents/);
   assert.match(client, /data-toggle-connections/);
   assert.match(client, /Show connections/);
@@ -423,6 +437,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /layoutDirection: 'horizontal'/);
   assert.match(client, /layoutDirection: 'vertical'/);
   assert.match(renderer, /layoutDirection = 'vertical'/);
+  assert.match(renderer, /MIN_RENDERED_LABEL_PX = 12/);
+  assert.match(renderer, /NODE_LABEL_MODEL_PX = 11/);
+  assert.match(renderer, /neighborhoodWindow/);
+  assert.match(renderer, /minZoom: MIN_READABLE_ZOOM/);
   assert.match(renderer, /preserveViewport = false/);
   assert.match(renderer, /anchorNodeId = null/);
   assert.match(renderer, /getViewport\(\)/);
