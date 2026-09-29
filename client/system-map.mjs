@@ -521,55 +521,191 @@ function semanticNeighborGroups(id) {
   };
 }
 
-function semanticRevealInfo(id, kind) {
-  const groups = semanticNeighborGroups(id);
-  const items = kind === 'contents' ? groups.contents : groups.connections;
+function semanticPlanKey(id, kind) {
+  return kind + ':' + id;
+}
+
+function semanticPlanningViewport() {
+  const width = Math.max(0, elements.canvas?.clientWidth || elements.graphFrame?.clientWidth || 0);
+  if (!usesViewportFittedWorkspace()) {
+    return {
+      width,
+      height: Math.max(0, elements.canvas?.clientHeight || 0)
+    };
+  }
+
+  const frameHeight = Math.max(0, elements.graphFrame?.clientHeight || 0);
+  const legendHeight = Math.max(0, elements.graphLegend?.offsetHeight || 0);
+  const keyboardSummaryHeight = Math.max(
+    0,
+    elements.keyboardNav?.querySelector('summary')?.offsetHeight || 0
+  );
+  const selectionActionReserve = 42;
+  const height = frameHeight
+    ? Math.max(220, frameHeight - legendHeight - keyboardSummaryHeight - selectionActionReserve - 4)
+    : Math.max(0, elements.canvas?.clientHeight || 0);
+
+  return { width, height };
+}
+
+function semanticWindowItems(id, kind, { excludeReveal = null } = {}) {
+  if (excludeReveal?.id === id && excludeReveal?.kind === kind) return [];
   const openSet = kind === 'contents' ? state.expanded : state.connections;
-  const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  if (!openSet.has(id)) return [];
+
+  const groups = semanticNeighborGroups(id);
+  const allItems = kind === 'contents' ? groups.contents : groups.connections;
+  const plan = state.revealPlans.get(semanticPlanKey(id, kind));
+  const itemIndex = new Map(allItems.map(item => [item.node.id, item]));
+  const items = (plan?.itemIds || allItems.map(item => item.node.id))
+    .map(itemId => itemIndex.get(itemId))
+    .filter(Boolean);
+  const pageSize = Math.max(1, Math.min(items.length || 1, Number(plan?.pageSize || items.length || 1)));
   const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
-  const total = items.length;
-  const viewportWidth = elements.canvas?.clientWidth || 0;
-  const viewportHeight = elements.canvas?.clientHeight || 0;
-  const batchSize = localRevealBatchSize({
-    total,
-    viewportWidth,
-    viewportHeight,
-    kind
-  });
-  const requestedSize = Math.min(total, batchSize, Number(limits.get(id) ?? batchSize));
   const window = neighborhoodWindow({
-    total,
+    total: items.length,
     offset: offsets.get(id) ?? 0,
-    batchSize: requestedSize,
+    batchSize: pageSize,
     direction: 'current'
   });
+  return items.slice(window.offset, window.offset + window.size);
+}
+
+function agentRuntimeVisibleIds({ excludeReveal = null } = {}) {
+  const seedIds = [];
+  const visualPath = activeVisualPath();
+  if (visualPath) seedIds.push(...visualPath.nodes);
+  if (state.selectedId) seedIds.push(state.selectedId);
+  if (state.highlightedEdgeId) {
+    const edge = state.graph?.edges.find(item => item.id === state.highlightedEdgeId);
+    if (edge) seedIds.push(edge.from, edge.to);
+  }
+
+  const visible = new Set(rootNodeIds(state.graph));
+  for (const id of seedIds) {
+    if (state.graph.nodes.some(node => node.id === id)) visible.add(id);
+  }
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const id of [...visible]) {
+      for (const kind of ['contents', 'connections']) {
+        for (const item of semanticWindowItems(id, kind, { excludeReveal })) {
+          if (!visible.has(item.node.id)) {
+            visible.add(item.node.id);
+            changed = true;
+          }
+        }
+      }
+    }
+  }
+  return visible;
+}
+
+function buildSemanticRevealPlan(id, kind, allItems) {
+  const independentVisible = agentRuntimeVisibleIds({
+    excludeReveal: { id, kind }
+  });
+  const candidateItems = allItems.filter(item => !independentVisible.has(item.node.id));
+  const viewport = semanticPlanningViewport();
+  const directions = candidateItems.map(item => item.direction);
+  const pageSize = candidateItems.length
+    ? localRevealBatchSize({
+      total: candidateItems.length,
+      viewportWidth: viewport.width,
+      viewportHeight: viewport.height,
+      kind,
+      layoutDirection: currentLensConfig()?.layoutDirection || 'vertical',
+      directions,
+      preserveUpstreamContext: true
+    })
+    : 0;
+
+  return {
+    itemIds: candidateItems.map(item => item.node.id),
+    directions,
+    pageSize,
+    totalRelationships: allItems.length,
+    alreadyVisibleCount: allItems.length - candidateItems.length,
+    viewportWidth: Math.round(viewport.width),
+    viewportHeight: Math.round(viewport.height)
+  };
+}
+
+function semanticRevealInfo(id, kind) {
+  const groups = semanticNeighborGroups(id);
+  const allItems = kind === 'contents' ? groups.contents : groups.connections;
+  const openSet = kind === 'contents' ? state.expanded : state.connections;
+  const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const open = openSet.has(id);
+  const key = semanticPlanKey(id, kind);
+  let plan = state.revealPlans.get(key);
+
+  if (!plan) {
+    plan = buildSemanticRevealPlan(id, kind, allItems);
+    if (open) state.revealPlans.set(key, plan);
+  }
+
+  const itemIndex = new Map(allItems.map(item => [item.node.id, item]));
+  const items = (plan.itemIds || [])
+    .map(itemId => itemIndex.get(itemId))
+    .filter(Boolean);
+  const revealTotal = items.length;
+  const batchSize = revealTotal
+    ? Math.max(1, Math.min(revealTotal, Number(plan.pageSize) || 1))
+    : 0;
+  const window = neighborhoodWindow({
+    total: revealTotal,
+    offset: offsets.get(id) ?? 0,
+    batchSize: batchSize || 1,
+    direction: 'current'
+  });
+
   return {
     open,
-    total,
-    batchSize: requestedSize,
+    total: allItems.length,
+    revealTotal,
+    alreadyVisibleCount: Math.max(0, allItems.length - revealTotal),
+    batchSize,
     offset: window.offset,
     start: open ? window.start : 0,
     end: open ? window.end : 0,
     revealed: open ? window.size : 0,
     hasPrevious: open && window.hasPrevious,
     hasNext: open && window.hasNext,
-    remaining: open ? Math.max(0, total - window.end) : total,
-    items
+    remaining: open ? Math.max(0, revealTotal - window.end) : revealTotal,
+    items,
+    allItems,
+    plan
   };
 }
 
 function semanticRangeText(info, noun) {
   if (!info?.total) return `0 ${noun}`;
-  if (!info.open) return `${info.total} ${noun}`;
-  return `${noun} ${info.start}–${info.end} of ${info.total} · ${Math.max(0, info.total - info.end)} remaining`;
+  if (!info.revealTotal) return `All ${info.total} ${noun} already visible`;
+  const prior = info.alreadyVisibleCount
+    ? ` · ${info.alreadyVisibleCount} already visible`
+    : '';
+  if (!info.open) return `${info.revealTotal} ${noun} available${prior}`;
+  return `${noun} ${info.start}–${info.end} of ${info.revealTotal} new · ${info.remaining} remaining${prior}`;
+}
+
+function semanticToggleLabel(info, noun) {
+  if (info.open) return noun === 'contents' ? 'Close contents' : 'Hide connections';
+  if (!info.revealTotal) return `All ${info.total} ${noun} visible`;
+  const count = Math.min(info.batchSize, info.revealTotal);
+  const existing = info.alreadyVisibleCount ? ` · ${info.alreadyVisibleCount} already visible` : '';
+  return noun === 'contents'
+    ? `Open ${count} ${noun}${existing}`
+    : `Show ${count} ${noun}${existing}`;
 }
 
 function semanticPageLabel(info, direction, noun) {
   const window = neighborhoodWindow({
-    total: info.total,
+    total: info.revealTotal,
     offset: info.offset,
-    batchSize: info.batchSize,
+    batchSize: info.batchSize || 1,
     direction
   });
   return direction === 'previous'
