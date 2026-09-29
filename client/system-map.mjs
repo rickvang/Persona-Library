@@ -511,24 +511,71 @@ function currentVisibleIds() {
     if (edge) seedIds.push(edge.from, edge.to);
   }
 
-  const visible = boundedVisibleNodeIds(
-    state.graph,
-    state.expanded,
-    state.expansionLimits,
-    { seedIds }
-  );
+  let visible;
+
+  if (state.lens === 'agent-runtime') {
+    visible = new Set(rootNodeIds(state.graph));
+    for (const id of seedIds) {
+      if (state.graph.nodes.some(node => node.id === id)) visible.add(id);
+    }
+
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const id of [...visible]) {
+        if (state.expanded.has(id)) {
+          const info = semanticRevealInfo(id, 'contents');
+          for (const item of info.items.slice(0, info.revealed)) {
+            if (!visible.has(item.node.id)) {
+              visible.add(item.node.id);
+              changed = true;
+            }
+          }
+        }
+        if (state.connections.has(id)) {
+          const info = semanticRevealInfo(id, 'connections');
+          for (const item of info.items.slice(0, info.revealed)) {
+            if (!visible.has(item.node.id)) {
+              visible.add(item.node.id);
+              changed = true;
+            }
+          }
+        }
+      }
+    }
+  } else {
+    visible = boundedVisibleNodeIds(
+      state.graph,
+      state.expanded,
+      state.expansionLimits,
+      { seedIds }
+    );
+  }
 
   if (!state.focusId) return visible;
 
   const focused = new Set([state.focusId]);
   const rootPath = nearestRootPath(state.focusId);
   for (const id of rootPath?.nodes || []) focused.add(id);
-  const focusLimit = state.expanded.has(state.focusId)
-    ? Number(state.expansionLimits.get(state.focusId) ?? DEFAULT_BRANCH_CHUNK)
-    : DEFAULT_BRANCH_CHUNK;
-  for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, focusLimit)) {
-    focused.add(node.id);
+
+  if (state.lens === 'agent-runtime') {
+    const contents = semanticRevealInfo(state.focusId, 'contents');
+    const connections = semanticRevealInfo(state.focusId, 'connections');
+    if (contents.open) {
+      for (const item of contents.items.slice(0, contents.revealed)) focused.add(item.node.id);
+    }
+    if (connections.open) {
+      for (const item of connections.items.slice(0, connections.revealed)) focused.add(item.node.id);
+    }
+  } else {
+    const focusLimit = state.expanded.has(state.focusId)
+      ? Number(state.expansionLimits.get(state.focusId) ?? DEFAULT_BRANCH_CHUNK)
+      : DEFAULT_BRANCH_CHUNK;
+    for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, focusLimit)) {
+      focused.add(node.id);
+    }
   }
+
   if (state.highlightedEdgeId) {
     const edge = state.graph.edges.find(item => item.id === state.highlightedEdgeId);
     if (edge) {
