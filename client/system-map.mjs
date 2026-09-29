@@ -1764,6 +1764,8 @@ function focusSearchResult() {
   state.highlightedEdgeId = null;
   elements.search.value = node.label;
   render();
+  if (elements.inspectorRail) elements.inspectorRail.scrollTop = 0;
+  normalizeGraphDocumentScroll();
   updateUrlState();
   requestAnimationFrame(() => ensureRenderer()?.focus(node.id));
   announce(`Focused ${node.label}.`);
@@ -1958,6 +1960,8 @@ function bindEvents() {
         state.focusId = null;
         state.highlightedEdgeId = null;
         render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+        if (elements.inspectorRail) elements.inspectorRail.scrollTop = 0;
+        normalizeGraphDocumentScroll();
         updateUrlState();
         requestAnimationFrame(() => ensureRenderer()?.focus(id));
         announce(`Returned to ${selectedNode()?.label || id} in the exploration path.`);
