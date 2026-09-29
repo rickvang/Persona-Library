@@ -6,9 +6,42 @@ import {
 } from './system-map-graph.mjs';
 
 export const DEFAULT_BRANCH_CHUNK = 24;
-export const MIN_READABLE_ZOOM = 0.72;
+export const NODE_LABEL_MODEL_PX = 11;
+export const MIN_RENDERED_LABEL_PX = 12;
+export const MIN_READABLE_ZOOM = MIN_RENDERED_LABEL_PX / NODE_LABEL_MODEL_PX;
 export const MAX_INITIAL_ZOOM = 1.32;
 export const LOCAL_REVEAL_GAP = 30;
+
+export function renderedLabelPixels(zoom, modelFontPx = NODE_LABEL_MODEL_PX) {
+  return Math.max(0, Number(zoom) || 0) * Math.max(0, Number(modelFontPx) || 0);
+}
+
+export function neighborhoodWindow({
+  total,
+  offset = 0,
+  batchSize = 1,
+  direction = 'current'
+} = {}) {
+  const count = Math.max(0, Math.floor(Number(total) || 0));
+  const size = Math.max(1, Math.floor(Number(batchSize) || 1));
+  const maxOffset = Math.max(0, count - Math.min(count, size));
+  const currentOffset = Math.min(maxOffset, Math.max(0, Math.floor(Number(offset) || 0)));
+  let nextOffset = currentOffset;
+
+  if (direction === 'next') nextOffset = Math.min(maxOffset, currentOffset + size);
+  if (direction === 'previous') nextOffset = Math.max(0, currentOffset - size);
+
+  const end = Math.min(count, nextOffset + size);
+  return {
+    offset: nextOffset,
+    start: count ? nextOffset + 1 : 0,
+    end,
+    total: count,
+    size: Math.max(0, end - nextOffset),
+    hasPrevious: nextOffset > 0,
+    hasNext: end < count
+  };
+}
 
 export function rectangleFromCenter({ x, y, width, height, id = null }) {
   return {
@@ -288,7 +321,7 @@ function stylesheet() {
         'border-width': 1.5,
         'color': '#15202b',
         'font-family': 'Inter, ui-sans-serif, system-ui, sans-serif',
-        'font-size': 10.5,
+        'font-size': NODE_LABEL_MODEL_PX,
         'font-weight': 650,
         'height': 54,
         'label': 'data(label)',
