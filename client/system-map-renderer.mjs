@@ -258,16 +258,16 @@ function stylesheet() {
         'border-width': 1.5,
         'color': '#15202b',
         'font-family': 'Inter, ui-sans-serif, system-ui, sans-serif',
-        'font-size': 11,
+        'font-size': 10.5,
         'font-weight': 650,
-        'height': 58,
+        'height': 54,
         'label': 'data(label)',
         'shape': 'round-rectangle',
         'text-halign': 'center',
-        'text-max-width': 126,
+        'text-max-width': 118,
         'text-valign': 'center',
         'text-wrap': 'wrap',
-        'width': 154
+        'width': 144
       }
     },
     {
@@ -421,16 +421,26 @@ export class SystemMapRenderer {
     this.signature = '';
   }
 
-  fit({ padding = 56 } = {}) {
+  fit({ padding = 56, maxZoom = 1.55 } = {}) {
     if (!this.cy || this.cy.elements().empty()) return;
-    this.cy.fit(this.cy.elements(), padding);
+    const collection = this.cy.elements();
+    this.cy.fit(collection, padding);
+    if (this.cy.zoom() > maxZoom) {
+      this.cy.zoom(maxZoom);
+      this.cy.center(collection);
+    }
   }
 
-  focus(id, { padding = 96 } = {}) {
+  focus(id, { padding = 96, maxZoom = 1.45 } = {}) {
     if (!this.cy || !id) return;
     const node = this.cy.getElementById(id);
     if (node.empty()) return;
-    this.cy.fit(node.closedNeighborhood(), padding);
+    const collection = node.closedNeighborhood();
+    this.cy.fit(collection, padding);
+    if (this.cy.zoom() > maxZoom) {
+      this.cy.zoom(maxZoom);
+      this.cy.center(collection);
+    }
   }
 
   getViewport() {
@@ -441,12 +451,37 @@ export class SystemMapRenderer {
     };
   }
 
+  getNodePositions() {
+    if (!this.cy) return [];
+    return this.cy.nodes().map(node => [node.id(), { ...node.position() }]);
+  }
+
+  restoreNodePositions(entries = []) {
+    if (!this.cy || !Array.isArray(entries)) return;
+    const positions = new Map(entries);
+    this.cy.nodes().forEach(node => {
+      const position = positions.get(node.id());
+      if (position && Number.isFinite(position.x) && Number.isFinite(position.y)) {
+        node.position(position);
+      }
+    });
+  }
+
   restoreViewport(viewport) {
     if (!this.cy || !viewport) return;
     if (Number.isFinite(viewport.zoom)) this.cy.zoom(viewport.zoom);
     if (viewport.pan && Number.isFinite(viewport.pan.x) && Number.isFinite(viewport.pan.y)) {
       this.cy.pan(viewport.pan);
     }
+  }
+
+  nodeLayoutSpec(node, direction = 'outgoing') {
+    return {
+      id: node.id(),
+      direction,
+      width: Math.max(1, node.outerWidth()),
+      height: Math.max(1, node.outerHeight())
+    };
   }
 
   positionLocalTopology({ anchorNodeId, addedNodeIds = [], previousPositions, layoutDirection = 'vertical' }) {
@@ -460,40 +495,61 @@ export class SystemMapRenderer {
     if (!anchorNodeId || !addedNodeIds.length) return;
     const anchor = this.cy.getElementById(anchorNodeId);
     if (anchor.empty()) return;
-    const origin = anchor.position();
-    const outgoing = [];
-    const incoming = [];
-    const unclassified = [];
 
+    const anchorPosition = anchor.position();
+    const anchorSpec = {
+      id: anchor.id(),
+      x: anchorPosition.x,
+      y: anchorPosition.y,
+      width: Math.max(1, anchor.outerWidth()),
+      height: Math.max(1, anchor.outerHeight())
+    };
+
+    const addedSet = new Set(addedNodeIds);
+    const occupied = this.cy.nodes()
+      .filter(node => !addedSet.has(node.id()))
+      .map(node => {
+        const position = node.position();
+        return {
+          id: node.id(),
+          x: position.x,
+          y: position.y,
+          width: Math.max(1, node.outerWidth()),
+          height: Math.max(1, node.outerHeight())
+        };
+      });
+
+    const specs = [];
     for (const id of addedNodeIds) {
       const node = this.cy.getElementById(id);
       if (node.empty()) continue;
       const connecting = node.edgesWith(anchor);
-      if (connecting.some(edge => edge.source().id() === anchorNodeId && edge.target().id() === id)) outgoing.push(node);
-      else if (connecting.some(edge => edge.target().id() === anchorNodeId && edge.source().id() === id)) incoming.push(node);
-      else unclassified.push(node);
+      let direction = 'outgoing';
+      if (connecting.some(edge => edge.target().id() === anchorNodeId && edge.source().id() === id)) {
+        direction = 'incoming';
+      }
+      specs.push(this.nodeLayoutSpec(node, direction));
     }
 
-    const place = (nodes, sign) => {
-      const perColumn = Math.min(6, Math.max(1, nodes.length));
-      nodes.forEach((node, index) => {
-        const column = Math.floor(index / perColumn);
-        const row = index % perColumn;
-        const rowsInColumn = Math.min(perColumn, nodes.length - column * perColumn);
-        const crossOffset = (row - (rowsInColumn - 1) / 2) * 92;
-        const primaryOffset = sign * (220 + column * 190);
-        node.position(layoutDirection === 'horizontal'
-          ? { x: origin.x + primaryOffset, y: origin.y + crossOffset }
-          : { x: origin.x + crossOffset, y: origin.y + primaryOffset });
-      });
-    };
+    const placements = planLocalNodePositions({
+      anchor: anchorSpec,
+      nodes: specs,
+      occupied,
+      layoutDirection
+    });
 
-    place(outgoing, 1);
-    place(incoming, -1);
-    place(unclassified, 1);
+    for (const [id, position] of placements) {
+      const node = this.cy.getElementById(id);
+      if (!node.empty()) node.position(position);
+    }
   }
 
-  revealLocalTopology({ anchorNodeId, addedNodeIds = [], padding = 28 } = {}) {
+  revealLocalTopology({
+    anchorNodeId,
+    addedNodeIds = [],
+    padding = 32,
+    minZoom = MIN_READABLE_ZOOM
+  } = {}) {
     if (!this.cy || !anchorNodeId || !addedNodeIds.length) return;
     const anchor = this.cy.getElementById(anchorNodeId);
     if (anchor.empty()) return;
@@ -504,19 +560,54 @@ export class SystemMapRenderer {
       if (!node.empty()) collection = collection.union(node);
     }
 
-    const bounds = collection.renderedBoundingBox({ includeLabels: true });
     const width = this.container.clientWidth || 0;
     const height = this.container.clientHeight || 0;
     if (!width || !height) return;
 
+    let bounds = collection.renderedBoundingBox({ includeLabels: true });
+    const camera = localRevealCamera({
+      bounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      currentZoom: this.cy.zoom(),
+      minZoom,
+      padding
+    });
+
+    if (camera.zoom < this.cy.zoom() - 0.001) {
+      const anchorRendered = anchor.renderedPosition();
+      this.cy.zoom({
+        level: camera.zoom,
+        renderedPosition: anchorRendered
+      });
+      bounds = collection.renderedBoundingBox({ includeLabels: true });
+    }
+
     let x = 0;
     let y = 0;
-    if (bounds.x1 < padding) x = padding - bounds.x1;
-    else if (bounds.x2 > width - padding) x = width - padding - bounds.x2;
-    if (bounds.y1 < padding) y = padding - bounds.y1;
-    else if (bounds.y2 > height - padding) y = height - padding - bounds.y2;
+    const tooWide = bounds.width > width - padding * 2;
+    const tooTall = bounds.height > height - padding * 2;
+
+    if (!tooWide) {
+      if (bounds.x1 < padding) x = padding - bounds.x1;
+      else if (bounds.x2 > width - padding) x = width - padding - bounds.x2;
+    }
+
+    if (!tooTall) {
+      if (bounds.y1 < padding) y = padding - bounds.y1;
+      else if (bounds.y2 > height - padding) y = height - padding - bounds.y2;
+    }
 
     if (x || y) this.cy.panBy({ x, y });
+
+    const anchorBounds = anchor.renderedBoundingBox({ includeLabels: true });
+    let anchorX = 0;
+    let anchorY = 0;
+    if (anchorBounds.x1 < padding) anchorX = padding - anchorBounds.x1;
+    else if (anchorBounds.x2 > width - padding) anchorX = width - padding - anchorBounds.x2;
+    if (anchorBounds.y1 < padding) anchorY = padding - anchorBounds.y1;
+    else if (anchorBounds.y2 > height - padding) anchorY = height - padding - anchorBounds.y2;
+    if (anchorX || anchorY) this.cy.panBy({ x: anchorX, y: anchorY });
   }
 
   render({
@@ -598,7 +689,7 @@ export class SystemMapRenderer {
             : undefined
         }).run();
 
-        if (fitOnTopologyChange) this.fit();
+        if (fitOnTopologyChange) this.fit({ maxZoom: MAX_INITIAL_ZOOM });
       }
     }
 
