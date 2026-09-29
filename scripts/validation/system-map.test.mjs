@@ -11,8 +11,16 @@ import {
 } from '../../client/system-map-graph.mjs';
 import {
   DEFAULT_BRANCH_CHUNK,
+  MIN_READABLE_ZOOM,
+  SystemMapRenderer,
   boundedVisibleNodeIds,
   initialExpandedIds,
+  localRevealBatchSize,
+  localRevealCamera,
+  panForVisibleBounds,
+  planLocalNodePositions,
+  rectangleFromCenter,
+  rectanglesOverlap,
   rendererElements
 } from '../../client/system-map-renderer.mjs';
 
@@ -81,6 +89,163 @@ test('System Map renderer derives bounded view state without introducing graph f
     { seedIds: ['dense:29'] }
   );
   assert.ok(seededTarget.has('dense:29'), 'search/path focus may reveal a canonical target outside the current chunk');
+});
+
+test('System Map local reveal placement preserves retained geometry and avoids occupied slots across repeated batches', () => {
+  const anchor = { id: 'anchor', x: 0, y: 0, width: 144, height: 54 };
+  const occupied = [
+    anchor,
+    { id: 'existing-right', x: 230, y: 0, width: 144, height: 54 },
+    { id: 'existing-down', x: 0, y: 100, width: 144, height: 54 }
+  ];
+  const occupiedBefore = structuredClone(occupied);
+  const firstNodes = Array.from({ length: 4 }, (_, index) => ({
+    id: 'first:' + index,
+    width: 144,
+    height: 54,
+    direction: 'outgoing'
+  }));
+
+  const first = planLocalNodePositions({
+    anchor,
+    nodes: firstNodes,
+    occupied,
+    layoutDirection: 'horizontal'
+  });
+
+  assert.deepEqual(occupied, occupiedBefore, 'planning a reveal must not mutate retained node geometry');
+  assert.equal(first.size, firstNodes.length);
+
+  const firstRects = [...first].map(([id, position]) => rectangleFromCenter({
+    id,
+    ...position,
+    width: 144,
+    height: 54
+  }));
+
+  for (const rect of firstRects) {
+    assert.ok(
+      occupied.every(existing => !rectanglesOverlap(rect, rectangleFromCenter(existing), 10)),
+      'newly revealed nodes must not overlap retained nodes'
+    );
+  }
+  for (let i = 0; i < firstRects.length; i += 1) {
+    for (let j = i + 1; j < firstRects.length; j += 1) {
+      assert.equal(rectanglesOverlap(firstRects[i], firstRects[j], 10), false, 'nodes in one reveal batch must not overlap');
+    }
+  }
+
+  const secondOccupied = [...occupied, ...firstRects];
+  const secondNodes = Array.from({ length: 3 }, (_, index) => ({
+    id: 'second:' + index,
+    width: 144,
+    height: 54,
+    direction: 'outgoing'
+  }));
+  const second = planLocalNodePositions({
+    anchor,
+    nodes: secondNodes,
+    occupied: secondOccupied,
+    layoutDirection: 'horizontal'
+  });
+  const secondRects = [...second].map(([id, position]) => rectangleFromCenter({
+    id,
+    ...position,
+    width: 144,
+    height: 54
+  }));
+
+  for (const rect of secondRects) {
+    assert.ok(
+      secondOccupied.every(existing => !rectanglesOverlap(rect, rectangleFromCenter(existing), 10)),
+      'show-more batches must avoid every slot already occupied by prior reveals'
+    );
+  }
+});
+
+test('System Map local reveal camera keeps readable zoom and can recover a clipped selected node', () => {
+  const camera = localRevealCamera({
+    bounds: { x1: -80, x2: 820, y1: -40, y2: 560, width: 900, height: 600 },
+    canvasWidth: 800,
+    canvasHeight: 500,
+    currentZoom: 2.3,
+    padding: 32
+  });
+
+  assert.ok(camera.zoom < 2.3, 'camera should zoom out when panning alone cannot fit the revealed neighborhood');
+  assert.ok(camera.zoom >= MIN_READABLE_ZOOM, 'camera must preserve a readable minimum zoom');
+  assert.equal(camera.fits, true, 'a moderate local neighborhood should fit after the bounded zoom adjustment');
+
+  const oversized = localRevealCamera({
+    bounds: { x1: -500, x2: 2500, y1: -500, y2: 1500, width: 3000, height: 2000 },
+    canvasWidth: 800,
+    canvasHeight: 500,
+    currentZoom: 2.3,
+    padding: 32
+  });
+  assert.equal(oversized.zoom, MIN_READABLE_ZOOM);
+  assert.equal(oversized.fits, false, 'an oversized neighborhood should remain explicitly too large instead of shrinking below readable zoom');
+
+  const selectedBounds = { x1: -24, x2: 120, y1: 110, y2: 164, width: 144, height: 54 };
+  const pan = panForVisibleBounds({
+    bounds: selectedBounds,
+    canvasWidth: 800,
+    canvasHeight: 500,
+    padding: 32
+  });
+  assert.ok(selectedBounds.x1 + pan.x >= 32, 'selected node should be moved back inside the readable safe area');
+
+  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'connections' }), 4);
+  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 520, viewportHeight: 600, kind: 'connections' }), 2);
+});
+
+test('System Map position and viewport snapshots restore a recognizable prior view', () => {
+  const makeNode = (id, initial) => {
+    let point = { ...initial };
+    return {
+      id: () => id,
+      position(next) {
+        if (next) point = { ...next };
+        return { ...point };
+      }
+    };
+  };
+  const nodes = [
+    makeNode('a', { x: 100, y: 120 }),
+    makeNode('b', { x: 340, y: 120 })
+  ];
+  let zoom = 1.1;
+  let pan = { x: 28, y: 36 };
+  const fakeCy = {
+    nodes: () => nodes,
+    zoom(next) {
+      if (typeof next === 'number') zoom = next;
+      return zoom;
+    },
+    pan(next) {
+      if (next) pan = { ...next };
+      return { ...pan };
+    }
+  };
+
+  const renderer = new SystemMapRenderer({
+    container: {},
+    cytoscapeFactory: () => ({})
+  });
+  renderer.cy = fakeCy;
+
+  const positions = renderer.getNodePositions();
+  const viewport = renderer.getViewport();
+  nodes[0].position({ x: -400, y: -400 });
+  nodes[1].position({ x: 900, y: 700 });
+  fakeCy.zoom(0.5);
+  fakeCy.pan({ x: -200, y: 90 });
+
+  renderer.restoreNodePositions(positions);
+  renderer.restoreViewport(viewport);
+
+  assert.deepEqual(renderer.getNodePositions(), positions, 'Back/collapse restoration should recover prior node positions');
+  assert.deepEqual(renderer.getViewport(), viewport, 'Back/collapse restoration should recover prior viewport');
 });
 
 test('System Map provenance resolves repository files without copying source content', () => {
