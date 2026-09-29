@@ -23,6 +23,7 @@ import {
   localRevealCamera,
   localCollectionFitsReadable,
   neighborhoodWindow,
+  normalizeNeighborhoodOffset,
   panForVisibleBounds,
   planLocalNodePositions,
   rectangleFromCenter,
@@ -138,6 +139,13 @@ test('System Map dense exploration keeps primary labels readable and pages neigh
   assert.equal(back.offset, 4);
   assert.equal(back.start, 5);
   assert.equal(back.end, 8);
+});
+
+test('System Map resize pagination keeps the previously visible item inside the normalized page', () => {
+  assert.equal(normalizeNeighborhoodOffset({ total: 9, offset: 4, pageSize: 3 }), 3);
+  assert.equal(normalizeNeighborhoodOffset({ total: 9, offset: 6, pageSize: 5 }), 5);
+  assert.equal(normalizeNeighborhoodOffset({ total: 9, offset: 8, pageSize: 4 }), 8);
+  assert.equal(normalizeNeighborhoodOffset({ total: 0, offset: 8, pageSize: 4 }), 0);
 });
 
 test('System Map local reveal placement preserves retained geometry and avoids occupied slots across repeated batches', () => {
@@ -508,8 +516,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /100dvh/);
   assert.match(page, /semantic-progress/);
   assert.match(page, /aria-label="Exploration path"/);
-  assert.match(page, /\.graph-mode \.inspector-rail \{[^}]*display:flex;[^}]*flex-direction:column;/s);
-  assert.match(page, /\.graph-mode \.detail-panel, \.graph-mode \.question-panel \{ flex:0 0 auto; \}/);
+  assert.match(page, /\.graph-mode \.inspector-rail \{[^}]*display:block;[^}]*overflow-y:auto;/s);
+  assert.match(page, /\.graph-mode \.detail-panel, \.graph-mode \.question-panel \{[^}]*min-height:max-content;/s);
+  assert.match(page, /\.inspector-rail > \* \{[^}]*min-height:max-content;/s);
+  assert.doesNotMatch(page, /\.graph-mode \.inspector-rail \{[^}]*display:grid;/s);
   assert.match(page, /\.graph-mode \.selection-actions \{[^}]*flex-wrap:nowrap;/s);
   assert.match(page, /branch-progress/);
   assert.match(page, /show-more-button/);
@@ -563,6 +573,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /excludeAlreadyVisibleRevealItems/);
   assert.match(client, /recomputeOpenRevealPlans/);
   assert.match(client, /scheduleRevealPlanResize/);
+  assert.match(client, /semanticPlanningSignature/);
+  assert.match(client, /normalizeNeighborhoodOffset/);
+  assert.match(client, /lastRevealPlanningSignature/);
   assert.match(client, /semanticToggleLabel/);
   assert.match(client, /semanticRangeText/);
   assert.match(client, /semanticPageLabel/);
