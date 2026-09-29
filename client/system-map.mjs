@@ -81,6 +81,7 @@ const state = {
   connectionLimits: new Map(),
   contentOffsets: new Map(),
   connectionOffsets: new Map(),
+  revealPlans: new Map(),
   explorationTrail: [],
   path: null,
   focusPath: null,
@@ -104,6 +105,8 @@ const elements = {
   explorerLensLabel: document.getElementById('explorer-lens-label'),
   graphOnly: [...root.querySelectorAll('[data-graph-only]')],
   canvas: document.getElementById('map-canvas'),
+  graphFrame: root.querySelector('.graph-frame'),
+  graphLegend: root.querySelector('.graph-legend'),
   graphFallback: document.getElementById('map-node-fallback'),
   keyboardNav: document.getElementById('map-keyboard-nav'),
   details: document.getElementById('map-details'),
@@ -172,6 +175,11 @@ function captureViewSnapshot() {
     connectionLimits: [...state.connectionLimits.entries()],
     contentOffsets: [...state.contentOffsets.entries()],
     connectionOffsets: [...state.connectionOffsets.entries()],
+    revealPlans: [...state.revealPlans.entries()].map(([key, plan]) => [key, {
+      ...plan,
+      itemIds: [...(plan.itemIds || [])],
+      directions: [...(plan.directions || [])]
+    }]),
     explorationTrail: [...state.explorationTrail],
     path: clonePath(state.path),
     focusPath: clonePath(state.focusPath),
@@ -216,6 +224,15 @@ function applyViewSnapshot(snapshot) {
   state.connectionOffsets = new Map(
     (snapshot.connectionOffsets || []).filter(([id]) => nodeIds.has(id))
   );
+  state.revealPlans = new Map(
+    (snapshot.revealPlans || [])
+      .filter(([, plan]) => Array.isArray(plan?.itemIds))
+      .map(([key, plan]) => [key, {
+        ...plan,
+        itemIds: plan.itemIds.filter(id => nodeIds.has(id)),
+        directions: Array.isArray(plan.directions) ? [...plan.directions] : []
+      }])
+  );
   state.explorationTrail = (snapshot.explorationTrail || []).filter(id => nodeIds.has(id));
   state.path = validPath(snapshot.path);
   state.focusPath = validPath(snapshot.focusPath);
@@ -258,6 +275,7 @@ function pushNavigationCheckpoint() {
     JSON.stringify(item?.connectionLimits || []),
     JSON.stringify(item?.contentOffsets || []),
     JSON.stringify(item?.connectionOffsets || []),
+    JSON.stringify(item?.revealPlans || []),
     (item?.explorationTrail || []).join('>'),
     item?.path?.nodes?.join('>')
   ].join('|');
