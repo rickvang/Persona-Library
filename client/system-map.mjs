@@ -494,6 +494,7 @@ function semanticRevealInfo(id, kind) {
   const items = kind === 'contents' ? groups.contents : groups.connections;
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const total = items.length;
   const viewportWidth = elements.canvas?.clientWidth || 0;
   const viewportHeight = elements.canvas?.clientHeight || 0;
@@ -503,22 +504,25 @@ function semanticRevealInfo(id, kind) {
     viewportHeight,
     kind
   });
-  const limit = Math.min(total, Number(limits.get(id) ?? batchSize));
-  const open = openSet.has(id);
-  const remaining = Math.max(0, total - limit);
-  const nextCount = localRevealBatchSize({
-    total: remaining,
-    viewportWidth,
-    viewportHeight,
-    kind
+  const requestedSize = Math.min(total, Number(limits.get(id) ?? batchSize));
+  const window = neighborhoodWindow({
+    total,
+    offset: offsets.get(id) ?? 0,
+    batchSize: requestedSize,
+    direction: 'current'
   });
+  const open = openSet.has(id);
   return {
     open,
     total,
-    batchSize,
-    revealed: open ? limit : 0,
-    hasMore: open && limit < total,
-    nextCount,
+    batchSize: requestedSize,
+    offset: window.offset,
+    start: open ? window.start : 0,
+    end: open ? window.end : 0,
+    revealed: open ? window.size : 0,
+    hasPrevious: open && window.hasPrevious,
+    hasNext: open && window.hasNext,
+    remaining: open ? Math.max(0, total - window.end) : total,
     items
   };
 }
