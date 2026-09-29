@@ -24,7 +24,7 @@ export function neighborhoodWindow({
 } = {}) {
   const count = Math.max(0, Math.floor(Number(total) || 0));
   const size = Math.max(1, Math.floor(Number(batchSize) || 1));
-  const maxOffset = Math.max(0, count - Math.min(count, size));
+  const maxOffset = count ? Math.floor((count - 1) / size) * size : 0;
   const currentOffset = Math.min(maxOffset, Math.max(0, Math.floor(Number(offset) || 0)));
   let nextOffset = currentOffset;
 
@@ -695,7 +695,7 @@ export class SystemMapRenderer {
         container: this.container,
         elements,
         style: stylesheet(),
-        minZoom: 0.22,
+        minZoom: MIN_READABLE_ZOOM,
         maxZoom: 2.6,
         wheelSensitivity: 0.16,
         boxSelectionEnabled: false,
