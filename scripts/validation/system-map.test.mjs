@@ -220,6 +220,36 @@ test('System Map local reveal placement preserves retained geometry and avoids o
   }
 });
 
+test('System Map paged neighborhood replacement reuses the same readable local slots predictably', () => {
+  const anchor = { id: 'anchor', x: 0, y: 0, width: 144, height: 54 };
+  const context = { id: 'context', x: -206, y: 0, width: 144, height: 54 };
+  const firstPage = [
+    { id: 'page1:a', width: 144, height: 54, direction: 'outgoing' },
+    { id: 'page1:b', width: 144, height: 54, direction: 'outgoing' },
+    { id: 'page1:c', width: 144, height: 54, direction: 'outgoing' }
+  ];
+  const secondPage = firstPage.map((node, index) => ({ ...node, id: 'page2:' + index }));
+
+  const first = planLocalNodePositions({
+    anchor,
+    nodes: firstPage,
+    occupied: [anchor, context],
+    layoutDirection: 'horizontal'
+  });
+  const second = planLocalNodePositions({
+    anchor,
+    nodes: secondPage,
+    occupied: [anchor, context],
+    layoutDirection: 'horizontal'
+  });
+
+  assert.deepEqual(
+    [...first.values()],
+    [...second.values()],
+    'replacing one semantic page with the next should keep the neighborhood in recognizable local slots'
+  );
+});
+
 test('System Map local reveal camera keeps readable zoom and can recover a clipped selected node', () => {
   const camera = localRevealCamera({
     bounds: { x1: -80, x2: 820, y1: -40, y2: 560, width: 900, height: 600 },
