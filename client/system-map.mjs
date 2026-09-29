@@ -1780,6 +1780,7 @@ async function restoreNavigationSnapshot(snapshot) {
   if (Number.isFinite(snapshot.documentScrollY)) {
     globalThis.scrollTo({ top: snapshot.documentScrollY, left: 0, behavior: 'auto' });
   }
+  scheduleRevealPlanResize();
   updateUrlState();
 }
 
@@ -1913,6 +1914,7 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     if (!usesViewportFittedWorkspace() && Number.isFinite(savedView?.documentScrollY)) {
       globalThis.scrollTo({ top: savedView.documentScrollY, left: 0, behavior: 'auto' });
     }
+    scheduleRevealPlanResize();
     updateUrlState();
     announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
   } catch (error) {
