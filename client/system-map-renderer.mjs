@@ -59,6 +59,18 @@ export function normalizeNeighborhoodOffset({
   return Math.floor(currentItem / size) * size;
 }
 
+export function compactNeighborhoodRange({
+  start = 0,
+  end = 0,
+  total = 0
+} = {}) {
+  const count = Math.max(0, Math.floor(Number(total) || 0));
+  if (!count) return '';
+  const first = Math.min(count, Math.max(1, Math.floor(Number(start) || 1)));
+  const last = Math.min(count, Math.max(first, Math.floor(Number(end) || first)));
+  return first === last ? `${first} of ${count}` : `${first}–${last} of ${count}`;
+}
+
 export function rectangleFromCenter({ x, y, width, height, id = null }) {
   return {
     id,
@@ -460,8 +472,8 @@ function stylesheet() {
       selector: 'node',
       style: {
         'background-color': '#fffefa',
-        'border-color': '#b8c2c9',
-        'border-width': 1.5,
+        'border-color': '#c4ccd1',
+        'border-width': 1.25,
         'color': '#15202b',
         'font-family': 'Inter, ui-sans-serif, system-ui, sans-serif',
         'font-size': NODE_LABEL_MODEL_PX,
@@ -504,27 +516,38 @@ function stylesheet() {
       selector: 'edge',
       style: {
         'curve-style': 'bezier',
-        'line-color': '#b9c3ca',
-        'opacity': 0.82,
-        'target-arrow-color': '#8c9aa4',
+        'line-color': '#b8c1c7',
+        'opacity': 0.62,
+        'target-arrow-color': '#7f8d96',
         'target-arrow-shape': 'triangle',
-        'width': 1.5
+        'arrow-scale': 0.85,
+        'width': 1.35
+      }
+    },
+    {
+      selector: 'edge[relationship = "contains"]',
+      style: {
+        'line-color': '#8aa394',
+        'target-arrow-color': '#6f897b',
+        'opacity': 0.9,
+        'width': 1.9
       }
     },
     {
       selector: 'node.selected',
       style: {
-        'border-color': '#234f68',
+        'background-color': '#eef7f8',
+        'border-color': '#1f5d73',
         'border-width': 3,
-        'overlay-color': '#234f68',
-        'overlay-opacity': 0.06
+        'overlay-color': '#1f5d73',
+        'overlay-opacity': 0.05
       }
     },
     {
       selector: 'node.neighbor',
       style: {
-        'border-color': '#5f7e90',
-        'border-width': 2
+        'border-color': '#7d96a3',
+        'border-width': 1.8
       }
     },
     {
@@ -540,14 +563,8 @@ function stylesheet() {
       style: {
         'line-color': '#376f8c',
         'target-arrow-color': '#376f8c',
-        'width': 2.6,
-        'label': 'data(label)',
-        'font-size': 9,
-        'color': '#49606f',
-        'text-background-color': '#fffefa',
-        'text-background-opacity': 0.94,
-        'text-background-padding': 3,
-        'text-rotation': 'autorotate'
+        'width': 2.5,
+        'opacity': 0.98
       }
     },
     {
@@ -555,14 +572,8 @@ function stylesheet() {
       style: {
         'line-color': '#7d6aa1',
         'target-arrow-color': '#7d6aa1',
-        'width': 2.6,
-        'label': 'data(label)',
-        'font-size': 9,
-        'color': '#5f5573',
-        'text-background-color': '#fffefa',
-        'text-background-opacity': 0.94,
-        'text-background-padding': 3,
-        'text-rotation': 'autorotate'
+        'width': 2.5,
+        'opacity': 0.98
       }
     },
     {
@@ -601,11 +612,11 @@ function stylesheet() {
     },
     {
       selector: '.dimmed',
-      style: { 'opacity': 0.18 }
+      style: { 'opacity': 0.44 }
     },
     {
       selector: '.filtered-out',
-      style: { 'opacity': 0.1 }
+      style: { 'opacity': 0.14 }
     }
   ];
 }

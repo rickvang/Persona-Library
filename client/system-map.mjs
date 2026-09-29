@@ -15,7 +15,8 @@ import {
   initialExpandedIds,
   localRevealBatchSize,
   neighborhoodWindow,
-  normalizeNeighborhoodOffset
+  normalizeNeighborhoodOffset,
+  compactNeighborhoodRange
 } from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -796,13 +797,14 @@ function semanticRangeText(info, noun) {
 }
 
 function semanticToggleLabel(info, noun) {
-  if (info.open) return noun === 'contents' ? 'Close contents' : 'Hide connections';
+  const isConnections = noun === 'connections';
+  if (info.open) return isConnections ? 'Hide connections' : `Close ${noun}`;
   if (!info.revealTotal) return `All ${info.total} ${noun} visible`;
   const count = Math.min(info.batchSize, info.revealTotal);
   const existing = info.alreadyVisibleCount ? ` · ${info.alreadyVisibleCount} already visible` : '';
-  return noun === 'contents'
-    ? `Open ${count} ${noun}${existing}`
-    : `Show ${count} ${noun}${existing}`;
+  return isConnections
+    ? `Show ${count} ${noun}${existing}`
+    : `Open ${count} ${noun}${existing}`;
 }
 
 function semanticPageLabel(info, direction, noun) {
@@ -816,6 +818,85 @@ function semanticPageLabel(info, direction, noun) {
     ? `Previous ${noun} ${window.start}–${window.end}`
     : `Next ${noun} ${window.start}–${window.end}`;
 }
+
+function semanticContentsPresentation(node) {
+  if (state.lens === 'agent-runtime' && node?.id === 'route-group:skills') {
+    return {
+      noun: 'routes',
+      title: 'Routes in this group',
+      description: 'These routes are explicitly contained by Skills routes in content/orientation/skills.json.'
+    };
+  }
+  return {
+    noun: 'contents',
+    title: 'Contents',
+    description: 'These items are connected by explicit containment or ownership relationships from this item.'
+  };
+}
+
+function semanticNoun(node, kind) {
+  if (kind === 'contents') return semanticContentsPresentation(node).noun;
+  return 'connections';
+}
+
+function semanticCompactRange(info) {
+  if (!info?.open || !info.revealTotal) return '';
+  return compactNeighborhoodRange({
+    start: info.start,
+    end: info.end,
+    total: info.revealTotal
+  });
+}
+
+function semanticPagerMarkup(node, kind, info, { compact = false } = {}) {
+  if (!info?.open || !info.revealTotal) return '';
+  const noun = semanticNoun(node, kind);
+  const previousAttr = kind === 'contents' ? 'data-show-previous-contents' : 'data-show-previous-connections';
+  const nextAttr = kind === 'contents' ? 'data-show-more-contents' : 'data-show-more-connections';
+  const range = semanticCompactRange(info);
+  const className = compact ? 'semantic-pager compact-pager' : 'semantic-pager';
+  return `
+    <div class="${className}" aria-label="${escapeHtml(noun)} page ${escapeHtml(range)}">
+      <button class="pager-button" type="button" ${previousAttr}="${escapeHtml(node.id)}"
+        aria-label="Previous ${escapeHtml(noun)}" title="Previous ${escapeHtml(noun)}" ${info.hasPrevious ? '' : 'disabled'}>
+        <span aria-hidden="true">‹</span>
+      </button>
+      <span class="semantic-page-range" title="${escapeHtml(semanticRangeText(info, noun))}">${escapeHtml(range)}</span>
+      <button class="pager-button" type="button" ${nextAttr}="${escapeHtml(node.id)}"
+        aria-label="Next ${escapeHtml(noun)}" title="Next ${escapeHtml(noun)}" ${info.hasNext ? '' : 'disabled'}>
+        <span aria-hidden="true">›</span>
+      </button>
+    </div>
+  `;
+}
+
+function semanticToolbarToggle(node, kind, info) {
+  if (!info?.total) return '';
+  const noun = semanticNoun(node, kind);
+  const label = noun.charAt(0).toUpperCase() + noun.slice(1);
+  const attr = kind === 'contents' ? 'data-toggle-contents' : 'data-toggle-connections';
+  const action = info.open ? 'Hide' : 'Show';
+  const disabled = !info.open && !info.revealTotal;
+  const title = disabled
+    ? `All ${info.total} ${noun} are already visible`
+    : `${action} ${noun}`;
+  return `
+    <button class="semantic-toggle ${info.open ? 'is-open' : ''}" type="button" ${attr}="${escapeHtml(node.id)}"
+      aria-expanded="${info.open}" aria-label="${escapeHtml(title)}" title="${escapeHtml(title)}" ${disabled ? 'disabled' : ''}>
+      <span>${escapeHtml(label)}</span><small>${info.total}</small>
+    </button>
+  `;
+}
+function semanticToolbarPager(node, contents, connections) {
+  const active = connections.open && connections.revealTotal
+    ? { kind: 'connections', info: connections }
+    : contents.open && contents.revealTotal
+      ? { kind: 'contents', info: contents }
+      : null;
+  if (!active) return '<div class="semantic-pager-slot" aria-hidden="true"></div>';
+  return `<div class="semantic-pager-slot">${semanticPagerMarkup(node, active.kind, active.info, { compact: true })}</div>`;
+}
+
 
 function sourceBackedExplanation(node) {
   if (!node) return null;
@@ -1044,12 +1125,10 @@ function highlightedEdgeEvidence() {
 }
 
 function renderAgentRuntimeDetails(node) {
-  const index = indexGraph(state.graph);
-  const incoming = index.incoming.get(node.id) || [];
-  const outgoing = index.outgoing.get(node.id) || [];
   const groups = semanticNeighborGroups(node.id);
   const contents = semanticRevealInfo(node.id, 'contents');
   const connections = semanticRevealInfo(node.id, 'connections');
+  const contentsPresentation = semanticContentsPresentation(node);
   const explanation = sourceBackedExplanation(node);
   const nodeSource = sourceUrl(node.source);
   const outgoingConnectionEdges = groups.connections
@@ -1059,6 +1138,7 @@ function renderAgentRuntimeDetails(node) {
     .filter(item => item.direction === 'incoming')
     .map(item => item.edge);
   const contentEdges = groups.contents.map(item => item.edge);
+  const contentsNoun = contentsPresentation.noun;
 
   elements.details.innerHTML = `
     <div class="detail-head">
@@ -1066,23 +1146,51 @@ function renderAgentRuntimeDetails(node) {
         <p class="eyebrow">${escapeHtml(nodeTypeLabel(node.type))}</p>
         <h2 tabindex="-1">${escapeHtml(node.label)}</h2>
       </div>
-      <span class="connection-count">${contents.total} contents · ${connections.total} connections</span>
+      <span class="connection-count">${contents.total ? `${contents.total} ${escapeHtml(contentsNoun)} · ` : ''}${connections.total} connections</span>
     </div>
 
-    <section class="detail-section">
-      <h3>Purpose</h3>
-      <p class="detail-copy">${escapeHtml(explanation?.summary || 'No source-backed plain-language explanation is available for this item yet.')}</p>
-      ${explanation?.example ? `<p class="detail-example"><strong>Example:</strong> ${escapeHtml(explanation.example)}</p>` : ''}
+    <div class="detail-intro">
+      <p class="detail-purpose">${escapeHtml(explanation?.summary || 'No source-backed plain-language explanation is available for this item yet.')}</p>
       ${explanation?.sourceLabel ? `<p class="explanation-source">${escapeHtml(explanation.sourceLabel)}</p>` : ''}
+      ${explanation?.example ? `
+        <details class="example-detail">
+          <summary>Example</summary>
+          <p>${escapeHtml(explanation.example)}</p>
+        </details>
+      ` : ''}
+    </div>
+
+    <section class="detail-section explore-section">
+      <div class="section-heading">
+        <h3>Explore</h3>
+        <span>Keep your place</span>
+      </div>
+      <div class="branch-actions">
+        ${contents.total ? `
+          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
+            ${escapeHtml(semanticToggleLabel(contents, contentsNoun))}
+          </button>
+        ` : ''}
+        ${contents.open ? semanticPagerMarkup(node, 'contents', contents) : ''}
+        ${connections.total ? `
+          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
+            ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
+          </button>
+        ` : ''}
+        ${connections.open ? semanticPagerMarkup(node, 'connections', connections) : ''}
+        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus area</button>
+      </div>
+      ${contents.open ? `<p class="secondary-count">${escapeHtml(semanticRangeText(contents, contentsNoun))}</p>` : ''}
+      ${connections.open ? `<p class="secondary-count">${escapeHtml(semanticRangeText(connections, 'connections'))}</p>` : ''}
     </section>
 
     ${contents.total ? `
       <section class="detail-section">
         <div class="section-heading">
-          <h3>Contents</h3>
-          <span>${contents.total} contained</span>
+          <h3>${escapeHtml(contentsPresentation.title)}</h3>
+          <span>${contents.total} ${escapeHtml(contentsNoun)}</span>
         </div>
-        <p class="detail-copy">These items are connected by explicit containment or ownership relationships from this item.</p>
+        <p class="detail-copy">${escapeHtml(contentsPresentation.description)}</p>
         ${groupedRelationships(contentEdges, 'outgoing', 'No explicit contents are represented.')}
       </section>
     ` : ''}
@@ -1092,7 +1200,6 @@ function renderAgentRuntimeDetails(node) {
         <h3>Connections</h3>
         <span>${connections.total} related</span>
       </div>
-      <p class="detail-copy">Connections relate separate entities. They do not imply containment or prove that a runtime execution followed this path.</p>
       ${outgoingConnectionEdges.length ? `
         <div class="connection-direction">
           <strong>Outgoing</strong>
@@ -1106,44 +1213,15 @@ function renderAgentRuntimeDetails(node) {
         </div>
       ` : ''}
       ${!connections.total ? '<p class="quiet">No non-containment connections are represented for this item.</p>' : ''}
-      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
     </section>
 
     ${highlightedEdgeEvidence()}
 
-    <section class="detail-section">
-      <div class="section-heading">
-        <h3>Explore</h3>
-        <span>Explicit controls</span>
-      </div>
-      <div class="branch-actions">
-        ${contents.total ? `
-          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
-            ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
-          </button>
-        ` : ''}
-        ${contents.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
-        ${contents.hasPrevious ? `
-          <button class="show-more-button" type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>
-        ` : ''}
-        ${contents.hasNext ? `
-          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>
-        ` : ''}
-        ${connections.total ? `
-          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
-            ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
-          </button>
-        ` : ''}
-        ${connections.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
-        ${connections.hasPrevious ? `
-          <button class="show-more-button" type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>
-        ` : ''}
-        ${connections.hasNext ? `
-          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>
-        ` : ''}
-        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus on this area</button>
-      </div>
-    </section>
+    <details class="detail-section evidence-boundary">
+      <summary>Evidence boundary</summary>
+      <p>These relationships describe declared static structure. They do not prove that a particular conversation or runtime followed this path.</p>
+      <p>${escapeHtml(coverageDescription())}</p>
+    </details>
 
     <details class="detail-section provenance-detail">
       <summary>Technical details &amp; source</summary>
@@ -1296,12 +1374,12 @@ function renderFallbackNodes(visible) {
             </button>
             ${contents.total ? `
               <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
-                ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
+                ${escapeHtml(semanticToggleLabel(contents, semanticNoun(node, 'contents')))}
               </button>
             ` : ''}
-            ${contents.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
-            ${contents.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
-            ${contents.hasNext ? `<button type="button" class="branch-toggle" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
+            ${contents.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(contents, semanticNoun(node, 'contents')))}</span>` : ''}
+            ${contents.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', semanticNoun(node, 'contents')))}</button>` : ''}
+            ${contents.hasNext ? `<button type="button" class="branch-toggle" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', semanticNoun(node, 'contents')))}</button>` : ''}
             ${connections.total ? `
               <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
                 ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
@@ -1396,25 +1474,20 @@ function renderSelectionActions() {
     const contents = semanticRevealInfo(node.id, 'contents');
     const connections = semanticRevealInfo(node.id, 'connections');
     elements.selectionActions.innerHTML = `
-      <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
-      <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
-      ${contents.total ? `
-        <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
-          ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
+      <span class="selection-label" title="${escapeHtml(node.label)}">
+        <strong>${escapeHtml(node.label)}</strong>
+        <span>${escapeHtml(nodeTypeLabel(node.type))}</span>
+      </span>
+      <div class="selection-primary-actions" aria-label="Selected node exploration">
+        ${semanticToolbarToggle(node, 'contents', contents)}
+        ${semanticToolbarToggle(node, 'connections', connections)}
+      </div>
+      ${semanticToolbarPager(node, contents, connections)}
+      <div class="selection-secondary-actions">
+        <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}" title="Focus this area">
+          ${state.focusId === node.id ? 'Focused' : 'Focus'}
         </button>
-      ` : ''}
-      ${contents.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
-      ${contents.hasPrevious ? `<button type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
-      ${contents.hasNext ? `<button type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
-      ${connections.total ? `
-        <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
-          ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
-        </button>
-      ` : ''}
-      ${connections.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
-      ${connections.hasPrevious ? `<button type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>` : ''}
-      ${connections.hasNext ? `<button type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>` : ''}
-      <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
+      </div>
     `;
     return;
   }
@@ -1607,7 +1680,8 @@ function toggleSemanticReveal(id, kind) {
   const info = semanticRevealInfo(id, kind);
   if (!info.total) return;
   if (!openSet.has(id) && !info.revealTotal) {
-    announce(`All ${info.total} ${kind} for ${selectedNode()?.label || id} are already visible.`);
+    const noun = semanticNoun(state.graph?.nodes.find(node => node.id === id), kind);
+    announce(`All ${info.total} ${noun} for ${selectedNode()?.label || id} are already visible.`);
     return;
   }
 
@@ -1635,9 +1709,10 @@ function toggleSemanticReveal(id, kind) {
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
   const updated = semanticRevealInfo(id, kind);
+  const noun = semanticNoun(selectedNode(), kind);
   announce(openSet.has(id)
-    ? `Showing ${semanticRangeText(updated, kind)} for ${selectedNode()?.label || id}.`
-    : `${kind === 'contents' ? 'Closed contents for' : 'Hidden connections for'} ${selectedNode()?.label || id}.`);
+    ? `Showing ${semanticRangeText(updated, noun)} for ${selectedNode()?.label || id}.`
+    : `${kind === 'contents' ? `Closed ${noun} for` : 'Hidden connections for'} ${selectedNode()?.label || id}.`);
 }
 
 function pageSemanticReveal(id, kind, direction = 'next') {
@@ -1666,7 +1741,8 @@ function pageSemanticReveal(id, kind, direction = 'next') {
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
   const updated = semanticRevealInfo(id, kind);
-  announce(`Showing ${semanticRangeText(updated, kind)} for ${selectedNode()?.label || id}.`);
+  const noun = semanticNoun(selectedNode(), kind);
+  announce(`Showing ${semanticRangeText(updated, noun)} for ${selectedNode()?.label || id}.`);
 }
 
 function showMoreNeighbors(id) {
