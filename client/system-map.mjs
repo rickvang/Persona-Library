@@ -258,6 +258,7 @@ function pushNavigationCheckpoint() {
     JSON.stringify(item?.connectionLimits || []),
     JSON.stringify(item?.contentOffsets || []),
     JSON.stringify(item?.connectionOffsets || []),
+    (item?.explorationTrail || []).join('>'),
     item?.path?.nodes?.join('>')
   ].join('|');
   if (key(last) === key(snapshot)) return;
