@@ -1114,12 +1114,10 @@ function highlightedEdgeEvidence() {
 }
 
 function renderAgentRuntimeDetails(node) {
-  const index = indexGraph(state.graph);
-  const incoming = index.incoming.get(node.id) || [];
-  const outgoing = index.outgoing.get(node.id) || [];
   const groups = semanticNeighborGroups(node.id);
   const contents = semanticRevealInfo(node.id, 'contents');
   const connections = semanticRevealInfo(node.id, 'connections');
+  const contentsPresentation = semanticContentsPresentation(node);
   const explanation = sourceBackedExplanation(node);
   const nodeSource = sourceUrl(node.source);
   const outgoingConnectionEdges = groups.connections
@@ -1129,6 +1127,7 @@ function renderAgentRuntimeDetails(node) {
     .filter(item => item.direction === 'incoming')
     .map(item => item.edge);
   const contentEdges = groups.contents.map(item => item.edge);
+  const contentsNoun = contentsPresentation.noun;
 
   elements.details.innerHTML = `
     <div class="detail-head">
@@ -1136,23 +1135,51 @@ function renderAgentRuntimeDetails(node) {
         <p class="eyebrow">${escapeHtml(nodeTypeLabel(node.type))}</p>
         <h2 tabindex="-1">${escapeHtml(node.label)}</h2>
       </div>
-      <span class="connection-count">${contents.total} contents · ${connections.total} connections</span>
+      <span class="connection-count">${contents.total ? `${contents.total} ${escapeHtml(contentsNoun)} · ` : ''}${connections.total} connections</span>
     </div>
 
-    <section class="detail-section">
-      <h3>Purpose</h3>
-      <p class="detail-copy">${escapeHtml(explanation?.summary || 'No source-backed plain-language explanation is available for this item yet.')}</p>
-      ${explanation?.example ? `<p class="detail-example"><strong>Example:</strong> ${escapeHtml(explanation.example)}</p>` : ''}
+    <div class="detail-intro">
+      <p class="detail-purpose">${escapeHtml(explanation?.summary || 'No source-backed plain-language explanation is available for this item yet.')}</p>
       ${explanation?.sourceLabel ? `<p class="explanation-source">${escapeHtml(explanation.sourceLabel)}</p>` : ''}
+      ${explanation?.example ? `
+        <details class="example-detail">
+          <summary>Example</summary>
+          <p>${escapeHtml(explanation.example)}</p>
+        </details>
+      ` : ''}
+    </div>
+
+    <section class="detail-section explore-section">
+      <div class="section-heading">
+        <h3>Explore</h3>
+        <span>Keep your place</span>
+      </div>
+      <div class="branch-actions">
+        ${contents.total ? `
+          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
+            ${escapeHtml(semanticToggleLabel(contents, contentsNoun))}
+          </button>
+        ` : ''}
+        ${contents.open ? semanticPagerMarkup(node, 'contents', contents) : ''}
+        ${connections.total ? `
+          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
+            ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
+          </button>
+        ` : ''}
+        ${connections.open ? semanticPagerMarkup(node, 'connections', connections) : ''}
+        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus area</button>
+      </div>
+      ${contents.open ? `<p class="secondary-count">${escapeHtml(semanticRangeText(contents, contentsNoun))}</p>` : ''}
+      ${connections.open ? `<p class="secondary-count">${escapeHtml(semanticRangeText(connections, 'connections'))}</p>` : ''}
     </section>
 
     ${contents.total ? `
       <section class="detail-section">
         <div class="section-heading">
-          <h3>Contents</h3>
-          <span>${contents.total} contained</span>
+          <h3>${escapeHtml(contentsPresentation.title)}</h3>
+          <span>${contents.total} ${escapeHtml(contentsNoun)}</span>
         </div>
-        <p class="detail-copy">These items are connected by explicit containment or ownership relationships from this item.</p>
+        <p class="detail-copy">${escapeHtml(contentsPresentation.description)}</p>
         ${groupedRelationships(contentEdges, 'outgoing', 'No explicit contents are represented.')}
       </section>
     ` : ''}
@@ -1162,7 +1189,6 @@ function renderAgentRuntimeDetails(node) {
         <h3>Connections</h3>
         <span>${connections.total} related</span>
       </div>
-      <p class="detail-copy">Connections relate separate entities. They do not imply containment or prove that a runtime execution followed this path.</p>
       ${outgoingConnectionEdges.length ? `
         <div class="connection-direction">
           <strong>Outgoing</strong>
@@ -1176,44 +1202,15 @@ function renderAgentRuntimeDetails(node) {
         </div>
       ` : ''}
       ${!connections.total ? '<p class="quiet">No non-containment connections are represented for this item.</p>' : ''}
-      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
     </section>
 
     ${highlightedEdgeEvidence()}
 
-    <section class="detail-section">
-      <div class="section-heading">
-        <h3>Explore</h3>
-        <span>Explicit controls</span>
-      </div>
-      <div class="branch-actions">
-        ${contents.total ? `
-          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
-            ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
-          </button>
-        ` : ''}
-        ${contents.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
-        ${contents.hasPrevious ? `
-          <button class="show-more-button" type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>
-        ` : ''}
-        ${contents.hasNext ? `
-          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>
-        ` : ''}
-        ${connections.total ? `
-          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
-            ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
-          </button>
-        ` : ''}
-        ${connections.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
-        ${connections.hasPrevious ? `
-          <button class="show-more-button" type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>
-        ` : ''}
-        ${connections.hasNext ? `
-          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>
-        ` : ''}
-        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus on this area</button>
-      </div>
-    </section>
+    <details class="detail-section evidence-boundary">
+      <summary>Evidence boundary</summary>
+      <p>These relationships describe declared static structure. They do not prove that a particular conversation or runtime followed this path.</p>
+      <p>${escapeHtml(coverageDescription())}</p>
+    </details>
 
     <details class="detail-section provenance-detail">
       <summary>Technical details &amp; source</summary>
