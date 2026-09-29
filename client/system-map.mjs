@@ -1551,6 +1551,9 @@ async function restoreNavigationSnapshot(snapshot) {
   if (!snapshot) return;
   if (snapshot.mode === 'overview' || snapshot.lens === 'overview') {
     showOverview({ rememberCurrent: false });
+    if (Number.isFinite(snapshot.documentScrollY)) {
+      globalThis.scrollTo({ top: snapshot.documentScrollY, left: 0, behavior: 'auto' });
+    }
     return;
   }
   if (snapshot.lens !== state.lens || state.mode !== 'graph') {
@@ -1563,6 +1566,12 @@ async function restoreNavigationSnapshot(snapshot) {
     const activeRenderer = ensureRenderer();
     if (snapshot.positions?.length) activeRenderer?.restoreNodePositions(snapshot.positions);
     if (snapshot.viewport) activeRenderer?.restoreViewport(snapshot.viewport);
+  }
+  if (elements.inspectorRail && Number.isFinite(snapshot.inspectorScrollTop)) {
+    elements.inspectorRail.scrollTop = snapshot.inspectorScrollTop;
+  }
+  if (Number.isFinite(snapshot.documentScrollY)) {
+    globalThis.scrollTo({ top: snapshot.documentScrollY, left: 0, behavior: 'auto' });
   }
   updateUrlState();
 }
@@ -1602,6 +1611,8 @@ function showOverview({ rememberCurrent = true } = {}) {
   state.path = null;
   state.focusPath = null;
   state.highlightedEdgeId = null;
+  state.explorationTrail = [];
+  root.classList.remove('graph-mode');
 
   elements.error.hidden = true;
   elements.explorer.hidden = true;
@@ -1654,6 +1665,9 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     state.expansionLimits = new Map();
     state.connections = new Set();
     state.connectionLimits = new Map();
+    state.contentOffsets = new Map();
+    state.connectionOffsets = new Map();
+    state.explorationTrail = [];
     state.path = null;
     state.focusPath = null;
     state.focusId = null;
@@ -1675,13 +1689,19 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     const savedView = viewSnapshot || (!restoreUrl ? lensViewStates.get(lens) : null);
     if (savedView) applyViewSnapshot(savedView);
     if (restoreUrl) restoreUrlState();
+    root.classList.add('graph-mode');
     elements.explorer.hidden = false;
+    normalizeGraphDocumentScroll();
     render({ fitOnTopologyChange: !savedView?.viewport });
     if (savedView?.viewport || savedView?.positions?.length) {
       const activeRenderer = ensureRenderer();
       if (savedView?.positions?.length) activeRenderer?.restoreNodePositions(savedView.positions);
       if (savedView?.viewport) activeRenderer?.restoreViewport(savedView.viewport);
     }
+    if (elements.inspectorRail && Number.isFinite(savedView?.inspectorScrollTop)) {
+      elements.inspectorRail.scrollTop = savedView.inspectorScrollTop;
+    }
+    normalizeGraphDocumentScroll();
     updateUrlState();
     announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
   } catch (error) {
