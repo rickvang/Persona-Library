@@ -1460,6 +1460,8 @@ function selectNode(id) {
   state.focusId = null;
   state.highlightedEdgeId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+  if (elements.inspectorRail) elements.inspectorRail.scrollTop = 0;
+  normalizeGraphDocumentScroll();
   updateUrlState();
   announce(state.lens === 'agent-runtime'
     ? `Selected ${selectedNode()?.label || id}. Inspect it, open contents, show connections, or focus the area as available.`
