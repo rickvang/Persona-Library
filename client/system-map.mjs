@@ -620,7 +620,7 @@ function buildSemanticRevealPlan(id, kind, allItems) {
       kind,
       layoutDirection: currentLensConfig()?.layoutDirection || 'vertical',
       directions,
-      preserveUpstreamContext: true
+      preserveUpstreamContext: usesViewportFittedWorkspace()
     })
     : 0;
 
@@ -709,7 +709,7 @@ function recomputeOpenRevealPlans({ announceChange = false } = {}) {
       kind,
       layoutDirection: currentLensConfig()?.layoutDirection || 'vertical',
       directions: items.map(item => item.direction),
-      preserveUpstreamContext: true
+      preserveUpstreamContext: usesViewportFittedWorkspace()
     });
     const nextSize = Math.max(1, Math.min(items.length, pageSize));
     if (nextSize === plan.pageSize) continue;
