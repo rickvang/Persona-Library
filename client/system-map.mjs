@@ -886,6 +886,16 @@ function semanticToolbarToggle(node, kind, info) {
     </button>
   `;
 }
+function semanticToolbarPager(node, contents, connections) {
+  const active = connections.open && connections.revealTotal
+    ? { kind: 'connections', info: connections }
+    : contents.open && contents.revealTotal
+      ? { kind: 'contents', info: contents }
+      : null;
+  if (!active) return '<div class="semantic-pager-slot" aria-hidden="true"></div>';
+  return `<div class="semantic-pager-slot">${semanticPagerMarkup(node, active.kind, active.info, { compact: true })}</div>`;
+}
+
 
 function sourceBackedExplanation(node) {
   if (!node) return null;
@@ -1463,25 +1473,20 @@ function renderSelectionActions() {
     const contents = semanticRevealInfo(node.id, 'contents');
     const connections = semanticRevealInfo(node.id, 'connections');
     elements.selectionActions.innerHTML = `
-      <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
-      <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
-      ${contents.total ? `
-        <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
-          ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
+      <span class="selection-label" title="${escapeHtml(node.label)}">
+        <strong>${escapeHtml(node.label)}</strong>
+        <span>${escapeHtml(nodeTypeLabel(node.type))}</span>
+      </span>
+      <div class="selection-primary-actions" aria-label="Selected node exploration">
+        ${semanticToolbarToggle(node, 'contents', contents)}
+        ${semanticToolbarToggle(node, 'connections', connections)}
+      </div>
+      ${semanticToolbarPager(node, contents, connections)}
+      <div class="selection-secondary-actions">
+        <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}" title="Focus this area">
+          ${state.focusId === node.id ? 'Focused' : 'Focus'}
         </button>
-      ` : ''}
-      ${contents.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
-      ${contents.hasPrevious ? `<button type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
-      ${contents.hasNext ? `<button type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
-      ${connections.total ? `
-        <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
-          ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
-        </button>
-      ` : ''}
-      ${connections.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
-      ${connections.hasPrevious ? `<button type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>` : ''}
-      ${connections.hasNext ? `<button type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>` : ''}
-      <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
+      </div>
     `;
     return;
   }
