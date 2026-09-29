@@ -739,6 +739,11 @@ export class SystemMapRenderer {
     if (anchor.empty()) return;
 
     let collection = anchor;
+    const addedSet = new Set(addedNodeIds);
+    const upstream = anchor.incomers?.('node')
+      ?.filter(node => !addedSet.has(node.id()))
+      ?.first?.();
+    if (upstream && !upstream.empty()) collection = collection.union(upstream);
     for (const id of addedNodeIds) {
       const node = this.cy.getElementById(id);
       if (!node.empty()) collection = collection.union(node);
