@@ -655,7 +655,7 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /data-toggle-connections/);
   assert.match(client, /agent:repository-dispatcher/);
   assert.match(client, /Chooses the shortest applicable activation path/);
-  assert.match(client, /Connections relate separate entities/);
+  assert.match(client, /These relationships describe declared static structure/);
   assert.match(client, /semanticToggleLabel\(contents, contentsNoun\)/);
   assert.match(client, /semanticToggleLabel\(connections, 'connections'\)/);
 
