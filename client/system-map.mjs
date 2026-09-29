@@ -540,7 +540,7 @@ function semanticRevealInfo(id, kind) {
 function semanticRangeText(info, noun) {
   if (!info?.total) return `0 ${noun}`;
   if (!info.open) return `${info.total} ${noun}`;
-  return `${noun} ${info.start}–${info.end} of ${info.total}`;
+  return `${noun} ${info.start}–${info.end} of ${info.total} · ${Math.max(0, info.total - info.end)} remaining`;
 }
 
 function semanticPageLabel(info, direction, noun) {
