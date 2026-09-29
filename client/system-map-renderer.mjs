@@ -176,6 +176,25 @@ export function localRevealCamera({
   };
 }
 
+export function localCollectionFitsReadable({
+  bounds,
+  canvasWidth,
+  canvasHeight,
+  zoom = MIN_READABLE_ZOOM,
+  currentZoom = zoom,
+  padding = 32
+} = {}) {
+  const camera = localRevealCamera({
+    bounds,
+    canvasWidth,
+    canvasHeight,
+    currentZoom,
+    minZoom: zoom,
+    padding
+  });
+  return camera.fits && camera.zoom >= zoom;
+}
+
 export function panForVisibleBounds({
   bounds,
   canvasWidth,
@@ -216,14 +235,18 @@ export function localRevealBatchSize({
   if (!count) return 0;
   const width = Math.max(0, Number(viewportWidth) || 0);
   const height = Math.max(0, Number(viewportHeight) || 0);
-  let capacity;
 
-  if (width && width < 620) capacity = 2;
-  else if (width && width < 900) capacity = 3;
-  else capacity = 4;
+  // Dense semantic neighborhoods are intentionally conservative. The graph
+  // shares the viewport with an inspector, and the readable zoom floor is
+  // above 1x, so a small page is preferable to revealing nodes that require
+  // panning to discover. Contents get one extra slot because they represent
+  // explicit containment and are typically the next structural step.
+  let capacity = kind === 'contents' ? 3 : 2;
 
-  if (height && height < 480) capacity = Math.min(capacity, 2);
-  if (kind === 'contents') capacity += 1;
+  if ((width && width < 520) || (height && height < 360)) {
+    capacity = Math.min(capacity, kind === 'contents' ? 2 : 1);
+  }
+
   return Math.min(count, Math.max(1, capacity));
 }
 
