@@ -600,6 +600,7 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /previousPositions/);
   assert.match(renderer, /addedNodeIds/);
   assert.match(renderer, /renderedBoundingBox/);
+  assert.match(renderer, /anchor\.incomers/);
   assert.match(renderer, /panBy/);
   assert.match(renderer, /transform: layoutDirection === 'horizontal'/);
   assert.match(client, /renderFallbackNodes\(visible\)/);
