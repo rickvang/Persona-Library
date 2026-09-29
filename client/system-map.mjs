@@ -11,7 +11,8 @@ import {
   DEFAULT_BRANCH_CHUNK,
   SystemMapRenderer,
   boundedVisibleNodeIds,
-  initialExpandedIds
+  initialExpandedIds,
+  localRevealBatchSize
 } from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -163,7 +164,8 @@ function captureViewSnapshot() {
     search: elements.search?.value || '',
     pathFrom: elements.pathFrom?.value || '',
     pathTo: elements.pathTo?.value || '',
-    viewport: renderer?.getViewport?.() || null
+    viewport: renderer?.getViewport?.() || null,
+    positions: renderer?.getNodePositions?.() || []
   };
 }
 
@@ -223,6 +225,10 @@ function pushNavigationCheckpoint() {
     item?.selectedId,
     item?.focusId,
     item?.highlightedEdgeId,
+    [...(item?.expanded || [])].sort().join(','),
+    [...(item?.connections || [])].sort().join(','),
+    JSON.stringify(item?.expansionLimits || []),
+    JSON.stringify(item?.connectionLimits || []),
     item?.path?.nodes?.join('>')
   ].join('|');
   if (key(last) === key(snapshot)) return;
@@ -444,14 +450,30 @@ function semanticRevealInfo(id, kind) {
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
   const total = items.length;
-  const limit = Math.min(total, Number(limits.get(id) ?? DEFAULT_BRANCH_CHUNK));
+  const viewportWidth = elements.canvas?.clientWidth || 0;
+  const viewportHeight = elements.canvas?.clientHeight || 0;
+  const batchSize = localRevealBatchSize({
+    total,
+    viewportWidth,
+    viewportHeight,
+    kind
+  });
+  const limit = Math.min(total, Number(limits.get(id) ?? batchSize));
   const open = openSet.has(id);
+  const remaining = Math.max(0, total - limit);
+  const nextCount = localRevealBatchSize({
+    total: remaining,
+    viewportWidth,
+    viewportHeight,
+    kind
+  });
   return {
     open,
     total,
+    batchSize,
     revealed: open ? limit : 0,
     hasMore: open && limit < total,
-    nextCount: Math.min(DEFAULT_BRANCH_CHUNK, Math.max(0, total - limit)),
+    nextCount,
     items
   };
 }
@@ -469,6 +491,32 @@ function sourceBackedExplanation(node) {
     return {
       summary: 'A static view of the repository’s declared orientation and routing contracts. It shows what the repository says agents should load or use, not what a particular conversation actually did.',
       sourceLabel: 'AGENTS.md · routing and live-state boundaries'
+    };
+  }
+  if (state.lens === 'agent-runtime' && node.id === 'routing:orientation-bootstrap') {
+    return {
+      summary: 'The semantic orientation entry point. For ordinary library-semantic work, the repository contract directs the agent to read site-orientation, choose one primary space, then load only that space’s route group and selected records or capability.',
+      example: 'Skill-related work can continue into the Skills space and its declared route group instead of loading unrelated spaces.',
+      sourceLabel: 'AGENTS.md · library-semantic route; content/site-orientation.json · root'
+    };
+  }
+  if (state.lens === 'agent-runtime' && node.id === 'space:skills') {
+    return {
+      summary: 'The primary semantic space for reusable capabilities. Its source defines what Skill work should answer, what to read, when changes are appropriate, and which Skills route file to use.',
+      example: 'A request to create or update a reusable callable Skill proceeds from this space into the Skills route group.',
+      sourceLabel: 'content/site-orientation.json · spaces.skills'
+    };
+  }
+  if (state.lens === 'agent-runtime' && node.id === 'route-group:skills') {
+    return {
+      summary: 'The declared collection of routes for Skill-related work. Each route describes a bounded request pattern, target capability, first reads, mutation boundary, reconciliation behavior, and handoff.',
+      sourceLabel: 'content/orientation/skills.json · root'
+    };
+  }
+  if (state.lens === 'agent-runtime' && node.id === 'route:skill-package-maintenance') {
+    return {
+      summary: 'The route for creating or updating a reusable callable Skill package. It targets the Skill creator package, starts from the approved scope and existing package/contract, requires authorized mutation, and hands off to validation plus change-impact reconciliation.',
+      sourceLabel: 'content/orientation/skills.json · routes[id=skill-package-maintenance]'
     };
   }
   return null;
