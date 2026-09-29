@@ -1373,12 +1373,12 @@ function renderFallbackNodes(visible) {
             </button>
             ${contents.total ? `
               <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
-                ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
+                ${escapeHtml(semanticToggleLabel(contents, semanticNoun(node, 'contents')))}
               </button>
             ` : ''}
-            ${contents.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
-            ${contents.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
-            ${contents.hasNext ? `<button type="button" class="branch-toggle" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
+            ${contents.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(contents, semanticNoun(node, 'contents')))}</span>` : ''}
+            ${contents.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', semanticNoun(node, 'contents')))}</button>` : ''}
+            ${contents.hasNext ? `<button type="button" class="branch-toggle" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', semanticNoun(node, 'contents')))}</button>` : ''}
             ${connections.total ? `
               <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
                 ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
