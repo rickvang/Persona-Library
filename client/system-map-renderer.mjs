@@ -292,6 +292,76 @@ export class SystemMapRenderer {
     }
   }
 
+  positionLocalTopology({ anchorNodeId, addedNodeIds = [], previousPositions, layoutDirection = 'vertical' }) {
+    if (!this.cy || !previousPositions?.size) return;
+
+    this.cy.nodes().forEach(node => {
+      const previous = previousPositions.get(node.id());
+      if (previous) node.position(previous);
+    });
+
+    if (!anchorNodeId || !addedNodeIds.length) return;
+    const anchor = this.cy.getElementById(anchorNodeId);
+    if (anchor.empty()) return;
+    const origin = anchor.position();
+    const outgoing = [];
+    const incoming = [];
+    const unclassified = [];
+
+    for (const id of addedNodeIds) {
+      const node = this.cy.getElementById(id);
+      if (node.empty()) continue;
+      const connecting = node.edgesWith(anchor);
+      if (connecting.some(edge => edge.source().id() === anchorNodeId && edge.target().id() === id)) outgoing.push(node);
+      else if (connecting.some(edge => edge.target().id() === anchorNodeId && edge.source().id() === id)) incoming.push(node);
+      else unclassified.push(node);
+    }
+
+    const place = (nodes, sign) => {
+      const perColumn = Math.min(6, Math.max(1, nodes.length));
+      nodes.forEach((node, index) => {
+        const column = Math.floor(index / perColumn);
+        const row = index % perColumn;
+        const rowsInColumn = Math.min(perColumn, nodes.length - column * perColumn);
+        const crossOffset = (row - (rowsInColumn - 1) / 2) * 92;
+        const primaryOffset = sign * (220 + column * 190);
+        node.position(layoutDirection === 'horizontal'
+          ? { x: origin.x + primaryOffset, y: origin.y + crossOffset }
+          : { x: origin.x + crossOffset, y: origin.y + primaryOffset });
+      });
+    };
+
+    place(outgoing, 1);
+    place(incoming, -1);
+    place(unclassified, 1);
+  }
+
+  revealLocalTopology({ anchorNodeId, addedNodeIds = [], padding = 28 } = {}) {
+    if (!this.cy || !anchorNodeId || !addedNodeIds.length) return;
+    const anchor = this.cy.getElementById(anchorNodeId);
+    if (anchor.empty()) return;
+
+    let collection = anchor;
+    for (const id of addedNodeIds) {
+      const node = this.cy.getElementById(id);
+      if (!node.empty()) collection = collection.union(node);
+    }
+
+    const bounds = collection.renderedBoundingBox({ includeLabels: true });
+    const width = this.container.clientWidth || 0;
+    const height = this.container.clientHeight || 0;
+    if (!width || !height) return;
+
+    let x = 0;
+    let y = 0;
+    if (bounds.x1 < padding) x = padding - bounds.x1;
+    else if (bounds.x2 > width - padding) x = width - padding - bounds.x2;
+    if (bounds.y1 < padding) y = padding - bounds.y1;
+    else if (bounds.y2 > height - padding) y = height - padding - bounds.y2;
+
+    if (x || y) this.cy.panBy({ x, y });
+  }
+
   render({
     graph,
     visibleIds,
@@ -308,12 +378,15 @@ export class SystemMapRenderer {
     const signature = topologySignature(graph, elements);
     const topologyChanged = signature !== this.signature;
     const previousViewport = preserveViewport ? this.getViewport() : null;
-    const anchorBefore = preserveViewport && anchorNodeId && this.cy
-      ? this.cy.getElementById(anchorNodeId)
-      : null;
-    const anchorRenderedBefore = anchorBefore && !anchorBefore.empty()
-      ? anchorBefore.renderedPosition()
-      : null;
+    const previousPositions = new Map();
+    const previousNodeIds = new Set();
+
+    if (this.cy) {
+      this.cy.nodes().forEach(node => {
+        previousNodeIds.add(node.id());
+        previousPositions.set(node.id(), { ...node.position() });
+      });
+    }
 
     if (!this.cy) {
       this.cy = this.cytoscapeFactory({
@@ -339,35 +412,36 @@ export class SystemMapRenderer {
     }
 
     if (topologyChanged) {
-      this.cy.layout({
-        name: 'breadthfirst',
-        directed: true,
-        circle: false,
-        grid: false,
-        avoidOverlap: true,
-        nodeDimensionsIncludeLabels: true,
-        spacingFactor: elements.length > 90 ? 0.92 : 1.12,
-        padding: 42,
-        animate: false,
-        transform: layoutDirection === 'horizontal'
-          ? (_node, position) => ({ x: position.y, y: position.x })
-          : undefined
-      }).run();
+      const addedNodeIds = this.cy.nodes()
+        .map(node => node.id())
+        .filter(id => !previousNodeIds.has(id));
 
-      if (preserveViewport && previousViewport) {
+      if (preserveViewport && previousViewport && previousPositions.size) {
+        this.positionLocalTopology({
+          anchorNodeId,
+          addedNodeIds,
+          previousPositions,
+          layoutDirection
+        });
         this.restoreViewport(previousViewport);
-        if (anchorNodeId && anchorRenderedBefore) {
-          const anchorAfter = this.cy.getElementById(anchorNodeId);
-          if (!anchorAfter.empty()) {
-            const anchorRenderedAfter = anchorAfter.renderedPosition();
-            this.cy.panBy({
-              x: anchorRenderedBefore.x - anchorRenderedAfter.x,
-              y: anchorRenderedBefore.y - anchorRenderedAfter.y
-            });
-          }
-        }
-      } else if (fitOnTopologyChange) {
-        this.fit();
+        this.revealLocalTopology({ anchorNodeId, addedNodeIds });
+      } else {
+        this.cy.layout({
+          name: 'breadthfirst',
+          directed: true,
+          circle: false,
+          grid: false,
+          avoidOverlap: true,
+          nodeDimensionsIncludeLabels: true,
+          spacingFactor: elements.length > 90 ? 0.92 : 1.12,
+          padding: 42,
+          animate: false,
+          transform: layoutDirection === 'horizontal'
+            ? (_node, position) => ({ x: position.y, y: position.x })
+            : undefined
+        }).run();
+
+        if (fitOnTopologyChange) this.fit();
       }
     }
 
