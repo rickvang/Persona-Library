@@ -16,6 +16,7 @@ import {
   MIN_READABLE_ZOOM,
   SystemMapRenderer,
   boundedVisibleNodeIds,
+  excludeAlreadyVisibleRevealItems,
   initialExpandedIds,
   localRevealBatchSize,
   localRevealCamera,
@@ -24,6 +25,7 @@ import {
   panForVisibleBounds,
   planLocalNodePositions,
   rectangleFromCenter,
+  readableLocalPageCapacity,
   rectanglesOverlap,
   renderedLabelPixels,
   rendererElements
@@ -249,10 +251,103 @@ test('System Map local reveal camera keeps readable zoom and can recover a clipp
   });
   assert.ok(selectedBounds.x1 + pan.x >= 32, 'selected node should be moved back inside the readable safe area');
 
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'connections' }), 2);
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 520, viewportHeight: 600, kind: 'connections' }), 2);
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 480, viewportHeight: 340, kind: 'connections' }), 1);
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'contents' }), 3);
+  assert.equal(localRevealBatchSize({
+    total: 10,
+    viewportWidth: 1000,
+    viewportHeight: 600,
+    kind: 'connections',
+    layoutDirection: 'horizontal',
+    directions: Array(10).fill('outgoing')
+  }), 5);
+  assert.equal(localRevealBatchSize({
+    total: 10,
+    viewportWidth: 850,
+    viewportHeight: 430,
+    kind: 'connections',
+    layoutDirection: 'horizontal',
+    directions: Array(10).fill('outgoing')
+  }), 4, 'normal desktop should compare several related nodes together');
+  assert.equal(localRevealBatchSize({
+    total: 10,
+    viewportWidth: 480,
+    viewportHeight: 340,
+    kind: 'connections',
+    layoutDirection: 'horizontal',
+    directions: Array(10).fill('outgoing')
+  }), 1, 'constrained mobile geometry should page aggressively only when necessary');
+});
+
+test('System Map reveal capacity is geometry-derived and preserves upstream context', () => {
+  const spacious = readableLocalPageCapacity({
+    total: 9,
+    viewportWidth: 900,
+    viewportHeight: 500,
+    layoutDirection: 'horizontal',
+    directions: Array(9).fill('outgoing')
+  });
+  const shortLaptop = readableLocalPageCapacity({
+    total: 9,
+    viewportWidth: 850,
+    viewportHeight: 360,
+    layoutDirection: 'horizontal',
+    directions: Array(9).fill('outgoing')
+  });
+  const narrow = readableLocalPageCapacity({
+    total: 9,
+    viewportWidth: 480,
+    viewportHeight: 500,
+    layoutDirection: 'horizontal',
+    directions: Array(9).fill('outgoing')
+  });
+
+  assert.ok(spacious >= 4, 'spacious desktop should reveal multiple comparable neighbors');
+  assert.ok(shortLaptop >= 1 && shortLaptop < spacious, 'short laptop should reduce the page only as geometry requires');
+  assert.equal(narrow, 1, 'narrow horizontal graph should use pagination rather than unreadable scale');
+});
+
+test('System Map Agent/runtime reveal candidates exclude independently visible context', async () => {
+  const runtimeGraph = JSON.parse(await fs.readFile(
+    new URL('../../dist/data/system-map/agent-runtime.json', import.meta.url),
+    'utf8'
+  ));
+  validateGraph(runtimeGraph);
+  const nodeById = new Map(runtimeGraph.nodes.map(node => [node.id, node]));
+  const rootId = 'view:agent-runtime';
+  const dispatcherId = 'agent:repository-dispatcher';
+  const bootstrapId = 'routing:orientation-bootstrap';
+
+  const dispatcherConnections = runtimeGraph.edges
+    .filter(edge => (
+      (edge.from === dispatcherId && edge.relationship !== 'contains' && edge.relationship !== 'owns' && !edge.relationship.startsWith('owns-'))
+      || edge.to === dispatcherId
+    ))
+    .map(edge => ({
+      node: nodeById.get(edge.from === dispatcherId ? edge.to : edge.from),
+      edge,
+      direction: edge.from === dispatcherId ? 'outgoing' : 'incoming'
+    }))
+    .sort((a, b) => a.node.label.localeCompare(b.node.label));
+
+  const initialVisible = new Set([rootId, dispatcherId, 'boundary:live-runtime-state']);
+  const newDispatcherConnections = excludeAlreadyVisibleRevealItems(dispatcherConnections, initialVisible);
+  assert.deepEqual(
+    newDispatcherConnections.map(item => item.node.id).sort(),
+    ['routing:orientation-bootstrap', 'validation:repository-validation'].sort(),
+    'dispatcher reveal should not spend a page on the already-visible Agent/runtime root'
+  );
+
+  const bootstrapConnections = runtimeGraph.edges
+    .filter(edge => edge.from === bootstrapId || edge.to === bootstrapId)
+    .map(edge => ({
+      node: nodeById.get(edge.from === bootstrapId ? edge.to : edge.from),
+      edge,
+      direction: edge.from === bootstrapId ? 'outgoing' : 'incoming'
+    }))
+    .sort((a, b) => a.node.label.localeCompare(b.node.label));
+  const bootstrapVisible = new Set([rootId, dispatcherId, bootstrapId, 'validation:repository-validation']);
+  const newBootstrapConnections = excludeAlreadyVisibleRevealItems(bootstrapConnections, bootstrapVisible);
+  assert.equal(newBootstrapConnections.length, 9);
+  assert.ok(newBootstrapConnections.every(item => item.node.id.startsWith('space:')));
 });
 
 test('System Map readable local pages fit selected node plus current page at the label floor', () => {
