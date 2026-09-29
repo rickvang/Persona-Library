@@ -176,6 +176,15 @@ test('System Map local reveal camera keeps readable zoom and can recover a clipp
   assert.ok(camera.zoom >= MIN_READABLE_ZOOM, 'camera must preserve a readable minimum zoom');
   assert.equal(camera.fits, true, 'a moderate local neighborhood should fit after the bounded zoom adjustment');
 
+  const manuallyZoomedTooFarOut = localRevealCamera({
+    bounds: { x1: 100, x2: 300, y1: 100, y2: 220, width: 200, height: 120 },
+    canvasWidth: 800,
+    canvasHeight: 500,
+    currentZoom: 0.4,
+    padding: 32
+  });
+  assert.equal(manuallyZoomedTooFarOut.zoom, MIN_READABLE_ZOOM, 'reveals should recover from a manually unreadable zoom level');
+
   const oversized = localRevealCamera({
     bounds: { x1: -500, x2: 2500, y1: -500, y2: 1500, width: 3000, height: 2000 },
     canvasWidth: 800,
