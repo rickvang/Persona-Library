@@ -10,6 +10,7 @@ export const NODE_LABEL_MODEL_PX = 11;
 export const MIN_RENDERED_LABEL_PX = 12;
 export const MIN_READABLE_ZOOM = MIN_RENDERED_LABEL_PX / NODE_LABEL_MODEL_PX;
 export const MAX_INITIAL_ZOOM = 1.32;
+export const OVERVIEW_MIN_ZOOM = 0.22;
 export const LOCAL_REVEAL_GAP = 30;
 export const NODE_MODEL_WIDTH = 144;
 export const NODE_MODEL_HEIGHT = 54;
@@ -314,8 +315,17 @@ export function readableLocalPageCapacity({
       })
     ];
     const bounds = boundsForRectangles(rectangles);
+    const renderedBounds = {
+      ...bounds,
+      x1: 0,
+      y1: 0,
+      x2: bounds.width * minZoom,
+      y2: bounds.height * minZoom,
+      width: bounds.width * minZoom,
+      height: bounds.height * minZoom
+    };
     if (!localCollectionFitsReadable({
-      bounds,
+      bounds: renderedBounds,
       canvasWidth: width,
       canvasHeight: height,
       zoom: minZoom,
@@ -605,9 +615,10 @@ export class SystemMapRenderer {
     this.signature = '';
   }
 
-  fit({ padding = 56, maxZoom = 1.55 } = {}) {
+  fit({ padding = 56, maxZoom = 1.55, minZoom = OVERVIEW_MIN_ZOOM } = {}) {
     if (!this.cy || this.cy.elements().empty()) return;
     const collection = this.cy.elements();
+    this.cy.minZoom?.(minZoom);
     this.cy.fit(collection, padding);
     if (this.cy.zoom() > maxZoom) {
       this.cy.zoom(maxZoom);
@@ -617,6 +628,7 @@ export class SystemMapRenderer {
 
   focus(id, { padding = 96, maxZoom = 1.45 } = {}) {
     if (!this.cy || !id) return;
+    this.cy.minZoom?.(MIN_READABLE_ZOOM);
     const node = this.cy.getElementById(id);
     if (node.empty()) return;
     const collection = node.closedNeighborhood();
@@ -631,6 +643,7 @@ export class SystemMapRenderer {
     if (!this.cy) return null;
     return {
       zoom: this.cy.zoom(),
+      minZoom: this.cy.minZoom?.() ?? OVERVIEW_MIN_ZOOM,
       pan: { ...this.cy.pan() }
     };
   }
@@ -653,6 +666,8 @@ export class SystemMapRenderer {
 
   restoreViewport(viewport) {
     if (!this.cy || !viewport) return;
+    if (Number.isFinite(viewport.minZoom)) this.cy.minZoom?.(viewport.minZoom);
+    else if (Number.isFinite(viewport.zoom)) this.cy.minZoom?.(Math.min(OVERVIEW_MIN_ZOOM, viewport.zoom));
     if (Number.isFinite(viewport.zoom)) this.cy.zoom(viewport.zoom);
     if (viewport.pan && Number.isFinite(viewport.pan.x) && Number.isFinite(viewport.pan.y)) {
       this.cy.pan(viewport.pan);
@@ -735,6 +750,7 @@ export class SystemMapRenderer {
     minZoom = MIN_READABLE_ZOOM
   } = {}) {
     if (!this.cy || !anchorNodeId || !addedNodeIds.length) return;
+    this.cy.minZoom?.(minZoom);
     const anchor = this.cy.getElementById(anchorNodeId);
     if (anchor.empty()) return;
 
@@ -842,7 +858,7 @@ export class SystemMapRenderer {
         container: this.container,
         elements,
         style: stylesheet(),
-        minZoom: MIN_READABLE_ZOOM,
+        minZoom: OVERVIEW_MIN_ZOOM,
         maxZoom: 2.6,
         wheelSensitivity: 0.16,
         boxSelectionEnabled: false,
