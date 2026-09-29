@@ -681,6 +681,70 @@ function semanticRevealInfo(id, kind) {
   };
 }
 
+function recomputeOpenRevealPlans({ announceChange = false } = {}) {
+  if (state.lens !== 'agent-runtime' || !state.graph || !state.revealPlans.size) return false;
+  const viewport = semanticPlanningViewport();
+  let changed = false;
+
+  for (const [key, plan] of [...state.revealPlans.entries()]) {
+    const separator = key.indexOf(':');
+    if (separator < 0) continue;
+    const kind = key.slice(0, separator);
+    const id = key.slice(separator + 1);
+    const openSet = kind === 'contents' ? state.expanded : state.connections;
+    if (!openSet.has(id)) continue;
+
+    const groups = semanticNeighborGroups(id);
+    const allItems = kind === 'contents' ? groups.contents : groups.connections;
+    const itemIndex = new Map(allItems.map(item => [item.node.id, item]));
+    const items = (plan.itemIds || []).map(itemId => itemIndex.get(itemId)).filter(Boolean);
+    if (!items.length) continue;
+
+    const pageSize = localRevealBatchSize({
+      total: items.length,
+      viewportWidth: viewport.width,
+      viewportHeight: viewport.height,
+      kind,
+      layoutDirection: currentLensConfig()?.layoutDirection || 'vertical',
+      directions: items.map(item => item.direction),
+      preserveUpstreamContext: true
+    });
+    const nextSize = Math.max(1, Math.min(items.length, pageSize));
+    if (nextSize === plan.pageSize) continue;
+
+    const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
+    const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+    const previousOffset = Math.max(0, Number(offsets.get(id) || 0));
+    const normalizedOffset = Math.floor(previousOffset / nextSize) * nextSize;
+
+    state.revealPlans.set(key, {
+      ...plan,
+      pageSize: nextSize,
+      viewportWidth: Math.round(viewport.width),
+      viewportHeight: Math.round(viewport.height)
+    });
+    offsets.set(id, Math.min(normalizedOffset, Math.max(0, items.length - 1)));
+    limits.set(id, nextSize);
+    changed = true;
+  }
+
+  if (changed && announceChange) {
+    announce('Neighborhood pagination adjusted to the resized graph while keeping the current location and selection.');
+  }
+  return changed;
+}
+
+let revealResizeFrame = 0;
+function scheduleRevealPlanResize() {
+  if (revealResizeFrame) cancelAnimationFrame(revealResizeFrame);
+  revealResizeFrame = requestAnimationFrame(() => {
+    revealResizeFrame = 0;
+    if (!recomputeOpenRevealPlans({ announceChange: true })) return;
+    render({ preserveViewport: true, anchorNodeId: state.selectedId, fitOnTopologyChange: false });
+    normalizeGraphDocumentScroll();
+  });
+}
+
 function semanticRangeText(info, noun) {
   if (!info?.total) return `0 ${noun}`;
   if (!info.revealTotal) return `All ${info.total} ${noun} already visible`;
