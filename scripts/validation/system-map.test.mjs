@@ -506,6 +506,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /100dvh/);
   assert.match(page, /semantic-progress/);
   assert.match(page, /aria-label="Exploration path"/);
+  assert.match(page, /\.graph-mode \.inspector-rail \{[^}]*display:flex;[^}]*flex-direction:column;/s);
+  assert.match(page, /\.graph-mode \.detail-panel, \.graph-mode \.question-panel \{ flex:0 0 auto; \}/);
+  assert.match(page, /\.graph-mode \.selection-actions \{[^}]*flex-wrap:nowrap;/s);
   assert.match(page, /branch-progress/);
   assert.match(page, /show-more-button/);
   assert.match(page, /id="map-type-filter"/);
@@ -553,6 +556,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /data-focus-selected/);
   assert.match(client, /semanticNeighborGroups/);
   assert.match(client, /semanticRevealInfo/);
+  assert.match(client, /semanticPlanningViewport/);
+  assert.match(client, /revealPlans/);
+  assert.match(client, /excludeAlreadyVisibleRevealItems/);
+  assert.match(client, /recomputeOpenRevealPlans/);
+  assert.match(client, /scheduleRevealPlanResize/);
+  assert.match(client, /semanticToggleLabel/);
   assert.match(client, /semanticRangeText/);
   assert.match(client, /semanticPageLabel/);
   assert.match(client, /pageSemanticReveal/);
@@ -566,6 +575,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /agent:repository-dispatcher/);
   assert.match(client, /Chooses the shortest applicable activation path/);
   assert.match(client, /Connections relate separate entities/);
+  assert.equal((client.match(/semanticToggleLabel\(contents, 'contents'\)/g) || []).length, 3, 'inspector, toolbar, and keyboard fallback should share one contents label helper');
+  assert.equal((client.match(/semanticToggleLabel\(connections, 'connections'\)/g) || []).length, 3, 'inspector, toolbar, and keyboard fallback should share one connections label helper');
+
   assert.doesNotMatch(client, /fitInline/);
   assert.match(client, /groupedRelationships/);
   assert.match(client, /layoutDirection: 'horizontal'/);
@@ -574,6 +586,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /MIN_RENDERED_LABEL_PX = 12/);
   assert.match(renderer, /NODE_LABEL_MODEL_PX = 11/);
   assert.match(renderer, /neighborhoodWindow/);
+  assert.match(renderer, /readableLocalPageCapacity/);
+  assert.match(renderer, /excludeAlreadyVisibleRevealItems/);
+  assert.match(renderer, /NODE_MODEL_WIDTH = 144/);
+  assert.match(renderer, /NODE_MODEL_HEIGHT = 54/);
   assert.match(renderer, /minZoom: MIN_READABLE_ZOOM/);
   assert.match(renderer, /preserveViewport = false/);
   assert.match(renderer, /anchorNodeId = null/);
