@@ -139,6 +139,8 @@ const elements = {
 let renderer = null;
 let rendererUnavailable = false;
 let graphResizeObserver = null;
+let revealResizeFrame = 0;
+let lastRevealPlanningSignature = '';
 
 function announce(message) {
   elements.liveRegion.textContent = message;
@@ -527,6 +529,16 @@ function semanticPlanKey(id, kind) {
   return kind + ':' + id;
 }
 
+function semanticPlanningSignature() {
+  const viewport = semanticPlanningViewport();
+  return [
+    Math.round(viewport.width),
+    Math.round(viewport.height),
+    currentLensConfig()?.layoutDirection || 'vertical',
+    usesViewportFittedWorkspace() ? 'desktop' : 'flow'
+  ].join('|');
+}
+
 function semanticPlanningViewport() {
   const width = Math.max(0, elements.canvas?.clientWidth || elements.graphFrame?.clientWidth || 0);
   if (!usesViewportFittedWorkspace()) {
@@ -736,14 +748,19 @@ function recomputeOpenRevealPlans({ announceChange = false } = {}) {
   return changed;
 }
 
-let revealResizeFrame = 0;
 function scheduleRevealPlanResize() {
   if (revealResizeFrame) cancelAnimationFrame(revealResizeFrame);
   revealResizeFrame = requestAnimationFrame(() => {
     revealResizeFrame = 0;
+    if (state.lens !== 'agent-runtime' || !state.graph) return;
+    const signature = semanticPlanningSignature();
+    if (signature === lastRevealPlanningSignature) return;
+    lastRevealPlanningSignature = signature;
+
     const changed = recomputeOpenRevealPlans({ announceChange: true });
-    const needsPreviewRefresh = state.lens === 'agent-runtime' && Boolean(state.selectedId);
+    const needsPreviewRefresh = Boolean(state.selectedId);
     if (!changed && !needsPreviewRefresh) return;
+
     render({ preserveViewport: true, anchorNodeId: state.selectedId, fitOnTopologyChange: false });
     normalizeGraphDocumentScroll();
   });
@@ -1840,6 +1857,7 @@ function showOverview({ rememberCurrent = true } = {}) {
   state.focusPath = null;
   state.highlightedEdgeId = null;
   state.explorationTrail = [];
+  lastRevealPlanningSignature = '';
   root.classList.remove('graph-mode');
 
   elements.error.hidden = true;
@@ -1920,6 +1938,7 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     if (restoreUrl) restoreUrlState();
     root.classList.add('graph-mode');
     elements.explorer.hidden = false;
+    lastRevealPlanningSignature = '';
     normalizeGraphDocumentScroll();
     render({ fitOnTopologyChange: !savedView?.viewport });
     if (savedView?.viewport || savedView?.positions?.length) {
