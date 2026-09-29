@@ -1436,11 +1436,9 @@ async function restoreNavigationSnapshot(snapshot) {
   applyViewSnapshot(snapshot);
   render({ fitOnTopologyChange: !snapshot.viewport });
   if (snapshot.viewport || snapshot.positions?.length) {
-    requestAnimationFrame(() => {
-      const activeRenderer = ensureRenderer();
-      if (snapshot.positions?.length) activeRenderer?.restoreNodePositions(snapshot.positions);
-      if (snapshot.viewport) activeRenderer?.restoreViewport(snapshot.viewport);
-    });
+    const activeRenderer = ensureRenderer();
+    if (snapshot.positions?.length) activeRenderer?.restoreNodePositions(snapshot.positions);
+    if (snapshot.viewport) activeRenderer?.restoreViewport(snapshot.viewport);
   }
   updateUrlState();
 }
@@ -1556,11 +1554,9 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     elements.explorer.hidden = false;
     render({ fitOnTopologyChange: !savedView?.viewport });
     if (savedView?.viewport || savedView?.positions?.length) {
-      requestAnimationFrame(() => {
-        const activeRenderer = ensureRenderer();
-        if (savedView?.positions?.length) activeRenderer?.restoreNodePositions(savedView.positions);
-        if (savedView?.viewport) activeRenderer?.restoreViewport(savedView.viewport);
-      });
+      const activeRenderer = ensureRenderer();
+      if (savedView?.positions?.length) activeRenderer?.restoreNodePositions(savedView.positions);
+      if (savedView?.viewport) activeRenderer?.restoreViewport(savedView.viewport);
     }
     updateUrlState();
     announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
