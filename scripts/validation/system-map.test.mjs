@@ -14,6 +14,7 @@ import {
   NODE_LABEL_MODEL_PX,
   MIN_RENDERED_LABEL_PX,
   MIN_READABLE_ZOOM,
+  OVERVIEW_MIN_ZOOM,
   SystemMapRenderer,
   boundedVisibleNodeIds,
   excludeAlreadyVisibleRevealItems,
@@ -102,6 +103,7 @@ test('System Map dense exploration keeps primary labels readable and pages neigh
   assert.equal(NODE_LABEL_MODEL_PX, 11);
   assert.equal(MIN_RENDERED_LABEL_PX, 12);
   assert.ok(MIN_READABLE_ZOOM > 1, 'readability floor should be based on rendered label pixels, not an arbitrarily small zoom');
+  assert.ok(OVERVIEW_MIN_ZOOM < MIN_READABLE_ZOOM, 'explicit overview/Fit mode may zoom farther out than normal local exploration');
   assert.ok(
     renderedLabelPixels(MIN_READABLE_ZOOM) >= MIN_RENDERED_LABEL_PX,
     'primary node labels must remain at least 12 rendered pixels at the minimum exploration zoom'
@@ -590,7 +592,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /excludeAlreadyVisibleRevealItems/);
   assert.match(renderer, /NODE_MODEL_WIDTH = 144/);
   assert.match(renderer, /NODE_MODEL_HEIGHT = 54/);
-  assert.match(renderer, /minZoom: MIN_READABLE_ZOOM/);
+  assert.match(renderer, /minZoom: OVERVIEW_MIN_ZOOM/);
+  assert.match(renderer, /this\.cy\.minZoom\?\.\(MIN_READABLE_ZOOM\)/);
+  assert.match(renderer, /this\.cy\.minZoom\?\.\(minZoom\)/);
   assert.match(renderer, /preserveViewport = false/);
   assert.match(renderer, /anchorNodeId = null/);
   assert.match(renderer, /getViewport\(\)/);
