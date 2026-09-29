@@ -17,6 +17,7 @@ import {
   OVERVIEW_MIN_ZOOM,
   SystemMapRenderer,
   boundedVisibleNodeIds,
+  compactNeighborhoodRange,
   excludeAlreadyVisibleRevealItems,
   initialExpandedIds,
   localRevealBatchSize,
@@ -139,6 +140,12 @@ test('System Map dense exploration keeps primary labels readable and pages neigh
   assert.equal(back.offset, 4);
   assert.equal(back.start, 5);
   assert.equal(back.end, 8);
+});
+
+test('System Map compact pager reports one stable concise range', () => {
+  assert.equal(compactNeighborhoodRange({ start: 4, end: 6, total: 9 }), '4–6 of 9');
+  assert.equal(compactNeighborhoodRange({ start: 9, end: 9, total: 9 }), '9 of 9');
+  assert.equal(compactNeighborhoodRange({ start: 0, end: 0, total: 0 }), '');
 });
 
 test('System Map resize pagination keeps the previously visible item inside the normalized page', () => {
@@ -390,6 +397,28 @@ test('System Map Agent/runtime reveal candidates exclude independently visible c
   assert.ok(newBootstrapConnections.every(item => item.node.id.startsWith('space:')));
 });
 
+test('System Map Skills route grouping is backed by explicit containment only', async () => {
+  const runtimeGraph = JSON.parse(await fs.readFile(
+    new URL('../../dist/data/system-map/agent-runtime.json', import.meta.url),
+    'utf8'
+  ));
+  const containsRoutes = runtimeGraph.edges.filter(edge => (
+    edge.from === 'route-group:skills' && edge.relationship === 'contains'
+  ));
+  assert.equal(containsRoutes.length, 7, 'Skills routes should reveal the seven explicitly contained route records');
+  assert.ok(containsRoutes.every(edge => edge.to.startsWith('route:')));
+  assert.ok(runtimeGraph.edges.some(edge => (
+    edge.from === 'space:skills'
+      && edge.to === 'route-group:skills'
+      && edge.relationship === 'uses-route-group'
+  )), 'Skills → Skills routes remains a connection, not fabricated containment');
+  assert.equal(runtimeGraph.edges.some(edge => (
+    edge.from === 'space:skills'
+      && edge.to === 'route-group:skills'
+      && edge.relationship === 'contains'
+  )), false);
+});
+
 test('System Map readable local pages fit selected node plus current page at the label floor', () => {
   const readableBounds = {
     x1: 30,
@@ -550,7 +579,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /\.graph-mode \.detail-panel, \.graph-mode \.question-panel \{[^}]*min-height:max-content;/s);
   assert.match(page, /\.inspector-rail > \* \{[^}]*min-height:max-content;/s);
   assert.doesNotMatch(page, /\.graph-mode \.inspector-rail \{[^}]*display:grid;/s);
-  assert.match(page, /\.graph-mode \.selection-actions \{[^}]*flex-wrap:nowrap;/s);
+  assert.match(page, /\.selection-actions \{[^}]*grid-template-columns:minmax\(150px,1fr\) auto 132px auto;[^}]*height:42px;/s);
+  assert.match(page, /\.graph-mode \.selection-actions \{[^}]*min-height:42px;[^}]*overflow:visible;/s);
+  assert.match(page, /\.semantic-pager-slot \{[^}]*width:132px;[^}]*height:30px;/s);
+  assert.match(page, /\.pager-button:disabled \{ opacity:\.28; \}/);
   assert.match(page, /branch-progress/);
   assert.match(page, /show-more-button/);
   assert.match(page, /id="map-type-filter"/);
@@ -609,6 +641,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /semanticToggleLabel/);
   assert.match(client, /semanticRangeText/);
   assert.match(client, /semanticPageLabel/);
+  assert.match(client, /semanticPagerMarkup/);
+  assert.match(client, /semanticToolbarToggle/);
+  assert.match(client, /semanticToolbarPager/);
+  assert.match(client, /semanticContentsPresentation/);
+  assert.match(client, /Routes in this group/);
+  assert.match(client, /content\/orientation\/skills\.json/);
   assert.match(client, /pageSemanticReveal/);
   assert.match(client, /contentOffsets/);
   assert.match(client, /connectionOffsets/);
@@ -618,8 +656,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /agent:repository-dispatcher/);
   assert.match(client, /Chooses the shortest applicable activation path/);
   assert.match(client, /Connections relate separate entities/);
-  assert.equal((client.match(/semanticToggleLabel\(contents, 'contents'\)/g) || []).length, 3, 'inspector, toolbar, and keyboard fallback should share one contents label helper');
-  assert.equal((client.match(/semanticToggleLabel\(connections, 'connections'\)/g) || []).length, 3, 'inspector, toolbar, and keyboard fallback should share one connections label helper');
+  assert.match(client, /semanticToggleLabel\(contents, contentsNoun\)/);
+  assert.match(client, /semanticToggleLabel\(connections, 'connections'\)/);
 
   assert.doesNotMatch(client, /fitInline/);
   assert.match(client, /groupedRelationships/);
@@ -631,6 +669,9 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /neighborhoodWindow/);
   assert.match(renderer, /readableLocalPageCapacity/);
   assert.match(renderer, /excludeAlreadyVisibleRevealItems/);
+  assert.match(renderer, /compactNeighborhoodRange/);
+  assert.match(renderer, /edge\[relationship = "contains"\]/);
+  assert.match(renderer, /style: \{ 'opacity': 0\.44 \}/);
   assert.match(renderer, /NODE_MODEL_WIDTH = 144/);
   assert.match(renderer, /NODE_MODEL_HEIGHT = 54/);
   assert.match(renderer, /minZoom: OVERVIEW_MIN_ZOOM/);
