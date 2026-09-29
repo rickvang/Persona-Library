@@ -796,35 +796,7 @@ function currentVisibleIds() {
   let visible;
 
   if (state.lens === 'agent-runtime') {
-    visible = new Set(rootNodeIds(state.graph));
-    for (const id of seedIds) {
-      if (state.graph.nodes.some(node => node.id === id)) visible.add(id);
-    }
-
-    let changed = true;
-    while (changed) {
-      changed = false;
-      for (const id of [...visible]) {
-        if (state.expanded.has(id)) {
-          const info = semanticRevealInfo(id, 'contents');
-          for (const item of info.items.slice(info.offset, info.offset + info.revealed)) {
-            if (!visible.has(item.node.id)) {
-              visible.add(item.node.id);
-              changed = true;
-            }
-          }
-        }
-        if (state.connections.has(id)) {
-          const info = semanticRevealInfo(id, 'connections');
-          for (const item of info.items.slice(info.offset, info.offset + info.revealed)) {
-            if (!visible.has(item.node.id)) {
-              visible.add(item.node.id);
-              changed = true;
-            }
-          }
-        }
-      }
-    }
+    visible = agentRuntimeVisibleIds();
   } else {
     visible = boundedVisibleNodeIds(
       state.graph,
@@ -841,14 +813,8 @@ function currentVisibleIds() {
   for (const id of rootPath?.nodes || []) focused.add(id);
 
   if (state.lens === 'agent-runtime') {
-    const contents = semanticRevealInfo(state.focusId, 'contents');
-    const connections = semanticRevealInfo(state.focusId, 'connections');
-    if (contents.open) {
-      for (const item of contents.items.slice(contents.offset, contents.offset + contents.revealed)) focused.add(item.node.id);
-    }
-    if (connections.open) {
-      for (const item of connections.items.slice(connections.offset, connections.offset + connections.revealed)) focused.add(item.node.id);
-    }
+    for (const item of semanticWindowItems(state.focusId, 'contents')) focused.add(item.node.id);
+    for (const item of semanticWindowItems(state.focusId, 'connections')) focused.add(item.node.id);
   } else {
     const focusLimit = state.expanded.has(state.focusId)
       ? Number(state.expansionLimits.get(state.focusId) ?? DEFAULT_BRANCH_CHUNK)
