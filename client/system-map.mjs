@@ -814,7 +814,7 @@ function renderAgentRuntimeDetails(node) {
       <div class="branch-actions">
         ${contents.total ? `
           <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-            ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+            ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
           </button>
         ` : ''}
         ${contents.hasMore ? `
@@ -822,7 +822,7 @@ function renderAgentRuntimeDetails(node) {
         ` : ''}
         ${connections.total ? `
           <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-            ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+            ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
           </button>
         ` : ''}
         ${connections.hasMore ? `
@@ -983,12 +983,12 @@ function renderFallbackNodes(visible) {
             </button>
             ${contents.total ? `
               <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-                ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+                ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
               </button>
             ` : ''}
             ${connections.total ? `
               <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-                ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+                ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
               </button>
             ` : ''}
           </article>
@@ -1081,12 +1081,12 @@ function renderSelectionActions() {
       <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
       ${contents.total ? `
         <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-          ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+          ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
         </button>
       ` : ''}
       ${connections.total ? `
         <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-          ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+          ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
         </button>
       ` : ''}
       <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
