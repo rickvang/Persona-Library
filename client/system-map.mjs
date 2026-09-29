@@ -691,6 +691,117 @@ function highlightedEdgeEvidence() {
   `;
 }
 
+function renderAgentRuntimeDetails(node) {
+  const index = indexGraph(state.graph);
+  const incoming = index.incoming.get(node.id) || [];
+  const outgoing = index.outgoing.get(node.id) || [];
+  const groups = semanticNeighborGroups(node.id);
+  const contents = semanticRevealInfo(node.id, 'contents');
+  const connections = semanticRevealInfo(node.id, 'connections');
+  const explanation = sourceBackedExplanation(node);
+  const nodeSource = sourceUrl(node.source);
+  const outgoingConnectionEdges = groups.connections
+    .filter(item => item.direction === 'outgoing')
+    .map(item => item.edge);
+  const incomingConnectionEdges = groups.connections
+    .filter(item => item.direction === 'incoming')
+    .map(item => item.edge);
+  const contentEdges = groups.contents.map(item => item.edge);
+
+  elements.details.innerHTML = `
+    <div class="detail-head">
+      <div>
+        <p class="eyebrow">${escapeHtml(nodeTypeLabel(node.type))}</p>
+        <h2 tabindex="-1">${escapeHtml(node.label)}</h2>
+      </div>
+      <span class="connection-count">${contents.total} contents · ${connections.total} connections</span>
+    </div>
+
+    <section class="detail-section">
+      <h3>Purpose</h3>
+      <p class="detail-copy">${escapeHtml(explanation?.summary || 'No source-backed plain-language explanation is available for this item yet.')}</p>
+      ${explanation?.example ? `<p class="detail-example"><strong>Example:</strong> ${escapeHtml(explanation.example)}</p>` : ''}
+      ${explanation?.sourceLabel ? `<p class="explanation-source">${escapeHtml(explanation.sourceLabel)}</p>` : ''}
+    </section>
+
+    ${contents.total ? `
+      <section class="detail-section">
+        <div class="section-heading">
+          <h3>Contents</h3>
+          <span>${contents.total} contained</span>
+        </div>
+        <p class="detail-copy">These items are connected by explicit containment or ownership relationships from this item.</p>
+        ${groupedRelationships(contentEdges, 'outgoing', 'No explicit contents are represented.')}
+      </section>
+    ` : ''}
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>Connections</h3>
+        <span>${connections.total} related</span>
+      </div>
+      <p class="detail-copy">Connections relate separate entities. They do not imply containment or prove that a runtime execution followed this path.</p>
+      ${outgoingConnectionEdges.length ? `
+        <div class="connection-direction">
+          <strong>Outgoing</strong>
+          ${groupedRelationships(outgoingConnectionEdges, 'outgoing', '')}
+        </div>
+      ` : ''}
+      ${incomingConnectionEdges.length ? `
+        <div class="connection-direction">
+          <strong>Incoming</strong>
+          ${groupedRelationships(incomingConnectionEdges, 'incoming', '')}
+        </div>
+      ` : ''}
+      ${!connections.total ? '<p class="quiet">No non-containment connections are represented for this item.</p>' : ''}
+      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
+    </section>
+
+    ${highlightedEdgeEvidence()}
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>Explore</h3>
+        <span>Explicit controls</span>
+      </div>
+      <div class="branch-actions">
+        ${contents.total ? `
+          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
+            ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+          </button>
+        ` : ''}
+        ${contents.hasMore ? `
+          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">Show ${contents.nextCount} more contents</button>
+        ` : ''}
+        ${connections.total ? `
+          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
+            ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+          </button>
+        ` : ''}
+        ${connections.hasMore ? `
+          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">Show ${connections.nextCount} more connections</button>
+        ` : ''}
+        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus on this area</button>
+      </div>
+    </section>
+
+    <details class="detail-section provenance-detail">
+      <summary>Technical details &amp; source</summary>
+      <div class="source-detail">
+        <dl>
+          <dt>Stable ID</dt><dd>${escapeHtml(node.id)}</dd>
+          <dt>Type</dt><dd>${escapeHtml(nodeTypeLabel(node.type))}</dd>
+          <dt>Owner</dt><dd>${escapeHtml(node.owner || 'Unavailable')}</dd>
+          <dt>Derivation</dt><dd>${escapeHtml(node.derivation)}</dd>
+          <dt>Source</dt><dd>${escapeHtml(node.source?.locator || 'Unavailable')}</dd>
+          <dt>Selector</dt><dd>${escapeHtml(node.source?.selector || 'Unavailable')}</dd>
+        </dl>
+        ${nodeSource ? `<a class="source-link" href="${escapeHtml(nodeSource)}" target="_blank" rel="noreferrer">Open canonical source ↗</a>` : ''}
+      </div>
+    </details>
+  `;
+}
+
 function renderDetails() {
   const node = selectedNode();
   if (!node) {
@@ -701,6 +812,11 @@ function renderDetails() {
         <p>Selection is separate from expansion and focus. Choose a node first, then decide whether to inspect, expand its direct relationships, or focus the map around it.</p>
       </div>
     `;
+    return;
+  }
+
+  if (state.lens === 'agent-runtime') {
+    renderAgentRuntimeDetails(node);
     return;
   }
 
