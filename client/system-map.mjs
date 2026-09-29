@@ -1254,6 +1254,7 @@ function highlightEdge(id) {
 }
 
 function toggleExpanded(id) {
+  pushNavigationCheckpoint();
   if (state.expanded.has(id)) {
     state.expanded.delete(id);
     state.expansionLimits.delete(id);
@@ -1275,12 +1276,14 @@ function toggleSemanticReveal(id, kind) {
   const info = semanticRevealInfo(id, kind);
   if (!info.total) return;
 
+  pushNavigationCheckpoint();
+
   if (openSet.has(id)) {
     openSet.delete(id);
     limits.delete(id);
   } else {
     openSet.add(id);
-    limits.set(id, DEFAULT_BRANCH_CHUNK);
+    limits.set(id, info.batchSize);
   }
 
   state.selectedId = id;
@@ -1295,11 +1298,12 @@ function showMoreSemantic(id, kind) {
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
   const info = semanticRevealInfo(id, kind);
-  if (!info.total) return;
+  if (!info.total || !info.hasMore) return;
 
+  pushNavigationCheckpoint();
   openSet.add(id);
-  const current = Number(limits.get(id) ?? DEFAULT_BRANCH_CHUNK);
-  const next = Math.min(info.total, current + DEFAULT_BRANCH_CHUNK);
+  const current = Number(limits.get(id) ?? info.batchSize);
+  const next = Math.min(info.total, current + info.nextCount);
   limits.set(id, next);
   state.selectedId = id;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
@@ -1310,6 +1314,7 @@ function showMoreSemantic(id, kind) {
 function showMoreNeighbors(id) {
   const total = directNeighbors(state.graph, id).nodes.length;
   if (!total) return;
+  pushNavigationCheckpoint();
   state.expanded.add(id);
   const current = Number(state.expansionLimits.get(id) ?? DEFAULT_BRANCH_CHUNK);
   const next = Math.min(total, current + DEFAULT_BRANCH_CHUNK);
@@ -1430,7 +1435,13 @@ async function restoreNavigationSnapshot(snapshot) {
   }
   applyViewSnapshot(snapshot);
   render({ fitOnTopologyChange: !snapshot.viewport });
-  if (snapshot.viewport) requestAnimationFrame(() => ensureRenderer()?.restoreViewport(snapshot.viewport));
+  if (snapshot.viewport || snapshot.positions?.length) {
+    requestAnimationFrame(() => {
+      const activeRenderer = ensureRenderer();
+      if (snapshot.positions?.length) activeRenderer?.restoreNodePositions(snapshot.positions);
+      if (snapshot.viewport) activeRenderer?.restoreViewport(snapshot.viewport);
+    });
+  }
   updateUrlState();
 }
 
@@ -1544,8 +1555,12 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     if (restoreUrl) restoreUrlState();
     elements.explorer.hidden = false;
     render({ fitOnTopologyChange: !savedView?.viewport });
-    if (savedView?.viewport) {
-      requestAnimationFrame(() => ensureRenderer()?.restoreViewport(savedView.viewport));
+    if (savedView?.viewport || savedView?.positions?.length) {
+      requestAnimationFrame(() => {
+        const activeRenderer = ensureRenderer();
+        if (savedView?.positions?.length) activeRenderer?.restoreNodePositions(savedView.positions);
+        if (savedView?.viewport) activeRenderer?.restoreViewport(savedView.viewport);
+      });
     }
     updateUrlState();
     announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
