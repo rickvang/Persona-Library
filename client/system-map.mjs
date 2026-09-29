@@ -15,7 +15,8 @@ import {
   initialExpandedIds,
   localRevealBatchSize,
   neighborhoodWindow,
-  normalizeNeighborhoodOffset
+  normalizeNeighborhoodOffset,
+  compactNeighborhoodRange
 } from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -815,6 +816,75 @@ function semanticPageLabel(info, direction, noun) {
   return direction === 'previous'
     ? `Previous ${noun} ${window.start}–${window.end}`
     : `Next ${noun} ${window.start}–${window.end}`;
+}
+
+function semanticContentsPresentation(node) {
+  if (state.lens === 'agent-runtime' && node?.id === 'route-group:skills') {
+    return {
+      noun: 'routes',
+      title: 'Routes in this group',
+      description: 'These routes are explicitly contained by Skills routes in content/orientation/skills.json.'
+    };
+  }
+  return {
+    noun: 'contents',
+    title: 'Contents',
+    description: 'These items are connected by explicit containment or ownership relationships from this item.'
+  };
+}
+
+function semanticNoun(node, kind) {
+  if (kind === 'contents') return semanticContentsPresentation(node).noun;
+  return 'connections';
+}
+
+function semanticCompactRange(info) {
+  if (!info?.open || !info.revealTotal) return '';
+  return compactNeighborhoodRange({
+    start: info.start,
+    end: info.end,
+    total: info.revealTotal
+  });
+}
+
+function semanticPagerMarkup(node, kind, info, { compact = false } = {}) {
+  if (!info?.open || !info.revealTotal) return '';
+  const noun = semanticNoun(node, kind);
+  const previousAttr = kind === 'contents' ? 'data-show-previous-contents' : 'data-show-previous-connections';
+  const nextAttr = kind === 'contents' ? 'data-show-more-contents' : 'data-show-more-connections';
+  const range = semanticCompactRange(info);
+  const className = compact ? 'semantic-pager compact-pager' : 'semantic-pager';
+  return `
+    <div class="${className}" aria-label="${escapeHtml(noun)} page ${escapeHtml(range)}">
+      <button class="pager-button" type="button" ${previousAttr}="${escapeHtml(node.id)}"
+        aria-label="Previous ${escapeHtml(noun)}" title="Previous ${escapeHtml(noun)}" ${info.hasPrevious ? '' : 'disabled'}>
+        <span aria-hidden="true">‹</span>
+      </button>
+      <span class="semantic-page-range" title="${escapeHtml(semanticRangeText(info, noun))}">${escapeHtml(range)}</span>
+      <button class="pager-button" type="button" ${nextAttr}="${escapeHtml(node.id)}"
+        aria-label="Next ${escapeHtml(noun)}" title="Next ${escapeHtml(noun)}" ${info.hasNext ? '' : 'disabled'}>
+        <span aria-hidden="true">›</span>
+      </button>
+    </div>
+  `;
+}
+
+function semanticToolbarToggle(node, kind, info) {
+  if (!info?.total) return '';
+  const noun = semanticNoun(node, kind);
+  const label = noun.charAt(0).toUpperCase() + noun.slice(1);
+  const attr = kind === 'contents' ? 'data-toggle-contents' : 'data-toggle-connections';
+  const action = info.open ? 'Hide' : 'Show';
+  const disabled = !info.open && !info.revealTotal;
+  const title = disabled
+    ? `All ${info.total} ${noun} are already visible`
+    : `${action} ${noun}`;
+  return `
+    <button class="semantic-toggle ${info.open ? 'is-open' : ''}" type="button" ${attr}="${escapeHtml(node.id)}"
+      aria-expanded="${info.open}" aria-label="${escapeHtml(title)}" title="${escapeHtml(title)}" ${disabled ? 'disabled' : ''}>
+      <span>${escapeHtml(label)}</span><small>${info.total}</small>
+    </button>
+  `;
 }
 
 function sourceBackedExplanation(node) {
