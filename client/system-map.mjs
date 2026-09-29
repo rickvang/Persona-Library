@@ -139,6 +139,16 @@ function announce(message) {
   elements.liveRegion.textContent = message;
 }
 
+function usesViewportFittedWorkspace() {
+  return Boolean(globalThis.matchMedia?.('(min-width: 981px)')?.matches);
+}
+
+function normalizeGraphDocumentScroll() {
+  if (state.mode === 'graph' && usesViewportFittedWorkspace() && globalThis.scrollY) {
+    globalThis.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
+}
+
 function currentLensConfig() {
   return lensConfigs[state.lens] || null;
 }
@@ -1434,6 +1444,7 @@ function focusSelectedNode(id = state.selectedId) {
   if (!id || !state.graph.nodes.some(node => node.id === id)) return;
   pushNavigationCheckpoint();
   state.selectedId = id;
+  recordExplorationLocation(id);
   state.focusId = id;
   state.path = null;
   state.focusPath = nearestRootPath(id);
@@ -1449,7 +1460,11 @@ function inspectSelectedNode() {
   if (!heading) return;
   const reducedMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   heading.focus({ preventScroll: true });
-  elements.details.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
+  if (usesViewportFittedWorkspace()) {
+    elements.inspectorRail?.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  } else {
+    elements.details.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
+  }
   announce(`Inspector focused for ${selectedNode()?.label || 'selected node'}.`);
 }
 
@@ -1460,6 +1475,9 @@ function reset() {
   state.expansionLimits = new Map();
   state.connections = new Set();
   state.connectionLimits = new Map();
+  state.contentOffsets = new Map();
+  state.connectionOffsets = new Map();
+  state.explorationTrail = [];
   state.path = null;
   state.focusPath = null;
   state.focusId = null;
@@ -1517,6 +1535,7 @@ function focusSearchResult() {
 
   pushNavigationCheckpoint();
   state.selectedId = node.id;
+  recordExplorationLocation(node.id);
   state.path = null;
   state.focusPath = nearestRootPath(node.id);
   state.focusId = node.id;
