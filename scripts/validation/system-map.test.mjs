@@ -11,16 +11,20 @@ import {
 } from '../../client/system-map-graph.mjs';
 import {
   DEFAULT_BRANCH_CHUNK,
+  NODE_LABEL_MODEL_PX,
+  MIN_RENDERED_LABEL_PX,
   MIN_READABLE_ZOOM,
   SystemMapRenderer,
   boundedVisibleNodeIds,
   initialExpandedIds,
   localRevealBatchSize,
   localRevealCamera,
+  neighborhoodWindow,
   panForVisibleBounds,
   planLocalNodePositions,
   rectangleFromCenter,
   rectanglesOverlap,
+  renderedLabelPixels,
   rendererElements
 } from '../../client/system-map-renderer.mjs';
 
@@ -89,6 +93,46 @@ test('System Map renderer derives bounded view state without introducing graph f
     { seedIds: ['dense:29'] }
   );
   assert.ok(seededTarget.has('dense:29'), 'search/path focus may reveal a canonical target outside the current chunk');
+});
+
+test('System Map dense exploration keeps primary labels readable and pages neighborhoods without accumulation', () => {
+  assert.equal(NODE_LABEL_MODEL_PX, 11);
+  assert.equal(MIN_RENDERED_LABEL_PX, 12);
+  assert.ok(MIN_READABLE_ZOOM > 1, 'readability floor should be based on rendered label pixels, not an arbitrarily small zoom');
+  assert.ok(
+    renderedLabelPixels(MIN_READABLE_ZOOM) >= MIN_RENDERED_LABEL_PX,
+    'primary node labels must remain at least 12 rendered pixels at the minimum exploration zoom'
+  );
+
+  const first = neighborhoodWindow({ total: 10, offset: 0, batchSize: 4 });
+  assert.deepEqual(first, {
+    offset: 0,
+    start: 1,
+    end: 4,
+    total: 10,
+    size: 4,
+    hasPrevious: false,
+    hasNext: true
+  });
+
+  const second = neighborhoodWindow({ total: 10, offset: first.offset, batchSize: 4, direction: 'next' });
+  assert.equal(second.offset, 4);
+  assert.equal(second.start, 5);
+  assert.equal(second.end, 8);
+  assert.equal(second.hasPrevious, true);
+  assert.equal(second.hasNext, true);
+
+  const third = neighborhoodWindow({ total: 10, offset: second.offset, batchSize: 4, direction: 'next' });
+  assert.equal(third.offset, 8);
+  assert.equal(third.start, 9);
+  assert.equal(third.end, 10);
+  assert.equal(third.size, 2);
+  assert.equal(third.hasNext, false);
+
+  const back = neighborhoodWindow({ total: 10, offset: third.offset, batchSize: 4, direction: 'previous' });
+  assert.equal(back.offset, 4);
+  assert.equal(back.start, 5);
+  assert.equal(back.end, 8);
 });
 
 test('System Map local reveal placement preserves retained geometry and avoids occupied slots across repeated batches', () => {
@@ -324,6 +368,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /class="graph-legend"/);
   assert.match(page, /Exact relationship/);
   assert.match(page, /prefers-reduced-motion/);
+  assert.match(page, /page\.graph-mode/);
+  assert.match(page, /100dvh/);
+  assert.match(page, /semantic-progress/);
+  assert.match(page, /aria-label="Exploration path"/);
   assert.match(page, /branch-progress/);
   assert.match(page, /show-more-button/);
   assert.match(page, /id="map-type-filter"/);
@@ -346,6 +394,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /nearestRootPath/);
   assert.match(client, /lensViewStates/);
   assert.match(client, /navigationStack/);
+  assert.match(client, /explorationTrail/);
+  assert.match(client, /recordExplorationLocation/);
+  assert.match(client, /data-location-node/);
+  assert.match(client, /data-location-overview/);
   assert.match(client, /captureViewSnapshot/);
   assert.match(client, /applyViewSnapshot/);
   assert.match(client, /updateUrlState/);
@@ -367,6 +419,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /data-focus-selected/);
   assert.match(client, /semanticNeighborGroups/);
   assert.match(client, /semanticRevealInfo/);
+  assert.match(client, /semanticRangeText/);
+  assert.match(client, /semanticPageLabel/);
+  assert.match(client, /pageSemanticReveal/);
+  assert.match(client, /contentOffsets/);
+  assert.match(client, /connectionOffsets/);
+  assert.match(client, /data-show-previous-connections/);
   assert.match(client, /data-toggle-contents/);
   assert.match(client, /data-toggle-connections/);
   assert.match(client, /Show connections/);
@@ -379,6 +437,10 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /layoutDirection: 'horizontal'/);
   assert.match(client, /layoutDirection: 'vertical'/);
   assert.match(renderer, /layoutDirection = 'vertical'/);
+  assert.match(renderer, /MIN_RENDERED_LABEL_PX = 12/);
+  assert.match(renderer, /NODE_LABEL_MODEL_PX = 11/);
+  assert.match(renderer, /neighborhoodWindow/);
+  assert.match(renderer, /minZoom: MIN_READABLE_ZOOM/);
   assert.match(renderer, /preserveViewport = false/);
   assert.match(renderer, /anchorNodeId = null/);
   assert.match(renderer, /getViewport\(\)/);

@@ -12,7 +12,8 @@ import {
   SystemMapRenderer,
   boundedVisibleNodeIds,
   initialExpandedIds,
-  localRevealBatchSize
+  localRevealBatchSize,
+  neighborhoodWindow
 } from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -78,6 +79,9 @@ const state = {
   expansionLimits: new Map(),
   connections: new Set(),
   connectionLimits: new Map(),
+  contentOffsets: new Map(),
+  connectionOffsets: new Map(),
+  explorationTrail: [],
   path: null,
   focusPath: null,
   focusId: null,
@@ -124,7 +128,8 @@ const elements = {
   questionSummary: document.getElementById('map-question-context-summary'),
   questionPreview: document.getElementById('map-question-preview'),
   questionCopy: document.getElementById('map-copy-question'),
-  questionCopyStatus: document.getElementById('map-copy-status')
+  questionCopyStatus: document.getElementById('map-copy-status'),
+  inspectorRail: root.querySelector('.inspector-rail')
 };
 
 let renderer = null;
@@ -132,6 +137,16 @@ let rendererUnavailable = false;
 
 function announce(message) {
   elements.liveRegion.textContent = message;
+}
+
+function usesViewportFittedWorkspace() {
+  return Boolean(globalThis.matchMedia?.('(min-width: 981px)')?.matches);
+}
+
+function normalizeGraphDocumentScroll() {
+  if (state.mode === 'graph' && usesViewportFittedWorkspace() && globalThis.scrollY) {
+    globalThis.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
 }
 
 function currentLensConfig() {
@@ -155,6 +170,9 @@ function captureViewSnapshot() {
     expansionLimits: [...state.expansionLimits.entries()],
     connections: [...state.connections],
     connectionLimits: [...state.connectionLimits.entries()],
+    contentOffsets: [...state.contentOffsets.entries()],
+    connectionOffsets: [...state.connectionOffsets.entries()],
+    explorationTrail: [...state.explorationTrail],
     path: clonePath(state.path),
     focusPath: clonePath(state.focusPath),
     focusId: state.focusId,
@@ -165,7 +183,9 @@ function captureViewSnapshot() {
     pathFrom: elements.pathFrom?.value || '',
     pathTo: elements.pathTo?.value || '',
     viewport: renderer?.getViewport?.() || null,
-    positions: renderer?.getNodePositions?.() || []
+    positions: renderer?.getNodePositions?.() || [],
+    inspectorScrollTop: elements.inspectorRail?.scrollTop || 0,
+    documentScrollY: globalThis.scrollY || 0
   };
 }
 
@@ -190,6 +210,13 @@ function applyViewSnapshot(snapshot) {
   state.connectionLimits = new Map(
     (snapshot.connectionLimits || []).filter(([id]) => nodeIds.has(id))
   );
+  state.contentOffsets = new Map(
+    (snapshot.contentOffsets || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.connectionOffsets = new Map(
+    (snapshot.connectionOffsets || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.explorationTrail = (snapshot.explorationTrail || []).filter(id => nodeIds.has(id));
   state.path = validPath(snapshot.path);
   state.focusPath = validPath(snapshot.focusPath);
   state.focusId = nodeIds.has(snapshot.focusId) ? snapshot.focusId : null;
@@ -212,7 +239,7 @@ function saveCurrentLensState() {
 
 function pushNavigationCheckpoint() {
   const snapshot = state.mode === 'overview'
-    ? { mode: 'overview', lens: 'overview' }
+    ? { mode: 'overview', lens: 'overview', documentScrollY: globalThis.scrollY || 0 }
     : state.graph
       ? captureViewSnapshot()
       : null;
@@ -229,6 +256,9 @@ function pushNavigationCheckpoint() {
     [...(item?.connections || [])].sort().join(','),
     JSON.stringify(item?.expansionLimits || []),
     JSON.stringify(item?.connectionLimits || []),
+    JSON.stringify(item?.contentOffsets || []),
+    JSON.stringify(item?.connectionOffsets || []),
+    (item?.explorationTrail || []).join('>'),
     item?.path?.nodes?.join('>')
   ].join('|');
   if (key(last) === key(snapshot)) return;
@@ -243,17 +273,46 @@ function snapshotLabel(snapshot) {
   return node?.label || lensConfigs[snapshot?.lens]?.humanTitle || lensConfigs[snapshot?.lens]?.label || 'Overview';
 }
 
+function recordExplorationLocation(id) {
+  if (!id || !state.graph?.nodes.some(node => node.id === id)) return;
+  const existingIndex = state.explorationTrail.indexOf(id);
+  if (existingIndex >= 0) {
+    state.explorationTrail = state.explorationTrail.slice(0, existingIndex + 1);
+  } else {
+    state.explorationTrail.push(id);
+  }
+}
+
 function renderTrail() {
   if (!elements.trail || !elements.back) return;
   elements.back.disabled = navigationStack.length === 0;
-  const recent = navigationStack.slice(-3).map(snapshot => snapshotLabel(snapshot));
-  const current = state.mode === 'overview'
-    ? 'System overview'
-    : selectedNode()?.label || currentLensConfig()?.humanTitle || currentLensConfig()?.label || 'System overview';
-  const labels = [...recent, current].filter((label, index, all) => index === 0 || label !== all[index - 1]);
-  elements.trail.innerHTML = labels
-    .map((label, index) => `<span class="${index === labels.length - 1 ? 'current' : ''}">${escapeHtml(label)}</span>`)
-    .join('<span aria-hidden="true">›</span>');
+
+  if (state.mode === 'overview') {
+    elements.trail.innerHTML = '<span class="trail-label">Location</span><span class="current">System overview</span>';
+    return;
+  }
+
+  const config = currentLensConfig();
+  const nodeIndex = state.graph ? indexGraph(state.graph).nodes : new Map();
+  const trailNodes = state.explorationTrail
+    .map(id => nodeIndex.get(id))
+    .filter(Boolean);
+
+  elements.trail.innerHTML = [
+    '<span class="trail-label">Exploration path</span>',
+    '<button type="button" class="trail-link" data-location-overview>System overview</button>',
+    '<span aria-hidden="true">›</span>',
+    `<span class="trail-area">${escapeHtml(config?.humanTitle || config?.label || state.lens)}</span>`,
+    ...trailNodes.flatMap((node, index) => [
+      '<span aria-hidden="true">›</span>',
+      index === trailNodes.length - 1
+        ? `<span class="current">${escapeHtml(node.label)}</span>`
+        : `<button type="button" class="trail-link" data-location-node="${escapeHtml(node.id)}">${escapeHtml(node.label)}</button>`
+    ])
+  ].join('');
+  requestAnimationFrame(() => {
+    elements.trail.scrollLeft = elements.trail.scrollWidth;
+  });
 }
 
 function relationshipLabel(value) {
@@ -449,6 +508,7 @@ function semanticRevealInfo(id, kind) {
   const items = kind === 'contents' ? groups.contents : groups.connections;
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const total = items.length;
   const viewportWidth = elements.canvas?.clientWidth || 0;
   const viewportHeight = elements.canvas?.clientHeight || 0;
@@ -458,24 +518,45 @@ function semanticRevealInfo(id, kind) {
     viewportHeight,
     kind
   });
-  const limit = Math.min(total, Number(limits.get(id) ?? batchSize));
-  const open = openSet.has(id);
-  const remaining = Math.max(0, total - limit);
-  const nextCount = localRevealBatchSize({
-    total: remaining,
-    viewportWidth,
-    viewportHeight,
-    kind
+  const requestedSize = Math.min(total, batchSize, Number(limits.get(id) ?? batchSize));
+  const window = neighborhoodWindow({
+    total,
+    offset: offsets.get(id) ?? 0,
+    batchSize: requestedSize,
+    direction: 'current'
   });
+  const open = openSet.has(id);
   return {
     open,
     total,
-    batchSize,
-    revealed: open ? limit : 0,
-    hasMore: open && limit < total,
-    nextCount,
+    batchSize: requestedSize,
+    offset: window.offset,
+    start: open ? window.start : 0,
+    end: open ? window.end : 0,
+    revealed: open ? window.size : 0,
+    hasPrevious: open && window.hasPrevious,
+    hasNext: open && window.hasNext,
+    remaining: open ? Math.max(0, total - window.end) : total,
     items
   };
+}
+
+function semanticRangeText(info, noun) {
+  if (!info?.total) return `0 ${noun}`;
+  if (!info.open) return `${info.total} ${noun}`;
+  return `${noun} ${info.start}–${info.end} of ${info.total} · ${Math.max(0, info.total - info.end)} remaining`;
+}
+
+function semanticPageLabel(info, direction, noun) {
+  const window = neighborhoodWindow({
+    total: info.total,
+    offset: info.offset,
+    batchSize: info.batchSize,
+    direction
+  });
+  return direction === 'previous'
+    ? `Previous ${noun} ${window.start}–${window.end}`
+    : `Next ${noun} ${window.start}–${window.end}`;
 }
 
 function sourceBackedExplanation(node) {
@@ -572,7 +653,7 @@ function currentVisibleIds() {
       for (const id of [...visible]) {
         if (state.expanded.has(id)) {
           const info = semanticRevealInfo(id, 'contents');
-          for (const item of info.items.slice(0, info.revealed)) {
+          for (const item of info.items.slice(info.offset, info.offset + info.revealed)) {
             if (!visible.has(item.node.id)) {
               visible.add(item.node.id);
               changed = true;
@@ -581,7 +662,7 @@ function currentVisibleIds() {
         }
         if (state.connections.has(id)) {
           const info = semanticRevealInfo(id, 'connections');
-          for (const item of info.items.slice(0, info.revealed)) {
+          for (const item of info.items.slice(info.offset, info.offset + info.revealed)) {
             if (!visible.has(item.node.id)) {
               visible.add(item.node.id);
               changed = true;
@@ -609,10 +690,10 @@ function currentVisibleIds() {
     const contents = semanticRevealInfo(state.focusId, 'contents');
     const connections = semanticRevealInfo(state.focusId, 'connections');
     if (contents.open) {
-      for (const item of contents.items.slice(0, contents.revealed)) focused.add(item.node.id);
+      for (const item of contents.items.slice(contents.offset, contents.offset + contents.revealed)) focused.add(item.node.id);
     }
     if (connections.open) {
-      for (const item of connections.items.slice(0, connections.revealed)) focused.add(item.node.id);
+      for (const item of connections.items.slice(connections.offset, connections.offset + connections.revealed)) focused.add(item.node.id);
     }
   } else {
     const focusLimit = state.expanded.has(state.focusId)
@@ -814,19 +895,27 @@ function renderAgentRuntimeDetails(node) {
       <div class="branch-actions">
         ${contents.total ? `
           <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-            ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
+            ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
           </button>
         ` : ''}
-        ${contents.hasMore ? `
-          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">Show ${contents.nextCount} more contents</button>
+        ${contents.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
+        ${contents.hasPrevious ? `
+          <button class="show-more-button" type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>
+        ` : ''}
+        ${contents.hasNext ? `
+          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>
         ` : ''}
         ${connections.total ? `
           <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-            ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
+            ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
           </button>
         ` : ''}
-        ${connections.hasMore ? `
-          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">Show ${connections.nextCount} more connections</button>
+        ${connections.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
+        ${connections.hasPrevious ? `
+          <button class="show-more-button" type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>
+        ` : ''}
+        ${connections.hasNext ? `
+          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>
         ` : ''}
         <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus on this area</button>
       </div>
@@ -983,14 +1072,20 @@ function renderFallbackNodes(visible) {
             </button>
             ${contents.total ? `
               <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-                ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
+                ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
               </button>
             ` : ''}
+            ${contents.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
+            ${contents.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
+            ${contents.hasNext ? `<button type="button" class="branch-toggle" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
             ${connections.total ? `
               <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-                ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
+                ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
               </button>
             ` : ''}
+            ${connections.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
+            ${connections.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>` : ''}
+            ${connections.hasNext ? `<button type="button" class="branch-toggle" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>` : ''}
           </article>
         `;
       }
@@ -1081,14 +1176,20 @@ function renderSelectionActions() {
       <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
       ${contents.total ? `
         <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-          ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
+          ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
         </button>
       ` : ''}
+      ${contents.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
+      ${contents.hasPrevious ? `<button type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
+      ${contents.hasNext ? `<button type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
       ${connections.total ? `
         <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-          ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
+          ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
         </button>
       ` : ''}
+      ${connections.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
+      ${connections.hasPrevious ? `<button type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>` : ''}
+      ${connections.hasNext ? `<button type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>` : ''}
       <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
     `;
     return;
@@ -1235,6 +1336,7 @@ function render(options = {}) {
 function selectNode(id) {
   if (state.selectedId !== id) pushNavigationCheckpoint();
   state.selectedId = id;
+  recordExplorationLocation(id);
   state.focusId = null;
   state.highlightedEdgeId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
@@ -1273,6 +1375,7 @@ function toggleSemanticReveal(id, kind) {
   if (state.lens !== 'agent-runtime') return;
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const info = semanticRevealInfo(id, kind);
   if (!info.total) return;
 
@@ -1281,34 +1384,50 @@ function toggleSemanticReveal(id, kind) {
   if (openSet.has(id)) {
     openSet.delete(id);
     limits.delete(id);
+    offsets.delete(id);
   } else {
     openSet.add(id);
     limits.set(id, info.batchSize);
+    offsets.set(id, 0);
   }
 
   state.selectedId = id;
+  recordExplorationLocation(id);
   state.focusId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`${openSet.has(id) ? (kind === 'contents' ? 'Opened contents for' : 'Showing connections for') : (kind === 'contents' ? 'Closed contents for' : 'Hidden connections for')} ${selectedNode()?.label || id}.`);
+  const updated = semanticRevealInfo(id, kind);
+  announce(openSet.has(id)
+    ? `Showing ${semanticRangeText(updated, kind)} for ${selectedNode()?.label || id}.`
+    : `${kind === 'contents' ? 'Closed contents for' : 'Hidden connections for'} ${selectedNode()?.label || id}.`);
 }
 
-function showMoreSemantic(id, kind) {
+function pageSemanticReveal(id, kind, direction = 'next') {
   if (state.lens !== 'agent-runtime') return;
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const info = semanticRevealInfo(id, kind);
-  if (!info.total || !info.hasMore) return;
+  if (!info.total || !info.open) return;
+
+  const nextWindow = neighborhoodWindow({
+    total: info.total,
+    offset: info.offset,
+    batchSize: info.batchSize,
+    direction
+  });
+  if (nextWindow.offset === info.offset) return;
 
   pushNavigationCheckpoint();
   openSet.add(id);
-  const current = Number(limits.get(id) ?? info.batchSize);
-  const next = Math.min(info.total, current + info.nextCount);
-  limits.set(id, next);
+  limits.set(id, info.batchSize);
+  offsets.set(id, nextWindow.offset);
   state.selectedId = id;
+  recordExplorationLocation(id);
+  state.focusId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`Showing ${next} of ${info.total} ${kind} for ${selectedNode()?.label || id}.`);
+  announce(`Showing ${kind} ${nextWindow.start}–${nextWindow.end} of ${nextWindow.total} for ${selectedNode()?.label || id}.`);
 }
 
 function showMoreNeighbors(id) {
@@ -1329,6 +1448,7 @@ function focusSelectedNode(id = state.selectedId) {
   if (!id || !state.graph.nodes.some(node => node.id === id)) return;
   pushNavigationCheckpoint();
   state.selectedId = id;
+  recordExplorationLocation(id);
   state.focusId = id;
   state.path = null;
   state.focusPath = nearestRootPath(id);
@@ -1344,7 +1464,11 @@ function inspectSelectedNode() {
   if (!heading) return;
   const reducedMotion = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   heading.focus({ preventScroll: true });
-  elements.details.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
+  if (usesViewportFittedWorkspace()) {
+    elements.inspectorRail?.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+  } else {
+    elements.details.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' });
+  }
   announce(`Inspector focused for ${selectedNode()?.label || 'selected node'}.`);
 }
 
@@ -1355,6 +1479,9 @@ function reset() {
   state.expansionLimits = new Map();
   state.connections = new Set();
   state.connectionLimits = new Map();
+  state.contentOffsets = new Map();
+  state.connectionOffsets = new Map();
+  state.explorationTrail = [];
   state.path = null;
   state.focusPath = null;
   state.focusId = null;
@@ -1412,6 +1539,7 @@ function focusSearchResult() {
 
   pushNavigationCheckpoint();
   state.selectedId = node.id;
+  recordExplorationLocation(node.id);
   state.path = null;
   state.focusPath = nearestRootPath(node.id);
   state.focusId = node.id;
@@ -1427,10 +1555,16 @@ async function restoreNavigationSnapshot(snapshot) {
   if (!snapshot) return;
   if (snapshot.mode === 'overview' || snapshot.lens === 'overview') {
     showOverview({ rememberCurrent: false });
+    if (Number.isFinite(snapshot.documentScrollY)) {
+      globalThis.scrollTo({ top: snapshot.documentScrollY, left: 0, behavior: 'auto' });
+    }
     return;
   }
   if (snapshot.lens !== state.lens || state.mode !== 'graph') {
     await loadLens(snapshot.lens, { viewSnapshot: snapshot, rememberCurrent: false });
+    if (!usesViewportFittedWorkspace() && Number.isFinite(snapshot.documentScrollY)) {
+      globalThis.scrollTo({ top: snapshot.documentScrollY, left: 0, behavior: 'auto' });
+    }
     return;
   }
   applyViewSnapshot(snapshot);
@@ -1439,6 +1573,12 @@ async function restoreNavigationSnapshot(snapshot) {
     const activeRenderer = ensureRenderer();
     if (snapshot.positions?.length) activeRenderer?.restoreNodePositions(snapshot.positions);
     if (snapshot.viewport) activeRenderer?.restoreViewport(snapshot.viewport);
+  }
+  if (elements.inspectorRail && Number.isFinite(snapshot.inspectorScrollTop)) {
+    elements.inspectorRail.scrollTop = snapshot.inspectorScrollTop;
+  }
+  if (Number.isFinite(snapshot.documentScrollY)) {
+    globalThis.scrollTo({ top: snapshot.documentScrollY, left: 0, behavior: 'auto' });
   }
   updateUrlState();
 }
@@ -1478,6 +1618,8 @@ function showOverview({ rememberCurrent = true } = {}) {
   state.path = null;
   state.focusPath = null;
   state.highlightedEdgeId = null;
+  state.explorationTrail = [];
+  root.classList.remove('graph-mode');
 
   elements.error.hidden = true;
   elements.explorer.hidden = true;
@@ -1530,6 +1672,9 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     state.expansionLimits = new Map();
     state.connections = new Set();
     state.connectionLimits = new Map();
+    state.contentOffsets = new Map();
+    state.connectionOffsets = new Map();
+    state.explorationTrail = [];
     state.path = null;
     state.focusPath = null;
     state.focusId = null;
@@ -1551,12 +1696,21 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     const savedView = viewSnapshot || (!restoreUrl ? lensViewStates.get(lens) : null);
     if (savedView) applyViewSnapshot(savedView);
     if (restoreUrl) restoreUrlState();
+    root.classList.add('graph-mode');
     elements.explorer.hidden = false;
+    normalizeGraphDocumentScroll();
     render({ fitOnTopologyChange: !savedView?.viewport });
     if (savedView?.viewport || savedView?.positions?.length) {
       const activeRenderer = ensureRenderer();
       if (savedView?.positions?.length) activeRenderer?.restoreNodePositions(savedView.positions);
       if (savedView?.viewport) activeRenderer?.restoreViewport(savedView.viewport);
+    }
+    if (elements.inspectorRail && Number.isFinite(savedView?.inspectorScrollTop)) {
+      elements.inspectorRail.scrollTop = savedView.inspectorScrollTop;
+    }
+    normalizeGraphDocumentScroll();
+    if (!usesViewportFittedWorkspace() && Number.isFinite(savedView?.documentScrollY)) {
+      globalThis.scrollTo({ top: savedView.documentScrollY, left: 0, behavior: 'auto' });
     }
     updateUrlState();
     announce(savedView ? `${config.label} lens restored.` : `${config.label} lens loaded.`);
@@ -1567,6 +1721,28 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
 
 function bindEvents() {
   root.addEventListener('click', event => {
+    const locationOverview = event.target.closest('[data-location-overview]');
+    if (locationOverview) {
+      pushNavigationCheckpoint();
+      showOverview();
+      return;
+    }
+    const locationNode = event.target.closest('[data-location-node]');
+    if (locationNode) {
+      const id = locationNode.dataset.locationNode;
+      if (state.graph?.nodes.some(node => node.id === id)) {
+        pushNavigationCheckpoint();
+        state.selectedId = id;
+        recordExplorationLocation(id);
+        state.focusId = null;
+        state.highlightedEdgeId = null;
+        render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+        updateUrlState();
+        requestAnimationFrame(() => ensureRenderer()?.focus(id));
+        announce(`Returned to ${selectedNode()?.label || id} in the exploration path.`);
+      }
+      return;
+    }
     const openLens = event.target.closest('[data-open-lens]');
     if (openLens) {
       pushNavigationCheckpoint();
@@ -1603,14 +1779,24 @@ function bindEvents() {
       toggleSemanticReveal(toggleConnections.dataset.toggleConnections, 'connections');
       return;
     }
+    const previousContents = event.target.closest('[data-show-previous-contents]');
+    if (previousContents) {
+      pageSemanticReveal(previousContents.dataset.showPreviousContents, 'contents', 'previous');
+      return;
+    }
     const moreContents = event.target.closest('[data-show-more-contents]');
     if (moreContents) {
-      showMoreSemantic(moreContents.dataset.showMoreContents, 'contents');
+      pageSemanticReveal(moreContents.dataset.showMoreContents, 'contents', 'next');
+      return;
+    }
+    const previousConnections = event.target.closest('[data-show-previous-connections]');
+    if (previousConnections) {
+      pageSemanticReveal(previousConnections.dataset.showPreviousConnections, 'connections', 'previous');
       return;
     }
     const moreConnections = event.target.closest('[data-show-more-connections]');
     if (moreConnections) {
-      showMoreSemantic(moreConnections.dataset.showMoreConnections, 'connections');
+      pageSemanticReveal(moreConnections.dataset.showMoreConnections, 'connections', 'next');
       return;
     }
     const showMore = event.target.closest('[data-show-more]');
