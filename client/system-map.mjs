@@ -881,19 +881,27 @@ function renderAgentRuntimeDetails(node) {
       <div class="branch-actions">
         ${contents.total ? `
           <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-            ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
+            ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
           </button>
         ` : ''}
-        ${contents.hasMore ? `
-          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">Show ${contents.nextCount} more contents</button>
+        ${contents.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
+        ${contents.hasPrevious ? `
+          <button class="show-more-button" type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>
+        ` : ''}
+        ${contents.hasNext ? `
+          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>
         ` : ''}
         ${connections.total ? `
           <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-            ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
+            ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
           </button>
         ` : ''}
-        ${connections.hasMore ? `
-          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">Show ${connections.nextCount} more connections</button>
+        ${connections.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
+        ${connections.hasPrevious ? `
+          <button class="show-more-button" type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>
+        ` : ''}
+        ${connections.hasNext ? `
+          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>
         ` : ''}
         <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus on this area</button>
       </div>
