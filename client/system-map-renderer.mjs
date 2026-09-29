@@ -6,6 +6,163 @@ import {
 } from './system-map-graph.mjs';
 
 export const DEFAULT_BRANCH_CHUNK = 24;
+export const MIN_READABLE_ZOOM = 0.72;
+export const MAX_INITIAL_ZOOM = 1.32;
+export const LOCAL_REVEAL_GAP = 30;
+
+export function rectangleFromCenter({ x, y, width, height, id = null }) {
+  return {
+    id,
+    x,
+    y,
+    width,
+    height,
+    x1: x - width / 2,
+    x2: x + width / 2,
+    y1: y - height / 2,
+    y2: y + height / 2
+  };
+}
+
+export function rectanglesOverlap(a, b, gap = 0) {
+  return !(
+    a.x2 + gap <= b.x1 ||
+    a.x1 - gap >= b.x2 ||
+    a.y2 + gap <= b.y1 ||
+    a.y1 - gap >= b.y2
+  );
+}
+
+function crossSlot(index) {
+  if (index === 0) return 0;
+  const distance = Math.ceil(index / 2);
+  return index % 2 ? -distance : distance;
+}
+
+export function planLocalNodePositions({
+  anchor,
+  nodes = [],
+  occupied = [],
+  layoutDirection = 'vertical',
+  gap = LOCAL_REVEAL_GAP,
+  primaryGap = 62,
+  maxColumns = 14,
+  maxCrossSlots = 18
+} = {}) {
+  if (!anchor) return new Map();
+  const placed = new Map();
+  const reserved = occupied.map(item => rectangleFromCenter(item));
+  const anchorRect = rectangleFromCenter(anchor);
+  if (!reserved.some(item => item.id === anchor.id)) reserved.push(anchorRect);
+
+  for (const spec of nodes) {
+    const width = Math.max(1, Number(spec.width) || 1);
+    const height = Math.max(1, Number(spec.height) || 1);
+    const sign = spec.direction === 'incoming' ? -1 : 1;
+    const nodePrimary = layoutDirection === 'horizontal' ? width : height;
+    const anchorPrimary = layoutDirection === 'horizontal' ? anchor.width : anchor.height;
+    const nodeCross = layoutDirection === 'horizontal' ? height : width;
+    const anchorCross = layoutDirection === 'horizontal' ? anchor.height : anchor.width;
+    const primaryStride = nodePrimary + gap + 26;
+    const crossStride = Math.max(nodeCross, anchorCross) + gap;
+    let chosen = null;
+
+    for (let column = 0; column < maxColumns && !chosen; column += 1) {
+      const primary = sign * (anchorPrimary / 2 + nodePrimary / 2 + primaryGap + column * primaryStride);
+      for (let slotIndex = 0; slotIndex < maxCrossSlots; slotIndex += 1) {
+        const cross = crossSlot(slotIndex) * crossStride;
+        const candidate = layoutDirection === 'horizontal'
+          ? rectangleFromCenter({
+            id: spec.id,
+            x: anchor.x + primary,
+            y: anchor.y + cross,
+            width,
+            height
+          })
+          : rectangleFromCenter({
+            id: spec.id,
+            x: anchor.x + cross,
+            y: anchor.y + primary,
+            width,
+            height
+          });
+
+        if (!reserved.some(existing => rectanglesOverlap(candidate, existing, gap / 2))) {
+          chosen = candidate;
+          break;
+        }
+      }
+    }
+
+    if (!chosen) {
+      const fallbackIndex = placed.size + 1;
+      chosen = rectangleFromCenter({
+        id: spec.id,
+        x: anchor.x + (layoutDirection === 'horizontal' ? sign * fallbackIndex * (width + gap) : 0),
+        y: anchor.y + (layoutDirection === 'horizontal' ? 0 : sign * fallbackIndex * (height + gap)),
+        width,
+        height
+      });
+    }
+
+    reserved.push(chosen);
+    placed.set(spec.id, { x: chosen.x, y: chosen.y });
+  }
+
+  return placed;
+}
+
+export function localRevealCamera({
+  bounds,
+  canvasWidth,
+  canvasHeight,
+  currentZoom,
+  minZoom = MIN_READABLE_ZOOM,
+  padding = 32
+} = {}) {
+  const width = Math.max(0, Number(canvasWidth) || 0);
+  const height = Math.max(0, Number(canvasHeight) || 0);
+  const zoom = Math.max(minZoom, Number(currentZoom) || minZoom);
+  if (!bounds || !width || !height) {
+    return { zoom, scale: 1, fits: false };
+  }
+
+  const availableWidth = Math.max(1, width - padding * 2);
+  const availableHeight = Math.max(1, height - padding * 2);
+  const boundsWidth = Math.max(1, bounds.width ?? (bounds.x2 - bounds.x1));
+  const boundsHeight = Math.max(1, bounds.height ?? (bounds.y2 - bounds.y1));
+  const scale = Math.min(1, availableWidth / boundsWidth, availableHeight / boundsHeight);
+  const targetZoom = Math.max(minZoom, Math.min(zoom, zoom * scale));
+  const effectiveScale = targetZoom / zoom;
+
+  return {
+    zoom: targetZoom,
+    scale: effectiveScale,
+    fits: boundsWidth * effectiveScale <= availableWidth + 0.5
+      && boundsHeight * effectiveScale <= availableHeight + 0.5
+  };
+}
+
+export function localRevealBatchSize({
+  total,
+  viewportWidth,
+  viewportHeight,
+  kind = 'connections'
+} = {}) {
+  const count = Math.max(0, Number(total) || 0);
+  if (!count) return 0;
+  const width = Math.max(0, Number(viewportWidth) || 0);
+  const height = Math.max(0, Number(viewportHeight) || 0);
+  let capacity;
+
+  if (width && width < 620) capacity = 2;
+  else if (width && width < 900) capacity = 3;
+  else capacity = 4;
+
+  if (height && height < 480) capacity = Math.min(capacity, 2);
+  if (kind === 'contents') capacity += 1;
+  return Math.min(count, Math.max(1, capacity));
+}
 
 function readableRelationship(value) {
   return String(value || '').replaceAll('-', ' ');
