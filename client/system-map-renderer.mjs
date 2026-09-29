@@ -604,7 +604,7 @@ export class SystemMapRenderer {
       padding
     });
 
-    if (camera.zoom < this.cy.zoom() - 0.001) {
+    if (Math.abs(camera.zoom - this.cy.zoom()) > 0.001) {
       const anchorRendered = anchor.renderedPosition();
       this.cy.zoom({
         level: camera.zoom,
