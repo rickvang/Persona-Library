@@ -47,6 +47,18 @@ export function neighborhoodWindow({
   };
 }
 
+export function normalizeNeighborhoodOffset({
+  total,
+  offset = 0,
+  pageSize = 1
+} = {}) {
+  const count = Math.max(0, Math.floor(Number(total) || 0));
+  if (!count) return 0;
+  const size = Math.max(1, Math.floor(Number(pageSize) || 1));
+  const currentItem = Math.min(count - 1, Math.max(0, Math.floor(Number(offset) || 0)));
+  return Math.floor(currentItem / size) * size;
+}
+
 export function rectangleFromCenter({ x, y, width, height, id = null }) {
   return {
     id,
