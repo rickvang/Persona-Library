@@ -1192,7 +1192,9 @@ function selectNode(id) {
   state.highlightedEdgeId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`Selected ${selectedNode()?.label || id}. Inspect, expand, or focus this area.`);
+  announce(state.lens === 'agent-runtime'
+    ? `Selected ${selectedNode()?.label || id}. Inspect it, open contents, show connections, or focus the area as available.`
+    : `Selected ${selectedNode()?.label || id}. Inspect, expand, or focus this area.`);
 }
 
 function highlightEdge(id) {
@@ -1217,6 +1219,45 @@ function toggleExpanded(id) {
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
   announce(`${state.expanded.has(id) ? 'Expanded' : 'Collapsed'} ${selectedNode()?.label || id} without resetting the viewport.`);
+}
+
+function toggleSemanticReveal(id, kind) {
+  if (state.lens !== 'agent-runtime') return;
+  const openSet = kind === 'contents' ? state.expanded : state.connections;
+  const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const info = semanticRevealInfo(id, kind);
+  if (!info.total) return;
+
+  if (openSet.has(id)) {
+    openSet.delete(id);
+    limits.delete(id);
+  } else {
+    openSet.add(id);
+    limits.set(id, DEFAULT_BRANCH_CHUNK);
+  }
+
+  state.selectedId = id;
+  state.focusId = null;
+  render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+  updateUrlState();
+  announce(`${openSet.has(id) ? (kind === 'contents' ? 'Opened contents for' : 'Showing connections for') : (kind === 'contents' ? 'Closed contents for' : 'Hidden connections for')} ${selectedNode()?.label || id}.`);
+}
+
+function showMoreSemantic(id, kind) {
+  if (state.lens !== 'agent-runtime') return;
+  const openSet = kind === 'contents' ? state.expanded : state.connections;
+  const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const info = semanticRevealInfo(id, kind);
+  if (!info.total) return;
+
+  openSet.add(id);
+  const current = Number(limits.get(id) ?? DEFAULT_BRANCH_CHUNK);
+  const next = Math.min(info.total, current + DEFAULT_BRANCH_CHUNK);
+  limits.set(id, next);
+  state.selectedId = id;
+  render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+  updateUrlState();
+  announce(`Showing ${next} of ${info.total} ${kind} for ${selectedNode()?.label || id}.`);
 }
 
 function showMoreNeighbors(id) {
@@ -1260,6 +1301,8 @@ function reset() {
   state.selectedId = null;
   state.expanded = initialExpandedIds(state.graph);
   state.expansionLimits = new Map();
+  state.connections = new Set();
+  state.connectionLimits = new Map();
   state.path = null;
   state.focusPath = null;
   state.focusId = null;
@@ -1429,6 +1472,8 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     state.selectedId = null;
     state.expanded = initialExpandedIds(graph);
     state.expansionLimits = new Map();
+    state.connections = new Set();
+    state.connectionLimits = new Map();
     state.path = null;
     state.focusPath = null;
     state.focusId = null;
@@ -1488,6 +1533,26 @@ function bindEvents() {
     const select = event.target.closest('[data-select-node]');
     if (select) {
       selectNode(select.dataset.selectNode);
+      return;
+    }
+    const toggleContents = event.target.closest('[data-toggle-contents]');
+    if (toggleContents) {
+      toggleSemanticReveal(toggleContents.dataset.toggleContents, 'contents');
+      return;
+    }
+    const toggleConnections = event.target.closest('[data-toggle-connections]');
+    if (toggleConnections) {
+      toggleSemanticReveal(toggleConnections.dataset.toggleConnections, 'connections');
+      return;
+    }
+    const moreContents = event.target.closest('[data-show-more-contents]');
+    if (moreContents) {
+      showMoreSemantic(moreContents.dataset.showMoreContents, 'contents');
+      return;
+    }
+    const moreConnections = event.target.closest('[data-show-more-connections]');
+    if (moreConnections) {
+      showMoreSemantic(moreConnections.dataset.showMoreConnections, 'connections');
       return;
     }
     const showMore = event.target.closest('[data-show-more]');
