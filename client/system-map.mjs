@@ -398,6 +398,83 @@ function expansionInfo(id) {
   };
 }
 
+function isContainmentEdge(edge, parentId) {
+  if (!edge || edge.from !== parentId) return false;
+  return edge.relationship === 'contains'
+    || edge.relationship === 'owns'
+    || edge.relationship.startsWith('owns-');
+}
+
+function semanticNeighborGroups(id) {
+  const index = indexGraph(state.graph);
+  const contents = [];
+  const connections = [];
+  const seenContents = new Set();
+  const seenConnections = new Set();
+
+  for (const edge of index.outgoing.get(id) || []) {
+    const node = index.nodes.get(edge.to);
+    if (!node) continue;
+    if (isContainmentEdge(edge, id)) {
+      if (!seenContents.has(node.id)) {
+        contents.push({ node, edge, direction: 'outgoing' });
+        seenContents.add(node.id);
+      }
+    } else if (!seenConnections.has(node.id)) {
+      connections.push({ node, edge, direction: 'outgoing' });
+      seenConnections.add(node.id);
+    }
+  }
+
+  for (const edge of index.incoming.get(id) || []) {
+    const node = index.nodes.get(edge.from);
+    if (!node || seenConnections.has(node.id)) continue;
+    connections.push({ node, edge, direction: 'incoming' });
+    seenConnections.add(node.id);
+  }
+
+  return {
+    contents: contents.sort((a, b) => a.node.label.localeCompare(b.node.label)),
+    connections: connections.sort((a, b) => a.node.label.localeCompare(b.node.label))
+  };
+}
+
+function semanticRevealInfo(id, kind) {
+  const groups = semanticNeighborGroups(id);
+  const items = kind === 'contents' ? groups.contents : groups.connections;
+  const openSet = kind === 'contents' ? state.expanded : state.connections;
+  const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const total = items.length;
+  const limit = Math.min(total, Number(limits.get(id) ?? DEFAULT_BRANCH_CHUNK));
+  const open = openSet.has(id);
+  return {
+    open,
+    total,
+    revealed: open ? limit : 0,
+    hasMore: open && limit < total,
+    nextCount: Math.min(DEFAULT_BRANCH_CHUNK, Math.max(0, total - limit)),
+    items
+  };
+}
+
+function sourceBackedExplanation(node) {
+  if (!node) return null;
+  if (state.lens === 'agent-runtime' && node.id === 'agent:repository-dispatcher') {
+    return {
+      summary: 'Chooses the shortest applicable activation path for work in Persona-Library. It distinguishes repository plumbing from library-semantic work and requires mixed work to escalate before changing canonical library meaning.',
+      example: 'A Persona or Skill relationship change takes the library-semantic path; straightforward CI or build maintenance can remain on the repository-plumbing path.',
+      sourceLabel: 'AGENTS.md · Choose the shortest activation path'
+    };
+  }
+  if (state.lens === 'agent-runtime' && node.id === 'view:agent-runtime') {
+    return {
+      summary: 'A static view of the repository’s declared orientation and routing contracts. It shows what the repository says agents should load or use, not what a particular conversation actually did.',
+      sourceLabel: 'AGENTS.md · routing and live-state boundaries'
+    };
+  }
+  return null;
+}
+
 function coverageDescription() {
   if (!state.graph) return '';
   if (state.graph.coverage === 'complete-for-scope') {
