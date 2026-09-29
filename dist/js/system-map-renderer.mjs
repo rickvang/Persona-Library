@@ -6,6 +6,193 @@ import {
 } from './system-map-graph.mjs';
 
 export const DEFAULT_BRANCH_CHUNK = 24;
+export const MIN_READABLE_ZOOM = 0.72;
+export const MAX_INITIAL_ZOOM = 1.32;
+export const LOCAL_REVEAL_GAP = 30;
+
+export function rectangleFromCenter({ x, y, width, height, id = null }) {
+  return {
+    id,
+    x,
+    y,
+    width,
+    height,
+    x1: x - width / 2,
+    x2: x + width / 2,
+    y1: y - height / 2,
+    y2: y + height / 2
+  };
+}
+
+export function rectanglesOverlap(a, b, gap = 0) {
+  return !(
+    a.x2 + gap <= b.x1 ||
+    a.x1 - gap >= b.x2 ||
+    a.y2 + gap <= b.y1 ||
+    a.y1 - gap >= b.y2
+  );
+}
+
+function crossSlot(index) {
+  if (index === 0) return 0;
+  const distance = Math.ceil(index / 2);
+  return index % 2 ? -distance : distance;
+}
+
+export function planLocalNodePositions({
+  anchor,
+  nodes = [],
+  occupied = [],
+  layoutDirection = 'vertical',
+  gap = LOCAL_REVEAL_GAP,
+  primaryGap = 62,
+  maxColumns = 14,
+  maxCrossSlots = 18
+} = {}) {
+  if (!anchor) return new Map();
+  const placed = new Map();
+  const reserved = occupied.map(item => rectangleFromCenter(item));
+  const anchorRect = rectangleFromCenter(anchor);
+  if (!reserved.some(item => item.id === anchor.id)) reserved.push(anchorRect);
+
+  for (const spec of nodes) {
+    const width = Math.max(1, Number(spec.width) || 1);
+    const height = Math.max(1, Number(spec.height) || 1);
+    const sign = spec.direction === 'incoming' ? -1 : 1;
+    const nodePrimary = layoutDirection === 'horizontal' ? width : height;
+    const anchorPrimary = layoutDirection === 'horizontal' ? anchor.width : anchor.height;
+    const nodeCross = layoutDirection === 'horizontal' ? height : width;
+    const anchorCross = layoutDirection === 'horizontal' ? anchor.height : anchor.width;
+    const primaryStride = nodePrimary + gap + 26;
+    const crossStride = Math.max(nodeCross, anchorCross) + gap;
+    let chosen = null;
+
+    for (let column = 0; column < maxColumns && !chosen; column += 1) {
+      const primary = sign * (anchorPrimary / 2 + nodePrimary / 2 + primaryGap + column * primaryStride);
+      for (let slotIndex = 0; slotIndex < maxCrossSlots; slotIndex += 1) {
+        const cross = crossSlot(slotIndex) * crossStride;
+        const candidate = layoutDirection === 'horizontal'
+          ? rectangleFromCenter({
+            id: spec.id,
+            x: anchor.x + primary,
+            y: anchor.y + cross,
+            width,
+            height
+          })
+          : rectangleFromCenter({
+            id: spec.id,
+            x: anchor.x + cross,
+            y: anchor.y + primary,
+            width,
+            height
+          });
+
+        if (!reserved.some(existing => rectanglesOverlap(candidate, existing, gap / 2))) {
+          chosen = candidate;
+          break;
+        }
+      }
+    }
+
+    if (!chosen) {
+      const fallbackIndex = placed.size + 1;
+      chosen = rectangleFromCenter({
+        id: spec.id,
+        x: anchor.x + (layoutDirection === 'horizontal' ? sign * fallbackIndex * (width + gap) : 0),
+        y: anchor.y + (layoutDirection === 'horizontal' ? 0 : sign * fallbackIndex * (height + gap)),
+        width,
+        height
+      });
+    }
+
+    reserved.push(chosen);
+    placed.set(spec.id, { x: chosen.x, y: chosen.y });
+  }
+
+  return placed;
+}
+
+export function localRevealCamera({
+  bounds,
+  canvasWidth,
+  canvasHeight,
+  currentZoom,
+  minZoom = MIN_READABLE_ZOOM,
+  padding = 32
+} = {}) {
+  const width = Math.max(0, Number(canvasWidth) || 0);
+  const height = Math.max(0, Number(canvasHeight) || 0);
+  const zoom = Math.max(minZoom, Number(currentZoom) || minZoom);
+  if (!bounds || !width || !height) {
+    return { zoom, scale: 1, fits: false };
+  }
+
+  const availableWidth = Math.max(1, width - padding * 2);
+  const availableHeight = Math.max(1, height - padding * 2);
+  const boundsWidth = Math.max(1, bounds.width ?? (bounds.x2 - bounds.x1));
+  const boundsHeight = Math.max(1, bounds.height ?? (bounds.y2 - bounds.y1));
+  const scale = Math.min(1, availableWidth / boundsWidth, availableHeight / boundsHeight);
+  const targetZoom = Math.max(minZoom, Math.min(zoom, zoom * scale));
+  const effectiveScale = targetZoom / zoom;
+
+  return {
+    zoom: targetZoom,
+    scale: effectiveScale,
+    fits: boundsWidth * effectiveScale <= availableWidth + 0.5
+      && boundsHeight * effectiveScale <= availableHeight + 0.5
+  };
+}
+
+export function panForVisibleBounds({
+  bounds,
+  canvasWidth,
+  canvasHeight,
+  padding = 32
+} = {}) {
+  if (!bounds) return { x: 0, y: 0 };
+  const width = Math.max(0, Number(canvasWidth) || 0);
+  const height = Math.max(0, Number(canvasHeight) || 0);
+  if (!width || !height) return { x: 0, y: 0 };
+
+  let x = 0;
+  let y = 0;
+  const boundsWidth = bounds.width ?? (bounds.x2 - bounds.x1);
+  const boundsHeight = bounds.height ?? (bounds.y2 - bounds.y1);
+  const fitsWidth = boundsWidth <= width - padding * 2;
+  const fitsHeight = boundsHeight <= height - padding * 2;
+
+  if (fitsWidth) {
+    if (bounds.x1 < padding) x = padding - bounds.x1;
+    else if (bounds.x2 > width - padding) x = width - padding - bounds.x2;
+  }
+  if (fitsHeight) {
+    if (bounds.y1 < padding) y = padding - bounds.y1;
+    else if (bounds.y2 > height - padding) y = height - padding - bounds.y2;
+  }
+
+  return { x, y };
+}
+
+export function localRevealBatchSize({
+  total,
+  viewportWidth,
+  viewportHeight,
+  kind = 'connections'
+} = {}) {
+  const count = Math.max(0, Number(total) || 0);
+  if (!count) return 0;
+  const width = Math.max(0, Number(viewportWidth) || 0);
+  const height = Math.max(0, Number(viewportHeight) || 0);
+  let capacity;
+
+  if (width && width < 620) capacity = 2;
+  else if (width && width < 900) capacity = 3;
+  else capacity = 4;
+
+  if (height && height < 480) capacity = Math.min(capacity, 2);
+  if (kind === 'contents') capacity += 1;
+  return Math.min(count, Math.max(1, capacity));
+}
 
 function readableRelationship(value) {
   return String(value || '').replaceAll('-', ' ');
@@ -101,16 +288,16 @@ function stylesheet() {
         'border-width': 1.5,
         'color': '#15202b',
         'font-family': 'Inter, ui-sans-serif, system-ui, sans-serif',
-        'font-size': 11,
+        'font-size': 10.5,
         'font-weight': 650,
-        'height': 58,
+        'height': 54,
         'label': 'data(label)',
         'shape': 'round-rectangle',
         'text-halign': 'center',
-        'text-max-width': 126,
+        'text-max-width': 118,
         'text-valign': 'center',
         'text-wrap': 'wrap',
-        'width': 154
+        'width': 144
       }
     },
     {
@@ -264,16 +451,26 @@ export class SystemMapRenderer {
     this.signature = '';
   }
 
-  fit({ padding = 56 } = {}) {
+  fit({ padding = 56, maxZoom = 1.55 } = {}) {
     if (!this.cy || this.cy.elements().empty()) return;
-    this.cy.fit(this.cy.elements(), padding);
+    const collection = this.cy.elements();
+    this.cy.fit(collection, padding);
+    if (this.cy.zoom() > maxZoom) {
+      this.cy.zoom(maxZoom);
+      this.cy.center(collection);
+    }
   }
 
-  focus(id, { padding = 96 } = {}) {
+  focus(id, { padding = 96, maxZoom = 1.45 } = {}) {
     if (!this.cy || !id) return;
     const node = this.cy.getElementById(id);
     if (node.empty()) return;
-    this.cy.fit(node.closedNeighborhood(), padding);
+    const collection = node.closedNeighborhood();
+    this.cy.fit(collection, padding);
+    if (this.cy.zoom() > maxZoom) {
+      this.cy.zoom(maxZoom);
+      this.cy.center(collection);
+    }
   }
 
   getViewport() {
@@ -284,12 +481,37 @@ export class SystemMapRenderer {
     };
   }
 
+  getNodePositions() {
+    if (!this.cy) return [];
+    return this.cy.nodes().map(node => [node.id(), { ...node.position() }]);
+  }
+
+  restoreNodePositions(entries = []) {
+    if (!this.cy || !Array.isArray(entries)) return;
+    const positions = new Map(entries);
+    this.cy.nodes().forEach(node => {
+      const position = positions.get(node.id());
+      if (position && Number.isFinite(position.x) && Number.isFinite(position.y)) {
+        node.position(position);
+      }
+    });
+  }
+
   restoreViewport(viewport) {
     if (!this.cy || !viewport) return;
     if (Number.isFinite(viewport.zoom)) this.cy.zoom(viewport.zoom);
     if (viewport.pan && Number.isFinite(viewport.pan.x) && Number.isFinite(viewport.pan.y)) {
       this.cy.pan(viewport.pan);
     }
+  }
+
+  nodeLayoutSpec(node, direction = 'outgoing') {
+    return {
+      id: node.id(),
+      direction,
+      width: Math.max(1, node.outerWidth()),
+      height: Math.max(1, node.outerHeight())
+    };
   }
 
   positionLocalTopology({ anchorNodeId, addedNodeIds = [], previousPositions, layoutDirection = 'vertical' }) {
@@ -303,40 +525,61 @@ export class SystemMapRenderer {
     if (!anchorNodeId || !addedNodeIds.length) return;
     const anchor = this.cy.getElementById(anchorNodeId);
     if (anchor.empty()) return;
-    const origin = anchor.position();
-    const outgoing = [];
-    const incoming = [];
-    const unclassified = [];
 
+    const anchorPosition = anchor.position();
+    const anchorSpec = {
+      id: anchor.id(),
+      x: anchorPosition.x,
+      y: anchorPosition.y,
+      width: Math.max(1, anchor.outerWidth()),
+      height: Math.max(1, anchor.outerHeight())
+    };
+
+    const addedSet = new Set(addedNodeIds);
+    const occupied = this.cy.nodes()
+      .filter(node => !addedSet.has(node.id()))
+      .map(node => {
+        const position = node.position();
+        return {
+          id: node.id(),
+          x: position.x,
+          y: position.y,
+          width: Math.max(1, node.outerWidth()),
+          height: Math.max(1, node.outerHeight())
+        };
+      });
+
+    const specs = [];
     for (const id of addedNodeIds) {
       const node = this.cy.getElementById(id);
       if (node.empty()) continue;
       const connecting = node.edgesWith(anchor);
-      if (connecting.some(edge => edge.source().id() === anchorNodeId && edge.target().id() === id)) outgoing.push(node);
-      else if (connecting.some(edge => edge.target().id() === anchorNodeId && edge.source().id() === id)) incoming.push(node);
-      else unclassified.push(node);
+      let direction = 'outgoing';
+      if (connecting.some(edge => edge.target().id() === anchorNodeId && edge.source().id() === id)) {
+        direction = 'incoming';
+      }
+      specs.push(this.nodeLayoutSpec(node, direction));
     }
 
-    const place = (nodes, sign) => {
-      const perColumn = Math.min(6, Math.max(1, nodes.length));
-      nodes.forEach((node, index) => {
-        const column = Math.floor(index / perColumn);
-        const row = index % perColumn;
-        const rowsInColumn = Math.min(perColumn, nodes.length - column * perColumn);
-        const crossOffset = (row - (rowsInColumn - 1) / 2) * 92;
-        const primaryOffset = sign * (220 + column * 190);
-        node.position(layoutDirection === 'horizontal'
-          ? { x: origin.x + primaryOffset, y: origin.y + crossOffset }
-          : { x: origin.x + crossOffset, y: origin.y + primaryOffset });
-      });
-    };
+    const placements = planLocalNodePositions({
+      anchor: anchorSpec,
+      nodes: specs,
+      occupied,
+      layoutDirection
+    });
 
-    place(outgoing, 1);
-    place(incoming, -1);
-    place(unclassified, 1);
+    for (const [id, position] of placements) {
+      const node = this.cy.getElementById(id);
+      if (!node.empty()) node.position(position);
+    }
   }
 
-  revealLocalTopology({ anchorNodeId, addedNodeIds = [], padding = 28 } = {}) {
+  revealLocalTopology({
+    anchorNodeId,
+    addedNodeIds = [],
+    padding = 32,
+    minZoom = MIN_READABLE_ZOOM
+  } = {}) {
     if (!this.cy || !anchorNodeId || !addedNodeIds.length) return;
     const anchor = this.cy.getElementById(anchorNodeId);
     if (anchor.empty()) return;
@@ -347,19 +590,45 @@ export class SystemMapRenderer {
       if (!node.empty()) collection = collection.union(node);
     }
 
-    const bounds = collection.renderedBoundingBox({ includeLabels: true });
     const width = this.container.clientWidth || 0;
     const height = this.container.clientHeight || 0;
     if (!width || !height) return;
 
-    let x = 0;
-    let y = 0;
-    if (bounds.x1 < padding) x = padding - bounds.x1;
-    else if (bounds.x2 > width - padding) x = width - padding - bounds.x2;
-    if (bounds.y1 < padding) y = padding - bounds.y1;
-    else if (bounds.y2 > height - padding) y = height - padding - bounds.y2;
+    let bounds = collection.renderedBoundingBox({ includeLabels: true });
+    const camera = localRevealCamera({
+      bounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      currentZoom: this.cy.zoom(),
+      minZoom,
+      padding
+    });
 
-    if (x || y) this.cy.panBy({ x, y });
+    if (Math.abs(camera.zoom - this.cy.zoom()) > 0.001) {
+      const anchorRendered = anchor.renderedPosition();
+      this.cy.zoom({
+        level: camera.zoom,
+        renderedPosition: anchorRendered
+      });
+      bounds = collection.renderedBoundingBox({ includeLabels: true });
+    }
+
+    const collectionPan = panForVisibleBounds({
+      bounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      padding
+    });
+    if (collectionPan.x || collectionPan.y) this.cy.panBy(collectionPan);
+
+    const anchorBounds = anchor.renderedBoundingBox({ includeLabels: true });
+    const anchorPan = panForVisibleBounds({
+      bounds: anchorBounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      padding
+    });
+    if (anchorPan.x || anchorPan.y) this.cy.panBy(anchorPan);
   }
 
   render({
@@ -441,7 +710,7 @@ export class SystemMapRenderer {
             : undefined
         }).run();
 
-        if (fitOnTopologyChange) this.fit();
+        if (fitOnTopologyChange) this.fit({ maxZoom: MAX_INITIAL_ZOOM });
       }
     }
 
