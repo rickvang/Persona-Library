@@ -11,6 +11,7 @@ import {
   DEFAULT_BRANCH_CHUNK,
   SystemMapRenderer,
   boundedVisibleNodeIds,
+  excludeAlreadyVisibleRevealItems,
   initialExpandedIds,
   localRevealBatchSize,
   neighborhoodWindow
@@ -608,7 +609,7 @@ function buildSemanticRevealPlan(id, kind, allItems) {
   const independentVisible = agentRuntimeVisibleIds({
     excludeReveal: { id, kind }
   });
-  const candidateItems = allItems.filter(item => !independentVisible.has(item.node.id));
+  const candidateItems = excludeAlreadyVisibleRevealItems(allItems, independentVisible);
   const viewport = semanticPlanningViewport();
   const directions = candidateItems.map(item => item.direction);
   const pageSize = candidateItems.length
