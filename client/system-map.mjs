@@ -1322,6 +1322,7 @@ function render(options = {}) {
 function selectNode(id) {
   if (state.selectedId !== id) pushNavigationCheckpoint();
   state.selectedId = id;
+  recordExplorationLocation(id);
   state.focusId = null;
   state.highlightedEdgeId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
@@ -1360,6 +1361,7 @@ function toggleSemanticReveal(id, kind) {
   if (state.lens !== 'agent-runtime') return;
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const info = semanticRevealInfo(id, kind);
   if (!info.total) return;
 
@@ -1368,34 +1370,50 @@ function toggleSemanticReveal(id, kind) {
   if (openSet.has(id)) {
     openSet.delete(id);
     limits.delete(id);
+    offsets.delete(id);
   } else {
     openSet.add(id);
     limits.set(id, info.batchSize);
+    offsets.set(id, 0);
   }
 
   state.selectedId = id;
+  recordExplorationLocation(id);
   state.focusId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`${openSet.has(id) ? (kind === 'contents' ? 'Opened contents for' : 'Showing connections for') : (kind === 'contents' ? 'Closed contents for' : 'Hidden connections for')} ${selectedNode()?.label || id}.`);
+  const updated = semanticRevealInfo(id, kind);
+  announce(openSet.has(id)
+    ? `Showing ${semanticRangeText(updated, kind)} for ${selectedNode()?.label || id}.`
+    : `${kind === 'contents' ? 'Closed contents for' : 'Hidden connections for'} ${selectedNode()?.label || id}.`);
 }
 
-function showMoreSemantic(id, kind) {
+function pageSemanticReveal(id, kind, direction = 'next') {
   if (state.lens !== 'agent-runtime') return;
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const info = semanticRevealInfo(id, kind);
-  if (!info.total || !info.hasMore) return;
+  if (!info.total || !info.open) return;
+
+  const nextWindow = neighborhoodWindow({
+    total: info.total,
+    offset: info.offset,
+    batchSize: info.batchSize,
+    direction
+  });
+  if (nextWindow.offset === info.offset) return;
 
   pushNavigationCheckpoint();
   openSet.add(id);
-  const current = Number(limits.get(id) ?? info.batchSize);
-  const next = Math.min(info.total, current + info.nextCount);
-  limits.set(id, next);
+  limits.set(id, info.batchSize);
+  offsets.set(id, nextWindow.offset);
   state.selectedId = id;
+  recordExplorationLocation(id);
+  state.focusId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`Showing ${next} of ${info.total} ${kind} for ${selectedNode()?.label || id}.`);
+  announce(`Showing ${kind} ${nextWindow.start}–${nextWindow.end} of ${nextWindow.total} for ${selectedNode()?.label || id}.`);
 }
 
 function showMoreNeighbors(id) {
