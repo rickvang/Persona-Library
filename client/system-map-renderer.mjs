@@ -143,6 +143,36 @@ export function localRevealCamera({
   };
 }
 
+export function panForVisibleBounds({
+  bounds,
+  canvasWidth,
+  canvasHeight,
+  padding = 32
+} = {}) {
+  if (!bounds) return { x: 0, y: 0 };
+  const width = Math.max(0, Number(canvasWidth) || 0);
+  const height = Math.max(0, Number(canvasHeight) || 0);
+  if (!width || !height) return { x: 0, y: 0 };
+
+  let x = 0;
+  let y = 0;
+  const boundsWidth = bounds.width ?? (bounds.x2 - bounds.x1);
+  const boundsHeight = bounds.height ?? (bounds.y2 - bounds.y1);
+  const fitsWidth = boundsWidth <= width - padding * 2;
+  const fitsHeight = boundsHeight <= height - padding * 2;
+
+  if (fitsWidth) {
+    if (bounds.x1 < padding) x = padding - bounds.x1;
+    else if (bounds.x2 > width - padding) x = width - padding - bounds.x2;
+  }
+  if (fitsHeight) {
+    if (bounds.y1 < padding) y = padding - bounds.y1;
+    else if (bounds.y2 > height - padding) y = height - padding - bounds.y2;
+  }
+
+  return { x, y };
+}
+
 export function localRevealBatchSize({
   total,
   viewportWidth,
@@ -583,31 +613,22 @@ export class SystemMapRenderer {
       bounds = collection.renderedBoundingBox({ includeLabels: true });
     }
 
-    let x = 0;
-    let y = 0;
-    const tooWide = bounds.width > width - padding * 2;
-    const tooTall = bounds.height > height - padding * 2;
-
-    if (!tooWide) {
-      if (bounds.x1 < padding) x = padding - bounds.x1;
-      else if (bounds.x2 > width - padding) x = width - padding - bounds.x2;
-    }
-
-    if (!tooTall) {
-      if (bounds.y1 < padding) y = padding - bounds.y1;
-      else if (bounds.y2 > height - padding) y = height - padding - bounds.y2;
-    }
-
-    if (x || y) this.cy.panBy({ x, y });
+    const collectionPan = panForVisibleBounds({
+      bounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      padding
+    });
+    if (collectionPan.x || collectionPan.y) this.cy.panBy(collectionPan);
 
     const anchorBounds = anchor.renderedBoundingBox({ includeLabels: true });
-    let anchorX = 0;
-    let anchorY = 0;
-    if (anchorBounds.x1 < padding) anchorX = padding - anchorBounds.x1;
-    else if (anchorBounds.x2 > width - padding) anchorX = width - padding - anchorBounds.x2;
-    if (anchorBounds.y1 < padding) anchorY = padding - anchorBounds.y1;
-    else if (anchorBounds.y2 > height - padding) anchorY = height - padding - anchorBounds.y2;
-    if (anchorX || anchorY) this.cy.panBy({ x: anchorX, y: anchorY });
+    const anchorPan = panForVisibleBounds({
+      bounds: anchorBounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      padding
+    });
+    if (anchorPan.x || anchorPan.y) this.cy.panBy(anchorPan);
   }
 
   render({
