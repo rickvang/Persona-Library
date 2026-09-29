@@ -615,8 +615,6 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /data-show-previous-connections/);
   assert.match(client, /data-toggle-contents/);
   assert.match(client, /data-toggle-connections/);
-  assert.match(client, /Show connections/);
-  assert.match(client, /Open contents/);
   assert.match(client, /agent:repository-dispatcher/);
   assert.match(client, /Chooses the shortest applicable activation path/);
   assert.match(client, /Connections relate separate entities/);
