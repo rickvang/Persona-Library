@@ -195,6 +195,9 @@
     .detail-section { padding:12px 0; }
     .detail-section h3 { margin-bottom:7px; font-size:12px; }
     .detail-copy { margin:0; color:#344252; font-size:11px; line-height:1.55; }
+    .detail-example { margin:9px 0 0; padding:8px 9px; border-left:2px solid #9fb7c2; color:#344252; background:#f5f8f7; font-size:10px; line-height:1.5; }
+    .explanation-source { margin:7px 0 0; color:var(--muted); font-size:9px; font-weight:800; }
+
     .section-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:7px; }
     .section-heading h3, .question-panel h2 { margin:0; }
     .relationship-groups { display:grid; gap:6px; }
@@ -256,7 +259,7 @@
     .overview-number { display:block; margin-bottom:5px; color:#8b98a4; font:800 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
     .overview-area h3 { margin:0; font-size:14px; line-height:1.25; letter-spacing:-.025em; }
     .overview-area > p { margin:11px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }
-    .overview-open { flex:none; display:grid; place-items:center; width:30px; height:30px; padding:0; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:19px; line-height:1; }
+    .overview-open { flex:none; display:inline-flex; align-items:center; gap:6px; min-height:30px; padding:6px 9px; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:10px; font-weight:850; line-height:1; }
     .overview-open:hover { transform:translateY(-1px); box-shadow:0 5px 12px rgba(35,79,104,.16); }
     .overview-area-meta { display:grid; gap:2px; margin-top:14px; padding-top:10px; border-top:1px solid var(--line); }
     .overview-area-meta span { color:var(--muted); font-size:8px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
@@ -429,7 +432,7 @@
               <span class="overview-number">01</span>
               <h3>How agents get oriented</h3>
             </div>
-            <button type="button" class="overview-open" data-open-lens="agent-runtime" aria-label="Explore how agents get oriented"><span aria-hidden="true">+</span></button>
+            <button type="button" class="overview-open" data-open-lens="agent-runtime" aria-label="Open how agents get oriented"><span>Open</span><span aria-hidden="true">→</span></button>
           </div>
           <p>Follow the declared path from repository instructions through spaces and routes to callable Skills.</p>
           <div class="overview-area-meta"><span>Technical view</span><strong>Agent / runtime</strong></div>
@@ -442,7 +445,7 @@
               <span class="overview-number">02</span>
               <h3>Personas &amp; capabilities</h3>
             </div>
-            <button type="button" class="overview-open" data-open-lens="persona-skill" aria-label="Explore personas and capabilities"><span aria-hidden="true">+</span></button>
+            <button type="button" class="overview-open" data-open-lens="persona-skill" aria-label="Open personas and capabilities"><span>Open</span><span aria-hidden="true">→</span></button>
           </div>
           <p>See stable Skill identities, persona-specific applications, guidance, and explicit capability relationships.</p>
           <div class="overview-area-meta"><span>Technical view</span><strong>Persona / Skill</strong></div>
@@ -454,7 +457,7 @@
               <span class="overview-number">03</span>
               <h3>Work &amp; verification</h3>
             </div>
-            <button type="button" class="overview-open" data-open-lens="work-coordination" aria-label="Explore work and verification"><span aria-hidden="true">+</span></button>
+            <button type="button" class="overview-open" data-open-lens="work-coordination" aria-label="Open work and verification"><span>Open</span><span aria-hidden="true">→</span></button>
           </div>
           <p>See work surfaces, orchestration, verification, truth classes, and the boundaries around live operational authority.</p>
           <div class="overview-area-meta"><span>Technical view</span><strong>Work &amp; coordination</strong></div>
@@ -466,7 +469,7 @@
               <span class="overview-number">04</span>
               <h3>Repositories &amp; ownership</h3>
             </div>
-            <button type="button" class="overview-open" data-open-lens="repository-ownership" aria-label="Explore repositories and ownership"><span aria-hidden="true">+</span></button>
+            <button type="button" class="overview-open" data-open-lens="repository-ownership" aria-label="Open repositories and ownership"><span>Open</span><span aria-hidden="true">→</span></button>
           </div>
           <p>See which repositories belong to the workspace, what each owns, and where local instruction and mutation boundaries live.</p>
           <div class="overview-area-meta"><span>Technical view</span><strong>Repository ownership</strong></div>
@@ -478,7 +481,7 @@
               <span class="overview-number">05</span>
               <h3>Sources &amp; generated outputs</h3>
             </div>
-            <button type="button" class="overview-open" data-open-lens="source-generated" aria-label="Explore sources and generated outputs"><span aria-hidden="true">+</span></button>
+            <button type="button" class="overview-open" data-open-lens="source-generated" aria-label="Open sources and generated outputs"><span>Open</span><span aria-hidden="true">→</span></button>
           </div>
           <p>Trace authored inputs and build steps into generated outputs while keeping generated artifacts separate from authored truth.</p>
           <div class="overview-area-meta"><span>Technical view</span><strong>Source / generated</strong></div>
@@ -488,7 +491,8 @@
       <div class="overview-howto">
         <strong>Inside an area</strong>
         <span>Select a node to understand it.</span>
-        <span><b>Expand +N</b> reveals direct recorded connections.</span>
+        <span><b>Open contents</b> reveals explicit containment where available.</span>
+        <span><b>Show connections</b> reveals related entities separately.</span>
         <span><b>Focus</b> isolates a bounded local view.</span>
         <span><b>Back</b> returns through your exploration.</span>
       </div>
@@ -511,10 +515,6 @@
             </div>
           </div>
           <div class="graph-frame">
-            <div class="graph-tools" aria-label="Graph controls">
-              <button type="button" id="map-fit-inline">Fit visible</button>
-              <span>Drag to pan · scroll or pinch to zoom</span>
-            </div>
             <div id="map-selection-actions" class="selection-actions" aria-label="Selected node actions" hidden></div>
             <div class="graph-legend" aria-label="Graph state legend">
               <span class="legend-item"><span class="legend-swatch selected" aria-hidden="true"></span>Selected node</span>
