@@ -1014,8 +1014,8 @@ function renderAgentRuntimeDetails(node) {
       </div>
       <div class="branch-actions">
         ${contents.total ? `
-          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-            ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
+          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
+            ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
           </button>
         ` : ''}
         ${contents.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
@@ -1026,8 +1026,8 @@ function renderAgentRuntimeDetails(node) {
           <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>
         ` : ''}
         ${connections.total ? `
-          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-            ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
+          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
+            ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
           </button>
         ` : ''}
         ${connections.open ? `<span class="branch-progress semantic-range">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
@@ -1191,16 +1191,16 @@ function renderFallbackNodes(visible) {
               <span class="node-meta">${contents.total} contents · ${connections.total} connections</span>
             </button>
             ${contents.total ? `
-              <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-                ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
+              <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
+                ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
               </button>
             ` : ''}
             ${contents.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
             ${contents.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
             ${contents.hasNext ? `<button type="button" class="branch-toggle" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
             ${connections.total ? `
-              <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-                ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
+              <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
+                ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
               </button>
             ` : ''}
             ${connections.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
@@ -1295,16 +1295,16 @@ function renderSelectionActions() {
       <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
       <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
       ${contents.total ? `
-        <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-          ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
+        <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}" ${!contents.open && !contents.revealTotal ? 'disabled' : ''}>
+          ${escapeHtml(semanticToggleLabel(contents, 'contents'))}
         </button>
       ` : ''}
       ${contents.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
       ${contents.hasPrevious ? `<button type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
       ${contents.hasNext ? `<button type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
       ${connections.total ? `
-        <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-          ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
+        <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}" ${!connections.open && !connections.revealTotal ? 'disabled' : ''}>
+          ${escapeHtml(semanticToggleLabel(connections, 'connections'))}
         </button>
       ` : ''}
       ${connections.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
