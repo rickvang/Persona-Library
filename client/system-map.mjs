@@ -1613,6 +1613,7 @@ function reset() {
   state.connectionLimits = new Map();
   state.contentOffsets = new Map();
   state.connectionOffsets = new Map();
+  state.revealPlans = new Map();
   state.explorationTrail = [];
   state.path = null;
   state.focusPath = null;
@@ -1806,6 +1807,7 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     state.connectionLimits = new Map();
     state.contentOffsets = new Map();
     state.connectionOffsets = new Map();
+    state.revealPlans = new Map();
     state.explorationTrail = [];
     state.path = null;
     state.focusPath = null;
