@@ -107,7 +107,6 @@ const elements = {
   pathResult: document.getElementById('path-result'),
   reset: document.getElementById('map-reset'),
   fit: document.getElementById('map-fit'),
-  fitInline: document.getElementById('map-fit-inline'),
   search: document.getElementById('map-search'),
   searchGo: document.getElementById('map-search-go'),
   searchOptions: document.getElementById('map-search-options'),
@@ -1566,7 +1565,6 @@ function bindEvents() {
   elements.back?.addEventListener('click', goBack);
   elements.reset.addEventListener('click', reset);
   elements.fit.addEventListener('click', fitGraph);
-  elements.fitInline.addEventListener('click', fitGraph);
   elements.searchGo.addEventListener('click', focusSearchResult);
   elements.search.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
