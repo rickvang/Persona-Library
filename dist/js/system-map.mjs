@@ -75,6 +75,8 @@ const state = {
   selectedId: null,
   expanded: new Set(),
   expansionLimits: new Map(),
+  connections: new Set(),
+  connectionLimits: new Map(),
   path: null,
   focusPath: null,
   focusId: null,
@@ -105,7 +107,6 @@ const elements = {
   pathResult: document.getElementById('path-result'),
   reset: document.getElementById('map-reset'),
   fit: document.getElementById('map-fit'),
-  fitInline: document.getElementById('map-fit-inline'),
   search: document.getElementById('map-search'),
   searchGo: document.getElementById('map-search-go'),
   searchOptions: document.getElementById('map-search-options'),
@@ -151,6 +152,8 @@ function captureViewSnapshot() {
     selectedId: state.selectedId,
     expanded: [...state.expanded],
     expansionLimits: [...state.expansionLimits.entries()],
+    connections: [...state.connections],
+    connectionLimits: [...state.connectionLimits.entries()],
     path: clonePath(state.path),
     focusPath: clonePath(state.focusPath),
     focusId: state.focusId,
@@ -180,6 +183,10 @@ function applyViewSnapshot(snapshot) {
   state.expanded = new Set((snapshot.expanded || []).filter(id => nodeIds.has(id)));
   state.expansionLimits = new Map(
     (snapshot.expansionLimits || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.connections = new Set((snapshot.connections || []).filter(id => nodeIds.has(id)));
+  state.connectionLimits = new Map(
+    (snapshot.connectionLimits || []).filter(([id]) => nodeIds.has(id))
   );
   state.path = validPath(snapshot.path);
   state.focusPath = validPath(snapshot.focusPath);
@@ -390,6 +397,83 @@ function expansionInfo(id) {
   };
 }
 
+function isContainmentEdge(edge, parentId) {
+  if (!edge || edge.from !== parentId) return false;
+  return edge.relationship === 'contains'
+    || edge.relationship === 'owns'
+    || edge.relationship.startsWith('owns-');
+}
+
+function semanticNeighborGroups(id) {
+  const index = indexGraph(state.graph);
+  const contents = [];
+  const connections = [];
+  const seenContents = new Set();
+  const seenConnections = new Set();
+
+  for (const edge of index.outgoing.get(id) || []) {
+    const node = index.nodes.get(edge.to);
+    if (!node) continue;
+    if (isContainmentEdge(edge, id)) {
+      if (!seenContents.has(node.id)) {
+        contents.push({ node, edge, direction: 'outgoing' });
+        seenContents.add(node.id);
+      }
+    } else if (!seenConnections.has(node.id)) {
+      connections.push({ node, edge, direction: 'outgoing' });
+      seenConnections.add(node.id);
+    }
+  }
+
+  for (const edge of index.incoming.get(id) || []) {
+    const node = index.nodes.get(edge.from);
+    if (!node || seenConnections.has(node.id)) continue;
+    connections.push({ node, edge, direction: 'incoming' });
+    seenConnections.add(node.id);
+  }
+
+  return {
+    contents: contents.sort((a, b) => a.node.label.localeCompare(b.node.label)),
+    connections: connections.sort((a, b) => a.node.label.localeCompare(b.node.label))
+  };
+}
+
+function semanticRevealInfo(id, kind) {
+  const groups = semanticNeighborGroups(id);
+  const items = kind === 'contents' ? groups.contents : groups.connections;
+  const openSet = kind === 'contents' ? state.expanded : state.connections;
+  const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const total = items.length;
+  const limit = Math.min(total, Number(limits.get(id) ?? DEFAULT_BRANCH_CHUNK));
+  const open = openSet.has(id);
+  return {
+    open,
+    total,
+    revealed: open ? limit : 0,
+    hasMore: open && limit < total,
+    nextCount: Math.min(DEFAULT_BRANCH_CHUNK, Math.max(0, total - limit)),
+    items
+  };
+}
+
+function sourceBackedExplanation(node) {
+  if (!node) return null;
+  if (state.lens === 'agent-runtime' && node.id === 'agent:repository-dispatcher') {
+    return {
+      summary: 'Chooses the shortest applicable activation path for work in Persona-Library. It distinguishes repository plumbing from library-semantic work and requires mixed work to escalate before changing canonical library meaning.',
+      example: 'A Persona or Skill relationship change takes the library-semantic path; straightforward CI or build maintenance can remain on the repository-plumbing path.',
+      sourceLabel: 'AGENTS.md · Choose the shortest activation path'
+    };
+  }
+  if (state.lens === 'agent-runtime' && node.id === 'view:agent-runtime') {
+    return {
+      summary: 'A static view of the repository’s declared orientation and routing contracts. It shows what the repository says agents should load or use, not what a particular conversation actually did.',
+      sourceLabel: 'AGENTS.md · routing and live-state boundaries'
+    };
+  }
+  return null;
+}
+
 function coverageDescription() {
   if (!state.graph) return '';
   if (state.graph.coverage === 'complete-for-scope') {
@@ -426,24 +510,71 @@ function currentVisibleIds() {
     if (edge) seedIds.push(edge.from, edge.to);
   }
 
-  const visible = boundedVisibleNodeIds(
-    state.graph,
-    state.expanded,
-    state.expansionLimits,
-    { seedIds }
-  );
+  let visible;
+
+  if (state.lens === 'agent-runtime') {
+    visible = new Set(rootNodeIds(state.graph));
+    for (const id of seedIds) {
+      if (state.graph.nodes.some(node => node.id === id)) visible.add(id);
+    }
+
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const id of [...visible]) {
+        if (state.expanded.has(id)) {
+          const info = semanticRevealInfo(id, 'contents');
+          for (const item of info.items.slice(0, info.revealed)) {
+            if (!visible.has(item.node.id)) {
+              visible.add(item.node.id);
+              changed = true;
+            }
+          }
+        }
+        if (state.connections.has(id)) {
+          const info = semanticRevealInfo(id, 'connections');
+          for (const item of info.items.slice(0, info.revealed)) {
+            if (!visible.has(item.node.id)) {
+              visible.add(item.node.id);
+              changed = true;
+            }
+          }
+        }
+      }
+    }
+  } else {
+    visible = boundedVisibleNodeIds(
+      state.graph,
+      state.expanded,
+      state.expansionLimits,
+      { seedIds }
+    );
+  }
 
   if (!state.focusId) return visible;
 
   const focused = new Set([state.focusId]);
   const rootPath = nearestRootPath(state.focusId);
   for (const id of rootPath?.nodes || []) focused.add(id);
-  const focusLimit = state.expanded.has(state.focusId)
-    ? Number(state.expansionLimits.get(state.focusId) ?? DEFAULT_BRANCH_CHUNK)
-    : DEFAULT_BRANCH_CHUNK;
-  for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, focusLimit)) {
-    focused.add(node.id);
+
+  if (state.lens === 'agent-runtime') {
+    const contents = semanticRevealInfo(state.focusId, 'contents');
+    const connections = semanticRevealInfo(state.focusId, 'connections');
+    if (contents.open) {
+      for (const item of contents.items.slice(0, contents.revealed)) focused.add(item.node.id);
+    }
+    if (connections.open) {
+      for (const item of connections.items.slice(0, connections.revealed)) focused.add(item.node.id);
+    }
+  } else {
+    const focusLimit = state.expanded.has(state.focusId)
+      ? Number(state.expansionLimits.get(state.focusId) ?? DEFAULT_BRANCH_CHUNK)
+      : DEFAULT_BRANCH_CHUNK;
+    for (const node of directNeighbors(state.graph, state.focusId).nodes.slice(0, focusLimit)) {
+      focused.add(node.id);
+    }
   }
+
   if (state.highlightedEdgeId) {
     const edge = state.graph.edges.find(item => item.id === state.highlightedEdgeId);
     if (edge) {
@@ -559,6 +690,117 @@ function highlightedEdgeEvidence() {
   `;
 }
 
+function renderAgentRuntimeDetails(node) {
+  const index = indexGraph(state.graph);
+  const incoming = index.incoming.get(node.id) || [];
+  const outgoing = index.outgoing.get(node.id) || [];
+  const groups = semanticNeighborGroups(node.id);
+  const contents = semanticRevealInfo(node.id, 'contents');
+  const connections = semanticRevealInfo(node.id, 'connections');
+  const explanation = sourceBackedExplanation(node);
+  const nodeSource = sourceUrl(node.source);
+  const outgoingConnectionEdges = groups.connections
+    .filter(item => item.direction === 'outgoing')
+    .map(item => item.edge);
+  const incomingConnectionEdges = groups.connections
+    .filter(item => item.direction === 'incoming')
+    .map(item => item.edge);
+  const contentEdges = groups.contents.map(item => item.edge);
+
+  elements.details.innerHTML = `
+    <div class="detail-head">
+      <div>
+        <p class="eyebrow">${escapeHtml(nodeTypeLabel(node.type))}</p>
+        <h2 tabindex="-1">${escapeHtml(node.label)}</h2>
+      </div>
+      <span class="connection-count">${contents.total} contents · ${connections.total} connections</span>
+    </div>
+
+    <section class="detail-section">
+      <h3>Purpose</h3>
+      <p class="detail-copy">${escapeHtml(explanation?.summary || 'No source-backed plain-language explanation is available for this item yet.')}</p>
+      ${explanation?.example ? `<p class="detail-example"><strong>Example:</strong> ${escapeHtml(explanation.example)}</p>` : ''}
+      ${explanation?.sourceLabel ? `<p class="explanation-source">${escapeHtml(explanation.sourceLabel)}</p>` : ''}
+    </section>
+
+    ${contents.total ? `
+      <section class="detail-section">
+        <div class="section-heading">
+          <h3>Contents</h3>
+          <span>${contents.total} contained</span>
+        </div>
+        <p class="detail-copy">These items are connected by explicit containment or ownership relationships from this item.</p>
+        ${groupedRelationships(contentEdges, 'outgoing', 'No explicit contents are represented.')}
+      </section>
+    ` : ''}
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>Connections</h3>
+        <span>${connections.total} related</span>
+      </div>
+      <p class="detail-copy">Connections relate separate entities. They do not imply containment or prove that a runtime execution followed this path.</p>
+      ${outgoingConnectionEdges.length ? `
+        <div class="connection-direction">
+          <strong>Outgoing</strong>
+          ${groupedRelationships(outgoingConnectionEdges, 'outgoing', '')}
+        </div>
+      ` : ''}
+      ${incomingConnectionEdges.length ? `
+        <div class="connection-direction">
+          <strong>Incoming</strong>
+          ${groupedRelationships(incomingConnectionEdges, 'incoming', '')}
+        </div>
+      ` : ''}
+      ${!connections.total ? '<p class="quiet">No non-containment connections are represented for this item.</p>' : ''}
+      <p class="coverage-note">${escapeHtml(coverageDescription())}</p>
+    </section>
+
+    ${highlightedEdgeEvidence()}
+
+    <section class="detail-section">
+      <div class="section-heading">
+        <h3>Explore</h3>
+        <span>Explicit controls</span>
+      </div>
+      <div class="branch-actions">
+        ${contents.total ? `
+          <button class="expand-button" type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
+            ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+          </button>
+        ` : ''}
+        ${contents.hasMore ? `
+          <button class="show-more-button" type="button" data-show-more-contents="${escapeHtml(node.id)}">Show ${contents.nextCount} more contents</button>
+        ` : ''}
+        ${connections.total ? `
+          <button class="show-more-button" type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
+            ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+          </button>
+        ` : ''}
+        ${connections.hasMore ? `
+          <button class="show-more-button" type="button" data-show-more-connections="${escapeHtml(node.id)}">Show ${connections.nextCount} more connections</button>
+        ` : ''}
+        <button class="show-more-button" type="button" data-focus-selected="${escapeHtml(node.id)}">Focus on this area</button>
+      </div>
+    </section>
+
+    <details class="detail-section provenance-detail">
+      <summary>Technical details &amp; source</summary>
+      <div class="source-detail">
+        <dl>
+          <dt>Stable ID</dt><dd>${escapeHtml(node.id)}</dd>
+          <dt>Type</dt><dd>${escapeHtml(nodeTypeLabel(node.type))}</dd>
+          <dt>Owner</dt><dd>${escapeHtml(node.owner || 'Unavailable')}</dd>
+          <dt>Derivation</dt><dd>${escapeHtml(node.derivation)}</dd>
+          <dt>Source</dt><dd>${escapeHtml(node.source?.locator || 'Unavailable')}</dd>
+          <dt>Selector</dt><dd>${escapeHtml(node.source?.selector || 'Unavailable')}</dd>
+        </dl>
+        ${nodeSource ? `<a class="source-link" href="${escapeHtml(nodeSource)}" target="_blank" rel="noreferrer">Open canonical source ↗</a>` : ''}
+      </div>
+    </details>
+  `;
+}
+
 function renderDetails() {
   const node = selectedNode();
   if (!node) {
@@ -569,6 +811,11 @@ function renderDetails() {
         <p>Selection is separate from expansion and focus. Choose a node first, then decide whether to inspect, expand its direct relationships, or focus the map around it.</p>
       </div>
     `;
+    return;
+  }
+
+  if (state.lens === 'agent-runtime') {
+    renderAgentRuntimeDetails(node);
     return;
   }
 
@@ -675,6 +922,31 @@ function renderFallbackNodes(visible) {
     })
     .map(node => {
       const selected = state.selectedId === node.id;
+
+      if (state.lens === 'agent-runtime') {
+        const contents = semanticRevealInfo(node.id, 'contents');
+        const connections = semanticRevealInfo(node.id, 'connections');
+        return `
+          <article class="map-node ${selected ? 'selected' : ''} ${pathNodes.has(node.id) ? 'in-path' : ''}">
+            <button type="button" class="node-select" data-select-node="${escapeHtml(node.id)}" aria-pressed="${selected}">
+              <span class="node-kicker">${escapeHtml(nodeTypeLabel(node.type))}</span>
+              <strong>${escapeHtml(node.label)}</strong>
+              <span class="node-meta">${contents.total} contents · ${connections.total} connections</span>
+            </button>
+            ${contents.total ? `
+              <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
+                ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+              </button>
+            ` : ''}
+            ${connections.total ? `
+              <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
+                ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+              </button>
+            ` : ''}
+          </article>
+        `;
+      }
+
       const expansion = expansionInfo(node.id);
       const compactLabel = expansion.expanded
         ? 'Collapse'
@@ -750,13 +1022,36 @@ function renderSelectionActions() {
     elements.selectionActions.innerHTML = '';
     return;
   }
+
+  elements.selectionActions.hidden = false;
+
+  if (state.lens === 'agent-runtime') {
+    const contents = semanticRevealInfo(node.id, 'contents');
+    const connections = semanticRevealInfo(node.id, 'connections');
+    elements.selectionActions.innerHTML = `
+      <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
+      <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
+      ${contents.total ? `
+        <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
+          ${contents.open ? 'Close contents' : `Open contents +${Math.min(DEFAULT_BRANCH_CHUNK, contents.total)}`}
+        </button>
+      ` : ''}
+      ${connections.total ? `
+        <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
+          ${connections.open ? 'Hide connections' : `Show connections +${Math.min(DEFAULT_BRANCH_CHUNK, connections.total)}`}
+        </button>
+      ` : ''}
+      <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
+    `;
+    return;
+  }
+
   const expansion = expansionInfo(node.id);
   const expandText = expansion.expanded
     ? 'Collapse'
     : expansion.total > DEFAULT_BRANCH_CHUNK
       ? `Expand +${Math.min(DEFAULT_BRANCH_CHUNK, expansion.total)} of ${expansion.total}`
       : `Expand +${expansion.total}`;
-  elements.selectionActions.hidden = false;
   elements.selectionActions.innerHTML = `
     <span class="selection-label"><strong>${escapeHtml(node.label)}</strong><span>${escapeHtml(nodeTypeLabel(node.type))}</span></span>
     <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
@@ -896,7 +1191,9 @@ function selectNode(id) {
   state.highlightedEdgeId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`Selected ${selectedNode()?.label || id}. Inspect, expand, or focus this area.`);
+  announce(state.lens === 'agent-runtime'
+    ? `Selected ${selectedNode()?.label || id}. Inspect it, open contents, show connections, or focus the area as available.`
+    : `Selected ${selectedNode()?.label || id}. Inspect, expand, or focus this area.`);
 }
 
 function highlightEdge(id) {
@@ -921,6 +1218,45 @@ function toggleExpanded(id) {
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
   announce(`${state.expanded.has(id) ? 'Expanded' : 'Collapsed'} ${selectedNode()?.label || id} without resetting the viewport.`);
+}
+
+function toggleSemanticReveal(id, kind) {
+  if (state.lens !== 'agent-runtime') return;
+  const openSet = kind === 'contents' ? state.expanded : state.connections;
+  const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const info = semanticRevealInfo(id, kind);
+  if (!info.total) return;
+
+  if (openSet.has(id)) {
+    openSet.delete(id);
+    limits.delete(id);
+  } else {
+    openSet.add(id);
+    limits.set(id, DEFAULT_BRANCH_CHUNK);
+  }
+
+  state.selectedId = id;
+  state.focusId = null;
+  render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+  updateUrlState();
+  announce(`${openSet.has(id) ? (kind === 'contents' ? 'Opened contents for' : 'Showing connections for') : (kind === 'contents' ? 'Closed contents for' : 'Hidden connections for')} ${selectedNode()?.label || id}.`);
+}
+
+function showMoreSemantic(id, kind) {
+  if (state.lens !== 'agent-runtime') return;
+  const openSet = kind === 'contents' ? state.expanded : state.connections;
+  const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
+  const info = semanticRevealInfo(id, kind);
+  if (!info.total) return;
+
+  openSet.add(id);
+  const current = Number(limits.get(id) ?? DEFAULT_BRANCH_CHUNK);
+  const next = Math.min(info.total, current + DEFAULT_BRANCH_CHUNK);
+  limits.set(id, next);
+  state.selectedId = id;
+  render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+  updateUrlState();
+  announce(`Showing ${next} of ${info.total} ${kind} for ${selectedNode()?.label || id}.`);
 }
 
 function showMoreNeighbors(id) {
@@ -964,6 +1300,8 @@ function reset() {
   state.selectedId = null;
   state.expanded = initialExpandedIds(state.graph);
   state.expansionLimits = new Map();
+  state.connections = new Set();
+  state.connectionLimits = new Map();
   state.path = null;
   state.focusPath = null;
   state.focusId = null;
@@ -1133,6 +1471,8 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
     state.selectedId = null;
     state.expanded = initialExpandedIds(graph);
     state.expansionLimits = new Map();
+    state.connections = new Set();
+    state.connectionLimits = new Map();
     state.path = null;
     state.focusPath = null;
     state.focusId = null;
@@ -1194,6 +1534,26 @@ function bindEvents() {
       selectNode(select.dataset.selectNode);
       return;
     }
+    const toggleContents = event.target.closest('[data-toggle-contents]');
+    if (toggleContents) {
+      toggleSemanticReveal(toggleContents.dataset.toggleContents, 'contents');
+      return;
+    }
+    const toggleConnections = event.target.closest('[data-toggle-connections]');
+    if (toggleConnections) {
+      toggleSemanticReveal(toggleConnections.dataset.toggleConnections, 'connections');
+      return;
+    }
+    const moreContents = event.target.closest('[data-show-more-contents]');
+    if (moreContents) {
+      showMoreSemantic(moreContents.dataset.showMoreContents, 'contents');
+      return;
+    }
+    const moreConnections = event.target.closest('[data-show-more-connections]');
+    if (moreConnections) {
+      showMoreSemantic(moreConnections.dataset.showMoreConnections, 'connections');
+      return;
+    }
     const showMore = event.target.closest('[data-show-more]');
     if (showMore) {
       showMoreNeighbors(showMore.dataset.showMore);
@@ -1205,7 +1565,6 @@ function bindEvents() {
   elements.back?.addEventListener('click', goBack);
   elements.reset.addEventListener('click', reset);
   elements.fit.addEventListener('click', fitGraph);
-  elements.fitInline.addEventListener('click', fitGraph);
   elements.searchGo.addEventListener('click', focusSearchResult);
   elements.search.addEventListener('keydown', event => {
     if (event.key === 'Enter') {
