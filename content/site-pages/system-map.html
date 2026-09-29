@@ -289,11 +289,13 @@
       .graph-mode .map-panel-head { flex:0 0 auto; padding:6px 9px 4px; }
       .graph-mode .graph-frame { flex:1; min-height:0; display:flex; flex-direction:column; margin:0 6px 6px; }
       .graph-mode .selection-actions, .graph-mode .graph-legend, .graph-mode .keyboard-nav { flex:0 0 auto; }
-      .graph-mode .selection-actions { flex-wrap:wrap; min-height:34px; padding:4px 6px; }
+      .graph-mode .selection-actions { flex-wrap:nowrap; min-height:34px; padding:4px 6px; overflow-x:auto; overflow-y:hidden; scrollbar-width:thin; }
       .graph-mode .graph-legend { overflow-x:auto; flex-wrap:nowrap; }
       .graph-mode .graph-canvas { flex:1; min-height:0; height:auto; }
       .graph-mode .keyboard-nav { max-height:34%; overflow:auto; }
-      .graph-mode .inspector-rail { position:static; top:auto; min-height:0; height:100%; max-height:none; overflow:auto; padding-right:2px; }
+      .graph-mode .inspector-rail { position:static; top:auto; display:flex; flex-direction:column; align-items:stretch; min-height:0; height:100%; max-height:none; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; padding-right:2px; }
+      .graph-mode .detail-panel, .graph-mode .question-panel { flex:0 0 auto; }
+      .graph-mode .detail-panel h2 { scroll-margin-top:10px; }
       .graph-mode .path-panel { flex:0 0 auto; margin-top:6px; }
       .graph-mode .path-panel[open] { max-height:34vh; overflow:auto; }
     }
