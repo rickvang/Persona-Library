@@ -1711,6 +1711,28 @@ async function loadLens(lens, { restoreUrl = false, viewSnapshot = null, remembe
 
 function bindEvents() {
   root.addEventListener('click', event => {
+    const locationOverview = event.target.closest('[data-location-overview]');
+    if (locationOverview) {
+      pushNavigationCheckpoint();
+      showOverview();
+      return;
+    }
+    const locationNode = event.target.closest('[data-location-node]');
+    if (locationNode) {
+      const id = locationNode.dataset.locationNode;
+      if (state.graph?.nodes.some(node => node.id === id)) {
+        pushNavigationCheckpoint();
+        state.selectedId = id;
+        recordExplorationLocation(id);
+        state.focusId = null;
+        state.highlightedEdgeId = null;
+        render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
+        updateUrlState();
+        requestAnimationFrame(() => ensureRenderer()?.focus(id));
+        announce(`Returned to ${selectedNode()?.label || id} in the exploration path.`);
+      }
+      return;
+    }
     const openLens = event.target.closest('[data-open-lens]');
     if (openLens) {
       pushNavigationCheckpoint();
@@ -1747,14 +1769,24 @@ function bindEvents() {
       toggleSemanticReveal(toggleConnections.dataset.toggleConnections, 'connections');
       return;
     }
+    const previousContents = event.target.closest('[data-show-previous-contents]');
+    if (previousContents) {
+      pageSemanticReveal(previousContents.dataset.showPreviousContents, 'contents', 'previous');
+      return;
+    }
     const moreContents = event.target.closest('[data-show-more-contents]');
     if (moreContents) {
-      showMoreSemantic(moreContents.dataset.showMoreContents, 'contents');
+      pageSemanticReveal(moreContents.dataset.showMoreContents, 'contents', 'next');
+      return;
+    }
+    const previousConnections = event.target.closest('[data-show-previous-connections]');
+    if (previousConnections) {
+      pageSemanticReveal(previousConnections.dataset.showPreviousConnections, 'connections', 'previous');
       return;
     }
     const moreConnections = event.target.closest('[data-show-more-connections]');
     if (moreConnections) {
-      showMoreSemantic(moreConnections.dataset.showMoreConnections, 'connections');
+      pageSemanticReveal(moreConnections.dataset.showMoreConnections, 'connections', 'next');
       return;
     }
     const showMore = event.target.closest('[data-show-more]');
