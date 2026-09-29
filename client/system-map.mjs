@@ -1156,14 +1156,20 @@ function renderSelectionActions() {
       <button type="button" data-inspect-selected="${escapeHtml(node.id)}">Inspect</button>
       ${contents.total ? `
         <button type="button" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-          ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
+          ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
         </button>
       ` : ''}
+      ${contents.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
+      ${contents.hasPrevious ? `<button type="button" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
+      ${contents.hasNext ? `<button type="button" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
       ${connections.total ? `
         <button type="button" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-          ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
+          ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
         </button>
       ` : ''}
+      ${connections.open ? `<span class="semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
+      ${connections.hasPrevious ? `<button type="button" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>` : ''}
+      ${connections.hasNext ? `<button type="button" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>` : ''}
       <button type="button" data-focus-selected="${escapeHtml(node.id)}" aria-pressed="${state.focusId === node.id}">${state.focusId === node.id ? 'Focused' : 'Focus'}</button>
     `;
     return;
