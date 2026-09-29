@@ -14,7 +14,8 @@ import {
   excludeAlreadyVisibleRevealItems,
   initialExpandedIds,
   localRevealBatchSize,
-  neighborhoodWindow
+  neighborhoodWindow,
+  normalizeNeighborhoodOffset
 } from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -729,7 +730,11 @@ function recomputeOpenRevealPlans({ announceChange = false } = {}) {
     const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
     const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
     const previousOffset = Math.max(0, Number(offsets.get(id) || 0));
-    const normalizedOffset = Math.floor(previousOffset / nextSize) * nextSize;
+    const normalizedOffset = normalizeNeighborhoodOffset({
+      total: items.length,
+      offset: previousOffset,
+      pageSize: nextSize
+    });
 
     state.revealPlans.set(key, {
       ...plan,
