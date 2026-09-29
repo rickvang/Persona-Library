@@ -797,13 +797,14 @@ function semanticRangeText(info, noun) {
 }
 
 function semanticToggleLabel(info, noun) {
-  if (info.open) return noun === 'contents' ? 'Close contents' : 'Hide connections';
+  const isConnections = noun === 'connections';
+  if (info.open) return isConnections ? 'Hide connections' : `Close ${noun}`;
   if (!info.revealTotal) return `All ${info.total} ${noun} visible`;
   const count = Math.min(info.batchSize, info.revealTotal);
   const existing = info.alreadyVisibleCount ? ` · ${info.alreadyVisibleCount} already visible` : '';
-  return noun === 'contents'
-    ? `Open ${count} ${noun}${existing}`
-    : `Show ${count} ${noun}${existing}`;
+  return isConnections
+    ? `Show ${count} ${noun}${existing}`
+    : `Open ${count} ${noun}${existing}`;
 }
 
 function semanticPageLabel(info, direction, noun) {
