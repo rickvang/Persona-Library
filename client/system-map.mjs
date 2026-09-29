@@ -517,7 +517,7 @@ function semanticRevealInfo(id, kind) {
     viewportHeight,
     kind
   });
-  const requestedSize = Math.min(total, Number(limits.get(id) ?? batchSize));
+  const requestedSize = Math.min(total, batchSize, Number(limits.get(id) ?? batchSize));
   const window = neighborhoodWindow({
     total,
     offset: offsets.get(id) ?? 0,
