@@ -19,6 +19,7 @@ import {
   initialExpandedIds,
   localRevealBatchSize,
   localRevealCamera,
+  localCollectionFitsReadable,
   neighborhoodWindow,
   panForVisibleBounds,
   planLocalNodePositions,
@@ -248,8 +249,46 @@ test('System Map local reveal camera keeps readable zoom and can recover a clipp
   });
   assert.ok(selectedBounds.x1 + pan.x >= 32, 'selected node should be moved back inside the readable safe area');
 
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'connections' }), 4);
+  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'connections' }), 2);
   assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 520, viewportHeight: 600, kind: 'connections' }), 2);
+  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 480, viewportHeight: 340, kind: 'connections' }), 1);
+  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'contents' }), 3);
+});
+
+test('System Map readable local pages fit selected node plus current page at the label floor', () => {
+  const readableBounds = {
+    x1: 30,
+    x2: 690,
+    y1: 40,
+    y2: 390,
+    width: 660,
+    height: 350
+  };
+  assert.equal(localCollectionFitsReadable({
+    bounds: readableBounds,
+    canvasWidth: 760,
+    canvasHeight: 460,
+    zoom: MIN_READABLE_ZOOM,
+    currentZoom: MIN_READABLE_ZOOM,
+    padding: 32
+  }), true);
+
+  const oversizedBounds = {
+    x1: 0,
+    x2: 940,
+    y1: 0,
+    y2: 620,
+    width: 940,
+    height: 620
+  };
+  assert.equal(localCollectionFitsReadable({
+    bounds: oversizedBounds,
+    canvasWidth: 760,
+    canvasHeight: 460,
+    zoom: MIN_READABLE_ZOOM,
+    currentZoom: MIN_READABLE_ZOOM,
+    padding: 32
+  }), false, 'a neighborhood that cannot fit at the readable floor must be treated as oversized rather than silently clipped');
 });
 
 test('System Map position and viewport snapshots restore a recognizable prior view', () => {
