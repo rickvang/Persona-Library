@@ -527,6 +527,24 @@ function semanticRevealInfo(id, kind) {
   };
 }
 
+function semanticRangeText(info, noun) {
+  if (!info?.total) return `0 ${noun}`;
+  if (!info.open) return `${info.total} ${noun}`;
+  return `${noun} ${info.start}–${info.end} of ${info.total}`;
+}
+
+function semanticPageLabel(info, direction, noun) {
+  const window = neighborhoodWindow({
+    total: info.total,
+    offset: info.offset,
+    batchSize: info.batchSize,
+    direction
+  });
+  return direction === 'previous'
+    ? `Previous ${noun} ${window.start}–${window.end}`
+    : `Next ${noun} ${window.start}–${window.end}`;
+}
+
 function sourceBackedExplanation(node) {
   if (!node) return null;
   if (state.lens === 'agent-runtime' && node.id === 'agent:repository-dispatcher') {
