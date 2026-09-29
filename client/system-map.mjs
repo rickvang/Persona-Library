@@ -1058,14 +1058,20 @@ function renderFallbackNodes(visible) {
             </button>
             ${contents.total ? `
               <button type="button" class="branch-toggle" data-toggle-contents="${escapeHtml(node.id)}" aria-expanded="${contents.open}">
-                ${contents.open ? 'Close contents' : `Open contents +${contents.batchSize}`}
+                ${contents.open ? 'Close contents' : `Open contents 1–${Math.min(contents.batchSize, contents.total)} of ${contents.total}`}
               </button>
             ` : ''}
+            ${contents.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(contents, 'contents'))}</span>` : ''}
+            ${contents.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'previous', 'contents'))}</button>` : ''}
+            ${contents.hasNext ? `<button type="button" class="branch-toggle" data-show-more-contents="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(contents, 'next', 'contents'))}</button>` : ''}
             ${connections.total ? `
               <button type="button" class="branch-toggle" data-toggle-connections="${escapeHtml(node.id)}" aria-expanded="${connections.open}">
-                ${connections.open ? 'Hide connections' : `Show connections +${connections.batchSize}`}
+                ${connections.open ? 'Hide connections' : `Show connections 1–${Math.min(connections.batchSize, connections.total)} of ${connections.total}`}
               </button>
             ` : ''}
+            ${connections.open ? `<span class="node-meta semantic-progress">${escapeHtml(semanticRangeText(connections, 'connections'))}</span>` : ''}
+            ${connections.hasPrevious ? `<button type="button" class="branch-toggle" data-show-previous-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'previous', 'connections'))}</button>` : ''}
+            ${connections.hasNext ? `<button type="button" class="branch-toggle" data-show-more-connections="${escapeHtml(node.id)}">${escapeHtml(semanticPageLabel(connections, 'next', 'connections'))}</button>` : ''}
           </article>
         `;
       }
