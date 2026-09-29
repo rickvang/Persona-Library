@@ -229,7 +229,7 @@ function saveCurrentLensState() {
 
 function pushNavigationCheckpoint() {
   const snapshot = state.mode === 'overview'
-    ? { mode: 'overview', lens: 'overview' }
+    ? { mode: 'overview', lens: 'overview', documentScrollY: globalThis.scrollY || 0 }
     : state.graph
       ? captureViewSnapshot()
       : null;
@@ -262,17 +262,43 @@ function snapshotLabel(snapshot) {
   return node?.label || lensConfigs[snapshot?.lens]?.humanTitle || lensConfigs[snapshot?.lens]?.label || 'Overview';
 }
 
+function recordExplorationLocation(id) {
+  if (!id || !state.graph?.nodes.some(node => node.id === id)) return;
+  const existingIndex = state.explorationTrail.indexOf(id);
+  if (existingIndex >= 0) {
+    state.explorationTrail = state.explorationTrail.slice(0, existingIndex + 1);
+  } else {
+    state.explorationTrail.push(id);
+  }
+}
+
 function renderTrail() {
   if (!elements.trail || !elements.back) return;
   elements.back.disabled = navigationStack.length === 0;
-  const recent = navigationStack.slice(-3).map(snapshot => snapshotLabel(snapshot));
-  const current = state.mode === 'overview'
-    ? 'System overview'
-    : selectedNode()?.label || currentLensConfig()?.humanTitle || currentLensConfig()?.label || 'System overview';
-  const labels = [...recent, current].filter((label, index, all) => index === 0 || label !== all[index - 1]);
-  elements.trail.innerHTML = labels
-    .map((label, index) => `<span class="${index === labels.length - 1 ? 'current' : ''}">${escapeHtml(label)}</span>`)
-    .join('<span aria-hidden="true">›</span>');
+
+  if (state.mode === 'overview') {
+    elements.trail.innerHTML = '<span class="trail-label">Location</span><span class="current">System overview</span>';
+    return;
+  }
+
+  const config = currentLensConfig();
+  const nodeIndex = state.graph ? indexGraph(state.graph).nodes : new Map();
+  const trailNodes = state.explorationTrail
+    .map(id => nodeIndex.get(id))
+    .filter(Boolean);
+
+  elements.trail.innerHTML = [
+    '<span class="trail-label">Exploration path</span>',
+    '<button type="button" class="trail-link" data-location-overview>System overview</button>',
+    '<span aria-hidden="true">›</span>',
+    `<span class="trail-area">${escapeHtml(config?.humanTitle || config?.label || state.lens)}</span>`,
+    ...trailNodes.flatMap((node, index) => [
+      '<span aria-hidden="true">›</span>',
+      index === trailNodes.length - 1
+        ? `<span class="current">${escapeHtml(node.label)}</span>`
+        : `<button type="button" class="trail-link" data-location-node="${escapeHtml(node.id)}">${escapeHtml(node.label)}</button>`
+    ])
+  ].join('');
 }
 
 function relationshipLabel(value) {
