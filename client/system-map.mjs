@@ -1679,7 +1679,8 @@ function toggleSemanticReveal(id, kind) {
   const info = semanticRevealInfo(id, kind);
   if (!info.total) return;
   if (!openSet.has(id) && !info.revealTotal) {
-    announce(`All ${info.total} ${kind} for ${selectedNode()?.label || id} are already visible.`);
+    const noun = semanticNoun(state.graph?.nodes.find(node => node.id === id), kind);
+    announce(`All ${info.total} ${noun} for ${selectedNode()?.label || id} are already visible.`);
     return;
   }
 
@@ -1707,9 +1708,10 @@ function toggleSemanticReveal(id, kind) {
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
   const updated = semanticRevealInfo(id, kind);
+  const noun = semanticNoun(selectedNode(), kind);
   announce(openSet.has(id)
-    ? `Showing ${semanticRangeText(updated, kind)} for ${selectedNode()?.label || id}.`
-    : `${kind === 'contents' ? 'Closed contents for' : 'Hidden connections for'} ${selectedNode()?.label || id}.`);
+    ? `Showing ${semanticRangeText(updated, noun)} for ${selectedNode()?.label || id}.`
+    : `${kind === 'contents' ? `Closed ${noun} for` : 'Hidden connections for'} ${selectedNode()?.label || id}.`);
 }
 
 function pageSemanticReveal(id, kind, direction = 'next') {
@@ -1738,7 +1740,8 @@ function pageSemanticReveal(id, kind, direction = 'next') {
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
   const updated = semanticRevealInfo(id, kind);
-  announce(`Showing ${semanticRangeText(updated, kind)} for ${selectedNode()?.label || id}.`);
+  const noun = semanticNoun(selectedNode(), kind);
+  announce(`Showing ${semanticRangeText(updated, noun)} for ${selectedNode()?.label || id}.`);
 }
 
 function showMoreNeighbors(id) {
