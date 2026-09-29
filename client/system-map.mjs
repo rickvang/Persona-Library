@@ -137,6 +137,7 @@ const elements = {
 
 let renderer = null;
 let rendererUnavailable = false;
+let graphResizeObserver = null;
 
 function announce(message) {
   elements.liveRegion.textContent = message;
@@ -2031,6 +2032,15 @@ function bindEvents() {
     }
     await loadLens(elements.lens.value);
   });
+
+  if (typeof globalThis.ResizeObserver === 'function' && elements.graphFrame) {
+    graphResizeObserver = new ResizeObserver(() => {
+      if (state.mode === 'graph') scheduleRevealPlanResize();
+    });
+    graphResizeObserver.observe(elements.graphFrame);
+  } else {
+    globalThis.addEventListener?.('resize', scheduleRevealPlanResize);
+  }
 }
 
 bindEvents();
