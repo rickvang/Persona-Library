@@ -75,6 +75,8 @@ const state = {
   selectedId: null,
   expanded: new Set(),
   expansionLimits: new Map(),
+  connections: new Set(),
+  connectionLimits: new Map(),
   path: null,
   focusPath: null,
   focusId: null,
@@ -151,6 +153,8 @@ function captureViewSnapshot() {
     selectedId: state.selectedId,
     expanded: [...state.expanded],
     expansionLimits: [...state.expansionLimits.entries()],
+    connections: [...state.connections],
+    connectionLimits: [...state.connectionLimits.entries()],
     path: clonePath(state.path),
     focusPath: clonePath(state.focusPath),
     focusId: state.focusId,
@@ -180,6 +184,10 @@ function applyViewSnapshot(snapshot) {
   state.expanded = new Set((snapshot.expanded || []).filter(id => nodeIds.has(id)));
   state.expansionLimits = new Map(
     (snapshot.expansionLimits || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.connections = new Set((snapshot.connections || []).filter(id => nodeIds.has(id)));
+  state.connectionLimits = new Map(
+    (snapshot.connectionLimits || []).filter(([id]) => nodeIds.has(id))
   );
   state.path = validPath(snapshot.path);
   state.focusPath = validPath(snapshot.focusPath);
