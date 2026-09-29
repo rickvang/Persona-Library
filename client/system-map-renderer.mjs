@@ -237,6 +237,14 @@ function boundsForRectangles(rectangles = []) {
   return { x1, x2, y1, y2, width: x2 - x1, height: y2 - y1 };
 }
 
+export function excludeAlreadyVisibleRevealItems(items = [], visibleIds = []) {
+  const visible = visibleIds instanceof Set ? visibleIds : new Set(visibleIds || []);
+  return items.filter(item => {
+    const id = item?.node?.id ?? item?.id;
+    return id && !visible.has(id);
+  });
+}
+
 export function readableLocalPageCapacity({
   total,
   viewportWidth,
