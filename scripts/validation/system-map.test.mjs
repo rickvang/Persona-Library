@@ -579,7 +579,7 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /\.graph-mode \.detail-panel, \.graph-mode \.question-panel \{[^}]*min-height:max-content;/s);
   assert.match(page, /\.inspector-rail > \* \{[^}]*min-height:max-content;/s);
   assert.doesNotMatch(page, /\.graph-mode \.inspector-rail \{[^}]*display:grid;/s);
-  assert.match(page, /\.selection-actions \{[^}]*grid-template-columns:minmax\(150px,1fr\) auto 132px auto;[^}]*height:42px;/s);
+  assert.match(page, /\.selection-actions \{[^}]*grid-template-columns:minmax\(180px,1fr\) auto 132px auto;[^}]*height:42px;/s);
   assert.match(page, /\.graph-mode \.selection-actions \{[^}]*min-height:42px;[^}]*overflow:visible;/s);
   assert.match(page, /\.semantic-pager-slot \{[^}]*width:132px;[^}]*height:30px;/s);
   assert.match(page, /\.pager-button:disabled \{ opacity:\.28; \}/);
