@@ -193,8 +193,10 @@
     .graph-canvas { height:calc(100vh - 236px); min-height:540px; }
     .keyboard-nav summary { padding:8px 10px; }
 
-    .inspector-rail { position:sticky; top:154px; display:grid; gap:10px; max-height:calc(100vh - 170px); overflow:auto; overscroll-behavior:contain; padding-right:2px; }
-    .detail-panel { min-height:0; padding:13px; }
+    .inspector-rail { position:sticky; top:154px; display:block; max-height:calc(100vh - 170px); overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; padding-right:2px; }
+    .inspector-rail > * { position:relative; min-height:max-content; }
+    .inspector-rail > * + * { margin-top:10px; }
+    .detail-panel { min-height:max-content; padding:13px; }
     .detail-head { align-items:center; padding-bottom:11px; }
     .detail-head h2, .empty-detail h2 { font-size:20px; }
     .connection-count, .section-heading > span, .evidence-state { flex:none; padding:3px 6px; border-radius:999px; color:var(--muted); background:#eef1ec; font-size:9px; font-weight:850; }
@@ -289,11 +291,13 @@
       .graph-mode .map-panel-head { flex:0 0 auto; padding:6px 9px 4px; }
       .graph-mode .graph-frame { flex:1; min-height:0; display:flex; flex-direction:column; margin:0 6px 6px; }
       .graph-mode .selection-actions, .graph-mode .graph-legend, .graph-mode .keyboard-nav { flex:0 0 auto; }
-      .graph-mode .selection-actions { flex-wrap:wrap; min-height:34px; padding:4px 6px; }
+      .graph-mode .selection-actions { flex-wrap:nowrap; min-height:34px; padding:4px 6px; overflow-x:auto; overflow-y:hidden; scrollbar-width:thin; }
       .graph-mode .graph-legend { overflow-x:auto; flex-wrap:nowrap; }
       .graph-mode .graph-canvas { flex:1; min-height:0; height:auto; }
       .graph-mode .keyboard-nav { max-height:34%; overflow:auto; }
-      .graph-mode .inspector-rail { position:static; top:auto; min-height:0; height:100%; max-height:none; overflow:auto; padding-right:2px; }
+      .graph-mode .inspector-rail { position:static; top:auto; display:block; min-height:0; height:100%; max-height:none; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; padding-right:2px; }
+      .graph-mode .detail-panel, .graph-mode .question-panel { display:block; width:100%; min-height:max-content; }
+      .graph-mode .detail-panel h2 { scroll-margin-top:10px; }
       .graph-mode .path-panel { flex:0 0 auto; margin-top:6px; }
       .graph-mode .path-panel[open] { max-height:34vh; overflow:auto; }
     }
@@ -315,8 +319,8 @@
       .overview-areas::before, .overview-area::before { display:none; }
       .overview-branch { height:18px; }
       .workspace { grid-template-columns:1fr; }
-      .inspector-rail { position:static; max-height:none; overflow:visible; grid-template-columns:minmax(0,1fr) minmax(280px,.7fr); }
-      .detail-panel { min-height:0; }
+      .inspector-rail { position:static; max-height:none; overflow:visible; }
+      .detail-panel { min-height:max-content; }
       .graph-canvas { height:min(58vh,520px); min-height:400px; }
       .page.graph-mode { height:auto; overflow:visible; display:block; }
       .graph-mode #map-explorer { overflow:visible; display:block; }
@@ -359,7 +363,7 @@
       .selection-label { width:100%; }
       .graph-legend { gap:6px 9px; overflow-x:auto; flex-wrap:nowrap; }
       .graph-canvas { min-height:360px; height:54vh; }
-      .inspector-rail { grid-template-columns:1fr; }
+      .inspector-rail { display:block; }
       .detail-head { align-items:flex-start; flex-direction:column; }
       .relationship-list li { grid-template-columns:minmax(0,1fr); }
       .edge-highlight-button { justify-self:start; }
