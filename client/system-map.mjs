@@ -646,7 +646,7 @@ function semanticRevealInfo(id, kind) {
 
   if (!plan) {
     plan = buildSemanticRevealPlan(id, kind, allItems);
-    if (open) state.revealPlans.set(key, plan);
+    state.revealPlans.set(key, plan);
   }
 
   const itemIndex = new Map(allItems.map(item => [item.node.id, item]));
@@ -741,10 +741,26 @@ function scheduleRevealPlanResize() {
   if (revealResizeFrame) cancelAnimationFrame(revealResizeFrame);
   revealResizeFrame = requestAnimationFrame(() => {
     revealResizeFrame = 0;
-    if (!recomputeOpenRevealPlans({ announceChange: true })) return;
+    const changed = recomputeOpenRevealPlans({ announceChange: true });
+    const needsPreviewRefresh = state.lens === 'agent-runtime' && Boolean(state.selectedId);
+    if (!changed && !needsPreviewRefresh) return;
     render({ preserveViewport: true, anchorNodeId: state.selectedId, fitOnTopologyChange: false });
     normalizeGraphDocumentScroll();
   });
+}
+
+function clearClosedRevealPlans() {
+  for (const key of [...state.revealPlans.keys()]) {
+    const separator = key.indexOf(':');
+    if (separator < 0) {
+      state.revealPlans.delete(key);
+      continue;
+    }
+    const kind = key.slice(0, separator);
+    const id = key.slice(separator + 1);
+    const openSet = kind === 'contents' ? state.expanded : state.connections;
+    if (!openSet.has(id)) state.revealPlans.delete(key);
+  }
 }
 
 function semanticRangeText(info, noun) {
@@ -1510,6 +1526,7 @@ async function copyQuestionHandoff() {
 }
 
 function render(options = {}) {
+  clearClosedRevealPlans();
   renderStatus();
   renderGraph(options);
   renderDetails();
