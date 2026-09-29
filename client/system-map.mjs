@@ -12,7 +12,8 @@ import {
   SystemMapRenderer,
   boundedVisibleNodeIds,
   initialExpandedIds,
-  localRevealBatchSize
+  localRevealBatchSize,
+  neighborhoodWindow
 } from './system-map-renderer.mjs';
 
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -78,6 +79,9 @@ const state = {
   expansionLimits: new Map(),
   connections: new Set(),
   connectionLimits: new Map(),
+  contentOffsets: new Map(),
+  connectionOffsets: new Map(),
+  explorationTrail: [],
   path: null,
   focusPath: null,
   focusId: null,
@@ -124,7 +128,8 @@ const elements = {
   questionSummary: document.getElementById('map-question-context-summary'),
   questionPreview: document.getElementById('map-question-preview'),
   questionCopy: document.getElementById('map-copy-question'),
-  questionCopyStatus: document.getElementById('map-copy-status')
+  questionCopyStatus: document.getElementById('map-copy-status'),
+  inspectorRail: root.querySelector('.inspector-rail')
 };
 
 let renderer = null;
@@ -155,6 +160,9 @@ function captureViewSnapshot() {
     expansionLimits: [...state.expansionLimits.entries()],
     connections: [...state.connections],
     connectionLimits: [...state.connectionLimits.entries()],
+    contentOffsets: [...state.contentOffsets.entries()],
+    connectionOffsets: [...state.connectionOffsets.entries()],
+    explorationTrail: [...state.explorationTrail],
     path: clonePath(state.path),
     focusPath: clonePath(state.focusPath),
     focusId: state.focusId,
@@ -165,7 +173,9 @@ function captureViewSnapshot() {
     pathFrom: elements.pathFrom?.value || '',
     pathTo: elements.pathTo?.value || '',
     viewport: renderer?.getViewport?.() || null,
-    positions: renderer?.getNodePositions?.() || []
+    positions: renderer?.getNodePositions?.() || [],
+    inspectorScrollTop: elements.inspectorRail?.scrollTop || 0,
+    documentScrollY: globalThis.scrollY || 0
   };
 }
 
@@ -190,6 +200,13 @@ function applyViewSnapshot(snapshot) {
   state.connectionLimits = new Map(
     (snapshot.connectionLimits || []).filter(([id]) => nodeIds.has(id))
   );
+  state.contentOffsets = new Map(
+    (snapshot.contentOffsets || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.connectionOffsets = new Map(
+    (snapshot.connectionOffsets || []).filter(([id]) => nodeIds.has(id))
+  );
+  state.explorationTrail = (snapshot.explorationTrail || []).filter(id => nodeIds.has(id));
   state.path = validPath(snapshot.path);
   state.focusPath = validPath(snapshot.focusPath);
   state.focusId = nodeIds.has(snapshot.focusId) ? snapshot.focusId : null;
@@ -229,6 +246,8 @@ function pushNavigationCheckpoint() {
     [...(item?.connections || [])].sort().join(','),
     JSON.stringify(item?.expansionLimits || []),
     JSON.stringify(item?.connectionLimits || []),
+    JSON.stringify(item?.contentOffsets || []),
+    JSON.stringify(item?.connectionOffsets || []),
     item?.path?.nodes?.join('>')
   ].join('|');
   if (key(last) === key(snapshot)) return;
