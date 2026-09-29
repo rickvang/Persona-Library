@@ -14,16 +14,20 @@ import {
   NODE_LABEL_MODEL_PX,
   MIN_RENDERED_LABEL_PX,
   MIN_READABLE_ZOOM,
+  OVERVIEW_MIN_ZOOM,
   SystemMapRenderer,
   boundedVisibleNodeIds,
+  excludeAlreadyVisibleRevealItems,
   initialExpandedIds,
   localRevealBatchSize,
   localRevealCamera,
   localCollectionFitsReadable,
   neighborhoodWindow,
+  normalizeNeighborhoodOffset,
   panForVisibleBounds,
   planLocalNodePositions,
   rectangleFromCenter,
+  readableLocalPageCapacity,
   rectanglesOverlap,
   renderedLabelPixels,
   rendererElements
@@ -100,6 +104,7 @@ test('System Map dense exploration keeps primary labels readable and pages neigh
   assert.equal(NODE_LABEL_MODEL_PX, 11);
   assert.equal(MIN_RENDERED_LABEL_PX, 12);
   assert.ok(MIN_READABLE_ZOOM > 1, 'readability floor should be based on rendered label pixels, not an arbitrarily small zoom');
+  assert.ok(OVERVIEW_MIN_ZOOM < MIN_READABLE_ZOOM, 'explicit overview/Fit mode may zoom farther out than normal local exploration');
   assert.ok(
     renderedLabelPixels(MIN_READABLE_ZOOM) >= MIN_RENDERED_LABEL_PX,
     'primary node labels must remain at least 12 rendered pixels at the minimum exploration zoom'
@@ -134,6 +139,13 @@ test('System Map dense exploration keeps primary labels readable and pages neigh
   assert.equal(back.offset, 4);
   assert.equal(back.start, 5);
   assert.equal(back.end, 8);
+});
+
+test('System Map resize pagination keeps the previously visible item inside the normalized page', () => {
+  assert.equal(normalizeNeighborhoodOffset({ total: 9, offset: 4, pageSize: 3 }), 3);
+  assert.equal(normalizeNeighborhoodOffset({ total: 9, offset: 6, pageSize: 5 }), 5);
+  assert.equal(normalizeNeighborhoodOffset({ total: 9, offset: 8, pageSize: 4 }), 8);
+  assert.equal(normalizeNeighborhoodOffset({ total: 0, offset: 8, pageSize: 4 }), 0);
 });
 
 test('System Map local reveal placement preserves retained geometry and avoids occupied slots across repeated batches', () => {
@@ -208,6 +220,36 @@ test('System Map local reveal placement preserves retained geometry and avoids o
   }
 });
 
+test('System Map paged neighborhood replacement reuses the same readable local slots predictably', () => {
+  const anchor = { id: 'anchor', x: 0, y: 0, width: 144, height: 54 };
+  const context = { id: 'context', x: -206, y: 0, width: 144, height: 54 };
+  const firstPage = [
+    { id: 'page1:a', width: 144, height: 54, direction: 'outgoing' },
+    { id: 'page1:b', width: 144, height: 54, direction: 'outgoing' },
+    { id: 'page1:c', width: 144, height: 54, direction: 'outgoing' }
+  ];
+  const secondPage = firstPage.map((node, index) => ({ ...node, id: 'page2:' + index }));
+
+  const first = planLocalNodePositions({
+    anchor,
+    nodes: firstPage,
+    occupied: [anchor, context],
+    layoutDirection: 'horizontal'
+  });
+  const second = planLocalNodePositions({
+    anchor,
+    nodes: secondPage,
+    occupied: [anchor, context],
+    layoutDirection: 'horizontal'
+  });
+
+  assert.deepEqual(
+    [...first.values()],
+    [...second.values()],
+    'replacing one semantic page with the next should keep the neighborhood in recognizable local slots'
+  );
+});
+
 test('System Map local reveal camera keeps readable zoom and can recover a clipped selected node', () => {
   const camera = localRevealCamera({
     bounds: { x1: -80, x2: 820, y1: -40, y2: 560, width: 900, height: 600 },
@@ -249,10 +291,103 @@ test('System Map local reveal camera keeps readable zoom and can recover a clipp
   });
   assert.ok(selectedBounds.x1 + pan.x >= 32, 'selected node should be moved back inside the readable safe area');
 
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'connections' }), 2);
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 520, viewportHeight: 600, kind: 'connections' }), 2);
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 480, viewportHeight: 340, kind: 'connections' }), 1);
-  assert.equal(localRevealBatchSize({ total: 10, viewportWidth: 1000, viewportHeight: 600, kind: 'contents' }), 3);
+  assert.equal(localRevealBatchSize({
+    total: 10,
+    viewportWidth: 1000,
+    viewportHeight: 600,
+    kind: 'connections',
+    layoutDirection: 'horizontal',
+    directions: Array(10).fill('outgoing')
+  }), 5);
+  assert.equal(localRevealBatchSize({
+    total: 10,
+    viewportWidth: 850,
+    viewportHeight: 430,
+    kind: 'connections',
+    layoutDirection: 'horizontal',
+    directions: Array(10).fill('outgoing')
+  }), 4, 'normal desktop should compare several related nodes together');
+  assert.equal(localRevealBatchSize({
+    total: 10,
+    viewportWidth: 480,
+    viewportHeight: 340,
+    kind: 'connections',
+    layoutDirection: 'horizontal',
+    directions: Array(10).fill('outgoing')
+  }), 1, 'constrained mobile geometry should page aggressively only when necessary');
+});
+
+test('System Map reveal capacity is geometry-derived and preserves upstream context', () => {
+  const spacious = readableLocalPageCapacity({
+    total: 9,
+    viewportWidth: 900,
+    viewportHeight: 500,
+    layoutDirection: 'horizontal',
+    directions: Array(9).fill('outgoing')
+  });
+  const shortLaptop = readableLocalPageCapacity({
+    total: 9,
+    viewportWidth: 850,
+    viewportHeight: 360,
+    layoutDirection: 'horizontal',
+    directions: Array(9).fill('outgoing')
+  });
+  const narrow = readableLocalPageCapacity({
+    total: 9,
+    viewportWidth: 480,
+    viewportHeight: 500,
+    layoutDirection: 'horizontal',
+    directions: Array(9).fill('outgoing')
+  });
+
+  assert.ok(spacious >= 4, 'spacious desktop should reveal multiple comparable neighbors');
+  assert.ok(shortLaptop >= 1 && shortLaptop < spacious, 'short laptop should reduce the page only as geometry requires');
+  assert.equal(narrow, 1, 'narrow horizontal graph should use pagination rather than unreadable scale');
+});
+
+test('System Map Agent/runtime reveal candidates exclude independently visible context', async () => {
+  const runtimeGraph = JSON.parse(await fs.readFile(
+    new URL('../../dist/data/system-map/agent-runtime.json', import.meta.url),
+    'utf8'
+  ));
+  validateGraph(runtimeGraph);
+  const nodeById = new Map(runtimeGraph.nodes.map(node => [node.id, node]));
+  const rootId = 'view:agent-runtime';
+  const dispatcherId = 'agent:repository-dispatcher';
+  const bootstrapId = 'routing:orientation-bootstrap';
+
+  const dispatcherConnections = runtimeGraph.edges
+    .filter(edge => (
+      (edge.from === dispatcherId && edge.relationship !== 'contains' && edge.relationship !== 'owns' && !edge.relationship.startsWith('owns-'))
+      || edge.to === dispatcherId
+    ))
+    .map(edge => ({
+      node: nodeById.get(edge.from === dispatcherId ? edge.to : edge.from),
+      edge,
+      direction: edge.from === dispatcherId ? 'outgoing' : 'incoming'
+    }))
+    .sort((a, b) => a.node.label.localeCompare(b.node.label));
+
+  const initialVisible = new Set([rootId, dispatcherId, 'boundary:live-runtime-state']);
+  const newDispatcherConnections = excludeAlreadyVisibleRevealItems(dispatcherConnections, initialVisible);
+  assert.deepEqual(
+    newDispatcherConnections.map(item => item.node.id).sort(),
+    ['routing:orientation-bootstrap', 'validation:repository-validation'].sort(),
+    'dispatcher reveal should not spend a page on the already-visible Agent/runtime root'
+  );
+
+  const bootstrapConnections = runtimeGraph.edges
+    .filter(edge => edge.from === bootstrapId || edge.to === bootstrapId)
+    .map(edge => ({
+      node: nodeById.get(edge.from === bootstrapId ? edge.to : edge.from),
+      edge,
+      direction: edge.from === bootstrapId ? 'outgoing' : 'incoming'
+    }))
+    .sort((a, b) => a.node.label.localeCompare(b.node.label));
+  const bootstrapVisible = new Set([rootId, dispatcherId, bootstrapId, 'validation:repository-validation']);
+  const newBootstrapConnections = excludeAlreadyVisibleRevealItems(bootstrapConnections, bootstrapVisible);
+  assert.equal(newBootstrapConnections.length, 9);
+  assert.ok(newBootstrapConnections.every(item => item.node.id.startsWith('space:')));
 });
 
 test('System Map readable local pages fit selected node plus current page at the label floor', () => {
@@ -411,6 +546,11 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /100dvh/);
   assert.match(page, /semantic-progress/);
   assert.match(page, /aria-label="Exploration path"/);
+  assert.match(page, /\.graph-mode \.inspector-rail \{[^}]*display:block;[^}]*overflow-y:auto;/s);
+  assert.match(page, /\.graph-mode \.detail-panel, \.graph-mode \.question-panel \{[^}]*min-height:max-content;/s);
+  assert.match(page, /\.inspector-rail > \* \{[^}]*min-height:max-content;/s);
+  assert.doesNotMatch(page, /\.graph-mode \.inspector-rail \{[^}]*display:grid;/s);
+  assert.match(page, /\.graph-mode \.selection-actions \{[^}]*flex-wrap:nowrap;/s);
   assert.match(page, /branch-progress/);
   assert.match(page, /show-more-button/);
   assert.match(page, /id="map-type-filter"/);
@@ -458,6 +598,15 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /data-focus-selected/);
   assert.match(client, /semanticNeighborGroups/);
   assert.match(client, /semanticRevealInfo/);
+  assert.match(client, /semanticPlanningViewport/);
+  assert.match(client, /revealPlans/);
+  assert.match(client, /excludeAlreadyVisibleRevealItems/);
+  assert.match(client, /recomputeOpenRevealPlans/);
+  assert.match(client, /scheduleRevealPlanResize/);
+  assert.match(client, /semanticPlanningSignature/);
+  assert.match(client, /normalizeNeighborhoodOffset/);
+  assert.match(client, /lastRevealPlanningSignature/);
+  assert.match(client, /semanticToggleLabel/);
   assert.match(client, /semanticRangeText/);
   assert.match(client, /semanticPageLabel/);
   assert.match(client, /pageSemanticReveal/);
@@ -466,11 +615,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(client, /data-show-previous-connections/);
   assert.match(client, /data-toggle-contents/);
   assert.match(client, /data-toggle-connections/);
-  assert.match(client, /Show connections/);
-  assert.match(client, /Open contents/);
   assert.match(client, /agent:repository-dispatcher/);
   assert.match(client, /Chooses the shortest applicable activation path/);
   assert.match(client, /Connections relate separate entities/);
+  assert.equal((client.match(/semanticToggleLabel\(contents, 'contents'\)/g) || []).length, 3, 'inspector, toolbar, and keyboard fallback should share one contents label helper');
+  assert.equal((client.match(/semanticToggleLabel\(connections, 'connections'\)/g) || []).length, 3, 'inspector, toolbar, and keyboard fallback should share one connections label helper');
+
   assert.doesNotMatch(client, /fitInline/);
   assert.match(client, /groupedRelationships/);
   assert.match(client, /layoutDirection: 'horizontal'/);
@@ -479,7 +629,13 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /MIN_RENDERED_LABEL_PX = 12/);
   assert.match(renderer, /NODE_LABEL_MODEL_PX = 11/);
   assert.match(renderer, /neighborhoodWindow/);
-  assert.match(renderer, /minZoom: MIN_READABLE_ZOOM/);
+  assert.match(renderer, /readableLocalPageCapacity/);
+  assert.match(renderer, /excludeAlreadyVisibleRevealItems/);
+  assert.match(renderer, /NODE_MODEL_WIDTH = 144/);
+  assert.match(renderer, /NODE_MODEL_HEIGHT = 54/);
+  assert.match(renderer, /minZoom: OVERVIEW_MIN_ZOOM/);
+  assert.match(renderer, /this\.cy\.minZoom\?\.\(MIN_READABLE_ZOOM\)/);
+  assert.match(renderer, /this\.cy\.minZoom\?\.\(minZoom\)/);
   assert.match(renderer, /preserveViewport = false/);
   assert.match(renderer, /anchorNodeId = null/);
   assert.match(renderer, /getViewport\(\)/);
@@ -489,6 +645,7 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /previousPositions/);
   assert.match(renderer, /addedNodeIds/);
   assert.match(renderer, /renderedBoundingBox/);
+  assert.match(renderer, /anchor\.incomers/);
   assert.match(renderer, /panBy/);
   assert.match(renderer, /transform: layoutDirection === 'horizontal'/);
   assert.match(client, /renderFallbackNodes\(visible\)/);
