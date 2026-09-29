@@ -685,6 +685,27 @@ export class SystemMapRenderer {
       padding
     });
     if (anchorPan.x || anchorPan.y) this.cy.panBy(anchorPan);
+
+    // Anchor correction can slightly shift an otherwise fitting local page.
+    // Re-check the complete page once more so the selected node and every
+    // node in the current semantic window finish inside the same safe area.
+    bounds = collection.renderedBoundingBox({ includeLabels: true });
+    if (localCollectionFitsReadable({
+      bounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      zoom: minZoom,
+      currentZoom: this.cy.zoom(),
+      padding
+    })) {
+      const finalPan = panForVisibleBounds({
+        bounds,
+        canvasWidth: width,
+        canvasHeight: height,
+        padding
+      });
+      if (finalPan.x || finalPan.y) this.cy.panBy(finalPan);
+    }
   }
 
   render({
