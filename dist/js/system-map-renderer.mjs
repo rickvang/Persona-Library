@@ -10,7 +10,11 @@ export const NODE_LABEL_MODEL_PX = 11;
 export const MIN_RENDERED_LABEL_PX = 12;
 export const MIN_READABLE_ZOOM = MIN_RENDERED_LABEL_PX / NODE_LABEL_MODEL_PX;
 export const MAX_INITIAL_ZOOM = 1.32;
+export const OVERVIEW_MIN_ZOOM = 0.22;
 export const LOCAL_REVEAL_GAP = 30;
+export const NODE_MODEL_WIDTH = 144;
+export const NODE_MODEL_HEIGHT = 54;
+export const LOCAL_PRIMARY_GAP = 62;
 
 export function renderedLabelPixels(zoom, modelFontPx = NODE_LABEL_MODEL_PX) {
   return Math.max(0, Number(zoom) || 0) * Math.max(0, Number(modelFontPx) || 0);
@@ -41,6 +45,18 @@ export function neighborhoodWindow({
     hasPrevious: nextOffset > 0,
     hasNext: end < count
   };
+}
+
+export function normalizeNeighborhoodOffset({
+  total,
+  offset = 0,
+  pageSize = 1
+} = {}) {
+  const count = Math.max(0, Math.floor(Number(total) || 0));
+  if (!count) return 0;
+  const size = Math.max(1, Math.floor(Number(pageSize) || 1));
+  const currentItem = Math.min(count - 1, Math.max(0, Math.floor(Number(offset) || 0)));
+  return Math.floor(currentItem / size) * size;
 }
 
 export function rectangleFromCenter({ x, y, width, height, id = null }) {
@@ -78,7 +94,7 @@ export function planLocalNodePositions({
   occupied = [],
   layoutDirection = 'vertical',
   gap = LOCAL_REVEAL_GAP,
-  primaryGap = 62,
+  primaryGap = LOCAL_PRIMARY_GAP,
   maxColumns = 14,
   maxCrossSlots = 18
 } = {}) {
@@ -225,29 +241,133 @@ export function panForVisibleBounds({
   return { x, y };
 }
 
+function boundsForRectangles(rectangles = []) {
+  if (!rectangles.length) return null;
+  const x1 = Math.min(...rectangles.map(rect => rect.x1));
+  const x2 = Math.max(...rectangles.map(rect => rect.x2));
+  const y1 = Math.min(...rectangles.map(rect => rect.y1));
+  const y2 = Math.max(...rectangles.map(rect => rect.y2));
+  return { x1, x2, y1, y2, width: x2 - x1, height: y2 - y1 };
+}
+
+export function excludeAlreadyVisibleRevealItems(items = [], visibleIds = []) {
+  const visible = visibleIds instanceof Set ? visibleIds : new Set(visibleIds || []);
+  return items.filter(item => {
+    const id = item?.node?.id ?? item?.id;
+    return id && !visible.has(id);
+  });
+}
+
+export function readableLocalPageCapacity({
+  total,
+  viewportWidth,
+  viewportHeight,
+  layoutDirection = 'horizontal',
+  directions = [],
+  padding = 32,
+  minZoom = MIN_READABLE_ZOOM,
+  nodeWidth = NODE_MODEL_WIDTH,
+  nodeHeight = NODE_MODEL_HEIGHT,
+  preserveUpstreamContext = true,
+  maxItems = 5
+} = {}) {
+  const count = Math.max(0, Math.floor(Number(total) || 0));
+  if (!count) return 0;
+  const width = Math.max(0, Number(viewportWidth) || 0);
+  const height = Math.max(0, Number(viewportHeight) || 0);
+  if (!width || !height) return 1;
+
+  const anchor = {
+    id: '__anchor__',
+    x: 0,
+    y: 0,
+    width: nodeWidth,
+    height: nodeHeight
+  };
+  const occupied = [anchor];
+  const contextRects = [rectangleFromCenter(anchor)];
+
+  if (preserveUpstreamContext) {
+    const primaryOffset = layoutDirection === 'horizontal'
+      ? nodeWidth / 2 + nodeWidth / 2 + LOCAL_PRIMARY_GAP
+      : nodeHeight / 2 + nodeHeight / 2 + LOCAL_PRIMARY_GAP;
+    const context = layoutDirection === 'horizontal'
+      ? { id: '__context__', x: -primaryOffset, y: 0, width: nodeWidth, height: nodeHeight }
+      : { id: '__context__', x: 0, y: -primaryOffset, width: nodeWidth, height: nodeHeight };
+    occupied.push(context);
+    contextRects.push(rectangleFromCenter(context));
+  }
+
+  let capacity = 0;
+  const limit = Math.min(count, Math.max(1, Math.floor(Number(maxItems) || 1)));
+  for (let size = 1; size <= limit; size += 1) {
+    const specs = Array.from({ length: size }, (_, index) => ({
+      id: '__candidate_' + index,
+      direction: directions[index] === 'incoming' ? 'incoming' : 'outgoing',
+      width: nodeWidth,
+      height: nodeHeight
+    }));
+    const placements = planLocalNodePositions({
+      anchor,
+      nodes: specs,
+      occupied,
+      layoutDirection
+    });
+    const rectangles = [
+      ...contextRects,
+      ...specs.map(spec => {
+        const position = placements.get(spec.id);
+        return rectangleFromCenter({
+          id: spec.id,
+          x: position.x,
+          y: position.y,
+          width: nodeWidth,
+          height: nodeHeight
+        });
+      })
+    ];
+    const bounds = boundsForRectangles(rectangles);
+    const renderedBounds = {
+      ...bounds,
+      x1: 0,
+      y1: 0,
+      x2: bounds.width * minZoom,
+      y2: bounds.height * minZoom,
+      width: bounds.width * minZoom,
+      height: bounds.height * minZoom
+    };
+    if (!localCollectionFitsReadable({
+      bounds: renderedBounds,
+      canvasWidth: width,
+      canvasHeight: height,
+      zoom: minZoom,
+      currentZoom: minZoom,
+      padding
+    })) break;
+    capacity = size;
+  }
+
+  return Math.max(1, capacity);
+}
+
 export function localRevealBatchSize({
   total,
   viewportWidth,
   viewportHeight,
-  kind = 'connections'
+  kind = 'connections',
+  layoutDirection = 'horizontal',
+  directions = [],
+  preserveUpstreamContext = true
 } = {}) {
-  const count = Math.max(0, Number(total) || 0);
-  if (!count) return 0;
-  const width = Math.max(0, Number(viewportWidth) || 0);
-  const height = Math.max(0, Number(viewportHeight) || 0);
-
-  // Dense semantic neighborhoods are intentionally conservative. The graph
-  // shares the viewport with an inspector, and the readable zoom floor is
-  // above 1x, so a small page is preferable to revealing nodes that require
-  // panning to discover. Contents get one extra slot because they represent
-  // explicit containment and are typically the next structural step.
-  let capacity = kind === 'contents' ? 3 : 2;
-
-  if ((width && width < 520) || (height && height < 360)) {
-    capacity = Math.min(capacity, kind === 'contents' ? 2 : 1);
-  }
-
-  return Math.min(count, Math.max(1, capacity));
+  return readableLocalPageCapacity({
+    total,
+    viewportWidth,
+    viewportHeight,
+    layoutDirection,
+    directions,
+    preserveUpstreamContext,
+    maxItems: kind === 'contents' ? 6 : 5
+  });
 }
 
 function readableRelationship(value) {
@@ -346,14 +466,14 @@ function stylesheet() {
         'font-family': 'Inter, ui-sans-serif, system-ui, sans-serif',
         'font-size': NODE_LABEL_MODEL_PX,
         'font-weight': 650,
-        'height': 54,
+        'height': NODE_MODEL_HEIGHT,
         'label': 'data(label)',
         'shape': 'round-rectangle',
         'text-halign': 'center',
         'text-max-width': 118,
         'text-valign': 'center',
         'text-wrap': 'wrap',
-        'width': 144
+        'width': NODE_MODEL_WIDTH
       }
     },
     {
@@ -507,9 +627,10 @@ export class SystemMapRenderer {
     this.signature = '';
   }
 
-  fit({ padding = 56, maxZoom = 1.55 } = {}) {
+  fit({ padding = 56, maxZoom = 1.55, minZoom = OVERVIEW_MIN_ZOOM } = {}) {
     if (!this.cy || this.cy.elements().empty()) return;
     const collection = this.cy.elements();
+    this.cy.minZoom?.(minZoom);
     this.cy.fit(collection, padding);
     if (this.cy.zoom() > maxZoom) {
       this.cy.zoom(maxZoom);
@@ -519,6 +640,7 @@ export class SystemMapRenderer {
 
   focus(id, { padding = 96, maxZoom = 1.45 } = {}) {
     if (!this.cy || !id) return;
+    this.cy.minZoom?.(MIN_READABLE_ZOOM);
     const node = this.cy.getElementById(id);
     if (node.empty()) return;
     const collection = node.closedNeighborhood();
@@ -533,6 +655,7 @@ export class SystemMapRenderer {
     if (!this.cy) return null;
     return {
       zoom: this.cy.zoom(),
+      minZoom: this.cy.minZoom?.() ?? OVERVIEW_MIN_ZOOM,
       pan: { ...this.cy.pan() }
     };
   }
@@ -555,6 +678,8 @@ export class SystemMapRenderer {
 
   restoreViewport(viewport) {
     if (!this.cy || !viewport) return;
+    if (Number.isFinite(viewport.minZoom)) this.cy.minZoom?.(viewport.minZoom);
+    else if (Number.isFinite(viewport.zoom)) this.cy.minZoom?.(Math.min(OVERVIEW_MIN_ZOOM, viewport.zoom));
     if (Number.isFinite(viewport.zoom)) this.cy.zoom(viewport.zoom);
     if (viewport.pan && Number.isFinite(viewport.pan.x) && Number.isFinite(viewport.pan.y)) {
       this.cy.pan(viewport.pan);
@@ -637,10 +762,16 @@ export class SystemMapRenderer {
     minZoom = MIN_READABLE_ZOOM
   } = {}) {
     if (!this.cy || !anchorNodeId || !addedNodeIds.length) return;
+    this.cy.minZoom?.(minZoom);
     const anchor = this.cy.getElementById(anchorNodeId);
     if (anchor.empty()) return;
 
     let collection = anchor;
+    const addedSet = new Set(addedNodeIds);
+    const upstream = anchor.incomers?.('node')
+      ?.filter(node => !addedSet.has(node.id()))
+      ?.first?.();
+    if (upstream && !upstream.empty()) collection = collection.union(upstream);
     for (const id of addedNodeIds) {
       const node = this.cy.getElementById(id);
       if (!node.empty()) collection = collection.union(node);
@@ -739,7 +870,7 @@ export class SystemMapRenderer {
         container: this.container,
         elements,
         style: stylesheet(),
-        minZoom: MIN_READABLE_ZOOM,
+        minZoom: OVERVIEW_MIN_ZOOM,
         maxZoom: 2.6,
         wheelSensitivity: 0.16,
         boxSelectionEnabled: false,
