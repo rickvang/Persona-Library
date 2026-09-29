@@ -1496,8 +1496,13 @@ function toggleSemanticReveal(id, kind) {
   const openSet = kind === 'contents' ? state.expanded : state.connections;
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
   const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
+  const key = semanticPlanKey(id, kind);
   const info = semanticRevealInfo(id, kind);
   if (!info.total) return;
+  if (!openSet.has(id) && !info.revealTotal) {
+    announce(`All ${info.total} ${kind} for ${selectedNode()?.label || id} are already visible.`);
+    return;
+  }
 
   pushNavigationCheckpoint();
 
@@ -1505,7 +1510,13 @@ function toggleSemanticReveal(id, kind) {
     openSet.delete(id);
     limits.delete(id);
     offsets.delete(id);
+    state.revealPlans.delete(key);
   } else {
+    state.revealPlans.set(key, {
+      ...info.plan,
+      itemIds: [...info.plan.itemIds],
+      directions: [...info.plan.directions]
+    });
     openSet.add(id);
     limits.set(id, info.batchSize);
     offsets.set(id, 0);
@@ -1528,10 +1539,10 @@ function pageSemanticReveal(id, kind, direction = 'next') {
   const limits = kind === 'contents' ? state.expansionLimits : state.connectionLimits;
   const offsets = kind === 'contents' ? state.contentOffsets : state.connectionOffsets;
   const info = semanticRevealInfo(id, kind);
-  if (!info.total || !info.open) return;
+  if (!info.revealTotal || !info.open) return;
 
   const nextWindow = neighborhoodWindow({
-    total: info.total,
+    total: info.revealTotal,
     offset: info.offset,
     batchSize: info.batchSize,
     direction
@@ -1547,7 +1558,8 @@ function pageSemanticReveal(id, kind, direction = 'next') {
   state.focusId = null;
   render({ preserveViewport: true, anchorNodeId: id, fitOnTopologyChange: false });
   updateUrlState();
-  announce(`Showing ${kind} ${nextWindow.start}–${nextWindow.end} of ${nextWindow.total} for ${selectedNode()?.label || id}.`);
+  const updated = semanticRevealInfo(id, kind);
+  announce(`Showing ${semanticRangeText(updated, kind)} for ${selectedNode()?.label || id}.`);
 }
 
 function showMoreNeighbors(id) {
