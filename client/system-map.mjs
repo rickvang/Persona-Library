@@ -621,7 +621,7 @@ function currentVisibleIds() {
       for (const id of [...visible]) {
         if (state.expanded.has(id)) {
           const info = semanticRevealInfo(id, 'contents');
-          for (const item of info.items.slice(0, info.revealed)) {
+          for (const item of info.items.slice(info.offset, info.offset + info.revealed)) {
             if (!visible.has(item.node.id)) {
               visible.add(item.node.id);
               changed = true;
@@ -630,7 +630,7 @@ function currentVisibleIds() {
         }
         if (state.connections.has(id)) {
           const info = semanticRevealInfo(id, 'connections');
-          for (const item of info.items.slice(0, info.revealed)) {
+          for (const item of info.items.slice(info.offset, info.offset + info.revealed)) {
             if (!visible.has(item.node.id)) {
               visible.add(item.node.id);
               changed = true;
@@ -658,10 +658,10 @@ function currentVisibleIds() {
     const contents = semanticRevealInfo(state.focusId, 'contents');
     const connections = semanticRevealInfo(state.focusId, 'connections');
     if (contents.open) {
-      for (const item of contents.items.slice(0, contents.revealed)) focused.add(item.node.id);
+      for (const item of contents.items.slice(contents.offset, contents.offset + contents.revealed)) focused.add(item.node.id);
     }
     if (connections.open) {
-      for (const item of connections.items.slice(0, connections.revealed)) focused.add(item.node.id);
+      for (const item of connections.items.slice(connections.offset, connections.offset + connections.revealed)) focused.add(item.node.id);
     }
   } else {
     const focusLimit = state.expanded.has(state.focusId)
