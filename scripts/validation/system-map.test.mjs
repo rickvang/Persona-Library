@@ -1,3 +1,11 @@
+import {
+  createJourneyState,
+  toggleGroup,
+  selectItem,
+  openRequestStage,
+  inspectParticipant,
+  goBack
+} from '../../client/system-map-journey.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -513,7 +521,7 @@ test('System Map provenance resolves repository files without copying source con
 
 test('System Map Site consumes domain-owned graphs without copying graph facts into presentation', async () => {
   const [page, client, renderer, build] = await Promise.all([
-    fs.readFile(new URL('../../content/site-pages/system-map.html', import.meta.url), 'utf8'),
+    fs.readFile(new URL('../../content/site-pages/system-map-advanced.html', import.meta.url), 'utf8'),
     fs.readFile(new URL('../../client/system-map.mjs', import.meta.url), 'utf8'),
     fs.readFile(new URL('../../client/system-map-renderer.mjs', import.meta.url), 'utf8'),
     fs.readFile(new URL('../../scripts/build-library.mjs', import.meta.url), 'utf8')
@@ -733,4 +741,76 @@ test('System Map provenance also resolves the Repository Ownership registry sour
     sourceUrl({ kind: 'repo-file', locator: 'rickvang/persona-workspace:repositories.json', selector: 'repositories' }),
     'https://github.com/rickvang/persona-workspace/blob/main/repositories.json'
   );
+});
+
+
+test('Simple System Map required journey preserves expansion and selection through request-stage inspection and Back', () => {
+  let state = createJourneyState();
+  assert.equal(state.view, 'system');
+  assert.deepEqual(state.expandedGroups, []);
+
+  state = toggleGroup(state, 'docs');
+  assert.deepEqual(state.expandedGroups, ['docs']);
+
+  state = selectItem(state, 'docs', 'route:system-orientation');
+  const systemContext = {
+    view: state.view,
+    expandedGroups: [...state.expandedGroups],
+    selectedGroupId: state.selectedGroupId,
+    selectedItemId: state.selectedItemId
+  };
+  assert.deepEqual(systemContext, {
+    view: 'system',
+    expandedGroups: ['docs'],
+    selectedGroupId: 'docs',
+    selectedItemId: 'route:system-orientation'
+  });
+
+  state = openRequestStage(state, 'route:system-orientation', 'stage-orientation');
+  assert.equal(state.view, 'request');
+  assert.equal(state.selectedStageId, 'stage-orientation');
+
+  state = inspectParticipant(state, 'skill-package:.agents/skills/persona-library-orientation');
+  assert.equal(state.selectedItemId, 'skill-package:.agents/skills/persona-library-orientation');
+
+  state = goBack(state);
+  assert.equal(state.view, 'request');
+  assert.equal(state.selectedStageId, 'stage-orientation');
+  assert.equal(state.selectedItemId, 'route:system-orientation');
+
+  state = goBack(state);
+  assert.equal(state.view, systemContext.view);
+  assert.deepEqual(state.expandedGroups, systemContext.expandedGroups);
+  assert.equal(state.selectedGroupId, systemContext.selectedGroupId);
+  assert.equal(state.selectedItemId, systemContext.selectedItemId);
+});
+
+test('Default System Map exposes the two-view prototype while preserving the advanced graph', async () => {
+  const [page, client, build] = await Promise.all([
+    fs.readFile(new URL('../../content/site-pages/system-map.html', import.meta.url), 'utf8'),
+    fs.readFile(new URL('../../client/system-map-simple.mjs', import.meta.url), 'utf8'),
+    fs.readFile(new URL('../../scripts/build-library.mjs', import.meta.url), 'utf8')
+  ]);
+
+  assert.match(page, />My System</);
+  assert.match(page, />How Requests Work</);
+  assert.match(page, /system-map-advanced\.html/);
+  assert.match(page, /id="explanation-panel"/);
+  assert.match(page, /id="map-back"/);
+  assert.doesNotMatch(page, /keyboard-nav|find-path|map-fit|path-from|path-to/);
+
+  assert.match(client, /system-orientation/);
+  assert.match(client, /persona-library-orientation/);
+  assert.match(client, /Documented \/ intended behavior — not an execution trace/);
+  assert.match(client, /Prototype boundary: this prepares the selected context/);
+  assert.match(client, /data-expand-group/);
+  assert.match(client, /data-where-stage/);
+  assert.match(client, /data-participant/);
+  assert.match(client, /loads-for-semantic-work/);
+  assert.match(client, /routes-to/);
+  assert.match(client, /The exact capability after this point depends on the selected space and request/);
+
+  assert.match(build, /"system-map-advanced\.html"/);
+  assert.match(build, /client\/system-map-journey\.mjs/);
+  assert.match(build, /client\/system-map-simple\.mjs/);
 });

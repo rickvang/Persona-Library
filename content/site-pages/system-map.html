@@ -3,657 +3,193 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Interactive, provenance-backed view of the Persona Workspace system." />
+  <meta name="description" content="A plain-language view of what is in Persona Library and how documented request routing works." />
   <title>System Map — Personas</title>
   <style>
     :root {
-      --ink:#101827; --muted:#617083; --night:#08111f; --paper:#f5f4ef; --card:#fffefa;
-      --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; --blue:#92bdf2;
-      --deep:#234f68; --soft:#eef1ec;
+      --ink:#111827; --muted:#667281; --night:#09111e; --paper:#f5f5f1; --surface:#fffefa;
+      --line:#d9ddd8; --soft:#eef1ed; --deep:#28566d; --deep-soft:#e8f0f3; --mint:#b9eadb;
+      --coral:#e56f58; --warm:#f5e7ba; --good:#2b765f;
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       color:var(--ink); background:var(--paper);
     }
     * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
     body { margin:0; background:var(--paper); }
     a { color:inherit; }
-    button, select { font:inherit; }
+    button, textarea { font:inherit; }
     button { cursor:pointer; }
-    .topbar { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:18px clamp(20px,5vw,72px); color:#fff; background:var(--night); }
-    .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.03em; text-decoration:none; }
-    .mark { width:26px; height:26px; display:grid; place-items:center; border-radius:7px; color:var(--night); background:var(--coral); font-size:11px; font-weight:900; }
-    .topnav { display:flex; gap:20px; color:#bfcbd8; font-size:13px; flex-wrap:wrap; justify-content:flex-end; }
+    button:focus-visible, a:focus-visible, textarea:focus-visible, summary:focus-visible {
+      outline:3px solid var(--coral); outline-offset:3px;
+    }
+    .topbar {
+      display:flex; align-items:center; justify-content:space-between; gap:20px;
+      min-height:50px; padding:11px clamp(18px,4vw,56px); color:#fff; background:var(--night);
+    }
+    .brand { display:flex; align-items:center; gap:9px; color:#fff; font-weight:800; letter-spacing:-.03em; text-decoration:none; }
+    .mark { width:26px; height:26px; display:grid; place-items:center; border-radius:7px; color:var(--night); background:#ff846d; font-size:11px; font-weight:900; }
+    .topnav { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:15px; color:#b9c5d2; font-size:12px; }
     .topnav a { text-decoration:none; }
     .topnav a[aria-current="page"] { color:#fff; }
-    .hero { padding:48px clamp(20px,8vw,120px) 42px; color:#fff; background:var(--night); }
-    .crumbs { margin:0 0 24px; color:#9cabbc; font-size:13px; }
-    .crumbs a { color:#cbd5df; text-underline-offset:3px; }
-    .eyebrow { margin:0 0 12px; color:#26705f; font-size:11px; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }
-    .hero .eyebrow { color:var(--mint); }
-    h1 { max-width:900px; margin:0; font-size:clamp(38px,6vw,68px); line-height:1; letter-spacing:-.06em; }
-    .hero-copy { max-width:760px; margin:20px 0 0; color:#c2ccd8; font-size:16px; line-height:1.6; }
-    .page { max-width:1380px; margin:0 auto; padding:28px clamp(20px,5vw,72px) 72px; }
-    .source-strip { display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; margin-bottom:20px; padding:14px 16px; border:1px solid #c8d8d1; border-radius:13px; background:#eff9f5; font-size:13px; }
-    .source-strip strong { font-size:12px; text-transform:uppercase; letter-spacing:.07em; }
-    .source-strip a { color:var(--deep); font-weight:800; text-underline-offset:3px; }
-    .lens-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:24px; }
-    .lens { min-height:116px; padding:14px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
-    .lens strong { display:block; font-size:14px; }
-    .lens p { margin:7px 0 0; color:var(--muted); font-size:12px; line-height:1.45; }
-    .lens.available { border-color:#8bc7b6; background:#effaf6; }
-    .lens-status { display:inline-block; margin-top:11px; padding:4px 7px; border-radius:999px; background:#e3e7e1; color:#657166; font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
-    .available .lens-status { color:#1f6554; background:#cdeee4; }
-    .map-toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; padding:12px 14px; border:1px solid var(--line); border-radius:13px; background:var(--card); }
-    .map-toolbar label { font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
-    .map-toolbar select { min-width:190px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; }
-    .map-toolbar button, .expand-button { padding:8px 11px; border:1px solid var(--deep); border-radius:9px; color:#fff; background:var(--deep); font-size:12px; font-weight:800; }
-    .map-toolbar .ghost, .branch-toggle { color:var(--deep); background:#fff; }
-    .explore-toolbar { display:grid; grid-template-columns:minmax(240px,1.4fr) minmax(180px,.8fr) minmax(200px,1fr); gap:10px; margin-bottom:14px; padding:12px 14px; border:1px solid var(--line); border-radius:13px; background:var(--card); }
-    .explore-field { display:grid; gap:5px; min-width:0; }
-    .explore-field label { color:var(--muted); font-size:10px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
-    .explore-field input, .explore-field select { width:100%; min-width:0; padding:9px 10px; border:1px solid var(--line); border-radius:8px; color:var(--ink); background:#fff; }
-    .search-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; }
-    .search-row button { padding:8px 11px; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:11px; font-weight:800; }
-    .spacer { flex:1; }
-    .map-status { display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; color:var(--muted); font-size:12px; }
-    .status-dot { width:8px; height:8px; border-radius:50%; background:#2a8a6d; }
-    .coverage { padding:4px 7px; border-radius:999px; color:#665622; background:#f7e9b5; font-weight:800; }
-    .workspace { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(320px,.55fr); gap:16px; align-items:start; }
-    .map-panel, .detail-panel, .path-panel { border:1px solid var(--line); border-radius:17px; background:var(--card); }
-    .panel-head { padding:16px 17px 10px; }
-    .panel-head h2 { margin:0; font-size:20px; letter-spacing:-.035em; }
-    .panel-head p { margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.5; }
-    .graph-frame { margin:8px 16px 18px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:linear-gradient(180deg,#fbfcf9 0%,#f4f6f2 100%); }
-    .graph-tools { display:flex; align-items:center; gap:10px; min-height:42px; padding:8px 10px; border-bottom:1px solid var(--line); background:rgba(255,254,250,.9); }
-    .graph-tools button { padding:6px 9px; border:1px solid #b9c4ca; border-radius:8px; color:var(--deep); background:#fff; font-size:11px; font-weight:800; }
-    .graph-tools span { color:var(--muted); font-size:10px; line-height:1.4; }
-    .graph-legend { display:flex; flex-wrap:wrap; gap:8px 12px; padding:8px 10px; border-bottom:1px solid var(--line); background:#fbfcf9; color:var(--muted); font-size:10px; }
-    .legend-item { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
-    .legend-swatch { width:14px; height:10px; border:2px solid #b8c2c9; border-radius:4px; background:#fffefa; }
-    .legend-swatch.selected { border-color:#234f68; border-width:3px; }
-    .legend-swatch.neighbor { border-color:#5f7e90; }
-    .legend-swatch.path { border-color:#987416; background:#fff0b8; }
-    .legend-line { width:22px; height:0; border-top:4px solid #d5563a; }
-    .graph-canvas { width:100%; height:min(68vh,720px); min-height:520px; background-image:radial-gradient(circle at 1px 1px,rgba(35,79,104,.08) 1px,transparent 0); background-size:22px 22px; }
-    .graph-canvas[hidden] { display:none; }
-    .map-nodes[hidden] { display:none; }
-    .keyboard-nav { border-top:1px solid var(--line); background:#fffefa; }
-    .keyboard-nav summary { padding:10px 12px; color:var(--deep); font-size:11px; font-weight:850; cursor:pointer; }
-    .keyboard-nav > p { margin:0; padding:0 12px 8px; color:var(--muted); font-size:10px; line-height:1.45; }
-    .keyboard-nav .map-nodes { padding-top:4px; }
-    .map-nodes { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:8px 16px 18px; }
-    .map-node { position:relative; border:1px solid var(--line); border-radius:13px; background:#fbfcf8; overflow:hidden; }
-    .map-node.selected { border-color:var(--deep); box-shadow:0 0 0 2px rgba(35,79,104,.12); }
-    .map-node.in-path { background:#fff8dc; border-color:#dac27e; }
-    .node-select { display:block; width:100%; padding:13px 13px 9px; border:0; text-align:left; color:var(--ink); background:transparent; }
-    .node-select:focus-visible, .branch-toggle:focus-visible, .show-more-button:focus-visible, .relationship-link:focus-visible, .edge-highlight-button:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline:2px solid var(--coral); outline-offset:2px; }
-    .node-kicker { display:block; margin-bottom:5px; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
-    .node-select strong { display:block; font-size:15px; line-height:1.3; }
-    .node-meta { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
-    .branch-toggle { margin:0 12px 12px; padding:6px 8px; border:1px solid var(--line); border-radius:7px; font-size:11px; font-weight:800; }
-    .path-marker { position:absolute; right:9px; top:8px; color:#745b14; font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
-    .detail-panel { min-height:420px; padding:18px; }
-    .detail-head { display:flex; justify-content:space-between; gap:16px; align-items:start; padding-bottom:16px; border-bottom:1px solid var(--line); }
-    .branch-actions { display:grid; gap:7px; min-width:150px; }
-    .show-more-button { padding:7px 10px; border:1px solid #b9c4ca; border-radius:9px; color:var(--deep); background:#fff; font-size:11px; font-weight:850; }
-    .branch-progress { margin:8px 0 0; color:var(--muted); font-size:10px; font-weight:750; }
-    .branch-more { margin-top:-6px; }
-    .detail-head h2, .empty-detail h2 { margin:0; font-size:27px; letter-spacing:-.045em; }
-    .node-id { margin:6px 0 0; color:var(--muted); font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; }
-    .detail-section { padding:16px 0; border-bottom:1px solid var(--line); }
-    .detail-section:last-child { border-bottom:0; padding-bottom:0; }
-    .detail-section h3 { margin:0 0 9px; font-size:13px; }
-    .relationship-list { display:grid; gap:8px; margin:0; padding:0; list-style:none; }
-    .relationship-list li { padding:10px; border:1px solid var(--line); border-radius:10px; background:#fafaf6; }
-    .relationship-list li.relationship-selected { border-color:#d97962; background:#fff4ef; box-shadow:0 0 0 2px rgba(213,86,58,.08); }
-    .relationship-actions { display:flex; justify-content:flex-end; margin-top:7px; }
-    .edge-highlight-button { padding:5px 7px; border:1px solid #d4b3a9; border-radius:7px; color:#7e301f; background:#fff; font-size:10px; font-weight:850; }
-    .edge-highlight-button[aria-pressed="true"] { color:#fff; background:#d5563a; border-color:#d5563a; }
-    .relationship-link { display:flex; flex-wrap:wrap; gap:6px; width:100%; padding:0; border:0; text-align:left; color:var(--ink); background:transparent; }
-    .relationship-link span { color:var(--muted); font-size:11px; text-transform:capitalize; }
-    .relationship-link strong { font-size:12px; }
-    .provenance-line { display:flex; justify-content:space-between; gap:10px; margin-top:7px; color:var(--muted); font-size:10px; }
-    .provenance-line a, .source-link { color:var(--deep); font-weight:800; text-underline-offset:3px; }
-    .quiet, .coverage-note { color:var(--muted); font-size:12px; line-height:1.5; }
-    .coverage-note { margin:10px 0 0; }
-    .source-detail dl { display:grid; grid-template-columns:90px 1fr; gap:7px 10px; margin:0 0 12px; font-size:11px; }
-    .source-detail dt { color:var(--muted); font-weight:800; }
-    .source-detail dd { margin:0; overflow-wrap:anywhere; }
-    .path-panel { margin-top:16px; padding:16px; }
-    .path-controls { display:flex; flex-wrap:wrap; gap:8px; align-items:end; }
-    .field { display:grid; gap:5px; min-width:210px; flex:1; }
-    .field label { color:var(--muted); font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
-    .field select { width:100%; padding:8px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; }
-    .path-controls button { padding:8px 11px; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:12px; font-weight:800; }
-    .path-caption { margin:14px 0 8px; color:var(--muted); font-size:11px; font-weight:800; }
-    .path-list { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none; }
-    .path-list li { padding:7px 9px; border-radius:999px; background:#fff1c7; font-size:11px; font-weight:800; }
-    .path-list li + li::before { content:"→"; margin-right:6px; color:#8d742c; }
-    .error-box { padding:24px; border:1px solid #e2b5a7; border-radius:14px; background:#fff0eb; }
-    .error-box h2 { margin:0 0 7px; }
-    .error-box p { color:#6d4b43; line-height:1.5; }
-    .error-box a { color:var(--deep); font-weight:800; }
-    .sr-only { position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
-    /* Investigation workspace refinement */
-    .topbar { position:sticky; top:0; z-index:30; min-height:48px; padding:10px 18px; }
-    .topnav { gap:14px; flex-wrap:nowrap; font-size:12px; }
-    .page { max-width:none; padding:12px 16px 28px; }
-    .workspace-header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:10px; }
-    .workspace-title { display:flex; align-items:baseline; gap:10px; min-width:0; }
-    .workspace-title .eyebrow { margin:0; white-space:nowrap; }
-    .workspace-title h1 { margin:0; font-size:22px; line-height:1.1; letter-spacing:-.035em; }
-    .authority-note { position:relative; color:var(--muted); font-size:11px; }
-    .authority-note summary { cursor:pointer; color:var(--deep); font-weight:850; }
-    .authority-note[open] { max-width:520px; padding:9px 11px; border:1px solid var(--line); border-radius:10px; background:var(--card); }
-    .authority-note p { margin:8px 0; line-height:1.45; }
-    .authority-note a { color:var(--deep); font-weight:800; text-underline-offset:3px; }
-
-    .command-bar { position:sticky; top:48px; z-index:25; display:grid; gap:8px; margin-bottom:10px; padding:9px 10px; border:1px solid var(--line); border-radius:12px; background:rgba(255,254,250,.96); backdrop-filter:blur(12px); box-shadow:0 8px 24px rgba(16,24,39,.04); }
-    .navigation-row { display:flex; align-items:center; gap:10px; min-width:0; }
-    .exploration-trail { display:flex; align-items:center; gap:6px; min-width:0; overflow-x:auto; overflow-y:hidden; color:var(--muted); font-size:11px; white-space:nowrap; scrollbar-width:none; }
-    .exploration-trail::-webkit-scrollbar { display:none; }
-    .exploration-trail span, .exploration-trail button { flex:none; max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .trail-label { color:#87939e; font-size:9px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
-    .trail-area { color:var(--muted); font-weight:750; }
-    .trail-link { padding:0; border:0; color:var(--deep); background:transparent; font:inherit; font-weight:800; text-decoration:underline; text-decoration-color:#b9c8cf; text-underline-offset:3px; }
-    .exploration-trail .current { color:var(--ink); font-weight:850; }
-    .command-row { display:flex; align-items:end; gap:8px; min-width:0; }
-    .compact-field { display:grid; gap:3px; min-width:0; }
-    .compact-field label { color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
-    .compact-field select, .compact-field input, .question-panel select, .question-panel textarea { width:100%; min-width:0; padding:7px 9px; border:1px solid var(--line); border-radius:8px; color:var(--ink); background:#fff; }
-    .lens-field { width:min(250px,23vw); }
-    .search-field { flex:1; min-width:220px; }
-    .search-row { grid-template-columns:minmax(0,1fr) auto; }
-    .search-row button, .compact-button, .filter-menu summary, .selection-actions button, .question-panel button { padding:7px 9px; border:1px solid #b9c4ca; border-radius:8px; color:var(--deep); background:#fff; font-size:11px; font-weight:850; }
-    .compact-button:disabled { opacity:.4; cursor:not-allowed; }
-    .filter-menu { position:relative; }
-    .filter-menu summary { list-style:none; cursor:pointer; white-space:nowrap; }
-    .filter-menu summary::-webkit-details-marker { display:none; }
-    .filter-popover { position:absolute; right:0; top:calc(100% + 6px); z-index:40; display:grid; gap:9px; width:300px; padding:11px; border:1px solid var(--line); border-radius:10px; background:var(--card); box-shadow:0 18px 45px rgba(16,24,39,.14); }
-    .map-status { min-height:18px; gap:6px 10px; font-size:10px; }
-    .coverage { padding:2px 6px; }
-
-    .workspace { grid-template-columns:minmax(0,1fr) minmax(300px,360px); gap:12px; align-items:start; }
-    .map-panel, .detail-panel, .question-panel, .path-panel { border-radius:12px; }
-    .map-panel { min-width:0; overflow:hidden; border-color:#dfe4df; box-shadow:0 2px 10px rgba(16,24,39,.025); }
-    .detail-panel, .question-panel { border-color:#e1e5e0; box-shadow:none; }
-    .map-panel-head { display:flex; align-items:center; justify-content:space-between; padding:8px 10px 5px; }
-    .map-panel-head h2 { font-size:15px; }
-    .map-panel-head p { max-width:760px; margin-top:2px; overflow:hidden; color:var(--muted); font-size:9.5px; text-overflow:ellipsis; white-space:nowrap; }
-    .graph-frame { position:relative; margin:0 8px 8px; border-radius:10px; }
-    .graph-tools { min-height:34px; padding:6px 8px; }
-    .graph-tools button { padding:5px 8px; }
-    .selection-actions { display:grid; grid-template-columns:minmax(180px,1fr) auto 132px auto; align-items:center; gap:7px; height:42px; min-height:42px; padding:5px 7px; border-bottom:1px solid #dfe5e0; background:#f8faf8; }
-    .selection-actions[hidden] { display:none; }
-    .selection-label { display:grid; gap:1px; min-width:0; }
-    .selection-label strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; }
-    .selection-label span { color:var(--muted); font-size:9px; }
-    .selection-primary-actions, .selection-secondary-actions { display:flex; align-items:center; gap:5px; min-width:0; }
-    .selection-primary-actions { justify-content:flex-end; }
-    .selection-actions button { min-height:28px; white-space:nowrap; }
-    .selection-actions button[aria-pressed="true"], .semantic-toggle.is-open { color:#fff; background:var(--deep); border-color:var(--deep); }
-    .semantic-toggle { display:inline-flex; align-items:center; gap:5px; }
-    .semantic-toggle small { min-width:18px; padding:1px 4px; border-radius:999px; background:#edf1ed; color:#52616a; font-size:8px; font-weight:900; }
-    .semantic-toggle.is-open small { background:rgba(255,255,255,.2); color:#fff; }
-    .semantic-pager-slot { display:flex; align-items:center; justify-content:center; width:132px; min-width:132px; height:30px; }
-    .semantic-pager { display:grid; grid-template-columns:28px minmax(64px,1fr) 28px; align-items:center; gap:3px; width:100%; }
-    .pager-button { display:grid; place-items:center; width:28px; height:28px; min-height:28px !important; padding:0 !important; font-size:18px !important; line-height:1; }
-    .pager-button:disabled { opacity:.28; }
-    .semantic-page-range { text-align:center; color:#44535e; font-size:9px; font-weight:900; white-space:nowrap; }
-    .semantic-progress { flex:none; padding:4px 7px; border-radius:999px; color:#495b67; background:#eaf0ec; font-size:9px; font-weight:850; white-space:nowrap; }
-    .semantic-range { align-self:center; margin:0; }
-    .secondary-count { margin:6px 0 0; color:var(--muted); font-size:9px; line-height:1.4; }
-    .semantic-pager button:focus-visible, .semantic-toggle:focus-visible, .selection-secondary-actions button:focus-visible { outline:2px solid #3d7188; outline-offset:2px; }
-    .graph-legend { padding:6px 8px; }
-    .graph-canvas { height:calc(100vh - 236px); min-height:540px; }
-    .keyboard-nav summary { padding:8px 10px; }
-
-    .inspector-rail { position:sticky; top:154px; display:block; max-height:calc(100vh - 170px); overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; padding-right:2px; }
-    .inspector-rail > * { position:relative; min-height:max-content; }
-    .inspector-rail > * + * { margin-top:10px; }
-    .detail-panel { min-height:max-content; padding:13px; }
-    .detail-head { align-items:center; padding-bottom:9px; border-bottom:1px solid #e5e8e3; }
-    .detail-head h2, .empty-detail h2 { font-size:19px; }
-    .connection-count, .section-heading > span, .evidence-state { flex:none; padding:3px 6px; border-radius:999px; color:var(--muted); background:#f0f2ef; font-size:9px; font-weight:850; }
-    .detail-intro { padding:11px 0 9px; }
-    .detail-purpose { margin:0; color:#24323c; font-size:11.5px; line-height:1.58; }
-    .detail-section { padding:10px 0; }
-    .detail-section h3 { margin-bottom:6px; font-size:12px; }
-    .detail-copy { margin:0 0 7px; color:#485762; font-size:10.5px; line-height:1.5; }
-    .explanation-source { margin:6px 0 0; color:#7a8790; font-size:8.5px; font-weight:800; }
-    .example-detail { margin-top:7px; }
-    .example-detail summary, .evidence-boundary summary { cursor:pointer; color:var(--deep); font-size:9.5px; font-weight:850; }
-    .example-detail p, .evidence-boundary p { margin:6px 0 0; color:#56636d; font-size:9.5px; line-height:1.48; }
-    .explore-section { padding-top:9px; }
-
-    .section-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:7px; }
-    .section-heading h3, .question-panel h2 { margin:0; }
-    .relationship-groups { display:grid; gap:6px; }
-    .relationship-group { border:1px solid #e3e7e2; border-radius:8px; background:#fbfbf8; overflow:hidden; }
-    .relationship-group summary { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 9px; cursor:pointer; color:#344252; font-size:10px; font-weight:850; text-transform:capitalize; }
-    .relationship-group summary strong { min-width:22px; padding:2px 5px; border-radius:999px; text-align:center; background:#edf0eb; font-size:9px; }
-    .relationship-list { gap:0; border-top:1px solid var(--line); }
-    .relationship-list li { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:7px; align-items:center; padding:6px 8px; border:0; border-bottom:1px solid #e7eae5; border-radius:0; background:#fffefa; }
-    .relationship-list li:last-child { border-bottom:0; }
-    .relationship-link { display:grid; gap:2px; }
-    .relationship-link strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:10px; }
-    .relationship-link span { font-size:9px; }
-    .edge-highlight-button { padding:4px 6px; font-size:9px; }
-    .connection-direction { display:grid; gap:6px; margin-top:9px; }
-    .connection-direction > strong { color:var(--muted); font-size:9px; letter-spacing:.06em; text-transform:uppercase; }
-    .relationship-evidence { padding:10px; border:1px solid #efc4b8; border-radius:10px; background:#fff7f3; }
-    .relationship-statement { display:flex; flex-wrap:wrap; gap:5px; align-items:center; margin:0 0 9px; font-size:10px; }
-    .relationship-statement span { color:var(--muted); }
-    .relationship-evidence dl, .source-detail dl { display:grid; grid-template-columns:74px 1fr; gap:5px 8px; margin:0 0 9px; font-size:10px; }
-    .relationship-evidence dt, .source-detail dt { color:var(--muted); font-weight:800; }
-    .relationship-evidence dd, .source-detail dd { margin:0; overflow-wrap:anywhere; }
-    .branch-actions { display:flex; flex-wrap:wrap; gap:6px; min-width:0; }
-    .expand-button, .show-more-button { padding:6px 8px; font-size:10px; }
-    .provenance-detail { border-bottom:0; }
-    .provenance-detail summary { cursor:pointer; color:var(--deep); font-size:11px; font-weight:850; }
-    .provenance-detail .source-detail { padding-top:9px; }
-
-    .question-panel { padding:13px; border:1px solid var(--line); background:var(--card); }
-    .question-panel .eyebrow { margin-bottom:4px; }
-    .question-panel h2 { font-size:15px; letter-spacing:-.025em; }
-    .question-panel label { display:block; margin:9px 0 4px; color:var(--muted); font-size:9px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
-    .question-panel textarea { resize:vertical; min-height:68px; line-height:1.45; }
-    .question-panel button { width:100%; margin-top:7px; color:#fff; background:var(--deep); border-color:var(--deep); }
-    .context-summary { margin:6px 0 0; color:var(--muted); font-size:9px; font-weight:800; }
-    .context-preview { margin-top:8px; border-top:1px solid var(--line); padding-top:8px; }
-    .context-preview summary { cursor:pointer; color:var(--deep); font-size:10px; font-weight:850; }
-    .context-preview pre { max-height:260px; margin:8px 0 0; padding:9px; overflow:auto; border-radius:8px; background:#0f1722; color:#d8e0e8; font:9px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
-
-    .path-panel { margin-top:10px; padding:0; background:var(--card); }
-    .path-panel > summary { padding:9px 12px; cursor:pointer; color:var(--deep); font-size:11px; font-weight:850; }
-    .path-body { padding:0 12px 12px; }
-    .system-overview { min-height:calc(100vh - 150px); padding:clamp(18px,3vw,36px); border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg,#fbfcf9 0%,#f1f4ef 100%); overflow:hidden; }
-    .system-overview[hidden] { display:none; }
-    .overview-intro { max-width:760px; margin:0 auto 26px; text-align:center; }
-    .overview-intro .eyebrow { margin-bottom:7px; }
-    .overview-intro h2 { margin:0; font-size:clamp(24px,3vw,38px); letter-spacing:-.045em; }
-    .overview-intro > p { margin:10px auto 0; color:var(--muted); font-size:13px; line-height:1.55; }
-    .overview-boundary { display:inline-block; padding:6px 9px; border-radius:8px; background:#eef1ec; font-size:10px !important; }
-    .overview-root { position:relative; z-index:2; max-width:480px; margin:0 auto; padding:18px 20px; border:1px solid #8cb4aa; border-radius:14px; text-align:center; background:#eff9f5; box-shadow:0 8px 24px rgba(35,79,104,.06); }
-    .overview-root-kicker { display:block; margin-bottom:4px; color:#26705f; font-size:9px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
-    .overview-root strong { display:block; font-size:20px; letter-spacing:-.03em; }
-    .overview-root p { margin:7px 0 0; color:#4f6370; font-size:11px; line-height:1.5; }
-    .overview-branch { width:1px; height:32px; margin:0 auto; background:#aeb9b5; }
-    .overview-areas { position:relative; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
-    .overview-areas::before { content:""; position:absolute; left:10%; right:10%; top:-17px; height:1px; background:#aeb9b5; }
-    .overview-area { position:relative; min-height:220px; padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:0 5px 18px rgba(16,24,39,.035); }
-    .overview-area::before { content:""; position:absolute; left:50%; top:-17px; width:1px; height:17px; background:#aeb9b5; }
-    .overview-area-head { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
-    .overview-number { display:block; margin-bottom:5px; color:#8b98a4; font:800 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
-    .overview-area h3 { margin:0; font-size:14px; line-height:1.25; letter-spacing:-.025em; }
-    .overview-area > p { margin:11px 0 0; color:var(--muted); font-size:10px; line-height:1.5; }
-    .overview-open { flex:none; display:inline-flex; align-items:center; gap:6px; min-height:30px; padding:6px 9px; border:1px solid var(--deep); border-radius:8px; color:#fff; background:var(--deep); font-size:10px; font-weight:850; line-height:1; }
-    .overview-open:hover { transform:translateY(-1px); box-shadow:0 5px 12px rgba(35,79,104,.16); }
-    .overview-area-meta { display:grid; gap:2px; margin-top:14px; padding-top:10px; border-top:1px solid var(--line); }
-    .overview-area-meta span { color:var(--muted); font-size:8px; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
-    .overview-area-meta strong { font-size:10px; }
-    .overview-caveat { color:#78662c !important; }
-    .overview-howto { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 14px; margin-top:20px; padding:10px 12px; border-top:1px solid var(--line); color:var(--muted); font-size:10px; }
-    .overview-howto strong { color:var(--ink); }
-    .overview-howto b { color:var(--deep); }
-    .lens-kicker { margin:0 0 3px !important; color:#71808d !important; font-size:9px !important; font-weight:900; letter-spacing:.07em; text-transform:uppercase; }
-
-    @media (min-width:981px) {
-      .page.graph-mode { height:calc(100dvh - 48px); padding:8px 16px 8px; overflow:hidden; display:flex; flex-direction:column; }
-      .graph-mode .workspace-header { flex:0 0 auto; margin-bottom:6px; }
-      .graph-mode .workspace-title h1 { font-size:19px; }
-      .graph-mode .command-bar { position:relative; top:auto; flex:0 0 auto; gap:5px; margin-bottom:7px; padding:6px 8px; box-shadow:none; }
-      .graph-mode .command-row { min-height:33px; }
-      .graph-mode .map-status { min-height:14px; line-height:1.2; }
-      .graph-mode #map-explorer { min-height:0; flex:1; display:flex; flex-direction:column; overflow:hidden; }
-      .graph-mode .workspace { min-height:0; flex:1; height:auto; align-items:stretch; }
-      .graph-mode .map-panel { min-height:0; height:100%; display:flex; flex-direction:column; }
-      .graph-mode .map-panel-head { flex:0 0 auto; padding:6px 9px 4px; }
-      .graph-mode .graph-frame { flex:1; min-height:0; display:flex; flex-direction:column; margin:0 6px 6px; }
-      .graph-mode .selection-actions, .graph-mode .graph-legend, .graph-mode .keyboard-nav { flex:0 0 auto; }
-      .graph-mode .selection-actions { min-height:42px; padding:5px 6px; overflow:visible; }
-      .graph-mode .graph-legend { overflow-x:auto; flex-wrap:nowrap; }
-      .graph-mode .graph-canvas { flex:1; min-height:0; height:auto; }
-      .graph-mode .keyboard-nav { max-height:34%; overflow:auto; }
-      .graph-mode .inspector-rail { position:static; top:auto; display:block; min-height:0; height:100%; max-height:none; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; padding-right:2px; }
-      .graph-mode .detail-panel, .graph-mode .question-panel { display:block; width:100%; min-height:max-content; }
-      .graph-mode .detail-panel h2 { scroll-margin-top:10px; }
-      .graph-mode .path-panel { flex:0 0 auto; margin-top:6px; }
-      .graph-mode .path-panel[open] { max-height:34vh; overflow:auto; }
+    .page { max-width:1500px; margin:0 auto; padding:24px clamp(18px,4vw,56px) 56px; }
+    .app-head { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:18px; padding-bottom:18px; border-bottom:1px solid var(--line); }
+    .eyebrow { margin:0 0 6px; color:var(--good); font-size:10px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:0; font-size:clamp(29px,4vw,46px); line-height:1.02; letter-spacing:-.05em; }
+    .lede { max-width:700px; margin:10px 0 0; color:var(--muted); font-size:14px; line-height:1.55; }
+    .advanced-link { align-self:start; padding:8px 10px; border:1px solid var(--line); border-radius:8px; color:var(--deep); background:var(--surface); font-size:11px; font-weight:800; text-decoration:none; }
+    .viewbar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0; }
+    .tabs { display:inline-flex; gap:4px; padding:4px; border:1px solid var(--line); border-radius:10px; background:#e9ece8; }
+    .tab { padding:8px 12px; border:0; border-radius:7px; color:#4d5c68; background:transparent; font-size:12px; font-weight:850; }
+    .tab[aria-selected="true"] { color:var(--ink); background:var(--surface); box-shadow:0 1px 4px rgba(17,24,39,.08); }
+    .back { padding:8px 10px; border:1px solid var(--line); border-radius:8px; color:var(--deep); background:var(--surface); font-size:11px; font-weight:850; }
+    .back:disabled { opacity:.38; cursor:not-allowed; }
+    .breadcrumbs { display:flex; flex-wrap:wrap; gap:5px; min-height:20px; margin:0 0 12px; color:var(--muted); font-size:11px; }
+    .breadcrumbs strong { color:var(--ink); }
+    .app-layout { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(330px,.65fr); gap:22px; align-items:start; }
+    .primary { min-width:0; }
+    .boundary-note {
+      margin:0 0 12px; padding:10px 12px; border-left:3px solid #87b9a9;
+      color:#4e605d; background:#edf7f3; font-size:11px; line-height:1.5;
     }
-
-    @media (min-width:981px) and (max-height:760px) {
-      .graph-mode .workspace-header { margin-bottom:4px; }
-      .graph-mode .workspace-title .eyebrow { display:none; }
-      .graph-mode .command-bar { padding:5px 7px; margin-bottom:5px; }
-      .graph-mode .map-panel-head p { display:none; }
-      .graph-mode .map-panel-head { padding-top:4px; }
+    .group-list { display:grid; gap:9px; }
+    .system-group { border-top:1px solid var(--line); background:transparent; }
+    .system-group:last-child { border-bottom:1px solid var(--line); }
+    .group-head { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:center; padding:15px 3px; }
+    .group-select { display:block; width:100%; padding:0; border:0; text-align:left; color:var(--ink); background:transparent; }
+    .group-select strong { display:block; font-size:17px; letter-spacing:-.02em; }
+    .group-purpose { display:block; max-width:760px; margin-top:5px; color:var(--muted); font-size:12px; line-height:1.45; }
+    .group-preview { display:block; margin-top:7px; color:#7d8891; font-size:10px; }
+    .expand {
+      width:36px; height:36px; display:grid; place-items:center; border:1px solid #b8c5c1; border-radius:50%;
+      color:var(--deep); background:var(--surface); font-size:21px; line-height:1;
     }
-
+    .expand[aria-expanded="true"] { color:#fff; background:var(--deep); border-color:var(--deep); }
+    .contained {
+      position:relative; margin:0 0 14px 18px; padding:2px 0 2px 16px; border-left:2px solid #c4d8d1;
+      max-height:min(48vh,470px); overflow:auto; scrollbar-gutter:stable;
+    }
+    .contained::before { content:"Contents"; display:block; margin:2px 0 7px; color:#7a8985; font-size:9px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+    .contained-item {
+      display:block; width:100%; padding:9px 8px; border:0; border-radius:7px; text-align:left; color:var(--ink); background:transparent;
+    }
+    .contained-item:hover { background:#ecefeb; }
+    .contained-item[aria-current="true"] { color:var(--deep); background:var(--deep-soft); }
+    .item-kind { display:block; margin-bottom:2px; color:#84909a; font-size:9px; font-weight:850; letter-spacing:.06em; text-transform:uppercase; }
+    .contained-item strong { display:block; font-size:12px; line-height:1.35; }
+    .other-spaces { margin-top:18px; padding-top:14px; border-top:1px solid var(--line); color:var(--muted); font-size:11px; line-height:1.55; }
+    .other-spaces summary { color:var(--deep); font-weight:850; cursor:pointer; }
+    .other-spaces dl { display:grid; grid-template-columns:max-content 1fr; gap:7px 12px; margin:10px 0 0; }
+    .other-spaces dt { color:var(--ink); font-weight:800; }
+    .other-spaces dd { margin:0; }
+    .explanation {
+      position:sticky; top:16px; min-height:420px; padding:20px; border:1px solid var(--line); border-radius:12px;
+      background:var(--surface); box-shadow:0 8px 28px rgba(17,24,39,.04);
+    }
+    .explain-kicker { margin:0 0 5px; color:var(--good); font-size:9px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+    .explanation h2 { margin:0; font-size:25px; line-height:1.08; letter-spacing:-.04em; overflow-wrap:anywhere; }
+    .explain-id { margin:7px 0 0; color:#89949d; font:10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; overflow-wrap:anywhere; }
+    .explain-section { padding:15px 0; border-bottom:1px solid #e6e8e4; }
+    .explain-section:last-of-type { border-bottom:0; }
+    .explain-section h3 { margin:0 0 6px; font-size:11px; }
+    .explain-section p { margin:0; color:#4f5d68; font-size:12px; line-height:1.55; }
+    .explain-list { display:grid; gap:4px; margin:0; padding-left:17px; color:#4f5d68; font-size:11px; line-height:1.45; }
+    .where-button, .participant {
+      margin-top:9px; padding:7px 9px; border:1px solid #b8c5c1; border-radius:8px; color:var(--deep); background:#fff; font-size:11px; font-weight:850;
+    }
+    .stage-list { display:grid; gap:0; margin:0; padding:0; list-style:none; }
+    .stage {
+      position:relative; padding:0 0 22px 42px; border-left:1px solid #cbd3cf; margin-left:13px;
+    }
+    .stage:last-child { border-left-color:transparent; }
+    .stage::before {
+      content:attr(data-number); position:absolute; left:-14px; top:0; width:28px; height:28px; display:grid; place-items:center;
+      border:1px solid #b7c7c1; border-radius:50%; color:var(--deep); background:var(--paper); font-size:9px; font-weight:900;
+    }
+    .stage-button { display:block; width:100%; padding:0 0 12px; border:0; text-align:left; background:transparent; }
+    .stage-button h2 { margin:0; font-size:18px; letter-spacing:-.025em; }
+    .stage-button p { max-width:760px; margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.5; }
+    .stage.selected .stage-button h2 { color:var(--deep); }
+    .stage-detail { margin-top:1px; padding:12px 14px; border-radius:9px; background:#eef1ed; }
+    .stage-detail h3 { margin:0 0 6px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#68756f; }
+    .stage-detail p { margin:0; color:#4d5c58; font-size:11px; line-height:1.5; }
+    .participants { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+    .participant { margin:0; }
+    .unknown { margin-top:9px !important; padding:8px 9px; border-left:3px solid #d3b251; background:#fbf5df; }
+    .ask { margin-top:16px; padding-top:14px; border-top:1px solid var(--line); }
+    .ask summary { color:var(--deep); font-size:12px; font-weight:900; cursor:pointer; }
+    .prototype-boundary { margin:8px 0; color:var(--muted); font-size:10px; line-height:1.45; }
+    .ask textarea { width:100%; min-height:120px; resize:vertical; padding:9px 10px; border:1px solid var(--line); border-radius:8px; color:#36434d; background:#f8f9f6; font:10px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .copy-context { margin-top:7px; padding:7px 9px; border:1px solid #b8c5c1; border-radius:8px; color:var(--deep); background:#fff; font-size:11px; font-weight:850; }
+    .source-details { margin-top:13px; color:var(--muted); font-size:10px; }
+    .source-details summary { color:#53636d; font-weight:800; cursor:pointer; }
+    .source-details dl { display:grid; grid-template-columns:70px 1fr; gap:6px 8px; margin:9px 0 0; }
+    .source-details dt { font-weight:800; }
+    .source-details dd { margin:0; overflow-wrap:anywhere; }
+    .source-details a { color:var(--deep); }
+    .empty-state { color:var(--muted); font-size:12px; line-height:1.55; }
+    .statusline { min-height:18px; margin-top:8px; color:var(--muted); font-size:10px; }
+    .statusline strong { color:var(--good); }
     @media (max-width:980px) {
-      .command-bar { position:relative; top:auto; }
-      .command-row { flex-wrap:wrap; }
-      .lens-field { width:240px; }
-      .search-field { min-width:280px; }
-      .overview-areas { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .overview-areas::before, .overview-area::before { display:none; }
-      .overview-branch { height:18px; }
-      .workspace { grid-template-columns:1fr; }
-      .inspector-rail { position:static; max-height:none; overflow:visible; }
-      .detail-panel { min-height:max-content; }
-      .graph-canvas { height:min(58vh,520px); min-height:400px; }
-      .page.graph-mode { height:auto; overflow:visible; display:block; }
-      .graph-mode #map-explorer { overflow:visible; display:block; }
-      .graph-mode .workspace { height:auto; }
-      .graph-mode .map-panel { height:auto; }
-      .graph-mode .inspector-rail { height:auto; }
+      .app-layout { grid-template-columns:minmax(0,1fr) minmax(290px,360px); gap:15px; }
+      .page { padding-inline:20px; }
+      .topnav { gap:10px; font-size:11px; }
     }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+    @media (max-width:760px) {
+      .topbar { align-items:flex-start; padding-inline:16px; }
+      .topnav { display:none; }
+      .page { padding:18px 15px 42px; }
+      .app-head { grid-template-columns:1fr; }
+      .advanced-link { justify-self:start; }
+      .viewbar { align-items:flex-start; }
+      .tabs { width:100%; }
+      .tab { flex:1; }
+      .app-layout { grid-template-columns:1fr; }
+      .explanation { position:static; min-height:0; }
+      .contained { max-height:360px; margin-left:10px; }
+      .other-spaces dl { grid-template-columns:1fr; gap:2px; }
+      .other-spaces dd { margin-bottom:7px; }
     }
-    @media (max-width:620px) {
-      .topbar { align-items:center; flex-direction:row; }
-      .topnav { margin-left:auto; gap:10px; }
-      .page { padding:9px 10px 22px; }
-      .workspace-header { align-items:flex-start; }
-      .system-overview { padding:18px 12px; }
-      .overview-intro { margin-bottom:18px; text-align:left; }
-      .overview-intro h2 { font-size:25px; }
-      .overview-boundary { display:block; }
-      .overview-root { text-align:left; }
-      .overview-branch { display:none; }
-      .overview-areas { grid-template-columns:1fr; margin-top:10px; }
-      .overview-area { min-height:0; }
-      .overview-howto { justify-content:flex-start; }
-      .workspace-title { display:grid; gap:2px; }
-      .workspace-title h1 { font-size:19px; }
-      .authority-note[open] { max-width:58vw; }
-      .command-row { align-items:stretch; }
-      .lens-field, .search-field { width:100%; min-width:100%; }
-      .compact-button, .filter-menu { flex:1; }
-      .filter-menu summary { text-align:center; }
-      .filter-popover { position:fixed; left:10px; right:10px; top:160px; width:auto; }
-      .map-status { display:none; }
-      .exploration-trail span { max-width:110px; }
-      .map-panel-head p { display:none; }
-      .graph-frame { margin:0 6px 6px; }
-      .graph-tools { align-items:center; flex-direction:row; }
-      .graph-tools span { font-size:9px; }
-      .selection-actions { grid-template-columns:minmax(0,1fr) auto; height:auto; min-height:42px; align-items:center; }
-      .selection-label { width:auto; grid-column:1 / -1; }
-      .selection-primary-actions { justify-content:flex-start; flex-wrap:wrap; }
-      .semantic-pager-slot { width:132px; min-width:132px; }
-      .selection-secondary-actions { justify-content:flex-end; }
-      .graph-legend { gap:6px 9px; overflow-x:auto; flex-wrap:nowrap; }
-      .graph-canvas { min-height:360px; height:54vh; }
-      .inspector-rail { display:block; }
-      .detail-head { align-items:flex-start; flex-direction:column; }
-      .relationship-list li { grid-template-columns:minmax(0,1fr); }
-      .edge-highlight-button { justify-self:start; }
-      .branch-actions { width:100%; }
-      .expand-button, .show-more-button { flex:1; }
-      .map-nodes { grid-template-columns:1fr; }
-      .path-controls { display:grid; }
-      .field { min-width:0; }
+    @media (prefers-reduced-motion:reduce) {
+      html { scroll-behavior:auto; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="index.html"><span class="mark">PL</span><span>Persona Library</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="guide.html">Docs</a><a href="system-map.html" aria-current="page">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a></nav>
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html">Docs</a><a href="system-map.html" aria-current="page">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
   </header>
-
-  <main class="page" data-system-map
-    data-graph-work-coordination-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
-    data-source-work-coordination-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json"
-    data-graph-repository-ownership-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/repository-ownership.json"
-    data-source-repository-ownership-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/repository-ownership.json"
-    data-graph-persona-skill-url="data/system-map/persona-skill.json"
-    data-source-persona-skill-url="https://github.com/rickvang/Persona-Library/blob/main/dist/data/system-map/persona-skill.json"
-    data-graph-source-generated-url="data/system-map/source-generated.json"
-    data-source-source-generated-url="https://github.com/rickvang/Persona-Library/blob/main/dist/data/system-map/source-generated.json"
-    data-graph-agent-runtime-url="data/system-map/agent-runtime.json"
-    data-source-agent-runtime-url="https://github.com/rickvang/Persona-Library/blob/main/dist/data/system-map/agent-runtime.json">
-
-    <section class="workspace-header" aria-labelledby="system-map-title">
-      <div class="workspace-title">
-        <p class="eyebrow">Interactive system view</p>
-        <h1 id="system-map-title">Persona Workspace</h1>
+  <main class="page" data-system-map-simple>
+    <header class="app-head">
+      <div>
+        <p class="eyebrow">System Map prototype</p>
+        <h1>Understand the system, then follow the request.</h1>
+        <p class="lede">Start with what exists. Open a part only when you need it, then see where documented request routing uses it.</p>
       </div>
-      <details class="authority-note">
-        <summary>Graph authority</summary>
-        <p>This workspace reads generated graph projections from their canonical owners. It never edits graph facts, ownership, provenance, or live runtime state.</p>
-        <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open current graph source ↗</a>
-      </details>
-    </section>
+      <a class="advanced-link" href="system-map-advanced.html">Advanced graph</a>
+    </header>
 
-    <section class="command-bar" aria-label="System Map workspace controls">
-      <div class="navigation-row">
-        <button class="ghost compact-button" type="button" id="map-back" disabled>← Back</button>
-        <nav id="map-trail" class="exploration-trail" aria-label="Exploration path"><span class="current">Overview</span></nav>
+    <div class="viewbar">
+      <div class="tabs" role="tablist" aria-label="System Map views">
+        <button class="tab" id="tab-system" type="button" role="tab" aria-selected="true" aria-controls="primary-surface" data-view="system">My System</button>
+        <button class="tab" id="tab-request" type="button" role="tab" aria-selected="false" aria-controls="primary-surface" data-view="request">How Requests Work</button>
       </div>
-
-      <div class="command-row">
-        <div class="compact-field lens-field">
-          <label for="map-lens">View</label>
-          <select id="map-lens">
-            <option value="overview">System overview</option>
-            <option value="work-coordination">Work &amp; coordination</option>
-            <option value="repository-ownership">Repository ownership</option>
-            <option value="persona-skill">Persona / Skill</option>
-            <option value="source-generated">Source / generated · advanced</option>
-            <option value="agent-runtime">Agent / runtime · advanced</option>
-          </select>
-        </div>
-
-        <div class="compact-field search-field" data-graph-only>
-          <label for="map-search">Find</label>
-          <div class="search-row">
-            <input id="map-search" list="map-search-options" type="search" placeholder="Node or stable ID" autocomplete="off" />
-            <button type="button" id="map-search-go">Focus</button>
-          </div>
-          <datalist id="map-search-options"></datalist>
-        </div>
-
-        <details class="filter-menu" data-graph-only>
-          <summary>Filters</summary>
-          <div class="filter-popover">
-            <div class="compact-field">
-              <label for="map-type-filter">Node type</label>
-              <select id="map-type-filter" disabled><option value="">All visible types</option></select>
-            </div>
-            <div class="compact-field">
-              <label for="map-relationship-filter">Relationship</label>
-              <select id="map-relationship-filter" disabled><option value="">All visible relationships</option></select>
-            </div>
-          </div>
-        </details>
-
-        <button class="ghost compact-button" type="button" id="map-fit" data-graph-only>Fit</button>
-        <button class="ghost compact-button" type="button" id="map-reset" data-graph-only>Reset</button>
-      </div>
-
-      <div class="map-status" id="map-status" aria-live="polite"><strong>Loading System Map…</strong></div>
-    </section>
-
-    <section id="map-overview" class="system-overview" aria-labelledby="overview-heading">
-      <div class="overview-intro">
-        <p class="eyebrow">Start here</p>
-        <h2 id="overview-heading">How the Persona Workspace fits together</h2>
-        <p>This map helps you understand the system before you inspect its implementation details. Start with one of the five areas below, then open its provenance-backed graph and expand only what you need.</p>
-        <p class="overview-boundary"><strong>Important:</strong> these five areas are navigation only. They do not create new system facts or relationships.</p>
-      </div>
-
-      <div class="overview-root">
-        <span class="overview-root-kicker">Whole system</span>
-        <strong>Persona Workspace</strong>
-        <p>Coordinates how agents orient, find relevant capabilities and sources, work across repositories, and verify changes.</p>
-      </div>
-
-      <div class="overview-branch" aria-hidden="true"></div>
-
-      <div class="overview-areas">
-        <article class="overview-area">
-          <div class="overview-area-head">
-            <div>
-              <span class="overview-number">01</span>
-              <h3>How agents get oriented</h3>
-            </div>
-            <button type="button" class="overview-open" data-open-lens="agent-runtime" aria-label="Open how agents get oriented"><span>Open</span><span aria-hidden="true">→</span></button>
-          </div>
-          <p>Follow the declared path from repository instructions through spaces and routes to callable Skills.</p>
-          <div class="overview-area-meta"><span>Technical view</span><strong>Agent / runtime</strong></div>
-          <p class="overview-caveat">Static routing only; live tools, permissions, deployments, and models stay external.</p>
-        </article>
-
-        <article class="overview-area">
-          <div class="overview-area-head">
-            <div>
-              <span class="overview-number">02</span>
-              <h3>Personas &amp; capabilities</h3>
-            </div>
-            <button type="button" class="overview-open" data-open-lens="persona-skill" aria-label="Open personas and capabilities"><span>Open</span><span aria-hidden="true">→</span></button>
-          </div>
-          <p>See stable Skill identities, persona-specific applications, guidance, and explicit capability relationships.</p>
-          <div class="overview-area-meta"><span>Technical view</span><strong>Persona / Skill</strong></div>
-        </article>
-
-        <article class="overview-area">
-          <div class="overview-area-head">
-            <div>
-              <span class="overview-number">03</span>
-              <h3>Work &amp; verification</h3>
-            </div>
-            <button type="button" class="overview-open" data-open-lens="work-coordination" aria-label="Open work and verification"><span>Open</span><span aria-hidden="true">→</span></button>
-          </div>
-          <p>See work surfaces, orchestration, verification, truth classes, and the boundaries around live operational authority.</p>
-          <div class="overview-area-meta"><span>Technical view</span><strong>Work &amp; coordination</strong></div>
-        </article>
-
-        <article class="overview-area">
-          <div class="overview-area-head">
-            <div>
-              <span class="overview-number">04</span>
-              <h3>Repositories &amp; ownership</h3>
-            </div>
-            <button type="button" class="overview-open" data-open-lens="repository-ownership" aria-label="Open repositories and ownership"><span>Open</span><span aria-hidden="true">→</span></button>
-          </div>
-          <p>See which repositories belong to the workspace, what each owns, and where local instruction and mutation boundaries live.</p>
-          <div class="overview-area-meta"><span>Technical view</span><strong>Repository ownership</strong></div>
-        </article>
-
-        <article class="overview-area">
-          <div class="overview-area-head">
-            <div>
-              <span class="overview-number">05</span>
-              <h3>Sources &amp; generated outputs</h3>
-            </div>
-            <button type="button" class="overview-open" data-open-lens="source-generated" aria-label="Open sources and generated outputs"><span>Open</span><span aria-hidden="true">→</span></button>
-          </div>
-          <p>Trace authored inputs and build steps into generated outputs while keeping generated artifacts separate from authored truth.</p>
-          <div class="overview-area-meta"><span>Technical view</span><strong>Source / generated</strong></div>
-        </article>
-      </div>
-
-      <div class="overview-howto">
-        <strong>Inside an area</strong>
-        <span>Select a node to understand it.</span>
-        <span><b>Open contents</b> reveals explicit containment where available.</span>
-        <span><b>Show connections</b> reveals related entities separately.</span>
-        <span><b>Focus</b> isolates a bounded local view.</span>
-        <span><b>Back</b> returns through your exploration.</span>
-      </div>
-    </section>
-
-    <section id="map-error" class="error-box" hidden>
-      <h2>System Map unavailable</h2>
-      <p id="map-error-message">The derived graph could not be loaded.</p>
-      <a id="map-source-fallback" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open the authoritative graph directly ↗</a>
-    </section>
-
-    <div id="map-explorer" hidden>
-      <section class="workspace">
-        <section class="map-panel" aria-labelledby="explorer-heading">
-          <div class="panel-head map-panel-head">
-            <div>
-              <p class="lens-kicker" id="explorer-lens-label">Technical view</p>
-              <h2 id="explorer-heading">Map</h2>
-              <p id="explorer-description">Select first. Inspect, expand, and focus are separate actions so exploration does not unexpectedly rearrange the workspace.</p>
-            </div>
-          </div>
-          <div class="graph-frame">
-            <div id="map-selection-actions" class="selection-actions" aria-label="Selected node actions" hidden></div>
-            <div class="graph-legend" aria-label="Graph state legend">
-              <span class="legend-item"><span class="legend-swatch selected" aria-hidden="true"></span>Selected node</span>
-              <span class="legend-item"><span class="legend-swatch neighbor" aria-hidden="true"></span>Connected node</span>
-              <span class="legend-item"><span class="legend-swatch path" aria-hidden="true"></span>Focus / path</span>
-              <span class="legend-item"><span class="legend-line" aria-hidden="true"></span>Exact relationship</span>
-            </div>
-            <div id="map-canvas" class="graph-canvas" role="img" aria-label="Interactive System Map graph"></div>
-            <details id="map-keyboard-nav" class="keyboard-nav">
-              <summary>Keyboard node navigator</summary>
-              <p>Use the focusable node and branch controls below as an equivalent textual way to inspect and expand the visible graph.</p>
-              <div id="map-node-fallback" class="map-nodes" aria-label="System Map keyboard node navigator"></div>
-            </details>
-          </div>
-        </section>
-
-        <aside class="inspector-rail" aria-label="System Map inspector and question context">
-          <section id="map-details" class="detail-panel" aria-live="polite">
-            <div class="empty-detail">
-              <p class="eyebrow">Inspector</p>
-              <h2>Select a node</h2>
-              <p>Select a map item first. You can then inspect its relationships, expand its direct context, or focus the graph around it.</p>
-            </div>
-          </section>
-
-          <section class="question-panel" aria-labelledby="question-heading">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Ask with context</p>
-                <h2 id="question-heading">Prepare a grounded question</h2>
-              </div>
-            </div>
-            <label for="map-question">Question</label>
-            <textarea id="map-question" rows="3" placeholder="What do you want the assistant to explain about this area?"></textarea>
-            <label for="map-question-scope">Included context</label>
-            <select id="map-question-scope">
-              <option value="selected">Selected item + visible direct relationships</option>
-              <option value="path">Current focus / path</option>
-              <option value="visible">Entire visible area</option>
-            </select>
-            <p id="map-question-context-summary" class="context-summary">0 nodes · 0 relationships</p>
-            <button type="button" id="map-copy-question">Copy question + context</button>
-            <p id="map-copy-status" class="quiet" aria-live="polite">The handoff includes stable map IDs, provenance, coverage, and evidence boundaries.</p>
-            <details class="context-preview">
-              <summary>Preview portable context</summary>
-              <pre id="map-question-preview"></pre>
-            </details>
-          </section>
-        </aside>
-      </section>
-
-      <details class="path-panel">
-        <summary>Trace an explicit path</summary>
-        <div class="path-body" aria-labelledby="path-heading">
-          <div class="panel-head" style="padding:0 0 12px">
-            <h2 id="path-heading">Shortest known path</h2>
-            <p>Direction is ignored only while finding the path; each represented relationship keeps its canonical direction and provenance.</p>
-          </div>
-          <div class="path-controls">
-            <div class="field"><label for="path-from">From</label><select id="path-from"></select></div>
-            <div class="field"><label for="path-to">To</label><select id="path-to"></select></div>
-            <button type="button" id="find-path">Find path</button>
-          </div>
-          <div id="path-result"><p class="quiet">Choose two nodes to show the shortest explicit path between them.</p></div>
-        </div>
-      </details>
+      <button class="back" id="map-back" type="button" disabled>← Back</button>
     </div>
 
-    <p id="map-live-region" class="sr-only" aria-live="polite"></p>
+    <nav class="breadcrumbs" id="map-breadcrumbs" aria-label="Exploration path"></nav>
+
+    <div class="app-layout">
+      <section class="primary" id="primary-surface" aria-live="polite"></section>
+      <aside class="explanation" id="explanation-panel" aria-live="polite">
+        <p class="empty-state">Select a system part to see what it is, why it matters, where it is used, and what you can explore next.</p>
+      </aside>
+    </div>
+    <p class="statusline" id="map-status" role="status" aria-live="polite"></p>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.3/dist/cytoscape.min.js"></script>
-  <script type="module" src="js/system-map.mjs"></script>
+  <script src="data/library-data.js"></script>
+  <script src="data/library-model.js"></script>
+  <script type="module" src="js/system-map-simple.mjs"></script>
 </body>
 </html>
