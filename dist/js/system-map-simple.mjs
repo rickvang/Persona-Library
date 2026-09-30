@@ -437,6 +437,9 @@ function ensureCurrentVisible() {
   if (state.view === 'system' && state.selectedItemId) {
     target = [...document.querySelectorAll('[data-item-id]')].find(element => element.dataset.itemId === state.selectedItemId);
   }
+  if (!target && state.view === 'system' && state.selectedGroupId) {
+    target = [...document.querySelectorAll('[data-group]')].find(element => element.dataset.group === state.selectedGroupId);
+  }
   if (state.view === 'request' && state.selectedStageId) {
     target = [...document.querySelectorAll('[data-stage-row]')].find(element => element.dataset.stageRow === state.selectedStageId);
   }
