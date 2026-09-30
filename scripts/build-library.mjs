@@ -100,6 +100,7 @@ const files = [
   ['client/system-map-renderer.mjs', 'dist/js/system-map-renderer.mjs'],
   ['client/system-map.mjs', 'dist/js/system-map.mjs'],
   ['client/system-map-journey.mjs', 'dist/js/system-map-journey.mjs'],
+  ['client/system-map-workflows.mjs', 'dist/js/system-map-workflows.mjs'],
   ['client/system-map-simple.mjs', 'dist/js/system-map-simple.mjs'],
   ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js'],
   ['content/job-tracker-page.html', 'dist/job-tracker.html'],

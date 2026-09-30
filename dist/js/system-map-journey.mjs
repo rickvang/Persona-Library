@@ -4,7 +4,8 @@ function snapshot(state) {
     expandedGroups: [...state.expandedGroups],
     selectedGroupId: state.selectedGroupId,
     selectedItemId: state.selectedItemId,
-    selectedStageId: state.selectedStageId
+    selectedStageId: state.selectedStageId,
+    selectedWorkflowId: state.selectedWorkflowId
   };
 }
 
@@ -23,6 +24,7 @@ export function createJourneyState() {
     selectedGroupId: null,
     selectedItemId: null,
     selectedStageId: null,
+    selectedWorkflowId: null,
     history: []
   };
 }
@@ -36,7 +38,7 @@ export function toggleGroup(state, groupId) {
     ...next,
     view: 'system',
     expandedGroups: [...expanded],
-    selectedGroupId: groupId
+    selectedGroupId: state.selectedItemId ? state.selectedGroupId : groupId
   };
 }
 
@@ -68,6 +70,8 @@ export function switchView(state, view, defaultStageId = null) {
   return {
     ...next,
     view,
+    selectedItemId: null,
+    selectedGroupId: null,
     selectedStageId: view === 'request' ? (state.selectedStageId || defaultStageId) : state.selectedStageId
   };
 }
@@ -96,9 +100,16 @@ export function inspectParticipant(state, itemId, stageId = state.selectedStageI
   const next = checkpoint(state);
   return {
     ...next,
-    view: 'request',
+    view: state.view === 'workflow' ? 'workflow' : 'request',
     selectedItemId: itemId,
     selectedStageId: stageId
+  };
+}
+
+export function openWorkflow(state, id) {
+  return {
+    ...checkpoint(state), view: 'workflow', selectedWorkflowId: id,
+    selectedStageId: null, selectedItemId: null
   };
 }
 

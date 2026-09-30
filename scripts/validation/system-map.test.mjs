@@ -2,10 +2,14 @@ import {
   createJourneyState,
   toggleGroup,
   selectItem,
+  switchView,
+  openWorkflow,
   openRequestStage,
   inspectParticipant,
   goBack
 } from '../../client/system-map-journey.mjs';
+import {buildWorkflowConnections, workflowId} from '../../client/system-map-workflows.mjs';
+import {loadValidationContext} from './context.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -813,4 +817,56 @@ test('Default System Map exposes the two-view prototype while preserving the adv
   assert.match(build, /"system-map-advanced\.html"/);
   assert.match(build, /client\/system-map-journey\.mjs/);
   assert.match(build, /client\/system-map-simple\.mjs/);
+});
+
+test('Workflow exploration preserves the original Skill context and avoids unrelated tab selection', () => {
+  let state = selectItem(toggleGroup(createJourneyState(), 'skills'), 'skills', 'skill:skill-agent-workflow-architecture');
+  const original = state;
+  const expanded = toggleGroup(state,'docs');
+  assert.equal(expanded.selectedGroupId,'skills');
+  assert.equal(expanded.selectedItemId,original.selectedItemId);
+  const request = switchView(state,'request','stage-dispatch');
+  assert.equal(request.selectedItemId,null);
+  assert.equal(request.selectedStageId,'stage-dispatch');
+
+  const id = workflowId('ai-orchestrator','Frame the system goal and boundary');
+  state = openWorkflow(state,id);
+  state = inspectParticipant(state,'persona:ai-orchestrator');
+  assert.equal(state.view,'workflow');
+  assert.equal(state.selectedWorkflowId,id);
+  state = goBack(state);
+  assert.equal(state.selectedItemId,null);
+  assert.equal(state.selectedWorkflowId,id);
+  state = goBack(state);
+  assert.deepEqual(state,original);
+});
+
+test('Workflow connections resolve actual catalog applications without modifying the data', async () => {
+  const {data} = await loadValidationContext();
+  const before = JSON.stringify(data);
+  const model = buildWorkflowConnections(data);
+  const id = workflowId('ai-orchestrator','Frame the system goal and boundary');
+  const flow = model.workflowById.get(id);
+  assert.equal(flow.personaName,'Riley Morgan');
+  assert.equal(flow.activities[0].title,'Define success and stop condition');
+  assert.equal(flow.activities[0].watchFor,'Teams jump to implementation before agreeing on the outcome');
+  assert.ok(model.linksById.get('skill:skill-agent-workflow-architecture').some(link => link.id === id && link.label === 'Used in workflow'));
+  assert.ok(model.linksById.get(id).some(link => link.id === 'persona:ai-orchestrator' && link.label === 'Owned by'));
+  assert.ok(model.linksById.get(id).some(link => link.id === 'skill:skill-agent-workflow-architecture' && link.label === 'Uses skill'));
+  assert.ok(model.linksById.get('template:template-job-application-notes').some(link => link.id === 'operating-pack:operating-pack-candidate-application-context'));
+  assert.equal(JSON.stringify(data),before);
+});
+
+test('Unresolved applications and representative tool names do not create workflow usage links', () => {
+  const data = {
+    personas:[{id:'p',name:'Owner'}], flowLibrary:{p:[{title:'Task',activities:[['Activity','','','','Example Tool']]}]},
+    skillCatalog:[{id:'s',personas:[{id:'p'}],workflows:[{personaId:'p',title:'Missing workflow'}]}],
+    toolCatalog:[{id:'t',name:'Example Tool'}],
+    templateCatalog:[{id:'x',applications:[{personaId:'p',workflow:'Task',known:false}]}]
+  };
+  const model = buildWorkflowConnections(data);
+  assert.equal(model.linksById.get('template:x'),undefined);
+  assert.equal(model.linksById.get('tool:t'),undefined);
+  assert.equal(model.linksById.get('skill:s').some(link => link.id.startsWith('workflow:')),false);
+  assert.deepEqual(model.linksById.get(workflowId('p','Task')),[{id:'persona:p',label:'Owned by'}]);
 });

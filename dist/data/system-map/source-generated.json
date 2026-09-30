@@ -196,6 +196,18 @@
       }
     },
     {
+      "id": "file:client/system-map-workflows.mjs",
+      "label": "client/system-map-workflows.mjs",
+      "type": "authored-source",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "file:client/system-map.mjs",
       "label": "client/system-map.mjs",
       "type": "authored-source",
@@ -1384,6 +1396,18 @@
       }
     },
     {
+      "id": "file:dist/js/system-map-workflows.mjs",
+      "label": "dist/js/system-map-workflows.mjs",
+      "type": "generated-artifact",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "file:dist/js/system-map.mjs",
       "label": "dist/js/system-map.mjs",
       "type": "generated-artifact",
@@ -2106,6 +2130,18 @@
       }
     },
     {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map-workflows.mjs",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/js/system-map-workflows.mjs",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map.mjs",
       "from": "build-step:scripts/build-library.mjs",
       "to": "file:dist/js/system-map.mjs",
@@ -2553,6 +2589,18 @@
       "id": "edge:file:client/system-map-simple.mjs--copied-to--file:dist/js/system-map-simple.mjs",
       "from": "file:client/system-map-simple.mjs",
       "to": "file:dist/js/system-map-simple.mjs",
+      "relationship": "copied-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:file:client/system-map-workflows.mjs--copied-to--file:dist/js/system-map-workflows.mjs",
+      "from": "file:client/system-map-workflows.mjs",
+      "to": "file:dist/js/system-map-workflows.mjs",
       "relationship": "copied-to",
       "derivation": "contract-derived",
       "source": {
@@ -3750,6 +3798,18 @@
       }
     },
     {
+      "id": "edge:file:dist/js/system-map-workflows.mjs--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/js/system-map-workflows.mjs",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+        "selector": "dist cleanliness scope"
+      }
+    },
+    {
       "id": "edge:file:dist/js/system-map.mjs--validated-by--validation:generated-output-cleanliness",
       "from": "file:dist/js/system-map.mjs",
       "to": "validation:generated-output-cleanliness",
@@ -4125,6 +4185,18 @@
       "id": "edge:source-group:client--contains--file:client/system-map-simple.mjs",
       "from": "source-group:client",
       "to": "file:client/system-map-simple.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/system-map-workflows.mjs",
+      "from": "source-group:client",
+      "to": "file:client/system-map-workflows.mjs",
       "relationship": "contains",
       "derivation": "contract-derived",
       "source": {
