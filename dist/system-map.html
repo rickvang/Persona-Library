@@ -19,7 +19,8 @@
     a { color:inherit; }
     button, textarea { font:inherit; }
     button { cursor:pointer; }
-    button:focus-visible, a:focus-visible, textarea:focus-visible, summary:focus-visible {
+    button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible,
+    #selected-heading:focus-visible, #workflow-heading:focus-visible {
       outline:3px solid var(--coral); outline-offset:3px;
     }
     .topbar {
@@ -34,10 +35,10 @@
     .page { max-width:1500px; margin:0 auto; padding:24px clamp(18px,4vw,56px) 56px; }
     .app-head { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:18px; padding-bottom:18px; border-bottom:1px solid var(--line); }
     .eyebrow { margin:0 0 6px; color:var(--good); font-size:10px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
-    h1 { margin:0; font-size:clamp(29px,4vw,46px); line-height:1.02; letter-spacing:-.05em; }
+    h1 { margin:0; font-size:28px; line-height:1.15; }
     .lede { max-width:700px; margin:10px 0 0; color:var(--muted); font-size:14px; line-height:1.55; }
     .advanced-link { align-self:start; padding:8px 10px; border:1px solid var(--line); border-radius:8px; color:var(--deep); background:var(--surface); font-size:11px; font-weight:800; text-decoration:none; }
-    .viewbar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0; }
+    .viewbar { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0; position:sticky; top:0; z-index:2; background:var(--paper); }
     .tabs { display:inline-flex; gap:4px; padding:4px; border:1px solid var(--line); border-radius:10px; background:#e9ece8; }
     .tab { padding:8px 12px; border:0; border-radius:7px; color:#4d5c68; background:transparent; font-size:12px; font-weight:850; }
     .tab[aria-selected="true"] { color:var(--ink); background:var(--surface); box-shadow:0 1px 4px rgba(17,24,39,.08); }
@@ -82,7 +83,7 @@
     .other-spaces dt { color:var(--ink); font-weight:800; }
     .other-spaces dd { margin:0; }
     .explanation {
-      position:sticky; top:16px; min-height:420px; padding:20px; border:1px solid var(--line); border-radius:12px;
+      position:sticky; top:80px; min-height:420px; padding:20px; border:1px solid var(--line); border-radius:8px;
       background:var(--surface); box-shadow:0 8px 28px rgba(17,24,39,.04);
     }
     .explain-kicker { margin:0 0 5px; color:var(--good); font-size:9px; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
@@ -129,6 +130,48 @@
     .empty-state { color:var(--muted); font-size:12px; line-height:1.55; }
     .statusline { min-height:18px; margin-top:8px; color:var(--muted); font-size:10px; }
     .statusline strong { color:var(--good); }
+    [hidden] { display:none !important; }
+    .page * { letter-spacing:0; }
+    .app-layout.full-width { grid-template-columns:minmax(0,1fr); }
+    .catalog-search { display:block; width:100%; max-width:640px; padding:10px 12px; border:1px solid var(--line); border-radius:6px; background:#fff; font:inherit; font-size:14px; }
+    .system-group .catalog-search { margin:0 0 10px 18px; width:calc(100% - 18px); }
+    .catalog-count { color:var(--muted); font-size:12px; }
+    .workflow-index { max-width:1000px; }
+    .workflow-index label { display:block; margin:0 0 8px; font-size:14px; font-weight:700; }
+    .workflow-row { position:relative; display:grid; gap:6px; width:100%; padding:18px 40px 18px 0; border:0; border-bottom:1px solid var(--line); text-align:left; background:transparent; color:var(--ink); }
+    .workflow-row strong { font-size:16px; }
+    .workflow-row > span:not(.row-arrow) { max-width:750px; line-height:1.5; }
+    .workflow-row > span:nth-of-type(2) { color:var(--muted); font-size:13px; }
+    .workflow-row:hover, .connection-link:hover { background:var(--deep-soft); }
+    .row-arrow { position:absolute; right:12px; top:40px; color:var(--deep); }
+    .workflow-head { max-width:850px; margin-bottom:18px; }
+    .workflow-head h2 { margin:5px 0 10px; font-size:25px; line-height:1.25; }
+    .workflow-head > p { color:var(--muted); font-size:14px; line-height:1.55; }
+    .workflow-head .explain-kicker { color:var(--good); font-size:11px; }
+    .workflow-cadence { font-size:12px !important; }
+    #workflow-heading, #selected-heading, .system-group, .stage { scroll-margin-top:95px; }
+    .workflow-entry { margin:0 0 20px; }
+    .workflow-connections { max-width:700px; margin-bottom:20px; }
+    .connection-link { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; width:100%; padding:11px 0; border:0; border-bottom:1px solid var(--line); color:var(--deep); background:transparent; text-align:left; line-height:1.45; font-size:13px; }
+    .connection-kind { display:block; grid-column:1 / -1; color:var(--muted); font-size:11px; }
+    .activity-list { max-width:900px; margin:24px 0; padding:0; list-style:none; }
+    .activity { position:relative; padding:0 0 20px 17px; margin-left:17px; border-left:1px solid var(--line); }
+    .activity:last-child { border-color:transparent; }
+    .activity summary { display:flex; gap:14px; align-items:flex-start; cursor:pointer; list-style:none; }
+    .activity summary::-webkit-details-marker { display:none; }
+    .activity summary::after { content:'+'; margin-left:auto; padding:4px 8px; color:var(--deep); }
+    .activity details[open] summary::after { content:'−'; }
+    .activity-number { flex:none; display:grid; place-items:center; width:34px; height:34px; margin-left:-35px; border:1px solid #9bbcb2; border-radius:50%; background:var(--paper); color:var(--good); font-size:11px; }
+    .activity summary strong { display:block; font-size:16px; line-height:1.4; }
+    .activity-purpose { display:block; margin-top:4px; color:var(--muted); font-size:13px; }
+    .activity-detail { display:grid; grid-template-columns:150px minmax(0,1fr); gap:10px 20px; margin:16px 0 0 14px; padding:16px 0; border-top:1px solid var(--line); font-size:13px; line-height:1.5; }
+    .activity-detail dt { font-weight:700; }
+    .activity-detail dd { margin:0; color:#4f5d68; }
+    .workflow-parts { max-width:900px; margin:24px 0; }
+    .workflow-parts h3 { font-size:15px; }
+    .workflow-parts p { color:var(--muted); font-size:13px; }
+    .explanation h2 { font-size:23px; line-height:1.2; }
+    .explain-section p, .explain-list { font-size:13px; }
     @media (max-width:980px) {
       .app-layout { grid-template-columns:minmax(0,1fr) minmax(290px,360px); gap:15px; }
       .page { padding-inline:20px; }
@@ -148,6 +191,15 @@
       .contained { max-height:360px; margin-left:10px; }
       .other-spaces dl { grid-template-columns:1fr; gap:2px; }
       .other-spaces dd { margin-bottom:7px; }
+      .viewbar { display:grid; grid-template-columns:minmax(0,1fr); position:sticky; top:0; z-index:2; background:var(--paper); padding:10px 0; }
+      .viewbar > .back { justify-self:start; }
+      .tab { padding:9px 5px; font-size:11px; }
+      .app-layout.is-detail .primary { display:none; }
+      .explanation { border-radius:8px; padding:18px; scroll-margin-top:110px; }
+      .activity-detail { grid-template-columns:1fr; gap:4px; }
+      .activity-detail dd { margin-bottom:9px; }
+      .workflow-head { scroll-margin-top:110px; }
+      #workflow-heading, #selected-heading { scroll-margin-top:110px; }
     }
     @media (prefers-reduced-motion:reduce) {
       html { scroll-behavior:auto; }
@@ -163,8 +215,8 @@
     <header class="app-head">
       <div>
         <p class="eyebrow">System Map prototype</p>
-        <h1>Understand the system, then follow the request.</h1>
-        <p class="lede">Start with what exists. Open a part only when you need it, then see where documented request routing uses it.</p>
+        <h1>My System</h1>
+        <p class="lede">Personas, skills, and the documented work that connects them.</p>
       </div>
       <a class="advanced-link" href="system-map-advanced.html">Advanced graph</a>
     </header>
@@ -173,6 +225,7 @@
       <div class="tabs" role="tablist" aria-label="System Map views">
         <button class="tab" id="tab-system" type="button" role="tab" aria-selected="true" aria-controls="primary-surface" data-view="system">My System</button>
         <button class="tab" id="tab-request" type="button" role="tab" aria-selected="false" aria-controls="primary-surface" data-view="request">How Requests Work</button>
+        <button class="tab" id="tab-workflow" type="button" role="tab" aria-selected="false" aria-controls="primary-surface" data-view="workflow">Workflows</button>
       </div>
       <button class="back" id="map-back" type="button" disabled>← Back</button>
     </div>
@@ -180,8 +233,8 @@
     <nav class="breadcrumbs" id="map-breadcrumbs" aria-label="Exploration path"></nav>
 
     <div class="app-layout">
-      <section class="primary" id="primary-surface" aria-live="polite"></section>
-      <aside class="explanation" id="explanation-panel" aria-live="polite">
+      <section class="primary" id="primary-surface" role="tabpanel" aria-labelledby="tab-system"></section>
+      <aside class="explanation" id="explanation-panel">
         <p class="empty-state">Select a system part to see what it is, why it matters, where it is used, and what you can explore next.</p>
       </aside>
     </div>

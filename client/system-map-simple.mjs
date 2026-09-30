@@ -7,8 +7,10 @@ import {
   openRequestStage,
   selectStage,
   inspectParticipant,
+  openWorkflow,
   goBack
 } from './system-map-journey.mjs';
+import {buildWorkflowConnections} from './system-map-workflows.mjs';
 
 const root = document.querySelector('[data-system-map-simple]');
 const primary = document.getElementById('primary-surface');
@@ -18,9 +20,15 @@ const backButton = document.getElementById('map-back');
 const status = document.getElementById('map-status');
 const tabSystem = document.getElementById('tab-system');
 const tabRequest = document.getElementById('tab-request');
+const tabWorkflow = document.getElementById('tab-workflow');
+const layout = document.querySelector('.app-layout');
 
 let state = createJourneyState();
 let model = null;
+let workflowSearch = '';
+const groupFilters = new Map();
+const groupScroll = new Map();
+const activityDisclosure = new Map();
 
 const htmlEscape = (value) => String(value ?? '')
   .replaceAll('&', '&amp;')
@@ -44,11 +52,14 @@ function listMarkup(values) {
 }
 
 function sourceHref(source) {
-  if (!source || source.kind !== 'repo-file' || !source.locator?.includes(':')) return '';
+  if (source?.kind === 'github_repository' && source.repository && source.path) {
+    return 'https://github.com/' + source.repository + '/blob/' + (source.revision || 'main') + '/' + source.path + (source.entrypoint ? '/' + source.entrypoint : '');
+  }
+  if (!source || !['repo-file', 'repo-directory'].includes(source.kind) || !source.locator?.includes(':')) return '';
   const divider = source.locator.indexOf(':');
   const repo = source.locator.slice(0, divider);
   const path = source.locator.slice(divider + 1);
-  return 'https://github.com/' + repo + '/blob/main/' + path;
+  return 'https://github.com/' + repo + (source.kind === 'repo-directory' ? '/tree/main/' : '/blob/main/') + path;
 }
 
 function describeRecord(kind, record, context = {}) {
@@ -57,7 +68,7 @@ function describeRecord(kind, record, context = {}) {
     const skills = context.skills || [];
     return {
       summary: firstText(record.overview, record.summary, record.definition, record.purpose, record.tagline, record.description, record.role ? record.name + ' is a ' + record.role + ' Persona.' : ''),
-      role: record.role ? 'This Persona is classified as ' + record.role + '. Its authored workflows and Skill applications describe the decisions it owns.' : 'Its authored workflows and Skill applications describe the decisions and work assigned to this Persona.',
+      role: firstText(record.useWhen, record.context, record.roleLabel),
       inside: workflows.map(flow => flow.title || flow.name).filter(Boolean),
       used: workflows.length ? 'Used by ' + workflows.length + ' authored workflow' + (workflows.length === 1 ? '' : 's') + ' in this Persona record.' : 'No authored workflow entries were found for this Persona in the loaded catalog.',
       next: skills.slice(0, 8).map(skill => skill.name)
@@ -69,7 +80,7 @@ function describeRecord(kind, record, context = {}) {
     const recipes = record.toolUseRecipes || [];
     return {
       summary: firstText(record.definition, record.summary, profiles[0]?.definition, profiles[0]?.summary, record.name),
-      role: 'This is a normalized reusable Skill identity. Persona application profiles preserve role-specific triggers, workflows, actions, and evidence.',
+      role: [...new Set(profiles.map(profile => profile.actions).filter(Boolean))].join(' '),
       inside: [
         ...profiles.map(profile => 'Persona application: ' + firstText(profile.personaName, profile.personaId)).filter(Boolean),
         ...recipes.map(recipe => 'Tool-use recipe: ' + firstText(recipe.title, recipe.id)).filter(Boolean)
@@ -91,10 +102,28 @@ function describeRecord(kind, record, context = {}) {
   if (kind === 'playbook') {
     return {
       summary: firstText(record.purpose, record.description, record.name + (record.status ? ' — ' + record.status : '')),
-      role: 'A Playbook supplies a process surface for Personas: stages, handoffs, state, gates, recovery, and learning toward an outcome. It is not an autonomous owner.',
+      role: 'Coordinates stages, participants, handoffs, and checks toward an outcome. Linked workflows describe the work owned by individual Personas.',
       inside: labels(record.stages, 'title'),
       used: record.status ? 'Catalog status: ' + record.status + '.' : 'This record is present in the canonical Playbook catalog.',
       next: []
+    };
+  }
+  if (kind === 'operating-pack' || kind === 'template') {
+    return {
+      summary: record.purpose,
+      role: record.useWhen,
+      inside: record.provides || [],
+      used: record.status + (record.source?.availability === 'documentation_only' ? '. Source is documented; access depends on the assistant and its permissions.' : ''),
+      next: []
+    };
+  }
+  if (kind === 'recipe') {
+    return {
+      summary: record.when,
+      role: record.requires,
+      inside: record.steps || [],
+      used: record.status + '. ' + record.mode,
+      next: [record.output, record.fallback].filter(Boolean)
     };
   }
   if (kind === 'route') {
@@ -134,10 +163,21 @@ function buildModel(bundle, docs, data) {
   }
 
   const spaceById = new Map((bundle.space_index || []).map(space => [space.id, space]));
-  const groupIds = ['personas','skills','tools','playbooks','docs'];
+  const groupIds = ['personas','skills','operating-packs','templates','tools','playbooks','docs'];
   const itemById = new Map();
+  const connections = buildWorkflowConnections(data);
+  const groupDescriptions = {
+    personas: 'The roles and perspectives that guide the work.',
+    skills: 'Reusable capabilities applied by those roles.',
+    'operating-packs': 'Context, conventions, and checks for a domain or project.',
+    templates: 'Starting structures for documents and other artifacts.',
+    tools: 'Capabilities for acting on files, services, and other systems.',
+    playbooks: 'Guidance for coordinating work across stages and people.',
+    docs: 'Instructions and routes for using the library.'
+  };
 
   const register = item => {
+    item.source ||= {kind:'repo-directory', locator:'rickvang/Persona-Library:content/library-data', selector:item.id};
     itemById.set(item.id, item);
     return item;
   };
@@ -173,6 +213,14 @@ function buildModel(bundle, docs, data) {
         items.push(register({id:'playbook:' + record.id, groupId, label:record.name || record.id, kind:'Playbook', detail, raw:record}));
       }
     }
+    if (groupId === 'operating-packs' || groupId === 'templates') {
+      const kind = groupId === 'templates' ? 'template' : 'operating-pack';
+      const catalog = groupId === 'templates' ? data.templateCatalog : data.operatingPackCatalog;
+      for (const record of catalog || []) {
+        items.push(register({id:kind + ':' + record.id, groupId, label:record.name,
+          kind:kind === 'template' ? 'Template' : 'Operating Pack', detail:describeRecord(kind, record), raw:record, source:record.source}));
+      }
+    }
     if (groupId === 'docs') {
       for (const record of docs.routes || []) {
         const detail = describeRecord('route', record);
@@ -189,16 +237,23 @@ function buildModel(bundle, docs, data) {
       label:space.label,
       kind:'System space',
       detail:{
-        summary:space.answers,
-        role:'This is one of the semantic spaces declared by the canonical Persona-Library orientation index.',
+        summary:groupDescriptions[groupId],
+        role:space.answers,
         inside:items.slice(0, 12).map(item => item.label),
         used:groupId === 'docs' ? 'The documented system-orientation request route enters the Docs space before choosing a downstream capability.' : 'This space is available to the orientation router when it is the smallest relevant domain for a request.',
         next:items.slice(0, 8).map(item => item.label)
       },
       source:graph.provenance['space:' + groupId] || {kind:'repo-file',locator:'rickvang/Persona-Library:content/site-orientation.json',selector:'spaces.' + groupId}
     });
-    return {id:groupId, label:space.label, purpose:space.answers, routeFile:space.route_file, items, spaceItem};
+    return {id:groupId, label:space.label, purpose:groupDescriptions[groupId], routeFile:space.route_file, items, spaceItem};
   });
+
+  for (const record of data.toolUseRecipes || []) {
+    register({id:'recipe:' + record.id, groupId:'tools', label:record.title, kind:'Tool-use guidance', detail:describeRecord('recipe',record), raw:record});
+  }
+  for (const workflow of connections.workflows) {
+    register({id:workflow.id, groupId:'personas', label:workflow.title, kind:'Workflow', source:workflow.source});
+  }
 
   const specialDescriptions = {
     'agent:repository-dispatcher': {
@@ -288,7 +343,7 @@ function buildModel(bundle, docs, data) {
   ]);
 
   return {
-    bundle, docs, graph, groups, itemById, stages, stageById, stageLinksByItem,
+    bundle, docs, graph, groups, itemById, stages, stageById, stageLinksByItem, ...connections,
     otherSpaces:(bundle.space_index || []).filter(space => !groupIds.includes(space.id))
   };
 }
@@ -297,6 +352,13 @@ function renderBreadcrumbs() {
   const parts = [];
   parts.push(state.view === 'system' ? '<strong>My System</strong>' : 'My System');
   if (state.view === 'request') parts.push('<strong>How Requests Work</strong>');
+  if (state.view === 'workflow') {
+    parts.push('<strong>Workflows</strong>');
+    const workflow = model.workflowById.get(state.selectedWorkflowId);
+    if (workflow) parts.push(htmlEscape(workflow.title));
+    const item = model.itemById.get(state.selectedItemId);
+    if (item) parts.push(htmlEscape(item.label));
+  }
   const group = model.groups.find(item => item.id === state.selectedGroupId);
   if (state.view === 'system' && group) parts.push(htmlEscape(group.label));
   if (state.view === 'system' && state.selectedItemId) {
@@ -316,16 +378,19 @@ function renderSystem() {
     const isOpen = expanded.has(group.id);
     const selectedGroup = state.selectedItemId === group.spaceItem.id;
     const preview = group.items.slice(0, 3).map(item => item.label).join(' · ');
-    const items = isOpen ? '<div class="contained">' + group.items.map(item => {
+    const query = groupFilters.get(group.id) || '';
+    const filter = group.items.length > 10 ? '<input class="catalog-search" data-filter-group="' + htmlEscape(group.id) + '" type="search" aria-label="Filter ' + htmlEscape(group.label) + '" placeholder="Find in ' + htmlEscape(group.label) + '" value="' + htmlEscape(query) + '">' : '';
+    const items = isOpen ? filter + '<div class="contained">' + group.items.map(item => {
       const selected = state.selectedItemId === item.id;
-      return '<button type="button" class="contained-item" data-item-id="' + htmlEscape(item.id) + '" data-group-id="' + htmlEscape(group.id) + '" aria-current="' + (selected ? 'true' : 'false') + '"><span class="item-kind">' + htmlEscape(item.kind) + '</span><strong>' + htmlEscape(item.label) + '</strong></button>';
+      const hidden = query && !item.label.toLowerCase().includes(query.toLowerCase());
+      return '<button type="button" class="contained-item" data-item-id="' + htmlEscape(item.id) + '" data-group-id="' + htmlEscape(group.id) + '" aria-current="' + (selected ? 'true' : 'false') + '"' + (hidden ? ' hidden' : '') + '><span class="item-kind">' + htmlEscape(item.kind) + '</span><strong>' + htmlEscape(item.label) + '</strong></button>';
     }).join('') + '</div>' : '';
     return '<section class="system-group" data-group="' + htmlEscape(group.id) + '">' +
       '<div class="group-head">' +
         '<button type="button" class="group-select" data-group-select="' + htmlEscape(group.id) + '" aria-current="' + (selectedGroup ? 'true' : 'false') + '">' +
           '<strong>' + htmlEscape(group.label) + '</strong>' +
           '<span class="group-purpose">' + htmlEscape(group.purpose) + '</span>' +
-          '<span class="group-preview">' + htmlEscape(group.items.length + ' records' + (preview ? ' · ' + preview : '')) + '</span>' +
+          '<span class="group-preview">' + htmlEscape(group.items.length + ' record' + (group.items.length === 1 ? '' : 's') + (preview ? ' · ' + preview : '')) + '</span>' +
         '</button>' +
         '<button type="button" class="expand" data-expand-group="' + htmlEscape(group.id) + '" aria-expanded="' + (isOpen ? 'true' : 'false') + '" aria-label="' + htmlEscape((isOpen ? 'Collapse ' : 'Expand ') + group.label + ' contents') + '">' + (isOpen ? '−' : '+') + '</button>' +
       '</div>' + items + '</section>';
@@ -352,7 +417,33 @@ function renderRequest() {
       '<button type="button" class="stage-button" data-stage-id="' + htmlEscape(stage.id) + '" aria-current="' + (selected ? 'step' : 'false') + '"><h2>' + htmlEscape(stage.title) + '</h2><p>' + htmlEscape(stage.what) + '</p></button>' +
       participantMarkup + '</li>';
   }).join('');
-  primary.innerHTML = '<p class="boundary-note"><strong>Documented / intended behavior — not an execution trace.</strong> This walkthrough shows declared routing contracts. It does not claim that a conversation followed these stages, expose hidden reasoning, or provide observed runtime evidence.</p><ol class="stage-list">' + stages + '</ol>';
+  primary.innerHTML = '<p class="boundary-note"><strong>Documented / intended behavior — not an execution trace.</strong> This is the routing for a question about Persona Library. Task-specific work continues through the workflows below.</p><button type="button" class="where-button workflow-entry" data-view="workflow">Explore documented workflows →</button><ol class="stage-list">' + stages + '</ol>';
+}
+
+function connectionMarkup(id, includedLabels = null) {
+  const links = (model.linksById.get(id) || []).filter(link => !includedLabels || includedLabels.includes(link.label));
+  return links.map(link => {
+    const item = model.itemById.get(link.id);
+    if (!item) return '';
+    const workflow = model.workflowById.get(link.id);
+    const label = workflow ? workflow.title + ' · ' + workflow.personaName : item.label;
+    return '<button type="button" class="connection-link" data-related-item="' + htmlEscape(item.id) + '"><span class="connection-kind">' + htmlEscape(link.label) + '</span><span>' + htmlEscape(label) + '</span><span aria-hidden="true">→</span></button>';
+  }).join('');
+}
+
+function renderWorkflows() {
+  const workflow = model.workflowById.get(state.selectedWorkflowId);
+  if (!workflow) {
+    const query = workflowSearch.trim().toLowerCase();
+    const filtered = model.workflows.filter(item => (item.title + ' ' + item.personaName + ' ' + item.summary).toLowerCase().includes(query));
+    primary.innerHTML = '<div class="workflow-index"><label for="workflow-search">Find a workflow</label><input class="catalog-search" id="workflow-search" type="search" placeholder="Name, purpose, or Persona" value="' + htmlEscape(workflowSearch) + '"><p class="catalog-count">' + filtered.length + ' documented workflows</p><div class="workflow-list">' + filtered.map(item => '<button type="button" class="workflow-row" data-related-item="' + htmlEscape(item.id) + '"><span class="connection-kind">' + htmlEscape(item.personaName) + '</span><strong>' + htmlEscape(item.title) + '</strong><span>' + htmlEscape(item.summary) + '</span><span class="row-arrow" aria-hidden="true">→</span></button>').join('') + (filtered.length ? '' : '<p>No workflows match this search.</p>') + '</div></div>';
+    return;
+  }
+  const openActivities = activityDisclosure.get(workflow.id) || new Set([0]);
+  const activities = workflow.activities.map((activity, index) => '<li class="activity"><details data-activity-index="' + index + '"' + (openActivities.has(index) ? ' open' : '') + '><summary><span class="activity-number">' + String(index + 1).padStart(2,'0') + '</span><span><strong>' + htmlEscape(activity.title) + '</strong><span class="activity-purpose">' + htmlEscape(activity.purpose || '') + '</span></span></summary><dl class="activity-detail">' + [
+    ['When', activity.cadence], ['Watch for', activity.watchFor], ['Reference / tool example', activity.reference]
+  ].filter(([,value]) => value).map(([label,value]) => '<dt>' + label + '</dt><dd>' + htmlEscape(value) + '</dd>').join('') + '</dl></details></li>').join('');
+  primary.innerHTML = '<header class="workflow-head"><p class="explain-kicker">Documented workflow</p><h2 id="workflow-heading" tabindex="-1">' + htmlEscape(workflow.title) + '</h2><p>' + htmlEscape(workflow.summary) + '</p><p class="workflow-cadence">' + htmlEscape(workflow.cadence || '') + '</p></header><div class="workflow-connections">' + connectionMarkup(workflow.id, ['Owned by']) + '</div><p class="boundary-note"><strong>Documented activities.</strong> Shown in the order recorded, without a claim that a request followed them. Timing between activities and branches are not specified.</p><ol class="activity-list" data-workflow-id="' + htmlEscape(workflow.id) + '">' + activities + '</ol><section class="workflow-parts"><h3>Skills used in this workflow</h3>' + (connectionMarkup(workflow.id, ['Uses skill']) || '<p>No skill applications are linked in the catalog.</p>') + '</section>' + (connectionMarkup(workflow.id, ['Operating context','Starting artifact']) ? '<section class="workflow-parts"><h3>Context and starting artifacts</h3>' + connectionMarkup(workflow.id, ['Operating context','Starting artifact']) + '</section>' : '') + sourceDetails(workflow.source) + '<button type="button" class="where-button" data-workflow-index>All workflows →</button>';
 }
 
 function contextText(item) {
@@ -386,6 +477,8 @@ function renderExplanation() {
     return stage ? '<button type="button" class="where-button" data-where-stage="' + htmlEscape(stageId) + '" data-where-item="' + htmlEscape(item.id) + '">Open “' + htmlEscape(stage.title) + '” →</button>' : '';
   }).join('');
 
+  const group = model.groups.find(group => group.spaceItem.id === item.id);
+  const links = connectionMarkup(item.id);
   const inside = listMarkup(item.detail?.inside || []);
   const next = listMarkup(item.detail?.next || []);
   const whereText = stages.length
@@ -395,22 +488,23 @@ function renderExplanation() {
   explanation.innerHTML =
     '<p class="explain-kicker">' + htmlEscape(item.kind) + '</p>' +
     '<h2 tabindex="-1" id="selected-heading">' + htmlEscape(item.label) + '</h2>' +
-    '<p class="explain-id">' + htmlEscape(item.id) + '</p>' +
     '<section class="explain-section"><h3>What is this?</h3><p>' + htmlEscape(item.detail?.summary || 'The loaded source does not provide a plain-language description for this item.') + '</p></section>' +
     '<section class="explain-section"><h3>What role does it play?</h3><p>' + htmlEscape(item.detail?.role || 'Its role is not described in the loaded bounded source.') + '</p></section>' +
-    '<section class="explain-section"><h3>What is inside it?</h3>' + inside + '</section>' +
+    (group ? '<section class="explain-section"><h3>Contents</h3><button type="button" class="where-button" data-open-contents="' + htmlEscape(group.id) + '">Open ' + htmlEscape(group.label) + ' contents →</button></section>' : item.kind === 'Persona' || item.kind === 'Skill' ? '' : '<section class="explain-section"><h3>What is inside it?</h3>' + inside + '</section>') +
     '<section class="explain-section"><h3>Where is it used?</h3><p>' + whereText + '</p>' + whereButtons + '</section>' +
-    '<section class="explain-section"><h3>What can I explore next?</h3>' + next + '</section>' +
+    '<section class="explain-section"><h3>Connected parts</h3>' + (links || (group ? '<p>Open this group to explore its records.</p>' : '<p>No additional connections are recorded here.</p>')) + '</section>' +
+    (item.kind === 'Tool-use guidance' ? '<section class="explain-section"><h3>Result and fallback</h3>' + next + '</section>' : '') +
     '<details class="ask"><summary>Ask about this</summary><p class="prototype-boundary">Prototype boundary: this prepares the selected context for a question. It does not generate or submit an answer inside this page.</p><textarea id="ask-context" aria-label="Question context">' + htmlEscape(contextText(item)) + '</textarea><button type="button" class="copy-context" data-copy-context>Copy context</button></details>' +
-    sourceDetails(item.source);
+    sourceDetails(item.source, item.id);
 }
 
-function sourceDetails(source) {
+function sourceDetails(source, id = '') {
   if (!source) return '';
   const href = sourceHref(source);
   return '<details class="source-details"><summary>Identifiers & source</summary><dl>' +
+    (id ? '<dt>Record</dt><dd>' + htmlEscape(id) + '</dd>' : '') +
     '<dt>Kind</dt><dd>' + htmlEscape(source.kind || 'not declared') + '</dd>' +
-    '<dt>Locator</dt><dd>' + (href ? '<a href="' + htmlEscape(href) + '">' + htmlEscape(source.locator || '') + '</a>' : htmlEscape(source.locator || 'not declared')) + '</dd>' +
+    '<dt>Locator</dt><dd>' + (href ? '<a href="' + htmlEscape(href) + '">' + htmlEscape(source.locator || source.repository + '/' + source.path) + '</a>' : htmlEscape(source.locator || 'not declared')) + '</dd>' +
     '<dt>Selector</dt><dd>' + htmlEscape(source.selector || 'not declared') + '</dd>' +
     '</dl></details>';
 }
@@ -420,40 +514,88 @@ function announce(message) {
 }
 
 function render(options = {}) {
+  const active = document.activeElement;
+  const focusAttribute = ['id','data-expand-group','data-stage-id','data-filter-group','data-view'].find(name => active?.hasAttribute(name));
+  const previousFocus = focusAttribute ? '[' + focusAttribute + '="' + CSS.escape(active.getAttribute(focusAttribute)) + '"]' : null;
+  const caret = active instanceof HTMLInputElement ? active.selectionStart : null;
+  for (const list of primary.querySelectorAll('.contained')) groupScroll.set(list.closest('[data-group]').dataset.group, list.scrollTop);
   tabSystem.setAttribute('aria-selected', String(state.view === 'system'));
   tabRequest.setAttribute('aria-selected', String(state.view === 'request'));
+  tabWorkflow.setAttribute('aria-selected', String(state.view === 'workflow'));
+  for (const tab of [tabSystem,tabRequest,tabWorkflow]) tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
   backButton.disabled = !state.history.length;
   if (state.view === 'system') renderSystem();
+  else if (state.view === 'workflow') renderWorkflows();
   else renderRequest();
   renderBreadcrumbs();
   renderExplanation();
-  if (options.ensureVisible) requestAnimationFrame(ensureCurrentVisible);
+  explanation.hidden = state.view === 'workflow' && !state.selectedItemId;
+  layout.classList.toggle('full-width', explanation.hidden);
+  layout.classList.toggle('is-detail', Boolean(state.selectedItemId));
+  primary.setAttribute('aria-labelledby', state.view === 'system' ? 'tab-system' : state.view === 'workflow' ? 'tab-workflow' : 'tab-request');
+  for (const list of primary.querySelectorAll('.contained')) list.scrollTop = groupScroll.get(list.closest('[data-group]').dataset.group) || 0;
+  const focus = document.querySelector(options.focus || previousFocus || '#workflow-heading, #selected-heading');
+  focus?.focus({preventScroll:true});
+  if (caret !== null && focus instanceof HTMLInputElement) focus.setSelectionRange(caret,caret);
+  if (options.ensureVisible) requestAnimationFrame(() => ensureCurrentVisible(options.scroll));
 }
 
-function ensureCurrentVisible() {
+function ensureCurrentVisible(selector = null) {
   const reduced = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   const behavior = reduced ? 'auto' : 'smooth';
-  let target = null;
-  if (state.view === 'system' && state.selectedItemId) {
+  let target = selector ? document.querySelector(selector) : null;
+  if (!target && state.selectedItemId && matchMedia('(max-width:760px)').matches) target = explanation;
+  if (!target && state.view === 'system' && state.selectedItemId) {
     target = [...document.querySelectorAll('[data-item-id]')].find(element => element.dataset.itemId === state.selectedItemId);
   }
   if (!target && state.view === 'system' && state.selectedGroupId) {
     target = [...document.querySelectorAll('[data-group]')].find(element => element.dataset.group === state.selectedGroupId);
   }
-  if (state.view === 'request' && state.selectedStageId) {
+  if (!target && state.view === 'request' && state.selectedStageId) {
     target = [...document.querySelectorAll('[data-stage-row]')].find(element => element.dataset.stageRow === state.selectedStageId);
   }
+  if (!target && state.view === 'workflow') target = document.getElementById('workflow-heading') || document.getElementById('workflow-search');
   target?.scrollIntoView({block:'nearest', behavior});
 }
 
 root.addEventListener('click', async event => {
+  const related = event.target.closest('[data-related-item]');
+  if (related) {
+    const id = related.dataset.relatedItem;
+    const item = model.itemById.get(id);
+    if (!item) return;
+    if (model.workflowById.has(id)) state = openWorkflow(state, id);
+    else if (state.view === 'workflow' || state.view === 'request') state = inspectParticipant(state,id);
+    else {
+      state = selectItem(state,item.groupId,id);
+      if (model.groups.find(group => group.id === item.groupId)?.items.some(item => item.id === id)) {
+        state = {...state,expandedGroups:[...new Set([...state.expandedGroups,item.groupId])]};
+      }
+    }
+    render({ensureVisible:true,focus:model.workflowById.has(id) ? '#workflow-heading' : '#selected-heading'});
+    announce('Opened ' + item.label + '.');
+    return;
+  }
+  const allWorkflows = event.target.closest('[data-workflow-index]');
+  if (allWorkflows) {
+    state = openWorkflow(state,null);
+    render({ensureVisible:true,focus:'#workflow-search'});
+    return;
+  }
+  const contents = event.target.closest('[data-open-contents]');
+  if (contents) {
+    const groupId = contents.dataset.openContents;
+    state = {...selectItem(state,groupId,null),expandedGroups:[...new Set([...state.expandedGroups,groupId])]};
+    render({ensureVisible:true,focus:'[data-expand-group="' + CSS.escape(groupId) + '"]',scroll:'[data-group="' + CSS.escape(groupId) + '"]'});
+    return;
+  }
   const viewButton = event.target.closest('[data-view]');
   if (viewButton) {
     const requested = viewButton.dataset.view;
     state = switchView(state, requested, 'stage-dispatch');
     if (requested === 'request' && !state.selectedStageId) state = {...state, selectedStageId:'stage-dispatch'};
-    render({ensureVisible:true});
-    announce(requested === 'system' ? 'Returned to My System.' : 'Opened documented request handling.');
+    render({ensureVisible:true,focus:'[data-view="' + requested + '"]'});
+    announce(requested === 'system' ? 'Returned to My System.' : requested === 'workflow' ? 'Opened documented workflows.' : 'Opened documented request handling.');
     return;
   }
 
@@ -461,7 +603,7 @@ root.addEventListener('click', async event => {
   if (expand) {
     const groupId = expand.dataset.expandGroup;
     state = toggleGroup(state, groupId);
-    render({ensureVisible:true});
+    render({ensureVisible:true,scroll:'[data-group="' + CSS.escape(groupId) + '"]'});
     const group = model.groups.find(item => item.id === groupId);
     announce((state.expandedGroups.includes(groupId) ? 'Expanded ' : 'Collapsed ') + (group?.label || groupId) + ' contents.');
     return;
@@ -472,7 +614,7 @@ root.addEventListener('click', async event => {
     const group = model.groups.find(item => item.id === groupSelect.dataset.groupSelect);
     if (!group) return;
     state = selectSystemGroup(state, group.id, group.spaceItem.id);
-    render({ensureVisible:true});
+    render({ensureVisible:true,focus:'#selected-heading'});
     announce('Selected ' + group.label + '.');
     return;
   }
@@ -480,7 +622,7 @@ root.addEventListener('click', async event => {
   const itemButton = event.target.closest('[data-item-id]');
   if (itemButton) {
     state = selectItem(state, itemButton.dataset.groupId, itemButton.dataset.itemId);
-    render({ensureVisible:true});
+    render({ensureVisible:true,focus:'#selected-heading'});
     announce('Selected ' + (model.itemById.get(itemButton.dataset.itemId)?.label || itemButton.dataset.itemId) + '.');
     return;
   }
@@ -488,7 +630,7 @@ root.addEventListener('click', async event => {
   const stageButton = event.target.closest('[data-stage-id]');
   if (stageButton) {
     state = selectStage(state, stageButton.dataset.stageId);
-    render({ensureVisible:true});
+    render({ensureVisible:true,focus:'[data-stage-id="' + CSS.escape(stageButton.dataset.stageId) + '"]'});
     announce('Opened request stage ' + (model.stageById.get(stageButton.dataset.stageId)?.title || '') + '.');
     return;
   }
@@ -496,7 +638,7 @@ root.addEventListener('click', async event => {
   const participant = event.target.closest('[data-participant]');
   if (participant) {
     state = inspectParticipant(state, participant.dataset.participant, participant.dataset.stage);
-    render({ensureVisible:true});
+    render({ensureVisible:true,focus:'#selected-heading'});
     announce('Inspecting ' + (model.itemById.get(participant.dataset.participant)?.label || participant.dataset.participant) + ' in this stage.');
     return;
   }
@@ -504,7 +646,7 @@ root.addEventListener('click', async event => {
   const where = event.target.closest('[data-where-stage]');
   if (where) {
     state = openRequestStage(state, where.dataset.whereItem, where.dataset.whereStage);
-    render({ensureVisible:true});
+    render({ensureVisible:true,focus:'#selected-heading'});
     announce('Opened the documented request stage that uses this item.');
     return;
   }
@@ -528,14 +670,47 @@ backButton.addEventListener('click', () => {
   const previous = state;
   state = goBack(state);
   if (state === previous) return;
-  render({ensureVisible:true});
+  render({ensureVisible:true,focus:state.selectedItemId ? '#selected-heading' : state.view === 'workflow' ? '#workflow-heading, #workflow-search' : '#map-back'});
   announce('Restored the previous exploration context.');
+});
+
+root.addEventListener('input', event => {
+  if (event.target.id === 'workflow-search') {
+    workflowSearch = event.target.value;
+    render({focus:'#workflow-search'});
+  }
+  const groupId = event.target.dataset.filterGroup;
+  if (groupId) {
+    groupFilters.set(groupId,event.target.value);
+    const group = model.groups.find(group => group.id === groupId);
+    for (const button of primary.querySelectorAll('[data-item-id]')) {
+      if (button.dataset.groupId !== groupId) continue;
+      const item = group.items.find(item => item.id === button.dataset.itemId);
+      button.hidden = !item.label.toLowerCase().includes(event.target.value.toLowerCase());
+    }
+  }
+});
+
+root.addEventListener('toggle', event => {
+  if (!event.target.isConnected || !event.target.hasAttribute('data-activity-index')) return;
+  const list = event.target.closest('[data-workflow-id]');
+  activityDisclosure.set(list.dataset.workflowId, new Set([...list.querySelectorAll('details[open]')].map(item => Number(item.dataset.activityIndex))));
+}, true);
+
+root.querySelector('[role="tablist"]').addEventListener('keydown', event => {
+  if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+  event.preventDefault();
+  const tabs = [tabSystem,tabRequest,tabWorkflow];
+  const index = tabs.indexOf(document.activeElement);
+  const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+  tabs[next].click();
+  tabs[next].focus();
 });
 
 let resizeFrame = null;
 globalThis.addEventListener('resize', () => {
   cancelAnimationFrame(resizeFrame);
-  resizeFrame = requestAnimationFrame(ensureCurrentVisible);
+  resizeFrame = requestAnimationFrame(() => ensureCurrentVisible());
 });
 
 async function start() {
