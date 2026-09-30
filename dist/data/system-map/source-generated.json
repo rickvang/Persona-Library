@@ -160,8 +160,32 @@
       }
     },
     {
+      "id": "file:client/system-map-journey.mjs",
+      "label": "client/system-map-journey.mjs",
+      "type": "authored-source",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "file:client/system-map-renderer.mjs",
       "label": "client/system-map-renderer.mjs",
+      "type": "authored-source",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:client/system-map-simple.mjs",
+      "label": "client/system-map-simple.mjs",
       "type": "authored-source",
       "owner": "repository:rickvang/persona-library",
       "derivation": "contract-derived",
@@ -726,6 +750,18 @@
     {
       "id": "file:content/site-pages/skills.html",
       "label": "content/site-pages/skills.html",
+      "type": "authored-source",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:content/site-pages/system-map-advanced.html",
+      "label": "content/site-pages/system-map-advanced.html",
       "type": "authored-source",
       "owner": "repository:rickvang/persona-library",
       "derivation": "contract-derived",
@@ -1312,8 +1348,32 @@
       }
     },
     {
+      "id": "file:dist/js/system-map-journey.mjs",
+      "label": "dist/js/system-map-journey.mjs",
+      "type": "generated-artifact",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "file:dist/js/system-map-renderer.mjs",
       "label": "dist/js/system-map-renderer.mjs",
+      "type": "generated-artifact",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:dist/js/system-map-simple.mjs",
+      "label": "dist/js/system-map-simple.mjs",
       "type": "generated-artifact",
       "owner": "repository:rickvang/persona-library",
       "derivation": "contract-derived",
@@ -1410,6 +1470,18 @@
     {
       "id": "file:dist/skills.html",
       "label": "dist/skills.html",
+      "type": "generated-artifact",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:dist/system-map-advanced.html",
+      "label": "dist/system-map-advanced.html",
       "type": "generated-artifact",
       "owner": "repository:rickvang/persona-library",
       "derivation": "contract-derived",
@@ -1998,9 +2070,33 @@
       }
     },
     {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map-journey.mjs",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/js/system-map-journey.mjs",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map-renderer.mjs",
       "from": "build-step:scripts/build-library.mjs",
       "to": "file:dist/js/system-map-renderer.mjs",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/system-map-simple.mjs",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/js/system-map-simple.mjs",
       "relationship": "generates",
       "derivation": "contract-derived",
       "source": {
@@ -2097,6 +2193,18 @@
       "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/skills.html",
       "from": "build-step:scripts/build-library.mjs",
       "to": "file:dist/skills.html",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/system-map-advanced.html",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/system-map-advanced.html",
       "relationship": "generates",
       "derivation": "contract-derived",
       "source": {
@@ -2418,9 +2526,33 @@
       }
     },
     {
+      "id": "edge:file:client/system-map-journey.mjs--copied-to--file:dist/js/system-map-journey.mjs",
+      "from": "file:client/system-map-journey.mjs",
+      "to": "file:dist/js/system-map-journey.mjs",
+      "relationship": "copied-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "edge:file:client/system-map-renderer.mjs--copied-to--file:dist/js/system-map-renderer.mjs",
       "from": "file:client/system-map-renderer.mjs",
       "to": "file:dist/js/system-map-renderer.mjs",
+      "relationship": "copied-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:file:client/system-map-simple.mjs--copied-to--file:dist/js/system-map-simple.mjs",
+      "from": "file:client/system-map-simple.mjs",
+      "to": "file:dist/js/system-map-simple.mjs",
       "relationship": "copied-to",
       "derivation": "contract-derived",
       "source": {
@@ -2985,6 +3117,18 @@
       "id": "edge:file:content/site-pages/skills.html--copied-to--file:dist/skills.html",
       "from": "file:content/site-pages/skills.html",
       "to": "file:dist/skills.html",
+      "relationship": "copied-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:file:content/site-pages/system-map-advanced.html--copied-to--file:dist/system-map-advanced.html",
+      "from": "file:content/site-pages/system-map-advanced.html",
+      "to": "file:dist/system-map-advanced.html",
       "relationship": "copied-to",
       "derivation": "contract-derived",
       "source": {
@@ -3570,8 +3714,32 @@
       }
     },
     {
+      "id": "edge:file:dist/js/system-map-journey.mjs--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/js/system-map-journey.mjs",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+        "selector": "dist cleanliness scope"
+      }
+    },
+    {
       "id": "edge:file:dist/js/system-map-renderer.mjs--validated-by--validation:generated-output-cleanliness",
       "from": "file:dist/js/system-map-renderer.mjs",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+        "selector": "dist cleanliness scope"
+      }
+    },
+    {
+      "id": "edge:file:dist/js/system-map-simple.mjs--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/js/system-map-simple.mjs",
       "to": "validation:generated-output-cleanliness",
       "relationship": "validated-by",
       "derivation": "contract-derived",
@@ -3668,6 +3836,18 @@
     {
       "id": "edge:file:dist/skills.html--validated-by--validation:generated-output-cleanliness",
       "from": "file:dist/skills.html",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+        "selector": "dist cleanliness scope"
+      }
+    },
+    {
+      "id": "edge:file:dist/system-map-advanced.html--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/system-map-advanced.html",
       "to": "validation:generated-output-cleanliness",
       "relationship": "validated-by",
       "derivation": "contract-derived",
@@ -3918,9 +4098,33 @@
       }
     },
     {
+      "id": "edge:source-group:client--contains--file:client/system-map-journey.mjs",
+      "from": "source-group:client",
+      "to": "file:client/system-map-journey.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "edge:source-group:client--contains--file:client/system-map-renderer.mjs",
       "from": "source-group:client",
       "to": "file:client/system-map-renderer.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/system-map-simple.mjs",
+      "from": "source-group:client",
+      "to": "file:client/system-map-simple.mjs",
       "relationship": "contains",
       "derivation": "contract-derived",
       "source": {
@@ -4485,6 +4689,18 @@
       "id": "edge:source-group:content--contains--file:content/site-pages/skills.html",
       "from": "source-group:content",
       "to": "file:content/site-pages/skills.html",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/system-map-advanced.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/system-map-advanced.html",
       "relationship": "contains",
       "derivation": "contract-derived",
       "source": {
