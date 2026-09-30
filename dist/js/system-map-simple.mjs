@@ -56,7 +56,7 @@ function describeRecord(kind, record, context = {}) {
     const workflows = context.workflows || [];
     const skills = context.skills || [];
     return {
-      summary: firstText(record.summary, record.definition, record.purpose, record.tagline, record.description, record.role ? record.name + ' is a ' + record.role + ' Persona.' : ''),
+      summary: firstText(record.overview, record.summary, record.definition, record.purpose, record.tagline, record.description, record.role ? record.name + ' is a ' + record.role + ' Persona.' : ''),
       role: record.role ? 'This Persona is classified as ' + record.role + '. Its authored workflows and Skill applications describe the decisions it owns.' : 'Its authored workflows and Skill applications describe the decisions and work assigned to this Persona.',
       inside: workflows.map(flow => flow.title || flow.name).filter(Boolean),
       used: workflows.length ? 'Used by ' + workflows.length + ' authored workflow' + (workflows.length === 1 ? '' : 's') + ' in this Persona record.' : 'No authored workflow entries were found for this Persona in the loaded catalog.',
