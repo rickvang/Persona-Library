@@ -148,6 +148,15 @@ test('readers expose stable heading anchors, section navigation, and related ref
   assert.deepEqual(duplicate.headings.map(heading => heading.id),['heading','repeated','repeated-1']);
 });
 
+test('optional reader sections and catalogs do not leave whitespace-only lines', () => {
+  const catalogs = renderReferenceCatalogs(templates.playbooks,templates.guide,publication,data);
+  const readers = [...publication.playbooks,...publication.documents].map(entry => renderReferenceReader(templates.reader,entry,publication.compiled.get(entry.source),publication,'kind' in entry));
+  for (const html of [...Object.values(catalogs),...readers]) assert.doesNotMatch(html,/^[ \t]+$/m);
+  const entry = publication.documents[0];
+  const doc = {...publication.compiled.get(entry.source),...renderMarkdown('# Code fixture\n\n```text\n  nonblank code  \n```',entry.source)};
+  assert.match(renderReferenceReader(templates.reader,entry,doc,publication,false),/  nonblank code  \n/);
+});
+
 test('legacy catalog fragments and the three existing Markdown URLs remain published', async () => {
   const html = await read('dist/playbooks.html');
   for (const entry of publication.playbooks) {

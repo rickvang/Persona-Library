@@ -182,7 +182,7 @@ function replaceMarkers(template, values) {
     if (!html.includes(marker)) throw new Error(`Missing reference publication marker: ${marker}`);
     html = html.replaceAll(marker,String(value));
   }
-  return html;
+  return html.replace(/^[ \t]+$/gm,'');
 }
 
 export function renderReferenceCatalogs(playbooksTemplate, guideTemplate, publication, data) {
