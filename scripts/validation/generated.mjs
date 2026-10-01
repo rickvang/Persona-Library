@@ -1,5 +1,6 @@
 const countFunctionDefinitions = (html, name) => (html.match(new RegExp(`function\\s+${name}\\s*\\(`, 'g')) || []).length;
 import { renderDecisionsPage } from '../build-decisions.mjs';
+import { renderToolsPage } from '../build-tools-pages.mjs';
 
 export function playbookCatalogCard(html, playbookId) {
   const match = html.match(new RegExp(`<article\\b[^>]*\\bdata-playbook-id="${playbookId}"[^>]*>[\\s\\S]*?</article>`));
@@ -209,7 +210,7 @@ export function validateGitHubGovernanceContract({ agents, workOrders, boundedPl
   if (!includesAll(boundedRoute?.next_handoff, ['pinned github tool contract', 'merge authorization', 'linked-issue completion semantics'])) throw new Error('Bounded Parallel routing must defer GitHub mutation semantics to the pinned Tool contract');
   if (!includesAll(boundedRoute?.next_handoff, ['standing completion authorization', 'valid authorizer source', 'fresh preflight', 'does not create authorization'])) throw new Error('Bounded Parallel routing must recognize repository standing authorization while preserving the authorization boundary');
   if (normalized(boundedRoute?.next_handoff).includes('separately authorized mutation')) throw new Error('Bounded Parallel routing must not maintain a duplicate reusable merge-authorization rule');
-  if (!includesAll(toolsPage, ['github', 'verified contract', 'runtime access', 'explicit authorization', 'fresh preflight'])) throw new Error('Tools page must present GitHub as a verified contract with runtime and authorization boundaries');
+  if (!includesAll(toolsPage, ['github', 'reference', 'pinned github operating instructions', 'runtime access', 'explicit authorization', 'fresh preflight'])) throw new Error('Tools page must present GitHub as a pinned instruction reference with runtime and authorization boundaries');
   if (!String(toolsPage || '').includes(`rickvang/tool-repo/blob/${pin[1]}/tools/github/AGENTS.md`)) throw new Error('Tools page GitHub contract link must match the root AGENTS pin');
   return pin[1].toLowerCase();
 }
@@ -298,6 +299,13 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
+  for (const file of ['tool-catalog.mjs','tool-page.mjs','tool-pages.css']) {
+    const outputPath = file.endsWith('.css') ? 'dist/css/' + file : 'dist/js/' + file;
+    if (await context.readFile('client/' + file) !== await context.readFile(outputPath)) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
+  }
+  const toolsTemplate = await context.readFile('content/site-pages/tools.html');
+  const expectedTools = renderToolsPage(toolsTemplate,context.data);
+  if (expectedTools !== files.toolsPage) throw new Error('Generated Tools page is stale; rebuild from its catalog and presentation references');
   const [rootAgents, policyOwners, workOrderContract, architecture, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme] = await Promise.all([
     context.readFile('AGENTS.md'),
     context.readFile('docs/policy-ownership.md'),
