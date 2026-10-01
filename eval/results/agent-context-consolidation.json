@@ -20,10 +20,10 @@
       "delta_percent": -15
     },
     "activated_behavior_context": {
-      "control_utf8_bytes": 1024607,
-      "preferred_utf8_bytes": 894637,
+      "control_utf8_bytes": 1030939,
+      "preferred_utf8_bytes": 900969,
       "delta_utf8_bytes": -129970,
-      "delta_percent": -12.7
+      "delta_percent": -12.6
     },
     "deterministic_work": {
       "control_completion_file_reads_per_route": 3,
@@ -81,7 +81,7 @@
         "passed": 8,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -17.3
+        "context_delta_percent": -16.9
       },
       "timing": {
         "control": {

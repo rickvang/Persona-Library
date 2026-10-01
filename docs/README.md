@@ -4,6 +4,34 @@ This directory contains current, reusable guidance and project-scoped work recor
 
 > **Looking for the overall human mental model?** Start with [How Persona Workspace works](https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md). This document is maintainer guidance for placing files *inside Persona-Library*; it does not redefine cross-repository ownership or require a human to understand the agent routing machinery.
 
+## Find current guidance
+
+| Task or question | Current owner |
+| --- | --- |
+| Decide which repository policy to read or change | [Policy ownership](policy-ownership.md) |
+| Create, verify, or maintain a reusable Template | [Template lifecycle](playbooks/template-lifecycle.md) |
+| Coordinate a bounded parallel implementation | [Bounded parallel implementation](playbooks/bounded-parallel-implementation.md) |
+| Coordinate multiple Personas around a problem | [Multi-persona collaboration](collaboration/multi-persona-collaboration-playbook.md) and [problem context](collaboration/problem-context.md) |
+| Understand the job-search process and its implementation sequence | [Job-search implementation](job-search/implementation.md) |
+| Compose or review an application packet | [Application context and review](job-search/application-context-and-review.md) |
+| Resolve candidate context, resume content, or Template mapping | [Candidate context](job-search/candidate-context-contract.md), [resume content model](job-search/resume-content-model.md), and [resume Template mapping](job-search/resume-template-mapping.md) |
+| Understand application tracking or seen-job deduplication | [Application tracker](job-search/application-tracker-contract.md) and [job ledger](job-search/job-ledger-contract.md) |
+| Route UX work to project context and design references | [Expert UX practice](ux/expert-ux-design-practice.md) and [project-context routing](ux/project-context-and-reference-routing.md) |
+| Record work or find an active Work Order | [Work tracking contract](work-orders.md) and [active package index](work-orders/README.md) |
+| Find a matching tool-heavy execution scenario | [Operational knowledge](operational-knowledge.md) |
+| Change a page shell, reader presentation, or publication selection | [Site authoring guide](../content/site-pages/README.md) and [publication manifest](../content/site-publication.json) |
+
+This index routes to existing owners. Change the owning document rather than copying its procedure into this index. `docs/playbooks/` contains some Playbooks; collaboration and job-search processes remain in their domain-owned folders. Ordinary current-state searches exclude `docs/work-orders/archive/**`; include historical material only when the task needs it.
+
+## Edit and verify
+
+1. Find the owner above, then apply the placement gate below if a new file is needed.
+2. Edit the canonical source. A published document keeps the same source owner; [the publication manifest](../content/site-publication.json) selects what appears on the Site.
+3. Install build dependencies and run the build and content checks in [the repository README](../README.md#run-locally). Review changed local links and the affected validation tests.
+4. Follow [the CI check list](../.github/workflows/repository-validation.yml) before completion. A published source edit also changes its generated reader and may refresh map/context artifacts; commit those reproducible outputs with the source.
+
+Documented stages describe an intended process. Neither a published reader nor a map connection is evidence that a particular assistant request followed that process.
+
 ## Where things live
 
 | Artifact | Destination | Rule |
