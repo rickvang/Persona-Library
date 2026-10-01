@@ -52,6 +52,18 @@
       }
     },
     {
+      "id": "build-step:scripts/build-tools-pages.mjs",
+      "label": "build-tools-pages.mjs",
+      "type": "build-step",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "buildToolsPage"
+      }
+    },
+    {
       "id": "file:client/canvas-graph.js",
       "label": "client/canvas-graph.js",
       "type": "authored-source",
@@ -222,6 +234,42 @@
     {
       "id": "file:client/template-preview.js",
       "label": "client/template-preview.js",
+      "type": "authored-source",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:client/tool-catalog.mjs",
+      "label": "client/tool-catalog.mjs",
+      "type": "authored-source",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:client/tool-page.mjs",
+      "label": "client/tool-page.mjs",
+      "type": "authored-source",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:client/tool-pages.css",
+      "label": "client/tool-pages.css",
       "type": "authored-source",
       "owner": "repository:rickvang/persona-library",
       "derivation": "contract-derived",
@@ -851,8 +899,8 @@
       "derivation": "contract-derived",
       "source": {
         "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-        "selector": "files copy contract"
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "TOOL_PAGE_SOURCES"
       }
     },
     {
@@ -870,6 +918,18 @@
     {
       "id": "file:dist/activity-views.html",
       "label": "dist/activity-views.html",
+      "type": "generated-artifact",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:dist/css/tool-pages.css",
+      "label": "dist/css/tool-pages.css",
       "type": "generated-artifact",
       "owner": "repository:rickvang/persona-library",
       "derivation": "contract-derived",
@@ -1432,6 +1492,30 @@
       }
     },
     {
+      "id": "file:dist/js/tool-catalog.mjs",
+      "label": "dist/js/tool-catalog.mjs",
+      "type": "generated-artifact",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "file:dist/js/tool-page.mjs",
+      "label": "dist/js/tool-page.mjs",
+      "type": "generated-artifact",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "file:dist/operating-packs.html",
       "label": "dist/operating-packs.html",
       "type": "generated-artifact",
@@ -1583,8 +1667,8 @@
       "derivation": "contract-derived",
       "source": {
         "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-        "selector": "files copy contract"
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "buildToolsPage"
       }
     },
     {
@@ -1737,6 +1821,18 @@
       "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/activity-views.html",
       "from": "build-step:scripts/build-library.mjs",
       "to": "file:dist/activity-views.html",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/css/tool-pages.css",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/css/tool-pages.css",
       "relationship": "generates",
       "derivation": "contract-derived",
       "source": {
@@ -2166,6 +2262,30 @@
       }
     },
     {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/tool-catalog.mjs",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/js/tool-catalog.mjs",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/js/tool-page.mjs",
+      "from": "build-step:scripts/build-library.mjs",
+      "to": "file:dist/js/tool-page.mjs",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
       "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/operating-packs.html",
       "from": "build-step:scripts/build-library.mjs",
       "to": "file:dist/operating-packs.html",
@@ -2310,18 +2430,6 @@
       }
     },
     {
-      "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/tools.html",
-      "from": "build-step:scripts/build-library.mjs",
-      "to": "file:dist/tools.html",
-      "relationship": "generates",
-      "derivation": "contract-derived",
-      "source": {
-        "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-        "selector": "files copy contract"
-      }
-    },
-    {
       "id": "edge:build-step:scripts/build-library.mjs--generates--file:dist/workflow-canvas.html",
       "from": "build-step:scripts/build-library.mjs",
       "to": "file:dist/workflow-canvas.html",
@@ -2451,6 +2559,18 @@
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:scripts/build-technical-system-maps.mjs",
         "selector": "dist/data/system-map/source-generated.mmd"
+      }
+    },
+    {
+      "id": "edge:build-step:scripts/build-tools-pages.mjs--generates--file:dist/tools.html",
+      "from": "build-step:scripts/build-tools-pages.mjs",
+      "to": "file:dist/tools.html",
+      "relationship": "generates",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "buildToolsPage"
       }
     },
     {
@@ -2625,6 +2745,54 @@
       "id": "edge:file:client/template-preview.js--copied-to--file:dist/js/template-preview.js",
       "from": "file:client/template-preview.js",
       "to": "file:dist/js/template-preview.js",
+      "relationship": "copied-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:file:client/tool-catalog.mjs--contributes-to--file:dist/tools.html",
+      "from": "file:client/tool-catalog.mjs",
+      "to": "file:dist/tools.html",
+      "relationship": "contributes-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "TOOL_PAGE_SOURCES"
+      }
+    },
+    {
+      "id": "edge:file:client/tool-catalog.mjs--copied-to--file:dist/js/tool-catalog.mjs",
+      "from": "file:client/tool-catalog.mjs",
+      "to": "file:dist/js/tool-catalog.mjs",
+      "relationship": "copied-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:file:client/tool-page.mjs--copied-to--file:dist/js/tool-page.mjs",
+      "from": "file:client/tool-page.mjs",
+      "to": "file:dist/js/tool-page.mjs",
+      "relationship": "copied-to",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:file:client/tool-pages.css--copied-to--file:dist/css/tool-pages.css",
+      "from": "file:client/tool-pages.css",
+      "to": "file:dist/css/tool-pages.css",
       "relationship": "copied-to",
       "derivation": "contract-derived",
       "source": {
@@ -3246,15 +3414,15 @@
       }
     },
     {
-      "id": "edge:file:content/site-pages/tools.html--copied-to--file:dist/tools.html",
+      "id": "edge:file:content/site-pages/tools.html--contributes-to--file:dist/tools.html",
       "from": "file:content/site-pages/tools.html",
       "to": "file:dist/tools.html",
-      "relationship": "copied-to",
+      "relationship": "contributes-to",
       "derivation": "contract-derived",
       "source": {
         "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-        "selector": "files copy contract"
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "TOOL_PAGE_SOURCES"
       }
     },
     {
@@ -3282,6 +3450,30 @@
       }
     },
     {
+      "id": "edge:file:dist/css/tool-pages.css--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/css/tool-pages.css",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+        "selector": "dist cleanliness scope"
+      }
+    },
+    {
+      "id": "edge:file:dist/data/library-data.js--consumed-by--build-step:scripts/build-tools-pages.mjs",
+      "from": "file:dist/data/library-data.js",
+      "to": "build-step:scripts/build-tools-pages.mjs",
+      "relationship": "consumed-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "TOOL_PAGE_SOURCES"
+      }
+    },
+    {
       "id": "edge:file:dist/data/library-data.js--validated-by--validation:generated-output-cleanliness",
       "from": "file:dist/data/library-data.js",
       "to": "validation:generated-output-cleanliness",
@@ -3291,6 +3483,18 @@
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
         "selector": "dist cleanliness scope"
+      }
+    },
+    {
+      "id": "edge:file:dist/data/library-model.js--consumed-by--build-step:scripts/build-tools-pages.mjs",
+      "from": "file:dist/data/library-model.js",
+      "to": "build-step:scripts/build-tools-pages.mjs",
+      "relationship": "consumed-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "TOOL_PAGE_SOURCES"
       }
     },
     {
@@ -3834,6 +4038,30 @@
       }
     },
     {
+      "id": "edge:file:dist/js/tool-catalog.mjs--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/js/tool-catalog.mjs",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+        "selector": "dist cleanliness scope"
+      }
+    },
+    {
+      "id": "edge:file:dist/js/tool-page.mjs--validated-by--validation:generated-output-cleanliness",
+      "from": "file:dist/js/tool-page.mjs",
+      "to": "validation:generated-output-cleanliness",
+      "relationship": "validated-by",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
+        "selector": "dist cleanliness scope"
+      }
+    },
+    {
       "id": "edge:file:dist/operating-packs.html--validated-by--validation:generated-output-cleanliness",
       "from": "file:dist/operating-packs.html",
       "to": "validation:generated-output-cleanliness",
@@ -4221,6 +4449,42 @@
       "id": "edge:source-group:client--contains--file:client/template-preview.js",
       "from": "source-group:client",
       "to": "file:client/template-preview.js",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/tool-catalog.mjs",
+      "from": "source-group:client",
+      "to": "file:client/tool-catalog.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/tool-page.mjs",
+      "from": "source-group:client",
+      "to": "file:client/tool-page.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+        "selector": "files copy contract"
+      }
+    },
+    {
+      "id": "edge:source-group:client--contains--file:client/tool-pages.css",
+      "from": "source-group:client",
+      "to": "file:client/tool-pages.css",
       "relationship": "contains",
       "derivation": "contract-derived",
       "source": {
@@ -4849,8 +5113,8 @@
       "derivation": "contract-derived",
       "source": {
         "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-        "selector": "files copy contract"
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "TOOL_PAGE_SOURCES"
       }
     },
     {
@@ -4995,6 +5259,18 @@
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:scripts/build-technical-system-maps.mjs",
         "selector": "buildTechnicalSystemMaps"
+      }
+    },
+    {
+      "id": "edge:view:source-generated--contains--build-step:scripts/build-tools-pages.mjs",
+      "from": "view:source-generated",
+      "to": "build-step:scripts/build-tools-pages.mjs",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:scripts/build-tools-pages.mjs",
+        "selector": "buildToolsPage"
       }
     },
     {

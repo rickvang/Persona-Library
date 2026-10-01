@@ -1,5 +1,50 @@
 window.PersonaLibraryDataFragments = window.PersonaLibraryDataFragments || {};
 Object.assign(window.PersonaLibraryDataFragments, {
+  // Presentation references are not canonical Tool identities or runtime evidence.
+  toolReferences: [
+    {
+      id:'reference-figma', name:'Figma', kind:'reference', category:'Design workspace',
+      summary:'Inspect interface direction, compare references, prototype behavior, and verify design-to-build fidelity.',
+      scope:'Named file or draft', risk:'Medium; shared edits require review',
+      recipeIds:['recipe-figma-hierarchy-inspection'],
+      resources:[{label:'Pinned Figma operating instructions',href:'https://github.com/rickvang/tool-repo/blob/01198019e8f1520eb222dc6af2ec17bd81bc9c30/tools/figma/AGENTS.md'}]
+    },
+    {
+      id:'reference-mobbin', name:'Mobbin', kind:'reference', category:'Research reference',
+      summary:'Find visual and interaction references to inform principles, comparisons, and contextual design judgment.',
+      scope:'Search session', risk:'Low to medium; preserve source context', recipeIds:[], resources:[]
+    },
+    {
+      id:'reference-github', name:'GitHub', kind:'reference', category:'Repository',
+      summary:'Inspect current remote state and perform bounded repository work through a reusable operating contract.',
+      scope:'Named repository, issue, or pull request', risk:'High; explicit authorization and fresh preflight required',
+      recipeIds:['recipe-mara-impact-trace','recipe-riley-github-efficient-change','recipe-alex-reconciliation'],
+      resources:[{label:'Pinned GitHub operating instructions',href:'https://github.com/rickvang/tool-repo/blob/01198019e8f1520eb222dc6af2ec17bd81bc9c30/tools/github/AGENTS.md'}]
+    },
+    {
+      id:'reference-google-drive', name:'Google Drive + Docs', kind:'reference', category:'Knowledge',
+      summary:'Find, read, draft, organize, or update documents inside an explicit folder and document scope.',
+      scope:'Named folder or document', risk:'Medium; shared edits require review',
+      recipeIds:['recipe-mara-concept-model','recipe-riley-learning-record','recipe-sofia-source-structure-audit'], resources:[]
+    },
+    {
+      id:'reference-notion', name:'Notion', kind:'reference', category:'Knowledge',
+      summary:'Read or update structured knowledge while preserving page ownership, relationships, and revision context.',
+      scope:'Named workspace or page', risk:'Medium; page edits require review', recipeIds:[], resources:[]
+    },
+    {
+      id:'reference-local-workspace', name:'Local workspace', kind:'capability', category:'Local environment',
+      summary:'Create folders and artifacts in an explicit approved path for reversible research, drafts, and isolated tests.',
+      scope:'Explicit local path', risk:'High; the target path must be named',
+      recipeIds:['recipe-riley-trace-evaluation','recipe-alex-artifact-validation','recipe-sofia-render-fidelity-review','recipe-sofia-accessibility-export-check'], resources:[]
+    },
+    {
+      id:'reference-mcp-adapter', name:'MCP capability adapter', kind:'capability', category:'Capability requirement',
+      summary:'Resolve a capability to an available MCP without hard-coding a vendor into a Persona or Skill.',
+      scope:'Capability and approved server', risk:'Varies; permission review required',
+      recipeIds:['recipe-riley-availability-preflight','recipe-alex-surface-preflight'], resources:[]
+    }
+  ],
   toolCatalog: [
     {
       id:'tool-vercel',

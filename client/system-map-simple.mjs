@@ -11,6 +11,7 @@ import {
   goBack
 } from './system-map-journey.mjs';
 import {buildWorkflowConnections} from './system-map-workflows.mjs';
+import {buildToolEntries} from './tool-catalog.mjs';
 
 const root = document.querySelector('[data-system-map-simple]');
 const primary = document.getElementById('primary-surface');
@@ -201,10 +202,10 @@ function buildModel(bundle, docs, data) {
       }
     }
     if (groupId === 'tools') {
-      for (const record of data.toolCatalog || []) {
-        const recipes = (data.toolUseRecipes || []).filter(recipe => recipe.toolId === record.id || recipe.tool === record.name);
+      for (const record of buildToolEntries(data).filter(entry => entry.kind === 'canonical')) {
+        const recipes = record.recipes;
         const detail = describeRecord('tool', record, {recipes});
-        items.push(register({id:'tool:' + record.id, groupId, label:record.name || record.id, kind:'Tool', detail, raw:record}));
+        items.push(register({id:'tool:' + record.id, groupId, label:record.name || record.id, kind:'Tool', detail, raw:record, catalogHref:record.href}));
       }
     }
     if (groupId === 'playbooks') {
@@ -490,6 +491,7 @@ function renderExplanation() {
     '<h2 tabindex="-1" id="selected-heading">' + htmlEscape(item.label) + '</h2>' +
     '<section class="explain-section"><h3>What is this?</h3><p>' + htmlEscape(item.detail?.summary || 'The loaded source does not provide a plain-language description for this item.') + '</p></section>' +
     '<section class="explain-section"><h3>What role does it play?</h3><p>' + htmlEscape(item.detail?.role || 'Its role is not described in the loaded bounded source.') + '</p></section>' +
+    (item.catalogHref ? '<p><a href="' + htmlEscape(item.catalogHref) + '">Open full Tool details</a></p>' : '') +
     (group ? '<section class="explain-section"><h3>Contents</h3><button type="button" class="where-button" data-open-contents="' + htmlEscape(group.id) + '">Open ' + htmlEscape(group.label) + ' contents →</button></section>' : item.kind === 'Persona' || item.kind === 'Skill' ? '' : '<section class="explain-section"><h3>What is inside it?</h3>' + inside + '</section>') +
     '<section class="explain-section"><h3>Where is it used?</h3><p>' + whereText + '</p>' + whereButtons + '</section>' +
     '<section class="explain-section"><h3>Connected parts</h3>' + (links || (group ? '<p>Open this group to explore its records.</p>' : '<p>No additional connections are recorded here.</p>')) + '</section>' +

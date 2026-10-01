@@ -5,6 +5,7 @@ import { buildDecisionsPage } from './build-decisions.mjs';
 import { buildPersonaSkillSystemMap } from './build-persona-skill-system-map.mjs';
 import { buildTechnicalSystemMaps } from './build-technical-system-maps.mjs';
 import { buildAgentContextBundles } from './build-agent-context-bundles.mjs';
+import { buildToolsPage } from './build-tools-pages.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const orientation = JSON.parse(await readFile(path.join(root, 'content/site-orientation.json'), 'utf8'));
@@ -88,6 +89,9 @@ const files = [
   ['content/site-orientation.json', 'dist/data/site-orientation.json'],
   ['client/library-ui.js', 'dist/js/library-ui.js'],
   ['client/library-state.js', 'dist/js/library-state.js'],
+  ['client/tool-catalog.mjs', 'dist/js/tool-catalog.mjs'],
+  ['client/tool-page.mjs', 'dist/js/tool-page.mjs'],
+  ['client/tool-pages.css', 'dist/css/tool-pages.css'],
   ['client/job-tracker-config.js', 'dist/js/job-tracker-config.js'],
   ['client/job-tracker-import.js', 'dist/js/job-tracker-import.js'],
   ['client/job-tracker-store.js', 'dist/js/job-tracker-store.js'],
@@ -136,6 +140,7 @@ await writeFile(
 console.log(`Built Applications storage config -> ${trackerRuntimeConfig.mode} mode`);
 
 await buildDecisionsPage(root);
+await buildToolsPage(root);
 
 const primarySitePages = [
   'dist/index.html',

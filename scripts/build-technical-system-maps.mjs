@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateGraph } from '../client/system-map-graph.mjs';
+import { TOOL_PAGE_SOURCES } from './build-tools-pages.mjs';
 
 const REPO = 'rickvang/Persona-Library';
 const OWNER = 'repository:rickvang/persona-library';
@@ -147,6 +148,7 @@ export async function deriveSourceGeneratedGraph(root = rootDir, { buildSourceOv
   const pairSource = sourceRef(buildPath, 'files copy contract');
   for (const [input, output] of directPairs) {
     if (output === 'dist/js/job-tracker-config.js') continue;
+    if (output === 'dist/tools.html' && buildSource.includes('await buildToolsPage(root)')) continue;
     sourceNode(nodes, input, pairSource);
     outputNode(nodes, output, pairSource);
     addEdge(edges, fileNodeId(input), fileNodeId(output), 'copied-to', 'contract-derived', pairSource);
@@ -167,6 +169,21 @@ export async function deriveSourceGeneratedGraph(root = rootDir, { buildSourceOv
     addEdge(edges, fileNodeId(input), fileNodeId(decisionOutput), 'contributes-to', 'contract-derived', sourceRef(decisionsStep, input + ' -> ' + decisionOutput));
   }
   addEdge(edges, stepNodeId(decisionsStep), fileNodeId(decisionOutput), 'generates', 'contract-derived', sourceRef(decisionsStep, 'dist/decisions.html'));
+
+  if (buildSource.includes('await buildToolsPage(root)')) {
+    const toolsStep = 'scripts/build-tools-pages.mjs';
+    const toolsOutput = 'dist/tools.html';
+    stepNode(nodes, toolsStep, 'buildToolsPage');
+    addEdge(edges, 'view:source-generated', stepNodeId(toolsStep), 'contains', 'contract-derived', sourceRef(toolsStep, 'buildToolsPage'));
+    outputNode(nodes, toolsOutput, sourceRef(toolsStep, 'buildToolsPage'));
+    for (const input of Object.values(TOOL_PAGE_SOURCES)) {
+      const source = sourceRef(toolsStep, 'TOOL_PAGE_SOURCES');
+      if (input.startsWith('dist/')) outputNode(nodes, input, source); else sourceNode(nodes, input, source);
+      if (input.startsWith('dist/')) addEdge(edges, fileNodeId(input), stepNodeId(toolsStep), 'consumed-by', 'contract-derived', source);
+      else addEdge(edges, fileNodeId(input), fileNodeId(toolsOutput), 'contributes-to', 'contract-derived', source);
+    }
+    addEdge(edges, stepNodeId(toolsStep), fileNodeId(toolsOutput), 'generates', 'contract-derived', sourceRef(toolsStep, 'buildToolsPage'));
+  }
 
   const personaStep = 'scripts/build-persona-skill-system-map.mjs';
   stepNode(nodes, personaStep, 'buildPersonaSkillSystemMap');

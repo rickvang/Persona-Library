@@ -8,6 +8,7 @@
     'operatingPacks',
     'templates',
     'toolCatalog',
+    'toolReferences',
     'personaToolRequirements',
     'personaHandoffs',
     'toolUseRecipes',

@@ -29,7 +29,8 @@ test('Source/generated graph stays bounded, provenance-backed, and output-direct
       node.id + ' must have an explicit generation relationship'
     );
     assert.ok(
-      outgoing.get(node.id).every(edge => edge.relationship === 'validated-by'),
+      outgoing.get(node.id).every(edge => edge.relationship === 'validated-by' ||
+        (edge.relationship === 'consumed-by' && graph.nodes.find(item => item.id === edge.to)?.type === 'build-step')),
       node.id + ' must not behave as an authored source'
     );
   }
