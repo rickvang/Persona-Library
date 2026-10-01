@@ -273,8 +273,8 @@
             "content/orientation/templates.json",
             "docs/README.md"
           ],
-          "utf8_bytes": 52937,
-          "rough_tokens": 13235
+          "utf8_bytes": 56103,
+          "rough_tokens": 14026
         },
         "expectation": {
           "pass": true,
@@ -356,8 +356,8 @@
             "content/orientation/templates.json",
             "docs/README.md"
           ],
-          "utf8_bytes": 45426,
-          "rough_tokens": 11357
+          "utf8_bytes": 48592,
+          "rough_tokens": 12148
         },
         "expectation": {
           "pass": true,
@@ -475,8 +475,8 @@
             "docs/policy-ownership.md",
             "docs/README.md"
           ],
-          "utf8_bytes": 44483,
-          "rough_tokens": 11121
+          "utf8_bytes": 47649,
+          "rough_tokens": 11913
         },
         "expectation": {
           "pass": true,
@@ -557,8 +557,8 @@
             "docs/policy-ownership.md",
             "docs/README.md"
           ],
-          "utf8_bytes": 36972,
-          "rough_tokens": 9243
+          "utf8_bytes": 40138,
+          "rough_tokens": 10035
         },
         "expectation": {
           "pass": true,
@@ -1562,12 +1562,12 @@
     "passed": 8,
     "failed": 0,
     "all_pass": true,
-    "preferred_context_utf8_bytes": 215566,
-    "control_context_utf8_bytes": 260632,
-    "preferred_context_rough_tokens": 53892,
-    "control_context_rough_tokens": 65158,
+    "preferred_context_utf8_bytes": 221898,
+    "control_context_utf8_bytes": 266964,
+    "preferred_context_rough_tokens": 55475,
+    "control_context_rough_tokens": 66741,
     "preferred_delta_utf8_bytes": -45066,
-    "preferred_delta_percent": -17.3
+    "preferred_delta_percent": -16.9
   },
   "limitations": [
     "The evaluator is intentionally fixture-scoped and is not a general-purpose natural-language router.",

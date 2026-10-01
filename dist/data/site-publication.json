@@ -836,9 +836,19 @@
       "category": "Maintenance",
       "source": "docs/README.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/README.md",
-      "sourceSha256": "daed91976dc46d0c35ca8ac905969d82b871bb0adf0a947fd0fc4f8a9d5b4a64",
+      "sourceSha256": "c29165f0eb96f00a3e6e1f91704969d7bae29773f07753829dd3e76b6ff3656a",
       "href": "doc-docs-authoring.html",
       "headings": [
+        {
+          "id": "find-current-guidance",
+          "label": "Find current guidance",
+          "depth": 2
+        },
+        {
+          "id": "edit-and-verify",
+          "label": "Edit and verify",
+          "depth": 2
+        },
         {
           "id": "where-things-live",
           "label": "Where things live",

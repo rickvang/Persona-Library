@@ -24,7 +24,9 @@
     </header>
 
     <div class="reader-layout">
-      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#where-things-live">Where things live</a>
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#find-current-guidance">Find current guidance</a>
+<a href="#edit-and-verify">Edit and verify</a>
+<a href="#where-things-live">Where things live</a>
 <a href="#work-order-lifecycle">Work Order lifecycle</a>
 <a href="#placement-gate">Placement gate</a>
 <a href="#hygiene-rules">Hygiene rules</a>
@@ -34,6 +36,72 @@
 <blockquote>
 <p><strong>Looking for the overall human mental model?</strong> Start with <a href="https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md" rel="noreferrer">How Persona Workspace works</a>. This document is maintainer guidance for placing files <em>inside Persona-Library</em>; it does not redefine cross-repository ownership or require a human to understand the agent routing machinery.</p>
 </blockquote>
+<h2 id="find-current-guidance">Find current guidance</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Task or question</th>
+<th>Current owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Decide which repository policy to read or change</td>
+<td><a href="https://github.com/rickvang/Persona-Library/blob/main/docs/policy-ownership.md" rel="noreferrer">Policy ownership</a></td>
+</tr>
+<tr>
+<td>Create, verify, or maintain a reusable Template</td>
+<td><a href="playbook-template-lifecycle.html">Template lifecycle</a></td>
+</tr>
+<tr>
+<td>Coordinate a bounded parallel implementation</td>
+<td><a href="playbook-bounded-parallel-implementation.html">Bounded parallel implementation</a></td>
+</tr>
+<tr>
+<td>Coordinate multiple Personas around a problem</td>
+<td><a href="playbook-multi-persona-collaboration.html">Multi-persona collaboration</a> and <a href="doc-problem-context.html">problem context</a></td>
+</tr>
+<tr>
+<td>Understand the job-search process and its implementation sequence</td>
+<td><a href="playbook-evidence-led-job-search.html">Job-search implementation</a></td>
+</tr>
+<tr>
+<td>Compose or review an application packet</td>
+<td><a href="doc-application-context-and-review.html">Application context and review</a></td>
+</tr>
+<tr>
+<td>Resolve candidate context, resume content, or Template mapping</td>
+<td><a href="doc-candidate-context.html">Candidate context</a>, <a href="doc-resume-content-model.html">resume content model</a>, and <a href="doc-resume-template-mapping.html">resume Template mapping</a></td>
+</tr>
+<tr>
+<td>Understand application tracking or seen-job deduplication</td>
+<td><a href="doc-application-tracker.html">Application tracker</a> and <a href="doc-seen-job-deduplication.html">job ledger</a></td>
+</tr>
+<tr>
+<td>Route UX work to project context and design references</td>
+<td><a href="https://github.com/rickvang/Persona-Library/blob/main/docs/ux/expert-ux-design-practice.md" rel="noreferrer">Expert UX practice</a> and <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/ux/project-context-and-reference-routing.md" rel="noreferrer">project-context routing</a></td>
+</tr>
+<tr>
+<td>Record work or find an active Work Order</td>
+<td><a href="https://github.com/rickvang/Persona-Library/blob/main/docs/work-orders.md" rel="noreferrer">Work tracking contract</a> and <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/work-orders/README.md" rel="noreferrer">active package index</a></td>
+</tr>
+<tr>
+<td>Find a matching tool-heavy execution scenario</td>
+<td><a href="https://github.com/rickvang/Persona-Library/blob/main/docs/operational-knowledge.md" rel="noreferrer">Operational knowledge</a></td>
+</tr>
+<tr>
+<td>Change a page shell, reader presentation, or publication selection</td>
+<td><a href="https://github.com/rickvang/Persona-Library/blob/main/content/site-pages/README.md" rel="noreferrer">Site authoring guide</a> and <a href="https://github.com/rickvang/Persona-Library/blob/main/content/site-publication.json" rel="noreferrer">publication manifest</a></td>
+</tr>
+</tbody></table>
+</div><p>This index routes to existing owners. Change the owning document rather than copying its procedure into this index. <code>docs/playbooks/</code> contains some Playbooks; collaboration and job-search processes remain in their domain-owned folders. Ordinary current-state searches exclude <code>docs/work-orders/archive/**</code>; include historical material only when the task needs it.</p>
+<h2 id="edit-and-verify">Edit and verify</h2>
+<ol>
+<li>Find the owner above, then apply the placement gate below if a new file is needed.</li>
+<li>Edit the canonical source. A published document keeps the same source owner; <a href="https://github.com/rickvang/Persona-Library/blob/main/content/site-publication.json" rel="noreferrer">the publication manifest</a> selects what appears on the Site.</li>
+<li>Install build dependencies and run the build and content checks in <a href="https://github.com/rickvang/Persona-Library/blob/main/README.md#run-locally" rel="noreferrer">the repository README</a>. Review changed local links and the affected validation tests.</li>
+<li>Follow <a href="https://github.com/rickvang/Persona-Library/blob/main/.github/workflows/repository-validation.yml" rel="noreferrer">the CI check list</a> before completion. A published source edit also changes its generated reader and may refresh map/context artifacts; commit those reproducible outputs with the source.</li>
+</ol>
+<p>Documented stages describe an intended process. Neither a published reader nor a map connection is evidence that a particular assistant request followed that process.</p>
 <h2 id="where-things-live">Where things live</h2>
 <div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
 <thead>
