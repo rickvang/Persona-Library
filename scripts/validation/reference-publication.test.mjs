@@ -176,6 +176,9 @@ test('Guide catalog states and Playbook examples are derived, not stale handwrit
   editedData.operatingPackCatalog[0].name = 'Fixture pack name';
   const html = renderReferenceCatalogs(templates.playbooks,templates.guide,publication,editedData).guide;
   assert.match(html,/Fixture Template name/); assert.match(html,/Fixture pack name/);
+  for (const pack of data.operatingPackCatalog) assert.ok(html.includes(`href="operating-packs.html?pack=${encodeURIComponent(pack.id)}"`));
+  for (const template of data.templateCatalog) assert.ok(html.includes(`href="templates.html#${encodeURIComponent(template.id)}"`));
+  assert.doesNotMatch(html,/href="operating-packs\.html#pack-/);
   assert.doesNotMatch(html,/main revision contains only|three design-system Template identities are planned|A broader playbooks skill can later/);
 });
 
