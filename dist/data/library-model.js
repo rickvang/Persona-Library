@@ -315,12 +315,13 @@
     const elena = personaMaintenance['career-strategist'];
     elena.revisions.push({version:'1.1',date:'2026-09-14',changeType:'capability-extension',summary:'Attached durable job-ledger disposition to Elena’s search sequencing workflow so repeated discovery updates known opportunities instead of resurfacing them as new.',affectedFields:['skills','workflows'],evidence:'Issue #90 job ledger contract; search specialist owns disposition, Riley does not',confidenceChange:'Ledger ownership is declared; private runtime persistence remains outside Persona-Library'});
     elena.revisions.push({version:'1.2',date:'2026-09-16',changeType:'scope-correction',summary:'Narrowed repeated-search persistence from a full opportunity ledger to a lightweight private seen-job set that suppresses openings already presented.',affectedFields:['skills','workflows'],evidence:'Issue #96 clarified user need: find new jobs without repeating previously shown openings; JobAgent remains reference evidence only',confidenceChange:'Duplicate suppression is explicit; application lifecycle tracking is no longer implied by the deduplication contract'});
-    elena.version = '1.2'; elena.updated = '2026-09-16';
+    elena.revisions.push({version:'1.3',date:'2026-10-01',changeType:'capability-extension',summary:'Made ATS-domain and company-career queries, employer publication/open-status verification, and explicit search coverage part of Elena’s opportunity-discovery workflow.',affectedFields:['skills','workflows'],evidence:'Creative Job Discovery query-bank extension in rickvang/SkillRepo and docs/job-search/implementation.md',confidenceChange:'Discovery instructions and coverage are explicit; runtime availability and live search results still require per-run evidence'});
+    elena.version = '1.3'; elena.updated = '2026-10-01';
 
     const searchSequencingSkillId = 'skill-search-sequencing-and-prioritization';
     const searchSequencingRecord = skillMaintenance[searchSequencingSkillId];
-    searchSequencingRecord.version = '1.1';
-    searchSequencingRecord.updated = '2026-09-14';
+    searchSequencingRecord.version = '1.2';
+    searchSequencingRecord.updated = '2026-10-01';
     searchSequencingRecord.revisions.push({
       version: '1.1',
       date: '2026-09-14',
@@ -330,6 +331,7 @@
       evidence: 'Issue #90 job ledger contract and Evidence-led Job Search shared-state boundary',
       confidenceChange: 'Contract-level ledger behavior added; repeated-search runtime proof deferred'
     });
+    searchSequencingRecord.revisions.push({version:'1.2',date:'2026-10-01',changeType:'source-update',summary:'Extended Elena’s search-sequencing application with external ATS/company-career query guidance and source-backed coverage reporting.',affectedFields:['actions','evidence'],evidence:'Creative Job Discovery query bank and job-search discovery-coverage contract',confidenceChange:'Query provenance and recency boundaries are explicit; search completeness and runtime availability are not implied'});
 
     for (const id of ['frontend-systems-engineer', 'application-data-architect']) {
       const record = personaMaintenance[id];
