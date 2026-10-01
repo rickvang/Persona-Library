@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multi-Persona Collaboration | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" aria-current="page">Playbooks</a><a href="guide.html" >Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="playbooks.html#collaboration">Back to Playbooks</a>
+      <p class="eyebrow">Documented process</p>
+      <h1>Multi-Persona Collaboration</h1>
+      <p class="lede">Multi-Persona Collaboration Playbook</p>
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/multi-persona-collaboration-playbook.md" rel="noreferrer">docs/collaboration/multi-persona-collaboration-playbook.md</a></p>
+    </header>
+    <p class="boundary-note">This is the documented process, not an observed request trace. It does not show whether your assistant followed it.</p>
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#purpose">Purpose</a>
+<a href="#entry-and-exit">Entry and exit</a>
+<a href="#shared-state">Shared state</a>
+<a href="#stages">Stages</a>
+<a href="#decision-rights-and-mutation-boundaries">Decision rights and mutation boundaries</a>
+<a href="#solution-quality-gate">Solution-quality gate</a>
+<a href="#failure-and-recovery">Failure and recovery</a>
+<a href="#handoff-packet">Handoff packet</a></nav></details></aside>
+      <article class="markdown-body"><span id="multi-persona-collaboration-playbook"></span>
+<h2 id="purpose">Purpose</h2>
+<p>Produce one useful, inspectable solution for a bounded user problem by coordinating explicitly selected Personas through a shared <code>problem-context</code> document. The context is an instrument for traceability and handoff; it is not the user-facing outcome.</p>
+<h2 id="entry-and-exit">Entry and exit</h2>
+<p>Entry requires a named problem, desired outcome, scope, constraints, success criteria, stopping condition, coordinator, and an approved context path. Participants are explicit and their records are either loaded or marked unavailable.</p>
+<p>Exit requires one concrete deliverable, decision, prototype, implementation, or action plan that addresses the original problem; evidence and uncertainty are distinguished; every contribution has a disposition; at least two stage handoffs are recorded; the final quality gate passes; and the next action or completion boundary is explicit. If these conditions cannot be met, leave the context active or blocked and explain the missing input.</p>
+<h2 id="shared-state">Shared state</h2>
+<p>The coordinator owns the serialized JSON context described in <a href="doc-problem-context.html"><code>problem-context.md</code></a>. The context is the run-level source of truth for request framing, selected participants, contributions, evidence, decisions, artifacts, gates, blockers, handoffs, authorization, and revisions. Canonical library records remain authoritative for Personas, Skills, Tools, Playbooks, workflows, and Decisions; link them by identity instead of copying them into the context.</p>
+<h2 id="stages">Stages</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Owner and purpose</th>
+<th>Required output</th>
+<th>Exit gate and handoff</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Frame</td>
+<td>Coordinator bounds the problem and success measure.</td>
+<td>Initialized named context.</td>
+<td>Request, scope, non-goals, constraints, success, and stopping condition are present; hand off to select.</td>
+</tr>
+<tr>
+<td>Select</td>
+<td>Coordinator chooses only justified participants and capabilities.</td>
+<td>Participant and dependency map.</td>
+<td>Every participant is explicit and available or visibly unavailable; hand off to contribute.</td>
+</tr>
+<tr>
+<td>Contribute</td>
+<td>Each selected Persona works independently within its responsibility.</td>
+<td>Attributable contribution records.</td>
+<td>Each useful contribution contains a distinct finding, evidence status, tradeoff/risk, and action; duplicate or unsupported material is marked.</td>
+</tr>
+<tr>
+<td>Synthesize</td>
+<td>Coordinator compares contributions without erasing disagreement.</td>
+<td>Decision-ready synthesis and open questions.</td>
+<td>Evidence, interpretations, proposals, and unknowns are separate; each contribution is adopted, modified, rejected, or unresolved with a reason; hand off to build.</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>Authorized builder turns the synthesis into one concrete deliverable.</td>
+<td>Artifact, decision, prototype, implementation, or action plan.</td>
+<td>Deliverable maps to the request and success criteria; mutation remains within explicit authorization; hand off to review.</td>
+</tr>
+<tr>
+<td>Review</td>
+<td>Named reviewer checks usefulness and traceability.</td>
+<td>Gate result and correction list.</td>
+<td>The solution-quality gate passes, or context records failure and the smallest correction; hand off to handoff/close.</td>
+</tr>
+<tr>
+<td>Handoff / recover</td>
+<td>New owner receives a compact packet or resumes after interruption.</td>
+<td>Accepted handoff or recovery state.</td>
+<td>Context ID, accepted facts, open questions, blockers/fallback, required output, and next action are recorded; no work is replayed silently.</td>
+</tr>
+<tr>
+<td>Close</td>
+<td>Coordinator records outcome and learning.</td>
+<td>Completed context and final deliverable link.</td>
+<td>Concrete outcome, dispositions, gate, limitations, and next action are inspectable.</td>
+</tr>
+</tbody></table>
+</div><h2 id="decision-rights-and-mutation-boundaries">Decision rights and mutation boundaries</h2>
+<ul>
+<li>The coordinator may initialize the context, record returned contributions, maintain stage state, and make the proposed synthesis visible.</li>
+<li>A Persona may provide a scoped contribution but may not claim another Persona&#39;s evidence, change canonical records, or publish an artifact.</li>
+<li>A reviewer may pass, fail, or defer a gate and must name the evidence or correction.</li>
+<li>Durable repository, Site, Tool, publication, installation, or registry changes require explicit user authorization and a named target. The Playbook does not infer that authorization from participation.</li>
+<li>The context helper is a record-management aid. It does not authenticate callers, provide concurrency control, grant permissions, execute Tools, or guarantee external delivery.</li>
+</ul>
+<h2 id="solution-quality-gate">Solution-quality gate</h2>
+<p>Pass only when all of the following are true:</p>
+<ol>
+<li>The output contains one concrete deliverable or decision that addresses the stated problem and at least one success criterion.</li>
+<li>The deliverable is traceable to recorded evidence and decisions; assumptions and unknowns are labeled.</li>
+<li>Each selected contribution adds distinct value or has a documented disposition and reason.</li>
+<li>Consequential disagreement, risks, blockers, and tradeoffs are visible rather than averaged into generic consensus.</li>
+<li>The user can tell what to use, what remains incomplete, and the next action.</li>
+</ol>
+<p>Participant count, length, confidence language, and agreement alone are not evidence of quality. If the output is only a transcript, a collection of summaries, or generic advice, fail the gate.</p>
+<h2 id="failure-and-recovery">Failure and recovery</h2>
+<ul>
+<li>Missing or unavailable participant: mark unavailable, use the documented fallback, and lower confidence; do not simulate the record.</li>
+<li>Missing evidence or contradiction: record an open question or blocker, preserve both claims, and choose a reversible next action.</li>
+<li>Tool or connector failure: record the requirement, failure, permission boundary, and safe manual fallback; do not claim execution.</li>
+<li>Interrupted stage: resume from the last context revision and the recorded next action.</li>
+<li>Failed solution-quality gate: keep the context active, record the correction, and return to the smallest responsible stage.</li>
+<li>Unauthorized mutation request: stop at proposal or draft and request the missing authorization and target.</li>
+</ul>
+<h2 id="handoff-packet">Handoff packet</h2>
+<p>Every stage handoff uses the context ID and records <code>from_stage</code>, <code>to_stage</code>, owner, accepted evidence/decisions, open questions, blockers or fallback, required output, and one next action. The receiving owner acknowledges the handoff before acting. This keeps the shared document useful across turns without turning it into an unbounded transcript.</p>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-bounded-parallel-implementation.html">Bounded Parallel Implementation Playbook</a></li><li><a href="playbook-template-lifecycle.html">Research, promote, and maintain a reusable Template</a></li><li><a href="doc-problem-context.html">Shared problem context</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="playbooks.html#collaboration">Back to Playbooks</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

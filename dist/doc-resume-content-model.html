@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Resume Content Model | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" >Playbooks</a><a href="guide.html" aria-current="page">Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="guide.html#reference-docs">Back to Docs</a>
+      <p class="eyebrow">Job search</p>
+      <h1>Resume Content Model</h1>
+      
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/resume-content-model.md" rel="noreferrer">docs/job-search/resume-content-model.md</a></p>
+    </header>
+    
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#purpose">Purpose</a>
+<a href="#ownership-boundary">Ownership boundary</a>
+<a href="#core-rule">Core rule</a>
+<a href="#traceability">Traceability</a>
+<a href="#model-shape">Model shape</a>
+<a href="#role-specific-selection-is-not-canonical-candidate-data">Role-specific selection is not canonical candidate data</a>
+<a href="#change-rules">Change rules</a>
+<a href="#validation-minimum">Validation minimum</a></nav></details></aside>
+      <article class="markdown-body"><span id="resume-content-model"></span>
+<h2 id="purpose">Purpose</h2>
+<p>Define a presentation-neutral, candidate-neutral semantic contract for resume content so one private candidate context can be rendered through materially different resume Templates without rewriting or reinterpreting the underlying facts each time.</p>
+<p>The canonical machine-readable contract is <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/resume-content-model.schema.json" rel="noreferrer"><code>resume-content-model.schema.json</code></a>. The current contract version is <strong>1.0</strong>.</p>
+<p>This model is a <strong>normalized projection for composition</strong>. It is not the candidate&#39;s evidence ledger, not a Template, not a role-specific resume, and not a public candidate record.</p>
+<h2 id="ownership-boundary">Ownership boundary</h2>
+<pre><code class="language-text">private candidate evidence + standing decisions
+        ↓
+private Resume Content Model instance
+        ↓
+Persona-Library semantic mapping Skill
+        +
+verified template-library slot manifest
+        ↓
+role-specific resume instance
+</code></pre>
+<ul>
+<li><strong>Private Candidate Application Context</strong> owns the actual candidate-specific model instance and its source/decision references.</li>
+<li><strong>Persona-Library</strong> owns this semantic contract, mapping rules, and validation semantics.</li>
+<li><strong>rickvang/template-library</strong> owns each resume Template&#39;s semantic slot manifest and presentation structure.</li>
+<li><strong>Application instance</strong> owns role-specific selection, emphasis, ordering exceptions, target terminology, and rendered output.</li>
+</ul>
+<p>Do not store private candidate instances in Persona-Library or <code>template-library</code>.</p>
+<h2 id="core-rule">Core rule</h2>
+<p>The model normalizes <strong>meaning</strong>, not layout.</p>
+<p>It may represent:</p>
+<ul>
+<li>identity and approved contact channels;</li>
+<li>professional descriptors and evidence-backed profile statements;</li>
+<li>employment relationships and separate employment periods;</li>
+<li>employer-of-record and nested client engagements;</li>
+<li>achievements, responsibilities, metrics, tools, methods, and role-scoped skills;</li>
+<li>global skill categories;</li>
+<li>education and certifications;</li>
+<li>projects and portfolio items.</li>
+</ul>
+<p>It must not encode:</p>
+<ul>
+<li>font, color, spacing, page count, columns, or visual hierarchy;</li>
+<li>a Template&#39;s section names or slot IDs;</li>
+<li>target-employer keywords merely for matching;</li>
+<li>role-specific selection or emphasis as canonical candidate truth;</li>
+<li>unsupported facts or generated claims detached from evidence.</li>
+</ul>
+<h2 id="traceability">Traceability</h2>
+<p>Every material object may carry:</p>
+<ul>
+<li><code>evidence_refs</code> — identifiers or private references to candidate evidence supporting the node;</li>
+<li><code>decision_refs</code> — identifiers or private references to standing decisions affecting representation;</li>
+<li><code>status</code> — <code>confirmed</code>, <code>supported</code>, <code>conflicted</code>, or <code>unknown</code>;</li>
+<li><code>notes</code> — private implementation notes when needed.</li>
+</ul>
+<p>A normalized value does not become factual evidence by existing in this model. If a normalized node conflicts with current evidence or a standing decision, the node is repaired or blocked; it does not override the source.</p>
+<h2 id="model-shape">Model shape</h2>
+<p>The canonical JSON Schema is authoritative for field names and structural validation. The conceptual shape is:</p>
+<pre><code class="language-text">schema_version
+candidate_ref
+revision
+identity
+  name
+  location
+  contact
+profile
+  descriptors[]
+  summary_statements[]
+skills
+  categories[]
+experience[]
+  employer
+  periods[]
+    title
+    dates
+    location
+    achievements[]
+    skills[]
+    engagements[]
+      client
+      title
+      dates
+      location
+      achievements[]
+      skills[]
+education[]
+certifications[]
+projects[]
+portfolio_items[]
+</code></pre>
+<h3 id="identity">Identity</h3>
+<p>Identity contains approved candidate-facing values such as display name, location, and contact channels. Contact values remain private until the candidate authorizes their use in an artifact.</p>
+<h3 id="profile">Profile</h3>
+<p><code>profile.descriptors[]</code> contains supported professional descriptors that may be selected for a role-specific header. <code>profile.summary_statements[]</code> contains evidence-backed statements that may be composed into a summary.</p>
+<p>The model does not require a final prewritten summary because summary selection and synthesis are role-specific application decisions.</p>
+<h3 id="skills">Skills</h3>
+<p>Global skills are grouped into semantic categories when useful. A Template may flatten, relabel, or omit category presentation, but it may not add unsupported skills.</p>
+<p>Role- or engagement-specific skills may also live under the owning experience node so a Template can render them inline without pretending every skill applies uniformly across the career.</p>
+<h3 id="experience">Experience</h3>
+<p><code>experience[]</code> represents an employment relationship. Keep the employer-of-record at this level.</p>
+<p><code>periods[]</code> preserves separate periods or roles under that employer when the evidence or candidate standing decisions require separation.</p>
+<p><code>engagements[]</code> represents nested client/project engagements under an employment period. A client engagement does not replace the employer-of-record.</p>
+<p>This structure intentionally supports consulting, agency, contracting, and repeated-employer histories without forcing every candidate into that pattern.</p>
+<h3 id="achievements">Achievements</h3>
+<p>Achievements are candidate-bound semantic claims or approved wording units attached to the employment period or engagement they belong to. They should preserve contribution, scope, method, metric, and outcome meaning where those are supported.</p>
+<p>Role-specific resume work may select or reorder achievements, but the canonical model should not silently rewrite their factual meaning.</p>
+<h3 id="education-certifications-projects-and-portfolio-items">Education, certifications, projects, and portfolio items</h3>
+<p>These remain separate semantic collections. A Template may combine education and certifications visually or omit optional project/portfolio sections with a recorded reason.</p>
+<h2 id="role-specific-selection-is-not-canonical-candidate-data">Role-specific selection is not canonical candidate data</h2>
+<p>The application instance may record:</p>
+<ul>
+<li>which descriptors or summary statements were selected;</li>
+<li>which skills were emphasized;</li>
+<li>which achievements were selected or omitted;</li>
+<li>role terminology used in generated prose;</li>
+<li>intentional ordering or section changes;</li>
+<li>the requirement-to-evidence mapping for the target role.</li>
+</ul>
+<p>Do not write those choices back into the canonical candidate model as though they were universal defaults unless the candidate explicitly adopts a new standing decision.</p>
+<h2 id="change-rules">Change rules</h2>
+<h3 id="candidate-source-changes">Candidate source changes</h3>
+<p>When candidate evidence or a standing decision changes, reconcile the affected normalized nodes before using them in a new resume.</p>
+<h3 id="model-contract-changes">Model contract changes</h3>
+<p>A field rename, semantic redefinition, required-field change, or nesting change is a Resume Content Model contract change. Increment <code>schema_version</code> and reconcile:</p>
+<ul>
+<li>the semantic mapping Skill;</li>
+<li>Candidate Application Context guidance;</li>
+<li>resume Template slot manifests;</li>
+<li>application Work Order fields or validation that depend on the changed semantics.</li>
+</ul>
+<h3 id="template-changes">Template changes</h3>
+<p>A Template may change its <code>slot-map.json</code> without changing this model when the underlying candidate semantics are unchanged.</p>
+<h2 id="validation-minimum">Validation minimum</h2>
+<p>Before mapping a candidate model into a Template:</p>
+<ol>
+<li>validate the instance against the current schema when tooling is available;</li>
+<li>confirm the model belongs to the active candidate context;</li>
+<li>confirm material nodes remain traceable to current evidence/decisions;</li>
+<li>block conflicted or unknown material nodes that would affect the artifact;</li>
+<li>preserve employer/client hierarchy and separate employment periods where required;</li>
+<li>keep role-specific selection outside the canonical model.</li>
+</ol>
+<p>See <a href="doc-resume-template-mapping.html"><code>resume-template-mapping.md</code></a> for the mapping contract.</p>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-evidence-led-job-search.html">Job search system implementation plan</a></li><li><a href="doc-application-context-and-review.html">Application context and review contract</a></li><li><a href="doc-application-tracker.html">Job application tracker contract</a></li><li><a href="doc-seen-job-deduplication.html">Seen-job deduplication contract</a></li><li><a href="doc-candidate-context.html">Candidate Context Contract</a></li><li><a href="doc-resume-template-mapping.html">Resume Template semantic mapping</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="guide.html#reference-docs">Back to Docs</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

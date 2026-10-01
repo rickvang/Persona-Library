@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bounded parallel implementation | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" aria-current="page">Playbooks</a><a href="guide.html" >Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="playbooks.html#bounded-parallel">Back to Playbooks</a>
+      <p class="eyebrow">Documented process</p>
+      <h1>Bounded parallel implementation</h1>
+      <p class="lede">Bounded Parallel Implementation Playbook</p>
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/bounded-parallel-implementation.md" rel="noreferrer">docs/playbooks/bounded-parallel-implementation.md</a></p>
+    </header>
+    <p class="boundary-note">This is the documented process, not an observed request trace. It does not show whether your assistant followed it.</p>
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#core-principle">Core principle</a>
+<a href="#implementation-truth-precedence">Implementation-truth precedence</a>
+<a href="#execution-path">Execution path</a>
+<a href="#outcome">Outcome</a>
+<a href="#when-to-use">When to use</a>
+<a href="#when-not-to-use">When not to use</a>
+<a href="#why-this-is-a-distinct-playbook">Why this is a distinct Playbook</a>
+<a href="#required-inputs">Required inputs</a>
+<a href="#roles">Roles</a>
+<a href="#shared-state-and-artifacts">Shared state and artifacts</a>
+<a href="#stages">Stages</a>
+<a href="#usage-containment">Usage containment</a>
+<a href="#runtime-mapping-examples">Runtime mapping examples</a>
+<a href="#decision-rights">Decision rights</a>
+<a href="#quality-gates">Quality gates</a>
+<a href="#failure-and-recovery">Failure and recovery</a>
+<a href="#capabilities-and-tools">Capabilities and Tools</a>
+<a href="#representative-and-boundary-cases">Representative and boundary cases</a>
+<a href="#provenance">Provenance</a></nav></details></aside>
+      <article class="markdown-body"><span id="bounded-parallel-implementation-playbook"></span>
+<ul>
+<li>Playbook ID: <code>playbook-bounded-parallel-implementation</code></li>
+<li>Status: Working model</li>
+<li>Audience: a coordinator dispatching a small number of independent repository implementation workstreams, plus the implementers and reviewers of those workstreams</li>
+<li>Canonical catalog identity: <code>content/library-data.js</code> <code>playbookCatalog</code></li>
+<li>Orientation route: <code>bounded-parallel-implementation</code></li>
+<li>Related collaboration contract: <a href="playbook-multi-persona-collaboration.html"><code>docs/collaboration/multi-persona-collaboration-playbook.md</code></a></li>
+</ul>
+<p>This Playbook coordinates existing repository, GitHub, Work Order, and review practices. It is not a runtime executor and does not create an Agent, Coordinator, Runtime, Budget, Scheduler, or Orchestration entity.</p>
+<p>Persona-Library may select, catalog, and explain this Playbook. After selection, the repository being changed owns implementation truth. For an external target repository, execution does not require loading Persona-Library records. If Persona-Library itself is the target repository, follow its own <code>AGENTS.md</code> → bootstrap → selected route contract; if another target repository requires Persona-Library records, follow that local requirement.</p>
+<h2 id="core-principle">Core principle</h2>
+<blockquote>
+<p>The repository being changed owns implementation truth. Persona-Library may help select who, what capability, or what Playbook applies, but it does not override the target repository&#39;s current source, instructions, architecture, issue state, tests, or validation contract.</p>
+</blockquote>
+<p>Prior conversation context, coordinator memory, Persona-Library records, and implementer handoffs are pointers and context; they are not substitutes for fresh target-repository inspection.</p>
+<p>GitHub-specific mutation classes, merge authorization, and linked-issue completion semantics come from the target repository&#39;s pinned GitHub Tool contract. This Playbook owns implementation coordination and its merge gate; it does not redefine the GitHub mutation contract.</p>
+<h2 id="implementation-truth-precedence">Implementation-truth precedence</h2>
+<p>This order is about implementation truth, not permission expansion. A repository contract may define standing authorization semantics tied to a user&#39;s scoped request; this Playbook records and applies that existing authorization but never creates permission from implementation status, review status, or a callback.</p>
+<pre><code class="language-text">explicit user request / authorization
+        ↓
+target-repository issue / scoped task
+        ↓
+target-repository AGENTS / architecture / local instructions
+        ↓
+target-repository canonical source + tests / validators
+        ↓
+reusable Playbook / Operating Pack guidance
+        ↓
+general practice
+</code></pre>
+<h2 id="execution-path">Execution path</h2>
+<p>The reusable contract must work when an agent starts directly inside the target repository.</p>
+<pre><code class="language-text">open target repo
+→ determine Implementer context state
+→ follow the target repository&#39;s orientation path when required
+→ source-ground workstream
+→ apply Bounded Parallel contract
+</code></pre>
+<p>Persona-Library remains optional discovery, applicability, relationships, and provenance. Do not treat it as an execution hub for work in another repository.</p>
+<h2 id="outcome">Outcome</h2>
+<p>Produce a small set of independent, reviewable implementation results—normally one branch and one pull request per workstream—after each workstream is source-grounded against current target-repository truth, with compact handoffs, independent review against current repository state, scoped correction only when needed, and merge only after authorization under the target repository&#39;s pinned GitHub Tool contract.</p>
+<p>Implementer success is a reviewable PR or a bounded blocker for the assigned workstream. Run success is every dispatched workstream accepted after independent review or explicitly blocked or deferred, plus a compact coordinator packet that a reviewer can use to rehydrate from GitHub. Success is not merge, transcript completeness, nested-agent activity, or a recorded correction list that has not been applied and re-reviewed.</p>
+<p>The run stops when every dispatched workstream is accepted after independent review or explicitly blocked or deferred, the compact handoffs are collected, and merge is either authorized under the target repository&#39;s pinned GitHub Tool contract and completed or explicitly left unmerged. Recording scoped corrections is not terminal: stages 5–6 require the named defects to be applied and the updated PR to be re-reviewed before that workstream can stop. A contradicted candidate is re-scoped or dropped before dispatch; it is not a dispatched workstream.</p>
+<h2 id="when-to-use">When to use</h2>
+<p>Use this Playbook when:</p>
+<ul>
+<li>two or more implementation workstreams are independent enough to proceed in parallel after source-grounding;</li>
+<li>each workstream can be bounded to one repository, one issue or Work Order slice, one branch, and one PR;</li>
+<li>the cost to avoid is dispatching from stale assumptions, duplicated repository inspection, nested delegation, polling, or copying child transcripts into the coordinator;</li>
+<li>GitHub remains the source of current branch, PR, diff, review, and check state.</li>
+</ul>
+<h2 id="when-not-to-use">When not to use</h2>
+<p>Do not use this Playbook when:</p>
+<ul>
+<li>the work is a Multi-Persona Collaboration run that must synthesize one solution from named Personas through a <code>problem-context</code>;</li>
+<li>a single implementer can finish one workstream without parallel dispatch;</li>
+<li>the request needs a new runtime, scheduler, worker pool, token meter, or model-selection engine;</li>
+<li>merge, publication, or access changes are being treated as authorized merely because implementation or review is green, rather than by a current requester instruction or repository contract;</li>
+<li>the work is still a one-off that does not need a reusable stage contract.</li>
+</ul>
+<p>If named Personas must argue a shared problem before implementation, use the <a href="playbook-multi-persona-collaboration.html">Multi-Persona Collaboration Playbook</a> first. Do not copy its stages, solution-quality gate, or <code>problem-context</code> contract into this Playbook.</p>
+<h2 id="why-this-is-a-distinct-playbook">Why this is a distinct Playbook</h2>
+<p>Multi-Persona Collaboration owns named Persona lenses, attributable contributions, synthesis, and one concrete solution for a bounded user problem.</p>
+<p>This Playbook owns bounded parallel <em>implementation</em>: Coordinator, Implementer, Reviewer, and Authorizer roles, source-grounding before dispatch, one-level delegation, compact GitHub-reference handoffs, independent PR review, and an explicit GitHub-contract merge gate.</p>
+<p>Issue <a href="https://github.com/rickvang/Persona-Library/issues/71" rel="noreferrer">#71</a> still tracks canonical catalog identity for Multi-Persona Collaboration. That open question does not make this workflow an extension of collaboration. Extending collaboration here would mix solution synthesis with repository mutation gates.</p>
+<p>Do not add a second “Source-Grounded Parallel Implementation” identity. Source grounding is a required stage of this Playbook.</p>
+<h2 id="required-inputs">Required inputs</h2>
+<ul>
+<li>candidate workstreams, each naming a repository, issue or requested outcome, and an initial scope;</li>
+<li>authorization for implementation and pull request creation; merge authorization is evaluated under the target repository&#39;s pinned GitHub Tool contract together with any target-repository standing completion authorization or explicit requester override;</li>
+<li>current <code>main</code> or other agreed base for each target repository, refreshed before grounding;</li>
+<li>enough access to inspect repo-local instructions, relevant source, and the local validation contract;</li>
+<li>a coordinator context that can receive compact handoffs, plus a reviewer context that can reinspect GitHub.</li>
+</ul>
+<p>Named independent workstreams are an <em>output</em> of source-grounding, not a substitute for it. A <code>problem-context</code> is not required unless the same run also uses Multi-Persona Collaboration. A Work Order records run-specific progress and authorization constraints; it never grants mutation permission.</p>
+<h2 id="roles">Roles</h2>
+<p>These are role names, not new library entities.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Owns</th>
+<th>Does not own</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Coordinator</td>
+<td>Determine and verify Implementer orientation state, source-ground candidate workstreams, dispatch only confirmed or qualified packets, collect compact handoffs, stop.</td>
+<td>Reimplementing a workstream, nested agents, polling as a substitute for handoff, implementation-code review during dispatch, silently rewriting a contradicted request.</td>
+</tr>
+<tr>
+<td>Implementer</td>
+<td>Exactly one workstream in one repository: follow the target repository&#39;s orientation path from the packet&#39;s references, re-open current source, produce one branch and one PR or a bounded blocker/defer outcome, then stop.</td>
+<td>Other workstreams, sub-agents, merge, treating a missing capability as success, treating the dispatch packet as copied repository history.</td>
+</tr>
+<tr>
+<td>Reviewer</td>
+<td>Independent reinspection of current PR, diff, review threads, and checks; problem-correctness against current repository owner and source; separate blockers from suggestions; send only scoped correction.</td>
+<td>Treating the implementer handoff as GitHub truth; expanding scope; merging.</td>
+</tr>
+<tr>
+<td>Authorizer</td>
+<td>Merge and other consequential mutations after fresh preflight when current requester or repository-contract authorization covers them.</td>
+<td>Creating authorization from a green implementer stop, passing review, or compact callback.</td>
+</tr>
+</tbody></table>
+</div><p>The same person or runtime may hold different roles in different stages. Holding the Coordinator role does not authorize Reviewer or Authorizer work during the coordinate stage.</p>
+<h2 id="shared-state-and-artifacts">Shared state and artifacts</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Owner</th>
+<th>Source of truth</th>
+<th>Status rule</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Issue or Work Order</td>
+<td>Coordinator / requester</td>
+<td>Run-specific scope and progress</td>
+<td>Records authorization constraints; does not grant mutation</td>
+</tr>
+<tr>
+<td>Orientation preflight</td>
+<td>Coordinator / Implementer</td>
+<td>Target repository&#39;s current instructions and orientation entrypoint</td>
+<td><code>fresh</code>, <code>previously_oriented</code>, or <code>unknown</code>; separate from grounding and not an authorization</td>
+</tr>
+<tr>
+<td>Source-grounding result</td>
+<td>Coordinator</td>
+<td>Current target-repository source vs requested work</td>
+<td><code>confirmed</code>, <code>qualified</code>, or <code>contradicted</code>; contradicted work is not dispatched</td>
+</tr>
+<tr>
+<td>Branch</td>
+<td>Implementer</td>
+<td>Git history for that workstream</td>
+<td>One branch per workstream</td>
+</tr>
+<tr>
+<td>Pull request</td>
+<td>Implementer until review; Reviewer during review</td>
+<td>Current GitHub PR, diff, threads, and checks</td>
+<td>Reviewable or blocked; not merged by this stage</td>
+</tr>
+<tr>
+<td>Compact handoff</td>
+<td>Coordinator collects; Implementer writes</td>
+<td>Notification packet only</td>
+<td>Must not replace GitHub state</td>
+</tr>
+<tr>
+<td>Completion callback</td>
+<td>Coordinator, when the runtime supports returning to the originating conversation</td>
+<td>Same schema as the compact handoff</td>
+<td>Example transport, not Playbook identity</td>
+</tr>
+</tbody></table>
+</div><p>Canonical library records, repository <code>AGENTS.md</code> files, and Tool contracts remain authoritative. Link them; do not copy them into handoffs or dispatch packets.</p>
+<h2 id="stages">Stages</h2>
+<h3 id="0-orientation-preflight">0. Orientation preflight</h3>
+<ul>
+<li><strong>Purpose:</strong> Establish whether the assigned Implementer has reliable current orientation context before source-grounding or implementation.</li>
+<li><strong>Owner:</strong> Coordinator verifies; the Implementer follows the target repository&#39;s path.</li>
+<li><strong>Entry:</strong> A candidate workstream names a repository and an issue or requested outcome. Authorization for inspection exists.</li>
+<li><strong>Inputs:</strong> Target repository, current base reference, repo-local <code>AGENTS.md</code> or scoped instructions, and any documented bootstrap or orientation entrypoint.</li>
+<li><strong>Actions:</strong> Record the Implementer context as <code>fresh</code>, <code>previously_oriented</code>, or <code>unknown</code>. Treat <code>fresh</code> and <code>unknown</code> as requiring the target repository&#39;s current orientation path before source-grounding. A <code>previously_oriented</code> Implementer still refreshes the current base and relevant scoped instructions/source. Record references and completion status only; do not copy instruction bodies or infer orientation from coordinator memory.</li>
+<li><strong>Outputs:</strong> Orientation status, entrypoint reference, completion evidence, and any reason an entrypoint does not exist.</li>
+<li><strong>Evidence:</strong> Target repository and base reference, orientation entrypoint or explicit <code>none</code>, and the Implementer&#39;s recorded orientation status.</li>
+<li><strong>Exit:</strong> The Orientation gate passes. A missing required orientation step stops the workstream before grounding; an absent formal bootstrap is recorded and the smallest applicable local instruction/source path is used.</li>
+<li><strong>Handoff:</strong> Stage 1 receives only workstreams whose orientation preflight passed.</li>
+</ul>
+<p>The Implementer context states are:</p>
+<ul>
+<li><strong>fresh</strong> — no reliable evidence the Implementer has read the target repository&#39;s current orientation/instructions in this run;</li>
+<li><strong>previously_oriented</strong> — the Implementer completed the repository&#39;s orientation path, but must still refresh current base and relevant scoped instructions/source;</li>
+<li><strong>unknown</strong> — orientation cannot be established; treat it conservatively like <code>fresh</code>.</li>
+</ul>
+<p>Orientation state is independent of workstream grounding state. A workstream may be <code>fresh + confirmed</code>, <code>previously_oriented + contradicted</code>, or <code>unknown + qualified</code>.</p>
+<h3 id="1-ground-candidate-workstreams-in-target-repository-source">1. Ground candidate workstreams in target-repository source</h3>
+<ul>
+<li><strong>Purpose:</strong> Establish current implementation truth in each target repository before any workstream is dispatched.</li>
+<li><strong>Owner:</strong> Coordinator, or an implementer starting directly in the target repository.</li>
+<li><strong>Entry:</strong> A candidate workstream names a repository and an issue or requested outcome. Authorization for inspection exists.</li>
+<li><strong>Inputs:</strong> Current base branch/revision; repo-local <code>AGENTS.md</code> or scoped instructions; architecture/ownership docs when present; relevant canonical source; relevant tests/validators; known shared-file or dependency constraints.</li>
+<li><strong>Actions:</strong> Refresh current branch/<code>main</code>. Read local instructions and the relevant source and validation surfaces. Compare the requested work with current source. Classify the result. Record qualifications. Do not copy full instruction files, architecture docs, source, or transcripts into the later packet.</li>
+<li><strong>Outputs:</strong> One comparison result per candidate: <code>confirmed</code>, <code>qualified</code>, or <code>contradicted</code>, with owner/path and validation notes.</li>
+<li><strong>Evidence:</strong> Named repository, base revision, inspected instruction/source/validation paths, and the comparison class.</li>
+<li><strong>Exit:</strong> Every candidate is classified. Contradicted work has stopped for re-scope. Qualified adjustments are written into the dispatch packet. Shared-file collisions are removed from parallel scope or explicitly serialized.</li>
+<li><strong>Handoff:</strong> Stage 2 receives only confirmed or qualified candidates.</li>
+</ul>
+<p>The stage must answer:</p>
+<pre><code class="language-text">What is actually true in this repository now?
+Which file/module/repository owns the behavior being changed?
+Does the requested implementation still match current source truth?
+What validation contract applies here?
+Is the workstream genuinely independent enough to dispatch in parallel?
+</code></pre>
+<p>Comparison classes:</p>
+<ul>
+<li><strong>confirmed</strong> — current source supports the requested workstream as framed;</li>
+<li><strong>qualified</strong> — the request is valid but scope, owner, dependency, or implementation shape must be adjusted;</li>
+<li><strong>contradicted</strong> — current source shows that the requested workstream is based on a stale/wrong assumption or wrong owner.</li>
+</ul>
+<p>A contradicted workstream must <strong>STOP and be re-scoped before implementation</strong>. Do not silently reinterpret the request and proceed.</p>
+<p>Minimum grounding record:</p>
+<pre><code class="language-text">repository
+base branch / revision
+issue or requested outcome
+repo-local AGENTS / scoped instructions
+architecture / ownership docs when present
+relevant canonical source
+relevant tests / validators
+known dependencies or shared-file constraints
+</code></pre>
+<h3 id="2-bound-and-dispatch">2. Bound and dispatch</h3>
+<ul>
+<li><strong>Purpose:</strong> Choose the minimum independent <em>confirmed or qualified</em> workstreams and dispatch one implementer to each.</li>
+<li><strong>Owner:</strong> Coordinator.</li>
+<li><strong>Entry:</strong> Orientation and source-grounding passed. Independent workstreams, authorization for implementation and PR creation, and current repository bases are named.</li>
+<li><strong>Inputs:</strong> Grounded issues or Work Order slices, repository targets, qualifications, constraints, required validation, stop conditions.</li>
+<li><strong>Actions:</strong> Confirm the workstreams do not require a shared in-progress branch; dispatch one level only; give each implementer one workstream and the compact handoff schema. Carry qualifications into the packet. Do not dispatch contradicted work.</li>
+<li><strong>Outputs:</strong> Dispatch packet per workstream.</li>
+<li><strong>Evidence:</strong> Each packet names repository, base revision, issue/workstream, Implementer context state, orientation entrypoint/status, source-grounding result (<code>confirmed</code> or <code>qualified</code>), canonical owner/relevant paths, branch naming, required validation, non-goals, and stop condition.</li>
+<li><strong>Exit:</strong> No extra implementers, no nested-agent instruction, no contradicted dispatch, and no coordinator implementation plan that duplicates a workstream.</li>
+<li><strong>Handoff:</strong> Each implementer receives only its packet. The coordinator does not keep a giant shared prompt of repository history.</li>
+</ul>
+<p>Dispatch packet (references, not copied repository history):</p>
+<pre><code class="language-text">repository
+base revision
+issue / workstream
+agent context: fresh | previously_oriented | unknown
+orientation entrypoint / references
+source-grounding result: confirmed | qualified
+canonical owner / relevant paths
+branch
+required validation
+non-goals
+stop condition
+</code></pre>
+<p>The implementer must re-open current repository state itself.</p>
+<h3 id="3-implement-in-parallel">3. Implement in parallel</h3>
+<ul>
+<li><strong>Purpose:</strong> Produce a reviewable result or a bounded blocker for one workstream.</li>
+<li><strong>Owner:</strong> The assigned Implementer.</li>
+<li><strong>Entry:</strong> A single dispatch packet and a fresh inspect of the target repository.</li>
+<li><strong>Inputs:</strong> Current repository orientation/instructions, Tool contracts, issue scope, required validation. For an external target repository, Persona-Library records are not required after Playbook selection unless the target repository requires them; if Persona-Library itself is the target repository, follow its local bootstrap and selected route requirements.</li>
+<li><strong>Actions:</strong> Inspect fresh state; stay in the grounded scope; run only required validation; open one PR, or transition to <code>blocked</code> or <code>deferred</code> when the bounded stop condition applies; do not spawn sub-agents; do not merge.</li>
+<li><strong>Outputs:</strong> Branch + PR, or a compact blocker/defer handoff that names the missing input, permission, conflict, or scoped dependency.</li>
+<li><strong>Evidence:</strong> GitHub references plus the validation actually run.</li>
+<li><strong>Exit:</strong> <code>review_ready</code>, <code>blocked</code>, or <code>deferred</code>. The Implementer transitions to <code>deferred</code> when an explicit, scoped dependency makes continued work inappropriate for this run but gives a concrete re-entry condition—for example, a named upstream PR/base revision, required user decision, or unavailable approved capability. A current contradiction or an unresolved permission/source conflict is <code>blocked</code>; a correctable in-scope defect remains implementation work. The Implementer records the dependency, owner/reference, reason, and re-entry condition, then stops.</li>
+<li><strong>Handoff:</strong> Compact handoff only. For <code>deferred</code>, include the dependency and re-entry condition; the same packet is used for a supported callback or coordinator fallback. Do not return the child transcript.</li>
+</ul>
+<p>Normal implementer bounds:</p>
+<pre><code class="language-text">one issue/workstream
+one repository target
+one branch
+one PR
+required validation only
+no merge
+no sub-agents
+stop when reviewable, blocked, or deferred
+</code></pre>
+<h3 id="4-compact-handoff">4. Compact handoff</h3>
+<ul>
+<li><strong>Purpose:</strong> Return durable references the reviewer can use without absorbing child context.</li>
+<li><strong>Owner:</strong> Implementer writes; Coordinator collects and, when the runtime supports it, forwards one completion callback.</li>
+<li><strong>Entry:</strong> Each implementer has stopped at <code>review_ready</code>, <code>blocked</code>, or <code>deferred</code>.</li>
+<li><strong>Inputs:</strong> GitHub identities and validation/blocker notes from each workstream.</li>
+<li><strong>Actions:</strong> Collect one packet per workstream. Do not poll as a substitute for handoff. Do not review implementation code in this stage.</li>
+<li><strong>Outputs:</strong> Coordinator packet, optionally delivered as one completion callback to the originating conversation.</li>
+<li><strong>Evidence:</strong> Every required handoff field is present or explicitly unknown.</li>
+<li><strong>Exit:</strong> Coordinator has the packets and stops coordinating.</li>
+<li><strong>Handoff:</strong> Reviewer receives the packets as pointers, not as proof of GitHub state.</li>
+</ul>
+<p>Default handoff schema:</p>
+<pre><code class="language-text">workstream status: review_ready | blocked | deferred
+repository
+issue/workstream
+branch
+PR
+validation performed
+blocker / dependency / re-entry condition
+</code></pre>
+<p>When the runtime supports returning to the originating conversation, the Coordinator sends one callback after all workstreams reach a bounded terminal state: <code>review_ready</code>, <code>blocked</code>, or <code>deferred</code>. The callback includes one terminal status for each workstream plus an aggregate <code>run status</code>. For one or more dispatched workstreams, the aggregate is <code>review_ready</code> only when every workstream is <code>review_ready</code>; it is <code>blocked</code> when any workstream is <code>blocked</code>; otherwise it is <code>deferred</code> when at least one workstream is <code>deferred</code>. Thus <code>review_ready + blocked</code> is <code>blocked</code>, <code>review_ready + deferred</code> is <code>deferred</code>, and <code>blocked + deferred</code> is <code>blocked</code>. The callback uses the compact handoff fields above and may include one concise coordinator note. It is notification and routing only; it does not assert current GitHub PR, diff, review, check, or merge state.</p>
+<p>If callback transport is unavailable, surface the same compact packet in the coordinator context, record the transport limitation, and stop. Do not simulate callback delivery or keep the originating conversation in an indefinite polling loop.</p>
+<h3 id="5-independent-review">5. Independent review</h3>
+<ul>
+<li><strong>Purpose:</strong> Judge current repository evidence, not the implementer narrative.</li>
+<li><strong>Owner:</strong> Reviewer.</li>
+<li><strong>Entry:</strong> Compact handoffs exist and GitHub is reachable, or unavailability is recorded.</li>
+<li><strong>Inputs:</strong> Live PR, diff, review threads, and checks. Refresh current <code>main</code> and PR state before reasoning. Re-check the target repository’s authoritative source and owner.</li>
+<li><strong>Actions:</strong> Re-fetch GitHub state; verify both implementation correctness against the current PR/diff/checks and problem correctness against current repository source and owner; separate blockers from suggestions; do not treat the handoff as current truth.</li>
+<li><strong>Outputs:</strong> Pass, fail, or defer, with a scoped correction list when needed.</li>
+<li><strong>Evidence:</strong> Named PR revision, check results, current owner/source reading, and review findings.</li>
+<li><strong>Exit:</strong> Each workstream is accepted, blocked, or returned for scoped correction. A correction list continues the run at stage 6; it does not stop the workstream.</li>
+<li><strong>Handoff:</strong> Authorizer for merge, Implementer for a named correction, or an explicit blocked/deferred remainder.</li>
+</ul>
+<h3 id="6-scoped-correction">6. Scoped correction</h3>
+<ul>
+<li><strong>Purpose:</strong> Fix only the named review defects.</li>
+<li><strong>Owner:</strong> The original Implementer when available; otherwise a newly dispatched implementer for that same workstream.</li>
+<li><strong>Entry:</strong> Reviewer listed a bounded correction against a specific PR.</li>
+<li><strong>Inputs:</strong> Current PR state plus the correction list.</li>
+<li><strong>Actions:</strong> Stay inside the named defects; do not reopen unrelated scope; do not spawn sub-agents; do not merge.</li>
+<li><strong>Outputs:</strong> Updated PR or a blocker.</li>
+<li><strong>Evidence:</strong> New commits and re-run required validation.</li>
+<li><strong>Exit:</strong> Correction is reviewable or blocked. The workstream does not stop until independent review accepts it or it is explicitly blocked or deferred.</li>
+<li><strong>Handoff:</strong> Return to independent review with an updated compact handoff.</li>
+</ul>
+<h3 id="7-authorized-merge-and-stop">7. Authorized merge and stop</h3>
+<ul>
+<li><strong>Purpose:</strong> Apply a consequential mutation only when authorization is already valid and fresh preflight passes, then stop.</li>
+<li><strong>Owner:</strong> Authorizer.</li>
+<li><strong>Entry:</strong> Review passed for the PRs intended to merge, and merge authorization is valid under the target repository&#39;s pinned GitHub Tool contract through a current requester instruction or repository contract.</li>
+<li><strong>Inputs:</strong> Current PR, base branch, review, check, mergeability, and effective linked-completion state, plus the applicable authorization source and any requester override.</li>
+<li><strong>Actions:</strong> Refresh state; merge in an order that respects shared-file conflicts; recognize repository standing completion authorization when the target repository defines it; do not create authorization from a green PR, passing review, or completion callback.</li>
+<li><strong>Outputs:</strong> Merge commits, or an explicit unmerged remainder.</li>
+<li><strong>Evidence:</strong> GitHub merge records and remaining open PRs.</li>
+<li><strong>Exit:</strong> Requested merges are done or explicitly declined; the run stops.</li>
+<li><strong>Handoff:</strong> Reconcile issue state under the target repository&#39;s pinned GitHub Tool contract and update the Work Order with outcomes, limitations, and next action within its authorized scope.</li>
+</ul>
+<h2 id="usage-containment">Usage containment</h2>
+<p>Usage containment is a quality property of this orchestration, not a pricing, token, or budget domain.</p>
+<ul>
+<li>Prefer references over copied context.</li>
+<li>Prefer repository instructions over giant prompts.</li>
+<li>Ground work in current target-repository source before dispatch.</li>
+<li>Avoid duplicated repository inspection.</li>
+<li>Avoid nested delegation.</li>
+<li>Avoid repeated status polling.</li>
+<li>Return summaries, not child transcripts.</li>
+<li>Use the least-expensive capable runtime or model for each role.</li>
+<li>Stop agents at explicit completion boundaries.</li>
+</ul>
+<p>Do not encode product prices or fixed token budgets in this Playbook.</p>
+<h2 id="runtime-mapping-examples">Runtime mapping examples</h2>
+<p>The durable contract is runtime-neutral. Product names below are adapters, not Playbook identity.</p>
+<h3 id="preferred-current-chatgpt-mapping">Preferred current ChatGPT mapping</h3>
+<p>Proven in this project as a useful handoff, not as a requirement for every runtime:</p>
+<pre><code class="language-text">originating Chat
+→ plan / select scoped issues
+→ switch or hand off to Work
+→ Work acts as thin coordinator
+→ determine Implementer context state
+→ target-repository orientation preflight
+→ source-ground each candidate in the target repository
+→ bound and dispatch only confirmed / qualified workstreams
+→ bounded implementation agents each produce one branch + PR, then stop
+→ Work collects only the compact handoffs
+→ Work sends one concise completion callback into the originating Chat when supported
+→ originating Chat independently reinspects GitHub and reviews the PRs
+→ scoped correction if needed
+→ merge when authorized by the requester or target-repository standing contract under the pinned GitHub Tool contract
+</code></pre>
+<h3 id="completion-callback-adapter">Completion callback adapter</h3>
+<p>The callback fires once the Coordinator has collected compact handoffs, required implementation-stage validation has completed or is explicitly recorded as skipped/blocked, and every dispatched workstream is <code>review_ready</code>, <code>blocked</code>, or <code>deferred</code>. It fires for bounded failure and defer outcomes as well as review-ready outcomes. The originating Chat is released while Work runs and resumes as the review/decision entry point after the callback.</p>
+<p>Default callback packet:</p>
+<pre><code class="language-text">run status: review_ready | blocked | deferred
+workstreams:
+  - status: review_ready | blocked | deferred
+    repository
+    issue / workstream
+    branch
+    PR
+    validation summary
+    blocker / dependency / re-entry condition, if any
+coordinator note: optional one concise sentence
+</code></pre>
+<p>The callback carries references and status, not child transcripts, copied diffs, repository instructions, long reasoning, review verdicts, or merge authorization. The originating Chat must refresh GitHub independently before review.</p>
+<h3 id="fallback">Fallback</h3>
+<p>If the runtime cannot return to the originating conversation, surface the same compact packet in the coordinator context, state that callback transport is unsupported, and stop. The reviewer still rehydrates from GitHub references.</p>
+<p>Cursor, Codex, or other implementation agents may fill the Implementer role. That does not make this a Work- or Codex-specific Tool package.</p>
+<p>An agent that starts inside an external target repository does not load Persona-Library after Playbook selection unless the target repository requires it. It follows the target repository&#39;s own orientation path, refreshes local instructions/source, and applies this contract. An agent working in Persona-Library follows Persona-Library&#39;s <code>AGENTS.md</code> → bootstrap → selected route path before grounding.</p>
+<h2 id="decision-rights">Decision rights</h2>
+<ul>
+<li>Coordinator may verify orientation, source-ground, dispatch confirmed or qualified workstreams, collect handoffs, send a supported completion callback or compact fallback, and stop the coordinate stage.</li>
+<li>Coordinator may not silently reinterpret a contradicted request as a different implementation and proceed.</li>
+<li>Implementer may edit only the assigned workstream and may not merge.</li>
+<li>Reviewer may pass, fail, or defer and must name evidence or a correction.</li>
+<li>Authorizer alone may merge or approve other consequential mutations.</li>
+<li>Unavailable Tools, connectors, or permissions are reported; they are not simulated as success.</li>
+</ul>
+<h2 id="quality-gates">Quality gates</h2>
+<p><strong>Orientation gate.</strong> Pass only when the Implementer context is recorded as <code>fresh</code>, <code>previously_oriented</code>, or <code>unknown</code>; <code>fresh</code> and <code>unknown</code> Implementers followed the target repository&#39;s current orientation entrypoint or an explicit <code>none</code> path was recorded; previously oriented Implementers refreshed current base and relevant scoped instructions/source; target-repository instructions were not overridden by coordinator memory; and the packet carries references/status rather than copied repository context. Fail when orientation is assumed without evidence, a fresh/unknown Implementer edits before applicable local orientation, a previously oriented Implementer skips freshness checks, or Persona-Library is made an unnecessary external-repository prerequisite.</p>
+<p><strong>Source-grounding gate.</strong> Pass only when the target repository and base revision are known; repo-local instructions and the relevant orientation path were inspected; relevant canonical source and validation surfaces were inspected; the requested work was classified as confirmed or qualified; qualifications are reflected in the dispatch packet; and known shared-file/dependency collisions are either removed from parallel scope or explicitly serialized. Fail when the workstream is framed only from conversation memory or Persona-Library context; canonical ownership is unknown; current source contradicts the requested implementation; local instructions or required validation were skipped without an explicit reason; or the workstreams are not actually independent. A contradicted result fails this gate and must be re-scoped before dispatch.</p>
+<p><strong>Dispatch gate.</strong> Pass only when each implementer has one recorded orientation state, one confirmed or qualified workstream, one repository, one stop condition, and no instruction to spawn sub-agents. Fail if a contradicted workstream is dispatched, the coordinator plans to reimplement, poll instead of awaiting handoff, or review code before the review stage.</p>
+<p><strong>Implementer stop gate.</strong> Pass only when the workstream has a reviewable PR, a bounded blocker, or a bounded defer with a named dependency and re-entry condition; required validation was run or explicitly skipped with reason; and the Implementer did not merge. Fail if nested agents were used, scope expanded, or <code>deferred</code> is used without an explicit scoped dependency and re-entry condition.</p>
+<p><strong>Handoff gate.</strong> Pass only when the packet uses the compact schema, includes one terminal status per workstream and the aggregate status rule, and does not include child transcripts or large repository copies. A supported callback has an aggregate terminal state from <code>review_ready</code>, <code>blocked</code>, or <code>deferred</code> plus each workstream&#39;s terminal state; an unsupported callback is surfaced as the same compact coordinator fallback. Fail if GitHub identities are missing without being marked unknown, a defer lacks its dependency/re-entry condition, or callback transport is simulated.</p>
+<p><strong>Review gate.</strong> Pass only when the reviewer re-fetched current GitHub state, checked problem correctness against current repository source and owner, and separated blockers from suggestions. Fail if the handoff or callback was treated as proof of current PR/diff/check state. A fail with scoped corrections is an entry to stage 6, not a run-stop.</p>
+<p><strong>Correction-loop gate.</strong> Recording scoped corrections is not terminal. Pass only after the named defects are applied and the updated PR is re-reviewed to accept, or the workstream is explicitly blocked or deferred.</p>
+<p><strong>Run-stop gate.</strong> Pass only when every dispatched workstream is accepted after review or explicitly blocked or deferred, compact handoffs exist, and merge is either authorized under the target repository&#39;s pinned GitHub Tool contract and completed or explicitly left unmerged. Fail if the run closes with a known failed review that still needs apply and re-review.</p>
+<p><strong>Merge gate.</strong> Pass only when merge is authorized by the current requester instruction or target-repository contract and fresh preflight passes. A green implementation, compact callback, or passing review does not create authorization by itself; repository standing completion authorization may already have been established by the scoped implementation request.</p>
+<h2 id="failure-and-recovery">Failure and recovery</h2>
+<ul>
+<li>Missing or overlapping workstream: do not dispatch; split or serialize first.</li>
+<li>Missing orientation evidence: stop before source-grounding; record the target entrypoint, required local reads, and the smallest safe recovery.</li>
+<li>Contradicted workstream: stop and re-scope; do not dispatch; do not silently reinterpret.</li>
+<li>Stale issue or remembered architecture: treat as contradicted or qualified from current source, not from conversation memory.</li>
+<li>Shared-file collision discovered during grounding, review, or merge: serialize remaining work; rebase the later PR; do not require both implementers to keep editing in parallel.</li>
+<li>Unavailable GitHub connector: report the limitation; do not infer remote state; use the documented fallback only when accepted.</li>
+<li>Implementer blocked: keep the workstream blocked; do not spawn a grandchild agent to bypass the blocker.</li>
+<li>Reviewer unavailable: leave PRs unmerged; do not have the coordinator silently review during the coordinate stage.</li>
+<li>Interrupted run: resume from GitHub identities in the last compact handoff, not from remembered transcripts.</li>
+<li>Missing merge authorization: when neither the requester nor the target repository contract authorizes merge, stop at reviewable PRs and surface the missing authorization boundary.</li>
+<li>Unsupported callback transport: surface the compact packet in the coordinator context, record the limitation, and stop without simulating delivery or polling indefinitely.</li>
+</ul>
+<h2 id="capabilities-and-tools">Capabilities and Tools</h2>
+<ul>
+<li>Repository-local <code>AGENTS.md</code> and Operating Packs: follow them inside a workstream; do not copy them into the Playbook.</li>
+<li>GitHub operating contract: a Tool requirement for issue/PR/review/merge freshness and authorization. Reuse that contract; do not duplicate Tool instructions here. A pin or catalog mention does not prove connector availability.</li>
+<li><code>$playbook-composer</code>: use when maintaining this Playbook, not when executing a run.</li>
+<li><code>$change-impact-reconciliation</code>: use after durable Playbook, Docs, Decision, or generated-artifact changes.</li>
+<li><code>$tool-discovery-and-safe-execution</code>: use when a workstream needs a Tool capability resolved; missing access is a blocker.</li>
+</ul>
+<p>Do not add a Work/Codex-specific Tool package unless later evidence shows substantial runtime-specific procedure that belongs in <code>tool-repo</code>.</p>
+<h2 id="representative-and-boundary-cases">Representative and boundary cases</h2>
+<p><strong>Representative case.</strong> Two independent <code>tool-repo</code> workstreams: issue #3 / PR #6 (GitHub package split) and issue #4 / PR #5 (Figma package). Separate implementers produced one branch and one PR each. Merge was sequential after #6 landed, including a README rebase on #5. See the original Work Order proof for what matched this contract and what the coordinator still duplicated.</p>
+<p><strong>Source-grounding case.</strong> <code>template-library</code> issue #1 remains open as a 2026-09-11 plan that audited an empty repository. Current <code>main</code> already contains <code>ARCHITECTURE.md</code> and three Templates. Dispatching the issue’s “first PR as written” is <strong>contradicted</strong>. A remaining repository-contract slice (root <code>AGENTS.md</code>, <code>CONTRIBUTING.md</code>, validator/tests) would be <strong>qualified</strong> only after re-scope. Persona-Library records were not required after Playbook selection. See this issue’s Work Order proof.</p>
+<p><strong>Boundary case.</strong> Two workstreams that secretly share a file, a coordinator that reviews diffs while still dispatching, or a workstream framed only from conversation memory without inspecting target-repository source, fails the source-grounding, dispatch, or merge gate. Nested sub-agents, transcript-as-truth review, and merge-by-callback also fail.</p>
+<h2 id="provenance">Provenance</h2>
+<ul>
+<li>Request: <a href="https://github.com/rickvang/Persona-Library/issues/82" rel="noreferrer">Persona-Library #82</a></li>
+<li>Source-grounding amendment: <a href="https://github.com/rickvang/Persona-Library/issues/86" rel="noreferrer">Persona-Library #86</a></li>
+<li>Runtime-mapping amendment: <a href="https://github.com/rickvang/Persona-Library/issues/82#issuecomment-5663449934" rel="noreferrer">issue comment</a></li>
+<li>Related: <a href="https://github.com/rickvang/Persona-Library/issues/71" rel="noreferrer">#71</a> collaboration identity, <a href="https://github.com/rickvang/Persona-Library/issues/75" rel="noreferrer">#75</a> GitHub/current-repository workflow, <a href="https://github.com/rickvang/Persona-Library/issues/70" rel="noreferrer">#70</a> ownership boundaries, <a href="https://github.com/rickvang/Persona-Library/issues/60" rel="noreferrer">#60</a> external-artifact boundary, <code>tool-repo</code> #3 and #4, <code>template-library</code> #1</li>
+<li>Confidence: contract is inspectable; one two-lane repository case exists; one external-repository source-grounding case exists; Chat→Work completion callback is a documented adapter, not yet a required proof for every runtime</li>
+<li>Assumptions: GitHub remains the default repository workflow; implementers can inspect fresh repository state; merge authorization remains governed by the target repository&#39;s pinned GitHub Tool contract; Persona-Library stays catalog/discovery rather than an execution dependency</li>
+<li>Unresolved: whether later cases need a second live parallel-run proof across two repositories; whether #71 later catalogs Multi-Persona Collaboration beside this identity; whether substantial Playbook artifacts should later move to an independent library</li>
+<li>Next action after an authorized update: bounded <code>$change-impact-reconciliation</code>, then reviewable PR, then the pinned GitHub Tool contract&#39;s merge gate</li>
+</ul>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-multi-persona-collaboration.html">Multi-Persona Collaboration Playbook</a></li><li><a href="playbook-template-lifecycle.html">Research, promote, and maintain a reusable Template</a></li><li><a href="doc-problem-context.html">Shared problem context</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="playbooks.html#bounded-parallel">Back to Playbooks</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

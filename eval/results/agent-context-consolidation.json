@@ -20,8 +20,8 @@
       "delta_percent": -15
     },
     "activated_behavior_context": {
-      "control_utf8_bytes": 1022541,
-      "preferred_utf8_bytes": 892571,
+      "control_utf8_bytes": 1024607,
+      "preferred_utf8_bytes": 894637,
       "delta_utf8_bytes": -129970,
       "delta_percent": -12.7
     },
@@ -81,7 +81,7 @@
         "passed": 8,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -17.4
+        "context_delta_percent": -17.3
       },
       "timing": {
         "control": {

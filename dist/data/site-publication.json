@@ -1,0 +1,870 @@
+{
+  "schema_version": "persona-library.site-publication/v1",
+  "playbooks": [
+    {
+      "id": "playbook-evidence-led-job-search",
+      "name": "Evidence-led job search",
+      "status": "Working model",
+      "summary": "Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.",
+      "kind": "process",
+      "source": "docs/job-search/implementation.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/implementation.md",
+      "sourceSha256": "ead2ac815400662d53baa07bd5a2722c13299efa5957603785fa13c01121cdb3",
+      "href": "playbook-evidence-led-job-search.html",
+      "legacyAnchor": "current",
+      "outline": [
+        "Phase 0 — Define the search",
+        "Phase 1 — Role and evidence alignment",
+        "Phase 2 — Application packet",
+        "Application preflight — before the council",
+        "Phase 3 — Quality review",
+        "Phase 4 — Outreach and interview",
+        "Phase 5 — Search learning loop"
+      ],
+      "outlineHeading": "Phased delivery",
+      "outlineLabel": "outline sections",
+      "roles": [],
+      "operator": {
+        "id": "job-search-orchestrator",
+        "name": "Priya Desai",
+        "roleLabel": "Job search orchestrator"
+      }
+    },
+    {
+      "id": "playbook-create-and-integrate-reusable-skill",
+      "name": "Create and integrate a reusable skill",
+      "status": "Working model",
+      "summary": "Combine bounded perspectives from the Personas who perform the work, then formalize a reusable capability without losing its context.",
+      "kind": "overview",
+      "source": "content/site-pages/skill-formation-overview.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/content/site-pages/skill-formation-overview.md",
+      "sourceSha256": "d7ec4bf63e84b32b64e6ac9ced30812c7602674375534df40e55a4f61228e750",
+      "href": "playbook-create-and-integrate-reusable-skill.html",
+      "legacyAnchor": "skill-formation",
+      "outline": [
+        "Frame: scope the capability",
+        "Select: choose the lenses",
+        "Synthesize: compare the perspectives",
+        "Formalize: structure the Skill",
+        "Validate: test quality and reuse",
+        "Reconcile: integrate the system"
+      ],
+      "outlineHeading": "Illustrative sequence",
+      "outlineLabel": "outline sections",
+      "roles": [],
+      "operator": null
+    },
+    {
+      "id": "playbook-multi-persona-collaboration",
+      "name": "Multi-Persona Collaboration",
+      "status": "Working model",
+      "summary": "Produce one useful, inspectable solution for a bounded user problem by coordinating explicitly selected Personas through a shared problem-context document. The context is an instrument for traceability and handoff; it is not the user-facing outcome.",
+      "kind": "process",
+      "source": "docs/collaboration/multi-persona-collaboration-playbook.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/multi-persona-collaboration-playbook.md",
+      "sourceSha256": "31bea1251b2686d11c4470bca219d231402d2cd6738f646b780566786f57bec3",
+      "href": "playbook-multi-persona-collaboration.html",
+      "legacyAnchor": "collaboration",
+      "outline": [
+        "Frame",
+        "Select",
+        "Contribute",
+        "Synthesize",
+        "Build",
+        "Review",
+        "Handoff / recover",
+        "Close"
+      ],
+      "outlineHeading": "Stages",
+      "outlineLabel": "stages",
+      "roles": [],
+      "operator": null
+    },
+    {
+      "id": "playbook-bounded-parallel-implementation",
+      "name": "Bounded parallel implementation",
+      "status": "Working model",
+      "summary": "Produce a small set of independent, reviewable implementation results—normally one branch and one pull request per workstream—after each workstream is source-grounded against current target-repository truth, with compact handoffs, independent review against current repository state, scoped correction only when needed, and merge only after authorization under the target repository's pinned GitHub Tool contract.",
+      "kind": "process",
+      "source": "docs/playbooks/bounded-parallel-implementation.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/bounded-parallel-implementation.md",
+      "sourceSha256": "398ce7a54dd28651b3cd3dce939096be22d0c780d328f1bd90c112b5bcb46847",
+      "href": "playbook-bounded-parallel-implementation.html",
+      "legacyAnchor": "bounded-parallel",
+      "outline": [
+        "0. Orientation preflight",
+        "1. Ground candidate workstreams in target-repository source",
+        "2. Bound and dispatch",
+        "3. Implement in parallel",
+        "4. Compact handoff",
+        "5. Independent review",
+        "6. Scoped correction",
+        "7. Authorized merge and stop"
+      ],
+      "outlineHeading": "Stages",
+      "outlineLabel": "stages",
+      "roles": [
+        "Coordinator",
+        "Implementer",
+        "Reviewer",
+        "Authorizer"
+      ],
+      "operator": null
+    },
+    {
+      "id": "playbook-template-lifecycle",
+      "name": "Research, promote, and maintain a reusable Template",
+      "status": "Working model",
+      "summary": "Move a reusable Template need from discovery through reuse-or-create, specialist quality when required, validation, promotion-or-local decision, Persona-Library catalog/Site publication, and reconciliation—without confusing library stewardship with domain authorship or copying external starters into Persona-Library.",
+      "kind": "process",
+      "source": "docs/playbooks/template-lifecycle.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/template-lifecycle.md",
+      "sourceSha256": "4db025d5578a31ea00ae4c52a7dff78696961dfb8f52b2b47309363fce13dacf",
+      "href": "playbook-template-lifecycle.html",
+      "legacyAnchor": "template-lifecycle",
+      "outline": [
+        "01 / DEFINE — Scope the Template need",
+        "02 / DISCOVER — Search catalog and verify sources",
+        "03 / ROUTE — Hand off domain quality when needed",
+        "04 / COMPOSE — Create or adapt the smallest starter",
+        "05 / VALIDATE — Prove source, boundary, and quality",
+        "06 / LIFECYCLE — Keep local, publish, promote, update, or deprecate",
+        "07 / RECONCILE — Review downstream effects once"
+      ],
+      "outlineHeading": "Stages",
+      "outlineLabel": "stages",
+      "roles": [],
+      "operator": {
+        "id": "template-librarian",
+        "name": "Elena Park",
+        "roleLabel": "Template Librarian"
+      }
+    }
+  ],
+  "documents": [
+    {
+      "id": "job-search-process",
+      "title": "Job search system implementation plan",
+      "summary": "Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.",
+      "category": "Job search",
+      "source": "docs/job-search/implementation.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/implementation.md",
+      "sourceSha256": "ead2ac815400662d53baa07bd5a2722c13299efa5957603785fa13c01121cdb3",
+      "href": "playbook-evidence-led-job-search.html",
+      "headings": [
+        {
+          "id": "purpose",
+          "label": "Purpose",
+          "depth": 2
+        },
+        {
+          "id": "recommended-operating-model",
+          "label": "Recommended operating model",
+          "depth": 2
+        },
+        {
+          "id": "mvp-scope",
+          "label": "MVP scope",
+          "depth": 2
+        },
+        {
+          "id": "application-tracker-companion-surface",
+          "label": "Application tracker companion surface",
+          "depth": 2
+        },
+        {
+          "id": "data-model",
+          "label": "Data model",
+          "depth": 2
+        },
+        {
+          "id": "ats-primary-application-packet",
+          "label": "ATS-primary application packet",
+          "depth": 2
+        },
+        {
+          "id": "phased-delivery",
+          "label": "Phased delivery",
+          "depth": 2
+        },
+        {
+          "id": "quality-gates",
+          "label": "Quality gates",
+          "depth": 2
+        },
+        {
+          "id": "deliberately-out-of-scope-for-the-mvp",
+          "label": "Deliberately out of scope for the MVP",
+          "depth": 2
+        },
+        {
+          "id": "validation-questions",
+          "label": "Validation questions",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "multi-persona-collaboration",
+      "title": "Multi-Persona Collaboration Playbook",
+      "summary": "Produce one useful, inspectable solution for a bounded user problem by coordinating explicitly selected Personas through a shared problem-context document. The context is an instrument for traceability and handoff; it is not the user-facing outcome.",
+      "category": "Processes",
+      "source": "docs/collaboration/multi-persona-collaboration-playbook.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/multi-persona-collaboration-playbook.md",
+      "sourceSha256": "31bea1251b2686d11c4470bca219d231402d2cd6738f646b780566786f57bec3",
+      "href": "playbook-multi-persona-collaboration.html",
+      "headings": [
+        {
+          "id": "purpose",
+          "label": "Purpose",
+          "depth": 2
+        },
+        {
+          "id": "entry-and-exit",
+          "label": "Entry and exit",
+          "depth": 2
+        },
+        {
+          "id": "shared-state",
+          "label": "Shared state",
+          "depth": 2
+        },
+        {
+          "id": "stages",
+          "label": "Stages",
+          "depth": 2
+        },
+        {
+          "id": "decision-rights-and-mutation-boundaries",
+          "label": "Decision rights and mutation boundaries",
+          "depth": 2
+        },
+        {
+          "id": "solution-quality-gate",
+          "label": "Solution-quality gate",
+          "depth": 2
+        },
+        {
+          "id": "failure-and-recovery",
+          "label": "Failure and recovery",
+          "depth": 2
+        },
+        {
+          "id": "handoff-packet",
+          "label": "Handoff packet",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "bounded-parallel-implementation",
+      "title": "Bounded Parallel Implementation Playbook",
+      "summary": "This Playbook coordinates existing repository, GitHub, Work Order, and review practices. It is not a runtime executor and does not create an Agent, Coordinator, Runtime, Budget, Scheduler, or Orchestration entity.",
+      "category": "Processes",
+      "source": "docs/playbooks/bounded-parallel-implementation.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/bounded-parallel-implementation.md",
+      "sourceSha256": "398ce7a54dd28651b3cd3dce939096be22d0c780d328f1bd90c112b5bcb46847",
+      "href": "playbook-bounded-parallel-implementation.html",
+      "headings": [
+        {
+          "id": "core-principle",
+          "label": "Core principle",
+          "depth": 2
+        },
+        {
+          "id": "implementation-truth-precedence",
+          "label": "Implementation-truth precedence",
+          "depth": 2
+        },
+        {
+          "id": "execution-path",
+          "label": "Execution path",
+          "depth": 2
+        },
+        {
+          "id": "outcome",
+          "label": "Outcome",
+          "depth": 2
+        },
+        {
+          "id": "when-to-use",
+          "label": "When to use",
+          "depth": 2
+        },
+        {
+          "id": "when-not-to-use",
+          "label": "When not to use",
+          "depth": 2
+        },
+        {
+          "id": "why-this-is-a-distinct-playbook",
+          "label": "Why this is a distinct Playbook",
+          "depth": 2
+        },
+        {
+          "id": "required-inputs",
+          "label": "Required inputs",
+          "depth": 2
+        },
+        {
+          "id": "roles",
+          "label": "Roles",
+          "depth": 2
+        },
+        {
+          "id": "shared-state-and-artifacts",
+          "label": "Shared state and artifacts",
+          "depth": 2
+        },
+        {
+          "id": "stages",
+          "label": "Stages",
+          "depth": 2
+        },
+        {
+          "id": "usage-containment",
+          "label": "Usage containment",
+          "depth": 2
+        },
+        {
+          "id": "runtime-mapping-examples",
+          "label": "Runtime mapping examples",
+          "depth": 2
+        },
+        {
+          "id": "decision-rights",
+          "label": "Decision rights",
+          "depth": 2
+        },
+        {
+          "id": "quality-gates",
+          "label": "Quality gates",
+          "depth": 2
+        },
+        {
+          "id": "failure-and-recovery",
+          "label": "Failure and recovery",
+          "depth": 2
+        },
+        {
+          "id": "capabilities-and-tools",
+          "label": "Capabilities and Tools",
+          "depth": 2
+        },
+        {
+          "id": "representative-and-boundary-cases",
+          "label": "Representative and boundary cases",
+          "depth": 2
+        },
+        {
+          "id": "provenance",
+          "label": "Provenance",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "template-lifecycle",
+      "title": "Research, promote, and maintain a reusable Template",
+      "summary": "This Playbook coordinates existing Template stewardship, lifecycle Skills, domain specialists, Work Orders, and reconciliation. It is not a runtime executor and does not redefine Template Librarian, Template Skills, domain expertise, or external artifact ownership.",
+      "category": "Processes",
+      "source": "docs/playbooks/template-lifecycle.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/template-lifecycle.md",
+      "sourceSha256": "4db025d5578a31ea00ae4c52a7dff78696961dfb8f52b2b47309363fce13dacf",
+      "href": "playbook-template-lifecycle.html",
+      "headings": [
+        {
+          "id": "outcome",
+          "label": "Outcome",
+          "depth": 2
+        },
+        {
+          "id": "when-to-use",
+          "label": "When to use",
+          "depth": 2
+        },
+        {
+          "id": "when-not-to-use",
+          "label": "When not to use",
+          "depth": 2
+        },
+        {
+          "id": "why-this-is-a-distinct-playbook",
+          "label": "Why this is a distinct Playbook",
+          "depth": 2
+        },
+        {
+          "id": "ownership-boundaries",
+          "label": "Ownership boundaries",
+          "depth": 2
+        },
+        {
+          "id": "participants-and-decision-rights",
+          "label": "Participants and decision rights",
+          "depth": 2
+        },
+        {
+          "id": "stages",
+          "label": "Stages",
+          "depth": 2
+        },
+        {
+          "id": "shared-state",
+          "label": "Shared state",
+          "depth": 2
+        },
+        {
+          "id": "quality-gates",
+          "label": "Quality gates",
+          "depth": 2
+        },
+        {
+          "id": "failure-and-recovery",
+          "label": "Failure and recovery",
+          "depth": 2
+        },
+        {
+          "id": "representative-cases",
+          "label": "Representative cases",
+          "depth": 2
+        },
+        {
+          "id": "runtime-notes",
+          "label": "Runtime notes",
+          "depth": 2
+        },
+        {
+          "id": "learning-loop",
+          "label": "Learning loop",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "problem-context",
+      "title": "Shared problem context",
+      "summary": "problem-context is the per-request working document for a multi-Persona collaboration. It is the shared source of truth for one bounded problem, not a replacement for canonical Persona, Skill, Tool, Playbook, or Decision records.",
+      "category": "Processes",
+      "source": "docs/collaboration/problem-context.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/problem-context.md",
+      "sourceSha256": "b723161d5e544157d1cbb79d0568f1950c6fbcbb3d3833076bf272a993554acd",
+      "href": "doc-problem-context.html",
+      "headings": [
+        {
+          "id": "required-context",
+          "label": "Required context",
+          "depth": 2
+        },
+        {
+          "id": "operating-contract",
+          "label": "Operating contract",
+          "depth": 2
+        },
+        {
+          "id": "noise-control-rules",
+          "label": "Noise-control rules",
+          "depth": 2
+        },
+        {
+          "id": "runtime-and-mutation-boundary",
+          "label": "Runtime and mutation boundary",
+          "depth": 2
+        },
+        {
+          "id": "minimal-handoff-packet",
+          "label": "Minimal handoff packet",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "application-context-and-review",
+      "title": "Application context and review contract",
+      "summary": "Use with the evidence-led job-search playbook. These are portable instructions for the requester’s available runtime, not an execution service in the Site.",
+      "category": "Job search",
+      "source": "docs/job-search/application-context-and-review.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/application-context-and-review.md",
+      "sourceSha256": "ef79b0a2fc17179080f979907de3f14c75fba0baad058d356a9bac9e2d0cc850",
+      "href": "doc-application-context-and-review.html",
+      "headings": [
+        {
+          "id": "ownership",
+          "label": "Ownership",
+          "depth": 2
+        },
+        {
+          "id": "load-only-the-relevant-context",
+          "label": "Load only the relevant context",
+          "depth": 2
+        },
+        {
+          "id": "preserve-a-claim-ledger",
+          "label": "Preserve a claim ledger",
+          "depth": 2
+        },
+        {
+          "id": "run-a-small-trial-before-a-full-rebuild",
+          "label": "Run a small trial before a full rebuild",
+          "depth": 2
+        },
+        {
+          "id": "review-independently-then-reconcile",
+          "label": "Review independently, then reconcile",
+          "depth": 2
+        },
+        {
+          "id": "site-relationships",
+          "label": "Site relationships",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "application-tracker",
+      "title": "Job application tracker contract",
+      "summary": "Define the standalone-friendly application-tracking surface that can live inside Persona Library without making Persona Library the source of private candidate history.",
+      "category": "Job search",
+      "source": "docs/job-search/application-tracker-contract.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/application-tracker-contract.md",
+      "sourceSha256": "e6710c598c95a49e57aec78a0c87161a7f5e28868e4214f72625e48f73f8688f",
+      "href": "doc-application-tracker.html",
+      "headings": [
+        {
+          "id": "purpose",
+          "label": "Purpose",
+          "depth": 2
+        },
+        {
+          "id": "ownership-boundary",
+          "label": "Ownership boundary",
+          "depth": 2
+        },
+        {
+          "id": "record-schema",
+          "label": "Record schema",
+          "depth": 2
+        },
+        {
+          "id": "lifecycle",
+          "label": "Lifecycle",
+          "depth": 2
+        },
+        {
+          "id": "persistence-and-privacy",
+          "label": "Persistence and privacy",
+          "depth": 2
+        },
+        {
+          "id": "storage-adapter",
+          "label": "Storage adapter",
+          "depth": 2
+        },
+        {
+          "id": "import-behavior",
+          "label": "Import behavior",
+          "depth": 2
+        },
+        {
+          "id": "local-to-remote-migration",
+          "label": "Local-to-remote migration",
+          "depth": 2
+        },
+        {
+          "id": "deployment-configuration",
+          "label": "Deployment configuration",
+          "depth": 2
+        },
+        {
+          "id": "extraction-boundary",
+          "label": "Extraction boundary",
+          "depth": 2
+        },
+        {
+          "id": "non-goals",
+          "label": "Non-goals",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "seen-job-deduplication",
+      "title": "Seen-job deduplication contract",
+      "summary": "Reusable contract for avoiding duplicate job results across repeated job-search checks. It answers one question only: has this opening already been presented to this authenticated user?",
+      "category": "Job search",
+      "source": "docs/job-search/job-ledger-contract.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/job-ledger-contract.md",
+      "sourceSha256": "07f33dd91f9b826adde1700a612b7677237fc42f8e3037ab28d8d952fe59f6ea",
+      "href": "doc-seen-job-deduplication.html",
+      "headings": [
+        {
+          "id": "ownership-boundary",
+          "label": "Ownership boundary",
+          "depth": 2
+        },
+        {
+          "id": "required-behavior",
+          "label": "Required behavior",
+          "depth": 2
+        },
+        {
+          "id": "stable-identity-order",
+          "label": "Stable identity order",
+          "depth": 2
+        },
+        {
+          "id": "authenticated-private-record",
+          "label": "Authenticated private record",
+          "depth": 2
+        },
+        {
+          "id": "security-boundary",
+          "label": "Security boundary",
+          "depth": 2
+        },
+        {
+          "id": "clientstorage-integration",
+          "label": "Client/storage integration",
+          "depth": 2
+        },
+        {
+          "id": "applications-relationship",
+          "label": "Applications relationship",
+          "depth": 2
+        },
+        {
+          "id": "explicit-non-goals",
+          "label": "Explicit non-goals",
+          "depth": 2
+        },
+        {
+          "id": "validation",
+          "label": "Validation",
+          "depth": 2
+        },
+        {
+          "id": "completion-boundary",
+          "label": "Completion boundary",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "candidate-context",
+      "title": "Candidate Context Contract",
+      "summary": "Define the reusable boundary between a person-specific job-search context, canonical Templates, and one role-specific application instance.",
+      "category": "Job search",
+      "source": "docs/job-search/candidate-context-contract.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/candidate-context-contract.md",
+      "sourceSha256": "292919dbdc674ea3103dd6c51ebfcbea04c18767ec6e012d656b12202d8fee28",
+      "href": "doc-candidate-context.html",
+      "headings": [
+        {
+          "id": "purpose",
+          "label": "Purpose",
+          "depth": 2
+        },
+        {
+          "id": "system-boundary",
+          "label": "System boundary",
+          "depth": 2
+        },
+        {
+          "id": "candidate-context-minimum-contract",
+          "label": "Candidate Context minimum contract",
+          "depth": 2
+        },
+        {
+          "id": "candidate-baseline-resume-binding",
+          "label": "Candidate Baseline Resume binding",
+          "depth": 2
+        },
+        {
+          "id": "resume-content-model-binding",
+          "label": "Resume Content Model binding",
+          "depth": 2
+        },
+        {
+          "id": "candidate-isolation",
+          "label": "Candidate isolation",
+          "depth": 2
+        },
+        {
+          "id": "decision-precedence",
+          "label": "Decision precedence",
+          "depth": 2
+        },
+        {
+          "id": "template-binding",
+          "label": "Template binding",
+          "depth": 2
+        },
+        {
+          "id": "content-mapping-record",
+          "label": "Content mapping record",
+          "depth": 2
+        },
+        {
+          "id": "validation-layers",
+          "label": "Validation layers",
+          "depth": 2
+        },
+        {
+          "id": "work-order-binding",
+          "label": "Work Order binding",
+          "depth": 2
+        },
+        {
+          "id": "multi-candidate-use",
+          "label": "Multi-candidate use",
+          "depth": 2
+        },
+        {
+          "id": "non-goals",
+          "label": "Non-goals",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "resume-content-model",
+      "title": "Resume Content Model",
+      "summary": "Define a presentation-neutral, candidate-neutral semantic contract for resume content so one private candidate context can be rendered through materially different resume Templates without rewriting or reinterpreting the underlying facts each time.",
+      "category": "Job search",
+      "source": "docs/job-search/resume-content-model.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/resume-content-model.md",
+      "sourceSha256": "791a64f55f35463023affad7fb406dc7d6a9bae81a8ae42c01cb3db00430bd63",
+      "href": "doc-resume-content-model.html",
+      "headings": [
+        {
+          "id": "purpose",
+          "label": "Purpose",
+          "depth": 2
+        },
+        {
+          "id": "ownership-boundary",
+          "label": "Ownership boundary",
+          "depth": 2
+        },
+        {
+          "id": "core-rule",
+          "label": "Core rule",
+          "depth": 2
+        },
+        {
+          "id": "traceability",
+          "label": "Traceability",
+          "depth": 2
+        },
+        {
+          "id": "model-shape",
+          "label": "Model shape",
+          "depth": 2
+        },
+        {
+          "id": "role-specific-selection-is-not-canonical-candidate-data",
+          "label": "Role-specific selection is not canonical candidate data",
+          "depth": 2
+        },
+        {
+          "id": "change-rules",
+          "label": "Change rules",
+          "depth": 2
+        },
+        {
+          "id": "validation-minimum",
+          "label": "Validation minimum",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "resume-template-mapping",
+      "title": "Resume Template semantic mapping",
+      "summary": "Define how a private candidate-bound Resume Content Model instance is mapped into a verified resume Template without losing material content, flattening candidate-specific structure, changing factual meaning, or silently reconstructing a standing-decision-designated Candidate Baseline Resume.",
+      "category": "Job search",
+      "source": "docs/job-search/resume-template-mapping.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/resume-template-mapping.md",
+      "sourceSha256": "57bf37f73bad2cf1e3c6a4e6d8d0781744c7b3f81d0b61dcc12ee831cb70aaf5",
+      "href": "doc-resume-template-mapping.html",
+      "headings": [
+        {
+          "id": "purpose",
+          "label": "Purpose",
+          "depth": 2
+        },
+        {
+          "id": "inputs",
+          "label": "Inputs",
+          "depth": 2
+        },
+        {
+          "id": "mapping-boundary",
+          "label": "Mapping boundary",
+          "depth": 2
+        },
+        {
+          "id": "mapping-result-states",
+          "label": "Mapping result states",
+          "depth": 2
+        },
+        {
+          "id": "mapping-procedure",
+          "label": "Mapping procedure",
+          "depth": 2
+        },
+        {
+          "id": "material-mapping-record",
+          "label": "Material mapping record",
+          "depth": 2
+        },
+        {
+          "id": "template-evolution-signal",
+          "label": "Template evolution signal",
+          "depth": 2
+        },
+        {
+          "id": "no-generator-requirement",
+          "label": "No generator requirement",
+          "depth": 2
+        }
+      ]
+    },
+    {
+      "id": "docs-authoring",
+      "title": "Documentation and file placement",
+      "summary": "This directory contains current, reusable guidance and project-scoped work records. Choose a destination by ownership and lifecycle before creating a file.",
+      "category": "Maintenance",
+      "source": "docs/README.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/README.md",
+      "sourceSha256": "daed91976dc46d0c35ca8ac905969d82b871bb0adf0a947fd0fc4f8a9d5b4a64",
+      "href": "doc-docs-authoring.html",
+      "headings": [
+        {
+          "id": "where-things-live",
+          "label": "Where things live",
+          "depth": 2
+        },
+        {
+          "id": "work-order-lifecycle",
+          "label": "Work Order lifecycle",
+          "depth": 2
+        },
+        {
+          "id": "placement-gate",
+          "label": "Placement gate",
+          "depth": 2
+        },
+        {
+          "id": "hygiene-rules",
+          "label": "Hygiene rules",
+          "depth": 2
+        },
+        {
+          "id": "generated-output",
+          "label": "Generated output",
+          "depth": 2
+        }
+      ]
+    }
+  ]
+}

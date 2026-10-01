@@ -1,6 +1,7 @@
 const countFunctionDefinitions = (html, name) => (html.match(new RegExp(`function\\s+${name}\\s*\\(`, 'g')) || []).length;
 import { renderDecisionsPage } from '../build-decisions.mjs';
 import { renderToolsPage } from '../build-tools-pages.mjs';
+import {loadPublication, renderReferenceCatalogs, renderReferenceReader} from '../build-reference-pages.mjs';
 
 export function playbookCatalogCard(html, playbookId) {
   const match = html.match(new RegExp(`<article\\b[^>]*\\bdata-playbook-id="${playbookId}"[^>]*>[\\s\\S]*?</article>`));
@@ -299,13 +300,23 @@ export async function validateGeneratedOutputs(context) {
     if (moduleSource !== moduleOutput) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   for (const { outputPath, source, output } of routeSources.values()) if (source !== output) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
-  for (const file of ['tool-catalog.mjs','tool-page.mjs','tool-pages.css']) {
+  for (const file of ['tool-catalog.mjs','tool-page.mjs','tool-pages.css','reference-page.mjs','reference-pages.css']) {
     const outputPath = file.endsWith('.css') ? 'dist/css/' + file : 'dist/js/' + file;
     if (await context.readFile('client/' + file) !== await context.readFile(outputPath)) throw new Error(`Generated ${outputPath} is stale; run build-library.mjs`);
   }
   const toolsTemplate = await context.readFile('content/site-pages/tools.html');
   const expectedTools = renderToolsPage(toolsTemplate,context.data);
   if (expectedTools !== files.toolsPage) throw new Error('Generated Tools page is stale; rebuild from its catalog and presentation references');
+  const {manifest:publicationManifest,publication} = await loadPublication(root,context.data);
+  const referenceCatalogs = renderReferenceCatalogs(await context.readFile('content/site-pages/playbooks.html'),await context.readFile('content/site-pages/guide.html'),publication,context.data);
+  if (referenceCatalogs.playbooks !== files.playbooksPage || referenceCatalogs.guide !== files.guidePage) throw new Error('Generated Playbooks or Docs page is stale; rebuild from the curated source bindings');
+  const {compiled,...publicationProjection} = publication;
+  if (await context.readFile('dist/data/site-publication.json') !== JSON.stringify(publicationProjection,null,2) + '\n') throw new Error('Generated Playbook/Docs projection is stale');
+  const readerTemplate = await context.readFile('content/site-pages/reference-reader.html');
+  for (const [entries,isPlaybook] of [[publication.playbooks,true],[publication.documents.filter(entry => !publication.playbooks.some(playbook => playbook.href === entry.href)),false]]) {
+    for (const entry of entries) if (await context.readFile('dist/' + entry.href) !== renderReferenceReader(readerTemplate,entry,publication.compiled.get(entry.source),publication,isPlaybook)) throw new Error(`Generated reference reader is stale: ${entry.href}`);
+  }
+  for (const entry of publicationManifest.documents) if (entry.legacyMarkdown && await context.readFile('dist/' + entry.legacyMarkdown) !== await context.readFile(entry.source)) throw new Error(`Legacy published Markdown is stale: ${entry.legacyMarkdown}`);
   const [rootAgents, policyOwners, workOrderContract, architecture, boundedParallelPlaybook, operationalKnowledgeContract, toolDiscoverySkill, workGraphSkill, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme] = await Promise.all([
     context.readFile('AGENTS.md'),
     context.readFile('docs/policy-ownership.md'),
@@ -399,8 +410,13 @@ export async function validateGeneratedOutputs(context) {
   if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchPage.includes('Define target') || !jobSearchPage.includes('ATS quality') || !jobSearchPage.includes('Integrity quality') || !jobSearchPage.includes('Preflight before the council') || !jobSearchPage.includes('reverse chronological') || !jobSearchPage.includes('date consistency')) throw new Error('Job search page is missing its system summary or quality gates');
   if (/>\s*Job-search orchestrator\s*</.test(jobSearchPage) || /Riley Morgan[^<]{0,120}Job-search orchestration/i.test(jobSearchPage) || /Riley Morgan[^<]{0,80}Job Search Persona/i.test(jobSearchPage)) throw new Error('Job search page must not present Riley as a Job-search domain identity');
   if (!jobSearchPage.includes('Priya Desai · Job search orchestrator') || !jobSearchPage.includes('Job search orchestrator · Playbook operator') || !jobSearchPage.includes('Riley Morgan · AI orchestrator')) throw new Error('Job search page must present Riley as the entry/router and Priya as the Job Search Orchestrator / Playbook operator');
-  if (!playbooksPage.includes('Playbooks compose the system.') || !playbooksPage.includes('Evidence-led job search') || !playbooksPage.includes('Bounded parallel implementation') || !playbooksPage.includes('compact handoff') || !playbooksPage.includes('Shared state keeps the playbook coherent') || !playbooksPage.includes('Change control') || !playbooksPage.includes('conditional reconciliation gate')) throw new Error('Playbooks page is missing its mental model or current playbook');
-  if (!playbooksPage.includes('Seen-job set') || !playbooksPage.includes('operating surface') || !playbooksPage.includes('Operated by Priya Desai · Job search orchestrator')) throw new Error('Playbooks page must present Persona-operated Playbooks, Priya as job-search operator, and the lightweight seen-job state card');
+  if (!playbooksPage.includes('data-reference-catalog') || !playbooksPage.includes('Change control') || !playbooksPage.includes('not records of what your assistant actually did')) throw new Error('Playbooks page must expose its source-driven catalog and process/execution boundary');
+  if (!playbooksPage.includes('Operated by <a href="index.html?persona=job-search-orchestrator">Priya Desai · Job search orchestrator')) throw new Error('Playbooks page must derive the job-search operating Persona from its existing identity');
+  for (const entry of publication.playbooks) {
+    const card = playbookCatalogCard(playbooksPage,entry.id);
+    if (!card.includes(entry.href) || !card.includes(`${entry.outline.length} ${entry.outlineLabel}`)) throw new Error(`Playbook card is missing its source-derived outline or reader: ${entry.id}`);
+    if (entry.kind === 'overview' && !card.includes('Process source not yet bound')) throw new Error('An unbound Playbook overview must not imply an authoritative process contract');
+  }
   if (!guidePage.includes('Evidence-led job search')) throw new Error('Docs page must keep Evidence-led job search as a Playbook example');
   const decisionsPage = files.decisionOutput;
   if (!decisionsPage.includes('DEC-011') || !decisionsPage.includes('Riley orchestrates job search; the Playbook owns the outcome')) throw new Error('Decisions page must record DEC-011 Riley/job-search ownership boundary');
@@ -428,8 +444,7 @@ export async function validateGeneratedOutputs(context) {
   if (!context.data.skillLibrary?.['job-search-orchestrator']?.some(skill => skill.name === 'Task decomposition and routing') || !context.data.skillLibrary?.['job-search-orchestrator']?.some(skill => skill.name === 'Failure recovery and operational judgment')) throw new Error('Job Search Orchestrator must reuse orchestration capabilities without requiring new portable Skills');
   if (!jobSearchImpl.includes('Riley Morgan · AI orchestrator') || !jobSearchImpl.includes('Priya Desai') || !jobSearchImpl.includes('seen-job deduplication contract')) throw new Error('docs/job-search/implementation.md must retain Riley as router, Priya as operator, and the seen-job deduplication contract');
   const templateLifecycleCard = playbookCatalogCard(playbooksPage, 'playbook-template-lifecycle');
-  if (!templateLifecycleCard || !templateLifecycleCard.includes('<span>7 stages</span>') || !templateLifecycleCard.includes('Elena Park · Template Librarian')) throw new Error('Template lifecycle catalog card must show 7 stages and Elena Park as coordinator');
-  if (!playbooksPage.includes('id="template-lifecycle"') || !playbooksPage.includes('Research, promote, and maintain a reusable Template') || !playbooksPage.includes('Promote only with reuse evidence')) throw new Error('Playbooks page must present the Template lifecycle overview');
+  if (!templateLifecycleCard || !templateLifecycleCard.includes('Elena Park · Template Librarian') || !templateLifecycleCard.includes('playbook-template-lifecycle.html')) throw new Error('Template lifecycle catalog must preserve its existing operating Persona and bound source reader');
   if (!guidePage.includes('Template lifecycle example') || !guidePage.includes('playbooks.html#template-lifecycle')) throw new Error('Docs page must link the Template lifecycle Playbook example');
   if (!decisionsPage.includes('DEC-012') || !decisionsPage.includes('Template lifecycle is a distinct Playbook') || !decisionsPage.includes('playbook-template-lifecycle')) throw new Error('Decisions page must record DEC-012 Template lifecycle Playbook boundary');
   const templateLifecyclePlaybook = await context.readFile('docs/playbooks/template-lifecycle.md');
@@ -438,9 +453,9 @@ export async function validateGeneratedOutputs(context) {
   if (!context.routeGroups.get('playbooks').routes.some((route) => route.id === 'template-lifecycle')) throw new Error('Playbooks route group must include template-lifecycle');
   if (!context.routeGroups.get('templates').routes.find((route) => route.id === 'template-library-stewardship')?.next_handoff.includes('playbook-template-lifecycle')) throw new Error('Templates stewardship handoff must point full lifecycle runs to the Playbook');
   const boundedParallelCard = playbookCatalogCard(playbooksPage, 'playbook-bounded-parallel-implementation');
-  if (!boundedParallelCard || !boundedParallelCard.includes('<span>4 roles</span>')) throw new Error('Bounded parallel catalog card must show 4 roles');
-  if (!boundedParallelCard.includes('<span>8 stages</span>')) throw new Error('Bounded parallel catalog card must show 8 stages');
-  if (!playbooksPage.includes('01 / ORIENT') || !playbooksPage.includes('02 / GROUND') || !playbooksPage.includes('source-ground')) throw new Error('Playbooks page must present orientation and source-grounding before dispatch');
+  const boundedProjection = publication.playbooks.find(entry => entry.id === 'playbook-bounded-parallel-implementation');
+  if (!boundedParallelCard || !boundedParallelCard.includes(`<span>${boundedProjection.roles.length} roles</span>`)) throw new Error('Bounded parallel catalog must derive role count from its process source');
+  if (!boundedParallelCard.includes('0. Orientation preflight') || !boundedParallelCard.includes('1. Ground candidate workstreams')) throw new Error('Bounded parallel catalog must preserve source orientation and grounding order');
   if (!operatingPacksPage.includes('Operating Packs keep the domain in view.') || !operatingPacksPage.includes('operatingPackCatalog') || !operatingPacksPage.includes('planned') || !operatingPacksPage.includes('AGENTS.md') || !operatingPacksPage.includes("grid.addEventListener('toggle'") || !operatingPacksPage.includes('}, true);') || !operatingPacksPage.includes("state.set({ selected: '' })")) throw new Error('Operating Packs page is missing its catalog, source boundary, or planned example');
   if (!templatesPage.includes('Find the right starting shape.') || !templatesPage.includes('templateCatalog') || !templatesPage.includes('category-filter') || !templatesPage.includes('status-filter') || !templatesPage.includes('source-filter') || !templatesPage.includes('preview-filter') || !templatesPage.includes('catalog-summary') || !templatesPage.includes('template-research') || !templatesPage.includes('relatedToolRecipes') || !templatesPage.includes("grid.addEventListener('toggle'")) throw new Error('Templates page is missing its normalized catalog, filters, relationships, or lifecycle boundary');
   if (!templatesPage.includes("id=\"' + escapeHtml(template.id)") || !templatesPage.includes('window.location.hash.slice(1)') || !templatesPage.includes("scrollIntoView({ block: 'start' })") || templatesPage.includes('<span id="template-design-system-web-app" aria-hidden="true"></span>') || !templatesPage.includes('Entrypoint unknown') || !templatesPage.includes('sourceState') || !templatesPage.includes('previewState') || !templatesPage.includes('data-source-state') || !templatesPage.includes('data-preview-state') || !templatesPage.includes('Inspect Template →') || !templatesPage.includes('pinned ')) throw new Error('Templates page is missing rendered fragment selection or planned entrypoint handling');

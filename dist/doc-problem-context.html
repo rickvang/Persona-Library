@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shared problem context | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" >Playbooks</a><a href="guide.html" aria-current="page">Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="guide.html#reference-docs">Back to Docs</a>
+      <p class="eyebrow">Processes</p>
+      <h1>Shared problem context</h1>
+      
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/problem-context.md" rel="noreferrer">docs/collaboration/problem-context.md</a></p>
+    </header>
+    
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#required-context">Required context</a>
+<a href="#operating-contract">Operating contract</a>
+<a href="#noise-control-rules">Noise-control rules</a>
+<a href="#runtime-and-mutation-boundary">Runtime and mutation boundary</a>
+<a href="#minimal-handoff-packet">Minimal handoff packet</a></nav></details></aside>
+      <article class="markdown-body"><span id="shared-problem-context"></span>
+<p><code>problem-context</code> is the per-request working document for a multi-Persona collaboration. It is the shared source of truth for one bounded problem, not a replacement for canonical Persona, Skill, Tool, Playbook, or Decision records.</p>
+<p>The first implementation is deliberately file-based. The coordinator creates one JSON document in the approved task workspace, gives it a stable <code>context_id</code>, and is the single writer. Personas and other contributors return scoped contribution records to the coordinator; they do not edit the context file directly. This makes the handoff inspectable and prevents an informal panel transcript from being mistaken for a solution.</p>
+<p>Use the companion schema at <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/problem-context.schema.json" rel="noreferrer"><code>problem-context.schema.json</code></a> and the dependency-free helper at <a href="https://github.com/rickvang/Persona-Library/blob/main/scripts/problem-context.mjs" rel="noreferrer"><code>../../scripts/problem-context.mjs</code></a>. The helper refuses to overwrite an existing context during <code>init</code>, rejects unknown participants, records an append-only revision entry for every mutation, and blocks completion when the quality gate or contribution dispositions are missing.</p>
+<h2 id="required-context">Required context</h2>
+<p>Every context should make these fields inspectable:</p>
+<ul>
+<li><code>context_id</code> and lifecycle <code>status</code> (<code>active</code>, <code>blocked</code>, or <code>completed</code>);</li>
+<li>the requester&#39;s problem, desired outcome, scope, non-goals, constraints, success criteria, and stopping condition;</li>
+<li>explicitly selected participants, each participant&#39;s responsibility, availability, loaded records, and write scope;</li>
+<li>the Playbook name, current stage, stage owner, decision rights, and next handoff;</li>
+<li>an evidence ledger that separates source/evidence status from interpretation or proposal;</li>
+<li>attributable contributions with finding, evidence, tradeoff/risk, recommended action, confidence, and disposition;</li>
+<li>decisions with rationale and decision owner;</li>
+<li>artifacts with status, provenance, and location or inline deliverable;</li>
+<li>quality gates, open questions, blockers, fallback, next action, and learning;</li>
+<li>authorization scope and revision history.</li>
+</ul>
+<h2 id="operating-contract">Operating contract</h2>
+<ol>
+<li>Frame the request before selecting participants. Do not invent a panel or fill an unavailable record.</li>
+<li>Select only the Personas, Skills, workflows, Tools, and Playbook stages actually needed. Record missing dependencies instead of simulating them.</li>
+<li>Have each participant contribute independently and within its stated responsibility. The coordinator records the contribution and its evidence status.</li>
+<li>Synthesize only after contributions are attributable. Preserve consequential disagreement and record whether each contribution was adopted, modified, rejected, or left unresolved, with a reason.</li>
+<li>Build or propose one concrete solution deliverable tied to the success criteria. A context containing only summaries, generic advice, or an unresolved transcript is not complete.</li>
+<li>Pass the solution-quality gate before handoff or completion. The gate checks usefulness, traceability from problem to evidence to decision to deliverable, coverage of success criteria, and disposition of every contribution. A multi-Persona completion also records at least two stage handoffs.</li>
+<li>On interruption, use <code>resume</code> to return the current stage, pending work, blockers, decisions, artifacts, and next action. Resume from the last recorded revision; do not replay completed work as if it were new.</li>
+<li>Close only after the solution is complete or an explicit blocked outcome explains why it cannot be completed. Durable publication, repository mutation, or Tool execution remains a separate authorized action.</li>
+</ol>
+<h2 id="noise-control-rules">Noise-control rules</h2>
+<p>The number of Personas is not a quality metric. A contribution is useful only when it adds a distinct finding, evidence-backed implication, tradeoff or risk, or actionable next step. Generic agreement, duplicated summaries, unsupported certainty, and role-play without an attributable record are noise. The final context must show the disposition of every contribution and the reason for any rejection or modification.</p>
+<h2 id="runtime-and-mutation-boundary">Runtime and mutation boundary</h2>
+<p>This MVP provides a serialized context artifact and a coordination procedure; it is not a concurrent agent scheduler, authentication system, message broker, or permission grant. The caller/coordinator is responsible for choosing an approved path, ensuring the selected records are available, and obtaining authorization before any durable write. The helper does not execute Tools, publish artifacts, install Skills, change canonical library records, or infer credentials.</p>
+<h2 id="minimal-handoff-packet">Minimal handoff packet</h2>
+<p>When handing work to another stage or contributor, include:</p>
+<pre><code class="language-text">context_id: &lt;stable id&gt;
+from_stage: &lt;completed stage&gt;
+to_stage: &lt;next stage&gt;
+owner: &lt;named owner&gt;
+goal: &lt;the bounded outcome&gt;
+accepted_facts: &lt;evidence and decisions with record ids&gt;
+open_questions: &lt;only unresolved items&gt;
+blockers_or_fallback: &lt;what prevents progress, if anything&gt;
+required_output: &lt;one concrete deliverable or decision&gt;
+next_action: &lt;single actionable next step&gt;
+</code></pre>
+<p>The receiving stage acknowledges the handoff by recording its own revision. If the receiving dependency is unavailable, leave the context active or blocked with the exact limitation; never mark the stage complete by implication.</p>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-multi-persona-collaboration.html">Multi-Persona Collaboration Playbook</a></li><li><a href="playbook-bounded-parallel-implementation.html">Bounded Parallel Implementation Playbook</a></li><li><a href="playbook-template-lifecycle.html">Research, promote, and maintain a reusable Template</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="guide.html#reference-docs">Back to Docs</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>
