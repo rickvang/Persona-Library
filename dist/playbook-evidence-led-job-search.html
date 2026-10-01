@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evidence-led job search | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" aria-current="page">Playbooks</a><a href="guide.html" >Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="playbooks.html#current">Back to Playbooks</a>
+      <p class="eyebrow">Documented process</p>
+      <h1>Evidence-led job search</h1>
+      <p class="lede">Job search system implementation plan</p>
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/implementation.md" rel="noreferrer">docs/job-search/implementation.md</a></p>
+    </header>
+    <p class="boundary-note">This is the documented process, not an observed request trace. It does not show whether your assistant followed it.</p>
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#purpose">Purpose</a>
+<a href="#recommended-operating-model">Recommended operating model</a>
+<a href="#mvp-scope">MVP scope</a>
+<a href="#application-tracker-companion-surface">Application tracker companion surface</a>
+<a href="#data-model">Data model</a>
+<a href="#ats-primary-application-packet">ATS-primary application packet</a>
+<a href="#phased-delivery">Phased delivery</a>
+<a href="#quality-gates">Quality gates</a>
+<a href="#deliberately-out-of-scope-for-the-mvp">Deliberately out of scope for the MVP</a>
+<a href="#validation-questions">Validation questions</a></nav></details></aside>
+      <article class="markdown-body"><span id="job-search-system-implementation-plan"></span>
+<h2 id="purpose">Purpose</h2>
+<p>Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.</p>
+<p>The system should optimize for truthful fit and useful clarity—not keyword stuffing, generic personal branding, or visual polish detached from the role.</p>
+<p>This is a Persona-operated Playbook surface. The Playbook composes Personas, Skills, persona-owned workflows, shared evidence, artifacts, decision rights, quality gates, recovery, and a learning loop around one outcome; Priya Desai · Job search orchestrator operates that surface for full-outcome job-search work.</p>
+<h2 id="recommended-operating-model">Recommended operating model</h2>
+<p>Riley Morgan · AI orchestrator remains the default system entry and routing point for unqualified requests. For a full-outcome job-search request, Riley routes to <strong>Priya Desai · Job search orchestrator</strong>, who operates the <strong>Evidence-led Job Search Playbook</strong> as the durable process surface. Use one primary candidate persona with a coordinated set of specialist lenses:</p>
+<ol>
+<li><strong>Job seeker</strong> — source of truth for goals, constraints, experience, preferences, voice, and evidence.</li>
+<li><strong>Search strategist (Elena Marin)</strong> — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity evaluation, with lightweight seen-job deduplication for repeated discovery checks.</li>
+<li><strong>Hiring manager / role calibrator (Marcus Chen)</strong> — interprets the role, separates required signals from noise, and defines what success would look like.</li>
+<li><strong>ATS application specialist / application narrative editor (Leah Okafor)</strong> — checks parsing, terminology alignment, structure, and truthful coverage.</li>
+<li><strong>Human narrative editor (conditional)</strong> — improves clarity, relevance, voice, credibility, and story when a human-facing output is warranted.</li>
+<li><strong>Visual communication reviewer (conditional, Camille Ortiz)</strong> — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.</li>
+<li><strong>Research and verification analyst</strong> — researches companies, teams, role expectations, and evidence.</li>
+<li><strong>Outreach and interview coach (Samira Nguyen)</strong> — prepares networking messages, follow-ups, interview stories, and questions.</li>
+<li><strong>Document designer (conditional, Sofia Calder)</strong> — document structure, production, accessibility, and fidelity when a rendered packet is in scope.</li>
+<li><strong>Job search orchestrator (Priya Desai)</strong> — operates the Playbook run: maintains stage and gate state, selects the smallest relevant specialist set, coordinates concurrent opportunities, preserves decisions and boundaries, handles recovery, and synthesizes the next handoff. Priya does not absorb specialist domain expertise.</li>
+</ol>
+<p><strong>Riley Morgan · AI orchestrator</strong> remains the default front door for unqualified requests and the general-purpose orchestration Persona across domains. Riley does not operate the job-search methodology as a domain expert: once Riley identifies a full-outcome job-search route, Priya becomes the operating Persona. Explicit requests naming Priya, a specialist, a Skill, or the Playbook may route directly without an unnecessary Riley hop.</p>
+<p>Three-layer ownership:</p>
+<pre><code class="language-text">Riley Morgan · AI orchestrator → default entry, intent interpretation, and routing for unqualified requests
+Priya Desai · Job search orchestrator → operates the full job-search outcome after routing and remains responsible for process completion
+Evidence-led Job Search Playbook → supplies stages / shared state / handoffs / quality gates / recovery / learning loop
+Job-search specialists → own domain judgment and artifact-specific expertise
+</code></pre>
+<p>Preferred presentation:</p>
+<pre><code class="language-text">Riley Morgan · AI Orchestrator
+→ routes unqualified full-outcome job-search work to Priya Desai · Job Search Orchestrator
+→ Priya uses Evidence-led Job Search Playbook
+</code></pre>
+<p>Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or private seen-job state.</p>
+<p>The default path is ATS-first with a material-claim integrity gate. Cover letters pass through a positioning layer before review so the evidence ledger informs the writing without dictating every sentence. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.</p>
+<h3 id="consultation-and-routing-convention">Consultation and routing convention</h3>
+<ul>
+<li>Unqualified job-search requests → Riley Morgan · AI orchestrator first. Riley routes narrow work to the matching specialist or Skill and full-outcome work to Priya Desai · Job search orchestrator.</li>
+<li>Priya operates the Evidence-led Job Search Playbook for full-outcome work and invokes only the specialists required by the active stage.</li>
+<li>Explicit specialist, Skill, Priya, or Playbook requests → the named target directly; explicit direct invocation does not require an extra Riley hop. An explicit Evidence-led Job Search Playbook request resolves to that Playbook with Priya as its operating Persona.</li>
+<li>When a requester explicitly asks to “consult Riley Morgan” for job-search work, use Riley for the requested general orchestration perspective or cross-domain coordination. Do not silently substitute Riley for Priya as the job-search operator, and do not make Riley the sole content, writing, hiring, search-strategy, visual, or document reviewer.</li>
+</ul>
+<p>For a full application-packet run, use Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Priya Desai for orchestration and stage/gate synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. A narrow cover-letter request may route directly to Avery, Leah, and Marcus without invoking Priya. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.</p>
+<h2 id="mvp-scope">MVP scope</h2>
+<p>The first build is a responsive reference surface plus actual working-draft persona records, not a full application tracker. It includes:</p>
+<ul>
+<li>The persona and responsibilities of each supporting role</li>
+<li>Six new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), Samira Nguyen (outreach and interview coach), and Priya Desai (job search orchestrator)</li>
+<li>Reuse of Camille Ortiz for visual communication review and Sofia Calder for document production when needed; Riley Morgan remains the general AI orchestrator outside the default job-search operator role</li>
+<li>Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record</li>
+<li>The end-to-end search workflow defined by the Evidence-led Job Search Playbook and operated by the Job Search Orchestrator</li>
+<li>A reusable <a href="doc-seen-job-deduplication.html">seen-job deduplication contract</a> so repeated job searches can suppress openings already presented</li>
+<li>Quality gates for ATS compatibility and evidence integrity by default, with human readability and visual communication when those outputs are warranted</li>
+<li>A clear boundary between current capabilities and later product work</li>
+</ul>
+<p>The new records are synthetic composites. They are intentionally marked as working drafts and should be refined with the person’s actual target, industry, constraints, employer process, and source documents.</p>
+<p>The first workflow is:</p>
+<p><code>Define target → Analyze role → Map evidence → Build shared evidence source → Render ATS → Review integrity → Optionally render human version and review parity → Submit → Learn</code></p>
+<h2 id="application-tracker-companion-surface">Application tracker companion surface</h2>
+<p>The original responsive job-search page remains a Playbook/reference surface. A separate top-level <strong>Applications</strong> companion surface owns opportunity/application lifecycle tracking and serves as shared persistent opportunity state for authorized job-search and application runs.</p>
+<ul>
+<li>The tracker is governed by <code>application-tracker-contract.md</code>.</li>
+<li>When Supabase deployment configuration is present and the user is authenticated, the authenticated Supabase private opportunity store is the primary persistence layer for real opportunity/application rows.</li>
+<li>Browser-local private state is an explicit fallback when remote configuration is absent, plus a migration source and rollback/recovery copy. A remote failure must never silently become a local write.</li>
+<li>Real opportunity/application rows remain outside Git and outside canonical Persona, Skill, Tool, Template, Operating Pack, Playbook, Doc, Decision, and Work Order data.</li>
+<li>The tracker lifecycle is <code>Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed</code>.</li>
+<li>Job posting and application-packet URLs are integration links, not canonical relationships to Persona or Skill records.</li>
+<li>Versioned JSON export/import remains the portability boundary for backup and future extraction into a standalone app.</li>
+<li>The tracker does not submit applications, send outreach, scrape jobs, or infer lifecycle transitions.</li>
+<li>Seen-job deduplication remains separate from Applications: repeated discovery uses the authenticated private <code>app.seen_jobs</code> store to suppress already-presented results, while Applications stores only intentionally tracked opportunities and their lifecycle.</li>
+</ul>
+<h3 id="tracker-workflow-checkpoints">Tracker workflow checkpoints</h3>
+<ul>
+<li>Before creating a tracker row, resolve an existing record by stable <code>id</code> and then canonical <code>sourceUrl</code>; do not create a duplicate for the same opportunity.</li>
+<li>When an opportunity is selected for tracking, create or update the record with <code>Found</code> and preserve the canonical <code>sourceUrl</code>.</li>
+<li>Capture optional <code>postingDate</code> only when the source actually provides it. Never infer or fabricate a posting date.</li>
+<li>When the application packet is complete, set <code>packetUrl</code> and advance to <code>Packet Ready</code> when appropriate; never downgrade a later confirmed lifecycle state.</li>
+<li>Only after an actual confirmed submission, advance to <code>Applied</code> and record <code>appliedDate</code>.</li>
+<li>Advance to <code>Interviewing</code>, <code>Offer</code>, or <code>Closed</code> only from confirmed events. Do not infer lifecycle transitions from drafting, packet completion, elapsed time, or assumptions.</li>
+<li>Tracker state changes record lifecycle facts; they do not authorize application submission, employer contact, outreach, or external sharing.</li>
+</ul>
+<h2 id="data-model">Data model</h2>
+<p>Each future job-search record should preserve:</p>
+<ul>
+<li>Candidate goals, constraints, target roles, and acceptable adjacent roles</li>
+<li>Job description, source URL, company context, and research date</li>
+<li>Requirement-to-evidence mappings with confidence and gaps</li>
+<li>Resume, cover letter, portfolio, outreach, and interview artifacts</li>
+<li>Template identity, canonical <code>rickvang/template-library</code> source path, entrypoint, and verified revision for every reusable starting artifact</li>
+<li>Role-specific copies kept separate from their reusable Template sources</li>
+<li>ATS review findings and human review findings as separate records</li>
+<li>Version history, decisions, submitted date, outcome, and learning</li>
+<li>Open questions and what evidence would change the search strategy</li>
+</ul>
+<p>These are application-run/evidence records, not the row schema for the Applications tracker. Keep candidate facts, researched claims, interpretations, and generated writing visibly distinct. Real seen-job rows live only in the authenticated private <code>app.seen_jobs</code> Supabase store; Persona-Library owns the reusable deduplication behavior, client/storage integration contract, and database schema/migration, not the user-specific rows.</p>
+<h3 id="repeated-search-deduplication">Repeated-search deduplication</h3>
+<p>Repeated searches must not present previously shown jobs as new by default. After discovery, derive the strongest stable identity available—source + stable job ID first, then canonical URL, then a conservative <code>company + title + location</code> fingerprint. Read the authenticated private <code>app.seen_jobs</code> store before display, suppress matches, present genuinely new jobs, then record only the jobs actually shown afterward. Tracking-only URL parameters must not create a new identity. No rejected/applied/expired lifecycle state, <code>last_seen</code> history, repost state machine, or application tracker is required for this behavior.</p>
+<h2 id="ats-primary-application-packet">ATS-primary application packet</h2>
+<p>The default application path is ATS-first: identify the active Candidate Context, read its standing decisions, resolve any standing-decision-designated <strong>Candidate Baseline Resume</strong>, maintain one shared evidence source, map the target requirements, render one semantically structured ATS resume, and run both evidence-integrity and baseline-integrity review. This is the smallest useful path for most applications.</p>
+<p>A Candidate Baseline Resume is a private, candidate-owned composed artifact such as an explicitly promoted master resume. It is not factual evidence and it is not the canonical reusable Template. When the active standing decisions designate one, it is the default composition baseline for the candidate&#39;s career spine. Role tailoring may change emphasis, summary language, supported skills, and selected achievements, but it must not silently reconstruct or replace the protected career spine from secondary profile stores or stale summaries.</p>
+<p>Create a human-facing resume only when the target channel accepts it and the review context gives it a meaningful advantage. Do not create two near-identical versions by habit. When no human-facing version is warranted, record that decision and use ATS-to-ledger integrity rather than an empty ATS-versus-human parity exercise.</p>
+<h3 id="reusable-template-source-contract">Reusable Template source contract</h3>
+<p><code>rickvang/template-library</code> is the canonical owner of reusable starting artifacts. Persona-Library may catalog Template identity, applicability, relationships, and verified source evidence, but it does not own the starter files.</p>
+<p>Before drafting or rendering a reusable application artifact:</p>
+<ol>
+<li>resolve the Template through the Persona-Library Template catalog;</li>
+<li>verify the external <code>template-library</code> path, <code>README.md</code> entrypoint, and Git revision;</li>
+<li>inspect the documented <code>starter/</code> boundary; copy/adapt it into the candidate&#39;s private role-specific application folder only when no standing-decision-designated Candidate Baseline Resume is active, otherwise use the baseline as the composition starting artifact while retaining the verified Template as the reusable-structure contract;</li>
+<li>record the Template ID and revision used;</li>
+<li>keep the resulting role-specific artifact independently owned after instantiation.</li>
+</ol>
+<p>For the current full application packet, the expected reusable starters are:</p>
+<ul>
+<li>ATS resume → <code>template-resume-classic-single-column</code> / <code>templates/resumes/classic-single-column</code>;</li>
+<li>cover letter → <code>template-cover-letter-evidence-led</code> / <code>templates/cover-letters/evidence-led</code>;</li>
+<li>Application Notes &amp; Answers → <code>template-job-application-notes</code> / <code>templates/job-applications/application-notes</code>.</li>
+</ul>
+<p>A repository or catalog entry is not proof that a Template exists. If a required Template path or entrypoint is missing, stale, or unverifiable, route to Template research/composition and create or repair the reusable Template in <code>rickvang/template-library</code> before treating it as the application starter. Do not silently promote a private Google Drive master, prior application, or ad hoc document into the canonical Template source. This reusable-Template boundary does <strong>not</strong> demote a candidate-designated baseline resume: the Template owns reusable presentation structure, while the Candidate Baseline Resume owns the candidate-specific composed career spine when standing decisions designate one. A requester may explicitly authorize a one-off non-reusable artifact, but that exception must be recorded and must not be cataloged as a Template without the normal Template lifecycle review.</p>
+<h3 id="shared-evidence-source">Shared evidence source</h3>
+<p>Before drafting, maintain one evidence inventory or claim ledger containing:</p>
+<ul>
+<li>source ID and exact source passage or artifact;</li>
+<li>action, attribution, scope, method, outcome, metric, and uncertainty;</li>
+<li>target-role relevance and confidence;</li>
+<li>approved wording or unresolved question;</li>
+<li>destination in the ATS resume, optional human-facing resume, cover letter, or portfolio.</li>
+</ul>
+<p>The ledger is authoritative. Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain visibly distinct.</p>
+<h3 id="positioning-layer-and-artifact-specific-evidence-rigor">Positioning layer and artifact-specific evidence rigor</h3>
+<p>Do not send the evidence ledger directly into prose. Create a short positioning brief between the ledger and the application artifact. It names the role-relevant themes, candidate-approved abstractions, voice cues, useful omissions, and uncertain areas that need careful handling. The positioning brief is an interpretive bridge, not a second evidence source.</p>
+<p>Apply evidence rigor according to the artifact:</p>
+<ul>
+<li>ATS resume: use high exactness for dates, titles, employers, metrics, tools, credentials, ownership, scope, and outcomes. Plain-text extraction and material-claim integrity remain strict.</li>
+<li>Cover letter: keep material facts, scope, ownership, metrics, tools, credentials, and known gaps truthful, while allowing sentence-level synthesis, broader descriptors, and candidate-owned voice when they faithfully summarize related evidence.</li>
+<li>Portfolio, outreach, and interview materials: keep material facts stable and choose the lightest review that fits the format and consequence of the claim.</li>
+</ul>
+<p>Classify candidate revisions before routing them back through evidence review:</p>
+<ul>
+<li>Voice-only change: accept when it improves clarity or recognizability without changing meaning.</li>
+<li>Positioning abstraction: accept when the candidate recognizes it as accurate and it does not materially upgrade scope, ownership, or expertise. Keep it in the positioning brief when it is useful across applications.</li>
+<li>New material fact: confirm or add it to the evidence ledger when it introduces a new metric, tool, credential, employer, date, responsibility, outcome, or scope claim.</li>
+<li>Omission: check role coverage and reader flow, but do not force a sentence back into the artifact solely to preserve one-to-one traceability.</li>
+</ul>
+<p>The cover-letter quality gate is candidate-recognizable voice, clear role relevance, useful flow, and no material misrepresentation. A cover-letter sentence does not need a one-to-one source citation when it is a truthful synthesis of supported evidence. The source path must remain recoverable in the private positioning brief or Work Order when a reviewer needs to inspect the underlying claim.</p>
+<h3 id="candidate-specific-standing-decisions">Candidate-specific standing decisions</h3>
+<p>Before role alignment or drafting, read the private candidate-specific standing-decision record when one exists. It carries explicit, candidate-confirmed choices about employer attribution, chronology, section placement, voice, omissions, and other repeatable resume decisions.</p>
+<p>The standing record is a private input, not a public Persona Library record. Store only its existence, read status, scope, and unresolved conflicts in a public Work Order. Keep the actual resume facts and private Drive links in the authorized private candidate workspace.</p>
+<p>Apply decision precedence in this order:</p>
+<ol>
+<li>A later explicit candidate instruction.</li>
+<li>A verified correction to the candidate’s source record.</li>
+<li>The current candidate standing decision.</li>
+<li>Generic job-search guidance.</li>
+</ol>
+<p>The evidence ledger remains authoritative for material claims. A standing decision can guide structure or reuse a confirmed attribution; it cannot create evidence, upgrade a claim, or resolve a conflict silently. If the record is missing, stale, or conflicts with current source material, record that status and pause the affected decision for candidate review.</p>
+<p>Reading or updating the standing record never authorizes upload, submission, employer contact, or external sharing. The Work Order must end with a recommendation or review handoff unless separate submission authorization is explicitly provided.</p>
+<h3 id="private-source-resolution-gate">Private-source resolution gate</h3>
+<p>Before role alignment or resume drafting, resolve private candidate sources in this order when they exist:</p>
+<ol>
+<li>Locate and read the active candidate standing-decision record.</li>
+<li>If it designates an active master or baseline resume, resolve that exact private artifact and record its source/revision before drafting.</li>
+<li>Resolve the shared evidence ledger and any normalized Resume Content Model referenced by the candidate context.</li>
+<li>Use secondary profile stores, old resumes, portfolio summaries, or application-history records only as supporting sources unless the active candidate context explicitly promotes them.</li>
+<li>If the designated baseline or authoritative evidence source cannot be resolved, mark the affected composition step <code>blocked</code>; do not silently substitute a stale or secondary source.</li>
+</ol>
+<p>When the runtime exposes a connected private-document source such as Google Drive, use its search/fetch capability to resolve the standing record and named baseline directly. Tool availability does not change source precedence.</p>
+<h3 id="candidate-baseline-resume-boundary">Candidate Baseline Resume boundary</h3>
+<p>A designated Candidate Baseline Resume protects the candidate&#39;s approved <strong>career spine</strong>: identity/contact values, employers, titles, employment periods, dates, locations, employer/client hierarchy, recent-employer presence, education, certifications, and candidate-confirmed grouped historical structure.</p>
+<p>It may also carry approved presentation choices such as heading hierarchy and categorized skills. Those presentation choices remain candidate-specific; they do not become reusable Template rules.</p>
+<p>The baseline does not override contradictory evidence. A verified evidence correction or later explicit candidate instruction may change it. When a role-specific output intentionally differs from the baseline on a protected field, record the difference and its evidence/decision basis. Material omissions must be <code>omitted_with_reason</code>, not silently dropped.</p>
+<h3 id="ats-resume-contract">ATS resume contract</h3>
+<p>The default ATS resume must be semantically structured, extraction-safe, readable, naturally aligned to supported role terminology, and clear about dates, titles, employers, engagement identity, attribution, scope, and outcomes.</p>
+<p>It must not hide content in graphics, rely on decorative layout, stuff keywords, silently normalize ambiguous facts, or claim a parser result that was not actually tested. If no employer parser is available, record parser suitability as unknown rather than implying validation.</p>
+<h3 id="accessible-document-production-and-export-verification">Accessible document production and export verification</h3>
+<p>ATS-safe and human-readable are compatible when visual treatment preserves semantic structure. Use native hyperlinks for email, portfolio, and LinkedIn; native list structures for bullets; semantic heading levels for the title, sections, and employers; and styled normal paragraphs for dates so heading navigation stops at meaningful content boundaries. Break long skills content into short categorized lines with visible labels. Use restrained color, typography, indentation, and spacing only when contrast, extraction, and reading order remain intact. Do not replace list structures with bullet-looking special characters.</p>
+<p>When a document is exported, record separate checks for:</p>
+<ul>
+<li>tagged output and document language metadata;</li>
+<li>heading, paragraph, list/list-item, and link structures;</li>
+<li>reading order and link destinations;</li>
+<li>page count, page breaks, clipped content, and orphaned headings or bullets; and</li>
+<li>live screen-reader behavior when it is actually tested.</li>
+</ul>
+<p>A successful tagged-PDF export is evidence about the exported structure, not proof of NVDA, JAWS, or other assistive-technology behavior. If live testing is not available, record that limitation explicitly.</p>
+<h3 id="default-ats-section-structure">Default ATS section structure</h3>
+<p>Use a conventional, linear section structure unless the employer instructions require something else:</p>
+<ol>
+<li>Contact information</li>
+<li><code>SUMMARY</code> (optional when the evidence is stronger without it)</li>
+<li><code>SKILLS</code> or <code>TECHNICAL SKILLS</code> (when supported role terms need a scannable home)</li>
+<li><code>WORK EXPERIENCE</code>, <code>EXPERIENCE</code>, or <code>PROFESSIONAL EXPERIENCE</code></li>
+<li><code>EDUCATION</code> and/or <code>CERTIFICATIONS</code></li>
+</ol>
+<p><code>PROJECTS</code>, <code>PORTFOLIO</code>, and <code>ADDITIONAL EXPERIENCE</code> are optional when they answer a real requirement or preserve relevant chronology. Prefer one clear work-experience section with a conventional heading when the source supports it.</p>
+<p><code>SELECTED IMPACT</code>, <code>CORE ALIGNMENT</code>, <code>TARGET</code>, <code>FIT</code>, and <code>MATCH</code> are not default ATS headings. Put accomplishments under the relevant role and supported capabilities under <code>SKILLS</code>. Do not create a section only to mirror the job description.</p>
+<p>There is no universal ATS heading certification. Conventional labels reduce ambiguity but do not prove a particular vendor&#39;s parser behavior. If the employer parser is not tested, record parser suitability as unknown.</p>
+<h3 id="employer-and-client-engagement-hierarchy">Employer and client engagement hierarchy</h3>
+<p>When source material identifies a consulting, staffing, or agency employer with client work beneath it, preserve both levels in the resume:</p>
+<ul>
+<li>Identify the actual employer of record and the client engagements from the source or an explicit candidate confirmation.</li>
+<li>Keep separate employer periods separate when the candidate left and later returned.</li>
+<li>Use an explicit plain-text <code>Client engagements:</code> line or bullet under the employer, and prefix each client accomplishment with the client name when multiple clients share that employer.</li>
+<li>Do not rely on visual indentation alone; the relationship must survive plain-text extraction.</li>
+<li>Keep direct employers as separate entries.</li>
+<li>If the employer/client relationship or employment period is uncertain, record the uncertainty and ask before regrouping.</li>
+</ul>
+<p>When several short historical roles need a grouped presentation, use an explicit umbrella label only as a presentation device. Preserve every underlying employer, title, date range, location, and accomplishment in extractable text; mark any aggregate date or location as a summary; and do not let the label imply an employer, title, or period that the source does not support.</p>
+<h3 id="ats-provider-and-channel-profiles">ATS provider and channel profiles</h3>
+<p>A provider profile is an evidence record, not a guess based on a portal name. Use one when the employer, application channel, or a tested downstream validator supplies actual constraints.</p>
+<p>Record:</p>
+<ul>
+<li>provider or channel name and the exact application URL;</li>
+<li>evidence source, research date, and any version or submission instructions;</li>
+<li>accepted upload formats and document limits;</li>
+<li>heading aliases, extraction behavior, or field-mapping rules that were actually documented or tested;</li>
+<li>the fixture or export used for a test, the observed result, and the untested scope;</li>
+<li>rules that remain unknown.</li>
+</ul>
+<p>Apply a provider profile only where its evidence supports it. A generic internal checker, a portal label, or advice from one vendor does not establish a universal Workday, Greenhouse, ZipRecruiter, or other ATS rule. When no provider evidence exists, use the default structure and report provider behavior as unknown.</p>
+<p>The current JobAgent implementation contains a generic text check rather than a provider matrix. Its required headings and parser warnings are useful as a tool-compatibility profile only; they are not evidence that a named ATS prefers those labels. Keep that distinction in the Work Order.
+Keep target employer, role, location, and work-mode context in the Work Order and requirement map. Do not add a target line to the resume body by default unless the requester explicitly wants a role-labeled version or the submission format requires it. A file name or Work Order can carry target context without adding it to the resume.</p>
+<p>Before review, compare the heading list against this structure, record intentional deviations, and check for duplicated material claims across summary, highlights, skills, and experience. A metric should have one canonical evidence-backed home; repeat it only when repetition materially improves the intended reading path.</p>
+<h3 id="optional-human-facing-resume">Optional human-facing resume</h3>
+<p>A human-facing version is a second rendering of the same approved evidence source. It may improve scan path, hierarchy, density, order, voice, and context-appropriate visual communication. It must preserve the meaning of every material claim and remain reasonably parseable when the employer still uses screening software.</p>
+<p>Run a separate human and visual review only when this version is created. Record every material content or order difference and why it helps the intended reader. If the difference changes meaning, return to source review.</p>
+<h3 id="future-human-facing-templates">Future human-facing templates</h3>
+<p>Reusable human-facing templates are separate design assets, not application outputs and not automatic application outputs. Keep them content-free or use clearly marked sample content; do not copy private candidate facts or employer-specific claims into a reusable template.</p>
+<p>A template should define its intended audience, scan path, hierarchy, density, accessibility, responsive or page behavior, safe text structure, and the conditions under which it should not be used. Build or maintain a template only when repeated human-facing work justifies it. Instantiating a template for a specific application remains an explicit, separately reviewed step.</p>
+<h3 id="review-and-integrity-gate">Review and integrity gate</h3>
+<p>Every application packet runs:</p>
+<ul>
+<li>role-to-evidence mapping;</li>
+<li>Template-source verification for every reusable starter;</li>
+<li>ATS structure and terminology review;</li>
+<li>claim-to-ledger integrity review;</li>
+<li>chronology and ambiguity preflight;</li>
+<li>explicit unknown and untested-scope review;</li>
+<li>conventional-heading and target-context review;</li>
+<li>duplicate-claim review across summary, highlights, skills, and experience.</li>
+<li>semantic document and export review when a file is rendered;</li>
+<li>page-flow review for clipped content, orphaned headings or bullets, and unintended whitespace;</li>
+<li>explicit separation between verified exported structure and untested live screen-reader behavior.</li>
+</ul>
+<p>When a human-facing version exists, also run the human/visual review and a parity comparison against the ATS version. When it does not exist, do not report human parity as passed or failed; report it as not applicable and preserve the reason.</p>
+<p>The selected submission artifact follows employer instructions. Do not submit both resume versions unless the employer or requester explicitly asks for both. Cover-letter claims, when requested, trace to the same ledger and add useful context rather than becoming a second evidence source.</p>
+<p>The reusable cover-letter starting artifact lives in <code>rickvang/template-library</code>, not in a private Drive master. Each application copies/adapts the verified Template starter into the role-specific private folder, then combines it with the positioning brief and shared evidence ledger. Prior role-specific drafts remain project artifacts and are not reusable Template sources unless the requester explicitly includes them as evidence for a later Template revision.</p>
+<p>For cover letters, the internal tailoring brief is the positioning layer. It may translate several related evidence items into a candidate-approved theme or descriptor so the sendable letter can read naturally. The final review protects material truth and role coverage without turning the letter into a line-by-line evidence audit.</p>
+<h3 id="work-order-tracking">Work Order tracking</h3>
+<p>The Work Order records the target, shared ledger, verified Template identities/revisions, canonical ATS version, optional human-facing version, standalone cover letter, Application Notes &amp; Answers, review findings, integrity result, optional parity result, selected submission file, tracker record reference and sync status when opportunity/application tracking is in scope, and learning after submission. It is the active progress record; specialized artifacts and private tracker rows remain separate and linked rather than duplicated.</p>
+<h2 id="phased-delivery">Phased delivery</h2>
+<h3 id="phase-0--define-the-search">Phase 0 — Define the search</h3>
+<ul>
+<li>Capture role family, level, industry, geography, work mode, compensation, timing, and constraints.</li>
+<li>Define a primary target plus acceptable adjacent targets.</li>
+<li>Create an evidence inventory: outcomes, scope, decisions, artifacts, metrics, and examples.</li>
+</ul>
+<h3 id="phase-1--role-and-evidence-alignment">Phase 1 — Role and evidence alignment</h3>
+<ul>
+<li>Parse a job description into responsibilities, capabilities, outcomes, and signals.</li>
+<li>Map each requirement to evidence, confidence, and a gap or follow-up question.</li>
+<li>Produce a candidate-approved positioning brief and role-specific evidence shortlist.</li>
+</ul>
+<h3 id="phase-2--application-packet">Phase 2 — Application packet</h3>
+<ul>
+<li>Resolve every reusable application starter through the Persona-Library Template catalog and a verified <code>rickvang/template-library</code> path/entrypoint/revision. If a required Template is missing, route to Template research/composition before drafting from it.</li>
+<li>Create one role-specific folder in the configured private application workspace and keep the ATS resume, cover letter, and Application Notes &amp; Answers as separate artifacts by default.</li>
+<li>Build one shared evidence source. When the active Candidate Context designates a Candidate Baseline Resume, copy/adapt that baseline into the role-specific artifact and tailor it conservatively; otherwise compose from the validated evidence/model into the verified Template. Add a human-facing resume only when the target channel or review context justifies a second output.</li>
+<li>Draft a separate cover letter for a full packet unless the employer does not accept one or the requester explicitly skips it; draft from the positioning brief, then review material claims and voice as separate questions.</li>
+<li>Build the Application Notes &amp; Answers artifact for role fit, constraints, application questions, portfolio planning, blockers, and submission checks.</li>
+<li>At packet completion, resolve the Applications tracker record, set <code>packetUrl</code>, and advance to <code>Packet Ready</code> when appropriate without downgrading a later confirmed state.</li>
+<li>Generate portfolio or case-study emphasis for design-oriented roles.</li>
+</ul>
+<h3 id="application-preflight--before-the-council">Application preflight — before the council</h3>
+<p>Run a small deterministic structural check before persona review. This is a builder rule, not a judgment the personas should have to remember:</p>
+<ul>
+<li>Parse every role’s start and end date into a consistent month-level representation.</li>
+<li>Sort the employer-facing resume reverse chronologically by end date unless a deliberate functional format is documented.</li>
+<li>Check for missing dates, inconsistent date formats, duplicate employer records, same-month ties, and month-level overlaps.</li>
+<li>Preserve source ambiguity. Do not invent day-level precision to make the timeline look cleaner.</li>
+<li>Carry the preflight result into the ATS, human-reader, and integrity reviews so a polished draft cannot hide a basic chronology error.</li>
+</ul>
+<p>Leah owns the ATS review and claim-to-ledger integrity result. Human-readable and visual review are conditional on a human-facing output. Riley records the flags and reconciliation decision. A failed ordering check should stop the packet before council synthesis; an overlap or same-month ambiguity should remain visible until the source is confirmed or the user explicitly accepts it.</p>
+<h3 id="phase-3--quality-review">Phase 3 — Quality review</h3>
+<ul>
+<li>Start with the preflight result rather than relying on visual inspection or persona memory.</li>
+<li>Verify each reusable artifact&#39;s Template ID, canonical source path, entrypoint, and revision.</li>
+<li>Run the ATS pass for parseability, terminology coverage, structure, and truthful alignment.</li>
+<li>Run the claim-to-ledger integrity pass and chronology preflight.</li>
+<li>For a cover letter, run the positioning and voice pass before the material-claim pass. Accept candidate-owned abstractions that preserve meaning; escalate only new material facts or changes to scope, ownership, metrics, tools, credentials, dates, or gaps.</li>
+<li>Run human/narrative and visual passes only when a human-facing version exists or a human-facing template is being evaluated.</li>
+<li>Record unresolved tradeoffs instead of silently flattening them.</li>
+</ul>
+<h3 id="phase-4--outreach-and-interview">Phase 4 — Outreach and interview</h3>
+<ul>
+<li>Create targeted outreach and follow-up messages.</li>
+<li>Prepare evidence-led interview stories and questions.</li>
+<li>Practice likely role-specific scenarios and evaluate answers against the same quality model.</li>
+</ul>
+<h3 id="phase-5--search-learning-loop">Phase 5 — Search learning loop</h3>
+<ul>
+<li>Use the authenticated private <code>app.seen_jobs</code> store so repeated discovery checks do not resurface openings already presented as new; read before display and record only presented results afterward.</li>
+<li>Use the Applications tracker as the lifecycle store for tracked opportunities while the Work Order references only the minimum operational state needed. Set <code>Applied</code> and <code>appliedDate</code> only after a confirmed submission, and advance interview, offer, or closure states only from confirmed events; never infer those transitions. Keep this lifecycle state separate from the seen-job deduplication contract.</li>
+<li>Separate market feedback from noise and small-sample assumptions.</li>
+<li>Update target roles, evidence gaps, positioning, and materials only when the evidence justifies it.</li>
+</ul>
+<h2 id="quality-gates">Quality gates</h2>
+<h3 id="template-source-quality">Template-source quality</h3>
+<ul>
+<li>Every reusable application artifact has a Template ID and a verified <code>rickvang/template-library</code> path, <code>README.md</code> entrypoint, and Git revision before use.</li>
+<li>The documented <code>starter/</code> copy boundary exists and is non-empty.</li>
+<li>A missing or stale Template routes to Template research/composition rather than a silent private-master fallback.</li>
+<li>Candidate facts and role-specific content live only in the instantiated private artifact, not the reusable Template source.</li>
+<li>Persona-Library does not claim a proposed external Template is canonical on <code>main</code> until the source path and entrypoint actually resolve there.</li>
+</ul>
+<h3 id="candidate-baseline-quality">Candidate-baseline quality</h3>
+<ul>
+<li>Any standing-decision-designated baseline/master was resolved and read before resume drafting.</li>
+<li>The final ATS artifact passed <strong>baseline-to-output</strong> integrity by comparing the protected baseline career spine against the role-specific output.</li>
+<li>Name/contact, employer/title/date/location chronology, employer/client hierarchy, recent employers, education, certifications, and candidate-confirmed historical grouping are unchanged unless a supported correction or explicit candidate decision authorizes the difference.</li>
+<li>Every material baseline omission is recorded as <code>omitted_with_reason</code>; every protected-field change identifies its evidence or decision basis.</li>
+<li>Secondary profile stores and stale summaries did not replace unresolved authoritative private sources.</li>
+<li>Reusable Template verification remains separate from candidate-baseline verification.</li>
+</ul>
+<h3 id="ats-default-quality">ATS default quality</h3>
+<ul>
+<li>The document parses into the intended sections or parser suitability is explicitly unknown.</li>
+<li>Role-relevant terminology appears naturally where supported by evidence.</li>
+<li>Dates, titles, employers, engagement identity, attribution, scope, and outcomes remain unambiguous.</li>
+<li>Employer/client attribution is explicit: confirmed client engagements appear under the actual employer, separate employment periods remain separate, and the relationship survives plain-text extraction.</li>
+<li>Roles are reverse chronological, or the chosen alternative format is explicitly documented.</li>
+<li>Missing dates, month-only ambiguity, duplicate employers, and overlaps are flagged rather than silently resolved.</li>
+<li>Formatting does not hide important content from extraction.</li>
+<li>Headings use the default structure or an intentional deviation is recorded.</li>
+<li>Target employer, role, location, and work-mode context are absent from the resume body unless explicitly requested.</li>
+<li>Accomplishments live under roles and capabilities live under <code>SKILLS</code> or an approved synonym; derived alignment sections are not created by default.</li>
+<li>Repeated material claims are removed or documented as intentional.</li>
+<li>Provider-specific formatting rules are applied only when a documented profile or actual test supports them.</li>
+<li>Generic validator results are labeled as implementation-specific compatibility evidence.</li>
+</ul>
+<h3 id="evidence-integrity-quality">Evidence-integrity quality</h3>
+<ul>
+<li>Every material claim traces to the shared evidence ledger, while synthesized wording may summarize multiple ledger items without a one-to-one sentence mapping.</li>
+<li>Metrics, tools, responsibilities, titles, dates, employers, and outcomes are not invented or upgraded.</li>
+<li>Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain distinct.</li>
+<li>Intentional omissions and synthesized wording are recorded.</li>
+<li>No parser, recruiter, human, or user response is claimed without that evidence.</li>
+<li>The packet stops or returns to source review when a material claim cannot be supported.</li>
+</ul>
+<h3 id="cover-letter-quality">Cover-letter quality</h3>
+<ul>
+<li>A positioning brief precedes the draft and identifies the reader decision path, role-relevant themes, candidate-approved abstractions, and material gaps.</li>
+<li>The letter sounds recognizable to the candidate and uses flow, specificity, and emphasis appropriate to a human reader.</li>
+<li>Candidate edits are classified as voice, positioning abstraction, new material fact, or omission before any evidence escalation.</li>
+<li>New material facts and material changes to scope, ownership, metrics, tools, credentials, dates, or gaps return to the evidence ledger.</li>
+<li>Truthful bridge language may acknowledge a gap without repeating internal audit language in the sendable letter.</li>
+<li>The final letter adds context or motivation rather than copying the resume.</li>
+</ul>
+<h3 id="optional-human-facing-quality">Optional human-facing quality</h3>
+<ul>
+<li>Use only when the channel or review context warrants a second rendering.</li>
+<li>The first scan communicates role, level, relevant value, and credible contribution quickly.</li>
+<li>Claims are specific, credible, and supported by the same ledger as the ATS version.</li>
+<li>Visual emphasis follows target-role relevance and evidence, not decoration.</li>
+<li>Content remains readable, accessible, truthful, and reasonably parseable.</li>
+<li>Material differences from the ATS version are recorded and meaning is preserved.</li>
+</ul>
+<h3 id="optional-human-template-quality">Optional human-template quality</h3>
+<ul>
+<li>The template is a separate, reusable artifact rather than a candidate-specific application output.</li>
+<li>Audience, scan path, hierarchy, density, accessibility, page or responsive behavior, and safe text structure are explicit.</li>
+<li>Sample content is clearly illustrative; private facts and employer-specific claims are not embedded.</li>
+<li>Use conditions, non-use conditions, and instantiation review are documented.</li>
+<li>The template does not bypass the shared evidence ledger or the ATS default path.</li>
+</ul>
+<h2 id="deliberately-out-of-scope-for-the-mvp">Deliberately out of scope for the MVP</h2>
+<ul>
+<li>Automatic job scraping or mass application submission</li>
+<li>Unverified salary, culture, or hiring-probability claims</li>
+<li>Autonomous outreach or recruiter messaging</li>
+<li>A single universal human-facing resume template or automatic human rendering for every application</li>
+<li>An aggregate score that pretends to replace judgment</li>
+<li>Hosting private candidate job history inside Persona-Library</li>
+<li>Full CRM-style application reminders or campaign automation</li>
+</ul>
+<p>The <a href="doc-seen-job-deduplication.html">seen-job deduplication contract</a> is in scope for suppressing openings already presented in repeated searches using the existing private Supabase data layer. A separate job database, second Supabase project, or Applications-lifecycle expansion is not.</p>
+<p>These other items remain future opportunities, not implied capabilities of the current reference page.</p>
+<h2 id="validation-questions">Validation questions</h2>
+<ul>
+<li>Is Riley presented as the default routing front door for unqualified requests, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?</li>
+<li>Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?</li>
+<li>Do repeated searches avoid presenting previously shown jobs as new by default, using the seen-job deduplication contract?</li>
+<li>When opportunity/application tracking is in scope, does the workflow resolve an existing Applications tracker record before creating a duplicate?</li>
+<li>Does authenticated Supabase remain primary persistence when configured, with browser-local state limited to explicit fallback, migration, and recovery?</li>
+<li>Are <code>postingDate</code> values source-backed only, and are <code>Applied</code>, <code>appliedDate</code>, interview, offer, and closure transitions recorded only from confirmed events?</li>
+<li>Does every reusable application artifact resolve to a verified <code>rickvang/template-library</code> Template before it is instantiated?</li>
+<li>When a needed reusable Template is missing, does the workflow create/repair it in <code>template-library</code> instead of silently falling back to a private Drive master?</li>
+<li>When standing decisions designate an active Candidate Baseline Resume, is that exact private artifact resolved before drafting?</li>
+<li>Does the role-specific resume preserve the baseline career spine or record every material difference with evidence and an explicit disposition?</li>
+<li>Are secondary profile stores prevented from substituting for an unresolved designated baseline or authoritative evidence source?</li>
+<li>Can a candidate explain why a role is in or out of scope?</li>
+<li>Can each important claim in an application be traced to evidence?</li>
+<li>Does the preflight catch wrong role order even when the content and visual review look good?</li>
+<li>Does the ATS pass improve retrieval without making the writing unnatural?</li>
+<li>Does the positioning layer preserve candidate voice while keeping material facts and role coverage stable?</li>
+<li>Are candidate edits routed by consequence instead of receiving the same sentence-level evidence scrutiny?</li>
+<li>When a human-facing output is warranted, can a reviewer identify fit, level, and contribution quickly?</li>
+<li>Does visual treatment support the context rather than merely signal taste?</li>
+<li>Does feedback change the search model only when it is repeated or well-supported?</li>
+<li>Does the heading structure make section boundaries obvious to a parser?</li>
+<li>Does the resume preserve employer-of-record and client attribution without relying on visual indentation?</li>
+<li>Does the resume keep target context in the Work Order while keeping the resume reusable?</li>
+<li>Do any highlights or alignment sections add distinct value instead of repeating experience or skills?</li>
+<li>Do native links, lists, headings, dates, and categorized skills survive extraction and assistive-technology review?</li>
+<li>Does the rendered file preserve page flow without clipping, orphaned content, or a stray list item?</li>
+<li>Are exact candidate-specific typography, color, and spacing settings kept in the private artifact or document spec rather than treated as universal rules?</li>
+</ul>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="doc-application-context-and-review.html">Application context and review contract</a></li><li><a href="doc-application-tracker.html">Job application tracker contract</a></li><li><a href="doc-seen-job-deduplication.html">Seen-job deduplication contract</a></li><li><a href="doc-candidate-context.html">Candidate Context Contract</a></li><li><a href="doc-resume-content-model.html">Resume Content Model</a></li><li><a href="doc-resume-template-mapping.html">Resume Template semantic mapping</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="playbooks.html#current">Back to Playbooks</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

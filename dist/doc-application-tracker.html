@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Job application tracker contract | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" >Playbooks</a><a href="guide.html" aria-current="page">Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="guide.html#reference-docs">Back to Docs</a>
+      <p class="eyebrow">Job search</p>
+      <h1>Job application tracker contract</h1>
+
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/application-tracker-contract.md" rel="noreferrer">docs/job-search/application-tracker-contract.md</a></p>
+    </header>
+
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#purpose">Purpose</a>
+<a href="#ownership-boundary">Ownership boundary</a>
+<a href="#record-schema">Record schema</a>
+<a href="#lifecycle">Lifecycle</a>
+<a href="#persistence-and-privacy">Persistence and privacy</a>
+<a href="#storage-adapter">Storage adapter</a>
+<a href="#import-behavior">Import behavior</a>
+<a href="#local-to-remote-migration">Local-to-remote migration</a>
+<a href="#deployment-configuration">Deployment configuration</a>
+<a href="#extraction-boundary">Extraction boundary</a>
+<a href="#non-goals">Non-goals</a></nav></details></aside>
+      <article class="markdown-body"><span id="job-application-tracker-contract"></span>
+<h2 id="purpose">Purpose</h2>
+<p>Define the standalone-friendly application-tracking surface that can live inside Persona Library without making Persona Library the source of private candidate history.</p>
+<p>This contract is separate from the lightweight seen-job deduplication contract in <code>job-ledger-contract.md</code>. Seen-job deduplication answers “have I already been shown this opening?” The application tracker answers “what is the current state of an opportunity I chose to track?”</p>
+<h2 id="ownership-boundary">Ownership boundary</h2>
+<pre><code class="language-text">Persona-Library
+→ owns the tracker UI, portable record schema, lifecycle vocabulary, storage adapter, migration/export behavior, and database contract
+→ may link to job-search Playbook guidance
+→ does not own or commit the user’s actual application history
+
+Authenticated private opportunity store
+→ owns real opportunity/application records when Supabase mode is configured
+→ is protected by Supabase Auth, explicit Data API grants, and row-level security
+→ remains independent of canonical Persona, Skill, Tool, Template, Pack, and Playbook records
+
+Browser-local private state
+→ remains an explicit fallback, migration source, and rollback/recovery copy
+→ is never a silent fallback when configured remote persistence fails
+→ can be exported/imported as versioned JSON
+
+Evidence-led Job Search Playbook / Priya Desai
+→ may use or update application state during an authorized job-search run
+→ does not become the storage layer
+
+Future standalone application
+→ may adopt the same record schema and authenticated store
+→ may move the UI without migrating Persona/Skill identities or canonical library records
+</code></pre>
+<h2 id="record-schema">Record schema</h2>
+<p>Each portable record uses a tracker-generated stable <code>id</code> and may contain:</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>company</code></td>
+<td>Employer name</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td>Job title</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>Current lifecycle state</td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>Location or work-mode note</td>
+</tr>
+<tr>
+<td><code>compensation</code></td>
+<td>Human-readable compensation note</td>
+</tr>
+<tr>
+<td><code>sourceUrl</code></td>
+<td>Canonical job posting</td>
+</tr>
+<tr>
+<td><code>packetUrl</code></td>
+<td>Private application packet/folder link</td>
+</tr>
+<tr>
+<td><code>postingDate</code></td>
+<td>Date the employer published the job posting, when known</td>
+</tr>
+<tr>
+<td><code>foundDate</code></td>
+<td>Date the opportunity was first tracked</td>
+</tr>
+<tr>
+<td><code>appliedDate</code></td>
+<td>Date submitted, when applicable</td>
+</tr>
+<tr>
+<td><code>nextAction</code></td>
+<td>Smallest current follow-up</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>Candidate-owned working notes</td>
+</tr>
+<tr>
+<td><code>updatedAt</code></td>
+<td>State freshness marker</td>
+</tr>
+</tbody></table>
+</div><p>The Supabase adapter maps this portable shape into database columns while preserving the portable ID. Database-only ownership and row identifiers do not become part of the public tracker export contract.</p>
+<h2 id="lifecycle">Lifecycle</h2>
+<p><code>Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed</code></p>
+<p>The tracker does not infer transitions. External submission, outreach, or interview actions remain separately authorized actions.</p>
+<h2 id="persistence-and-privacy">Persistence and privacy</h2>
+<h3 id="configured-remote-mode">Configured remote mode</h3>
+<p>When deployment supplies a complete Supabase URL + publishable-key pair, the generated tracker runtime uses authenticated Supabase storage as the primary persistence layer. The build accepts either <code>SUPABASE_URL</code> + <code>SUPABASE_PUBLISHABLE_KEY</code> or the Vercel/Next.js aliases <code>NEXT_PUBLIC_SUPABASE_URL</code> + <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code>.</p>
+<ul>
+<li>Browser code may use only a publishable key; secret/service-role keys are prohibited.</li>
+<li>The exposed <code>app</code> schema must be explicitly allowed through the Supabase Data API.</li>
+<li>Opportunity tables require explicit grants plus RLS; neither mechanism replaces the other.</li>
+<li>RLS policies must bind reads and writes to <code>auth.uid() = user_id</code>.</li>
+<li>UPDATE requires both <code>USING</code> and <code>WITH CHECK</code>.</li>
+<li>Signed-out remote mode cannot mutate opportunity records.</li>
+<li>The initial private owner flow uses Supabase email + password authentication; the tracker does not depend on magic-link email delivery.</li>
+<li>Password values are submitted directly to Supabase Auth and are never written to local storage, repository content, generated config, logs, or tracker records.</li>
+<li>A remote error must not silently write the same change into browser-local state.</li>
+</ul>
+<h3 id="local-fallback-mode">Local fallback mode</h3>
+<p>If no remote deployment config exists, the tracker uses browser <code>localStorage</code> key <code>persona-library.job-applications.v1</code>.</p>
+<ul>
+<li>Local mode is explicit in the UI.</li>
+<li>Existing local records remain available as a migration source after remote mode is enabled.</li>
+<li>Migration never deletes the local copy automatically.</li>
+<li>A successful migration records a local migration marker but preserves the underlying local backup.</li>
+</ul>
+<h3 id="repository-privacy">Repository privacy</h3>
+<ul>
+<li>No real application records are committed to Persona Library.</li>
+<li>No candidate-specific opportunity rows are embedded in fixtures, generated output, or database contract files.</li>
+<li>Export/import uses versioned JSON for backups and migration.</li>
+<li>Publishing Persona Library source must not publish private tracker contents.</li>
+</ul>
+<h2 id="storage-adapter">Storage adapter</h2>
+<p>The Applications runtime depends on an <code>OpportunityStore</code> boundary rather than direct page-owned persistence.</p>
+<p>Expected adapters:</p>
+<ul>
+<li><code>LocalStorageOpportunityStore</code> — explicit fallback/migration implementation.</li>
+<li><code>SupabaseOpportunityStore</code> — authenticated remote implementation.</li>
+</ul>
+<p>Both expose the operations needed by the UI: load, upsert, remove, safe batch save, explicit replace-all restore, and authentication state where applicable. The Supabase adapter uses <code>signInWithPassword</code> for the private owner login.</p>
+<p>The UI must not decide that a failed remote write should become a local write.</p>
+<h2 id="import-behavior">Import behavior</h2>
+<p>The normal import path is a non-destructive merge/upsert into the current active store.</p>
+<ul>
+<li>Read the current active-store records before applying incoming JSON.</li>
+<li>Match by stable <code>id</code> first, then by canonicalized <code>sourceUrl</code> when IDs differ.</li>
+<li>Do not use company/title similarity as an automatic overwrite identity.</li>
+<li>Add records with no stable identity match.</li>
+<li>Preserve existing non-empty lifecycle fields and user-owned <code>notes</code> and <code>nextAction</code>.</li>
+<li>Advance lifecycle state only when the incoming state is further along; never downgrade an existing <code>Applied</code>, <code>Interviewing</code>, or <code>Offer</code> record to an earlier state.</li>
+<li>Fill empty metadata such as <code>packetUrl</code>, <code>location</code>, <code>compensation</code>, and <code>postingDate</code>; an incoming posting URL may correct a matched record.</li>
+<li>Keep <code>postingDate</code> optional and never infer or fabricate it when the source does not provide a posting date.</li>
+<li>Surface ambiguous or conflicting identities in the import review before committing safe changes.</li>
+<li>Show counts for new, updated, unchanged, and conflicting records before the merge is committed.</li>
+<li>Keep an explicit <code>Replace all</code> action for restoring a backup; it is never the default.</li>
+<li>Malformed, unsupported, or invalid imports fail without changing active-store state.</li>
+<li>Export format remains <code>format: &quot;persona-library-job-applications&quot;</code> with <code>version: 1</code>.</li>
+</ul>
+<h2 id="local-to-remote-migration">Local-to-remote migration</h2>
+<p>When remote mode is configured and the user is authenticated:</p>
+<ol>
+<li>read existing browser-local records without modifying them;</li>
+<li>read current authenticated remote records;</li>
+<li>preview the normal non-destructive merge;</li>
+<li>require explicit user action to commit safe changes;</li>
+<li>write through the Supabase adapter;</li>
+<li>re-read remote records to verify the save returned;</li>
+<li>record the local migration marker only after successful remote persistence;</li>
+<li>retain local records and JSON export as rollback/recovery.</li>
+</ol>
+<p>A Work Order or application process must not claim migration is complete without inspecting the remote result.</p>
+<h2 id="deployment-configuration">Deployment configuration</h2>
+<p>The static build produces <code>dist/js/job-tracker-config.js</code>.</p>
+<ul>
+<li>No remote env config → explicit <code>local</code> mode.</li>
+<li>A complete <code>SUPABASE_URL</code> + <code>SUPABASE_PUBLISHABLE_KEY</code> pair, or a complete <code>NEXT_PUBLIC_SUPABASE_URL</code> + <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code> pair → <code>supabase</code> mode.</li>
+<li>Supplying a URL without a matching publishable key, or vice versa, is a build error.</li>
+<li><code>SUPABASE_SCHEMA</code> may select the exposed application schema and defaults to <code>app</code>.</li>
+<li>The build never reads or emits a secret/service-role key.</li>
+</ul>
+<p>The browser client dependency must be version-pinned and reviewed when upgraded.</p>
+<h2 id="extraction-boundary">Extraction boundary</h2>
+<p>The tracker must remain extractable:</p>
+<ul>
+<li>no Persona or Skill ID is required as a primary record key;</li>
+<li>no tracker record is a canonical Persona-Library record;</li>
+<li>links to job-search guidance are integrations, not storage dependencies;</li>
+<li>UI/runtime code remains isolated from library data normalization;</li>
+<li>persistence stays behind the storage adapter so a later app can replace the UI or client without rewriting canonical library identities;</li>
+<li>Supabase catalog projections, if later added, remain separate from private opportunity storage.</li>
+</ul>
+<h2 id="non-goals">Non-goals</h2>
+<ul>
+<li>autonomous application submission;</li>
+<li>scraping or background job discovery;</li>
+<li>recruiter CRM functionality;</li>
+<li>email/calendar synchronization;</li>
+<li>multi-user collaboration UI;</li>
+<li>storing candidate resume evidence in opportunity rows;</li>
+<li>making Supabase canonical for Personas, Skills, Tools, Templates, Operating Packs, Playbooks, Docs, Decisions, or Work Orders;</li>
+<li>replacing the Evidence-led Job Search Playbook or the seen-job deduplication contract.</li>
+</ul>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-evidence-led-job-search.html">Job search system implementation plan</a></li><li><a href="doc-application-context-and-review.html">Application context and review contract</a></li><li><a href="doc-seen-job-deduplication.html">Seen-job deduplication contract</a></li><li><a href="doc-candidate-context.html">Candidate Context Contract</a></li><li><a href="doc-resume-content-model.html">Resume Content Model</a></li><li><a href="doc-resume-template-mapping.html">Resume Template semantic mapping</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="guide.html#reference-docs">Back to Docs</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

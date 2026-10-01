@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateGraph } from '../client/system-map-graph.mjs';
 import { TOOL_PAGE_SOURCES } from './build-tools-pages.mjs';
+import { REFERENCE_PAGE_SOURCES } from './build-reference-pages.mjs';
 
 const REPO = 'rickvang/Persona-Library';
 const OWNER = 'repository:rickvang/persona-library';
@@ -149,6 +150,7 @@ export async function deriveSourceGeneratedGraph(root = rootDir, { buildSourceOv
   for (const [input, output] of directPairs) {
     if (output === 'dist/js/job-tracker-config.js') continue;
     if (output === 'dist/tools.html' && buildSource.includes('await buildToolsPage(root)')) continue;
+    if (['dist/playbooks.html','dist/guide.html'].includes(output) && buildSource.includes('await buildReferencePages(root)')) continue;
     sourceNode(nodes, input, pairSource);
     outputNode(nodes, output, pairSource);
     addEdge(edges, fileNodeId(input), fileNodeId(output), 'copied-to', 'contract-derived', pairSource);
@@ -183,6 +185,24 @@ export async function deriveSourceGeneratedGraph(root = rootDir, { buildSourceOv
       else addEdge(edges, fileNodeId(input), fileNodeId(toolsOutput), 'contributes-to', 'contract-derived', source);
     }
     addEdge(edges, stepNodeId(toolsStep), fileNodeId(toolsOutput), 'generates', 'contract-derived', sourceRef(toolsStep, 'buildToolsPage'));
+  }
+
+  if (buildSource.includes('await buildReferencePages(root)')) {
+    const referenceStep = 'scripts/build-reference-pages.mjs';
+    const manifest = await readJson(root,REFERENCE_PAGE_SOURCES.manifest);
+    const source = sourceRef(referenceStep,'buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest');
+    stepNode(nodes,referenceStep,'buildReferencePages');
+    addEdge(edges,'view:source-generated',stepNodeId(referenceStep),'contains','contract-derived',source);
+    const readers = [...manifest.playbooks.map(entry => 'dist/' + entry.id + '.html'),...manifest.documents.filter(entry => !manifest.playbooks.some(binding => binding.document === entry.id)).map(entry => 'dist/doc-' + entry.id + '.html')];
+    const outputs = ['dist/playbooks.html','dist/guide.html','dist/data/site-publication.json',...readers,...manifest.documents.map(entry => entry.legacyMarkdown && 'dist/' + entry.legacyMarkdown).filter(Boolean)];
+    for (const input of new Set([...Object.values(REFERENCE_PAGE_SOURCES),...manifest.documents.map(entry => entry.source),...manifest.playbooks.map(entry => entry.overviewSource).filter(Boolean)])) {
+      if (input.startsWith('dist/')) outputNode(nodes,input,source); else sourceNode(nodes,input,source);
+      addEdge(edges,fileNodeId(input),stepNodeId(referenceStep),'consumed-by','contract-derived',source);
+    }
+    for (const output of outputs) {
+      outputNode(nodes,output,source);
+      addEdge(edges,stepNodeId(referenceStep),fileNodeId(output),'generates','contract-derived',source);
+    }
   }
 
   const personaStep = 'scripts/build-persona-skill-system-map.mjs';

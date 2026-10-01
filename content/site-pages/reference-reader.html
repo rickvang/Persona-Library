@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{PAGE_TITLE}} | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" {{PLAYBOOK_CURRENT}}>Playbooks</a><a href="guide.html" {{DOCS_CURRENT}}>Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="{{BACK_HREF}}">Back to {{BACK_LABEL}}</a>
+      <p class="eyebrow">{{KIND_LABEL}}</p>
+      <h1>{{PAGE_TITLE}}</h1>
+      <!-- READER_SOURCE_TITLE -->
+      <p class="source-link">Source: <a href="{{SOURCE_HREF}}" rel="noreferrer">{{SOURCE_PATH}}</a></p>
+    </header>
+    <!-- READER_BOUNDARY -->
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><!-- READER_TOC --></nav></details></aside>
+      <article class="markdown-body"><!-- READER_BODY --><!-- READER_RELATED --></article>
+    </div>
+    <footer class="page-footer"><a href="{{BACK_HREF}}">Back to {{BACK_LABEL}}</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

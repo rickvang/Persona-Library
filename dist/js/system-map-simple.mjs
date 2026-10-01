@@ -102,12 +102,15 @@ function describeRecord(kind, record, context = {}) {
   }
   if (kind === 'playbook') {
     return {
-      summary: firstText(record.purpose, record.description, record.name + (record.status ? ' — ' + record.status : '')),
-      role: 'Coordinates stages, participants, handoffs, and checks toward an outcome. Linked workflows describe the work owned by individual Personas.',
-      inside: labels(record.stages, 'title'),
-      used: record.status ? 'Catalog status: ' + record.status + '.' : 'This record is present in the canonical Playbook catalog.',
+      summary: record.summary,
+      role: record.kind === 'overview' ? 'Authored overview; an authoritative process source is not yet bound. This is not an execution contract.' : 'This documented process coordinates work, handoffs, and checks. Its outline is not evidence that your assistant followed it.',
+      inside: record.outline,
+      used: 'Catalog status: ' + record.status + '. Source: ' + record.source + '.',
       next: []
     };
+  }
+  if (kind === 'document') {
+    return {summary:record.summary,role:'Current reference guidance. Category: ' + record.category + '.',inside:record.headings.map(heading => heading.label),used:'Published from ' + record.source + '.',next:[]};
   }
   if (kind === 'operating-pack' || kind === 'template') {
     return {
@@ -142,7 +145,10 @@ function describeRecord(kind, record, context = {}) {
   return { summary:firstText(record.description, record.label, record.name), role:'', inside:[], used:'', next:[] };
 }
 
-function buildModel(bundle, docs, data) {
+function buildModel(bundle, docs, data, publication) {
+  if (publication?.schema_version !== 'persona-library.site-publication/v1' || !Array.isArray(publication.documents) || !Array.isArray(publication.playbooks)) throw new Error('The generated Playbook and Docs publication is unavailable.');
+  const canonicalPlaybookIds = new Set((data.playbookCatalog || []).map(record => record.id));
+  if (publication.playbooks.length !== canonicalPlaybookIds.size || publication.playbooks.some(record => !canonicalPlaybookIds.has(record.id))) throw new Error('Playbook publication does not match the loaded canonical catalog.');
   if (bundle?.schema_version !== 'persona-library.agent-context/v0.1' || bundle?.route_id !== 'system-orientation') {
     throw new Error('The generated system-orientation bundle is unavailable or does not match the documented route.');
   }
@@ -209,9 +215,9 @@ function buildModel(bundle, docs, data) {
       }
     }
     if (groupId === 'playbooks') {
-      for (const record of data.playbookCatalog || []) {
+      for (const record of publication.playbooks) {
         const detail = describeRecord('playbook', record);
-        items.push(register({id:'playbook:' + record.id, groupId, label:record.name || record.id, kind:'Playbook', detail, raw:record}));
+        items.push(register({id:'playbook:' + record.id, groupId, label:record.name || record.id, kind:'Playbook', detail, raw:record, catalogHref:record.href,source:{kind:'repo-file',locator:'rickvang/Persona-Library:' + record.source,selector:record.kind === 'overview' ? 'authored overview' : 'documented process'}}));
       }
     }
     if (groupId === 'operating-packs' || groupId === 'templates') {
@@ -223,6 +229,9 @@ function buildModel(bundle, docs, data) {
       }
     }
     if (groupId === 'docs') {
+      for (const record of publication.documents) {
+        items.push(register({id:'doc:' + record.id,groupId,label:record.title,kind:'Reference document',detail:describeRecord('document',record),raw:record,catalogHref:record.href,source:{kind:'repo-file',locator:'rickvang/Persona-Library:' + record.source,selector:'curated reference document'}}));
+      }
       for (const record of docs.routes || []) {
         const detail = describeRecord('route', record);
         const id = 'route:' + record.id;
@@ -491,7 +500,7 @@ function renderExplanation() {
     '<h2 tabindex="-1" id="selected-heading">' + htmlEscape(item.label) + '</h2>' +
     '<section class="explain-section"><h3>What is this?</h3><p>' + htmlEscape(item.detail?.summary || 'The loaded source does not provide a plain-language description for this item.') + '</p></section>' +
     '<section class="explain-section"><h3>What role does it play?</h3><p>' + htmlEscape(item.detail?.role || 'Its role is not described in the loaded bounded source.') + '</p></section>' +
-    (item.catalogHref ? '<p><a href="' + htmlEscape(item.catalogHref) + '">Open full Tool details</a></p>' : '') +
+    (item.catalogHref ? '<p><a href="' + htmlEscape(item.catalogHref) + '">Open full ' + htmlEscape(item.kind === 'Reference document' ? 'document' : item.kind) + ' details</a></p>' : '') +
     (group ? '<section class="explain-section"><h3>Contents</h3><button type="button" class="where-button" data-open-contents="' + htmlEscape(group.id) + '">Open ' + htmlEscape(group.label) + ' contents →</button></section>' : item.kind === 'Persona' || item.kind === 'Skill' ? '' : '<section class="explain-section"><h3>What is inside it?</h3>' + inside + '</section>') +
     '<section class="explain-section"><h3>Where is it used?</h3><p>' + whereText + '</p>' + whereButtons + '</section>' +
     '<section class="explain-section"><h3>Connected parts</h3>' + (links || (group ? '<p>Open this group to explore its records.</p>' : '<p>No additional connections are recorded here.</p>')) + '</section>' +
@@ -717,19 +726,20 @@ globalThis.addEventListener('resize', () => {
 
 async function start() {
   try {
-    const [bundleResponse, docsResponse] = await Promise.all([
+    const [bundleResponse, docsResponse, publicationResponse] = await Promise.all([
       fetch('data/agent-context/system-orientation.json', {cache:'no-store'}),
-      fetch('data/orientation/docs.json', {cache:'no-store'})
+      fetch('data/orientation/docs.json', {cache:'no-store'}),
+      fetch('data/site-publication.json', {cache:'no-store'})
     ]);
-    if (!bundleResponse.ok || !docsResponse.ok) throw new Error('Could not load the generated orientation sources.');
-    const [bundle, docs] = await Promise.all([bundleResponse.json(), docsResponse.json()]);
+    if (!bundleResponse.ok || !docsResponse.ok || !publicationResponse.ok) throw new Error('Could not load the generated orientation and publication sources.');
+    const [bundle, docs, publication] = await Promise.all([bundleResponse.json(), docsResponse.json(), publicationResponse.json()]);
     const data = globalThis.PersonaLibraryData;
     if (!data) throw new Error('Persona Library data did not initialize.');
-    model = buildModel(bundle, docs, data);
+    model = buildModel(bundle, docs, data, publication);
     render();
     announce('Loaded source-backed system contents and documented request routing.');
   } catch (error) {
-    primary.innerHTML = '<p class="boundary-note"><strong>Prototype unavailable.</strong> ' + htmlEscape(error.message) + '</p>';
+    primary.innerHTML = '<p class="boundary-note"><strong>System Map unavailable.</strong> ' + htmlEscape(error.message) + '</p>';
     explanation.innerHTML = '<p class="empty-state">No system relationships were inferred to fill the gap.</p>';
     status.textContent = 'Source loading failed.';
   }

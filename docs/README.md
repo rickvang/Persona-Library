@@ -19,7 +19,7 @@ This directory contains current, reusable guidance and project-scoped work recor
 | Evaluation fixtures and results | eval/ | Record conditions and evidence without implying live provider capability. |
 | Isolated experiments | the existing prototype-owned path | Keep prototypes out of live records until explicit promotion. |
 | Authored static Site page shell | content/site-pages/ | Edit the stable route source here; the build publishes it to the matching top-level `dist/*.html` path. |
-| Published job-search Site doc | docs/job-search/ | Keep the canonical Markdown here; the build copies selected published docs into `dist/docs/`. |
+| Curated published reference or process | its current canonical Markdown owner in docs/ | Select it in `content/site-publication.json`; the build renders the Docs index, reader, and map projection. Existing published job-search Markdown URLs remain compatibility copies. |
 | Generated Site output | dist/ | Disposable build output only; never hand-edit. |
 | Temporary or scratch material | uncommitted temporary workspace | Do not commit by default. |
 | External-project artifact | its authorized external repository/system | Link or reference it; do not copy it into Persona-Library for convenience. |
@@ -63,4 +63,6 @@ Direct placement does not grant mutation permission and does not bypass change-i
 
 ## Generated output
 
-dist/ is the committed, publishable, dependency-free Site output. Change content/ or client/, run node scripts/build-library.mjs, then run node scripts/validate-content.mjs and the focused validation test before handoff. A clean rebuild must reproduce the committed generated data and route copies; no contributor should author changes directly under dist/.
+dist/ is the committed, publishable, dependency-free Site output. Install the pinned build-only Markdown parser with `npm ci --include=dev --ignore-scripts`, change content/ or client/ or a published source document, run `node scripts/build-library.mjs`, then run `node scripts/validate-content.mjs` and the focused validation test before handoff. A clean rebuild must reproduce the committed generated data and route copies; no contributor should author changes directly under dist/.
+
+`content/site-publication.json` is the explicit publication allowlist and existing-ID Playbook source binding, not a second process contract. `scripts/build-reference-pages.mjs` renders those current sources into the Playbooks catalog, curated Docs index, static readers, and `dist/data/site-publication.json` for the map. The existing human guide remains authored in `content/site-pages/guide.html`; its catalog-state examples are build-derived. An authored overview under `content/site-pages/` must stay labeled as an overview when no authoritative process source is bound. Internal reconstruction notes, work records/archives, Decisions, and Prototyping are not automatically published by this pipeline. Existing published job-search Markdown URLs remain compatibility copies.

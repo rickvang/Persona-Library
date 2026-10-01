@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation and file placement | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" >Playbooks</a><a href="guide.html" aria-current="page">Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="guide.html#reference-docs">Back to Docs</a>
+      <p class="eyebrow">Maintenance</p>
+      <h1>Documentation and file placement</h1>
+
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/README.md" rel="noreferrer">docs/README.md</a></p>
+    </header>
+
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#where-things-live">Where things live</a>
+<a href="#work-order-lifecycle">Work Order lifecycle</a>
+<a href="#placement-gate">Placement gate</a>
+<a href="#hygiene-rules">Hygiene rules</a>
+<a href="#generated-output">Generated output</a></nav></details></aside>
+      <article class="markdown-body"><span id="documentation-and-file-placement"></span>
+<p>This directory contains current, reusable guidance and project-scoped work records. Choose a destination by ownership and lifecycle before creating a file.</p>
+<blockquote>
+<p><strong>Looking for the overall human mental model?</strong> Start with <a href="https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md" rel="noreferrer">How Persona Workspace works</a>. This document is maintainer guidance for placing files <em>inside Persona-Library</em>; it does not redefine cross-repository ownership or require a human to understand the agent routing machinery.</p>
+</blockquote>
+<h2 id="where-things-live">Where things live</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Destination</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canonical Persona, Skill, Tool, Playbook, Template, or Operating Pack data</td>
+<td>content/ or its existing canonical owner</td>
+<td>Extend the existing owner before creating parallel truth.</td>
+</tr>
+<tr>
+<td>Callable repository Skill package</td>
+<td>.agents/skills/&lt;skill&gt;/</td>
+<td>Keep the package namespace flat until loader support changes.</td>
+</tr>
+<tr>
+<td>Current reusable system or domain guidance</td>
+<td>docs/&lt;subject&gt;/</td>
+<td>Keep current truth here; put rationale in Decisions.</td>
+</tr>
+<tr>
+<td>Repository policy validation ownership</td>
+<td>docs/policy-ownership.md</td>
+<td>Keep one canonical validated owner per repository-wide policy; root <code>AGENTS.md</code> activates rather than duplicates delegated contracts.</td>
+</tr>
+<tr>
+<td>Durable Decision records</td>
+<td>docs/decisions/records.json</td>
+<td>Append the rationale, alternatives, affected surfaces, status, and revisit condition; <code>content/decisions-page.html</code> plus <code>scripts/build-decisions.mjs</code> generate the Decisions page from this single source.</td>
+</tr>
+<tr>
+<td>Active project state needing unique recovery detail</td>
+<td>docs/work-orders/&lt;id&gt;/</td>
+<td>Use a Work Order only when Current Work plus the issue/PR and domain artifact do not already preserve enough execution/recovery state.</td>
+</tr>
+<tr>
+<td>Qualifying small repository change</td>
+<td>existing authoritative surfaces</td>
+<td>Use the small-change lane when a separate Work Order would duplicate state already held by Current Work, the issue/PR, or a domain-specific artifact. A pull request may be the active repository record; preserve existing issues, Current Work, Verification Queue records, and Work Graph membership when they have their own lifecycle.</td>
+</tr>
+<tr>
+<td>Terminal Work Order package</td>
+<td>docs/work-orders/archive/YYYY-MM/&lt;id&gt;/</td>
+<td>Preserve history; archive only after a terminal status is recorded.</td>
+</tr>
+<tr>
+<td>Evaluation fixtures and results</td>
+<td>eval/</td>
+<td>Record conditions and evidence without implying live provider capability.</td>
+</tr>
+<tr>
+<td>Isolated experiments</td>
+<td>the existing prototype-owned path</td>
+<td>Keep prototypes out of live records until explicit promotion.</td>
+</tr>
+<tr>
+<td>Authored static Site page shell</td>
+<td>content/site-pages/</td>
+<td>Edit the stable route source here; the build publishes it to the matching top-level <code>dist/*.html</code> path.</td>
+</tr>
+<tr>
+<td>Curated published reference or process</td>
+<td>its current canonical Markdown owner in docs/</td>
+<td>Select it in <code>content/site-publication.json</code>; the build renders the Docs index, reader, and map projection. Existing published job-search Markdown URLs remain compatibility copies.</td>
+</tr>
+<tr>
+<td>Generated Site output</td>
+<td>dist/</td>
+<td>Disposable build output only; never hand-edit.</td>
+</tr>
+<tr>
+<td>Temporary or scratch material</td>
+<td>uncommitted temporary workspace</td>
+<td>Do not commit by default.</td>
+</tr>
+<tr>
+<td>External-project artifact</td>
+<td>its authorized external repository/system</td>
+<td>Link or reference it; do not copy it into Persona-Library for convenience.</td>
+</tr>
+</tbody></table>
+</div><h2 id="work-order-lifecycle">Work Order lifecycle</h2>
+<p>Active packages stay directly under docs/work-orders/. A package with a terminal status (complete, no-go, or cancelled) moves to docs/work-orders/archive/YYYY-MM/&lt;id&gt;/ using the month of the reliable terminal update. Archival is lifecycle classification, not deletion. Archived packages are read-only historical evidence unless a later issue explicitly reopens or corrects them; active, blocked, draft, and review work stays in the active namespace.</p>
+<p>See <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/work-orders.md" rel="noreferrer">the Work Order contract</a> and <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/work-orders/README.md" rel="noreferrer">the active package index</a>.</p>
+<h2 id="placement-gate">Placement gate</h2>
+<p>Before committing a new file or directory, answer:</p>
+<ol>
+<li>What artifact kind is this?</li>
+<li>Who owns its truth?</li>
+<li>Is it current guidance, active project state, historical evidence, evaluation evidence, prototype material, canonical source, or generated output?</li>
+<li>Does an existing file or package already own this responsibility?</li>
+<li>Is a new file required, or can the existing owner be extended?</li>
+<li>What is its lifecycle and archive condition?</li>
+<li>Which references, routes, validators, and generated surfaces must stay aligned?</li>
+</ol>
+<p>When all seven answers are clear and the change follows an established owner/destination/lifecycle pattern, place the artifact directly; a separate architecture-review hop is unnecessary. Examples include a focused validator test beside the existing suite or regeneration of known <code>dist/</code> output from an established authored source.</p>
+<p>Escalate the placement question to Mara Okoye / the repository&#39;s knowledge-systems architecture review when canonical ownership is ambiguous, a new artifact class or top-level space is proposed, a new Persona/Skill/Tool/Template/Playbook identity is introduced, ownership would transfer across repositories, a semantic boundary/taxonomy would change, multiple plausible destinations compete, or a lifecycle/source-of-truth conflict remains unresolved.</p>
+<p>Direct placement does not grant mutation permission and does not bypass change-impact reconciliation when the selected change contract requires it.</p>
+<h2 id="hygiene-rules">Hygiene rules</h2>
+<ul>
+<li>Do not add a root file because finding a destination is inconvenient.</li>
+<li>Do not create a second document that restates an existing contract.</li>
+<li>Do not leave two full copies after a move.</li>
+<li>Do not archive active, blocked, draft, or review work.</li>
+<li>Do not leave completed Work Orders indefinitely in the active namespace.</li>
+<li>Do not hand-edit generated files; change authored source and run node scripts/build-library.mjs.</li>
+<li>Do not create nested .agents/skills/ namespaces without proven loader support.</li>
+<li>Do not move external canonical artifacts into this repository.</li>
+<li>Do not commit chat transcripts, giant scratch notes, temporary snapshots, or synthetic output unless they are required evidence with a defined owner and lifecycle.</li>
+<li>A GitHub issue, small-change pull request, or Work Order may track implementation; none grants unrelated mutation or merge authority.</li>
+</ul>
+<h2 id="generated-output">Generated output</h2>
+<p>dist/ is the committed, publishable, dependency-free Site output. Install the pinned build-only Markdown parser with <code>npm ci --include=dev --ignore-scripts</code>, change content/ or client/ or a published source document, run <code>node scripts/build-library.mjs</code>, then run <code>node scripts/validate-content.mjs</code> and the focused validation test before handoff. A clean rebuild must reproduce the committed generated data and route copies; no contributor should author changes directly under dist/.</p>
+<p><code>content/site-publication.json</code> is the explicit publication allowlist and existing-ID Playbook source binding, not a second process contract. <code>scripts/build-reference-pages.mjs</code> renders those current sources into the Playbooks catalog, curated Docs index, static readers, and <code>dist/data/site-publication.json</code> for the map. The existing human guide remains authored in <code>content/site-pages/guide.html</code>; its catalog-state examples are build-derived. An authored overview under <code>content/site-pages/</code> must stay labeled as an overview when no authoritative process source is bound. Internal reconstruction notes, work records/archives, Decisions, and Prototyping are not automatically published by this pipeline. Existing published job-search Markdown URLs remain compatibility copies.</p>
+</article>
+    </div>
+    <footer class="page-footer"><a href="guide.html#reference-docs">Back to Docs</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

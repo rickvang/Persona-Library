@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research, promote, and maintain a reusable Template | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" aria-current="page">Playbooks</a><a href="guide.html" >Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="playbooks.html#template-lifecycle">Back to Playbooks</a>
+      <p class="eyebrow">Documented process</p>
+      <h1>Research, promote, and maintain a reusable Template</h1>
+
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/template-lifecycle.md" rel="noreferrer">docs/playbooks/template-lifecycle.md</a></p>
+    </header>
+    <p class="boundary-note">This is the documented process, not an observed request trace. It does not show whether your assistant followed it.</p>
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#outcome">Outcome</a>
+<a href="#when-to-use">When to use</a>
+<a href="#when-not-to-use">When not to use</a>
+<a href="#why-this-is-a-distinct-playbook">Why this is a distinct Playbook</a>
+<a href="#ownership-boundaries">Ownership boundaries</a>
+<a href="#participants-and-decision-rights">Participants and decision rights</a>
+<a href="#stages">Stages</a>
+<a href="#shared-state">Shared state</a>
+<a href="#quality-gates">Quality gates</a>
+<a href="#failure-and-recovery">Failure and recovery</a>
+<a href="#representative-cases">Representative cases</a>
+<a href="#runtime-notes">Runtime notes</a>
+<a href="#learning-loop">Learning loop</a></nav></details></aside>
+      <article class="markdown-body"><span id="research-promote-and-maintain-a-reusable-template"></span>
+<ul>
+<li>Playbook ID: <code>playbook-template-lifecycle</code></li>
+<li>Status: Working model</li>
+<li>Audience: Template Librarian stewards, domain specialists composing starters, and operators deciding whether a starter stays local or becomes canonical</li>
+<li>Canonical catalog identity: <code>content/library-data/catalogs.js</code> <code>playbookCatalog</code>; <code>content/library-data.js</code> assembles the compatibility bundle</li>
+<li>Orientation route: <code>template-lifecycle</code></li>
+<li>Related Skills: <code>$template-research</code>, <code>$template-composer</code>, <code>$template-reconciliation</code></li>
+<li>Related Persona: Elena Park / <code>template-librarian</code></li>
+<li>Related Decisions: DEC-008 (Templates are reusable starting artifacts), DEC-009 (Template Librarian stewards the collection)</li>
+</ul>
+<p>This Playbook coordinates existing Template stewardship, lifecycle Skills, domain specialists, Work Orders, and reconciliation. It is not a runtime executor and does not redefine Template Librarian, Template Skills, domain expertise, or external artifact ownership.</p>
+<h2 id="outcome">Outcome</h2>
+<p>Move a reusable Template need from discovery through reuse-or-create, specialist quality when required, validation, promotion-or-local decision, Persona-Library catalog/Site publication, and reconciliation—without confusing library stewardship with domain authorship or copying external starters into Persona-Library.</p>
+<p>Success is an inspectable lifecycle decision with truthful source/provenance evidence, the correct specialist review when domain quality matters, and one bounded reconciliation pass after a material change. When reusable or canonical publication is the accepted outcome, success also requires a matching Persona-Library Template catalog record, a Persona-Library-local illustrative viewer representation using synthetic content, refreshed generated Site data, verified visibility in the Persona-Library Templates tab, and a focused viewer state of <code>Illustrative concept available</code>. Planned Templates may remain without a local viewer representation until publication. Success is not automatic promotion, inferred runtime access, or a Playbook run for every bounded Skill action.</p>
+<p>The run stops when the need is satisfied by reuse/adaptation, a local/candidate starter is intentionally kept local, a reusable/canonical publication is source-verified, cataloged, represented locally in the viewer, visible in the Templates tab/focused viewer, and reconciled, or the run is blocked at a named gate (unverified source, missing specialist, insufficient reuse evidence, unauthorized promotion, missing required viewer representation, stale generated Site data, missing Templates-tab/viewer visibility, or architecture escalation).</p>
+<h2 id="when-to-use">When to use</h2>
+<p>Use this Playbook when:</p>
+<ul>
+<li>the work crosses Template Librarian stewardship and at least one other owner (domain specialist, Mara placement, external source change, or reconciliation);</li>
+<li>the outcome is a reusable Template lifecycle decision, not a one-off file edit;</li>
+<li>catalog-first discovery, specialist quality, promotion evidence, Site publication, and reconciliation need a shared stage contract.</li>
+</ul>
+<h2 id="when-not-to-use">When not to use</h2>
+<p>Do not use this Playbook when:</p>
+<ul>
+<li>a single bounded Skill action is enough (catalog lookup, research brief, local compose, or a read-only reconciliation pass);</li>
+<li>the request is ordinary domain design/writing that does not need a reusable starter;</li>
+<li>the work is Operating Pack methodology, Tool permission, or Playbook orchestration disguised as a Template;</li>
+<li>promotion, external fetch/install, or runtime access is being treated as implied by catalog presence.</li>
+</ul>
+<h2 id="why-this-is-a-distinct-playbook">Why this is a distinct Playbook</h2>
+<p>Existing Template Skills already own discovery, composition, and Template-specific reconciliation. Elena Park already owns stewardship workflows. Those pieces remain authoritative.</p>
+<p>This Playbook is justified because the repeated outcome now crosses owners:</p>
+<pre><code class="language-text">Elena Park / Template Librarian → stewardship, provenance, duplication, promotion coordination
+$template-research → catalog-first discovery and source verification
+domain specialists → substantive Template quality
+$template-composer → smallest useful starter after the boundary is accepted
+Mara Okoye → architecture / placement escalation
+$template-reconciliation → read-only Template downstream review
+$change-impact-reconciliation → one universal pass when required
+rickvang/template-library → canonical reusable starter artifacts
+Persona-Library → Template identity, applicability, relationships, provenance, lifecycle context, local viewer representation, and Templates-tab publication
+</code></pre>
+<p>That is a reusable multi-stage coordination model. It is not a profile of Evidence-led Job Search, Skill formation, or Bounded Parallel Implementation.</p>
+<h2 id="ownership-boundaries">Ownership boundaries</h2>
+<pre><code class="language-text">Playbook
+→ stages, handoffs, gates, stop conditions, recovery
+
+Elena Park
+→ catalog stewardship and lifecycle coordination
+
+Domain specialists (for example Camille Ortiz, Jordan Lee, Sofia Calder)
+→ discipline-specific Template quality
+
+Mara Okoye
+→ architecture, taxonomy, placement, cross-library escalation
+
+Template Skills
+→ professional/library-management procedures inside stages
+
+template-library
+→ canonical reusable starter files
+
+Persona-Library Template records
+→ identity, applicability, relationships, evidence, lifecycle metadata
+
+Persona-Library local viewer
+→ synthetic illustrative representation for published reusable/canonical Templates
+
+Persona-Library generated Site
+→ Templates-tab display of the current catalog state
+
+Work Order
+→ run-specific authorization and progress
+</code></pre>
+<p>Do not create a new Persona, Skill, registry, package manager, sync service, or runtime for this Playbook. Do not copy Template Skills or Persona methods into this document beyond references.</p>
+<h2 id="participants-and-decision-rights">Participants and decision rights</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Owner</th>
+<th>Recommends</th>
+<th>Approves / stops</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Steward / coordinator</td>
+<td>Elena Park</td>
+<td>catalog action, promotion readiness, specialist routing</td>
+<td>can stop on provenance, duplication, or unauthorized promotion</td>
+<td>Not a universal domain author</td>
+</tr>
+<tr>
+<td>Domain specialist</td>
+<td>Named discipline Persona</td>
+<td>substantive starter quality</td>
+<td>owns domain quality gate for that discipline</td>
+<td>Required only when composition/adaptation needs domain judgment</td>
+</tr>
+<tr>
+<td>Architecture escalation</td>
+<td>Mara Okoye</td>
+<td>placement / boundary</td>
+<td>required before new durable space/file/concept</td>
+<td>Not the routine Template operator</td>
+</tr>
+<tr>
+<td>Research Skill</td>
+<td><code>$template-research</code></td>
+<td>reuse / adapt / create / catalog</td>
+<td>proposal only until authorized</td>
+<td>Catalog-first</td>
+</tr>
+<tr>
+<td>Composer Skill</td>
+<td><code>$template-composer</code></td>
+<td>starter manifest and boundary</td>
+<td>creates only after research acceptance + authorization</td>
+<td>Does not auto-promote</td>
+</tr>
+<tr>
+<td>Reconciliation</td>
+<td><code>$template-reconciliation</code> then <code>$change-impact-reconciliation</code></td>
+<td>required downstream updates</td>
+<td>read-only</td>
+<td>One universal pass; no recursion</td>
+</tr>
+</tbody></table>
+</div><h2 id="stages">Stages</h2>
+<h3 id="01--define--scope-the-template-need">01 / DEFINE — Scope the Template need</h3>
+<ul>
+<li><strong>Purpose:</strong> Make the task, destination, reuse-versus-project-local intent, and authorization visible.</li>
+<li><strong>Owner:</strong> Elena Park (stewardship) with the requester.</li>
+<li><strong>Entry:</strong> A Template need is stated or suspected.</li>
+<li><strong>Actions:</strong> Capture intended artifact, constraints, destination, and whether broader reuse is claimed.</li>
+<li><strong>Exit:</strong> Need brief exists; Playbook is used only if cross-owner coordination is required; otherwise stop and use the matching Template route/Skill.</li>
+<li><strong>Gate:</strong> Do not enter discovery pretending a project output is already a reusable Template.</li>
+</ul>
+<h3 id="02--discover--search-catalog-and-verify-sources">02 / DISCOVER — Search catalog and verify sources</h3>
+<ul>
+<li><strong>Purpose:</strong> Prefer existing Templates before creating anything.</li>
+<li><strong>Owner:</strong> Elena Park using <code>$template-research</code>.</li>
+<li><strong>Actions:</strong> Search the live catalog; compare purpose, category, use-when, source path, entrypoint, status, availability, and evidence; verify external path/revision when claimed.</li>
+<li><strong>Exit:</strong> Candidate comparison with reuse, adapt, create-local, or planned/canonical recommendation.</li>
+<li><strong>Gate:</strong> Repository existence alone is not verified artifact availability. Unverified source → stop or defer.</li>
+</ul>
+<h3 id="03--route--hand-off-domain-quality-when-needed">03 / ROUTE — Hand off domain quality when needed</h3>
+<ul>
+<li><strong>Purpose:</strong> Keep stewardship separate from domain authorship.</li>
+<li><strong>Owner:</strong> Elena Park routes; named specialist performs substantive work.</li>
+<li><strong>Actions:</strong> Classify discipline; select the smallest capable specialist; pass catalog/source/boundary context; receive specialist result without mixing methodology into the starter.</li>
+<li><strong>Exit:</strong> Specialist review complete, not required, or blocked pending a named specialist.</li>
+<li><strong>Gate:</strong> Missing required specialist review stops composition/promotion. Mara is used only for architecture/placement escalation.</li>
+</ul>
+<h3 id="04--compose--create-or-adapt-the-smallest-starter">04 / COMPOSE — Create or adapt the smallest starter</h3>
+<ul>
+<li><strong>Purpose:</strong> Produce only the useful starting structure after the boundary is accepted.</li>
+<li><strong>Owner:</strong> <code>$template-composer</code> with the relevant specialist when domain quality is in scope.</li>
+<li><strong>Entry:</strong> Accepted research result and explicit authorization for the target location.</li>
+<li><strong>Actions:</strong> Reuse or adapt first; create only needed starter files; preserve provenance; keep methodology/permissions/orchestration out of the Template; when reusable publication is intended, include a publication handoff for a Persona-Library-local synthetic viewer representation without copying the external starter.</li>
+<li><strong>Exit:</strong> Local, candidate, planned, or authorized canonical starter with an explicit boundary note and, when reusable publication is intended, an explicit publication handoff rather than a completion claim.</li>
+<li><strong>Gate:</strong> No silent promotion of a project starter into the reusable catalog. External source creation alone is not complete reusable publication.</li>
+</ul>
+<h3 id="05--validate--prove-source-boundary-and-quality">05 / VALIDATE — Prove source, boundary, and quality</h3>
+<ul>
+<li><strong>Purpose:</strong> Make validation inspectable before lifecycle mutation.</li>
+<li><strong>Owner:</strong> Elena Park coordinates; specialist owns domain checks; research/composer evidence remains attached.</li>
+<li><strong>Checks:</strong> source/path/entrypoint/revision truthfulness; reusable structure vs project output vs operating guidance; domain quality when required; availability claims not inferred; local viewer content is synthetic and preserves the external-source boundary when publication is in scope.</li>
+<li><strong>Exit:</strong> Pass, revise, or block with named gaps.</li>
+<li><strong>Gate:</strong> Failed source verification, missing specialist review, or a misleading viewer representation cannot be waved through as “good enough to promote.”</li>
+</ul>
+<h3 id="06--lifecycle--keep-local-publish-promote-update-or-deprecate">06 / LIFECYCLE — Keep local, publish, promote, update, or deprecate</h3>
+<ul>
+<li><strong>Purpose:</strong> Decide and complete the durable collection action from reuse evidence.</li>
+<li><strong>Owner:</strong> Elena Park coordinates; authorized operator performs canonical source/catalog/viewer mutation and generated Site refresh.</li>
+<li><strong>Actions:</strong> Evaluate reuse/promotion evidence; update or relocate canonical source when authorized; add or refresh the Persona-Library Template catalog record; add or refresh the local illustrative viewer representation using synthetic content; run the repository build that refreshes generated Site data; verify the Template appears in the Persona-Library Templates tab with the intended identity, source, lifecycle, and availability state and in the focused viewer as <code>Illustrative concept available</code>; keep project-local starters local when evidence is weak. Planned Templates may remain without a viewer until publication.</li>
+<li><strong>Exit:</strong> Explicit lifecycle decision with owner, revision context, revisit condition, catalog state, local viewer state, generated-output freshness, and Templates-tab/focused-viewer visibility status.</li>
+<li><strong>Gate:</strong> Reusable/canonical publication is incomplete until source, catalog, required local viewer representation, generated Site data, Templates-tab display, and focused-viewer state agree. Promotion requires reuse evidence and authorization. Unauthorized promotion stops here.</li>
+</ul>
+<h3 id="07--reconcile--review-downstream-effects-once">07 / RECONCILE — Review downstream effects once</h3>
+<ul>
+<li><strong>Purpose:</strong> Keep related records and generated surfaces coherent after a material Template change.</li>
+<li><strong>Owner:</strong> <code>$template-reconciliation</code>, then one <code>$change-impact-reconciliation</code> pass when required.</li>
+<li><strong>Actions:</strong> Trace identity/source/status/relationship impacts; verify catalog/source alignment, required local viewer representation, generated Site freshness, Templates-tab visibility, and focused-viewer state when reusable publication is in scope; separate required vs optional follow-ups; escalate architecture questions to Mara.</li>
+<li><strong>Exit:</strong> Reconciliation report with next action; no recursive reconciliation.</li>
+<li><strong>Gate:</strong> Read-only unless a separately authorized update follows the report. Missing catalog/viewer/Site visibility is a required follow-up, not a successful publication.</li>
+</ul>
+<h2 id="shared-state">Shared state</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Owner</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Need brief</td>
+<td>Requester / Work Order</td>
+<td>Task, destination, authorization, reuse claim</td>
+</tr>
+<tr>
+<td>Candidate comparison</td>
+<td><code>$template-research</code> / Elena</td>
+<td>Catalog matches, gaps, recommendation</td>
+</tr>
+<tr>
+<td>Source evidence ledger</td>
+<td>Elena / research Skill</td>
+<td>Path, entrypoint, revision, verification status</td>
+</tr>
+<tr>
+<td>Boundary note</td>
+<td>Composer / specialist</td>
+<td>Starter vs examples vs methodology vs project output</td>
+</tr>
+<tr>
+<td>Lifecycle decision</td>
+<td>Elena / authorized operator</td>
+<td>Local, publish, promote, update, deprecate, supersede</td>
+</tr>
+<tr>
+<td>Publication state</td>
+<td>Elena / authorized operator</td>
+<td>Catalog record, local viewer representation, generated Site freshness, Templates-tab and focused-viewer visibility</td>
+</tr>
+<tr>
+<td>Reconciliation report</td>
+<td>Template + universal adapters</td>
+<td>Required updates and limitations</td>
+</tr>
+</tbody></table>
+</div><p>Private project content stays in the project workspace. Canonical reusable starters stay in <code>rickvang/template-library</code> unless another authorized source is verified. Persona-Library stores Template metadata and relationships plus synthetic local viewer representations, not duplicated artifact trees; its generated Site exposes the current catalog through the Templates tab.</p>
+<h2 id="quality-gates">Quality gates</h2>
+<ol>
+<li><strong>Catalog-first:</strong> existing Templates checked before creation.</li>
+<li><strong>Boundary integrity:</strong> reusable structure separated from project output and operating guidance.</li>
+<li><strong>Source truth:</strong> path/entrypoint/revision evidence is verified or explicitly unknown.</li>
+<li><strong>Domain quality:</strong> right specialist reviewed when substantive quality is required.</li>
+<li><strong>Promotion evidence:</strong> reuse evidence justifies canonical status; existence alone does not.</li>
+<li><strong>Lifecycle ownership:</strong> every source/status change has an owner and revision context.</li>
+<li><strong>Viewer representation:</strong> every reusable/canonical publication has a Persona-Library-local illustrative representation using synthetic content and preserving the external-source boundary; planned Templates are exempt until publication.</li>
+<li><strong>Site publication:</strong> reusable/canonical publication requires matching Persona-Library catalog metadata, refreshed generated Site data, verified Templates-tab visibility, and <code>Illustrative concept available</code> in the focused viewer.</li>
+<li><strong>Reconciliation once:</strong> Template adapter then one universal pass at the appropriate boundary.</li>
+<li><strong>Availability honesty:</strong> catalog, viewer, or Templates-tab visibility does not imply runtime access; missing source or runtime access remains visible.</li>
+</ol>
+<h2 id="failure-and-recovery">Failure and recovery</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Stop / recovery</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unverified external source</td>
+<td>Stop at DISCOVER/VALIDATE; do not claim verified</td>
+</tr>
+<tr>
+<td>Missing specialist for domain Template</td>
+<td>Stop at ROUTE/VALIDATE; do not let Elena author the discipline content</td>
+</tr>
+<tr>
+<td>Insufficient reuse evidence</td>
+<td>Keep local/candidate; do not promote</td>
+</tr>
+<tr>
+<td>Unauthorized promotion or source write</td>
+<td>Stop at LIFECYCLE; record blocker</td>
+</tr>
+<tr>
+<td>Published reusable/canonical Template lacks a local illustrative viewer or the viewer misrepresents the external source</td>
+<td>Treat publication as incomplete; add/repair the Persona-Library-owned synthetic representation and revalidate the boundary</td>
+</tr>
+<tr>
+<td>Canonical source exists but catalog/generated Site/Templates tab/focused viewer is stale or missing</td>
+<td>Treat publication as incomplete; refresh the authorized catalog/viewer/generated surfaces and re-verify visibility before completion</td>
+</tr>
+<tr>
+<td>Architecture / taxonomy ambiguity</td>
+<td>Escalate to Mara; do not invent a new space or concept</td>
+</tr>
+<tr>
+<td>Stale relationships after change</td>
+<td>Return through RECONCILE; apply only authorized follow-ups</td>
+</tr>
+</tbody></table>
+</div><h2 id="representative-cases">Representative cases</h2>
+<h3 id="successful-lifecycle-case">Successful lifecycle case</h3>
+<p>Need: a reusable web-app design-system starter is requested. Elena searches the catalog, finds a planned or partial match, verifies <code>template-library</code> path/revision, routes Camille/Jordan for design-system quality, composes only missing starter structure after authorization, validates boundary and provenance, promotes or updates the canonical source with reuse evidence, registers or refreshes its Persona-Library catalog record, adds or refreshes a synthetic local viewer representation, rebuilds generated Site data, verifies the Template appears correctly in the Templates tab and focused viewer, then runs Template reconciliation and one universal pass.</p>
+<h3 id="boundary--failure-case">Boundary / failure case</h3>
+<p>Need: promote a project resume draft into the Template catalog. Discovery shows the artifact mixes private candidate facts with starter structure, source path is unverified, and no specialist boundary review exists. The Playbook stops before promotion, keeps the work project-local, and records the missing evidence rather than inventing a canonical Template.</p>
+<h2 id="runtime-notes">Runtime notes</h2>
+<p>This Playbook is runtime-neutral. Current agent surfaces may load the Template catalog, Skills, and Work Order, but no runtime is the canonical meaning of the Playbook. Do not add fetch/install/sync machinery here. The Templates tab and local illustrative viewer are Persona-Library publication surfaces, not proof of runtime access to the external source.</p>
+<h2 id="learning-loop">Learning loop</h2>
+<p>After each run, record whether catalog-first search avoided duplication, whether specialist routing preserved domain quality, whether promotion evidence was sufficient, whether the local viewer representation remained synthetic and source-honest, whether Site publication completed successfully, and whether reconciliation found stale relationships. Revise this Playbook only when repeated runs show a missing stage/gate, not when a one-off Skill action would have been enough.</p>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-multi-persona-collaboration.html">Multi-Persona Collaboration Playbook</a></li><li><a href="playbook-bounded-parallel-implementation.html">Bounded Parallel Implementation Playbook</a></li><li><a href="doc-problem-context.html">Shared problem context</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="playbooks.html#template-lifecycle">Back to Playbooks</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

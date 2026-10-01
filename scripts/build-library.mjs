@@ -6,6 +6,7 @@ import { buildPersonaSkillSystemMap } from './build-persona-skill-system-map.mjs
 import { buildTechnicalSystemMaps } from './build-technical-system-maps.mjs';
 import { buildAgentContextBundles } from './build-agent-context-bundles.mjs';
 import { buildToolsPage } from './build-tools-pages.mjs';
+import { buildReferencePages } from './build-reference-pages.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const orientation = JSON.parse(await readFile(path.join(root, 'content/site-orientation.json'), 'utf8'));
@@ -78,12 +79,6 @@ const authoredSitePages = [
   "workflow-canvas.html"
 ];
 
-const publishedSiteDocs = [
-  ['docs/job-search/application-context-and-review.md', 'dist/docs/application-context-and-review.md'],
-  ['docs/job-search/application-tracker-contract.md', 'dist/docs/application-tracker-contract.md'],
-  ['docs/job-search/job-ledger-contract.md', 'dist/docs/job-ledger-contract.md']
-];
-
 const files = [
   ['content/library-model.js', 'dist/data/library-model.js'],
   ['content/site-orientation.json', 'dist/data/site-orientation.json'],
@@ -92,6 +87,8 @@ const files = [
   ['client/tool-catalog.mjs', 'dist/js/tool-catalog.mjs'],
   ['client/tool-page.mjs', 'dist/js/tool-page.mjs'],
   ['client/tool-pages.css', 'dist/css/tool-pages.css'],
+  ['client/reference-page.mjs', 'dist/js/reference-page.mjs'],
+  ['client/reference-pages.css', 'dist/css/reference-pages.css'],
   ['client/job-tracker-config.js', 'dist/js/job-tracker-config.js'],
   ['client/job-tracker-import.js', 'dist/js/job-tracker-import.js'],
   ['client/job-tracker-store.js', 'dist/js/job-tracker-store.js'],
@@ -109,7 +106,6 @@ const files = [
   ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js'],
   ['content/job-tracker-page.html', 'dist/job-tracker.html'],
   ...authoredSitePages.map((name) => [`content/site-pages/${name}`, `dist/${name}`]),
-  ...publishedSiteDocs,
   ...routeFiles.map((routeFile) => [`content/${routeFile}`, `dist/data/${routeFile}`])
 ];
 
@@ -141,6 +137,7 @@ console.log(`Built Applications storage config -> ${trackerRuntimeConfig.mode} m
 
 await buildDecisionsPage(root);
 await buildToolsPage(root);
+await buildReferencePages(root);
 
 const primarySitePages = [
   'dist/index.html',

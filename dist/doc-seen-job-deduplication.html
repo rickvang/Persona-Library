@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seen-job deduplication contract | Persona Library</title>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html" >Playbooks</a><a href="guide.html" aria-current="page">Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+  </header>
+  <main class="page reference-reader" id="main">
+    <header class="detail-heading">
+      <a href="guide.html#reference-docs">Back to Docs</a>
+      <p class="eyebrow">Job search</p>
+      <h1>Seen-job deduplication contract</h1>
+
+      <p class="source-link">Source: <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/job-ledger-contract.md" rel="noreferrer">docs/job-search/job-ledger-contract.md</a></p>
+    </header>
+
+    <div class="reader-layout">
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#ownership-boundary">Ownership boundary</a>
+<a href="#required-behavior">Required behavior</a>
+<a href="#stable-identity-order">Stable identity order</a>
+<a href="#authenticated-private-record">Authenticated private record</a>
+<a href="#security-boundary">Security boundary</a>
+<a href="#clientstorage-integration">Client/storage integration</a>
+<a href="#applications-relationship">Applications relationship</a>
+<a href="#explicit-non-goals">Explicit non-goals</a>
+<a href="#validation">Validation</a>
+<a href="#completion-boundary">Completion boundary</a></nav></details></aside>
+      <article class="markdown-body"><span id="seen-job-deduplication-contract"></span>
+<p>Reusable contract for avoiding duplicate job results across repeated job-search checks. It answers one question only: <strong>has this opening already been presented to this authenticated user?</strong></p>
+<p>The file name is retained for compatibility with existing references. This contract does <strong>not</strong> define a full job-opportunity ledger or application tracker.</p>
+<p>Application lifecycle tracking is defined separately in <a href="doc-application-tracker.html"><code>application-tracker-contract.md</code></a>. The two stores may reference the same posting identity, but neither contract silently absorbs the other.</p>
+<h2 id="ownership-boundary">Ownership boundary</h2>
+<pre><code class="language-text">Creative Job Search / job-discovery capability
+→ finds current openings
+→ derives the strongest stable identity for each result
+→ reads the authenticated private seen-job store before presentation
+→ suppresses identities already shown from default “what’s new?” output
+→ presents genuinely new results
+→ records only the results actually presented, after they are shown
+
+Applications tracker
+→ stores only opportunities intentionally selected for lifecycle tracking
+→ remains canonical for Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed
+
+Persona-Library
+→ owns this reusable behavior, identity precedence, client/storage integration contract,
+  and the private database schema/migration required for the feature
+→ does not own or commit user-specific seen-job rows
+
+persona-workspace-data Supabase private state
+→ owns the actual per-user seen-job rows in app.seen_jobs
+→ uses the existing authenticated app schema and Data API boundary
+</code></pre>
+<p>JobAgent remains reference evidence only. Do not integrate JobAgent, import its broader model, or recreate its lifecycle.</p>
+<h2 id="required-behavior">Required behavior</h2>
+<pre><code class="language-text">search
+→ normalize each returned job enough to derive identity
+→ query app.seen_jobs for the authenticated user
+→ already presented?
+   ├─ yes → suppress from default new-results output
+   └─ no  → present
+             ↓
+           after presentation succeeds
+             ↓
+           insert identity into app.seen_jobs
+</code></pre>
+<p>Reading happens <strong>before</strong> presentation. Recording happens <strong>after</strong> presentation. A discovered job that was never shown must not be marked seen merely because it appeared in an intermediate search result.</p>
+<h2 id="stable-identity-order">Stable identity order</h2>
+<p>Use the strongest available identity first:</p>
+<ol>
+<li>provider/source + stable provider job ID;</li>
+<li>normalized canonical posting URL;</li>
+<li>conservative normalized <code>company + title + location</code> fingerprint.</li>
+</ol>
+<p>Tracking-only URL parameters must not make the same posting appear new. The fallback fingerprint should require enough information to avoid collapsing distinct openings; if company, title, and location are not all available and there is no stronger identity, treat identity as unresolved instead of guessing.</p>
+<h2 id="authenticated-private-record">Authenticated private record</h2>
+<p>The private seen-job set is persisted in the dedicated <code>app.seen_jobs</code> store in the existing <code>persona-workspace-data</code> Supabase project.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>user_id</code></td>
+<td>Authenticated owner; RLS binds access to <code>auth.uid()</code></td>
+</tr>
+<tr>
+<td><code>stable_key</code></td>
+<td>Identity used for repeated-result suppression</td>
+</tr>
+<tr>
+<td><code>provider_job_id</code></td>
+<td>Stable provider/source job identifier when available</td>
+</tr>
+<tr>
+<td><code>source_url</code></td>
+<td>Presented posting URL when available</td>
+</tr>
+<tr>
+<td><code>normalized_source_url</code></td>
+<td>Canonical URL used for URL identity</td>
+</tr>
+<tr>
+<td><code>company</code></td>
+<td>Human-readable employer</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Human-readable job title</td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>Location used by the conservative fallback when available</td>
+</tr>
+<tr>
+<td><code>first_shown_at</code></td>
+<td>Time the opening was first actually presented</td>
+</tr>
+</tbody></table>
+</div><p>The table intentionally has no application status, rejection state, recruiter fields, campaign fields, observation history, or <code>last_seen</code>.</p>
+<h2 id="security-boundary">Security boundary</h2>
+<p>The seen-job table follows the same private-data principles as Applications while remaining a separate table and workflow:</p>
+<ul>
+<li><code>app</code> is the existing explicitly exposed Data API schema;</li>
+<li><code>authenticated</code> receives only the table privileges required for deduplication;</li>
+<li>anonymous access is revoked;</li>
+<li>RLS limits reads and inserts to <code>(select auth.uid()) = user_id</code>;</li>
+<li>browser/runtime code uses only the publishable project key plus the authenticated user session;</li>
+<li>secret/service-role credentials are prohibited from client code;</li>
+<li>real seen-job rows never appear in Persona-Library source, fixtures, generated output, Work Orders, or test evidence.</li>
+</ul>
+<h2 id="clientstorage-integration">Client/storage integration</h2>
+<p><code>client/seen-job-store.js</code> provides the reusable integration boundary.</p>
+<ul>
+<li><code>deriveIdentity(job)</code> applies provider ID → canonical URL → conservative fingerprint precedence.</li>
+<li><code>canonicalizeSourceUrl(url)</code> removes fragments and tracking-only parameters while preserving identity-bearing URL data.</li>
+<li><code>filterUnseen(results)</code> reads the authenticated <code>app.seen_jobs</code> table before results are presented.</li>
+<li><code>recordPresented(shownResults)</code> inserts identities only after those results were actually shown.</li>
+<li>Duplicate inserts are ignored so <code>first_shown_at</code> is not rewritten on later equivalent runs.</li>
+<li>There is no local-storage fallback for seen-job suppression; configured repeated-run memory is the authenticated private Supabase store.</li>
+</ul>
+<h2 id="applications-relationship">Applications relationship</h2>
+<p>A seen job is not automatically a tracked opportunity.</p>
+<pre><code class="language-text">seen job
+→ optionally selected for tracking
+→ create/update Applications opportunity
+→ lifecycle begins at Found
+</code></pre>
+<p>The same posting may therefore exist in both stores for different reasons. Seen-job state answers whether it has been presented; Applications state answers what is happening with an intentionally tracked opportunity.</p>
+<h2 id="explicit-non-goals">Explicit non-goals</h2>
+<p>This contract does not require:</p>
+<ul>
+<li>application lifecycle fields in <code>seen_jobs</code>;</li>
+<li>rejected / applied / expired state;</li>
+<li><code>last_seen</code> observation history;</li>
+<li>repost/material-change state machines;</li>
+<li>campaign analytics or campaign-health persistence;</li>
+<li>recruiter CRM data;</li>
+<li>a new Supabase project;</li>
+<li>a scheduler, queue, daemon, or sync service;</li>
+<li>autonomous job discovery or application submission;</li>
+<li>JobAgent integration;</li>
+<li><code>rickvang/ai-job-search</code> as an implementation target.</li>
+</ul>
+<h2 id="validation">Validation</h2>
+<p>Use synthetic/test rows and an authorized private runtime. Do not commit live private history.</p>
+<ol>
+<li>A first search returns a synthetic matching job as unseen.</li>
+<li>The runtime presents it, then records it.</li>
+<li>A later equivalent search suppresses it.</li>
+<li>Tracking-only URL differences resolve to the same identity.</li>
+<li>Stable provider job IDs take precedence when available.</li>
+<li>Conservative fallback identity does not collapse clearly distinct locations/roles.</li>
+<li>Genuinely new jobs still pass through.</li>
+<li>The same posting can independently be added to Applications as <code>Found</code>.</li>
+<li>Anonymous and different-user contexts cannot read or mutate the row.</li>
+</ol>
+<h2 id="completion-boundary">Completion boundary</h2>
+<p>Issue #96 is complete only when the repository contract and client adapter, the live private <code>app.seen_jobs</code> schema, repeated-run proof, and owner-isolation/security validation all agree. Applications remains a separate lifecycle store and no real seen-job history is committed to Git.</p>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-evidence-led-job-search.html">Job search system implementation plan</a></li><li><a href="doc-application-context-and-review.html">Application context and review contract</a></li><li><a href="doc-application-tracker.html">Job application tracker contract</a></li><li><a href="doc-candidate-context.html">Candidate Context Contract</a></li><li><a href="doc-resume-content-model.html">Resume Content Model</a></li><li><a href="doc-resume-template-mapping.html">Resume Template semantic mapping</a></li></ul></section></article>
+    </div>
+    <footer class="page-footer"><a href="guide.html#reference-docs">Back to Docs</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
+  </main>
+</body>
+</html>

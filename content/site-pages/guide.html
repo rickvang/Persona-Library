@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="How to create, research, and extend personas in the Personas system." />
-  <title>Using persona-research — Personas</title>
+  <title>Docs | Persona Library</title>
   <style>
     :root { --ink:#101827; --ink-soft:#526174; --night:#08111f; --paper:#f5f4ef; --card:#fffefa; --line:#d8dcd6; --coral:#ff7c62; --mint:#a6ead7; --yellow:#f2d47e; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); font-synthesis:none; }
     * { box-sizing:border-box; }
@@ -66,22 +66,28 @@
     @media (max-width:800px) { .docs-layout { grid-template-columns:1fr; gap:18px; padding-top:26px; } .sidebar { position:static; display:flex; gap:5px; overflow-x:auto; border-right:0; border-bottom:1px solid var(--line); padding:0 0 12px; white-space:nowrap; } .sidebar-label { display:none; } .sidebar a { padding:8px 11px; border-radius:8px; background:#e9ece6; } .rule-list li { grid-template-columns:1fr; gap:5px; } }
     @media (max-width:520px) { .topbar { padding:16px 20px; } .topnav { gap:12px; font-size:12px; white-space:nowrap; } .hero { padding:30px 20px 32px; } .docs-layout { padding-left:20px; padding-right:20px; } .source-callout { display:block; } .source-callout .copy { margin-top:14px; } .mini-table { display:block; overflow-x:auto; white-space:normal; } }
   </style>
+  <link rel="stylesheet" href="css/tool-pages.css">
+  <link rel="stylesheet" href="css/reference-pages.css">
+  <script type="module" src="js/reference-page.mjs"></script>
 </head>
-<body>
+<body class="docs-guide">
+  <a class="skip-link" href="#start">Skip to content</a>
   <header class="topbar">
     <a class="brand" href="index.html"><span class="mark">PL</span><span>Personas</span></a>
-    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html" aria-current="page">Docs</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
+    <nav class="topnav" aria-label="Primary"><a href="index.html">Personas</a><a href="skills.html">Skills</a><a href="operating-packs.html">Operating Packs</a><a href="templates.html">Templates</a><a href="tools.html">Tools</a><a href="playbooks.html">Playbooks</a><a href="guide.html" aria-current="page">Docs</a><a href="system-map.html">System Map</a><span aria-hidden="true" style="display:inline-block;width:1px;height:17px;margin:0 2px;background:#405064;vertical-align:middle"></span><a href="job-tracker.html">Applications</a><a href="decisions.html">Decisions</a><a href="prototyping.html">Prototyping</a></nav>
   </header>
   <section class="hero">
     <p class="crumbs"><a href="index.html">Personas</a> / Docs</p>
     <p class="eyebrow">Reference guide</p>
     <h1>Docs</h1>
     <p class="hero-copy">A practical reference for understanding how Persona-Library fits into the wider workspace, using its reusable knowledge, and maintaining the system when deeper technical detail is actually needed.</p>
+    <p><a href="#reference-docs">Reference docs</a></p>
   </section>
   <div class="docs-layout">
     <nav class="sidebar" aria-label="Guide sections">
       <p class="sidebar-label">On this page</p>
       <a href="#start">Start here</a>
+      <a href="#reference-docs">Reference docs</a>
       <a href="#system-overview">How the system fits together</a>
       <a href="#create">Use the library</a>
       <a href="#operating-packs">Operating Packs</a>
@@ -142,6 +148,11 @@
         <div class="source-callout"><div><h3>Canonical Workspace guide</h3><p>This page summarizes the model for Persona-Library. The full cross-repository explanation lives in Persona Workspace so the Site does not become a second source of truth.</p></div><a class="back" href="https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md">Open How Persona Workspace works →</a></div>
       </section>
 
+      <section class="reference-section" id="reference-docs">
+        <h2>Reference docs</h2>
+        <!-- DOCS_INDEX -->
+      </section>
+
       <section class="article-section" id="create">
         <h2>Create a persona</h2>
         <p>Use this when you want a new persona researched and added to Personas. You can optionally invoke the skill explicitly.</p>
@@ -184,7 +195,8 @@
         </div>
         <div class="note"><p><strong>Keep the layers separate:</strong> Skills own reusable expertise and judgment. Operating Packs own contextual rules, standards, procedures, references, and validation guidance. Playbooks coordinate outcomes and reference packs when needed. Tools act under their own scope and permissions.</p></div>
         <div class="note"><p><strong>Source and status:</strong> Actual Markdown files may stay in a repository or project outside this library. A repository name, URL, or catalog entry does not prove availability. Project-specific guidance remains local unless evidence and review justify a reusable canonical pack.</p></div>
-         <div class="source-callout"><div><h3>Current example</h3><p>The Design System pack is a canonical external reference to <code>rickvang/operating-packs/packs/design-system</code>. Its <code>AGENTS.md</code> entrypoint is verified at revision <code>569c326f6f9df4077ee77352fe691bda6ec37b92</code>, while runtime access remains capability-dependent.</p></div><a class="back" href="operating-packs.html">Browse Operating Packs →</a></div>
+        <h3>Current catalog</h3>
+        <!-- PACK_CATALOG_STATE -->
        </section>
 
       <section class="article-section" id="templates">
@@ -197,7 +209,8 @@
         <div class="note"><p><strong>Ownership boundary:</strong> Persona-Library owns Template identity, applicability, relationships, source metadata, evidence, and lifecycle context. The actual reusable artifact may live in <code>rickvang/template-library</code> or another authorized source. Templates do not own Skill judgment, Operating Pack rules, Tool permissions, or Playbook orchestration.</p></div>
         <div class="note"><p><strong>Stewardship model:</strong> The <a href="index.html?persona=template-librarian">Template Librarian</a> keeps the collection findable, trustworthy, and current, verifies provenance, checks duplication, coordinates promotion and lifecycle changes, and routes substantive work to the relevant domain specialist. Camille, Jordan, Sofia, or another specialist decides what a discipline-specific Template should contain; Mara handles architecture and concept-boundary escalation.</p></div>
         <div class="note"><p><strong>Source honesty:</strong> A verified repository revision does not prove that a proposed Template path exists or that the current runtime can access, copy, render, or execute it. Planned, unavailable, and project-local states remain visible.</p></div>
-        <div class="source-callout"><div><h3>Current catalog state</h3><p>The three design-system Template identities are planned external references. The inspected <code>rickvang/template-library</code> main revision contains only <code>README.md</code>; the proposed artifact paths are not yet present.</p></div><a class="back" href="templates.html">Browse Templates →</a></div>
+        <h3>Current catalog</h3>
+        <!-- TEMPLATE_CATALOG_STATE -->
       </section>
 
       <section class="article-section" id="library-model">
@@ -234,12 +247,8 @@
         <h2>Composed playbooks</h2>
         <p>A playbook is an operating surface used by a Persona. It defines stages, participants, handoffs, decision rights, shared state, quality gates, recovery, and a learning loop; it does not act, exercise domain judgment, or independently own the outcome. The operating Persona calls existing personas and skills through that process rather than copying them.</p>
         <ul class="rule-list"><li><strong>Primitives</strong><span>Personas, skills, resources, tools, artifacts, and persona-owned workflows.</span></li><li><strong>Composition</strong><span>Stages, routing, handoffs, decision rights, quality gates, and flow dependencies.</span></li><li><strong>Instance</strong><span>The user’s actual goal, constraints, evidence, artifact versions, decisions, and feedback.</span></li></ul>
-        <div class="source-callout"><div><h3>Current example</h3><p><strong>Evidence-led job search</strong> is operated by Priya Desai · Job search orchestrator and coordinates role calibration, evidence mapping, ATS review, human narrative, visual communication, outreach, interviews, recovery, and learning.</p></div><a class="back" href="playbooks.html">Open Playbooks →</a></div>
-        <div class="source-callout"><div><h3>Skill formation example</h3><p><strong>Create and integrate a reusable skill</strong> coordinates a boundary-setting persona, relevant domain personas, an orchestrator, Create-skill, and reconciliation.</p></div><a class="back" href="playbooks.html#skill-formation">Open the skill formation playbook →</a></div>
-        <div class="source-callout"><div><h3>Template lifecycle example</h3><p><strong>Research, promote, and maintain a reusable Template</strong> coordinates Template Librarian stewardship, domain specialists, Template Skills, promotion evidence, and reconciliation.</p></div><a class="back" href="playbooks.html#template-lifecycle">Open the Template lifecycle playbook →</a></div>
-        <div class="source-callout"><div><h3>Collaboration example</h3><p><strong>Multi-Persona Collaboration</strong> coordinates explicitly named Personas through a shared <code>problem-context</code> to produce one attributable, inspectable solution instead of an averaged transcript.</p></div><a class="back" href="playbooks.html#collaboration">Open the collaboration playbook →</a></div>
-        <div class="source-callout"><div><h3>Bounded parallel example</h3><p><strong>Bounded parallel implementation</strong> records implementer orientation, source-grounds each workstream in the target repository before dispatch, then uses a thin coordinator, compact GitHub-reference handoffs or completion callback, independent PR review, and separately authorized merge. Persona-Library catalogs the Playbook; the repository being changed owns implementation truth.</p></div><a class="back" href="playbooks.html#bounded-parallel">Open the bounded parallel playbook →</a></div>
-        <div class="note"><p><strong>Skill boundary:</strong> playbooks coordinate the work, while <code>Multi-perspective skill synthesis</code> captures the reusable reasoning inside the process. A broader playbooks skill can later standardize outcome framing, stage decomposition, routing, shared state, gates, handoffs, and reconciliation across multiple playbooks.</p></div>
+        <!-- PLAYBOOK_EXAMPLES -->
+        <div class="note"><p><strong>Skill boundary:</strong> Playbooks coordinate the work; Skills own reusable expertise. The existing <code>$playbook-composer</code> maintains process contracts without becoming a runtime executor.</p></div>
       </section>
 
       <section class="article-section" id="application-context">

@@ -1,0 +1,11 @@
+{
+  "name": "persona-library-site-build",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node scripts/build-library.mjs",
+    "validate": "node scripts/validate-content.mjs"
+  },
+  "devDependencies": { "marked": "18.0.14" }
+}
