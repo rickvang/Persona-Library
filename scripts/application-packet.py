@@ -23,8 +23,22 @@ def text(value):
 
 
 def numbers(value):
-    words = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty".split()
-    value = re.sub(r"\b(" + "|".join(words) + r")\b", lambda m: str(words.index(m[0])), value.lower())
+    units = {word: number for number, word in enumerate(
+        "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split())}
+    tens = {word: number * 10 for number, word in enumerate(
+        "twenty thirty forty fifty sixty seventy eighty ninety".split(), 2)}
+    words = "|".join([*units, *tens, "hundred", "thousand", "million", "billion", "trillion"])
+
+    def normalize(match):
+        parts = re.split(r"[\s-]+", match[0])
+        if len(parts) == 1 and parts[0] in units | tens:
+            return str((units | tens)[parts[0]])
+        if len(parts) == 2 and parts[0] in tens and parts[1] in units and 1 <= units[parts[1]] <= 9:
+            return str(tens[parts[0]] + units[parts[1]])
+        raise ValueError("Use digits for unsupported number-word forms before checking evidence.")
+
+    value = re.sub(r"\b(?:" + words + r")\b(?:[\s-]+(?:and[\s-]+)?(?:" + words + r")\b)*",
+                   normalize, value.lower().replace("\u2011", "-"))
     return set(re.findall(r"(?<![\w])\$?\d[\d,]*(?:\.\d+)?(?:%|\+)?", value))
 
 

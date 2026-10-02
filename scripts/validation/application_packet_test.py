@@ -57,6 +57,23 @@ class PacketTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unsupported number"):
             packet.prepare(profile, draft)
 
+    def test_written_numbers_cannot_bypass_evidence(self):
+        for quantity in ("thirty", "forty", "twenty-one", "twenty one", "one hundred", "two thousand"):
+            with self.subTest(quantity=quantity):
+                profile, draft = fixture()
+                profile["facts"]["current"]["text"] = "Designed 4 products across 20 projects for 1 team."
+                draft["resume"]["summary"]["text"] = f"Designed {quantity} products."
+                with self.assertRaisesRegex(ValueError, "unsupported number"):
+                    packet.prepare(profile, draft)
+
+    def test_supported_written_numbers_match_digits(self):
+        for quantity, number in (("thirty", 30), ("twenty-one", 21), ("ninety nine", 99)):
+            with self.subTest(quantity=quantity):
+                profile, draft = fixture()
+                profile["facts"]["current"]["text"] = f"Designed 4 products and delivered {number} projects."
+                draft["resume"]["summary"]["text"] = f"Delivered {quantity} projects."
+                self.assertEqual(packet.prepare(profile, draft)["summary"], draft["resume"]["summary"]["text"])
+
     def test_wrong_employer_attribution(self):
         profile, draft = fixture()
         draft["resume"]["roles"][0]["bullets"][0]["evidence"] = ["earlier"]
