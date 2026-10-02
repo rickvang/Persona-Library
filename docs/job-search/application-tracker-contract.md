@@ -50,7 +50,7 @@ Each portable record uses a tracker-generated stable `id` and may contain:
 | `foundDate` | Date the opportunity was first tracked |
 | `appliedDate` | Date submitted, when applicable |
 | `nextAction` | Smallest current follow-up |
-| `notes` | Candidate-owned working notes |
+| `notes` | Brief role-fit notes, application-answer drafts, unknowns, source/revision references and review findings; link substantial private notes when warranted |
 | `updatedAt` | State freshness marker |
 
 The Supabase adapter maps this portable shape into database columns while preserving the portable ID. Database-only ownership and row identifiers do not become part of the public tracker export contract.
@@ -60,6 +60,8 @@ The Supabase adapter maps this portable shape into database columns while preser
 `Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed`
 
 The tracker does not infer transitions. External submission, outreach, or interview actions remain separately authorized actions.
+
+Routine preparation keeps answers and unresolved questions in these existing notes rather than creating a parallel coordination document. Keep canonical candidate facts and the evidence bank in Candidate Context; use source references here. A separate notes artifact is optional for substantial form answers or an explicit request, and should be linked rather than duplicated. Keep a packet `Reviewing` while material facts or required answers remain unresolved; record `Packet Ready` only when the actual submission artifacts and required answers pass review.
 
 ## Persistence and privacy
 
@@ -169,6 +171,6 @@ The tracker must remain extractable:
 - recruiter CRM functionality;
 - email/calendar synchronization;
 - multi-user collaboration UI;
-- storing candidate resume evidence in opportunity rows;
+- storing the canonical candidate resume evidence bank in opportunity rows (brief role-specific answers and source references remain working notes);
 - making Supabase canonical for Personas, Skills, Tools, Templates, Operating Packs, Playbooks, Docs, Decisions, or Work Orders;
 - replacing the Evidence-led Job Search Playbook or the seen-job deduplication contract.

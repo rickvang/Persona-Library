@@ -14,16 +14,16 @@
     "behavioral_passed": 39,
     "behavioral_failed": 0,
     "base_context": {
-      "control_utf8_bytes": 137772,
+      "control_utf8_bytes": 137062,
       "preferred_utf8_bytes": 117112,
-      "delta_utf8_bytes": -20660,
-      "delta_percent": -15
+      "delta_utf8_bytes": -19950,
+      "delta_percent": -14.6
     },
     "activated_behavior_context": {
-      "control_utf8_bytes": 1032233,
+      "control_utf8_bytes": 1027973,
       "preferred_utf8_bytes": 902167,
-      "delta_utf8_bytes": -130066,
-      "delta_percent": -12.6
+      "delta_utf8_bytes": -125806,
+      "delta_percent": -12.2
     },
     "deterministic_work": {
       "control_completion_file_reads_per_route": 3,
@@ -69,11 +69,11 @@
     {
       "route_id": "system-orientation",
       "context": {
-        "control_utf8_bytes": 34555,
+        "control_utf8_bytes": 33845,
         "preferred_utf8_bytes": 27028,
-        "delta_utf8_bytes": -7527,
-        "delta_percent": -21.8,
-        "control_rough_tokens": 8639,
+        "delta_utf8_bytes": -6817,
+        "delta_percent": -20.1,
+        "control_rough_tokens": 8462,
         "preferred_rough_tokens": 6757
       },
       "behavior": {
@@ -81,7 +81,7 @@
         "passed": 8,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -16.8
+        "context_delta_percent": -15.5
       },
       "timing": {
         "control": {
