@@ -5,18 +5,18 @@
       "id": "playbook-evidence-led-job-search",
       "name": "Evidence-led job search",
       "status": "Working model",
-      "summary": "Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.",
+      "summary": "Help a person find suitable work, prepare truthful applications, and learn from confirmed outcomes. Routine application preparation uses the short path below; the later sections supply campaign guidance and exception detail.",
       "kind": "process",
       "source": "docs/playbooks/evidence-led-job-search.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/evidence-led-job-search.md",
-      "sourceSha256": "41ae3aaec25b0a2cbda9cec21322de33d46d2a4b0449890a628b254cf22bf32d",
+      "sourceSha256": "dc0f432ecdd228cce61678544e31846174d12f5e5d88193ec62e6f91f364ebc3",
       "href": "playbook-evidence-led-job-search.html",
       "legacyAnchor": "current",
       "outline": [
         "Phase 0 — Define the search",
         "Phase 1 — Role and evidence alignment",
         "Phase 2 — Application packet",
-        "Application preflight — before the council",
+        "Application preflight — before final review",
         "Phase 3 — Quality review",
         "Phase 4 — Outreach and interview",
         "Phase 5 — Search learning loop"
@@ -144,17 +144,22 @@
   "documents": [
     {
       "id": "job-search-process",
-      "title": "Job search system implementation plan",
-      "summary": "Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.",
+      "title": "Evidence-led Job Search Playbook",
+      "summary": "Help a person find suitable work, prepare truthful applications, and learn from confirmed outcomes. Routine application preparation uses the short path below; the later sections supply campaign guidance and exception detail.",
       "category": "Job search",
       "source": "docs/playbooks/evidence-led-job-search.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/evidence-led-job-search.md",
-      "sourceSha256": "41ae3aaec25b0a2cbda9cec21322de33d46d2a4b0449890a628b254cf22bf32d",
+      "sourceSha256": "dc0f432ecdd228cce61678544e31846174d12f5e5d88193ec62e6f91f364ebc3",
       "href": "playbook-evidence-led-job-search.html",
       "headings": [
         {
           "id": "purpose",
           "label": "Purpose",
+          "depth": 2
+        },
+        {
+          "id": "routine-application-preparation--default",
+          "label": "Routine application preparation — default",
           "depth": 2
         },
         {
@@ -480,11 +485,11 @@
     {
       "id": "application-context-and-review",
       "title": "Application context and review contract",
-      "summary": "Use with the evidence-led job-search playbook. These are portable instructions for the requester’s available runtime, not an execution service in the Site.",
+      "summary": "Use the Evidence-led Job Search Playbook's routine application path first. These instructions define context and review criteria; they do not require a full Work Order, notes document or council for each application.",
       "category": "Job search",
       "source": "docs/job-search/application-context-and-review.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/application-context-and-review.md",
-      "sourceSha256": "ef79b0a2fc17179080f979907de3f14c75fba0baad058d356a9bac9e2d0cc850",
+      "sourceSha256": "c83259a4bf182e82e9f9f7413a0d6f0c6db67ca9b9f009049b98dd8a69f1d0d9",
       "href": "doc-application-context-and-review.html",
       "headings": [
         {
@@ -508,8 +513,8 @@
           "depth": 2
         },
         {
-          "id": "review-independently-then-reconcile",
-          "label": "Review independently, then reconcile",
+          "id": "review-once-escalate-unresolved-findings",
+          "label": "Review once; escalate unresolved findings",
           "depth": 2
         },
         {
@@ -526,7 +531,7 @@
       "category": "Job search",
       "source": "docs/job-search/application-tracker-contract.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/application-tracker-contract.md",
-      "sourceSha256": "e6710c598c95a49e57aec78a0c87161a7f5e28868e4214f72625e48f73f8688f",
+      "sourceSha256": "617a1209de365c1141f9736d2c665f15c39602db4dbfa98837ebe9b833167340",
       "href": "doc-application-tracker.html",
       "headings": [
         {

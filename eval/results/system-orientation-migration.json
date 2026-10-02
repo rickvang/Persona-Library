@@ -20,8 +20,8 @@
       "content/orientation/docs.json",
       ".agents/skills/persona-library-orientation/SKILL.md"
     ],
-    "utf8_bytes": 34555,
-    "rough_tokens": 8639
+    "utf8_bytes": 33845,
+    "rough_tokens": 8462
   },
   "phase9_control_baseline": {
     "utf8_bytes": 31864,
@@ -29,9 +29,9 @@
   },
   "deltas": {
     "preferred_vs_current_fallback": {
-      "utf8_bytes": -7527,
-      "rough_tokens": -1882,
-      "percent": -21.8
+      "utf8_bytes": -6817,
+      "rough_tokens": -1705,
+      "percent": -20.1
     },
     "preferred_vs_phase9_control": {
       "utf8_bytes": -4836,

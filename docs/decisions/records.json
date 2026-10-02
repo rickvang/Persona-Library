@@ -827,6 +827,25 @@
         "DEC-018"
       ],
       "revisit": "OpenAI exposes a stable per-task subscription usage API or first-party task ledger that removes the need for before/after snapshots; allowance semantics materially change; repeated observations are too coarse or contaminated to support useful comparisons; or token/context evidence proves to be the more direct resource signal for the user's actual plan."
+    },
+    {
+      "id": "DEC-027",
+      "status": "Applied",
+      "category": "Application workflow proportionality",
+      "date": "2026-10-01",
+      "title": "Routine applications reuse approved context and produce only needed artifacts",
+      "summary": "Use one candidate-source read per batch, needed submission files, brief tracker notes and one final submission review; reserve detailed notes, Work Orders and independent passes for observed exceptions.",
+      "question": "How can routine application preparation preserve material truth and usable files without repeatedly rebuilding context or producing internal coordination artifacts?",
+      "decision": "The Evidence-led Job Search Playbook owns a short routine default. Bind one Candidate Context and designated baseline, verify used Templates once per batch, check each current employer form, tailor the resume and needed cover letter, keep brief answers/unknowns and source references in Applications, review the actual final submission files once, update the meaningful milestone and stop. Refresh unchanged evidence only on a relevant invalidation or tool-required freshness boundary. Separate notes, content trials, extra renderings, independent specialists and Work Orders are conditional; an exception adds only the steps it needs. Keep canonical evidence private in Candidate Context and require confirmed, separately authorized submission before Applied.",
+      "rationale": "A three-role packet batch produced nine native documents, six submission PDFs and ten rendered pages of internal notes. Source/chronology checks and PDF inspection found real issues, but notes exports and repeated detailed coordination increased work without improving submission files. The requester asked to simplify before continuing application work. Existing tracker notes and the repository recovery-state rule already provide the needed homes.",
+      "alternatives": "Keep the detailed path mandatory for all packets; remove factual/export checks; build a new generator/cache/automation; or create a separate lightweight Playbook identity. These respectively preserve duplicate work, lose necessary quality evidence, add infrastructure to a procedural problem, or duplicate the existing process owner.",
+      "tradeoffs": "The executor must identify when notes or review need more depth and keep unresolved facts visible. A short default is not proof of faster execution or employer-parser success; real future runs must establish those outcomes.",
+      "affects": "Evidence-led Job Search Playbook; application context/review and Work Order guidance; Applications working-notes contract; resume/application route; Priya and job-seeker workflow guidance; notes Template applicability; human guide and job-search reference; generated Site output; issue #285.",
+      "evidence": "Issue #285; requester feedback after the private three-role application batch on October 1, 2026; existing Applications notes field and DEC-024 recovery-state rule.",
+      "qualifies": [
+        "DEC-024"
+      ],
+      "revisit": "Routine runs lose material factual checks, required answers or recoverable state; brief tracker notes become impractical; or measured future runs show that the reduced default does not remove repeated work."
     }
   ]
 }

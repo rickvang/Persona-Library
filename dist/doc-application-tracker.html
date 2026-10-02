@@ -118,7 +118,7 @@ Future standalone application
 </tr>
 <tr>
 <td><code>notes</code></td>
-<td>Candidate-owned working notes</td>
+<td>Brief role-fit notes, application-answer drafts, unknowns, source/revision references and review findings; link substantial private notes when warranted</td>
 </tr>
 <tr>
 <td><code>updatedAt</code></td>
@@ -129,6 +129,7 @@ Future standalone application
 <h2 id="lifecycle">Lifecycle</h2>
 <p><code>Found → Reviewing → Packet Ready → Applied → Interviewing → Offer / Closed</code></p>
 <p>The tracker does not infer transitions. External submission, outreach, or interview actions remain separately authorized actions.</p>
+<p>Routine preparation keeps answers and unresolved questions in these existing notes rather than creating a parallel coordination document. Keep canonical candidate facts and the evidence bank in Candidate Context; use source references here. A separate notes artifact is optional for substantial form answers or an explicit request, and should be linked rather than duplicated. Keep a packet <code>Reviewing</code> while material facts or required answers remain unresolved; record <code>Packet Ready</code> only when the actual submission artifacts and required answers pass review.</p>
 <h2 id="persistence-and-privacy">Persistence and privacy</h2>
 <h3 id="configured-remote-mode">Configured remote mode</h3>
 <p>When deployment supplies a complete Supabase URL + publishable-key pair, the generated tracker runtime uses authenticated Supabase storage as the primary persistence layer. The build accepts either <code>SUPABASE_URL</code> + <code>SUPABASE_PUBLISHABLE_KEY</code> or the Vercel/Next.js aliases <code>NEXT_PUBLIC_SUPABASE_URL</code> + <code>NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY</code>.</p>
@@ -224,11 +225,11 @@ Future standalone application
 <li>recruiter CRM functionality;</li>
 <li>email/calendar synchronization;</li>
 <li>multi-user collaboration UI;</li>
-<li>storing candidate resume evidence in opportunity rows;</li>
+<li>storing the canonical candidate resume evidence bank in opportunity rows (brief role-specific answers and source references remain working notes);</li>
 <li>making Supabase canonical for Personas, Skills, Tools, Templates, Operating Packs, Playbooks, Docs, Decisions, or Work Orders;</li>
 <li>replacing the Evidence-led Job Search Playbook or the seen-job deduplication contract.</li>
 </ul>
-<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-evidence-led-job-search.html">Job search system implementation plan</a></li><li><a href="doc-application-context-and-review.html">Application context and review contract</a></li><li><a href="doc-seen-job-deduplication.html">Seen-job deduplication contract</a></li><li><a href="doc-candidate-context.html">Candidate Context Contract</a></li><li><a href="doc-resume-content-model.html">Resume Content Model</a></li><li><a href="doc-resume-template-mapping.html">Resume Template semantic mapping</a></li></ul></section></article>
+<section class="related-docs"><h2>Related references</h2><ul><li><a href="playbook-evidence-led-job-search.html">Evidence-led Job Search Playbook</a></li><li><a href="doc-application-context-and-review.html">Application context and review contract</a></li><li><a href="doc-seen-job-deduplication.html">Seen-job deduplication contract</a></li><li><a href="doc-candidate-context.html">Candidate Context Contract</a></li><li><a href="doc-resume-content-model.html">Resume Content Model</a></li><li><a href="doc-resume-template-mapping.html">Resume Template semantic mapping</a></li></ul></section></article>
     </div>
     <footer class="page-footer"><a href="guide.html#reference-docs">Back to Docs</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>
   </main>

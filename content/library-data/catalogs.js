@@ -96,7 +96,7 @@ Object.assign(window.PersonaLibraryDataFragments, {
       name:'Application Notes & Answers',
       purpose:'Provide a reusable coordination document for one job application without replacing the separate resume or cover letter.',
       category:'job-applications',
-      useWhen:'A full application packet or application has enough role-specific decisions, questions, constraints, or submission checks to justify a persistent notes record.',
+      useWhen:'Application answers or decisions are substantial enough to exceed brief tracker notes, or the requester explicitly asks for a separate private notes document.',
       lifecycle:'candidate',
       status:'Candidate external reference',
       source:{kind:'github_repository',repository:'rickvang/template-library',path:'templates/job-applications/application-notes',entrypoint:'README.md',repositoryDocumentationEntrypoint:'README.md',revision:'362710ea7a4b26f1f8f5669acba0f12483af5b41',availability:'documentation_only',verification:'Verified on 2026-09-16 at merge commit 362710ea7a4b26f1f8f5669acba0f12483af5b41; templates/job-applications/application-notes/README.md resolves, declares Template ID template-job-application-notes, and documents starter/application-notes.md as the copy boundary. Runtime access remains capability-dependent.'},
@@ -106,7 +106,7 @@ Object.assign(window.PersonaLibraryDataFragments, {
       operatingPacks:['operating-pack-candidate-application-context'],
       playbooks:['playbook-evidence-led-job-search'],
       evidence:'Verified external source evidence: templates/job-applications/application-notes and its README.md entrypoint resolve in rickvang/template-library at merge revision 362710ea7a4b26f1f8f5669acba0f12483af5b41, with starter/application-notes.md present. The Template is a coordination artifact rather than a resume, cover letter, evidence ledger, tracker, employer-contact record, or submission authorization. Repeated reuse evidence is not yet established, so the Template remains a candidate.',
-      revision:{version:'0.1',date:'2026-09-16',changeType:'initial-catalog-entry',summary:'Registered the merged Application Notes & Answers Template and its verified canonical source, entrypoint, and starter boundary.',affectedFields:['identity','source','status','relationships','evidence','revision'],confidence:'Path, README.md entrypoint, Template identity, and starter/application-notes.md resolve at merge revision 362710ea7a4b26f1f8f5669acba0f12483af5b41; repeated reuse evidence remains unavailable'}
+      revision:{version:'0.2',date:'2026-10-01',changeType:'qualified-applicability',summary:'Use a separate notes artifact for substantial answers or an explicit request; routine application coordination stays in existing tracker notes.',affectedFields:['useWhen','revision'],confidence:'Canonical starter provenance remains recorded at merge revision 362710ea7a4b26f1f8f5669acba0f12483af5b41; the new applicability is procedural guidance, not measured reuse evidence'}
     },
     {
       id:'template-design-system-web-app',

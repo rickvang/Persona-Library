@@ -1,8 +1,10 @@
-# Job-search Application Packet Work Order
+# Detailed Application Packet Work Order — exception path
 
 This Work Order extends the repository-wide [Work Order convention](../work-orders.md) for a job-search application packet. It tracks active work and decisions; it is not a transcript, a job-submission authorization, or a substitute for the candidate's source evidence.
 
-A full application packet is a role-specific foldered artifact set, not one combined document. Keep the resume, cover letter, and application notes/answers as separate files in the authorized private application workspace.
+Start with the [routine application path](../playbooks/evidence-led-job-search.md#routine-application-preparation--default). Use this template only when existing Current Work, Applications and artifact references cannot preserve enough unique execution/recovery state. Fill only sections needed by the exception; a complex form or source question does not require every field, matrix, review lens or output below.
+
+Submission artifacts remain separate, independently openable files in the authorized private role folder. A routine packet normally needs a resume and a cover letter only when needed; brief application notes/answers belong in the existing tracker. A separate notes document is optional when the content is substantial or explicitly requested. Internal notes do not need a PDF or rendered-page QA unless they are a requested deliverable.
 
 Reusable starting artifacts come from `rickvang/template-library`. Persona-Library catalogs Template identity and applicability; `template-library` owns the canonical starter files. Do not silently treat a private Drive master or prior role-specific artifact as the reusable Template source. Separately, when the active Candidate Context designates a private master as the **Candidate Baseline Resume**, that baseline remains the candidate-specific composition starting point for the protected career spine; reusable Template ownership does not erase that candidate decision.
 
@@ -188,7 +190,7 @@ Start with one canonical ATS resume. When an active Candidate Baseline Resume is
 
 ### Template source gate
 
-Before drafting or rendering an application artifact, resolve its reusable starting Template through the Persona-Library Template catalog and verify the external `rickvang/template-library` source path, `README.md` entrypoint, and Git revision.
+Before drafting or rendering an application artifact, resolve its reusable starting Template through the Persona-Library Template catalog and verify the external `rickvang/template-library` source path, `README.md` entrypoint, and Git revision. Verify only the outputs being created, reuse verified unchanged sources within the batch, and refresh at an actual invalidation or tool-required freshness boundary.
 
 Template verification and Candidate Baseline verification answer different questions. The reusable Template supplies portable presentation structure; an active Candidate Baseline Resume supplies the candidate-specific composed career spine. Verify both when both apply.
 
@@ -239,15 +241,15 @@ Default folder name:
 
 `<Company> — <Role> — <YYYY-MM-DD>`
 
-Keep the principal artifacts as separate files by default:
+Keep submission artifacts as separate files; create optional artifacts only when warranted:
 
 1. `<Company> — <Role> — Resume — ATS`
-2. `<Company> — <Role> — Cover Letter`
-3. `<Company> — <Role> — Application Notes & Answers`
+2. `<Company> — <Role> — Cover Letter` when needed
+3. `<Company> — <Role> — Application Notes & Answers` when substantial or requested
 
-The notes/answers record is the coordination artifact for role fit, constraints, portfolio planning, application questions, unresolved candidate decisions, and the submission checklist. It may link to the resume and cover letter, but it must not contain the only copy of either submission artifact.
+Tracker notes normally hold brief role fit, constraints, portfolio choices, application answers, unknowns and submission checks. When a separate notes document is warranted, link it from the tracker and avoid maintaining a second copy of the same answers. Neither notes location may contain the only copy of a submission artifact.
 
-For a **full application-packet request**, create the standalone cover letter by default. Skip it only when the employer does not accept a cover letter or the requester explicitly says not to create one; record the reason. A narrow resume-only or cover-letter-only request does not imply the full three-artifact packet.
+Create a standalone cover letter when required, requested, or chosen by the candidate for an employer that accepts one. Otherwise record it as not needed. A packet request does not automatically require three documents or two resume renderings.
 
 Before `ready-for-review`, verify:
 
@@ -262,7 +264,7 @@ Before `ready-for-review`, verify:
 - the role-specific application folder exists in the configured private workspace;
 - each required artifact is independently openable;
 - file names identify the company and role without relying on folder context alone;
-- the notes/answers record links or points to the separate resume and cover letter rather than embedding the only copy;
+- the tracker notes or optional notes document point to the separate submission files rather than embedding the only copies;
 - any skipped cover letter has an explicit reason;
 - no private workspace identifier is copied into Persona-Library.
 
@@ -271,7 +273,7 @@ Before `ready-for-review`, verify:
 | OUT-ATS | ATS resume version (default) | Employer intake and screening |  |  | draft / reviewed / selected / superseded |  |  |
 | OUT-HUMAN | Human-facing resume version (optional) | Human reviewer |  |  | not warranted / draft / reviewed / selected / superseded |  |  |
 | OUT-LETTER | Standalone cover letter | Human reviewer and required submission channel |  |  | draft / reviewed / selected / skipped with reason |  |  |
-| OUT-NOTES | Application Notes & Answers | Candidate and application operator |  |  | draft / reviewed / ready |  |  |
+| OUT-NOTES | Application Notes & Answers (optional) | Candidate and application operator |  |  | not warranted / draft / reviewed / ready |  |  |
 
 Both resume versions, when both exist, are renderings of one evidence source rather than independent stories. The human-facing version may improve hierarchy, density, order, voice, and contextual visual communication; neither version may change the meaning of a material claim.
 
@@ -395,9 +397,11 @@ A reusable human-facing template is not an application output and does not repla
 - Standalone artifact link or private location:
 - Review result: pass / revise / skipped with reason / unknown
 
-For a full application packet, the cover letter is a standalone artifact by default. It may need a structured, readable format for its submission channel, but it must not become a new source of unsupported claims and must not exist only as embedded text inside the application notes/answers record.
+When a cover letter is needed, keep it as a standalone artifact. It may need a structured, readable format for its submission channel, but it must not become a new source of unsupported claims and must not exist only as embedded text inside the application notes/answers record.
 
 ### Application Notes & Answers
+
+Create this document only for substantial notes or an explicit request. For a routine packet, keep the applicable brief information in tracker notes instead. Review its factual answers and links, but export/render it only when required as a deliverable.
 
 - Template ID, source path, and verified revision:
 - Candidate Context revision used:

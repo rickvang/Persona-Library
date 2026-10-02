@@ -1,12 +1,30 @@
-# Job search system implementation plan
+# Evidence-led Job Search Playbook
 
 ## Purpose
 
-Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.
+Help a person find suitable work, prepare truthful applications, and learn from confirmed outcomes. Routine application preparation uses the short path below; the later sections supply campaign guidance and exception detail.
 
 The system should optimize for truthful fit and useful clarity—not keyword stuffing, generic personal branding, or visual polish detached from the role.
 
 This is a Persona-operated Playbook surface. The Playbook composes Personas, Skills, persona-owned workflows, shared evidence, artifacts, decision rights, quality gates, recovery, and a learning loop around one outcome; Priya Desai · Job search orchestrator operates that surface for full-outcome job-search work.
+
+## Routine application preparation — default
+
+Use this path for one role or a batch of roles using an approved candidate baseline and an established layout. A request to create application packets starts here; it does not automatically request every specialist, a new evidence ledger, or a detailed Work Order.
+
+1. **Load once per batch.** Bind one private Candidate Context, read its standing decisions, designated Candidate Baseline Resume and relevant evidence, and record the source references/revisions. Verify only the reusable Templates used by the requested outputs. Carry those sources and completed checks through the batch. Refresh when a source or candidate instruction changes, a revision is uncertain, or a tool requires a fresh read before writing; do not reread unchanged sources for each role or review lens.
+2. **Check each role.** Read the current employer posting and application requirements. Identify the important evidence matches, upload constraints, required questions and unknown candidate facts. Resolve the existing Applications record by stable ID/canonical URL before creating a row. Ask only for facts that cannot be safely inferred from confirmed sources; keep affected answers pending while other work proceeds.
+3. **Prepare the needed artifacts.** Copy and tailor the approved baseline in the configured private role folder, preserving its career spine. Create a separate cover letter when the employer requires it, the requester asks for it, or the candidate chooses to include an accepted optional letter; otherwise record that it was not needed. Keep brief role-fit notes, source/revision references, application-answer drafts, unknowns and the next action in the existing tracker notes. Link to canonical candidate evidence instead of copying the evidence bank into opportunity rows. A separate Application Notes & Answers document is optional when these notes become substantial.
+4. **Review the final submission files once.** In one review of the actual final revision, check material claims and chronology against the approved sources, supported role coverage, candidate-specific rules, employer requirements and candidate isolation. Export only the submission formats needed. Check text extraction, links and every rendered submission page for reading order, clipping and unexpected pages. Record observed failures and untested parser or accessibility behavior briefly; do not create or render internal-notes PDFs by default. After a correction, reopen only the checks affected by that change.
+5. **Record the milestone and stop.** Set the packet link and honest readiness state in Applications. Keep a packet Reviewing while material candidate facts or required answers remain unresolved. Update Current Work at material workstream boundaries when it is already required; do not mirror every edit, export or check. Preparation never sets Applied or an applied date: those require confirmed, separately authorized submission. Stop when the requested reviewable packet and its remaining questions are delivered.
+
+The existing tracker plus private submission files normally carry enough application state. Create a Work Order only under the repository's recovery-state rule, and use one Current Work row for a substantial batch rather than one per role or document. Select the smallest operating specialist set; review lenses are criteria, not instructions to dispatch separate agents or invoke a council.
+
+### When more detail is needed
+
+Add only the steps needed by an observed exception: substantial application-form narratives; a material source conflict that supported wording cannot resolve; a new Template or layout; a second resume rendering requiring parity review; an interrupted handoff whose existing records cannot preserve recovery state; or an explicit request for detailed notes or independent specialist review. Use the relevant sections below and the [detailed application Work Order template](../job-search/application-work-order-template.md) only as needed. A single unresolved answer does not expand every role in the batch into the full workflow.
+
+Tool failure calls for bounded recovery, not a new application infrastructure project. Make one focused repair attempt, then use an available supported fallback or report the affected output's limitation. Additional retries are justified by new evidence. Building a new transfer helper, generator, cache or automation requires its own scoped request.
 
 ## Recommended operating model
 
@@ -53,7 +71,7 @@ The default path is ATS-first with a material-claim integrity gate. Cover letter
 - Explicit specialist, Skill, Priya, or Playbook requests → the named target directly; explicit direct invocation does not require an extra Riley hop. An explicit Evidence-led Job Search Playbook request resolves to that Playbook with Priya as its operating Persona.
 - When a requester explicitly asks to “consult Riley Morgan” for job-search work, use Riley for the requested general orchestration perspective or cross-domain coordination. Do not silently substitute Riley for Priya as the job-search operator, and do not make Riley the sole content, writing, hiring, search-strategy, visual, or document reviewer.
 
-For a full application-packet run, use Avery Brooks for candidate goals, evidence, and authentic voice; Leah Okafor for application narrative and structure; Marcus Chen for hiring-side relevance and credibility; and Priya Desai for orchestration and stage/gate synthesis. Add Sofia Calder only when document production or accessibility is in scope, and add Samira Nguyen only when outreach or interview carryover is in scope. A narrow cover-letter request may route directly to Avery, Leah, and Marcus without invoking Priya. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
+For routine packets, the selected executor may apply the relevant candidate, application and hiring lenses in one pass. Invoke Avery Brooks, Leah Okafor, Marcus Chen or another specialist only when their judgment is needed or requested; Priya remains responsible for full-outcome orchestration. Add Sofia Calder for unresolved document production/accessibility questions and Samira Nguyen for outreach or interview work. If the requester asks for a fresh design, exclude prior drafts from the evidence set unless the requester explicitly includes them.
 
 ## MVP scope
 
@@ -108,7 +126,7 @@ Each future job-search record should preserve:
 - Resume, cover letter, portfolio, outreach, and interview artifacts
 - Template identity, canonical `rickvang/template-library` source path, entrypoint, and verified revision for every reusable starting artifact
 - Role-specific copies kept separate from their reusable Template sources
-- ATS review findings and human review findings as separate records
+- Applicable review findings and untested scope; separate records only for independent reviews actually performed
 - Version history, decisions, submitted date, outcome, and learning
 - Open questions and what evidence would change the search strategy
 
@@ -148,11 +166,11 @@ Before drafting or rendering a reusable application artifact:
 4. record the Template ID and revision used;
 5. keep the resulting role-specific artifact independently owned after instantiation.
 
-For the current full application packet, the expected reusable starters are:
+Verify the reusable starters only for artifacts actually being created:
 
 - ATS resume → `template-resume-classic-single-column` / `templates/resumes/classic-single-column`;
-- cover letter → `template-cover-letter-evidence-led` / `templates/cover-letters/evidence-led`;
-- Application Notes & Answers → `template-job-application-notes` / `templates/job-applications/application-notes`.
+- cover letter, when needed → `template-cover-letter-evidence-led` / `templates/cover-letters/evidence-led`;
+- separate Application Notes & Answers, when warranted → `template-job-application-notes` / `templates/job-applications/application-notes`.
 
 A repository or catalog entry is not proof that a Template exists. If a required Template path or entrypoint is missing, stale, or unverifiable, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library` before treating it as the application starter. Do not silently promote a private Google Drive master, prior application, or ad hoc document into the canonical Template source. This reusable-Template boundary does **not** demote a candidate-designated baseline resume: the Template owns reusable presentation structure, while the Candidate Baseline Resume owns the candidate-specific composed career spine when standing decisions designate one. A requester may explicitly authorize a one-off non-reusable artifact, but that exception must be recorded and must not be cataloged as a Template without the normal Template lifecycle review.
 
@@ -168,9 +186,11 @@ Before drafting, maintain one evidence inventory or claim ledger containing:
 
 The ledger is authoritative. Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain visibly distinct.
 
+Reuse the existing approved inventory. For a routine packet, add or confirm only new or materially changed claims; do not rebuild the candidate's ledger or make a second per-role copy.
+
 ### Positioning layer and artifact-specific evidence rigor
 
-Do not send the evidence ledger directly into prose. Create a short positioning brief between the ledger and the application artifact. It names the role-relevant themes, candidate-approved abstractions, voice cues, useful omissions, and uncertain areas that need careful handling. The positioning brief is an interpretive bridge, not a second evidence source.
+Do not send the evidence ledger directly into prose. Identify the role-relevant themes, candidate-approved abstractions, voice cues, useful omissions and uncertain areas before writing. For routine work this short positioning brief may be held in the batch context or tracker notes; it need not be a separate document. It is an interpretive bridge, not a second evidence source.
 
 Apply evidence rigor according to the artifact:
 
@@ -306,7 +326,7 @@ A template should define its intended audience, scan path, hierarchy, density, a
 
 ### Review and integrity gate
 
-Every application packet runs:
+Every application packet covers these criteria in the final revision review; they do not require separate passes, reports or agent calls:
 
 - role-to-evidence mapping;
 - Template-source verification for every reusable starter;
@@ -330,7 +350,7 @@ For cover letters, the internal tailoring brief is the positioning layer. It may
 
 ### Work Order tracking
 
-The Work Order records the target, shared ledger, verified Template identities/revisions, canonical ATS version, optional human-facing version, standalone cover letter, Application Notes & Answers, review findings, integrity result, optional parity result, selected submission file, tracker record reference and sync status when opportunity/application tracking is in scope, and learning after submission. It is the active progress record; specialized artifacts and private tracker rows remain separate and linked rather than duplicated.
+Applications owns the role's lifecycle, packet link, brief answers/unknowns and next action. Current Work is the concise index for a substantial workstream. A Work Order is optional under [the repository recovery-state rule](../work-orders.md); when needed, it records only unique execution/recovery detail and links to the existing tracker, candidate evidence and artifacts. Do not duplicate those contents or create a Work Order for every packet.
 
 ## Phased delivery
 
@@ -348,17 +368,19 @@ The Work Order records the target, shared ledger, verified Template identities/r
 
 ### Phase 2 — Application packet
 
+Use the routine preparation path above by default. These phase details are available for campaign planning and exceptions; complete only the applicable work.
+
 - Resolve every reusable application starter through the Persona-Library Template catalog and a verified `rickvang/template-library` path/entrypoint/revision. If a required Template is missing, route to Template research/composition before drafting from it.
-- Create one role-specific folder in the configured private application workspace and keep the ATS resume, cover letter, and Application Notes & Answers as separate artifacts by default.
+- Create one role-specific folder in the configured private application workspace. Keep the resume and any requested cover letter independently openable; use tracker notes unless a separate Application Notes & Answers document is warranted.
 - Build one shared evidence source. When the active Candidate Context designates a Candidate Baseline Resume, copy/adapt that baseline into the role-specific artifact and tailor it conservatively; otherwise compose from the validated evidence/model into the verified Template. Add a human-facing resume only when the target channel or review context justifies a second output.
-- Draft a separate cover letter for a full packet unless the employer does not accept one or the requester explicitly skips it; draft from the positioning brief, then review material claims and voice as separate questions.
-- Build the Application Notes & Answers artifact for role fit, constraints, application questions, portfolio planning, blockers, and submission checks.
+- Draft a separate cover letter when needed under the routine path; review material claims and voice as criteria within the final review.
+- Capture role fit, constraints, questions, portfolio choices, blockers and submission checks briefly in tracker notes; create a separate notes document only when that content warrants it.
 - At packet completion, resolve the Applications tracker record, set `packetUrl`, and advance to `Packet Ready` when appropriate without downgrading a later confirmed state.
-- Generate portfolio or case-study emphasis for design-oriented roles.
+- Select relevant existing portfolio examples for design-oriented roles; create new case-study work only when requested or required.
 
-### Application preflight — before the council
+### Application preflight — before final review
 
-Run a small deterministic structural check before persona review. This is a builder rule, not a judgment the personas should have to remember:
+Include a small structural check in the final review. An independent council is conditional, not a prerequisite:
 
 - Parse every role’s start and end date into a consistent month-level representation.
 - Sort the employer-facing resume reverse chronologically by end date unless a deliberate functional format is documented.
@@ -366,9 +388,11 @@ Run a small deterministic structural check before persona review. This is a buil
 - Preserve source ambiguity. Do not invent day-level precision to make the timeline look cleaner.
 - Carry the preflight result into the ATS, human-reader, and integrity reviews so a polished draft cannot hide a basic chronology error.
 
-Leah owns the ATS review and claim-to-ledger integrity result. Human-readable and visual review are conditional on a human-facing output. Riley records the flags and reconciliation decision. A failed ordering check should stop the packet before council synthesis; an overlap or same-month ambiguity should remain visible until the source is confirmed or the user explicitly accepts it.
+Leah owns the application-review criteria; the selected executor can apply them directly. A failed ordering check stops readiness, and an overlap or same-month ambiguity remains visible until the source is confirmed or the user explicitly accepts it. Routine work records these findings in tracker notes; independent specialist review is reserved for requested or unresolved judgment.
 
 ### Phase 3 — Quality review
+
+Apply these criteria within the routine final review. Separate passes are conditional on the exception being addressed, not mandatory tasks for each lens.
 
 - Start with the preflight result rather than relying on visual inspection or persona memory.
 - Verify each reusable artifact's Template ID, canonical source path, entrypoint, and revision.
