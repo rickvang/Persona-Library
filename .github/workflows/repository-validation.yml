@@ -46,6 +46,9 @@ jobs:
       - name: Validate source-driven Tools publication
         run: node --test scripts/validation/tool-publication.test.mjs
 
+      - name: Validate native application-packet execution
+        run: node --test scripts/validation/application-packet.test.mjs
+
       - name: Validate source-driven Playbooks and Docs publication
         run: node --test scripts/validation/reference-publication.test.mjs
 

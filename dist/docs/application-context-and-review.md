@@ -2,6 +2,29 @@
 
 Use the [Evidence-led Job Search Playbook's routine application path](../playbooks/evidence-led-job-search.md#routine-application-preparation--default) first. These instructions define context and review criteria; they do not require a full Work Order, notes document or council for each application.
 
+## Native packet operation
+
+[scripts/application-packet.mjs](https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.mjs) is the executable routine for an approved Google Docs baseline and the existing private Drive/Applications store. It has no model calls, credentials or new service dependencies. The executor supplies tailoring judgment and final-file review; the runner supplies copy, indexed edit, export/save, recovery and owner-scoped recording.
+
+Load the runner once per batch in the native tool runtime. In a runtime with `tools`, `store` and `load`, read the complete trusted repository file into `source` (check command success and output truncation), then:
+
+```javascript
+const runPacket = Function(source.replace(/^export /m, '') + '; return runApplicationPacket;')();
+const result = await runPacket(privateInput, tools, privateCheckpoint);
+store('privatePacketCheckpoint', result.checkpoint);
+// Display only stage, relevant artifact links and an actionable failure, not the private checkpoint.
+```
+
+In a JavaScript module runtime, import `runApplicationPacket` directly and supply the exposed native tools. The runner accepts `google_drive_*` / `supabase_execute_sql` tool names or their `mcp__codex_apps__` prefixes; it does not install or prove connector availability.
+
+Inputs are one active `candidateId`, the approved native `baseline` document snapshot, a verified private `folderId`, `title`, the canonical `job` (`id`, `company`, `role`, `sourceUrl`), exact `edits` (`before`, `after`, optional base `style` and relative styled `spans`), protected career-spine strings in `protectedText`, and the configured `tracker` (`projectId`, verified `userId`). Optional `pending`, `note`, `nextAction` and `fileName` carry only the requested role's state. Keep all inputs and checkpoints private and outside Git. Do not infer candidate approval or ownership from a document title.
+
+The first call returns `review_required` with a stable native document revision and a saved private PDF. Review that actual PDF's text, links and every rendered page, plus claims, chronology and employer requirements. Call again with the same inputs/checkpoint and `review: { documentId, revisionId, pdfId, checks: { claims, chronology, requirements, text, links, pages } }`; each finding is a boolean. Failed/pending findings or unresolved answers keep the record Reviewing. Later application states and confirmed submission dates are preserved. A missing tracker permits an explicit artifact-only smoke run, never a claim that Applications was updated.
+
+If export adds an unexpected tab-title page, remove only the verified extra page, review the resulting complete submission PDF, and supply its native file reference or absolute local path as `review.fileUri` and its SHA-256 as `review.fileHash`. The runner uploads that reviewed PDF before recording its link. Do not mark a native three-page export reviewed because an earlier two-page file passed.
+
+`needs_attention` retains completed work. A failed read/export can resume from that checkpoint. A lost edit response is reconciled against actual original/planned content before another write. A lost copy/upload response requires inspecting the private destination and adopting the confirmed artifact ID before clearing `pendingMutation`; never blindly repeat a creation. Changed candidate/job/baseline inputs need a fresh checkpoint. Resolving an answer or adding a review finding updates only the recording milestone, preserving the existing files. A changed document invalidates its export/review evidence; a changed transformed-PDF reference/hash uploads only that new reviewed file. Keep tool-required trusted-read and permission checks; a runner receipt does not substitute for them.
+
 ## Ownership
 
 - The Evidence-led Job Search Playbook owns the full-outcome stages and handoffs.

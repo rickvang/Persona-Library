@@ -24,7 +24,8 @@
     </header>
 
     <div class="reader-layout">
-      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#ownership">Ownership</a>
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#native-packet-operation">Native packet operation</a>
+<a href="#ownership">Ownership</a>
 <a href="#load-only-the-relevant-context">Load only the relevant context</a>
 <a href="#preserve-a-claim-ledger">Preserve a claim ledger</a>
 <a href="#run-a-small-trial-before-a-full-rebuild">Run a small trial before a full rebuild</a>
@@ -32,6 +33,19 @@
 <a href="#site-relationships">Site relationships</a></nav></details></aside>
       <article class="markdown-body"><span id="application-context-and-review-contract"></span>
 <p>Use the <a href="playbook-evidence-led-job-search.html#routine-application-preparation--default">Evidence-led Job Search Playbook&#39;s routine application path</a> first. These instructions define context and review criteria; they do not require a full Work Order, notes document or council for each application.</p>
+<h2 id="native-packet-operation">Native packet operation</h2>
+<p><a href="https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.mjs" rel="noreferrer">scripts/application-packet.mjs</a> is the executable routine for an approved Google Docs baseline and the existing private Drive/Applications store. It has no model calls, credentials or new service dependencies. The executor supplies tailoring judgment and final-file review; the runner supplies copy, indexed edit, export/save, recovery and owner-scoped recording.</p>
+<p>Load the runner once per batch in the native tool runtime. In a runtime with <code>tools</code>, <code>store</code> and <code>load</code>, read the complete trusted repository file into <code>source</code> (check command success and output truncation), then:</p>
+<pre><code class="language-javascript">const runPacket = Function(source.replace(/^export /m, &#39;&#39;) + &#39;; return runApplicationPacket;&#39;)();
+const result = await runPacket(privateInput, tools, privateCheckpoint);
+store(&#39;privatePacketCheckpoint&#39;, result.checkpoint);
+// Display only stage, relevant artifact links and an actionable failure, not the private checkpoint.
+</code></pre>
+<p>In a JavaScript module runtime, import <code>runApplicationPacket</code> directly and supply the exposed native tools. The runner accepts <code>google_drive_*</code> / <code>supabase_execute_sql</code> tool names or their <code>mcp__codex_apps__</code> prefixes; it does not install or prove connector availability.</p>
+<p>Inputs are one active <code>candidateId</code>, the approved native <code>baseline</code> document snapshot, a verified private <code>folderId</code>, <code>title</code>, the canonical <code>job</code> (<code>id</code>, <code>company</code>, <code>role</code>, <code>sourceUrl</code>), exact <code>edits</code> (<code>before</code>, <code>after</code>, optional base <code>style</code> and relative styled <code>spans</code>), protected career-spine strings in <code>protectedText</code>, and the configured <code>tracker</code> (<code>projectId</code>, verified <code>userId</code>). Optional <code>pending</code>, <code>note</code>, <code>nextAction</code> and <code>fileName</code> carry only the requested role&#39;s state. Keep all inputs and checkpoints private and outside Git. Do not infer candidate approval or ownership from a document title.</p>
+<p>The first call returns <code>review_required</code> with a stable native document revision and a saved private PDF. Review that actual PDF&#39;s text, links and every rendered page, plus claims, chronology and employer requirements. Call again with the same inputs/checkpoint and <code>review: { documentId, revisionId, pdfId, checks: { claims, chronology, requirements, text, links, pages } }</code>; each finding is a boolean. Failed/pending findings or unresolved answers keep the record Reviewing. Later application states and confirmed submission dates are preserved. A missing tracker permits an explicit artifact-only smoke run, never a claim that Applications was updated.</p>
+<p>If export adds an unexpected tab-title page, remove only the verified extra page, review the resulting complete submission PDF, and supply its native file reference or absolute local path as <code>review.fileUri</code> and its SHA-256 as <code>review.fileHash</code>. The runner uploads that reviewed PDF before recording its link. Do not mark a native three-page export reviewed because an earlier two-page file passed.</p>
+<p><code>needs_attention</code> retains completed work. A failed read/export can resume from that checkpoint. A lost edit response is reconciled against actual original/planned content before another write. A lost copy/upload response requires inspecting the private destination and adopting the confirmed artifact ID before clearing <code>pendingMutation</code>; never blindly repeat a creation. Changed candidate/job/baseline inputs need a fresh checkpoint. Resolving an answer or adding a review finding updates only the recording milestone, preserving the existing files. A changed document invalidates its export/review evidence; a changed transformed-PDF reference/hash uploads only that new reviewed file. Keep tool-required trusted-read and permission checks; a runner receipt does not substitute for them.</p>
 <h2 id="ownership">Ownership</h2>
 <ul>
 <li>The Evidence-led Job Search Playbook owns the full-outcome stages and handoffs.</li>

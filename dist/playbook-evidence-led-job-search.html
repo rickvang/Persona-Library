@@ -25,6 +25,7 @@
     <p class="boundary-note">This is the documented process, not an observed request trace. It does not show whether your assistant followed it.</p>
     <div class="reader-layout">
       <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#purpose">Purpose</a>
+<a href="#choose-the-requested-operation">Choose the requested operation</a>
 <a href="#routine-application-preparation--default">Routine application preparation — default</a>
 <a href="#recommended-operating-model">Recommended operating model</a>
 <a href="#mvp-scope">MVP scope</a>
@@ -40,14 +41,40 @@
 <p>Help a person find suitable work, prepare truthful applications, and learn from confirmed outcomes. Routine application preparation uses the short path below; the later sections supply campaign guidance and exception detail.</p>
 <p>The system should optimize for truthful fit and useful clarity—not keyword stuffing, generic personal branding, or visual polish detached from the role.</p>
 <p>This is a Persona-operated Playbook surface. The Playbook composes Personas, Skills, persona-owned workflows, shared evidence, artifacts, decision rights, quality gates, recovery, and a learning loop around one outcome; Priya Desai · Job search orchestrator operates that surface for full-outcome job-search work.</p>
+<h2 id="choose-the-requested-operation">Choose the requested operation</h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Reference table"><table>
+<thead>
+<tr>
+<th>Request</th>
+<th>Direct path</th>
+<th>Context needed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Find new jobs</td>
+<td>Search and shortlist; use the <a href="doc-seen-job-deduplication.html">seen-job ledger</a> for repeated discovery</td>
+<td>Approved target/preferences, saved queries, seen identities; verify shortlisted employer postings</td>
+</tr>
+<tr>
+<td>Prepare an application packet</td>
+<td>Routine path below and the <a href="doc-application-context-and-review.html#native-packet-operation">native packet runner</a></td>
+<td>Approved candidate/baseline context once per batch, selected employer form, exact edits, private role folder and application identity</td>
+</tr>
+<tr>
+<td>Update application status</td>
+<td><a href="doc-application-tracker.html">Application tracker</a></td>
+<td>Owner-scoped existing record and confirmed event; do not rebuild the packet or rerun discovery</td>
+</tr>
+</tbody></table>
+</div><p>The selected executor can operate directly. Persona ownership and review lenses do not require a runtime handoff or independent agent for each operation. The routine path owns the sequence; supporting contracts supply facts, boundaries and review criteria only when needed.</p>
 <h2 id="routine-application-preparation--default">Routine application preparation — default</h2>
 <p>Use this path for one role or a batch of roles using an approved candidate baseline and an established layout. A request to create application packets starts here; it does not automatically request every specialist, a new evidence ledger, or a detailed Work Order.</p>
 <ol>
 <li><strong>Load once per batch.</strong> Bind one private Candidate Context, read its standing decisions, designated Candidate Baseline Resume and relevant evidence, and record the source references/revisions. Verify only the reusable Templates used by the requested outputs. Carry those sources and completed checks through the batch. Refresh when a source or candidate instruction changes, a revision is uncertain, or a tool requires a fresh read before writing; do not reread unchanged sources for each role or review lens.</li>
 <li><strong>Check each role.</strong> Read the current employer posting and application requirements. Identify the important evidence matches, upload constraints, required questions and unknown candidate facts. Resolve the existing Applications record by stable ID/canonical URL before creating a row. Ask only for facts that cannot be safely inferred from confirmed sources; keep affected answers pending while other work proceeds.</li>
-<li><strong>Prepare the needed artifacts.</strong> Copy and tailor the approved baseline in the configured private role folder, preserving its career spine. Create a separate cover letter when the employer requires it, the requester asks for it, or the candidate chooses to include an accepted optional letter; otherwise record that it was not needed. Keep brief role-fit notes, source/revision references, application-answer drafts, unknowns and the next action in the existing tracker notes. Link to canonical candidate evidence instead of copying the evidence bank into opportunity rows. A separate Application Notes &amp; Answers document is optional when these notes become substantial.</li>
+<li><strong>Prepare the needed artifacts.</strong> Use the <a href="doc-application-context-and-review.html#native-packet-operation">native packet operation</a> for an established Google Docs baseline. It makes a private copy, applies original indexed edits in one revision-guarded batch, exports and immediately saves the PDF through its native file reference, then pauses for final-file review. Carry its private checkpoint through the run; do not restart completed copies/edits/exports after a later failure. Preserve the baseline&#39;s career spine. Create a separate cover letter when the employer requires it, the requester asks for it, or the candidate chooses to include an accepted optional letter; otherwise record that it was not needed. Keep brief role-fit notes, source/revision references, application-answer drafts, unknowns and the next action in the existing tracker notes. Link to canonical candidate evidence instead of copying the evidence bank into opportunity rows. A separate Application Notes &amp; Answers document is optional when these notes become substantial.</li>
 <li><strong>Review the final submission files once.</strong> In one review of the actual final revision, check material claims and chronology against the approved sources, supported role coverage, candidate-specific rules, employer requirements and candidate isolation. Export only the submission formats needed. Check text extraction, links and every rendered submission page for reading order, clipping and unexpected pages. Record observed failures and untested parser or accessibility behavior briefly; do not create or render internal-notes PDFs by default. After a correction, reopen only the checks affected by that change.</li>
-<li><strong>Record the milestone and stop.</strong> Set the packet link and honest readiness state in Applications. Keep a packet Reviewing while material candidate facts or required answers remain unresolved. Update Current Work at material workstream boundaries when it is already required; do not mirror every edit, export or check. Preparation never sets Applied or an applied date: those require confirmed, separately authorized submission. Stop when the requested reviewable packet and its remaining questions are delivered.</li>
+<li><strong>Record the milestone and stop.</strong> Finish the same packet operation with review findings tied to its exact document revision and PDF; it sets the packet link and honest readiness state in Applications while preserving existing notes, later lifecycle states and submission dates. Keep a packet Reviewing while material candidate facts, required answers or review findings remain unresolved. Update Current Work at material workstream boundaries when it is already required; do not mirror every edit, export or check. Preparation never sets Applied or an applied date: those require confirmed, separately authorized submission. Stop when the requested reviewable packet and its remaining questions are delivered.</li>
 </ol>
 <p>The existing tracker plus private submission files normally carry enough application state. Create a Work Order only under the repository&#39;s recovery-state rule, and use one Current Work row for a substantial batch rather than one per role or document. Select the smallest operating specialist set; review lenses are criteria, not instructions to dispatch separate agents or invoke a council.</p>
 <h3 id="when-more-detail-is-needed">When more detail is needed</h3>
