@@ -846,6 +846,25 @@
         "DEC-024"
       ],
       "revisit": "Routine runs lose material factual checks, required answers or recoverable state; brief tracker notes become impractical; or measured future runs show that the reduced default does not remove repeated work."
+    },
+    {
+      "id": "DEC-028",
+      "status": "Applied",
+      "category": "Application packet execution",
+      "date": "2026-10-02",
+      "title": "Routine packets use a native-tool operation with explicit final-file review",
+      "summary": "Batch indexed edits, immediately save native exports, retain private recovery checkpoints and record only reviewed packet milestones.",
+      "question": "How can the lean application procedure become a reliable executable path without a new application platform?",
+      "decision": "Use the repository-owned application-packet runner with an approved baseline snapshot, exact original indexed edits, protected career spine, private destination and owner-scoped application identity. Compose in one revision-guarded native batch, export and upload through the native file reference, then pause for final-file review. Continue the same private checkpoint to record the exact reviewed revision/PDF; unresolved facts or answers keep Reviewing, and prior submission dates/later lifecycle states are preserved. New answers change recording only. Lost creation responses require reconciliation before retry.",
+      "rationale": "The lean instructions were not enough to prevent cascading substitutions, inherited label formatting and an expired manual PDF download. A live private smoke run exercised lookup, copy, indexed edit, revision read, export, direct upload and private-artifact verification in 21.356 seconds across 10 native calls; this is mechanical production timing, not full application timing.",
+      "alternatives": "Continue separate ad-hoc calls; introduce a new resume platform or rendering service; remove final review; or perform independent specialist passes for every routine packet. The small native operation addresses the observed production failures while retaining the existing master, tracker and domain review.",
+      "tradeoffs": "The executor still supplies truthful tailoring, verified ownership/context and inspection of every final PDF page. Connector availability and native export quirks remain explicit dependencies. The mechanical benchmark excludes source loading, research, writing judgment and final review, and does not establish a full packet time guarantee.",
+      "affects": "Issue #287; scripts/application-packet.mjs; routine Evidence-led Job Search Playbook; application context/review; Docs route; repository validation; generated readers/context.",
+      "evidence": "User authorization to fix the job workflow on October 2, 2026; native direct-file-reference transfer and guarded private production smoke run; synthetic regression cases for swaps, formatting, stale revisions, ownership, recovery and recording.",
+      "qualifies": [
+        "DEC-027"
+      ],
+      "revisit": "Real packet runs still require repeated manual production/recovery, provider contracts change, a new layout demands different composition, or full packet timing fails to improve."
     }
   ]
 }

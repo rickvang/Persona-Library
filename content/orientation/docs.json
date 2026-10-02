@@ -210,6 +210,7 @@
         "Riley Morgan default routing contract when the request is unqualified; explicit specialist or Skill requests route directly",
         "docs/playbooks/evidence-led-job-search.md: Routine application preparation is the default; load only relevant detail for exceptions",
         "docs/job-search/application-context-and-review.md for context reuse and final-review criteria",
+        "scripts/application-packet.mjs for routine native Google Docs copy/edit/export/save and reviewed Applications recording; load once per batch with private inputs/checkpoint",
         "one active private Candidate Application Context, its applicable Operating Pack, standing decisions, designated Candidate Baseline Resume and relevant evidence; read once per batch and carry source references/revisions",
         "current employer posting and application requirements for each role",
         "docs/job-search/application-tracker-contract.md and the existing private tracker record when opportunity/application tracking is in scope",
