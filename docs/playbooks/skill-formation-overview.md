@@ -22,7 +22,7 @@ Find shared triggers, actions, tools, decisions, and quality signals while prese
 
 ### Formalize: structure the Skill
 
-Use the existing Skill authoring route to turn the shared core into a structured Skill with explicit boundaries. Consult [Skill authoring guidance](guide.html#skill-authoring).
+Use the existing Skill authoring route to turn the shared core into a structured Skill with explicit boundaries. Consult [Skill authoring guidance](../../content/site-pages/guide.html#skill-authoring).
 
 ### Validate: test quality and reuse
 
@@ -50,4 +50,4 @@ These are perspectives in the authored overview, not a declaration that a runtim
 
 ## Next step
 
-Use [the existing Skill authoring guidance](guide.html#skill-authoring) for an actual library change. A future source binding must identify an authoritative process owner before this overview can be presented as a documented process contract.
+Use [the existing Skill authoring guidance](../../content/site-pages/guide.html#skill-authoring) for an actual library change. A future source binding must identify an authoritative process owner before this overview can be presented as a documented process contract.

@@ -104,7 +104,7 @@ const files = [
   ['client/system-map-workflows.mjs', 'dist/js/system-map-workflows.mjs'],
   ['client/system-map-simple.mjs', 'dist/js/system-map-simple.mjs'],
   ['content/prototypes/workflow-canvas.js', 'dist/data/prototypes/workflow-canvas.js'],
-  ['content/job-tracker-page.html', 'dist/job-tracker.html'],
+  ['content/site-pages/job-tracker.html', 'dist/job-tracker.html'],
   ...authoredSitePages.map((name) => [`content/site-pages/${name}`, `dist/${name}`]),
   ...routeFiles.map((routeFile) => [`content/${routeFile}`, `dist/data/${routeFile}`])
 ];

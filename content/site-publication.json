@@ -2,14 +2,14 @@
   "schema_version": "persona-library.site-publication/v1",
   "playbooks": [
     { "id": "playbook-evidence-led-job-search", "document": "job-search-process", "outlineSection": "Phased delivery", "summarySection": "Purpose", "operatorPersonaId": "job-search-orchestrator", "legacyAnchor": "current" },
-    { "id": "playbook-create-and-integrate-reusable-skill", "overviewSource": "content/site-pages/skill-formation-overview.md", "outlineSection": "Illustrative sequence", "summarySection": "Purpose", "legacyAnchor": "skill-formation" },
+    { "id": "playbook-create-and-integrate-reusable-skill", "overviewSource": "docs/playbooks/skill-formation-overview.md", "outlineSection": "Illustrative sequence", "summarySection": "Purpose", "legacyAnchor": "skill-formation" },
     { "id": "playbook-multi-persona-collaboration", "document": "multi-persona-collaboration", "outlineSection": "Stages", "summarySection": "Purpose", "legacyAnchor": "collaboration" },
     { "id": "playbook-bounded-parallel-implementation", "document": "bounded-parallel-implementation", "outlineSection": "Stages", "summarySection": "Outcome", "rolesSection": "Roles", "legacyAnchor": "bounded-parallel" },
     { "id": "playbook-template-lifecycle", "document": "template-lifecycle", "outlineSection": "Stages", "summarySection": "Outcome", "operatorPersonaId": "template-librarian", "legacyAnchor": "template-lifecycle" }
   ],
   "documents": [
-    { "id": "job-search-process", "source": "docs/job-search/implementation.md", "category": "Job search" },
-    { "id": "multi-persona-collaboration", "source": "docs/collaboration/multi-persona-collaboration-playbook.md", "category": "Processes" },
+    { "id": "job-search-process", "source": "docs/playbooks/evidence-led-job-search.md", "category": "Job search" },
+    { "id": "multi-persona-collaboration", "source": "docs/playbooks/multi-persona-collaboration.md", "category": "Processes" },
     { "id": "bounded-parallel-implementation", "source": "docs/playbooks/bounded-parallel-implementation.md", "category": "Processes" },
     { "id": "template-lifecycle", "source": "docs/playbooks/template-lifecycle.md", "category": "Processes" },
     { "id": "problem-context", "source": "docs/collaboration/problem-context.md", "category": "Processes" },

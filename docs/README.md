@@ -11,8 +11,8 @@ This directory contains current, reusable guidance and project-scoped work recor
 | Decide which repository policy to read or change | [Policy ownership](policy-ownership.md) |
 | Create, verify, or maintain a reusable Template | [Template lifecycle](playbooks/template-lifecycle.md) |
 | Coordinate a bounded parallel implementation | [Bounded parallel implementation](playbooks/bounded-parallel-implementation.md) |
-| Coordinate multiple Personas around a problem | [Multi-persona collaboration](collaboration/multi-persona-collaboration-playbook.md) and [problem context](collaboration/problem-context.md) |
-| Understand the job-search process and its implementation sequence | [Job-search implementation](job-search/implementation.md) |
+| Coordinate multiple Personas around a problem | [Multi-persona collaboration](playbooks/multi-persona-collaboration.md) and [problem context](collaboration/problem-context.md) |
+| Understand the job-search process and its implementation sequence | [Evidence-led Job Search Playbook](playbooks/evidence-led-job-search.md) |
 | Compose or review an application packet | [Application context and review](job-search/application-context-and-review.md) |
 | Resolve candidate context, resume content, or Template mapping | [Candidate context](job-search/candidate-context-contract.md), [resume content model](job-search/resume-content-model.md), and [resume Template mapping](job-search/resume-template-mapping.md) |
 | Understand application tracking or seen-job deduplication | [Application tracker](job-search/application-tracker-contract.md) and [job ledger](job-search/job-ledger-contract.md) |
@@ -21,7 +21,7 @@ This directory contains current, reusable guidance and project-scoped work recor
 | Find a matching tool-heavy execution scenario | [Operational knowledge](operational-knowledge.md) |
 | Change a page shell, reader presentation, or publication selection | [Site authoring guide](../content/site-pages/README.md) and [publication manifest](../content/site-publication.json) |
 
-This index routes to existing owners. Change the owning document rather than copying its procedure into this index. `docs/playbooks/` contains some Playbooks; collaboration and job-search processes remain in their domain-owned folders. Ordinary current-state searches exclude `docs/work-orders/archive/**`; include historical material only when the task needs it.
+This index routes to existing owners. Change the owning document rather than copying its procedure into this index. `docs/playbooks/` contains the Playbook process sources and the explicitly labeled Skill formation overview. Supporting job-search and collaboration contracts stay in their domain folders. The old domain Playbook paths are forwarding notes, not parallel process sources. Ordinary current-state searches exclude `docs/work-orders/archive/**`; include historical material only when the task needs it.
 
 ## Edit and verify
 
@@ -39,14 +39,16 @@ Documented stages describe an intended process. Neither a published reader nor a
 | Canonical Persona, Skill, Tool, Playbook, Template, or Operating Pack data | content/ or its existing canonical owner | Extend the existing owner before creating parallel truth. |
 | Callable repository Skill package | .agents/skills/<skill>/ | Keep the package namespace flat until loader support changes. |
 | Current reusable system or domain guidance | docs/<subject>/ | Keep current truth here; put rationale in Decisions. |
+| Playbook process or explicitly labeled overview | docs/playbooks/ | Keep one source per process; domain contracts stay with their subjects. An overview does not become an authoritative process by moving here. |
 | Repository policy validation ownership | docs/policy-ownership.md | Keep one canonical validated owner per repository-wide policy; root `AGENTS.md` activates rather than duplicates delegated contracts. |
-| Durable Decision records | docs/decisions/records.json | Append the rationale, alternatives, affected surfaces, status, and revisit condition; `content/decisions-page.html` plus `scripts/build-decisions.mjs` generate the Decisions page from this single source. |
+| Durable Decision records | docs/decisions/records.json | Append the rationale, alternatives, affected surfaces, status, and revisit condition; `content/site-pages/decisions.html` plus `scripts/build-decisions.mjs` generate the Decisions page from this single source. |
 | Active project state needing unique recovery detail | docs/work-orders/<id>/ | Use a Work Order only when Current Work plus the issue/PR and domain artifact do not already preserve enough execution/recovery state. |
 | Qualifying small repository change | existing authoritative surfaces | Use the small-change lane when a separate Work Order would duplicate state already held by Current Work, the issue/PR, or a domain-specific artifact. A pull request may be the active repository record; preserve existing issues, Current Work, Verification Queue records, and Work Graph membership when they have their own lifecycle. |
 | Terminal Work Order package | docs/work-orders/archive/YYYY-MM/<id>/ | Preserve history; archive only after a terminal status is recorded. |
 | Evaluation fixtures and results | eval/ | Record conditions and evidence without implying live provider capability. |
 | Isolated experiments | the existing prototype-owned path | Keep prototypes out of live records until explicit promotion. |
 | Authored static Site page shell | content/site-pages/ | Edit the stable route source here; the build publishes it to the matching top-level `dist/*.html` path. |
+| Shared website reader layout | content/site-pages/reference-reader.layout.html | The reference builder fills this layout for published readers; it is not a standalone route or a reusable Template Library artifact. |
 | Curated published reference or process | its current canonical Markdown owner in docs/ | Select it in `content/site-publication.json`; the build renders the Docs index, reader, and map projection. Existing published job-search Markdown URLs remain compatibility copies. |
 | Generated Site output | dist/ | Disposable build output only; never hand-edit. |
 | Temporary or scratch material | uncommitted temporary workspace | Do not commit by default. |
@@ -93,4 +95,4 @@ Direct placement does not grant mutation permission and does not bypass change-i
 
 dist/ is the committed, publishable, dependency-free Site output. Install the pinned build-only Markdown parser with `npm ci --include=dev --ignore-scripts`, change content/ or client/ or a published source document, run `node scripts/build-library.mjs`, then run `node scripts/validate-content.mjs` and the focused validation test before handoff. A clean rebuild must reproduce the committed generated data and route copies; no contributor should author changes directly under dist/.
 
-`content/site-publication.json` is the explicit publication allowlist and existing-ID Playbook source binding, not a second process contract. `scripts/build-reference-pages.mjs` renders those current sources into the Playbooks catalog, curated Docs index, static readers, and `dist/data/site-publication.json` for the map. The existing human guide remains authored in `content/site-pages/guide.html`; its catalog-state examples are build-derived. An authored overview under `content/site-pages/` must stay labeled as an overview when no authoritative process source is bound. Internal reconstruction notes, work records/archives, Decisions, and Prototyping are not automatically published by this pipeline. Existing published job-search Markdown URLs remain compatibility copies.
+`content/site-publication.json` is the explicit publication allowlist and existing-ID Playbook source binding, not a second process contract. `scripts/build-reference-pages.mjs` renders those current sources into the Playbooks catalog, curated Docs index, static readers, and `dist/data/site-publication.json` for the map. The existing human guide remains authored in `content/site-pages/guide.html`; its catalog-state examples are build-derived. The authored `docs/playbooks/skill-formation-overview.md` must stay labeled as an overview when no authoritative process source is bound. Internal reconstruction notes, work records/archives, Decisions, and Prototyping are not automatically published by this pipeline. Existing published job-search Markdown URLs remain compatibility copies.

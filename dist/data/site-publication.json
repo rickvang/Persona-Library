@@ -7,9 +7,9 @@
       "status": "Working model",
       "summary": "Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.",
       "kind": "process",
-      "source": "docs/job-search/implementation.md",
-      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/implementation.md",
-      "sourceSha256": "1db44af7355fcfeb049977736215a426b26bbe2bdca9e8244c8b1106d1d69227",
+      "source": "docs/playbooks/evidence-led-job-search.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/evidence-led-job-search.md",
+      "sourceSha256": "41ae3aaec25b0a2cbda9cec21322de33d46d2a4b0449890a628b254cf22bf32d",
       "href": "playbook-evidence-led-job-search.html",
       "legacyAnchor": "current",
       "outline": [
@@ -36,9 +36,9 @@
       "status": "Working model",
       "summary": "Combine bounded perspectives from the Personas who perform the work, then formalize a reusable capability without losing its context.",
       "kind": "overview",
-      "source": "content/site-pages/skill-formation-overview.md",
-      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/content/site-pages/skill-formation-overview.md",
-      "sourceSha256": "d7ec4bf63e84b32b64e6ac9ced30812c7602674375534df40e55a4f61228e750",
+      "source": "docs/playbooks/skill-formation-overview.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/skill-formation-overview.md",
+      "sourceSha256": "2b68ebf221da3d9c5d566234a2353b3c00f9adbabcb3acd76a95f8888015ca17",
       "href": "playbook-create-and-integrate-reusable-skill.html",
       "legacyAnchor": "skill-formation",
       "outline": [
@@ -60,9 +60,9 @@
       "status": "Working model",
       "summary": "Produce one useful, inspectable solution for a bounded user problem by coordinating explicitly selected Personas through a shared problem-context document. The context is an instrument for traceability and handoff; it is not the user-facing outcome.",
       "kind": "process",
-      "source": "docs/collaboration/multi-persona-collaboration-playbook.md",
-      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/multi-persona-collaboration-playbook.md",
-      "sourceSha256": "31bea1251b2686d11c4470bca219d231402d2cd6738f646b780566786f57bec3",
+      "source": "docs/playbooks/multi-persona-collaboration.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/multi-persona-collaboration.md",
+      "sourceSha256": "1681121ee4f9bd944f07fe4aa0860dbb5f536829bbf724c1479e22fc5cecdc0c",
       "href": "playbook-multi-persona-collaboration.html",
       "legacyAnchor": "collaboration",
       "outline": [
@@ -88,7 +88,7 @@
       "kind": "process",
       "source": "docs/playbooks/bounded-parallel-implementation.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/bounded-parallel-implementation.md",
-      "sourceSha256": "398ce7a54dd28651b3cd3dce939096be22d0c780d328f1bd90c112b5bcb46847",
+      "sourceSha256": "337d6755c48f6234fdcee419f2a8ce08005fd3896afa9e747235ed73a499118e",
       "href": "playbook-bounded-parallel-implementation.html",
       "legacyAnchor": "bounded-parallel",
       "outline": [
@@ -147,9 +147,9 @@
       "title": "Job search system implementation plan",
       "summary": "Build a research-backed job-search workspace that helps a person define a target, interpret a role, turn real experience into evidence, write an ATS-compatible application, preserve human readability and aesthetics, and learn from each submission.",
       "category": "Job search",
-      "source": "docs/job-search/implementation.md",
-      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/implementation.md",
-      "sourceSha256": "1db44af7355fcfeb049977736215a426b26bbe2bdca9e8244c8b1106d1d69227",
+      "source": "docs/playbooks/evidence-led-job-search.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/evidence-led-job-search.md",
+      "sourceSha256": "41ae3aaec25b0a2cbda9cec21322de33d46d2a4b0449890a628b254cf22bf32d",
       "href": "playbook-evidence-led-job-search.html",
       "headings": [
         {
@@ -209,9 +209,9 @@
       "title": "Multi-Persona Collaboration Playbook",
       "summary": "Produce one useful, inspectable solution for a bounded user problem by coordinating explicitly selected Personas through a shared problem-context document. The context is an instrument for traceability and handoff; it is not the user-facing outcome.",
       "category": "Processes",
-      "source": "docs/collaboration/multi-persona-collaboration-playbook.md",
-      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/collaboration/multi-persona-collaboration-playbook.md",
-      "sourceSha256": "31bea1251b2686d11c4470bca219d231402d2cd6738f646b780566786f57bec3",
+      "source": "docs/playbooks/multi-persona-collaboration.md",
+      "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/multi-persona-collaboration.md",
+      "sourceSha256": "1681121ee4f9bd944f07fe4aa0860dbb5f536829bbf724c1479e22fc5cecdc0c",
       "href": "playbook-multi-persona-collaboration.html",
       "headings": [
         {
@@ -263,7 +263,7 @@
       "category": "Processes",
       "source": "docs/playbooks/bounded-parallel-implementation.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/bounded-parallel-implementation.md",
-      "sourceSha256": "398ce7a54dd28651b3cd3dce939096be22d0c780d328f1bd90c112b5bcb46847",
+      "sourceSha256": "337d6755c48f6234fdcee419f2a8ce08005fd3896afa9e747235ed73a499118e",
       "href": "playbook-bounded-parallel-implementation.html",
       "headings": [
         {
@@ -836,7 +836,7 @@
       "category": "Maintenance",
       "source": "docs/README.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/README.md",
-      "sourceSha256": "c29165f0eb96f00a3e6e1f91704969d7bae29773f07753829dd3e76b6ff3656a",
+      "sourceSha256": "4a161f2349af2afeb0ab46fd52630e391e322815e19ddf95626e7d7a8ebe8489",
       "href": "doc-docs-authoring.html",
       "headings": [
         {

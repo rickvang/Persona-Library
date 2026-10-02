@@ -312,7 +312,7 @@ export async function validateGeneratedOutputs(context) {
   if (referenceCatalogs.playbooks !== files.playbooksPage || referenceCatalogs.guide !== files.guidePage) throw new Error('Generated Playbooks or Docs page is stale; rebuild from the curated source bindings');
   const {compiled,...publicationProjection} = publication;
   if (await context.readFile('dist/data/site-publication.json') !== JSON.stringify(publicationProjection,null,2) + '\n') throw new Error('Generated Playbook/Docs projection is stale');
-  const readerTemplate = await context.readFile('content/site-pages/reference-reader.html');
+  const readerTemplate = await context.readFile('content/site-pages/reference-reader.layout.html');
   for (const [entries,isPlaybook] of [[publication.playbooks,true],[publication.documents.filter(entry => !publication.playbooks.some(playbook => playbook.href === entry.href)),false]]) {
     for (const entry of entries) if (await context.readFile('dist/' + entry.href) !== renderReferenceReader(readerTemplate,entry,publication.compiled.get(entry.source),publication,isPlaybook)) throw new Error(`Generated reference reader is stale: ${entry.href}`);
   }
@@ -429,8 +429,8 @@ export async function validateGeneratedOutputs(context) {
   if (!seenJobContract.includes('Seen-job deduplication contract') || !seenJobContract.includes('private seen-job set') || !seenJobContract.includes('first_shown') || !seenJobContract.includes('does **not** define a full job-opportunity ledger or application tracker')) throw new Error('Seen-job deduplication contract is missing identity, privacy, or scope boundaries');
   const trackerContract = await context.readFile('docs/job-search/application-tracker-contract.md');
   validateJobApplicationTrackerContract({ page: jobTrackerPage, runtime: jobTrackerRuntimeOutput, importRuntime: jobTrackerImportOutput, storeRuntime: jobTrackerStoreOutput, configRuntime: jobTrackerConfigOutput, contract: trackerContract });
-  const jobSearchImpl = await context.readFile('docs/job-search/implementation.md');
-  if (jobSearchImpl.includes('Riley is the job-search orchestrator') || jobSearchImpl.includes('**Job-search orchestrator**')) throw new Error('docs/job-search/implementation.md must not frame Riley as the Job-search orchestrator identity');
+  const jobSearchImpl = await context.readFile('docs/playbooks/evidence-led-job-search.md');
+  if (jobSearchImpl.includes('Riley is the job-search orchestrator') || jobSearchImpl.includes('**Job-search orchestrator**')) throw new Error('docs/playbooks/evidence-led-job-search.md must not frame Riley as the Job-search orchestrator identity');
   const riley = context.data.personas.find(persona => persona.id === 'ai-orchestrator');
   const rileyFlows = context.data.flowLibrary?.['ai-orchestrator'] || [];
   const jobSearchPlaybook = context.data.playbookCatalog.find(playbook => playbook.id === 'playbook-evidence-led-job-search');
@@ -442,7 +442,7 @@ export async function validateGeneratedOutputs(context) {
   if (!jobSearchOperator || jobSearchOperator.name !== 'Priya Desai' || jobSearchOperator.roleLabel !== 'Job search orchestrator') throw new Error('Canonical Job Search Orchestrator Persona is missing or malformed');
   if (jobSearchOperatorFlows.length < 6 || !jobSearchOperatorFlows.some(flow => flow.title === 'Review campaign health and allocate attention') || !jobSearchOperatorFlows.some(flow => flow.title === 'Recover a stalled or inconsistent search')) throw new Error('Job Search Orchestrator workflow map is incomplete');
   if (!context.data.skillLibrary?.['job-search-orchestrator']?.some(skill => skill.name === 'Task decomposition and routing') || !context.data.skillLibrary?.['job-search-orchestrator']?.some(skill => skill.name === 'Failure recovery and operational judgment')) throw new Error('Job Search Orchestrator must reuse orchestration capabilities without requiring new portable Skills');
-  if (!jobSearchImpl.includes('Riley Morgan · AI orchestrator') || !jobSearchImpl.includes('Priya Desai') || !jobSearchImpl.includes('seen-job deduplication contract')) throw new Error('docs/job-search/implementation.md must retain Riley as router, Priya as operator, and the seen-job deduplication contract');
+  if (!jobSearchImpl.includes('Riley Morgan · AI orchestrator') || !jobSearchImpl.includes('Priya Desai') || !jobSearchImpl.includes('seen-job deduplication contract')) throw new Error('docs/playbooks/evidence-led-job-search.md must retain Riley as router, Priya as operator, and the seen-job deduplication contract');
   const templateLifecycleCard = playbookCatalogCard(playbooksPage, 'playbook-template-lifecycle');
   if (!templateLifecycleCard || !templateLifecycleCard.includes('Elena Park · Template Librarian') || !templateLifecycleCard.includes('playbook-template-lifecycle.html')) throw new Error('Template lifecycle catalog must preserve its existing operating Persona and bound source reader');
   if (!guidePage.includes('Template lifecycle example') || !guidePage.includes('playbooks.html#template-lifecycle')) throw new Error('Docs page must link the Template lifecycle Playbook example');

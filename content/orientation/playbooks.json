@@ -78,7 +78,7 @@
       "availability_source": "documentation_only",
       "first_reads": [
         "docs/collaboration/problem-context.schema.json",
-        "docs/collaboration/multi-persona-collaboration-playbook.md",
+        "docs/playbooks/multi-persona-collaboration.md",
         "active Work Order"
       ],
       "mutation_boundary": "authorized_update",
@@ -108,7 +108,7 @@
       "availability_source": "documentation_only",
       "first_reads": [
         "docs/playbooks/bounded-parallel-implementation.md",
-        "docs/collaboration/multi-persona-collaboration-playbook.md",
+        "docs/playbooks/multi-persona-collaboration.md",
         "active Work Order or GitHub issue"
       ],
       "mutation_boundary": "authorized_update",

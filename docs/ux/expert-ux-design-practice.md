@@ -34,7 +34,7 @@ Relevant repository sources:
 - [Canonical Persona and Skill data](../../content/library-data.js)
 - [Layout Lab](../../.agents/skills/layout-lab/SKILL.md)
 - [Shared problem context](../collaboration/problem-context.md)
-- [Collaboration Playbook](../collaboration/multi-persona-collaboration-playbook.md)
+- [Collaboration Playbook](../playbooks/multi-persona-collaboration.md)
 - [Change Impact Reconciliation](../../.agents/skills/change-impact-reconciliation/SKILL.md)
 - [UX work order template](ux-work-order-template.md)
 - [IA-to-UI traceability template](ia-to-ui-traceability-template.md)

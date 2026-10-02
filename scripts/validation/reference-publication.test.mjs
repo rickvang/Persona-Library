@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {readFile, readdir} from 'node:fs/promises';
+import {readFile, readdir, access} from 'node:fs/promises';
 import path from 'node:path';
 import {loadValidationContext} from './context.mjs';
 import {compilePublication, validatePublicationManifest, renderReferenceCatalogs, renderReferenceReader, renderMarkdown, publicationLink, REFERENCE_PAGE_SOURCES} from '../build-reference-pages.mjs';
@@ -19,7 +19,7 @@ test('publication binds the existing catalog without promoting the source-less o
   assert.equal(publication.playbooks.filter(entry => entry.kind === 'process').length,4);
   const overview = publication.playbooks.find(entry => entry.kind === 'overview');
   assert.equal(overview.id,'playbook-create-and-integrate-reusable-skill');
-  assert.equal(overview.source,'content/site-pages/skill-formation-overview.md');
+  assert.equal(overview.source,'docs/playbooks/skill-formation-overview.md');
   const catalogs = renderReferenceCatalogs(templates.playbooks,templates.guide,publication,data);
   assert.match(catalogs.playbooks,/Process source not yet bound/);
   assert.match(renderReferenceReader(templates.reader,overview,publication.compiled.get(overview.source),publication,true),/not a bound process contract/);
@@ -39,6 +39,42 @@ test('an edited process reaches its card, Guide, reader, and map projection', ()
   assert.match(renderReferenceReader(templates.reader,entry,changed.compiled.get(source),changed,true),/Fixture stage body/);
   assert.match(JSON.stringify(changed.playbooks),/Unique fixture stage/);
   assert.notEqual(entry.sourceSha256,publication.playbooks.find(record => record.id === entry.id).sourceSha256);
+});
+
+test('relocated process sources retain reader URLs, local links, and forwarding notes', async () => {
+  for (const [id,source,oldPath] of [
+    ['playbook-evidence-led-job-search','docs/playbooks/evidence-led-job-search.md','docs/job-search/implementation.md'],
+    ['playbook-multi-persona-collaboration','docs/playbooks/multi-persona-collaboration.md','docs/collaboration/multi-persona-collaboration-playbook.md']
+  ]) {
+    const entry = publication.playbooks.find(record => record.id === id);
+    assert.equal(entry.source,source);
+    assert.equal(entry.href,id + '.html');
+    const forwarding = await read(oldPath);
+    assert.ok(forwarding.length < 600);
+    const link = forwarding.match(/\]\(([^)]+)\)/)?.[1];
+    assert.equal(path.posix.normalize(path.posix.join(path.posix.dirname(oldPath),link)),source);
+    assert.ok(!manifest.documents.some(record => record.source === oldPath));
+  }
+  const collaboration = publication.playbooks.find(record => record.id === 'playbook-multi-persona-collaboration');
+  assert.match(publication.compiled.get(collaboration.source).html,/href="doc-problem-context.html"/);
+  const jobSearch = publication.playbooks.find(record => record.id === 'playbook-evidence-led-job-search');
+  assert.match(publication.compiled.get(jobSearch.source).html,/href="doc-seen-job-deduplication.html"/);
+  const overview = publication.playbooks.find(record => record.kind === 'overview');
+  assert.match(publication.compiled.get(overview.source).html,/href="guide.html#skill-authoring"/);
+});
+
+test('page sources stay together without publishing the shared reader layout', async () => {
+  assert.equal(REFERENCE_PAGE_SOURCES.readerTemplate,'content/site-pages/reference-reader.layout.html');
+  for (const source of ['content/site-pages/job-tracker.html','content/site-pages/decisions.html']) {
+    assert.match(await read(source),/^<!doctype html>/);
+  }
+  for (const oldPath of ['content/job-tracker-page.html','content/decisions-page.html','content/site-pages/reference-reader.html','content/site-pages/skill-formation-overview.md']) {
+    await assert.rejects(access(path.join(root,oldPath)),{code:'ENOENT'});
+  }
+  const names = await readdir(path.join(root,'dist'));
+  for (const route of ['job-tracker.html','decisions.html']) assert.ok(names.includes(route));
+  assert.ok(!names.includes('reference-reader.layout.html'));
+  assert.ok(!names.includes('reference-reader.html'));
 });
 
 test('catalog status and operating Persona are derived from existing identities', () => {
@@ -80,7 +116,7 @@ test('a new explicitly curated source gets an index row and reader without custo
 test('missing, conflicting, unknown, and duplicate bindings reject publication', () => {
   const missing = structuredClone(manifest); missing.playbooks.pop();
   assert.throws(() => validatePublicationManifest(missing,data),/exactly one/);
-  const conflict = structuredClone(manifest); conflict.playbooks[0].overviewSource = 'content/site-pages/fixture-overview.md';
+  const conflict = structuredClone(manifest); conflict.playbooks[0].overviewSource = 'docs/playbooks/fixture-overview.md';
   assert.throws(() => validatePublicationManifest(conflict,data),/one known document or authored overview/);
   const duplicate = structuredClone(manifest); duplicate.playbooks.push({...duplicate.playbooks[0]});
   assert.throws(() => validatePublicationManifest(duplicate,data),/duplicate Playbook binding/);
@@ -117,6 +153,14 @@ test('curation rejects prototype, internal, archive, and traversal paths', () =>
   assert.ok(!JSON.stringify(output).includes('proto-'));
 });
 
+test('overview relocation does not widen the publication source boundary', () => {
+  for (const source of ['content/site-pages/fixture-overview.md','docs/internal/fixture-overview.md','docs/work-orders/fixture-overview.md','docs/playbooks/../fixture-overview.md','docs/playbooks/process.md','docs\\playbooks\\fixture-overview.md']) {
+    const editedManifest = structuredClone(manifest);
+    editedManifest.playbooks.find(entry => entry.overviewSource).overviewSource = source;
+    assert.throws(() => validatePublicationManifest(editedManifest,data),/Invalid overview source/);
+  }
+});
+
 test('Markdown renders real lists and tables while escaping HTML and unsafe links', () => {
   const markdown = '# Safety\n\n<script>alert(1)</script>\n\n<img src=x onerror=alert(2)>\n\n[Bad](javascript:alert%281%29) [Good](https://example.com/?a=1&b=2)\n\n![Image](data:text/html;base64,abcd)\n\n- List item\n\n| Column | Value |\n| --- | --- |\n| Cell | Text |';
   const {html} = renderMarkdown(markdown,'docs/safety.md');
@@ -131,7 +175,7 @@ test('relative curated references stay in the Site; unselected sources stay at t
   const docs = new Map([['docs/collaboration/problem-context.md',{href:'doc-problem-context.html'}],['docs/playbooks/template-lifecycle.md',{href:'playbook-template-lifecycle.html'}]]);
   assert.equal(publicationLink('../collaboration/problem-context.md#shared-state','docs/playbooks/fixture.md',docs),'doc-problem-context.html#shared-state');
   assert.equal(publicationLink('template-lifecycle.md','docs/playbooks/fixture.md',docs),'playbook-template-lifecycle.html');
-  assert.equal(publicationLink('guide.html#skill-authoring','content/site-pages/skill-formation-overview.md',docs),'guide.html#skill-authoring');
+  assert.equal(publicationLink('../../content/site-pages/guide.html#skill-authoring','docs/playbooks/skill-formation-overview.md',docs),'guide.html#skill-authoring');
   assert.equal(publicationLink('../../AGENTS.md','docs/playbooks/fixture.md',docs),'https://github.com/rickvang/Persona-Library/blob/main/AGENTS.md');
   for (const href of ['javascript:alert(1)','data:text/html,fixture','//unsafe.example','https://user:secret@example.com','https:\\unsafe.example']) assert.equal(publicationLink(href,'docs/fixture.md',docs),'');
 });

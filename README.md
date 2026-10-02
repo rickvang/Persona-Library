@@ -35,7 +35,7 @@ The Site and map describe the system's recorded structure and documented process
 - `scripts/` — the build and content-validation scripts.
 - `dist/` — the generated, dependency-free Site, including all public pages, the Operating Packs and Templates catalogs, the focused Template viewer, and the onboarding guidance.
 - `ARCHITECTURE.md` — the system boundary, source-of-truth rules, and maintenance invariants.
-- `docs/job-search/implementation.md` — the job-search workspace scope and sequencing plan.
+- `docs/playbooks/evidence-led-job-search.md` - the job-search process, workspace scope, and sequencing plan.
 - `AGENTS.md` — the repository activation and orientation entry point.
 - `content/site-orientation.json` — maintainer/agent machine-readable routing bootstrap; it is not required for basic human Workspace orientation.
 - `content/orientation/` — selectively loaded agent/maintainer route groups keyed by the existing primary spaces.
