@@ -24,7 +24,8 @@
     </header>
 
     <div class="reader-layout">
-      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#native-packet-operation">Native packet operation</a>
+      <aside class="reader-sidebar"><details class="reader-toc" data-reader-toc open><summary>On this page</summary><nav aria-label="Document sections"><a href="#local-packet-operation">Local packet operation</a>
+<a href="#native-packet-operation--compatibility">Native packet operation — compatibility</a>
 <a href="#ownership">Ownership</a>
 <a href="#load-only-the-relevant-context">Load only the relevant context</a>
 <a href="#preserve-a-claim-ledger">Preserve a claim ledger</a>
@@ -33,7 +34,45 @@
 <a href="#site-relationships">Site relationships</a></nav></details></aside>
       <article class="markdown-body"><span id="application-context-and-review-contract"></span>
 <p>Use the <a href="playbook-evidence-led-job-search.html#routine-application-preparation--default">Evidence-led Job Search Playbook&#39;s routine application path</a> first. These instructions define context and review criteria; they do not require a full Work Order, notes document or council for each application.</p>
-<h2 id="native-packet-operation">Native packet operation</h2>
+<h2 id="local-packet-operation">Local packet operation</h2>
+<p>Routine packets use <a href="https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.py" rel="noreferrer">scripts/application-packet.py</a>. Load one private source-bound candidate profile, read the current employer posting, and write one role-specific JSON draft containing the job and both documents. Run the command once, inspect the final files, correct only observed failures, and deliver. The builder has no network, model API, Drive, Notion, Supabase, or application-tracker dependency.</p>
+<pre><code class="language-sh">python scripts/application-packet.py --profile /private/candidate-profile.json --draft /private/role-draft.json --output /private/new-packet
+</code></pre>
+<p>Use the Python runtime from <code>load_workspace_dependencies</code> in Codex. Its <code>reportlab</code>, <code>python-docx</code>, <code>pypdf</code>, and <code>pypdfium2</code> packages are already bundled. Other environments install <code>scripts/application-packet-requirements.txt</code> once. The default outputs are <code>resume.pdf</code>, <code>resume.docx</code>, and separate <code>cover-letter.pdf</code> / <code>cover-letter.docx</code> when the draft includes a letter. <code>--formats pdf</code> generates only PDFs. The output folder must be new or empty, preserving existing packets.</p>
+<h3 id="prepare-once-and-reuse">Prepare once and reuse</h3>
+<p>The private profile is a compact projection of verified candidate sources, not new career authority. Build it once from the designated baseline, applicable standing decisions, and candidate-confirmed additions. Preserve source references and revisions; increment its version when facts or applicable decisions change. Keep the complete history there and select relevant content for each resume. A selected employer/title/date/location and its client context always come from the profile. Omitted roles need an explicit reason and must respect candidate instructions. A prior role-specific packet cannot establish new facts.</p>
+<p>The built-in layout is renderer implementation, not a new reusable Template identity. Template catalog/research is needed only when the requester chooses a reusable external Template or needs a different layout. Do not add a library routing or placement ceremony to each private packet. A new layout still needs actual page review.</p>
+<p>Profile fields:</p>
+<ul>
+<li><code>candidate_id</code>, <code>version</code>, <code>identity</code> (<code>name</code>, <code>location</code>, <code>email</code>, optional <code>phone</code>, <code>links</code> with <code>label</code> and HTTPS <code>url</code>).</li>
+<li><code>sources</code>: records with <code>id</code>, <code>reference</code>, and <code>revision</code>.</li>
+<li><code>facts</code>: ID-keyed records with <code>text</code>, <code>source</code>, and <code>role</code> for role-specific accomplishments. Retain an original passage locator when available.</li>
+<li><code>roles</code>: records with <code>id</code>, <code>employer</code>, <code>title</code>, <code>start</code> and <code>end</code> in <code>YYYY-MM</code> (null end means current), optional <code>location</code> and explicit employer/client <code>context</code>.</li>
+<li>Approved <code>skills</code>, <code>education</code>, and <code>certifications</code> as text arrays; applicable standing decisions and voice preferences may travel in the same private file.</li>
+</ul>
+<p>The role draft binds <code>candidate_id</code> and <code>profile_version</code>. Its <code>job</code> records <code>id</code>, <code>company</code>, <code>role</code>, <code>source_url</code>, <code>checked_on</code>, selected <code>requirements</code> with IDs, and optional <code>cover_letter_required</code> / <code>resume_page_limit</code> (default two pages). <code>matches</code> gives each selected requirement its evidence IDs or an explicit <code>gap</code>. <code>unanswered</code> holds remaining application answers; these do not prevent file production.</p>
+<pre><code class="language-json">{
+  &quot;candidate_id&quot;: &quot;active-private-candidate&quot;,
+  &quot;profile_version&quot;: &quot;1&quot;,
+  &quot;job&quot;: {&quot;id&quot;: &quot;role-id&quot;, &quot;company&quot;: &quot;Employer&quot;, &quot;role&quot;: &quot;Designer&quot;, &quot;source_url&quot;: &quot;https://example.com/job&quot;, &quot;checked_on&quot;: &quot;2026-10-02&quot;, &quot;requirements&quot;: [{&quot;id&quot;: &quot;systems&quot;, &quot;text&quot;: &quot;Design systems&quot;}]},
+  &quot;resume&quot;: {
+    &quot;headline&quot;: &quot;Product Designer&quot;,
+    &quot;summary&quot;: {&quot;text&quot;: &quot;Source-supported positioning.&quot;, &quot;evidence&quot;: [&quot;fact-id&quot;]},
+    &quot;roles&quot;: [{&quot;id&quot;: &quot;source-role-id&quot;, &quot;bullets&quot;: [{&quot;text&quot;: &quot;Source-supported accomplishment.&quot;, &quot;evidence&quot;: [&quot;fact-id&quot;]}]}],
+    &quot;skills&quot;: [&quot;Figma&quot;],
+    &quot;omitted_roles&quot;: []
+  },
+  &quot;cover_letter&quot;: {&quot;date&quot;: &quot;2026-10-02&quot;, &quot;opening&quot;: &quot;Why this product interests me.&quot;, &quot;paragraphs&quot;: [{&quot;text&quot;: &quot;Relevant source-supported experience.&quot;, &quot;evidence&quot;: [&quot;fact-id&quot;]}], &quot;closing&quot;: &quot;The conversation I would welcome.&quot;},
+  &quot;matches&quot;: [{&quot;requirement&quot;: &quot;systems&quot;, &quot;evidence&quot;: [&quot;fact-id&quot;]}],
+  &quot;unanswered&quot;: [&quot;Work authorization confirmation&quot;]
+}
+</code></pre>
+<h3 id="review-and-deliver">Review and deliver</h3>
+<p>The builder preserves source career identity, sorts source dates, rejects missing/cross-role evidence, unconfirmed skills, unsupported numeric claims, undisclosed role omissions, incomplete requirement dispositions, placeholders, missing exported text/links, and exceeded page budgets. Each role is kept together; it never shrinks text to force a page count. These are mechanical integrity checks, not proof that wording preserves meaning or that an employer&#39;s ATS accepted it.</p>
+<p><code>preview/</code> contains every PDF page for one visual review. <code>build-report.json</code> contains source revisions, output hashes, mechanical timing, omissions, unknown answers, and explicitly pending editorial/layout review. Review source meaning, role fit, voice, and every actual final PDF page. DOCX has structural/text/link checks; its layout remains unverified until a Word-compatible renderer is inspected when that format will be submitted. Correct only affected content/checks and build a new output revision.</p>
+<p>Measure job reading/drafting, command execution, and final review separately, with the full user-request interval when benchmarking. A fast render is not a fast end-to-end application. Deliver reviewed files before bookkeeping. Resolve/update the existing Applications record separately when tracking is in scope; preserve later confirmed states and keep unresolved answers visible. Production does not submit, upload, or set <code>Applied</code>.</p>
+<h2 id="native-packet-operation--compatibility">Native packet operation — compatibility</h2>
+<p>Use this path only when native Google Docs baseline fidelity or private Drive/Applications recording is explicitly needed. It is not the default full-packet builder and does not produce the cover letter or DOCX exports.</p>
 <p><a href="https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.mjs" rel="noreferrer">scripts/application-packet.mjs</a> is the executable routine for an approved Google Docs baseline and the existing private Drive/Applications store. It has no model calls, credentials or new service dependencies. The executor supplies tailoring judgment and final-file review; the runner supplies copy, indexed edit, export/save, recovery and owner-scoped recording.</p>
 <p>Load the runner once per batch in the native tool runtime. In a runtime with <code>tools</code>, <code>store</code> and <code>load</code>, read the complete trusted repository file into <code>source</code> (check command success and output truncation), then:</p>
 <pre><code class="language-javascript">const runPacket = Function(source.replace(/^export /m, &#39;&#39;) + &#39;; return runApplicationPacket;&#39;)();

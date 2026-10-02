@@ -29,6 +29,8 @@ The normalized Resume Content Model is a presentation-neutral projection from ev
 
 ## Application composition sequence
 
+Routine local packet production uses the [Local packet operation](application-context-and-review.md#local-packet-operation): reuse one versioned private source projection, author one role draft, render, review and deliver. That projection retains baseline facts, standing decisions and source revisions; it cannot override them. The detailed composition sequence below applies when resolving source conflicts or performing reusable external Template/semantic mapping. It is not a mandatory per-packet startup sequence for the built-in local renderer.
+
 For candidate-specific application work:
 
 ```text

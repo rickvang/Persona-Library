@@ -65,8 +65,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35052,
-          "rough_tokens": 8763
+          "utf8_bytes": 35643,
+          "rough_tokens": 8911
         },
         "expectation": {
           "pass": true,
@@ -142,8 +142,8 @@
             "dist/data/agent-context/skill-package-maintenance.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 28725,
-          "rough_tokens": 7182
+          "utf8_bytes": 29316,
+          "rough_tokens": 7329
         },
         "expectation": {
           "pass": true,
@@ -261,8 +261,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35052,
-          "rough_tokens": 8763
+          "utf8_bytes": 35643,
+          "rough_tokens": 8911
         },
         "expectation": {
           "pass": true,
@@ -338,8 +338,8 @@
             "dist/data/agent-context/skill-package-maintenance.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 28725,
-          "rough_tokens": 7182
+          "utf8_bytes": 29316,
+          "rough_tokens": 7329
         },
         "expectation": {
           "pass": true,
@@ -456,8 +456,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 27491,
-          "rough_tokens": 6873
+          "utf8_bytes": 28082,
+          "rough_tokens": 7021
         },
         "expectation": {
           "pass": true,
@@ -533,8 +533,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 27491,
-          "rough_tokens": 6873
+          "utf8_bytes": 28082,
+          "rough_tokens": 7021
         },
         "expectation": {
           "pass": true,
@@ -651,8 +651,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 27491,
-          "rough_tokens": 6873
+          "utf8_bytes": 28082,
+          "rough_tokens": 7021
         },
         "expectation": {
           "pass": true,
@@ -728,8 +728,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 27491,
-          "rough_tokens": 6873
+          "utf8_bytes": 28082,
+          "rough_tokens": 7021
         },
         "expectation": {
           "pass": true,
@@ -846,8 +846,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 27491,
-          "rough_tokens": 6873
+          "utf8_bytes": 28082,
+          "rough_tokens": 7021
         },
         "expectation": {
           "pass": true,
@@ -923,8 +923,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 27491,
-          "rough_tokens": 6873
+          "utf8_bytes": 28082,
+          "rough_tokens": 7021
         },
         "expectation": {
           "pass": true,
@@ -1042,8 +1042,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35052,
-          "rough_tokens": 8763
+          "utf8_bytes": 35643,
+          "rough_tokens": 8911
         },
         "expectation": {
           "pass": true,
@@ -1119,8 +1119,8 @@
             "dist/data/agent-context/skill-package-maintenance.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 28725,
-          "rough_tokens": 7182
+          "utf8_bytes": 29316,
+          "rough_tokens": 7329
         },
         "expectation": {
           "pass": true,
@@ -1238,8 +1238,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35052,
-          "rough_tokens": 8763
+          "utf8_bytes": 35643,
+          "rough_tokens": 8911
         },
         "expectation": {
           "pass": true,
@@ -1315,8 +1315,8 @@
             "dist/data/agent-context/skill-package-maintenance.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 28725,
-          "rough_tokens": 7182
+          "utf8_bytes": 29316,
+          "rough_tokens": 7329
         },
         "expectation": {
           "pass": true,
@@ -1434,8 +1434,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35052,
-          "rough_tokens": 8763
+          "utf8_bytes": 35643,
+          "rough_tokens": 8911
         },
         "expectation": {
           "pass": true,
@@ -1511,8 +1511,8 @@
             "dist/data/agent-context/skill-package-maintenance.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 28725,
-          "rough_tokens": 7182
+          "utf8_bytes": 29316,
+          "rough_tokens": 7329
         },
         "expectation": {
           "pass": true,
@@ -1630,8 +1630,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35052,
-          "rough_tokens": 8763
+          "utf8_bytes": 35643,
+          "rough_tokens": 8911
         },
         "expectation": {
           "pass": true,
@@ -1707,8 +1707,8 @@
             "dist/data/agent-context/skill-package-maintenance.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 28725,
-          "rough_tokens": 7182
+          "utf8_bytes": 29316,
+          "rough_tokens": 7329
         },
         "expectation": {
           "pass": true,
@@ -1773,12 +1773,12 @@
     "passed": 9,
     "failed": 0,
     "all_pass": true,
-    "preferred_context_utf8_bytes": 172350,
-    "control_context_utf8_bytes": 210312,
-    "preferred_context_rough_tokens": 43088,
-    "control_context_rough_tokens": 52578,
+    "preferred_context_utf8_bytes": 175896,
+    "control_context_utf8_bytes": 213858,
+    "preferred_context_rough_tokens": 43974,
+    "control_context_rough_tokens": 53465,
     "preferred_delta_utf8_bytes": -37962,
-    "preferred_delta_percent": -18.1
+    "preferred_delta_percent": -17.8
   },
   "limitations": [
     "The evaluator is fixture-scoped and is not a general-purpose natural-language router.",

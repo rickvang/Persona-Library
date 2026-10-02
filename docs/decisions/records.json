@@ -865,6 +865,26 @@
         "DEC-027"
       ],
       "revisit": "Real packet runs still require repeated manual production/recovery, provider contracts change, a new layout demands different composition, or full packet timing fails to improve."
+    },
+    {
+      "id": "DEC-029",
+      "status": "Applied",
+      "category": "Application packet execution",
+      "date": "2026-10-02",
+      "title": "Routine packets separate local document production from tracking",
+      "summary": "Use a source-bound private profile and one role draft to generate local documents in one command; keep editorial review explicit and tracking separate.",
+      "question": "What should replace repeated source discovery, agent-led document mechanics and cloud bookkeeping in routine packet preparation?",
+      "decision": "Use scripts/application-packet.py as the default production path. The candidate profile is a private source projection with version, source revisions, original claims and preserved career identity. One role draft supplies positioning, source-referenced bullets, requirement matches/gaps and a separate optional letter. Render required PDF/DOCX files locally and check text, links, source binding, numbers, chronology and page budgets. Review actual files for meaning, fit, voice and layout. Deliver before optional tracking or external upload. The native runner remains an explicitly selected compatibility path. Existing layouts and exhaustive content are subject to evidence-based reassessment rather than inherited approval.",
+      "rationale": "The fresh Luna packet test completed in 950.347 seconds with 79 recorded calls, including 43 shell commands and no native runner invocation. A narrow native operation did not remove setup, full-packet authoring, export recovery or bookkeeping. The requester authorized a minimal rebuild after a first-principles review. Local production removes those external dependencies while preserving factual and final-file checks.",
+      "alternatives": "Further shorten procedural guidance; make the native single-document operation mandatory; adopt a complete external resume application; or remove review. These leave repeated coordination, retain cloud dependencies, add infrastructure, or lose quality evidence.",
+      "tradeoffs": "The writer still exercises judgment and the final reviewer still inspects actual files. Numeric and evidence-reference checks do not establish semantic truth. DOCX layout requires a compatible renderer when submitted; PDF rendering is independent. Mechanical timing excludes research, writing and review and is not an end-to-end guarantee.",
+      "affects": "Issue #289; routine packet activation; scripts/application-packet.py and its tests/dependencies; application context/review; job-search Playbook; Docs route; generated readers/context; repository validation.",
+      "evidence": "Requester first-principles rebuild authorization on 2026-10-02; authoritative fresh benchmark chat metadata/tool trace; local regression exports and private source-bound MyPattern production trial.",
+      "qualifies": [
+        "DEC-027",
+        "DEC-028"
+      ],
+      "revisit": "Observed local output fails factual or reader quality; source snapshots become stale; a required employer format cannot be verified; or future full-request timing shows that the simplified path still incurs repeated setup."
     }
   ]
 }
