@@ -14,16 +14,16 @@
     "behavioral_passed": 39,
     "behavioral_failed": 0,
     "base_context": {
-      "control_utf8_bytes": 137245,
-      "preferred_utf8_bytes": 117112,
-      "delta_utf8_bytes": -20133,
-      "delta_percent": -14.7
+      "control_utf8_bytes": 139461,
+      "preferred_utf8_bytes": 119476,
+      "delta_utf8_bytes": -19985,
+      "delta_percent": -14.3
     },
     "activated_behavior_context": {
-      "control_utf8_bytes": 1029071,
-      "preferred_utf8_bytes": 902167,
-      "delta_utf8_bytes": -126904,
-      "delta_percent": -12.3
+      "control_utf8_bytes": 1044731,
+      "preferred_utf8_bytes": 918715,
+      "delta_utf8_bytes": -126016,
+      "delta_percent": -12.1
     },
     "deterministic_work": {
       "control_completion_file_reads_per_route": 3,
@@ -69,19 +69,19 @@
     {
       "route_id": "system-orientation",
       "context": {
-        "control_utf8_bytes": 34028,
-        "preferred_utf8_bytes": 27028,
-        "delta_utf8_bytes": -7000,
-        "delta_percent": -20.6,
-        "control_rough_tokens": 8507,
-        "preferred_rough_tokens": 6757
+        "control_utf8_bytes": 34471,
+        "preferred_utf8_bytes": 27619,
+        "delta_utf8_bytes": -6852,
+        "delta_percent": -19.9,
+        "control_rough_tokens": 8618,
+        "preferred_rough_tokens": 6905
       },
       "behavior": {
         "fixtures": 8,
         "passed": 8,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -15.8
+        "context_delta_percent": -15.4
       },
       "timing": {
         "control": {
@@ -142,19 +142,19 @@
     {
       "route_id": "template-composition",
       "context": {
-        "control_utf8_bytes": 32692,
-        "preferred_utf8_bytes": 28038,
+        "control_utf8_bytes": 33283,
+        "preferred_utf8_bytes": 28629,
         "delta_utf8_bytes": -4654,
-        "delta_percent": -14.2,
-        "control_rough_tokens": 8173,
-        "preferred_rough_tokens": 7010
+        "delta_percent": -14,
+        "control_rough_tokens": 8321,
+        "preferred_rough_tokens": 7158
       },
       "behavior": {
         "fixtures": 10,
         "passed": 10,
         "failed": 0,
         "activated_fixtures": 5,
-        "context_delta_percent": -14.2
+        "context_delta_percent": -14
       },
       "timing": {
         "control": {
@@ -215,19 +215,19 @@
     {
       "route_id": "tool-resolution",
       "context": {
-        "control_utf8_bytes": 35473,
-        "preferred_utf8_bytes": 33321,
+        "control_utf8_bytes": 36064,
+        "preferred_utf8_bytes": 33912,
         "delta_utf8_bytes": -2152,
-        "delta_percent": -6.1,
-        "control_rough_tokens": 8869,
-        "preferred_rough_tokens": 8331
+        "delta_percent": -6,
+        "control_rough_tokens": 9016,
+        "preferred_rough_tokens": 8478
       },
       "behavior": {
         "fixtures": 12,
         "passed": 12,
         "failed": 0,
         "activated_fixtures": 11,
-        "context_delta_percent": -6.1
+        "context_delta_percent": -6
       },
       "timing": {
         "control": {
@@ -288,19 +288,19 @@
     {
       "route_id": "skill-package-maintenance",
       "context": {
-        "control_utf8_bytes": 35052,
-        "preferred_utf8_bytes": 28725,
+        "control_utf8_bytes": 35643,
+        "preferred_utf8_bytes": 29316,
         "delta_utf8_bytes": -6327,
-        "delta_percent": -18.1,
-        "control_rough_tokens": 8763,
-        "preferred_rough_tokens": 7182
+        "delta_percent": -17.8,
+        "control_rough_tokens": 8911,
+        "preferred_rough_tokens": 7329
       },
       "behavior": {
         "fixtures": 9,
         "passed": 9,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -18.1
+        "context_delta_percent": -17.8
       },
       "timing": {
         "control": {

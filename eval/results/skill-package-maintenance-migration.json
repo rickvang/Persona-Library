@@ -10,8 +10,8 @@
       "dist/data/agent-context/skill-package-maintenance.json",
       ".agents/skills/pl-skill-creator/SKILL.md"
     ],
-    "utf8_bytes": 28725,
-    "rough_tokens": 7182
+    "utf8_bytes": 29316,
+    "rough_tokens": 7329
   },
   "canonical_fallback": {
     "artifacts": [
@@ -20,14 +20,14 @@
       "content/orientation/skills.json",
       ".agents/skills/pl-skill-creator/SKILL.md"
     ],
-    "utf8_bytes": 35052,
-    "rough_tokens": 8763
+    "utf8_bytes": 35643,
+    "rough_tokens": 8911
   },
   "deltas": {
     "preferred_vs_current_fallback": {
       "utf8_bytes": -6327,
-      "rough_tokens": -1581,
-      "percent": -18.1
+      "rough_tokens": -1582,
+      "percent": -17.8
     }
   },
   "exit_gate": {

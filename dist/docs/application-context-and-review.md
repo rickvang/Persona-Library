@@ -2,7 +2,61 @@
 
 Use the [Evidence-led Job Search Playbook's routine application path](../playbooks/evidence-led-job-search.md#routine-application-preparation--default) first. These instructions define context and review criteria; they do not require a full Work Order, notes document or council for each application.
 
-## Native packet operation
+## Local packet operation
+
+Routine packets use [scripts/application-packet.py](https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.py). Load one private source-bound candidate profile, read the current employer posting, and write one role-specific JSON draft containing the job and both documents. Run the command once, inspect the final files, correct only observed failures, and deliver. The builder has no network, model API, Drive, Notion, Supabase, or application-tracker dependency.
+
+```sh
+python scripts/application-packet.py --profile /private/candidate-profile.json --draft /private/role-draft.json --output /private/new-packet
+```
+
+Use the Python runtime from `load_workspace_dependencies` in Codex. Its `reportlab`, `python-docx`, `pypdf`, and `pypdfium2` packages are already bundled. Other environments install `scripts/application-packet-requirements.txt` once. The default outputs are `resume.pdf`, `resume.docx`, and separate `cover-letter.pdf` / `cover-letter.docx` when the draft includes a letter. `--formats pdf` generates only PDFs. The output folder must be new or empty, preserving existing packets.
+
+### Prepare once and reuse
+
+The private profile is a compact projection of verified candidate sources, not new career authority. Build it once from the designated baseline, applicable standing decisions, and candidate-confirmed additions. Preserve source references and revisions; increment its version when facts or applicable decisions change. Keep the complete history there and select relevant content for each resume. A selected employer/title/date/location and its client context always come from the profile. Omitted roles need an explicit reason and must respect candidate instructions. A prior role-specific packet cannot establish new facts.
+
+The built-in layout is renderer implementation, not a new reusable Template identity. Template catalog/research is needed only when the requester chooses a reusable external Template or needs a different layout. Do not add a library routing or placement ceremony to each private packet. A new layout still needs actual page review.
+
+Profile fields:
+
+- `candidate_id`, `version`, `identity` (`name`, `location`, `email`, optional `phone`, `links` with `label` and HTTPS `url`).
+- `sources`: records with `id`, `reference`, and `revision`.
+- `facts`: ID-keyed records with `text`, `source`, and `role` for role-specific accomplishments. Retain an original passage locator when available.
+- `roles`: records with `id`, `employer`, `title`, `start` and `end` in `YYYY-MM` (null end means current), optional `location` and explicit employer/client `context`.
+- Approved `skills`, `education`, and `certifications` as text arrays; applicable standing decisions and voice preferences may travel in the same private file.
+
+The role draft binds `candidate_id` and `profile_version`. Its `job` records `id`, `company`, `role`, `source_url`, `checked_on`, selected `requirements` with IDs, and optional `cover_letter_required` / `resume_page_limit` (default two pages). `matches` gives each selected requirement its evidence IDs or an explicit `gap`. `unanswered` holds remaining application answers; these do not prevent file production.
+
+```json
+{
+  "candidate_id": "active-private-candidate",
+  "profile_version": "1",
+  "job": {"id": "role-id", "company": "Employer", "role": "Designer", "source_url": "https://example.com/job", "checked_on": "2026-10-02", "requirements": [{"id": "systems", "text": "Design systems"}]},
+  "resume": {
+    "headline": "Product Designer",
+    "summary": {"text": "Source-supported positioning.", "evidence": ["fact-id"]},
+    "roles": [{"id": "source-role-id", "bullets": [{"text": "Source-supported accomplishment.", "evidence": ["fact-id"]}]}],
+    "skills": ["Figma"],
+    "omitted_roles": []
+  },
+  "cover_letter": {"date": "2026-10-02", "opening": "Why this product interests me.", "paragraphs": [{"text": "Relevant source-supported experience.", "evidence": ["fact-id"]}], "closing": "The conversation I would welcome."},
+  "matches": [{"requirement": "systems", "evidence": ["fact-id"]}],
+  "unanswered": ["Work authorization confirmation"]
+}
+```
+
+### Review and deliver
+
+The builder preserves source career identity, sorts source dates, rejects missing/cross-role evidence, unconfirmed skills, unsupported numeric claims, undisclosed role omissions, incomplete requirement dispositions, placeholders, missing exported text/links, and exceeded page budgets. Each role is kept together; it never shrinks text to force a page count. These are mechanical integrity checks, not proof that wording preserves meaning or that an employer's ATS accepted it.
+
+`preview/` contains every PDF page for one visual review. `build-report.json` contains source revisions, output hashes, mechanical timing, omissions, unknown answers, and explicitly pending editorial/layout review. Review source meaning, role fit, voice, and every actual final PDF page. DOCX has structural/text/link checks; its layout remains unverified until a Word-compatible renderer is inspected when that format will be submitted. Correct only affected content/checks and build a new output revision.
+
+Measure job reading/drafting, command execution, and final review separately, with the full user-request interval when benchmarking. A fast render is not a fast end-to-end application. Deliver reviewed files before bookkeeping. Resolve/update the existing Applications record separately when tracking is in scope; preserve later confirmed states and keep unresolved answers visible. Production does not submit, upload, or set `Applied`.
+
+## Native packet operation — compatibility
+
+Use this path only when native Google Docs baseline fidelity or private Drive/Applications recording is explicitly needed. It is not the default full-packet builder and does not produce the cover letter or DOCX exports.
 
 [scripts/application-packet.mjs](https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.mjs) is the executable routine for an approved Google Docs baseline and the existing private Drive/Applications store. It has no model calls, credentials or new service dependencies. The executor supplies tailoring judgment and final-file review; the runner supplies copy, indexed edit, export/save, recovery and owner-scoped recording.
 

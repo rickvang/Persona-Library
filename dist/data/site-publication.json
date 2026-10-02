@@ -9,7 +9,7 @@
       "kind": "process",
       "source": "docs/playbooks/evidence-led-job-search.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/evidence-led-job-search.md",
-      "sourceSha256": "c7057168242c4a21ad39d9bdd9a6e33401c2e07c61d256dcabac6531b4d701cf",
+      "sourceSha256": "169ef034af49c40865379c4f9769bcbe1e7737c52d06111efb84781e8885f4df",
       "href": "playbook-evidence-led-job-search.html",
       "legacyAnchor": "current",
       "outline": [
@@ -149,7 +149,7 @@
       "category": "Job search",
       "source": "docs/playbooks/evidence-led-job-search.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/playbooks/evidence-led-job-search.md",
-      "sourceSha256": "c7057168242c4a21ad39d9bdd9a6e33401c2e07c61d256dcabac6531b4d701cf",
+      "sourceSha256": "169ef034af49c40865379c4f9769bcbe1e7737c52d06111efb84781e8885f4df",
       "href": "playbook-evidence-led-job-search.html",
       "headings": [
         {
@@ -494,12 +494,17 @@
       "category": "Job search",
       "source": "docs/job-search/application-context-and-review.md",
       "sourceHref": "https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/application-context-and-review.md",
-      "sourceSha256": "b9bf9caf9381c5a36f7df2c60956d4532914aab3e3e35d13eb9ea058e67c8487",
+      "sourceSha256": "986f13138bac1f923d7444f1b606e98be4b2709970695a6003c9b1f25148f2b2",
       "href": "doc-application-context-and-review.html",
       "headings": [
         {
-          "id": "native-packet-operation",
-          "label": "Native packet operation",
+          "id": "local-packet-operation",
+          "label": "Local packet operation",
+          "depth": 2
+        },
+        {
+          "id": "native-packet-operation--compatibility",
+          "label": "Native packet operation — compatibility",
           "depth": 2
         },
         {

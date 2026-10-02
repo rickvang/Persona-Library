@@ -49,6 +49,12 @@ jobs:
       - name: Validate native application-packet execution
         run: node --test scripts/validation/application-packet.test.mjs
 
+      - name: Install local packet rendering dependencies
+        run: python -m pip install --disable-pip-version-check -r scripts/application-packet-requirements.txt
+
+      - name: Validate local application-packet production
+        run: python scripts/validation/application_packet_test.py
+
       - name: Validate source-driven Playbooks and Docs publication
         run: node --test scripts/validation/reference-publication.test.mjs
 

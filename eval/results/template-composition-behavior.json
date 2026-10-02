@@ -73,8 +73,8 @@
             "content/orientation/templates.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 32692,
-          "rough_tokens": 8173
+          "utf8_bytes": 33283,
+          "rough_tokens": 8321
         },
         "expectation": {
           "pass": true,
@@ -156,8 +156,8 @@
             "dist/data/agent-context/template-composition.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 28038,
-          "rough_tokens": 7010
+          "utf8_bytes": 28629,
+          "rough_tokens": 7158
         },
         "expectation": {
           "pass": true,
@@ -287,8 +287,8 @@
             "content/orientation/templates.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 32692,
-          "rough_tokens": 8173
+          "utf8_bytes": 33283,
+          "rough_tokens": 8321
         },
         "expectation": {
           "pass": true,
@@ -370,8 +370,8 @@
             "dist/data/agent-context/template-composition.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 28038,
-          "rough_tokens": 7010
+          "utf8_bytes": 28629,
+          "rough_tokens": 7158
         },
         "expectation": {
           "pass": true,
@@ -501,8 +501,8 @@
             "content/orientation/templates.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 32692,
-          "rough_tokens": 8173
+          "utf8_bytes": 33283,
+          "rough_tokens": 8321
         },
         "expectation": {
           "pass": true,
@@ -584,8 +584,8 @@
             "dist/data/agent-context/template-composition.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 28038,
-          "rough_tokens": 7010
+          "utf8_bytes": 28629,
+          "rough_tokens": 7158
         },
         "expectation": {
           "pass": true,
@@ -714,8 +714,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -797,8 +797,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -927,8 +927,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -1010,8 +1010,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -1140,8 +1140,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -1223,8 +1223,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -1354,8 +1354,8 @@
             "content/orientation/templates.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 32692,
-          "rough_tokens": 8173
+          "utf8_bytes": 33283,
+          "rough_tokens": 8321
         },
         "expectation": {
           "pass": true,
@@ -1437,8 +1437,8 @@
             "dist/data/agent-context/template-composition.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 28038,
-          "rough_tokens": 7010
+          "utf8_bytes": 28629,
+          "rough_tokens": 7158
         },
         "expectation": {
           "pass": true,
@@ -1568,8 +1568,8 @@
             "content/orientation/templates.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 32692,
-          "rough_tokens": 8173
+          "utf8_bytes": 33283,
+          "rough_tokens": 8321
         },
         "expectation": {
           "pass": true,
@@ -1651,8 +1651,8 @@
             "dist/data/agent-context/template-composition.json",
             ".agents/skills/template-composer/SKILL.md"
           ],
-          "utf8_bytes": 28038,
-          "rough_tokens": 7010
+          "utf8_bytes": 28629,
+          "rough_tokens": 7158
         },
         "expectation": {
           "pass": true,
@@ -1781,8 +1781,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -1864,8 +1864,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -1994,8 +1994,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -2077,8 +2077,8 @@
             "content/site-orientation.json",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 26349,
-          "rough_tokens": 6588
+          "utf8_bytes": 26940,
+          "rough_tokens": 6735
         },
         "expectation": {
           "pass": true,
@@ -2147,12 +2147,12 @@
     "passed": 10,
     "failed": 0,
     "all_pass": true,
-    "preferred_context_utf8_bytes": 140190,
-    "control_context_utf8_bytes": 163460,
-    "preferred_context_rough_tokens": 35048,
-    "control_context_rough_tokens": 40865,
+    "preferred_context_utf8_bytes": 143145,
+    "control_context_utf8_bytes": 166415,
+    "preferred_context_rough_tokens": 35787,
+    "control_context_rough_tokens": 41604,
     "preferred_delta_utf8_bytes": -23270,
-    "preferred_delta_percent": -14.2
+    "preferred_delta_percent": -14
   },
   "limitations": [
     "The evaluator is deliberately fixture-scoped and is not a general-purpose natural-language router.",

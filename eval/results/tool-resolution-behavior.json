@@ -93,8 +93,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -180,8 +180,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -335,8 +335,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -422,8 +422,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -577,8 +577,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -664,8 +664,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -819,8 +819,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -906,8 +906,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -1061,8 +1061,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -1148,8 +1148,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -1303,8 +1303,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -1390,8 +1390,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -1545,8 +1545,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -1632,8 +1632,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -1787,8 +1787,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -1874,8 +1874,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -2029,8 +2029,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -2116,8 +2116,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -2270,8 +2270,8 @@
             "content/site-orientation.json",
             "content/orientation/tools.json"
           ],
-          "utf8_bytes": 20916,
-          "rough_tokens": 5229
+          "utf8_bytes": 21507,
+          "rough_tokens": 5377
         },
         "expectation": {
           "pass": true,
@@ -2357,8 +2357,8 @@
             "content/site-orientation.json",
             "content/orientation/tools.json"
           ],
-          "utf8_bytes": 20916,
-          "rough_tokens": 5229
+          "utf8_bytes": 21507,
+          "rough_tokens": 5377
         },
         "expectation": {
           "pass": true,
@@ -2512,8 +2512,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -2599,8 +2599,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -2754,8 +2754,8 @@
             "content/orientation/tools.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 35473,
-          "rough_tokens": 8869
+          "utf8_bytes": 36064,
+          "rough_tokens": 9016
         },
         "expectation": {
           "pass": true,
@@ -2841,8 +2841,8 @@
             "dist/data/agent-context/tool-resolution.json",
             ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
           ],
-          "utf8_bytes": 33321,
-          "rough_tokens": 8331
+          "utf8_bytes": 33912,
+          "rough_tokens": 8478
         },
         "expectation": {
           "pass": true,
@@ -2923,12 +2923,12 @@
     "passed": 12,
     "failed": 0,
     "all_pass": true,
-    "preferred_context_utf8_bytes": 366531,
-    "control_context_utf8_bytes": 390203,
-    "preferred_context_rough_tokens": 91633,
-    "control_context_rough_tokens": 97551,
+    "preferred_context_utf8_bytes": 373032,
+    "control_context_utf8_bytes": 396704,
+    "preferred_context_rough_tokens": 93258,
+    "control_context_rough_tokens": 99176,
     "preferred_delta_utf8_bytes": -23672,
-    "preferred_delta_percent": -6.1
+    "preferred_delta_percent": -6
   },
   "limitations": [
     "Fixtures provide explicit live-evidence states; they do not execute destructive or arbitrary external actions.",
