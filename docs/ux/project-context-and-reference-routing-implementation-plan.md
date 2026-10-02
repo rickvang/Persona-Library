@@ -11,7 +11,7 @@ Related layers:
 - [Work Orders](../work-orders.md)
 - [IA-to-UI Traceability Template](ia-to-ui-traceability-template.md)
 - [Shared collaboration context](../collaboration/problem-context.md)
-- [Collaboration Playbook](../collaboration/multi-persona-collaboration-playbook.md)
+- [Collaboration Playbook](../playbooks/multi-persona-collaboration.md)
 
 ## 1. Decision
 

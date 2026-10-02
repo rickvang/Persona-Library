@@ -1,6 +1,6 @@
 # Authored Site pages
 
-This directory contains authored page shells and the shared reference-reader template. [scripts/build-library.mjs](../../scripts/build-library.mjs) publishes them together with canonical records, selected Markdown sources, and shared browser modules. Edit authored sources and rebuild; never edit `dist/` directly.
+This directory contains authored page shells and the shared document-reader layout. [scripts/build-library.mjs](../../scripts/build-library.mjs) publishes them together with canonical records, selected Markdown sources, and shared browser modules. Edit authored sources and rebuild; never edit `dist/` directly. The `.layout.html` name identifies a build-only layout, not a standalone route or a reusable Template Library artifact.
 
 ## Choose the authoring source
 
@@ -11,13 +11,13 @@ This directory contains authored page shells and the shared reference-reader tem
 | Published Playbook or reference content | The Markdown source selected in [site-publication.json](../site-publication.json); use the [Docs task index](../../docs/README.md) to find its owner | The reference builder derives catalog summaries, static readers, the Docs index, and map data from selected sources |
 | Playbooks catalog presentation | [playbooks.html](playbooks.html) | The reference builder fills its source-derived catalog content |
 | Human guide copy or Docs index presentation | [guide.html](guide.html) | The reference builder adds the curated reference index and current catalog-state examples |
-| Shared reference-reader layout or behavior | [reference-reader.html](reference-reader.html), [reference-page.mjs](../../client/reference-page.mjs), and [reference-pages.css](../../client/reference-pages.css) | The HTML is a template for generated readers, not a standalone public route |
-| Decisions | [records.json](../../docs/decisions/records.json) and [decisions-page.html](../decisions-page.html) | The Decisions builder renders `dist/decisions.html` |
-| Applications tracker page | [job-tracker-page.html](../job-tracker-page.html) and relevant [client modules](../../client/) | The build copies the authored tracker page to `dist/job-tracker.html` |
+| Shared reference-reader layout or behavior | [reference-reader.layout.html](reference-reader.layout.html), [reference-page.mjs](../../client/reference-page.mjs), and [reference-pages.css](../../client/reference-pages.css) | The HTML is a shared layout for generated readers, not a standalone public route |
+| Decisions | [records.json](../../docs/decisions/records.json) and [decisions.html](decisions.html) | The Decisions builder renders `dist/decisions.html` |
+| Applications tracker page | [job-tracker.html](job-tracker.html) and relevant [client modules](../../client/) | The build copies the authored tracker page to `dist/job-tracker.html` |
 
 Adding an HTML file here does not publish a route automatically: the main build has an explicit page list. Adding a Markdown document likewise does not publish it automatically: the publication manifest is an explicit allowlist, and existing Playbook IDs keep their source bindings.
 
-[skill-formation-overview.md](skill-formation-overview.md) is an authored overview, not a bound authoritative process contract. Preserve that distinction. Three existing job-search Markdown URLs under `dist/docs/` remain compatibility copies of their selected sources. Internal notes, work records and archives, and Prototyping are not automatically selected as published references.
+[skill-formation-overview.md](../../docs/playbooks/skill-formation-overview.md) is an authored overview, not a bound authoritative process contract. Playbook process sources live alongside it under `docs/playbooks/`, not among page shells. Preserve that distinction. Three existing job-search Markdown URLs under `dist/docs/` remain compatibility copies of their selected sources. Internal notes, work records and archives, and Prototyping are not automatically selected as published references.
 
 ## Rebuild and check
 

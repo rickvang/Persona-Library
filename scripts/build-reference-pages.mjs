@@ -8,7 +8,7 @@ export const REFERENCE_PAGE_SOURCES = {
   manifest:'content/site-publication.json',
   catalogTemplate:'content/site-pages/playbooks.html',
   guideTemplate:'content/site-pages/guide.html',
-  readerTemplate:'content/site-pages/reference-reader.html',
+  readerTemplate:'content/site-pages/reference-reader.layout.html',
   buildDependencyManifest:'package.json',
   buildDependencyLock:'package-lock.json',
   libraryData:'dist/data/library-data.js',
@@ -50,7 +50,7 @@ export function validatePublicationManifest(manifest, data) {
   const boundSources = new Set();
   for (const entry of manifest.playbooks) {
     if (Boolean(entry.document) === Boolean(entry.overviewSource) || (entry.document && !documentIds.has(entry.document))) throw new Error(`Playbook needs one known document or authored overview: ${entry.id}`);
-    if (entry.overviewSource && !/^content\/site-pages\/[a-z0-9-]+-overview\.md$/.test(entry.overviewSource)) throw new Error(`Invalid overview source: ${entry.id}`);
+    if (entry.overviewSource && !/^docs\/playbooks\/[a-z0-9-]+-overview\.md$/.test(entry.overviewSource)) throw new Error(`Invalid overview source: ${entry.id}`);
     const binding = entry.document || entry.overviewSource;
     if (boundSources.has(binding)) throw new Error(`Conflicting Playbook source binding: ${binding}`);
     boundSources.add(binding);
@@ -80,8 +80,6 @@ export function publicationLink(href, source, documentBySource) {
   let target;
   try { target = decodeURIComponent(url.pathname.slice(1)); } catch { return ''; }
   if (documentBySource.has(target)) return documentBySource.get(target).href + url.hash;
-  // Authored Site overviews use public page links, not repository-relative file links.
-  if (source.startsWith('content/site-pages/') && /^content\/site-pages\/[a-z0-9-]+\.html$/.test(target)) return path.posix.basename(target) + url.hash;
   if (/^content\/site-pages\/[a-z0-9-]+\.html$/.test(target)) return path.posix.basename(target) + url.hash;
   return sourceHref(target) + url.hash;
 }

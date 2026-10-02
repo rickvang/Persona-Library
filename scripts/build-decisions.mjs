@@ -85,7 +85,7 @@ export function renderDecisionsPage(template, records) {
 
 export async function buildDecisionsPage(root) {
   const [template, source] = await Promise.all([
-    readFile(path.join(root, 'content/decisions-page.html'), 'utf8'),
+    readFile(path.join(root, 'content/site-pages/decisions.html'), 'utf8'),
     readFile(path.join(root, 'docs/decisions/records.json'), 'utf8')
   ]);
   const parsed = JSON.parse(source);

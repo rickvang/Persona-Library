@@ -166,7 +166,7 @@ export async function deriveSourceGeneratedGraph(root = rootDir, { buildSourceOv
   addEdge(edges, 'view:source-generated', stepNodeId(decisionsStep), 'contains', 'contract-derived', sourceRef(decisionsStep, 'buildDecisionsPage'));
   const decisionOutput = 'dist/decisions.html';
   outputNode(nodes, decisionOutput, sourceRef(decisionsStep, 'dist/decisions.html'));
-  for (const input of ['content/decisions-page.html', 'docs/decisions/records.json']) {
+  for (const input of ['content/site-pages/decisions.html', 'docs/decisions/records.json']) {
     sourceNode(nodes, input, sourceRef(decisionsStep, input + ' -> ' + decisionOutput));
     addEdge(edges, fileNodeId(input), fileNodeId(decisionOutput), 'contributes-to', 'contract-derived', sourceRef(decisionsStep, input + ' -> ' + decisionOutput));
   }

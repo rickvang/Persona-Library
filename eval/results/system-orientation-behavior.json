@@ -72,8 +72,8 @@
             ".agents/skills/persona-library-orientation/SKILL.md",
             "docs/policy-ownership.md"
           ],
-          "utf8_bytes": 36913,
-          "rough_tokens": 9229
+          "utf8_bytes": 36929,
+          "rough_tokens": 9233
         },
         "expectation": {
           "pass": true,
@@ -273,8 +273,8 @@
             "content/orientation/templates.json",
             "docs/README.md"
           ],
-          "utf8_bytes": 56103,
-          "rough_tokens": 14026
+          "utf8_bytes": 56718,
+          "rough_tokens": 14180
         },
         "expectation": {
           "pass": true,
@@ -356,8 +356,8 @@
             "content/orientation/templates.json",
             "docs/README.md"
           ],
-          "utf8_bytes": 48592,
-          "rough_tokens": 12148
+          "utf8_bytes": 49191,
+          "rough_tokens": 12298
         },
         "expectation": {
           "pass": true,
@@ -475,8 +475,8 @@
             "docs/policy-ownership.md",
             "docs/README.md"
           ],
-          "utf8_bytes": 47649,
-          "rough_tokens": 11913
+          "utf8_bytes": 48264,
+          "rough_tokens": 12066
         },
         "expectation": {
           "pass": true,
@@ -557,8 +557,8 @@
             "docs/policy-ownership.md",
             "docs/README.md"
           ],
-          "utf8_bytes": 40138,
-          "rough_tokens": 10035
+          "utf8_bytes": 40737,
+          "rough_tokens": 10185
         },
         "expectation": {
           "pass": true,
@@ -1011,8 +1011,8 @@
             "docs/policy-ownership.md",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 45367,
-          "rough_tokens": 11342
+          "utf8_bytes": 45383,
+          "rough_tokens": 11346
         },
         "expectation": {
           "pass": true,
@@ -1215,8 +1215,8 @@
             "docs/policy-ownership.md",
             "content/orientation/personas.json"
           ],
-          "utf8_bytes": 40998,
-          "rough_tokens": 10250
+          "utf8_bytes": 41014,
+          "rough_tokens": 10254
         },
         "expectation": {
           "pass": true,
@@ -1419,8 +1419,8 @@
             "docs/policy-ownership.md",
             "content/orientation/tools.json"
           ],
-          "utf8_bytes": 39934,
-          "rough_tokens": 9984
+          "utf8_bytes": 39950,
+          "rough_tokens": 9988
         },
         "expectation": {
           "pass": true,
@@ -1562,12 +1562,12 @@
     "passed": 8,
     "failed": 0,
     "all_pass": true,
-    "preferred_context_utf8_bytes": 221898,
-    "control_context_utf8_bytes": 266964,
-    "preferred_context_rough_tokens": 55475,
-    "control_context_rough_tokens": 66741,
-    "preferred_delta_utf8_bytes": -45066,
-    "preferred_delta_percent": -16.9
+    "preferred_context_utf8_bytes": 223096,
+    "control_context_utf8_bytes": 268258,
+    "preferred_context_rough_tokens": 55774,
+    "control_context_rough_tokens": 67065,
+    "preferred_delta_utf8_bytes": -45162,
+    "preferred_delta_percent": -16.8
   },
   "limitations": [
     "The evaluator is intentionally fixture-scoped and is not a general-purpose natural-language router.",

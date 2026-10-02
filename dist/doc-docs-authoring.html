@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td>Understand the job-search process and its implementation sequence</td>
-<td><a href="playbook-evidence-led-job-search.html">Job-search implementation</a></td>
+<td><a href="playbook-evidence-led-job-search.html">Evidence-led Job Search Playbook</a></td>
 </tr>
 <tr>
 <td>Compose or review an application packet</td>
@@ -93,7 +93,7 @@
 <td><a href="https://github.com/rickvang/Persona-Library/blob/main/content/site-pages/README.md" rel="noreferrer">Site authoring guide</a> and <a href="https://github.com/rickvang/Persona-Library/blob/main/content/site-publication.json" rel="noreferrer">publication manifest</a></td>
 </tr>
 </tbody></table>
-</div><p>This index routes to existing owners. Change the owning document rather than copying its procedure into this index. <code>docs/playbooks/</code> contains some Playbooks; collaboration and job-search processes remain in their domain-owned folders. Ordinary current-state searches exclude <code>docs/work-orders/archive/**</code>; include historical material only when the task needs it.</p>
+</div><p>This index routes to existing owners. Change the owning document rather than copying its procedure into this index. <code>docs/playbooks/</code> contains the Playbook process sources and the explicitly labeled Skill formation overview. Supporting job-search and collaboration contracts stay in their domain folders. The old domain Playbook paths are forwarding notes, not parallel process sources. Ordinary current-state searches exclude <code>docs/work-orders/archive/**</code>; include historical material only when the task needs it.</p>
 <h2 id="edit-and-verify">Edit and verify</h2>
 <ol>
 <li>Find the owner above, then apply the placement gate below if a new file is needed.</li>
@@ -127,6 +127,11 @@
 <td>Keep current truth here; put rationale in Decisions.</td>
 </tr>
 <tr>
+<td>Playbook process or explicitly labeled overview</td>
+<td>docs/playbooks/</td>
+<td>Keep one source per process; domain contracts stay with their subjects. An overview does not become an authoritative process by moving here.</td>
+</tr>
+<tr>
 <td>Repository policy validation ownership</td>
 <td>docs/policy-ownership.md</td>
 <td>Keep one canonical validated owner per repository-wide policy; root <code>AGENTS.md</code> activates rather than duplicates delegated contracts.</td>
@@ -134,7 +139,7 @@
 <tr>
 <td>Durable Decision records</td>
 <td>docs/decisions/records.json</td>
-<td>Append the rationale, alternatives, affected surfaces, status, and revisit condition; <code>content/decisions-page.html</code> plus <code>scripts/build-decisions.mjs</code> generate the Decisions page from this single source.</td>
+<td>Append the rationale, alternatives, affected surfaces, status, and revisit condition; <code>content/site-pages/decisions.html</code> plus <code>scripts/build-decisions.mjs</code> generate the Decisions page from this single source.</td>
 </tr>
 <tr>
 <td>Active project state needing unique recovery detail</td>
@@ -165,6 +170,11 @@
 <td>Authored static Site page shell</td>
 <td>content/site-pages/</td>
 <td>Edit the stable route source here; the build publishes it to the matching top-level <code>dist/*.html</code> path.</td>
+</tr>
+<tr>
+<td>Shared website reader layout</td>
+<td>content/site-pages/reference-reader.layout.html</td>
+<td>The reference builder fills this layout for published readers; it is not a standalone route or a reusable Template Library artifact.</td>
 </tr>
 <tr>
 <td>Curated published reference or process</td>
@@ -219,7 +229,7 @@
 </ul>
 <h2 id="generated-output">Generated output</h2>
 <p>dist/ is the committed, publishable, dependency-free Site output. Install the pinned build-only Markdown parser with <code>npm ci --include=dev --ignore-scripts</code>, change content/ or client/ or a published source document, run <code>node scripts/build-library.mjs</code>, then run <code>node scripts/validate-content.mjs</code> and the focused validation test before handoff. A clean rebuild must reproduce the committed generated data and route copies; no contributor should author changes directly under dist/.</p>
-<p><code>content/site-publication.json</code> is the explicit publication allowlist and existing-ID Playbook source binding, not a second process contract. <code>scripts/build-reference-pages.mjs</code> renders those current sources into the Playbooks catalog, curated Docs index, static readers, and <code>dist/data/site-publication.json</code> for the map. The existing human guide remains authored in <code>content/site-pages/guide.html</code>; its catalog-state examples are build-derived. An authored overview under <code>content/site-pages/</code> must stay labeled as an overview when no authoritative process source is bound. Internal reconstruction notes, work records/archives, Decisions, and Prototyping are not automatically published by this pipeline. Existing published job-search Markdown URLs remain compatibility copies.</p>
+<p><code>content/site-publication.json</code> is the explicit publication allowlist and existing-ID Playbook source binding, not a second process contract. <code>scripts/build-reference-pages.mjs</code> renders those current sources into the Playbooks catalog, curated Docs index, static readers, and <code>dist/data/site-publication.json</code> for the map. The existing human guide remains authored in <code>content/site-pages/guide.html</code>; its catalog-state examples are build-derived. The authored <code>docs/playbooks/skill-formation-overview.md</code> must stay labeled as an overview when no authoritative process source is bound. Internal reconstruction notes, work records/archives, Decisions, and Prototyping are not automatically published by this pipeline. Existing published job-search Markdown URLs remain compatibility copies.</p>
 </article>
     </div>
     <footer class="page-footer"><a href="guide.html#reference-docs">Back to Docs</a><a href="guide.html#reference-docs">All reference docs</a><a href="system-map.html">System Map</a></footer>

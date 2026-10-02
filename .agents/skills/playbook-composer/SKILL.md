@@ -33,7 +33,7 @@ Do not activate for:
 
 1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `playbooks` route group and any explicitly affected groups.
 2. Define the outcome, users, constraints, risk, success measure, stopping condition, requested destination, and authorization.
-3. Check for an existing Playbook before creating a new one. Consult [the current job-search implementation](../../../docs/job-search/implementation.md) when the request is analogous; treat it as a fixture and scope reference, not proof of runtime execution.
+3. Check for an existing Playbook before creating a new one. Consult [the current job-search process](../../../docs/playbooks/evidence-led-job-search.md) when the request is analogous; treat it as a fixture and scope reference, not proof of runtime execution.
 4. Load only explicitly named or justified Personas, Skills, workflows, Tools, recipes, artifacts, evidence, and decisions. Record unavailable items and incomplete dependency visibility.
 5. Resolve Tool capability requirements through `$tool-discovery-and-safe-execution` when needed; do not assume a connector, credential, workspace, permission, or runtime is available.
 6. When the Playbook is intended to coordinate Personas around one live request, use the [shared problem-context contract](../../../docs/collaboration/problem-context.md) as the run-level state boundary. Define who owns the context, how contributions are appended, how a handoff resumes, and which concrete deliverable closes the run. Do not assume a scheduler, concurrent runtime, authentication, or direct participant writes.

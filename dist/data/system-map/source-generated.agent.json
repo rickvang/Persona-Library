@@ -135,16 +135,6 @@
       "type": "authored-source"
     },
     {
-      "id": "file:content/decisions-page.html",
-      "label": "content/decisions-page.html",
-      "type": "authored-source"
-    },
-    {
-      "id": "file:content/job-tracker-page.html",
-      "label": "content/job-tracker-page.html",
-      "type": "authored-source"
-    },
-    {
       "id": "file:content/library-data.js",
       "label": "content/library-data.js",
       "type": "authored-source"
@@ -315,6 +305,11 @@
       "type": "authored-source"
     },
     {
+      "id": "file:content/site-pages/decisions.html",
+      "label": "content/site-pages/decisions.html",
+      "type": "authored-source"
+    },
+    {
       "id": "file:content/site-pages/guide.html",
       "label": "content/site-pages/guide.html",
       "type": "authored-source"
@@ -327,6 +322,11 @@
     {
       "id": "file:content/site-pages/job-search.html",
       "label": "content/site-pages/job-search.html",
+      "type": "authored-source"
+    },
+    {
+      "id": "file:content/site-pages/job-tracker.html",
+      "label": "content/site-pages/job-tracker.html",
       "type": "authored-source"
     },
     {
@@ -350,13 +350,8 @@
       "type": "authored-source"
     },
     {
-      "id": "file:content/site-pages/reference-reader.html",
-      "label": "content/site-pages/reference-reader.html",
-      "type": "authored-source"
-    },
-    {
-      "id": "file:content/site-pages/skill-formation-overview.md",
-      "label": "content/site-pages/skill-formation-overview.md",
+      "id": "file:content/site-pages/reference-reader.layout.html",
+      "label": "content/site-pages/reference-reader.layout.html",
       "type": "authored-source"
     },
     {
@@ -815,11 +810,6 @@
       "type": "generated-artifact"
     },
     {
-      "id": "file:docs/collaboration/multi-persona-collaboration-playbook.md",
-      "label": "docs/collaboration/multi-persona-collaboration-playbook.md",
-      "type": "authored-source"
-    },
-    {
       "id": "file:docs/collaboration/problem-context.md",
       "label": "docs/collaboration/problem-context.md",
       "type": "authored-source"
@@ -845,11 +835,6 @@
       "type": "authored-source"
     },
     {
-      "id": "file:docs/job-search/implementation.md",
-      "label": "docs/job-search/implementation.md",
-      "type": "authored-source"
-    },
-    {
       "id": "file:docs/job-search/job-ledger-contract.md",
       "label": "docs/job-search/job-ledger-contract.md",
       "type": "authored-source"
@@ -867,6 +852,21 @@
     {
       "id": "file:docs/playbooks/bounded-parallel-implementation.md",
       "label": "docs/playbooks/bounded-parallel-implementation.md",
+      "type": "authored-source"
+    },
+    {
+      "id": "file:docs/playbooks/evidence-led-job-search.md",
+      "label": "docs/playbooks/evidence-led-job-search.md",
+      "type": "authored-source"
+    },
+    {
+      "id": "file:docs/playbooks/multi-persona-collaboration.md",
+      "label": "docs/playbooks/multi-persona-collaboration.md",
+      "type": "authored-source"
+    },
+    {
+      "id": "file:docs/playbooks/skill-formation-overview.md",
+      "label": "docs/playbooks/skill-formation-overview.md",
       "type": "authored-source"
     },
     {
@@ -1538,18 +1538,6 @@
       "relationship": "copied-to"
     },
     {
-      "id": "edge:file:content/decisions-page.html--contributes-to--file:dist/decisions.html",
-      "from": "file:content/decisions-page.html",
-      "to": "file:dist/decisions.html",
-      "relationship": "contributes-to"
-    },
-    {
-      "id": "edge:file:content/job-tracker-page.html--copied-to--file:dist/job-tracker.html",
-      "from": "file:content/job-tracker-page.html",
-      "to": "file:dist/job-tracker.html",
-      "relationship": "copied-to"
-    },
-    {
       "id": "edge:file:content/library-data.js--contributes-to--file:dist/data/library-data.js",
       "from": "file:content/library-data.js",
       "to": "file:dist/data/library-data.js",
@@ -1754,6 +1742,12 @@
       "relationship": "copied-to"
     },
     {
+      "id": "edge:file:content/site-pages/decisions.html--contributes-to--file:dist/decisions.html",
+      "from": "file:content/site-pages/decisions.html",
+      "to": "file:dist/decisions.html",
+      "relationship": "contributes-to"
+    },
+    {
       "id": "edge:file:content/site-pages/guide.html--consumed-by--build-step:scripts/build-reference-pages.mjs",
       "from": "file:content/site-pages/guide.html",
       "to": "build-step:scripts/build-reference-pages.mjs",
@@ -1769,6 +1763,12 @@
       "id": "edge:file:content/site-pages/job-search.html--copied-to--file:dist/job-search.html",
       "from": "file:content/site-pages/job-search.html",
       "to": "file:dist/job-search.html",
+      "relationship": "copied-to"
+    },
+    {
+      "id": "edge:file:content/site-pages/job-tracker.html--copied-to--file:dist/job-tracker.html",
+      "from": "file:content/site-pages/job-tracker.html",
+      "to": "file:dist/job-tracker.html",
       "relationship": "copied-to"
     },
     {
@@ -1796,14 +1796,8 @@
       "relationship": "copied-to"
     },
     {
-      "id": "edge:file:content/site-pages/reference-reader.html--consumed-by--build-step:scripts/build-reference-pages.mjs",
-      "from": "file:content/site-pages/reference-reader.html",
-      "to": "build-step:scripts/build-reference-pages.mjs",
-      "relationship": "consumed-by"
-    },
-    {
-      "id": "edge:file:content/site-pages/skill-formation-overview.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
-      "from": "file:content/site-pages/skill-formation-overview.md",
+      "id": "edge:file:content/site-pages/reference-reader.layout.html--consumed-by--build-step:scripts/build-reference-pages.mjs",
+      "from": "file:content/site-pages/reference-reader.layout.html",
       "to": "build-step:scripts/build-reference-pages.mjs",
       "relationship": "consumed-by"
     },
@@ -2378,12 +2372,6 @@
       "relationship": "validated-by"
     },
     {
-      "id": "edge:file:docs/collaboration/multi-persona-collaboration-playbook.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
-      "from": "file:docs/collaboration/multi-persona-collaboration-playbook.md",
-      "to": "build-step:scripts/build-reference-pages.mjs",
-      "relationship": "consumed-by"
-    },
-    {
       "id": "edge:file:docs/collaboration/problem-context.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
       "from": "file:docs/collaboration/problem-context.md",
       "to": "build-step:scripts/build-reference-pages.mjs",
@@ -2414,12 +2402,6 @@
       "relationship": "consumed-by"
     },
     {
-      "id": "edge:file:docs/job-search/implementation.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
-      "from": "file:docs/job-search/implementation.md",
-      "to": "build-step:scripts/build-reference-pages.mjs",
-      "relationship": "consumed-by"
-    },
-    {
       "id": "edge:file:docs/job-search/job-ledger-contract.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
       "from": "file:docs/job-search/job-ledger-contract.md",
       "to": "build-step:scripts/build-reference-pages.mjs",
@@ -2440,6 +2422,24 @@
     {
       "id": "edge:file:docs/playbooks/bounded-parallel-implementation.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
       "from": "file:docs/playbooks/bounded-parallel-implementation.md",
+      "to": "build-step:scripts/build-reference-pages.mjs",
+      "relationship": "consumed-by"
+    },
+    {
+      "id": "edge:file:docs/playbooks/evidence-led-job-search.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
+      "from": "file:docs/playbooks/evidence-led-job-search.md",
+      "to": "build-step:scripts/build-reference-pages.mjs",
+      "relationship": "consumed-by"
+    },
+    {
+      "id": "edge:file:docs/playbooks/multi-persona-collaboration.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
+      "from": "file:docs/playbooks/multi-persona-collaboration.md",
+      "to": "build-step:scripts/build-reference-pages.mjs",
+      "relationship": "consumed-by"
+    },
+    {
+      "id": "edge:file:docs/playbooks/skill-formation-overview.md--consumed-by--build-step:scripts/build-reference-pages.mjs",
+      "from": "file:docs/playbooks/skill-formation-overview.md",
       "to": "build-step:scripts/build-reference-pages.mjs",
       "relationship": "consumed-by"
     },
@@ -2585,18 +2585,6 @@
       "id": "edge:source-group:client--contains--file:client/tool-pages.css",
       "from": "source-group:client",
       "to": "file:client/tool-pages.css",
-      "relationship": "contains"
-    },
-    {
-      "id": "edge:source-group:content--contains--file:content/decisions-page.html",
-      "from": "source-group:content",
-      "to": "file:content/decisions-page.html",
-      "relationship": "contains"
-    },
-    {
-      "id": "edge:source-group:content--contains--file:content/job-tracker-page.html",
-      "from": "source-group:content",
-      "to": "file:content/job-tracker-page.html",
       "relationship": "contains"
     },
     {
@@ -2804,6 +2792,12 @@
       "relationship": "contains"
     },
     {
+      "id": "edge:source-group:content--contains--file:content/site-pages/decisions.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/decisions.html",
+      "relationship": "contains"
+    },
+    {
       "id": "edge:source-group:content--contains--file:content/site-pages/guide.html",
       "from": "source-group:content",
       "to": "file:content/site-pages/guide.html",
@@ -2819,6 +2813,12 @@
       "id": "edge:source-group:content--contains--file:content/site-pages/job-search.html",
       "from": "source-group:content",
       "to": "file:content/site-pages/job-search.html",
+      "relationship": "contains"
+    },
+    {
+      "id": "edge:source-group:content--contains--file:content/site-pages/job-tracker.html",
+      "from": "source-group:content",
+      "to": "file:content/site-pages/job-tracker.html",
       "relationship": "contains"
     },
     {
@@ -2846,15 +2846,9 @@
       "relationship": "contains"
     },
     {
-      "id": "edge:source-group:content--contains--file:content/site-pages/reference-reader.html",
+      "id": "edge:source-group:content--contains--file:content/site-pages/reference-reader.layout.html",
       "from": "source-group:content",
-      "to": "file:content/site-pages/reference-reader.html",
-      "relationship": "contains"
-    },
-    {
-      "id": "edge:source-group:content--contains--file:content/site-pages/skill-formation-overview.md",
-      "from": "source-group:content",
-      "to": "file:content/site-pages/skill-formation-overview.md",
+      "to": "file:content/site-pages/reference-reader.layout.html",
       "relationship": "contains"
     },
     {
@@ -2924,12 +2918,6 @@
       "relationship": "contains"
     },
     {
-      "id": "edge:source-group:docs--contains--file:docs/collaboration/multi-persona-collaboration-playbook.md",
-      "from": "source-group:docs",
-      "to": "file:docs/collaboration/multi-persona-collaboration-playbook.md",
-      "relationship": "contains"
-    },
-    {
       "id": "edge:source-group:docs--contains--file:docs/collaboration/problem-context.md",
       "from": "source-group:docs",
       "to": "file:docs/collaboration/problem-context.md",
@@ -2960,12 +2948,6 @@
       "relationship": "contains"
     },
     {
-      "id": "edge:source-group:docs--contains--file:docs/job-search/implementation.md",
-      "from": "source-group:docs",
-      "to": "file:docs/job-search/implementation.md",
-      "relationship": "contains"
-    },
-    {
       "id": "edge:source-group:docs--contains--file:docs/job-search/job-ledger-contract.md",
       "from": "source-group:docs",
       "to": "file:docs/job-search/job-ledger-contract.md",
@@ -2987,6 +2969,24 @@
       "id": "edge:source-group:docs--contains--file:docs/playbooks/bounded-parallel-implementation.md",
       "from": "source-group:docs",
       "to": "file:docs/playbooks/bounded-parallel-implementation.md",
+      "relationship": "contains"
+    },
+    {
+      "id": "edge:source-group:docs--contains--file:docs/playbooks/evidence-led-job-search.md",
+      "from": "source-group:docs",
+      "to": "file:docs/playbooks/evidence-led-job-search.md",
+      "relationship": "contains"
+    },
+    {
+      "id": "edge:source-group:docs--contains--file:docs/playbooks/multi-persona-collaboration.md",
+      "from": "source-group:docs",
+      "to": "file:docs/playbooks/multi-persona-collaboration.md",
+      "relationship": "contains"
+    },
+    {
+      "id": "edge:source-group:docs--contains--file:docs/playbooks/skill-formation-overview.md",
+      "from": "source-group:docs",
+      "to": "file:docs/playbooks/skill-formation-overview.md",
       "relationship": "contains"
     },
     {
@@ -3223,16 +3223,6 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
-    "file:content/decisions-page.html": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
-      "selector": "content/decisions-page.html -> dist/decisions.html"
-    },
-    "file:content/job-tracker-page.html": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-      "selector": "files copy contract"
-    },
     "file:content/library-data.js": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
@@ -3403,6 +3393,11 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
+    "file:content/site-pages/decisions.html": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
+      "selector": "content/site-pages/decisions.html -> dist/decisions.html"
+    },
     "file:content/site-pages/guide.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -3414,6 +3409,11 @@
       "selector": "files copy contract"
     },
     "file:content/site-pages/job-search.html": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
+    "file:content/site-pages/job-tracker.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
@@ -3438,12 +3438,7 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
-    "file:content/site-pages/reference-reader.html": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
-    "file:content/site-pages/skill-formation-overview.md": {
+    "file:content/site-pages/reference-reader.layout.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
@@ -3903,11 +3898,6 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
-    "file:docs/collaboration/multi-persona-collaboration-playbook.md": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
     "file:docs/collaboration/problem-context.md": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -3933,11 +3923,6 @@
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
     },
-    "file:docs/job-search/implementation.md": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
     "file:docs/job-search/job-ledger-contract.md": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -3954,6 +3939,21 @@
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
     },
     "file:docs/playbooks/bounded-parallel-implementation.md": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "file:docs/playbooks/evidence-led-job-search.md": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "file:docs/playbooks/multi-persona-collaboration.md": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "file:docs/playbooks/skill-formation-overview.md": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
@@ -4523,16 +4523,6 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
-    "edge:file:content/decisions-page.html--contributes-to--file:dist/decisions.html": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
-      "selector": "content/decisions-page.html -> dist/decisions.html"
-    },
-    "edge:file:content/job-tracker-page.html--copied-to--file:dist/job-tracker.html": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-      "selector": "files copy contract"
-    },
     "edge:file:content/library-data.js--contributes-to--file:dist/data/library-data.js": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
@@ -4703,6 +4693,11 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
+    "edge:file:content/site-pages/decisions.html--contributes-to--file:dist/decisions.html": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
+      "selector": "content/site-pages/decisions.html -> dist/decisions.html"
+    },
     "edge:file:content/site-pages/guide.html--consumed-by--build-step:scripts/build-reference-pages.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -4714,6 +4709,11 @@
       "selector": "files copy contract"
     },
     "edge:file:content/site-pages/job-search.html--copied-to--file:dist/job-search.html": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
+    "edge:file:content/site-pages/job-tracker.html--copied-to--file:dist/job-tracker.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
@@ -4738,12 +4738,7 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
-    "edge:file:content/site-pages/reference-reader.html--consumed-by--build-step:scripts/build-reference-pages.mjs": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
-    "edge:file:content/site-pages/skill-formation-overview.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
+    "edge:file:content/site-pages/reference-reader.layout.html--consumed-by--build-step:scripts/build-reference-pages.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
@@ -5223,11 +5218,6 @@
       "locator": "rickvang/Persona-Library:scripts/check-generated-output.mjs",
       "selector": "dist cleanliness scope"
     },
-    "edge:file:docs/collaboration/multi-persona-collaboration-playbook.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
     "edge:file:docs/collaboration/problem-context.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -5253,11 +5243,6 @@
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
     },
-    "edge:file:docs/job-search/implementation.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
     "edge:file:docs/job-search/job-ledger-contract.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -5274,6 +5259,21 @@
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
     },
     "edge:file:docs/playbooks/bounded-parallel-implementation.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "edge:file:docs/playbooks/evidence-led-job-search.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "edge:file:docs/playbooks/multi-persona-collaboration.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "edge:file:docs/playbooks/skill-formation-overview.md--consumed-by--build-step:scripts/build-reference-pages.mjs": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
@@ -5394,16 +5394,6 @@
       "selector": "files copy contract"
     },
     "edge:source-group:client--contains--file:client/tool-pages.css": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
-      "selector": "files copy contract"
-    },
-    "edge:source-group:content--contains--file:content/decisions-page.html": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
-      "selector": "content/decisions-page.html -> dist/decisions.html"
-    },
-    "edge:source-group:content--contains--file:content/job-tracker-page.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
@@ -5578,6 +5568,11 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
+    "edge:source-group:content--contains--file:content/site-pages/decisions.html": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-decisions.mjs",
+      "selector": "content/site-pages/decisions.html -> dist/decisions.html"
+    },
     "edge:source-group:content--contains--file:content/site-pages/guide.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -5589,6 +5584,11 @@
       "selector": "files copy contract"
     },
     "edge:source-group:content--contains--file:content/site-pages/job-search.html": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
+      "selector": "files copy contract"
+    },
+    "edge:source-group:content--contains--file:content/site-pages/job-tracker.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
@@ -5613,12 +5613,7 @@
       "locator": "rickvang/Persona-Library:scripts/build-library.mjs",
       "selector": "files copy contract"
     },
-    "edge:source-group:content--contains--file:content/site-pages/reference-reader.html": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
-    "edge:source-group:content--contains--file:content/site-pages/skill-formation-overview.md": {
+    "edge:source-group:content--contains--file:content/site-pages/reference-reader.layout.html": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
@@ -5678,11 +5673,6 @@
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
     },
-    "edge:source-group:docs--contains--file:docs/collaboration/multi-persona-collaboration-playbook.md": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
     "edge:source-group:docs--contains--file:docs/collaboration/problem-context.md": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -5708,11 +5698,6 @@
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
     },
-    "edge:source-group:docs--contains--file:docs/job-search/implementation.md": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
-      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
-    },
     "edge:source-group:docs--contains--file:docs/job-search/job-ledger-contract.md": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
@@ -5729,6 +5714,21 @@
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
     },
     "edge:source-group:docs--contains--file:docs/playbooks/bounded-parallel-implementation.md": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "edge:source-group:docs--contains--file:docs/playbooks/evidence-led-job-search.md": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "edge:source-group:docs--contains--file:docs/playbooks/multi-persona-collaboration.md": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
+      "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
+    },
+    "edge:source-group:docs--contains--file:docs/playbooks/skill-formation-overview.md": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:scripts/build-reference-pages.mjs",
       "selector": "buildReferencePages / REFERENCE_PAGE_SOURCES / curated manifest"
