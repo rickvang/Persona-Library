@@ -72,8 +72,8 @@
             ".agents/skills/persona-library-orientation/SKILL.md",
             "docs/policy-ownership.md"
           ],
-          "utf8_bytes": 37083,
-          "rough_tokens": 9271
+          "utf8_bytes": 36845,
+          "rough_tokens": 9212
         },
         "expectation": {
           "pass": true,
@@ -273,8 +273,8 @@
             "content/orientation/templates.json",
             "docs/README.md"
           ],
-          "utf8_bytes": 56872,
-          "rough_tokens": 14218
+          "utf8_bytes": 56634,
+          "rough_tokens": 14159
         },
         "expectation": {
           "pass": true,
@@ -475,8 +475,8 @@
             "docs/policy-ownership.md",
             "docs/README.md"
           ],
-          "utf8_bytes": 48418,
-          "rough_tokens": 12105
+          "utf8_bytes": 48180,
+          "rough_tokens": 12045
         },
         "expectation": {
           "pass": true,
@@ -1011,8 +1011,8 @@
             "docs/policy-ownership.md",
             "content/orientation/templates.json"
           ],
-          "utf8_bytes": 45537,
-          "rough_tokens": 11385
+          "utf8_bytes": 45299,
+          "rough_tokens": 11325
         },
         "expectation": {
           "pass": true,
@@ -1215,8 +1215,8 @@
             "docs/policy-ownership.md",
             "content/orientation/personas.json"
           ],
-          "utf8_bytes": 41168,
-          "rough_tokens": 10292
+          "utf8_bytes": 40930,
+          "rough_tokens": 10233
         },
         "expectation": {
           "pass": true,
@@ -1419,8 +1419,8 @@
             "docs/policy-ownership.md",
             "content/orientation/tools.json"
           ],
-          "utf8_bytes": 40104,
-          "rough_tokens": 10026
+          "utf8_bytes": 39866,
+          "rough_tokens": 9967
         },
         "expectation": {
           "pass": true,
@@ -1563,11 +1563,11 @@
     "failed": 0,
     "all_pass": true,
     "preferred_context_utf8_bytes": 226642,
-    "control_context_utf8_bytes": 269182,
+    "control_context_utf8_bytes": 267754,
     "preferred_context_rough_tokens": 56661,
-    "control_context_rough_tokens": 67296,
-    "preferred_delta_utf8_bytes": -42540,
-    "preferred_delta_percent": -15.8
+    "control_context_rough_tokens": 66939,
+    "preferred_delta_utf8_bytes": -41112,
+    "preferred_delta_percent": -15.4
   },
   "limitations": [
     "The evaluator is intentionally fixture-scoped and is not a general-purpose natural-language router.",
