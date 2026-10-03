@@ -47,6 +47,29 @@ test('Persona validation is independently runnable without Site or generated fil
   assert.throws(() => validatePersonas({ data: { ...context.data, flowLibrary: { [persona.id]: [{ type: 'foundational', title: 'Check a contract', activities: [['incomplete']] }] } } }, {}), /incomplete activity row/);
 });
 
+test('Persona work modes are optional ordered preferences with a bounded vocabulary', () => {
+  const validate = record => validatePersonas({ data: {
+    personas: [record],
+    skillLibrary: { [record.id]: [profile] },
+    flowLibrary: { [record.id]: [{ type: 'foundational', title: 'Check a contract', activities: [['Input', 'Action', 'Output', 'Fallback']] }] }
+  } }, {});
+
+  validate(persona);
+  assert.equal(Object.hasOwn(persona, 'workModes'), false);
+  for (const workModes of [['execute'], ['review', 'execute'], ['orchestrate', 'execute', 'review']]) {
+    const record = { ...persona, workModes: [...workModes] };
+    validate(record);
+    assert.deepEqual(record.workModes, workModes);
+  }
+  for (const workModes of [undefined, null, 'execute', {}, []]) {
+    assert.throws(() => validate({ ...persona, workModes }), /workModes must be a nonempty array/);
+  }
+  for (const workModes of [['manage'], ['Execute'], ['execute', null], ['execute', 1], Array(1)]) {
+    assert.throws(() => validate({ ...persona, workModes }), /unsupported work mode/);
+  }
+  assert.throws(() => validate({ ...persona, workModes: ['review', 'review'] }), /workModes must be unique/);
+});
+
 test('Skill validation owns skill shape and does not need presentation context', () => {
   const context = { data: {
     personas: [persona],

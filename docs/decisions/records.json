@@ -885,6 +885,22 @@
         "DEC-028"
       ],
       "revisit": "Observed local output fails factual or reader quality; source snapshots become stale; a required employer format cannot be verified; or future full-request timing shows that the simplified path still incurs repeated setup."
+    },
+    {
+      "id": "DEC-030",
+      "status": "Applied",
+      "category": "Persona routing",
+      "date": "2026-10-03",
+      "title": "Persona work modes guide assignment without changing identity or authority",
+      "summary": "Add optional ordered routing preferences to Riley, Evan, and Mara while keeping task assignments and existing workflow requirements authoritative.",
+      "question": "How can persona selection distinguish execution, review, and orchestration without adding a rigid persona taxonomy or mandatory agent hops?",
+      "decision": "Use an optional workModes array with unique values execute, review, and orchestrate. These are nonexclusive routing preferences: the first entry is preferred only when the task does not specify an assignment, and every preference stays within the Persona's expertise. Missing metadata means unspecified; omitted modes are not prohibited. Riley lists orchestrate/execute/review, Evan execute/review, and Mara review/execute for knowledge-system classification, placement, ownership, lifecycle, and semantic change impact. The field grants no permission, creates no review gate, and does not alter role, expertise, reasoning settings, or existing workflow requirements. Untagged Personas remain valid under existing routing.",
+      "rationale": "The requester wants visible task roles and appropriately sized work without extra orchestration overhead. A read-only pilot and bounded semantic review support these three preferences from their existing Persona definitions. The authored records and existing generated data path can carry the hint without a new router.",
+      "alternatives": "Assign one exclusive persona type; infer workflow assignment from operator/leader/specialist; label every Persona now; or require Riley and an independent reviewer for every task. These either collapse distinct concepts or add unnecessary routing and validation work.",
+      "tradeoffs": "The preferences are inferred from Working draft Persona records, not runtime capability proof. Task-specific assignment and subject expertise still require judgment. This initial scope leaves other Personas unspecified and does not select or change model reasoning levels.",
+      "affects": "Riley Morgan, Evan Reyes, and Mara Okoye authored Persona records; Persona optional-field validation; architecture semantics; generated library data and Decisions reader.",
+      "evidence": "Requester approval on 2026-10-03 following a read-only three-Persona pilot; existing role, behavior, workflow, and evidence claims; bounded knowledge-systems semantic review.",
+      "revisit": "Observed dispatch chooses the wrong domain or imposes an unnecessary review or orchestration hop; additional Personas need explicit preferences; or runtime evidence warrants changing the ordered choices."
     }
   ]
 }

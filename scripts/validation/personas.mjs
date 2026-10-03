@@ -1,4 +1,5 @@
 const ALLOWED_ROLES = new Set(['operator', 'leader', 'specialist']);
+const ALLOWED_WORK_MODES = new Set(['execute', 'review', 'orchestrate']);
 const ALLOWED_FLOW_TYPES = new Set(['foundational', 'supporting', 'edge']);
 
 export function validatePersonas({ data }, indexes) {
@@ -8,6 +9,11 @@ export function validatePersonas({ data }, indexes) {
     personaIds.add(persona.id);
     for (const field of ['name', 'role', 'roleLabel', 'lifecycle', 'operatingContext', 'operatingState', 'confidence']) if (persona[field] === undefined || persona[field] === null || persona[field] === '') throw new Error(`${persona.id} is missing ${field}`);
     if (!ALLOWED_ROLES.has(persona.role)) throw new Error(`${persona.id} has an unsupported role: ${persona.role}`);
+    if (Object.hasOwn(persona, 'workModes')) {
+      if (!Array.isArray(persona.workModes) || !persona.workModes.length) throw new Error(`${persona.id} workModes must be a nonempty array`);
+      for (const mode of persona.workModes) if (!ALLOWED_WORK_MODES.has(mode)) throw new Error(`${persona.id} has an unsupported work mode`);
+      if (new Set(persona.workModes).size !== persona.workModes.length) throw new Error(`${persona.id} workModes must be unique`);
+    }
     const skillNames = new Set((persona.skills || []).map(skill => skill.split(' — ')[0]));
     const profiles = data.skillLibrary[persona.id] || [];
     for (const profile of profiles) if (!skillNames.has(profile.name)) throw new Error(`${persona.id} has an unregistered skill profile: ${profile.name}`);
