@@ -1,0 +1,15 @@
+{
+  "id": "persona-context-loading-frontend-review",
+  "task": "Review a small internal project dashboard. It currently downloads every project description and attachment list at startup, although people first scan project names and statuses and then open one project in a detail drawer. Slow networks occur; editing and offline synchronization are outside this first change. Use the appropriate building Persona to recommend the smallest rendering/data-loading change, identify what the UX and data owners must settle, and give focused validation. This is a hypothetical read-only review, not observed user research, repository-placement work, or implementation authorization.",
+  "expected_persona_id": "frontend-systems-engineer",
+  "intended_use": "building",
+  "assigned_work_mode": "review",
+  "acceptance_checks": [
+    "Select Evan Reyes for frontend runtime judgment rather than a generic orchestration or repository-placement route.",
+    "Use review for this task even though execute is Evan's first workModes preference.",
+    "Recommend a small initial list payload and loading the selected project's details and attachments when needed; avoid introducing an offline sync system.",
+    "Keep UX interaction decisions and backend data/permission contracts with their respective owners.",
+    "Name focused network/payload and loading/error/keyboard checks; do not require a broad review council or duplicated validation.",
+    "Keep the scenario hypothetical, implementation unauthorized, tool access unclaimed, and existing Persona confidence metadata unchanged."
+  ]
+}
