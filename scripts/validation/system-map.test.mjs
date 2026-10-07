@@ -538,8 +538,12 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /data\/system-map\/agent-runtime\.json/);
   assert.match(page, /id="map-overview"/);
   assert.match(page, /<option value="overview">System overview<\/option>/);
-  assert.match(page, /How the Persona Workspace fits together/);
-  assert.match(page, /these five areas are navigation only/);
+  assert.match(page, /How the ecosystem fits together/);
+  assert.match(page, /these six areas are navigation only/);
+  assert.match(page, /Ecosystem &amp; ownership/);
+  assert.match(page, /data-open-lens="ecosystem-orientation"/);
+  assert.match(page, /grid-template-columns:repeat\(6,minmax\(0,1fr\)\)/);
+  assert.match(page, /\.overview-areas::before \{[^}]*left:8\.333%;[^}]*right:8\.333%;/s);
   assert.match(page, /How agents get oriented/);
   assert.match(page, /Personas &amp; capabilities/);
   assert.match(page, /Work &amp; verification/);
@@ -603,6 +607,7 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.doesNotMatch(page, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.doesNotMatch(client, /concept:current-work|repository:rickvang\/portfolio|persona:ui-expert|skill:skill-architecture-decision-making|edge:concept:/);
   assert.match(client, /lensConfigs/);
+  assert.match(client, /humanTitle: 'Ecosystem & ownership'/);
   assert.match(client, /humanTitle: 'How agents get oriented'/);
   assert.match(client, /humanTitle: 'Personas & capabilities'/);
   assert.match(client, /humanTitle: 'Work & verification'/);
@@ -713,6 +718,7 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(renderer, /filters = \{\}/);
   assert.match(renderer, /highlightedEdgeId = null/);
   assert.match(renderer, /exact-edge/);
+  assert.match(client, /ecosystem-orientation/);
   assert.match(client, /repository-ownership/);
   assert.match(client, /persona-skill/);
   assert.match(client, /source-generated/);
