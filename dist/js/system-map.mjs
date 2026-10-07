@@ -26,6 +26,15 @@ const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character =>
 const root = document.querySelector('[data-system-map]');
 
 const lensConfigs = {
+  'ecosystem-orientation': {
+    label: 'Ecosystem orientation',
+    humanTitle: 'Ecosystem & ownership',
+    description: 'See the top-level collaboration, execution, design, repository-discovery, work, and live-authority routes without turning the map into a source of truth.',
+    graphUrl: root?.dataset.graphEcosystemOrientationUrl,
+    sourceUrl: root?.dataset.sourceEcosystemOrientationUrl,
+    layoutDirection: 'horizontal',
+    coverageNote: 'Known-explicit orientation relationships only; repository-local and domain-system sources remain authoritative, and live operational state stays external.'
+  },
   'work-coordination': {
     label: 'Work & coordination',
     humanTitle: 'Work & verification',
