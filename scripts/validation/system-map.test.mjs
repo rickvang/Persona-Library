@@ -542,6 +542,8 @@ test('System Map Site consumes domain-owned graphs without copying graph facts i
   assert.match(page, /these six areas are navigation only/);
   assert.match(page, /Ecosystem &amp; ownership/);
   assert.match(page, /data-open-lens="ecosystem-orientation"/);
+  assert.match(page, /grid-template-columns:repeat\(6,minmax\(0,1fr\)\)/);
+  assert.match(page, /\.overview-areas::before \{[^}]*left:8\.333%;[^}]*right:8\.333%;/s);
   assert.match(page, /How agents get oriented/);
   assert.match(page, /Personas &amp; capabilities/);
   assert.match(page, /Work &amp; verification/);
