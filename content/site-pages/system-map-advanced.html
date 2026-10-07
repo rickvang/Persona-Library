@@ -404,6 +404,8 @@
   </header>
 
   <main class="page" data-system-map
+    data-graph-ecosystem-orientation-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/ecosystem-orientation.json"
+    data-source-ecosystem-orientation-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/ecosystem-orientation.json"
     data-graph-work-coordination-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/work-coordination.json"
     data-source-work-coordination-url="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json"
     data-graph-repository-ownership-url="https://raw.githubusercontent.com/rickvang/persona-workspace/main/system-map/generated/repository-ownership.json"
@@ -418,12 +420,12 @@
     <section class="workspace-header" aria-labelledby="system-map-title">
       <div class="workspace-title">
         <p class="eyebrow">Interactive system view</p>
-        <h1 id="system-map-title">Persona Workspace</h1>
+        <h1 id="system-map-title">Ecosystem</h1>
       </div>
       <details class="authority-note">
         <summary>Graph authority</summary>
         <p>This workspace reads generated graph projections from their canonical owners. It never edits graph facts, ownership, provenance, or live runtime state.</p>
-        <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/work-coordination.json" target="_blank" rel="noreferrer">Open current graph source ↗</a>
+        <a id="map-graph-source-link" href="https://github.com/rickvang/persona-workspace/blob/main/system-map/generated/ecosystem-orientation.json" target="_blank" rel="noreferrer">Open current graph source ↗</a>
       </details>
     </section>
 
@@ -438,6 +440,7 @@
           <label for="map-lens">View</label>
           <select id="map-lens">
             <option value="overview">System overview</option>
+            <option value="ecosystem-orientation">Ecosystem orientation</option>
             <option value="work-coordination">Work &amp; coordination</option>
             <option value="repository-ownership">Repository ownership</option>
             <option value="persona-skill">Persona / Skill</option>
@@ -479,20 +482,33 @@
     <section id="map-overview" class="system-overview" aria-labelledby="overview-heading">
       <div class="overview-intro">
         <p class="eyebrow">Start here</p>
-        <h2 id="overview-heading">How the Persona Workspace fits together</h2>
-        <p>This map helps you understand the system before you inspect its implementation details. Start with one of the five areas below, then open its provenance-backed graph and expand only what you need.</p>
-        <p class="overview-boundary"><strong>Important:</strong> these five areas are navigation only. They do not create new system facts or relationships.</p>
+        <h2 id="overview-heading">How the ecosystem fits together</h2>
+        <p>This map helps you understand the system before you inspect its implementation details. Start with one of the six areas below, then open its provenance-backed graph and expand only what you need.</p>
+        <p class="overview-boundary"><strong>Important:</strong> these six areas are navigation only. They do not create new system facts or relationships.</p>
       </div>
 
       <div class="overview-root">
         <span class="overview-root-kicker">Whole system</span>
-        <strong>Persona Workspace</strong>
-        <p>Coordinates how agents orient, find relevant capabilities and sources, work across repositories, and verify changes.</p>
+        <strong>Ecosystem</strong>
+        <p>Routes people and agents to the canonical collaboration, execution, domain, repository, work, and live-authority sources without owning those sources.</p>
       </div>
 
       <div class="overview-branch" aria-hidden="true"></div>
 
       <div class="overview-areas">
+        <article class="overview-area">
+          <div class="overview-area-head">
+            <div>
+              <span class="overview-number">00</span>
+              <h3>Ecosystem &amp; ownership</h3>
+            </div>
+            <button type="button" class="overview-open" data-open-lens="ecosystem-orientation" aria-label="Open ecosystem orientation"><span>Open</span><span aria-hidden="true">→</span></button>
+          </div>
+          <p>Find the top-level canonical system or repository before loading deeper implementation detail.</p>
+          <div class="overview-area-meta"><span>Orientation view</span><strong>Ecosystem orientation</strong></div>
+          <p class="overview-caveat">Derived navigation only; local/domain sources and live systems remain authoritative.</p>
+        </article>
+
         <article class="overview-area">
           <div class="overview-area-head">
             <div>
