@@ -48,8 +48,8 @@ Immediately before a consequential GitHub mutation, refresh the live state neede
 
 When a selected Skill or Tool-use recipe has a matching active Operational Scenario, read `content/library-data/operational-scenarios/index.json` and load only the selected scenario body. Reuse still-valid evidence, refresh only at material freshness boundaries, validate at the cheapest sufficient layer, and stop when evidence is sufficient. Scenario guidance never overrides authorization or current source-of-truth rules.
 
-## Shared Persona Workspace
+## Ecosystem and shared repository discovery
 
-The canonical human explanation of the wider system is [How Persona Workspace works](https://github.com/rickvang/persona-workspace/blob/main/docs/HOW-IT-WORKS.md). Keep this file optimized for repository execution; do not duplicate the whole-workspace human model here. The human model never overrides this repository's local authority or mutation boundaries.
+The canonical wider-system orientation is [Ecosystem Orientation & System Map](https://app.notion.com/p/3f2cd82535ff8199b5d8e85c556761aa). Persona Workspace remains the technical repository-discovery and generated-map compatibility layer. Keep this file optimized for repository execution; ecosystem orientation never overrides this repository's local authority or mutation boundaries.
 
 When opened from [Persona Workspace](https://github.com/rickvang/persona-workspace), use the parent only for cross-repository discovery and coordination. Its generated repository map identifies sibling entrypoints and ownership; this repository's local instructions remain authoritative for work here. Workspace visibility is not cross-repository write permission.
