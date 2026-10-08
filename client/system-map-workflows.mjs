@@ -19,18 +19,20 @@ export function buildWorkflowConnections(data) {
     ...(data.templateCatalog || []).map(item => 'template:' + item.id),
     ...(data.toolUseRecipes || []).map(item => 'recipe:' + item.id)
   ]);
-  for (const persona of data.personas || []) {
-    for (const record of data.flowLibrary?.[persona.id] || []) {
-      const id = workflowId(persona.id, record.title);
+  const personas = new Map((data.personas || []).map(persona => [persona.id, persona]));
+  for (const [sourceKey, records] of Object.entries(data.flowLibrary || {})) {
+    const persona = personas.get(sourceKey);
+    for (const record of records) {
+      const id = workflowId(sourceKey, record.title);
       knownIds.add(id);
       workflows.push({
-        id, title: record.title, summary: record.summary || '', personaId: persona.id,
-        personaName: persona.name, cadence: record.cadence, type: record.type,
+        id, title: record.title, summary: record.summary || '', personaId: sourceKey,
+        personaName: persona?.name || 'Method workflow', cadence: record.cadence, type: record.type,
         activities: (record.activities || []).map(activity => ({
           title: activity[0], cadence: activity[1], purpose: activity[2],
           watchFor: activity[3], reference: activity[4]
         })),
-        source: authoredSource('flowLibrary[' + persona.id + '][title=' + record.title + ']')
+        source: authoredSource('flowLibrary[' + sourceKey + '][title=' + record.title + ']')
       });
     }
   }

@@ -853,14 +853,17 @@ test('Workflow connections resolve actual catalog applications without modifying
   const model = buildWorkflowConnections(data);
   const id = workflowId('ai-orchestrator','Frame the system goal and boundary');
   const flow = model.workflowById.get(id);
-  assert.equal(flow.personaName,'Riley Morgan');
+  assert.equal(flow.personaName,'Method workflow');
   assert.equal(flow.activities[0].title,'Define success and stop condition');
   assert.equal(flow.activities[0].watchFor,'Teams jump to implementation before agreeing on the outcome');
   assert.ok(model.linksById.get('skill:skill-agent-workflow-architecture').some(link => link.id === id && link.label === 'Used in workflow'));
-  assert.ok(model.linksById.get(id).some(link => link.id === 'persona:ai-orchestrator' && link.label === 'Owned by'));
+  assert.equal(model.linksById.get(id).some(link => link.id === 'persona:ai-orchestrator'), false, 'Do not create ownership links to retired metadata');
   assert.ok(model.linksById.get(id).some(link => link.id === 'skill:skill-agent-workflow-architecture' && link.label === 'Uses skill'));
   assert.ok(model.linksById.get('template:template-job-application-notes').some(link => link.id === 'operating-pack:operating-pack-candidate-application-context'));
   assert.equal(JSON.stringify(data),before);
+  const withoutMetadata = buildWorkflowConnections({...data, personas: []});
+  assert.equal(withoutMetadata.workflows.length, Object.values(data.flowLibrary).flat().length);
+  assert.deepEqual(withoutMetadata.workflowById.get(id).activities, flow.activities);
 });
 
 test('Unresolved applications and representative tool names do not create workflow usage links', () => {
