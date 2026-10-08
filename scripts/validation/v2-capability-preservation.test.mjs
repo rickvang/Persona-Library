@@ -50,6 +50,10 @@ test('CW-92: preserve full-source material fields under the explicit reader tran
 
 test('CW-92 WP23: required domain handoffs survive without pilot identities', () => {
   const data = initialize(current, omitPilot);
+  for (const id of ['scenario-github-issue-implementation', 'scenario-vercel-deployed-state-verification', 'scenario-riley-work-graph-supervision']) {
+    const scenario = data.operationalScenarioCatalog.find(item => item.id === id);
+    assert.deepStrictEqual(plain(scenario.unresolvedRouteIds), [], id + ' must retain a resolvable route without the pilot Personas');
+  }
   const original = id => baseline.context.data.personaHandoffs.find(item => item.id === id);
   const routing = data.skillCatalog.find(skill => skill.id === 'skill-task-decomposition-and-routing');
   for (const [id, target] of [

@@ -6,11 +6,9 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "ownerType": "tool-use-recipe",
   "ownerId": "recipe-riley-vercel-review-checkpoint",
   "situation": "Repository validation is available, but the task may require a live Preview, deployment status, runtime logs, routing/environment behavior, or a materially reviewable deployed state.",
-  "expectedRoute": "Riley Morgan → Tool and context design → Vercel review-checkpoint recipe",
+  "expectedRoute": "Tool and context design → Vercel review-checkpoint recipe",
   "route": {
-    "personaIds": [
-      "ai-orchestrator"
-    ],
+    "personaIds": [],
     "skillIds": [
       "skill-tool-and-context-design"
     ],

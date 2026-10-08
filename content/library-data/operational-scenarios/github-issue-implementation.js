@@ -6,11 +6,9 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "ownerType": "tool-use-recipe",
   "ownerId": "recipe-riley-github-efficient-change",
   "situation": "A scoped repository issue is authorized for implementation and the agent needs current remote truth, coherent mutations, review evidence, and a safe completion boundary.",
-  "expectedRoute": "Riley Morgan → Tool and context design → GitHub efficient-change recipe",
+  "expectedRoute": "Tool and context design → GitHub efficient-change recipe",
   "route": {
-    "personaIds": [
-      "ai-orchestrator"
-    ],
+    "personaIds": [],
     "skillIds": [
       "skill-tool-and-context-design"
     ],

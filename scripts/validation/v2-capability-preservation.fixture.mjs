@@ -251,6 +251,17 @@ export function readerBaseline(context) {
     }
   }
   const handoff = id => context.data.personaHandoffs.find(item => item.id === id);
+  const neutralizeScenarioProjection = value => {
+    if (!value || typeof value !== 'object') return;
+    if (['scenario-github-issue-implementation', 'scenario-vercel-deployed-state-verification', 'scenario-riley-work-graph-supervision'].includes(value.id)) {
+      value.route.personaIds = [];
+      value.expectedRoute = value.expectedRoute.replace('Riley Morgan → ', '');
+      value.situation = value.situation.replace('and Riley must decide', 'and the active coordinator must decide');
+      if (value.searchableText) value.searchableText = value.searchableText.replace('riley morgan → ', '').replace('and riley must decide', 'and the active coordinator must decide');
+    }
+    Object.values(value).forEach(neutralizeScenarioProjection);
+  };
+  neutralizeScenarioProjection(snapshot);
   const routingId = 'skill-task-decomposition-and-routing';
   const decisions = [...snapshot.guidance[routingId].operation.moves,
     neutralHandoffText(handoff('handoff-riley-to-frontend-systems-engineer'), 'skill-web-application-architecture'),
