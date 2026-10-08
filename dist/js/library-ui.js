@@ -43,7 +43,7 @@
   }
 
   function renderSkillSummary() {
-    return '<section class="skill-summary" aria-label="Skill detail summary"><div class="summary-label">Skill detail summary</div><p class="summary-order"><strong>Order</strong> Capability → How it operates → How to recognize quality → Triggers/actions → Evidence → Workflows → Skill anatomy → Persona applications → Revision history</p><div class="summary-model"><span><strong>Operating model</strong> Loop · Inputs · Decisions · Outputs · Feedback · Boundaries · Leaves behind</span><span><strong>Quality model</strong> Quality signals · How to inspect · Watch for</span></div></section>';
+    return '<section class="skill-summary" aria-label="Skill detail summary"><div class="summary-label">Skill detail summary</div><p class="summary-order"><strong>Order</strong> Capability → How it operates → How to recognize quality → Triggers/actions → Evidence → Workflows → Skill anatomy → Methods and contexts → Revision history</p><div class="summary-model"><span><strong>Operating model</strong> Loop · Inputs · Decisions · Outputs · Feedback · Boundaries · Leaves behind</span><span><strong>Quality model</strong> Quality signals · How to inspect · Watch for</span></div></section>';
   }
 
   function renderSkillAnatomy(skill) {
@@ -53,7 +53,7 @@
     if (!buildingBlocks.length && !supportingConnections.length && !relatedSkills.length) return '';
     const group = (label, items, kind) => `<section class="anatomy-group"><span>${label}</span><div class="connection-chips">${items.length ? items.map(item => renderConnectionChip(item, kind)).join('') : '<p class="connection-empty">Not mapped yet</p>'}</div></section>`;
     const applicationItems = [
-      ...(skill.workflows || []).map(workflow => `${workflow.title} · ${workflow.personaName}`),
+      ...(skill.workflows || []).map(workflow => `${workflow.title}${workflow.personaName ? ' · ' + workflow.personaName : ''}`),
       ...(skill.personas || []).map(persona => `${persona.name} · ${persona.roleLabel}`)
     ];
     return `<section class="skill-anatomy"><div class="skill-anatomy-head"><div><h3>Skill anatomy</h3><p>See the reusable pieces behind this capability, then open the focused map when you want more context.</p></div><button class="explore-connections" type="button" data-action="toggle-connections" aria-expanded="false">Explore connections</button></div><div class="anatomy-grid">${group('Built from', buildingBlocks, 'building-block')}${group('Supports', supportingConnections, 'supporting-connection')}${group('Related skills', relatedSkills, 'related-skill')}</div><p class="connection-detail" id="dialog-connection-detail" hidden></p><div class="connection-explorer" data-connection-explorer><h4>Focused connection map</h4><div class="connection-map"><section class="connection-cluster"><h5>Building blocks</h5><ul>${buildingBlocks.map(item => `<li>${escapeHtml(item.name)}</li>`).join('') || '<li>Not mapped yet</li>'}</ul></section><div class="connection-center">${escapeHtml(skill.name)}</div><section class="connection-cluster"><h5>Applications</h5><ul>${applicationItems.map(item => `<li>${escapeHtml(item)}</li>`).join('') || '<li>Not mapped yet</li>'}</ul></section></div><div class="connection-list"><strong>Reference list:</strong> ${escapeHtml(buildingBlocks.map(item => item.name).join(' · ') || 'No building blocks mapped yet.')}</div></div></section>`;

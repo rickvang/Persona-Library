@@ -12,17 +12,17 @@ metadata:
 
 ## Purpose
 
-Turn one substantial outcome into a minimal, inspectable work graph and supervise it through execution without becoming the execution runtime. Riley owns the graph, routing policy, evidence requirements, recovery decisions, and reconciliation. Codex, Work, Herdr, Orca, Maestro, Vicoa, direct Tools, or later runtimes may execute individual nodes when available.
+Turn one substantial outcome into a minimal, inspectable work graph and supervise it through execution without becoming the execution runtime. The active coordinator owns the graph, routing policy, evidence requirements, recovery decisions, and reconciliation. Codex, Work, Herdr, Orca, Maestro, Vicoa, direct Tools, or later runtimes may execute individual nodes when available.
 
-This Skill composes Riley's existing Agent Workflow Architecture, Task Decomposition and Routing, Tool and Context Design, Risk / Guardrails / Human Oversight, and Failure Recovery capabilities. Use the bounded-parallel implementation Playbook when repository implementation needs its source-grounding, review, correction, and merge stages.
+This Skill composes the existing Agent Workflow Architecture, Task Decomposition and Routing, Tool and Context Design, Risk / Guardrails / Human Oversight, and Failure Recovery capabilities. Use the bounded-parallel implementation Playbook when repository implementation needs its source-grounding, review, correction, and merge stages.
 
 ## Use this Skill when
 
 - one outcome spans multiple issues, branches, PRs, agents, or specialist workstreams;
 - some work can proceed concurrently but dependencies or collision risk must be managed;
-- Riley must supervise delegated work rather than transfer ownership completely;
+- The active coordinator must supervise delegated work rather than transfer ownership completely;
 - an interrupted or stale execution attempt must be resumed, superseded, or reassigned safely;
-- the user wants to hand Riley a set of current tasks and have Riley plan, route, supervise, and reconcile them.
+- the user wants to provide a set of current tasks and have the coordinator plan, route, supervise, and reconcile them.
 
 Do not use it for a single bounded task that one executor can complete directly, ordinary Persona routing, a one-way ownership handoff with no supervision, or as a reason to spawn more agents than the work requires.
 
@@ -111,7 +111,7 @@ Every settled Dispatch receives a disposition:
 1. Keep **one authoritative active dispatch per WorkNode**.
 2. Treat retries and reassignments as new dispatches; stale attempts never silently regain authority.
 3. Do not infer completion from silence, idle state, process exit, a commit, a branch, or the executor's self-report alone.
-4. Distinguish **handoff** from **supervised delegation**. A handoff transfers responsibility; supervised delegation leaves Riley accountable for the outcome.
+4. Distinguish **handoff** from **supervised delegation**. A handoff transfers responsibility; supervised delegation leaves the active coordinator accountable for the outcome.
 5. Parallelize only nodes that are dependency-independent and pass collision review. Serialize shared-file, shared-schema, shared-architecture, or unknown-overlap work by default.
 6. Recovery is **read-before-retry**. Rediscover live state before spawning another agent, branch, task, or PR.
 7. Give every settled dispatch an explicit disposition, cleanup state, and re-entry condition when applicable.
@@ -128,7 +128,7 @@ Every settled Dispatch receives a disposition:
 5. **Create bounded dispatches.** Give each executor one node, the minimum necessary context, a stop condition, expected evidence, and explicit permission boundary. Record returned IDs rather than predicting them.
 6. **Supervise by events and evidence.** Use runtime lifecycle signals when available, but verify completion through the WorkNode evidence contract. Do not poll without a freshness reason.
 7. **Handle gates and blockers.** Pause the affected node, preserve independent lanes when safe, and surface consequential human decisions instead of answering them on the user's behalf.
-8. **Recover safely.** On timeout, stale state, failure, or interruption, inspect the existing Dispatch and live references first. Establish from live evidence that it can no longer act on the node; if the adapter cannot establish this, pause or block the node instead of issuing a replacement. Every recovery recommendation must name the stable WorkNode, preserve each Dispatch as a separate historical attempt, and state which attempt (if any) remains the sole active authority. Distinguish Riley's graph-level disposition decision from runtime permission to stop/cancel an attempt and from any human approval gate. If authority, inactive-state evidence, or required approval is unknown or unsatisfied, hold the node and request what is missing. Resume the same Dispatch when safe; otherwise record its disposition and persist the new Dispatch ID before launch. After an upstream node completes on shared files, inspect the changed scope and rerun collision review before dispatching downstream work.
+8. **Recover safely.** On timeout, stale state, failure, or interruption, inspect the existing Dispatch and live references first. Establish from live evidence that it can no longer act on the node; if the adapter cannot establish this, pause or block the node instead of issuing a replacement. Every recovery recommendation must name the stable WorkNode, preserve each Dispatch as a separate historical attempt, and state which attempt (if any) remains the sole active authority. Distinguish the coordinator’s graph-level disposition decision from runtime permission to stop/cancel an attempt and from any human approval gate. If authority, inactive-state evidence, or required approval is unknown or unsatisfied, hold the node and request what is missing. Resume the same Dispatch when safe; otherwise record its disposition and persist the new Dispatch ID before launch. After an upstream node completes on shared files, inspect the changed scope and rerun collision review before dispatching downstream work.
 9. **Review and reconcile.** Apply the relevant Playbook / Tool contract for review and consequential mutations. Update Current Work and the applicable recovery artifact (including a Work Order when one exists) only at meaningful lifecycle boundaries.
 10. **Stop cleanly.** Accept, block, defer, supersede, or release every active node/dispatch; record the exact next action for anything unfinished.
 

@@ -9,7 +9,7 @@ Use this practice when a product, feature, workflow, or interface needs informat
 
 The practice is designed to produce one useful design outcome, not a gallery of polished screens or a documentation exercise. It makes the reasoning behind structure and visual emphasis inspectable and keeps evidence separate from assumptions.
 
-This is a workflow/reference guide applied through existing Persona records. It is not a replacement for Camille Ortiz, Jordan Lee, Layout Lab, the collaboration context, or the existing Skill catalog.
+This workflow/reference guide applies through existing Skills and optional Persona contexts. Preserve Layout Lab, the collaboration context, and the existing Skill catalog. UI methods do not require a Persona record.
 
 ## Artifact decision and boundaries
 
@@ -97,12 +97,12 @@ An observed finding without a named source and session or revision context is no
 Do not merge Camille Ortiz and Jordan Lee into an invented Expert UX Designer record.
 
 - Jordan Lee, ux-senior, leads when the problem, content model, terminology, task flow, navigation, or evaluation question is unsettled. Jordan owns the reasoning trail for why the structure serves the task.
-- Camille Ortiz, ui-expert, leads once the task and sufficient structure are known. Camille owns visual hierarchy, contextual composition, interaction states, responsive behavior, UI accessibility, implementation notes, and built-versus-designed QA.
-- Both review IA-to-UI coherence and accessibility when the change is material. Neither may invent research or make an unauthorized product decision.
+- Once the task and sufficient structure are known, apply the existing UI Skills for visual hierarchy, contextual composition, interaction states, responsive behavior, accessibility, implementation notes, and built-versus-designed QA. Assign a qualified executor; no named Persona is required.
+- The responsible structure and interface reviewers check IA-to-UI coherence and accessibility when the change is material. Neither may invent research or make an unauthorized product decision.
 - Use the smallest relevant Persona set. If several named Personas need shared state and handoffs, use the shared problem-context and collaboration Playbook.
 - If no relevant Persona exists, generate a temporary project-scoped synthetic participant as described in Phase 2. Do not add it to canonical library data by implication.
 
-Routing is conditional rather than a permanent lead assignment. A settled task may start with Camille; an unsettled task starts with Jordan. The active work record records the actual owner and the reason.
+Routing is conditional rather than a permanent lead assignment. A settled task may start directly with the applicable UI Skill; an unsettled task starts with the task/structure route. The active work record records the actual owner and the reason.
 
 ## Proportionality
 
@@ -500,3 +500,12 @@ For a browse, filter, compare, and detail surface, the focused path may use the 
 - [ ] Built QA records tested and untested scope.
 - [ ] Durable changes have the required decision and reconciliation record.
 - [ ] One concrete deliverable, decision, or next action is explicit.
+
+## Supporting method sources
+
+Evidence maturity: **Working draft**. Cross-industry secondary research synthesis informed by O*NET interface-design tasks, the GOV.UK interaction-design capability framework, ISO human-centred design guidance, W3C accessibility standards, usability heuristics, visual-design principles, layout guidance, and design-system contribution practice. Tool entries are representative categories or hypotheses unless a source names the tool; validate with portfolio review, design critiques, implementation audits, or job shadowing.
+
+- [10 Usability Heuristics for User Interface Design](https://www.nngroup.com/articles/ten-usability-heuristics/) — Nielsen Norman Group; Checked Sep 2026. Supports interface priorities around system status, real-world language, user control, consistency, error prevention, recognition, and recovery.
+- [5 Principles of Visual Design in UX](https://www.nngroup.com/articles/principles-visual-design/) — Nielsen Norman Group; Checked Sep 2026. Supports scale, visual hierarchy, balance, contrast, and Gestalt as compositional principles that can improve usability and brand expression.
+- [Layout](https://m3.material.io/foundations/layout/layout-overview) — Material Design 3; Checked Sep 2026. Supports layout as the visual arrangement that directs attention to important information and makes action easier.
+- [Develop a component or pattern](https://design-system.service.gov.uk/community/develop-a-component-or-pattern/) — GOV.UK Design System; Checked Sep 2026. Supports researching existing patterns, working with a design community, testing realistic prototypes, and checking accessibility before publishing.

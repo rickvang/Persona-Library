@@ -10,8 +10,8 @@
       "dist/data/agent-context/template-composition.json",
       ".agents/skills/template-composer/SKILL.md"
     ],
-    "utf8_bytes": 28629,
-    "rough_tokens": 7158
+    "utf8_bytes": 28674,
+    "rough_tokens": 7169
   },
   "canonical_fallback": {
     "artifacts": [
@@ -20,8 +20,8 @@
       "content/orientation/templates.json",
       ".agents/skills/template-composer/SKILL.md"
     ],
-    "utf8_bytes": 33283,
-    "rough_tokens": 8321
+    "utf8_bytes": 33411,
+    "rough_tokens": 8353
   },
   "phase9_control_baseline": {
     "utf8_bytes": 29240,
@@ -29,14 +29,14 @@
   },
   "deltas": {
     "preferred_vs_current_fallback": {
-      "utf8_bytes": -4654,
-      "rough_tokens": -1163,
-      "percent": -14
+      "utf8_bytes": -4737,
+      "rough_tokens": -1184,
+      "percent": -14.2
     },
     "preferred_vs_phase9_control": {
-      "utf8_bytes": -611,
-      "rough_tokens": -152,
-      "percent": -2.1
+      "utf8_bytes": -566,
+      "rough_tokens": -141,
+      "percent": -1.9
     }
   },
   "bundle": {

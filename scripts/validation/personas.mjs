@@ -44,15 +44,19 @@ export function validatePersonas({ data }, indexes) {
   for (const persona of data.personas) {
     const flows = data.flowLibrary[persona.id];
     if (!Array.isArray(flows) || !flows.length) throw new Error(`${persona.id} has no workflow map`);
+  }
+  const methodSourceKeys = new Set(Object.entries(data.skillLibrary).filter(([id]) => id.startsWith('skill-')).flatMap(([, methods]) => methods.map(method => method.legacySourceKey).filter(Boolean)));
+  for (const [sourceKey, flows] of Object.entries(data.flowLibrary)) {
+    if (!personaIds.has(sourceKey) && !methodSourceKeys.has(sourceKey)) throw new Error(`Flow library has no matching persona or method provenance: ${sourceKey}`);
+    if (!Array.isArray(flows) || !flows.length) throw new Error(`${sourceKey} has no workflow map`);
     const titles = new Set();
     for (const flow of flows) {
-      if (!ALLOWED_FLOW_TYPES.has(flow.type)) throw new Error(`${persona.id} has an unsupported flow type: ${flow.type}`);
-      if (!flow.title || titles.has(flow.title)) throw new Error(`Duplicate or missing flow title for ${persona.id}`);
+      if (!ALLOWED_FLOW_TYPES.has(flow.type)) throw new Error(`${sourceKey} has an unsupported flow type: ${flow.type}`);
+      if (!flow.title || titles.has(flow.title)) throw new Error(`Duplicate or missing flow title for ${sourceKey}`);
       titles.add(flow.title);
-      if (!Array.isArray(flow.activities) || !flow.activities.length) throw new Error(`${persona.id}/${flow.title} has no activities`);
-      for (const activity of flow.activities) if (!Array.isArray(activity) || activity.length < 4) throw new Error(`${persona.id}/${flow.title} has an incomplete activity row`);
+      if (!Array.isArray(flow.activities) || !flow.activities.length) throw new Error(`${sourceKey}/${flow.title} has no activities`);
+      for (const activity of flow.activities) if (!Array.isArray(activity) || activity.length < 4) throw new Error(`${sourceKey}/${flow.title} has an incomplete activity row`);
     }
   }
-  for (const personaId of Object.keys(data.flowLibrary)) if (!personaIds.has(personaId)) throw new Error(`Flow library has no matching persona: ${personaId}`);
   indexes.personaIds = personaIds;
 }

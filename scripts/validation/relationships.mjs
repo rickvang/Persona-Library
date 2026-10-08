@@ -5,7 +5,7 @@ export function validateRelationships({ data }, indexes) {
   for (const tool of data.toolCatalog) {
     if (!tool.id || toolIds.has(tool.id) || !tool.name || !tool.category || !tool.capability || !tool.scope || !tool.risk || !tool.permission || !tool.approval || !tool.verification || !tool.fallback || !tool.availability || !tool.evidenceStatus || !tool.status || !tool.version || !tool.updated) throw new Error(`Invalid or duplicate Tool record: ${tool.id || '(missing)'}`);
     toolIds.add(tool.id);
-    if (!Array.isArray(tool.aliases) || !Array.isArray(tool.evidence) || !tool.evidence.length || !Array.isArray(tool.toolUseRecipeIds) || !tool.toolUseRecipeIds.length || !Array.isArray(tool.personaIds) || !tool.personaIds.length || !Array.isArray(tool.skillIds) || !tool.skillIds.length || !Array.isArray(tool.revisions) || !tool.revisions.length) throw new Error(`Incomplete Tool record relationships or history: ${tool.id}`);
+    if (!Array.isArray(tool.aliases) || !Array.isArray(tool.evidence) || !tool.evidence.length || !Array.isArray(tool.toolUseRecipeIds) || !tool.toolUseRecipeIds.length || !Array.isArray(tool.personaIds) || !Array.isArray(tool.skillIds) || !tool.skillIds.length || !Array.isArray(tool.revisions) || !tool.revisions.length) throw new Error(`Incomplete Tool record relationships or history: ${tool.id}`);
     if (tool.personaIds.some(id => !indexes.personaIds.has(id))) throw new Error(`Tool record references an unknown Persona: ${tool.id}`);
     if (tool.skillIds.some(id => !indexes.catalogIds.has(id))) throw new Error(`Tool record references an unknown Skill: ${tool.id}`);
   }
@@ -15,7 +15,7 @@ export function validateRelationships({ data }, indexes) {
     if (!recipe.id || recipeIds.has(recipe.id) || !recipe.title || !recipe.tool || !recipe.skillId || !recipe.playbook || !recipe.mode || !recipe.requires || !recipe.output || !recipe.fallback || !recipe.status) throw new Error(`Invalid or duplicate tool-use recipe: ${recipe.id || '(missing)'}`);
     recipeIds.add(recipe.id);
     if (!indexes.catalogIds.has(recipe.skillId)) throw new Error(`Tool-use recipe references an unknown skill: ${recipe.skillId}`);
-    if (!Array.isArray(recipe.personaIds) || !recipe.personaIds.length || recipe.personaIds.some(id => !indexes.personaIds.has(id))) throw new Error(`Tool-use recipe references an unknown persona: ${recipe.id}`);
+    if (!Array.isArray(recipe.personaIds) || recipe.personaIds.some(id => !indexes.personaIds.has(id))) throw new Error(`Tool-use recipe references an unknown persona: ${recipe.id}`);
     if (!Array.isArray(recipe.steps) || !recipe.steps.length) throw new Error(`Tool-use recipe has no steps: ${recipe.id}`);
     if (recipe.toolId) {
       const tool = data.toolCatalog.find(item => item.id === recipe.toolId);

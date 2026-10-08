@@ -74,7 +74,7 @@ Before committing a new file or directory, answer:
 
 When all seven answers are clear and the change follows an established owner/destination/lifecycle pattern, place the artifact directly; a separate architecture-review hop is unnecessary. Examples include a focused validator test beside the existing suite or regeneration of known `dist/` output from an established authored source.
 
-Escalate the placement question to Mara Okoye / the repository's knowledge-systems architecture review when canonical ownership is ambiguous, a new artifact class or top-level space is proposed, a new Persona/Skill/Tool/Template/Playbook identity is introduced, ownership would transfer across repositories, a semantic boundary/taxonomy would change, multiple plausible destinations compete, or a lifecycle/source-of-truth conflict remains unresolved.
+Escalate the placement question to the repository's qualified knowledge-systems architecture review when canonical ownership is ambiguous, a new artifact class or top-level space is proposed, a new Persona/Skill/Tool/Template/Playbook identity is introduced, ownership would transfer across repositories, a semantic boundary/taxonomy would change, multiple plausible destinations compete, or a lifecycle/source-of-truth conflict remains unresolved.
 
 Direct placement does not grant mutation permission and does not bypass change-impact reconciliation when the selected change contract requires it.
 

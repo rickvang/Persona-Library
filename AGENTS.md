@@ -16,7 +16,7 @@ Selecting the plumbing path never changes mutation authorization or validation r
 
 ## Placement and semantic integrity
 
-Use the documented placement table and gate directly (`docs/README.md`) when artifact kind, canonical owner, destination pattern, lifecycle, and source-of-truth boundary are already clear. **Escalate to Mara Okoye** when ownership is ambiguous, a new artifact class/top-level space/semantic identity is introduced, destinations compete, lifecycle/source-of-truth conflict remains, or a cross-repository/taxonomy boundary changes. Regenerating known output from an established source does not itself require Mara review.
+Use the documented placement table and gate directly (`docs/README.md`) when artifact kind, canonical owner, destination pattern, lifecycle, and source-of-truth boundary are already clear. **Escalate to qualified knowledge-systems architecture review** when ownership is ambiguous, a new artifact class/top-level space/semantic identity is introduced, destinations compete, lifecycle/source-of-truth conflict remains, or a cross-repository/taxonomy boundary changes. Regenerating known output from an established source does not itself require architecture review.
 
 For semantic work, preserve prototype isolation and append durable rationale to Decisions rather than rewriting history. Read the selected Skill's `change_mode`, `change_domain`, and `reconciliation` metadata; run `$change-impact-reconciliation` when that contract requires it. Metadata and routing never grant write authority.
 

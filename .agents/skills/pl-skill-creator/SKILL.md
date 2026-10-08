@@ -22,7 +22,7 @@ Use `pl-skill-creator` as the repository package ID and `PL Skill Creator` as th
 - converting a bounded capability brief into `SKILL.md` and supporting resources;
 - validating triggering, behavior, packaging, evaluation, or distribution readiness for a Skill.
 
-Do not use it for discovering Persona capabilities (`persona-skills`), forming a capability from several Persona perspectives (`multi-perspective-skill-synthesis`), composing a multi-stage Playbook, executing a Tool, changing credentials or permissions, or writing one-off task instructions.
+Do not use it for discovering Persona capabilities (`persona-skills`), forming a capability from materially distinct evidence (`multi-perspective-skill-synthesis`), composing a multi-stage Playbook, executing a Tool, changing credentials or permissions, or writing one-off task instructions.
 
 ## Required preflight
 
@@ -49,7 +49,7 @@ The generated bundle is derived routing context, not Skill/package truth. Canoni
 1. Read the orientation bootstrap and repository contract, then load the relevant `skills` route group. Identify the request mode, target package, authorization, success criteria, and affected surfaces.
 2. Check the existing package, routes, aliases, capability catalog, related workflows, Tool-use recipes, and current runtime requirements before proposing a new identity.
 3. Separate the canonical reusable capability from Persona-specific applications, workflow methods, and Tool recipes.
-4. For a new durable package, file, or reference, run the Mara placement and boundary gate before mutation. The gate chooses the destination; it does not grant write authority.
+4. For a new durable package, file, or reference, apply the documented placement and boundary gate before mutation; use qualified architecture review only when ownership or boundaries are ambiguous. The gate chooses the destination; it does not grant write authority.
 5. Build a compact context packet containing the outcome, examples, constraints, target runtime(s), permissions, evidence, and validation plan.
 
 ## Operating procedure

@@ -14,16 +14,16 @@
     "behavioral_passed": 39,
     "behavioral_failed": 0,
     "base_context": {
-      "control_utf8_bytes": 139696,
-      "preferred_utf8_bytes": 119476,
-      "delta_utf8_bytes": -20220,
-      "delta_percent": -14.5
+      "control_utf8_bytes": 140428,
+      "preferred_utf8_bytes": 119782,
+      "delta_utf8_bytes": -20646,
+      "delta_percent": -14.7
     },
     "activated_behavior_context": {
-      "control_utf8_bytes": 1046141,
-      "preferred_utf8_bytes": 918715,
-      "delta_utf8_bytes": -127426,
-      "delta_percent": -12.2
+      "control_utf8_bytes": 1051039,
+      "preferred_utf8_bytes": 920725,
+      "delta_utf8_bytes": -130314,
+      "delta_percent": -12.4
     },
     "deterministic_work": {
       "control_completion_file_reads_per_route": 3,
@@ -69,19 +69,19 @@
     {
       "route_id": "system-orientation",
       "context": {
-        "control_utf8_bytes": 34471,
-        "preferred_utf8_bytes": 27619,
-        "delta_utf8_bytes": -6852,
-        "delta_percent": -19.9,
-        "control_rough_tokens": 8618,
-        "preferred_rough_tokens": 6905
+        "control_utf8_bytes": 34628,
+        "preferred_utf8_bytes": 27699,
+        "delta_utf8_bytes": -6929,
+        "delta_percent": -20,
+        "control_rough_tokens": 8657,
+        "preferred_rough_tokens": 6925
       },
       "behavior": {
         "fixtures": 8,
         "passed": 8,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -15.4
+        "context_delta_percent": -15.5
       },
       "timing": {
         "control": {
@@ -142,19 +142,19 @@
     {
       "route_id": "template-composition",
       "context": {
-        "control_utf8_bytes": 33283,
-        "preferred_utf8_bytes": 28629,
-        "delta_utf8_bytes": -4654,
-        "delta_percent": -14,
-        "control_rough_tokens": 8321,
-        "preferred_rough_tokens": 7158
+        "control_utf8_bytes": 33411,
+        "preferred_utf8_bytes": 28674,
+        "delta_utf8_bytes": -4737,
+        "delta_percent": -14.2,
+        "control_rough_tokens": 8353,
+        "preferred_rough_tokens": 7169
       },
       "behavior": {
         "fixtures": 10,
         "passed": 10,
         "failed": 0,
         "activated_fixtures": 5,
-        "context_delta_percent": -14
+        "context_delta_percent": -14.2
       },
       "timing": {
         "control": {
@@ -215,19 +215,19 @@
     {
       "route_id": "tool-resolution",
       "context": {
-        "control_utf8_bytes": 36064,
-        "preferred_utf8_bytes": 33912,
-        "delta_utf8_bytes": -2152,
-        "delta_percent": -6,
-        "control_rough_tokens": 9016,
-        "preferred_rough_tokens": 8478
+        "control_utf8_bytes": 36192,
+        "preferred_utf8_bytes": 33957,
+        "delta_utf8_bytes": -2235,
+        "delta_percent": -6.2,
+        "control_rough_tokens": 9048,
+        "preferred_rough_tokens": 8490
       },
       "behavior": {
         "fixtures": 12,
         "passed": 12,
         "failed": 0,
         "activated_fixtures": 11,
-        "context_delta_percent": -6
+        "context_delta_percent": -6.2
       },
       "timing": {
         "control": {
@@ -288,19 +288,19 @@
     {
       "route_id": "skill-package-maintenance",
       "context": {
-        "control_utf8_bytes": 35878,
-        "preferred_utf8_bytes": 29316,
-        "delta_utf8_bytes": -6562,
-        "delta_percent": -18.3,
-        "control_rough_tokens": 8970,
-        "preferred_rough_tokens": 7329
+        "control_utf8_bytes": 36197,
+        "preferred_utf8_bytes": 29452,
+        "delta_utf8_bytes": -6745,
+        "delta_percent": -18.6,
+        "control_rough_tokens": 9050,
+        "preferred_rough_tokens": 7363
       },
       "behavior": {
         "fixtures": 9,
         "passed": 9,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -18.3
+        "context_delta_percent": -18.6
       },
       "timing": {
         "control": {

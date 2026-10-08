@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test, { after, before } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -7,7 +8,10 @@ import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
 import { validateSkills } from './skills.mjs';
 import { derivePersonaSkillGraph } from '../build-persona-skill-system-map.mjs';
-import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, neutralHandoffText, neutralRequirementText, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { validatePersonas } from './personas.mjs';
+import { validateRelationships } from './relationships.mjs';
+import { buildValidationIndexes } from './context.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 let current, baseline, expected, historical;
@@ -46,6 +50,81 @@ test('CW-92: preserve full-source material fields under the explicit reader tran
   assert.equal(historical.skillIds.length, fixture.expectedProfileCount);
   assert.equal(baseline.context.libraryDataSources.length, 21);
   assertPreserved(capturePilot(current), expected);
+});
+
+test('CW-92 WP23: unique pilot source references remain discoverable outside wrappers', async () => {
+  for (const [id, file, titles] of [
+    ['ui-expert', 'docs/ux/expert-ux-design-practice.md', ['10 Usability Heuristics for User Interface Design', '5 Principles of Visual Design in UX', 'Layout', 'Develop a component or pattern']],
+    ['ai-orchestrator', 'docs/work-orders.md', ['How we built our multi-agent research system', 'AutoGen']]
+  ]) {
+    const original = baseline.context.data.personas.find(persona => persona.id === id);
+    const text = await readFile(path.join(root, file), 'utf8');
+    assert.ok(text.includes(original.confidence));
+    assert.ok(text.includes(original.evidence));
+    for (const source of original.resources.filter(resource => titles.includes(resource.title))) {
+      for (const field of ['title', 'publisher', 'checked', 'url', 'why']) assert.ok(text.includes(source[field]), `${id}: preserve ${source.title} ${field}`);
+    }
+  }
+});
+
+test('CW-92 WP24: archive only pilot wrappers and redundant identity adapters', () => {
+  const retired = new Set(fixture.pilotSourceKeys);
+  assert.deepStrictEqual(plain(current.data.personas.map(item => item.id).sort()), plain(baseline.context.data.personas.map(item => item.id).filter(id => !retired.has(id)).sort()));
+  assert.equal(current.data.personaToolRequirements.some(item => retired.has(item.personaId)), false);
+  assert.equal(current.data.personaHandoffs.some(item => retired.has(item.fromPersonaId) || retired.has(item.toPersonaId)), false);
+  for (const record of [...current.data.toolCatalog, ...current.data.toolUseRecipes]) assert.equal(record.personaIds.some(id => retired.has(id)), false);
+  for (const id of fixture.pilotSourceKeys) assert.equal(current.data.maintenance.personas[id], undefined);
+  for (const field of ['toolUseRecipes', 'toolCatalog', 'operatingPacks', 'templates']) {
+    assert.deepStrictEqual(plain(current.data[field].map(item => item.id).sort()), plain(baseline.context.data[field].map(item => item.id).sort()), field + ' identities must not be retired with wrappers');
+  }
+});
+
+test('CW-92 WP23: required domain handoffs survive without pilot identities', () => {
+  const data = initialize(current, omitPilot);
+  for (const id of ['scenario-github-issue-implementation', 'scenario-vercel-deployed-state-verification', 'scenario-riley-work-graph-supervision']) {
+    const scenario = data.operationalScenarioCatalog.find(item => item.id === id);
+    assert.deepStrictEqual(plain(scenario.unresolvedRouteIds), [], id + ' must retain a resolvable route without the pilot Personas');
+  }
+  const original = id => baseline.context.data.personaHandoffs.find(item => item.id === id);
+  const routing = data.skillCatalog.find(skill => skill.id === 'skill-task-decomposition-and-routing');
+  for (const [id, target] of [
+    ['handoff-riley-to-frontend-systems-engineer', 'skill-web-application-architecture'],
+    ['handoff-riley-to-application-data-architect', 'skill-application-and-data-architecture']
+  ]) assert.ok(routing.guidance.operation.decisions.includes(neutralHandoffText(original(id), target)));
+  const frontend = data.skillCatalog.find(skill => skill.id === 'skill-web-application-architecture');
+  assert.equal(frontend.guidance.operation.boundaries,
+    baseline.context.data.skillPractice[frontend.id].operation.boundaries + ' ' + neutralHandoffText(original('handoff-frontend-to-camille-interface-intent'), 'skill-interaction-states-and-behavior-design'));
+  const templateReview = data.flowLibrary['template-librarian'].find(flow => flow.title === 'Route Template research and composition').handoff;
+  const old = original('handoff-template-librarian-to-camille');
+  for (const field of ['trigger', 'input', 'output', 'required', 'onUnavailable', 'status']) assert.deepStrictEqual(templateReview[field], old[field], `Template review ${field}`);
+  assert.equal(templateReview.to, 'skill-interaction-states-and-behavior-design');
+  assert.equal(templateReview.responsibility, old.responsibility.replace('Elena', 'The librarian').replace('Camille', 'The interface specialist'));
+  for (const record of [data.operatingPacks.find(item => item.id === 'operating-pack-design-system'), data.templates.find(item => item.id === 'template-design-system-web-app')]) {
+    assert.match(record.useWhen, /skill-component-and-design-system-thinking.*Extend and govern the design system/);
+    assert.ok(record.relatedSkills.includes('skill-component-and-design-system-thinking'));
+  }
+});
+
+test('CW-92 WP23: tool requirements survive in recipe owners and optional associations can retire', () => {
+  const data = initialize(current, omitPilot);
+  for (const requirement of baseline.context.data.personaToolRequirements.filter(item => item.personaId === 'ai-orchestrator')) {
+    const recipe = data.toolUseRecipes.find(item => item.id === requirement.recipeId);
+    assert.ok(recipe.steps.includes(neutralRequirementText(requirement)), requirement.id + ' retains every execution requirement');
+  }
+  const evaluation = data.toolUseRecipes.find(item => item.id === 'recipe-riley-trace-evaluation');
+  assert.ok(evaluation.steps.some(step => step.includes('Invoke a qualified independent reviewer')));
+  assert.match(evaluation.fallback, /access-gap or unknown.*without claiming conformance/);
+  assert.equal(evaluation.status, 'Needs validation');
+  // Preview only the optional association removal that WP24 will apply after
+  // acceptance. Missing supplied IDs must still fail; empty arrays are valid.
+  for (const record of [...data.toolCatalog, ...data.toolUseRecipes]) record.personaIds = record.personaIds.filter(id => !fixture.pilotSourceKeys.includes(id));
+  const indexes = buildValidationIndexes(data);
+  assert.doesNotThrow(() => validatePersonas({ data }, indexes));
+  assert.doesNotThrow(() => validateRelationships({ data }, indexes));
+  data.flowLibrary['ui-expert'][0].activities = [];
+  assert.throws(() => validatePersonas({ data }, indexes), /has no activities/);
+  evaluation.personaIds.push('missing-persona');
+  assert.throws(() => validateRelationships({ data }, indexes), /unknown persona/);
 });
 
 test('CW-92 WP05: all eight UI methods are singly authored under semantic Skill IDs', () => {
@@ -138,7 +217,8 @@ test('CW-92 WP06: graph application locators follow all eight authored orchestra
     const edges = graph.edges.filter(edge =>
       (edge.to === appId && edge.relationship === 'has-skill-application') ||
       (edge.from === appId && edge.relationship === 'application-of'));
-    assert.equal(edges.length, 2);
+    assert.equal(edges.length, 1, 'Keep the method application-of edge; the archived Persona edge is gone');
+    assert.equal(edges[0].relationship, 'application-of');
     assert.ok(edges.every(edge => edge.source.selector === selector));
   }
   const skillId = current.model.slugify('Work graph orchestration');
@@ -331,10 +411,10 @@ test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scop
 
 test('CW-92 WP04-F2: seven orchestration workflow IDs preserve all source bodies and the recovery collision', () => {
   const flows = current.data.flowLibrary['ai-orchestrator'];
-  const historicalFlows = baseline.context.data.flowLibrary['ai-orchestrator'];
+  const historicalFlows = expected.flows['ai-orchestrator'].map(({ id, ...body }) => body);
   assert.equal(flows.length, 7);
   assert.deepStrictEqual(plain(flows.map(({ title, id }) => [title, id])), orchestrationWorkflowBackfill);
-  assert.deepStrictEqual(plain(flows.map(({ id, ...body }) => body)), plain(historicalFlows), 'All 24 original activities and workflow conditions remain untouched');
+  assert.deepStrictEqual(plain(flows.map(({ id, ...body }) => body)), plain(historicalFlows), 'All 24 activities and conditions survive the explicit independent-review routing transformation');
   const allIds = Object.values(current.data.flowLibrary).flat().map(flow => flow.id).filter(Boolean);
   assert.equal(new Set(allIds).size, 14, 'All 14 pilot workflow IDs must be unique');
   for (const [title, id] of orchestrationWorkflowBackfill) {
@@ -428,7 +508,7 @@ test('CW-92: full source and maintenance initialize without pilot or any Persona
   }
   const marker = 'const rileyPersonaRecord = window.PersonaLibraryDataFragments.personas.find';
   const inject = source => source.replace(marker, "window.PersonaLibraryDataFragments.personas = window.PersonaLibraryDataFragments.personas.filter(p => p.id !== 'ai-orchestrator');\n" + marker);
-  assert.equal(current.files.librarySource.split(marker).length - 1, 1);
+  assert.equal(current.files.librarySource.split(marker).length - 1, 0, 'The retired wrapper override must be absent');
   assert.throws(() => vm.runInNewContext(inject(baseline.context.files.librarySource), { window: {} }), /overview|undefined/);
   const sandbox = { window: {} };
   vm.runInNewContext(inject(current.files.librarySource), sandbox);
@@ -635,11 +715,13 @@ test('CW-92 WP07: only authored workflow titles resolve; missing activities and 
     ['ai-orchestrator', 'Coordinate evaluation and improvement', 'workflow-coordinate-evaluation-and-improvement']
   ]) {
     const flow = current.model.resolveWorkflowReference({ id, title, legacySourceKey: key }, current.data.flowLibrary).flow;
-    const original = baseline.context.data.flowLibrary[key].find(item => item.title === title);
+    const original = expected.flows[key].find(item => item.title === title);
     assert.ok(original);
     const { id: addedId, ...body } = plain(flow);
     assert.equal(addedId, id);
-    assert.deepStrictEqual(body, plain(original), 'All activities, safeguards and handoffs must survive as owned authored workflows');
+    const { id: expectedId, ...expectedBody } = plain(original);
+    assert.equal(expectedId, id);
+    assert.deepStrictEqual(body, expectedBody, 'All activities, safeguards and handoffs survive the explicit independent-review routing transformation');
     assert.ok(flow.activities.length > 0);
   }
   const evaluation = current.data.flowLibrary['ai-orchestrator'].find(flow => flow.id === 'workflow-coordinate-evaluation-and-improvement');

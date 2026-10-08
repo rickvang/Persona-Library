@@ -146,14 +146,13 @@ export async function derivePersonaSkillGraph(context) {
   }
 
   const profileSourceByPersona = new Map();
-  for (const persona of data.personas) {
-    if (!(data.skillLibrary[persona.id] || []).length) continue;
+  for (const sourceKey of Object.keys(data.skillLibrary).filter(key => !key.startsWith('skill-'))) {
     const file = findUniqueSource(
       profileSources,
-      [`'${persona.id}':[`, `'${persona.id}': [`, `"${persona.id}":[`, `"${persona.id}": [`],
-      `Persona Skill applications for ${persona.id}`
+      [`'${sourceKey}':[`, `'${sourceKey}': [`, `"${sourceKey}":[`, `"${sourceKey}": [`],
+      `Skill applications for ${sourceKey}`
     );
-    profileSourceByPersona.set(persona.id, file);
+    profileSourceByPersona.set(sourceKey, file);
   }
 
   for (const skill of data.skillCatalog) {
@@ -168,30 +167,26 @@ export async function derivePersonaSkillGraph(context) {
     });
     addEdge(edges, 'view:skills', skillId, 'contains', 'contract-derived', architectureSource);
 
-    for (const profile of skill.profiles) {
-      const migrated = (data.skillLibrary[skill.id] || []).filter(method =>
-        method.legacySourceKey === profile.personaId && method.name === skill.name &&
-        method.definition === profile.definition && method.when === profile.triggers
-      );
-      if (migrated.length > 1) throw new Error(`Ambiguous migrated method for ${profile.personaId} / ${skill.id}`);
+    for (const method of skill.methods) {
+      const persona = skill.personas.find(item => item.id === method.legacySourceKey);
       let appSource;
-      if (migrated.length) {
-        appSource = neutralApplicationSource(profileSources, skill.id, migrated[0].id);
+      if ((data.skillLibrary[skill.id] || []).some(record => record.id === method.id)) {
+        appSource = neutralApplicationSource(profileSources, skill.id, method.id);
       } else {
-        const file = profileSourceByPersona.get(profile.personaId);
-        if (!file) throw new Error(`Missing authored profile source for ${profile.personaId} / ${skill.id}`);
-        appSource = sourceRef(file, `skillLibrary[${profile.personaId}][name=${skill.name}]`);
+        const file = profileSourceByPersona.get(method.legacySourceKey);
+        if (!file) throw new Error(`Missing authored method source for ${method.legacySourceKey} / ${skill.id}`);
+        appSource = sourceRef(file, `skillLibrary[${method.legacySourceKey}][name=${skill.name}]`);
       }
-      const appId = applicationNodeId(profile.personaId, skill.id);
+      const appId = applicationNodeId(method.legacySourceKey || method.id, skill.id);
       nodes.push({
         id: appId,
-        label: `${profile.personaName} · ${skill.name}`,
-        type: 'persona-skill-application',
+        label: persona ? `${persona.name} · ${skill.name}` : `${skill.name} · ${method.id}`,
+        type: method.legacySourceKey ? 'persona-skill-application' : 'skill-method',
         owner: OWNER,
         derivation: 'structured-derived',
         source: appSource
       });
-      addEdge(edges, personaNodeId(profile.personaId), appId, 'has-skill-application', 'structured-derived', appSource);
+      if (persona) addEdge(edges, personaNodeId(persona.id), appId, 'has-skill-application', 'structured-derived', appSource);
       addEdge(edges, appId, skillId, 'application-of', 'structured-derived', appSource);
     }
 

@@ -207,7 +207,7 @@ Private project content stays in the project workspace. Canonical reusable start
 
 ### Successful lifecycle case
 
-Need: a reusable web-app design-system starter is requested. Elena searches the catalog, finds a planned or partial match, verifies `template-library` path/revision, routes Camille/Jordan for design-system quality, composes only missing starter structure after authorization, validates boundary and provenance, promotes or updates the canonical source with reuse evidence, registers or refreshes its Persona-Library catalog record, adds or refreshes a synthetic local viewer representation, rebuilds generated Site data, verifies the Template appears correctly in the Templates tab and focused viewer, then runs Template reconciliation and one universal pass.
+Need: a reusable web-app design-system starter is requested. Elena searches the catalog, finds a planned or partial match, verifies `template-library` path/revision, routes qualified review through the Component and design-system thinking and Interaction states and behavior design Skills, with Jordan for applicable UX questions, composes only missing starter structure after authorization, validates boundary and provenance, promotes or updates the canonical source with reuse evidence, registers or refreshes its Persona-Library catalog record, adds or refreshes a synthetic local viewer representation, rebuilds generated Site data, verifies the Template appears correctly in the Templates tab and focused viewer, then runs Template reconciliation and one universal pass.
 
 ### Boundary / failure case
 

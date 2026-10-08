@@ -75,6 +75,8 @@ export function capturePilot(context) {
     }
   } while (entityIds.size !== previousSize);
   const relevantIds = new Set([...keys, ...entityIds]);
+  // Keep checking this retained recipe after its pilot identity edge retires.
+  relevantIds.add('recipe-riley-trace-evaluation');
   const linked = {};
   for (const field of ['toolUseRecipes', 'personaToolRequirements', 'personaHandoffs', 'operationalScenarios', 'operationalScenarioCatalog', 'playbookCatalog', 'operatingPacks', 'operatingPackCatalog', 'templates', 'templateCatalog', 'toolCatalog', 'toolReferences']) {
     linked[field] = plain((data[field] || []).filter(item => mentions(item, relevantIds)));
@@ -156,8 +158,37 @@ export const orchestrationWorkflowBackfill = [
   ['Adapt after a model or tool change', 'workflow-adapt-after-model-or-tool-change']
 ];
 
+// Expected owner-local projection of each immutable handoff, including its
+// conditional trigger, requiredness, failure path and unproven runtime status.
+export const neutralHandoffText = (handoff, target) => {
+  const responsibility = handoff.responsibility.replaceAll('Riley', 'The coordinator').replaceAll('Evan', 'The frontend specialist').replaceAll('Nadia', 'The application/data specialist').replaceAll('Camille', 'The interface specialist');
+  const output = handoff.output.replaceAll('Evan', 'The frontend specialist');
+  return `Required conditional handoff to ${target}. Trigger: ${handoff.trigger} Responsibility: ${responsibility} Input: ${handoff.input} Output: ${output} If unavailable: ${handoff.onUnavailable} Evidence status: ${handoff.status}.`;
+};
+
+export const neutralRequirementText = requirement => `Activity: ${requirement.activity}. Workflow: ${requirement.workflow}. Required capability: ${requirement.capability}. Preferred path: ${requirement.preferredTool}. Mode: ${requirement.mode}. Scope: ${requirement.scope}. Unavailable-path fallback: ${requirement.fallback}. Purpose: ${requirement.why.replace('Lets Riley', 'Lets the coordinator')} Evidence status: ${requirement.status}.`;
+
 export function readerBaseline(context) {
   const snapshot = capturePilot(context);
+  // WP21 explicitly removes named/default routing prerequisites. Derive only
+  // these approved replacements from the pinned source, preserving every other
+  // field and every workflow activity (including mandatory independent review).
+  const riley = snapshot.definitions.find(persona => persona.id === 'ai-orchestrator');
+  riley.overview = 'When explicitly selected, Riley applies the existing intent and routing methods to turn open-ended goals into bounded work. Default system entry and durable orchestration do not require this Persona.';
+  riley.behaviors = riley.behaviors.map(value => value
+    .replace('Receives unqualified requests, interprets intent, and selects the smallest useful route', 'When selected, interprets intent and selects the smallest useful route')
+    .replace('Treats every substantial Current Work workstream as Riley-governed for durable orchestration unless the requester explicitly establishes another orchestration boundary, while allowing the selected Persona, Skill, Playbook, Tool path, or runtime to execute directly', 'When selected as coordinator, maintains durable orchestration continuity while allowing the selected Skill, Playbook, Tool path, or runtime to execute directly'));
+  riley.implication = riley.implication
+    .replace('For every substantial Current Work workstream, Riley owns durable orchestration continuity unless the requester explicitly establishes another orchestration boundary;', 'When explicitly selected as coordinator, Riley maintains durable orchestration continuity;')
+    .replace('Route every evaluated run through Noor’s conformance observation before treating the result as evidence.', 'Route every evaluated run through qualified independent conformance review before treating the result as evidence; no named Persona is required.');
+  const evaluation = snapshot.flows['ai-orchestrator'].find(flow => flow.title === 'Coordinate evaluation and improvement');
+  evaluation.summary = 'Frame the evaluation, send every evaluated run to a qualified independent reviewer for conformance observation, and use the classified evidence to improve the system.';
+  evaluation.handoff.to = 'skill-evaluation-and-observability';
+  evaluation.handoff.output = 'Independent observation with result class, evidence status, confidence, severity, repeatability, owner, and next test.';
+  evaluation.activities[0][4] = 'Evaluation brief + independent review handoff';
+  evaluation.activities[1][0] = 'Invoke qualified independent conformance observation';
+  evaluation.activities[1][3] = 'The executor or final answer stands in for independent observation';
+  snapshot.linked.personaHandoffs.find(edge => edge.id === 'handoff-riley-to-noor-conformance').responsibility = 'For an explicitly selected Persona application, Riley prepares comparable conditions and Noor observes conformance evidence. This compatibility route does not own the general review requirement: the evaluation workflow requires qualified independent review without a named Persona prerequisite.';
   // WP04-F1: only the seven explicitly accepted UI workflow IDs are added to
   // the immutable baseline projection; no workflow body or unrelated source is
   // normalized away. Method references gain those IDs, not a new authored copy.
@@ -223,5 +254,84 @@ export function readerBaseline(context) {
       }
     }
   }
+  const handoff = id => context.data.personaHandoffs.find(item => item.id === id);
+  const neutralizeScenarioProjection = value => {
+    if (!value || typeof value !== 'object') return;
+    if (['scenario-github-issue-implementation', 'scenario-vercel-deployed-state-verification', 'scenario-riley-work-graph-supervision'].includes(value.id)) {
+      value.route.personaIds = [];
+      value.expectedRoute = value.expectedRoute.replace('Riley Morgan → ', '');
+      value.situation = value.situation.replace('and Riley must decide', 'and the active coordinator must decide');
+      if (value.searchableText) value.searchableText = value.searchableText.replace('riley morgan → ', '').replace('and riley must decide', 'and the active coordinator must decide');
+    }
+    Object.values(value).forEach(neutralizeScenarioProjection);
+  };
+  neutralizeScenarioProjection(snapshot);
+  const requirements = context.data.personaToolRequirements.filter(item => item.personaId === 'ai-orchestrator');
+  const neutralizeRecipeProjection = value => {
+    if (!value || typeof value !== 'object') return;
+    const requirement = requirements.find(item => item.recipeId === value.id);
+    if (requirement && value.steps) value.steps.unshift(neutralRequirementText(requirement));
+    if (value.id === 'recipe-riley-trace-evaluation') {
+      value.title = 'Prepare a run for qualified independent conformance review';
+      value.steps = value.steps.map(step => step.replace('Invoke Noor to classify the run', 'Invoke a qualified independent reviewer to classify the run').replace('Route Noor’s finding', 'Route the independent reviewer’s finding'));
+      value.output = 'A normalized run packet, independent observation entry, and bounded next action.';
+      value.fallback = value.fallback.replace('If Noor is unavailable', 'If qualified independent review is unavailable');
+    }
+    if (value.id === 'requirement-riley-trace-evaluation') value.recipeTitle = 'Prepare a run for qualified independent conformance review';
+    Object.values(value).forEach(neutralizeRecipeProjection);
+  };
+  neutralizeRecipeProjection(snapshot);
+  const routingId = 'skill-task-decomposition-and-routing';
+  const decisions = [...snapshot.guidance[routingId].operation.moves,
+    neutralHandoffText(handoff('handoff-riley-to-frontend-systems-engineer'), 'skill-web-application-architecture'),
+    neutralHandoffText(handoff('handoff-riley-to-application-data-architect'), 'skill-application-and-data-architecture')];
+  snapshot.guidance[routingId].operation.decisions = decisions;
+  snapshot.catalog.find(skill => skill.id === routingId).guidance.operation.decisions = decisions;
+  const frontendId = 'skill-web-application-architecture';
+  const frontend = snapshot.practice[frontendId];
+  if (frontend) {
+    frontend.operation.boundaries += ' ' + neutralHandoffText(handoff('handoff-frontend-to-camille-interface-intent'), 'skill-interaction-states-and-behavior-design');
+    snapshot.catalog.find(skill => skill.id === frontendId).guidance.operation.boundaries = frontend.operation.boundaries;
+  }
+  for (const field of ['operatingPacks', 'operatingPackCatalog', 'templates', 'templateCatalog']) {
+    for (const record of snapshot.linked[field]) {
+      if (!['operating-pack-design-system', 'template-design-system-web-app'].includes(record.id)) continue;
+      const application = record.applications.find(item => item.personaId === 'ui-expert');
+      record.useWhen += ` Apply ${application.skillId} through the “${application.workflow}” workflow. ${application.reason.replace('Camille uses', 'Use')}`;
+    }
+  }
+  // WP24 archives only the two accepted wrappers and their derived identity
+  // metadata/compatibility edges. All method bodies, variants, workflows,
+  // neutral handoff contracts, recipe requirements and provenance stay pinned.
+  const retired = new Set(['ui-expert', 'ai-orchestrator']);
+  snapshot.definitions = [];
+  snapshot.maintenance.personas = {};
+  for (const skill of snapshot.catalog) {
+    // Optional metadata affects presentation order only; preserve every variant.
+    for (const field of ['profiles', 'workflows']) skill[field].sort((a, b) => Number(retired.has(a.personaId)) - Number(retired.has(b.personaId)));
+  }
+  const retiredRequirements = new Set(requirements.map(item => item.id));
+  const retiredHandoffs = new Set(['handoff-riley-to-noor-conformance', 'handoff-template-librarian-to-camille', 'handoff-riley-to-frontend-systems-engineer', 'handoff-riley-to-application-data-architect', 'handoff-frontend-to-camille-interface-intent']);
+  snapshot.linked.personaToolRequirements = snapshot.linked.personaToolRequirements.filter(item => !retiredRequirements.has(item.id));
+  snapshot.linked.personaHandoffs = snapshot.linked.personaHandoffs.filter(item => !retiredHandoffs.has(item.id));
+  const associated = new Set(['tool-vercel', 'recipe-figma-hierarchy-inspection', ...requirements.map(item => item.recipeId)]);
+  const archiveMetadata = value => {
+    if (!value || typeof value !== 'object') return;
+    if (associated.has(value.id)) {
+      if (value.personaIds) value.personaIds = value.personaIds.filter(id => !retired.has(id));
+      if (value.personaNames) value.personaNames = value.personaNames.filter(name => !['Camille Ortiz', 'Riley Morgan'].includes(name));
+    }
+    if (['operating-pack-design-system', 'template-design-system-web-app'].includes(value.id)) {
+      if (value.applications) value.applications = value.applications.filter(item => item.personaId !== 'ui-expert');
+      if (value.relatedPersonas) value.relatedPersonas = value.relatedPersonas.filter(item => item.id !== 'ui-expert');
+    }
+    if (Array.isArray(value.personas)) value.personas = value.personas.filter(item => !retired.has(item.id));
+    if (retired.has(value.personaId)) {
+      delete value.personaName;
+      delete value.roleLabel;
+    }
+    Object.values(value).forEach(archiveMetadata);
+  };
+  archiveMetadata(snapshot);
   return plain(snapshot);
 }

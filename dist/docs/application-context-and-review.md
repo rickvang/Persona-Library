@@ -82,8 +82,8 @@ If export adds an unexpected tab-title page, remove only the verified extra page
 ## Ownership
 
 - The Evidence-led Job Search Playbook owns the full-outcome stages and handoffs.
-- Riley Morgan · AI orchestrator coordinates contributors when multiple specialists are needed; Riley is not the Job Search Persona or sole domain expert.
-- Route narrow strategy, hiring, writing, outreach, visual, or document questions to Elena, Marcus, Leah, Samira, Camille, or Sofia directly.
+- The selected coordinator applies Task decomposition and routing when multiple specialists are needed; coordination does not confer domain expertise or require a Persona.
+- Route narrow strategy, hiring, writing, outreach, visual, or document questions to Elena, Marcus, Leah, Samira, the applicable UI Skill, or Sofia directly.
 - Opportunity discovery uses the [job ledger contract](job-ledger-contract.md) in private workspace state. Do not store private job-search history in Persona-Library.
 
 ## Load only the relevant context

@@ -148,8 +148,8 @@
     "mixed_escalation_rule": "A task may begin on the repository-plumbing path while it is mechanical. Before it changes canonical library meaning, identity, relationships, Decisions, or semantic routing, load the library-semantic bootstrap and continue through the relevant route group. Selecting the short path never changes mutation authorization or validation requirements."
   },
   "creation_gate": {
-    "owner": "Mara Okoye",
-    "role": "Knowledge systems architect",
+    "owner": "Repository knowledge-systems architecture review",
+    "role": "Qualified review of ownership, placement and lifecycle",
     "purpose": "Resolve placement when ownership, destination, lifecycle, or semantic boundaries are genuinely ambiguous; obvious extensions inside an established owner use the documented placement table/gate directly.",
     "applies_to": [
       "Personas",
@@ -167,7 +167,7 @@
       "Confirm the exact destination and file placement, record the closest alternatives, and preserve unresolved taxonomy questions.",
       "Hand the placement result to the smallest domain skill only after the boundary is clear; a placement review does not authorize a write. After an authorized durable source or structural change, follow the selected change contract and run $change-impact-reconciliation when required."
     ],
-    "required_before": "Mara review is required only for cases matching escalate_when. Direct-placement cases still complete the placement gate, authorization checks, and any required change-impact reconciliation.",
+    "required_before": "Qualified architecture review is required only for cases matching escalate_when. Direct-placement cases still complete the placement gate, authorization checks, and any required change-impact reconciliation.",
     "direct_when": [
       "artifact kind is known",
       "canonical owner is known",

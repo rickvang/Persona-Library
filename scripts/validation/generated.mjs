@@ -17,7 +17,8 @@ export function validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, 
   const recipe = (toolUseRecipes || []).find(item => item.id === 'recipe-riley-vercel-review-checkpoint');
   if (!recipe || recipe.toolId !== tool.id || recipe.tool !== tool.name || !tool.toolUseRecipeIds?.includes(recipe.id)) throw new Error('Canonical Vercel Tool recipe relationship is invalid');
   const requirement = (personaToolRequirements || []).find(item => item.id === 'requirement-riley-vercel-review-checkpoint');
-  if (!requirement || requirement.preferredToolId !== tool.id || requirement.preferredTool !== tool.name || requirement.recipeId !== recipe.id) throw new Error('Canonical Vercel Persona Tool relationship is invalid');
+  if (requirement && (requirement.preferredToolId !== tool.id || requirement.preferredTool !== tool.name || requirement.recipeId !== recipe.id)) throw new Error('Canonical Vercel Persona Tool relationship is invalid');
+  if (!includesAll((recipe.steps || []).join(' '), ['required capability:', 'preferred path: vercel', 'scope:', 'unavailable-path fallback:', 'evidence status:'])) throw new Error('Canonical Vercel recipe must retain the neutral execution requirement');
   if (!includesAll(toolsPage, ['data-tool-id="tool-vercel"', '<h3>vercel</h3>', 'runtime availability', 'account permission', '#recipe-vercel-review-checkpoint'])) throw new Error('Tools page must expose the canonical Vercel Tool record and linked recipe');
 }
 
@@ -51,9 +52,6 @@ export function validateWebArchitecturePersonaContract({ personas, flowLibrary, 
   }
 
   const requiredHandoffs = [
-    'handoff-riley-to-frontend-systems-engineer',
-    'handoff-riley-to-application-data-architect',
-    'handoff-frontend-to-camille-interface-intent',
     'handoff-frontend-to-jordan-ux-structure',
     'handoff-frontend-to-application-data-architect',
     'handoff-application-data-to-frontend-systems-engineer',
@@ -129,7 +127,7 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
   if (!includesAll(all('scenario-github-issue-implementation'), ['reuse still-valid evidence','freshness','cheapest sufficient','immediately before merge','stop'])) throw new Error('GitHub scenario must encode reuse/freshness/stop');
   if (!includesAll(all('scenario-vercel-deployed-state-verification'), ['repository ci','do not deploy','preview','deployed-state question','stop'])) throw new Error('Vercel scenario must encode CI-first/no-unnecessary-preview behavior');
   if (!includesAll(all('scenario-architecture-proportionate-decision'), ['keep-current','do nothing yet','revisit trigger','technology-first'])) throw new Error('Architecture scenario must encode proportionate choice');
-  if (!includesAll(all('scenario-frontend-runtime-boundary'), ['camille','jordan','nadia','accessibility','performance'])) throw new Error('Frontend scenario must preserve handoffs');
+  if (!includesAll(all('scenario-frontend-runtime-boundary'), ['skill-interaction-states-and-behavior-design','jordan','nadia','accessibility','performance'])) throw new Error('Frontend scenario must preserve handoffs');
   if (!includesAll(all('scenario-application-data-source-of-truth'), ['structured files','cms','database','authentication','authorization','rollback'])) throw new Error('Application/data scenario must cover persistence/auth/migration');
   if (model.findOperationalScenarios('implement GitHub issue',{limit:1})[0]?.id !== 'scenario-github-issue-implementation') throw new Error('GitHub matcher failed');
   if (model.findOperationalScenarios('verify deployed preview in Vercel',{limit:1})[0]?.id !== 'scenario-vercel-deployed-state-verification') throw new Error('Vercel matcher failed');
@@ -142,12 +140,14 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
 }
 
 export function validateRileyContinuityContract({ workOrders, riley, rileyFlows }) {
-  if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley AI orchestrator record is missing');
-  const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
-  if (!includesAll(personaText, ['current work', 'work order when one exists', 'verification queue', 'recovery artifact', 'live systems', 'broad rediscovery', 'every substantial current work workstream', 'operating route', 'parent work id', 'execute directly'])) throw new Error('Riley must declare universal durable Current Work orchestration with an optional Work Order / authoritative recovery-artifact hierarchy while preserving direct execution');
+  if (riley) {
+    if (riley.id !== 'ai-orchestrator') throw new Error('Invalid optional AI orchestrator record');
+    const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
+    if (!includesAll(personaText, ['current work', 'work order when one exists', 'verification queue', 'recovery artifact', 'live systems', 'broad rediscovery', 'operating route', 'parent work id', 'execute directly'])) throw new Error('The selected coordinator must preserve the optional Work Order / authoritative recovery-artifact hierarchy and direct execution');
+  }
   const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
   if (!operate || !includesAll(JSON.stringify(operate), ['resume and checkpoint substantial work', 'work order when one exists', 'authoritative recovery artifact', 'reconcile durable orchestration state', 'operating route', 'parent work id'])) throw new Error('Riley operating workflow must include conditional recovery-artifact checkpoint/resume and durable orchestration reconciliation behavior');
-  if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → recovery artifact → live-system hierarchy');
+  if (!includesAll(workOrders, ['every substantial workstream', 'active coordinator', 'directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define coordinator-owned continuity plus the Current Work → recovery artifact → live-system hierarchy');
 }
 
 export function validateRepositoryWorkingCopyContract({ workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {
@@ -172,9 +172,11 @@ export function validateRepositoryWorkingCopyContract({ workOrders, architecture
 }
 
 export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }) {
-  if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley work-graph validation requires the AI orchestrator Persona');
-  const personaText = normalized([riley.behaviors, riley.needs, riley.skills, riley.implication].flat(Infinity).join(' '));
-  if (!includesAll(personaText, ['work graph', 'authoritative dispatch', 'supervised delegation', 'read-before-retry'])) throw new Error('Riley Persona must expose work-graph supervision, dispatch authority, delegation, and recovery semantics');
+  if (riley) {
+    if (riley.id !== 'ai-orchestrator') throw new Error('Invalid optional AI orchestrator record');
+    const personaText = normalized([riley.behaviors, riley.needs, riley.skills, riley.implication].flat(Infinity).join(' '));
+    if (!includesAll(personaText, ['work graph', 'authoritative dispatch', 'supervised delegation', 'read-before-retry'])) throw new Error('Riley Persona must expose work-graph supervision, dispatch authority, delegation, and recovery semantics');
+  }
 
   const skill = (skillCatalog || []).find(item => item.id === 'skill-work-graph-orchestration');
   if (!skill) throw new Error('Work graph orchestration Skill is missing');
@@ -218,12 +220,12 @@ export function validateGitHubGovernanceContract({ agents, workOrders, boundedPl
 
 const routingCaseRequirements = {
   unqualifiedNarrow: {
-    terms: ['unqualified', 'riley morgan', 'narrow', 'specialist', 'skill'],
-    message: 'Unqualified narrow requests must route from Riley to a specialist or Skill'
+    terms: ['unqualified', 'narrow', 'specialist', 'skill'],
+    message: 'Unqualified narrow requests must route to a specialist or Skill'
   },
   unqualifiedFullOutcome: {
-    terms: ['unqualified', 'riley morgan', 'full-outcome', 'playbook'],
-    message: 'Unqualified full-outcome requests must route from Riley to a Playbook'
+    terms: ['unqualified', 'full-outcome', 'playbook'],
+    message: 'Unqualified full-outcome requests must route to a Playbook'
   },
   explicitSpecialist: {
     terms: ['explicit', 'specialist', 'directly'],
@@ -242,15 +244,16 @@ export function validateJobSearchRoutingCase(route, caseId) {
 }
 
 export function validateJobSearchRoutingContract({ route, implementation, riley, rileyFlows, playbook, specialistIds }) {
-  if (!riley || riley.roleLabel !== 'AI orchestrator') throw new Error('Riley must retain the canonical AI orchestrator identity');
+  if (riley && riley.roleLabel !== 'AI orchestrator') throw new Error('Riley must retain the canonical AI orchestrator identity when selected');
   if (!rileyFlows?.some(flow => includesAll(`${flow.summary || ''} ${flow.title || ''}`, ['unqualified', 'bounded']))) throw new Error('Riley workflow must describe default handling of unqualified requests');
   if (!playbook || playbook.id !== 'playbook-evidence-led-job-search') throw new Error('Evidence-led Job Search must remain the canonical job-search Playbook');
   for (const caseId of Object.keys(routingCaseRequirements)) validateJobSearchRoutingCase(route, caseId);
   if (!includesAll(route?.next_handoff, ['stages', 'shared state', 'quality gates', 'recovery', 'learning loop'])) throw new Error('Docs job-search route must describe Playbook procedure ownership');
   if (!includesAll(route?.next_handoff, ['candidate baseline', 'standing decisions', 'career spine', 'secondary profile'])) throw new Error('Docs job-search route must enforce designated Candidate Baseline resolution before composition');
-  if (!includesAll(implementation, ['default system entry', 'unqualified requests', 'priya desai', 'operates', 'shared state', 'quality gates', 'learning loop', 'explicit requests', 'route directly', 'process surface'])) throw new Error('Job-search guidance must express Riley-first routing, Priya operation, and Playbook process ownership');
+  if (!includesAll(implementation, ['default system entry', 'unqualified requests', 'priya desai', 'operates', 'shared state', 'quality gates', 'learning loop', 'explicit requests', 'route directly', 'process surface'])) throw new Error('Job-search guidance must express direct task routing, Priya operation, and Playbook process ownership');
   if (!includesAll(implementation, ['candidate baseline resume', 'private-source resolution gate', 'career spine', 'secondary profile stores', 'baseline-to-output'])) throw new Error('Job-search guidance must preserve a designated candidate baseline and baseline-integrity gate');
-  const requiredSpecialists = ['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'ui-expert', 'document-designer'];
+  const requiredSpecialists = ['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'document-designer'];
+  if (!includesAll(implementation, ['visual communication', 'interface hierarchy'])) throw new Error('Job-search guidance must retain the visual communication Skill route');
   for (const id of requiredSpecialists) if (!specialistIds?.has(id)) throw new Error(`Job-search specialist boundary is missing: ${id}`);
   if (specialistIds?.has('job-search')) throw new Error('No generic Job Search Persona may be introduced');
 }
@@ -409,7 +412,7 @@ export async function validateGeneratedOutputs(context) {
 
   if (!jobSearchPage.includes('An evidence-led job search system.') || !jobSearchPage.includes('Define target') || !jobSearchPage.includes('ATS quality') || !jobSearchPage.includes('Integrity quality') || !jobSearchPage.includes('id="preflight"') || !jobSearchPage.includes('reverse chronological') || !jobSearchPage.includes('date consistency')) throw new Error('Job search page is missing its system summary or quality gates');
   if (/>\s*Job-search orchestrator\s*</.test(jobSearchPage) || /Riley Morgan[^<]{0,120}Job-search orchestration/i.test(jobSearchPage) || /Riley Morgan[^<]{0,80}Job Search Persona/i.test(jobSearchPage)) throw new Error('Job search page must not present Riley as a Job-search domain identity');
-  if (!jobSearchPage.includes('Priya Desai · Job search orchestrator') || !jobSearchPage.includes('Job search orchestrator · Playbook operator') || !jobSearchPage.includes('Riley Morgan · AI orchestrator')) throw new Error('Job search page must present Riley as the entry/router and Priya as the Job Search Orchestrator / Playbook operator');
+  if (!jobSearchPage.includes('Priya Desai · Job search orchestrator') || !jobSearchPage.includes('Job search orchestrator · Playbook operator') || !jobSearchPage.includes('Route unqualified requests directly to the applicable Skill or specialist.')) throw new Error('Job search page must support direct routing and preserve Priya as the Job Search Orchestrator / Playbook operator');
   if (!playbooksPage.includes('data-reference-catalog') || !playbooksPage.includes('Change control') || !playbooksPage.includes('not records of what your assistant actually did')) throw new Error('Playbooks page must expose its source-driven catalog and process/execution boundary');
   if (!playbooksPage.includes('Operated by <a href="index.html?persona=job-search-orchestrator">Priya Desai · Job search orchestrator')) throw new Error('Playbooks page must derive the job-search operating Persona from its existing identity');
   for (const entry of publication.playbooks) {
@@ -442,7 +445,7 @@ export async function validateGeneratedOutputs(context) {
   if (!jobSearchOperator || jobSearchOperator.name !== 'Priya Desai' || jobSearchOperator.roleLabel !== 'Job search orchestrator') throw new Error('Canonical Job Search Orchestrator Persona is missing or malformed');
   if (jobSearchOperatorFlows.length < 6 || !jobSearchOperatorFlows.some(flow => flow.title === 'Review campaign health and allocate attention') || !jobSearchOperatorFlows.some(flow => flow.title === 'Recover a stalled or inconsistent search')) throw new Error('Job Search Orchestrator workflow map is incomplete');
   if (!context.data.skillLibrary?.['job-search-orchestrator']?.some(skill => skill.name === 'Task decomposition and routing') || !context.data.skillLibrary?.['job-search-orchestrator']?.some(skill => skill.name === 'Failure recovery and operational judgment')) throw new Error('Job Search Orchestrator must reuse orchestration capabilities without requiring new portable Skills');
-  if (!jobSearchImpl.includes('Riley Morgan · AI orchestrator') || !jobSearchImpl.includes('Priya Desai') || !jobSearchImpl.includes('seen-job deduplication contract')) throw new Error('docs/playbooks/evidence-led-job-search.md must retain Riley as router, Priya as operator, and the seen-job deduplication contract');
+  if (!jobSearchImpl.includes('Task decomposition and routing') || !jobSearchImpl.includes('Priya Desai') || !jobSearchImpl.includes('seen-job deduplication contract')) throw new Error('docs/playbooks/evidence-led-job-search.md must retain task routing, Priya as operator, and the seen-job deduplication contract');
   const templateLifecycleCard = playbookCatalogCard(playbooksPage, 'playbook-template-lifecycle');
   if (!templateLifecycleCard || !templateLifecycleCard.includes('Elena Park · Template Librarian') || !templateLifecycleCard.includes('playbook-template-lifecycle.html')) throw new Error('Template lifecycle catalog must preserve its existing operating Persona and bound source reader');
   if (!guidePage.includes('Template lifecycle example') || !guidePage.includes('playbooks.html#template-lifecycle')) throw new Error('Docs page must link the Template lifecycle Playbook example');

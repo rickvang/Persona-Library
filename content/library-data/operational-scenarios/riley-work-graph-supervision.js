@@ -5,10 +5,10 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "title": "Supervise several implementation lanes without losing authoritative ownership",
   "ownerType": "skill",
   "ownerId": "skill-work-graph-orchestration",
-  "situation": "A substantial outcome spans several issues, branches, PRs, agents, or runtimes and Riley must decide dependencies, safe parallelism, authoritative attempts, gates, recovery, and completion.",
-  "expectedRoute": "Riley Morgan → Work graph orchestration → smallest capable execution routes → live evidence / review gates → Current Work and applicable recovery-artifact reconciliation",
+  "situation": "A substantial outcome spans several issues, branches, PRs, agents, or runtimes and the active coordinator must decide dependencies, safe parallelism, authoritative attempts, gates, recovery, and completion.",
+  "expectedRoute": "Work graph orchestration → smallest capable execution routes → live evidence / review gates → Current Work and applicable recovery-artifact reconciliation",
   "route": {
-    "personaIds": ["ai-orchestrator"],
+    "personaIds": [],
     "skillIds": ["skill-work-graph-orchestration", "skill-task-decomposition-and-routing", "skill-tool-and-context-design", "skill-failure-recovery-and-operational-judgment"],
     "toolRecipeIds": [],
     "operatingPackIds": []

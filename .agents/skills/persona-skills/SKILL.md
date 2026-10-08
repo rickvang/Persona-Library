@@ -1,11 +1,11 @@
 ---
 name: persona-skills
-description: Identify, define, expand, deduplicate, and validate the reusable skills behind a Persona's activities and workflows.
+description: Identify, define, expand, deduplicate, and maintain reusable task-conditioned methods and optional Persona applications.
 metadata:
   skill_layer: library_management
   change_mode: source_update
   change_domain: skills
-  reconciliation: persona-reconciliation
+  reconciliation: change-impact-reconciliation
 ---
 
 # Persona Skills
@@ -16,14 +16,14 @@ This is a repository-local reconstruction. The prior Persona Library conversatio
 
 ## Use this skill when
 
-Activate when the user asks what reusable skills a Persona needs, wants to expand or validate a capability, wants triggers or quality signals, or wants a capability connected to workflows and Persona applications.
+Activate for reusable method authoring, capability expansion, triggers, quality signals, workflow relationships, or optional Persona applications. A Persona record is not required.
 
-Do not activate for Tool execution, credential or access work, canonical Tool catalog maintenance, generic standalone skill creation with no Persona/workflow context, or a one-off behavior that is not independently reusable. A Tool procedure may be a recipe or relationship rather than a new core Skill.
+Do not activate for Tool execution, credential or access work, canonical Tool catalog maintenance, callable package creation (use `pl-skill-creator`), or a one-off behavior that is not independently reusable. A Tool procedure may be a recipe or relationship rather than a new core Skill.
 
 ## Required preflight
 
-1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `skills` route group and the relevant Persona route.
-2. Load the target Persona's workflows, activities, existing skill applications, and relevant evidence. Read the authored modules under [`content/library-data/`](../../../content/library-data/) plus [the compatibility assembler](../../../content/library-data.js) and [the normalizer](../../../content/library-model.js) when identity, relationships, or normalized reach is involved.
+1. Read [the orientation bootstrap](../../../content/site-orientation.json) and [the repository contract](../../../AGENTS.md), then load the `skills` route group. Load a Persona route only when that application is affected.
+2. Load the target method, task conditions, workflows, activities, application context when present, and relevant evidence. Read the authored modules under [`content/library-data/`](../../../content/library-data/) plus [the compatibility assembler](../../../content/library-data.js) and [the normalizer](../../../content/library-model.js) when identity, relationships, or normalized reach is involved.
 3. Check the canonical skill catalog, aliases, primitive units, composed skills, and related recipes before proposing a new identity.
 4. Establish the mode, requested scope, output destination, authorization, and success criteria. Default to a proposal; metadata never grants write authority.
 
@@ -47,7 +47,7 @@ Compare new evidence with affected capability claims and classify it as `confirm
 
 ## Operating procedure
 
-1. Define the Persona, activity or workflow, decision, and desired outcome.
+1. Define the task conditions, activity or workflow, decision, and desired outcome; include Persona context only when relevant.
 2. Separate a portable capability from a workflow name, task step, behavior, credential, preference, Tool, or recipe.
 3. Search the current catalog and aliases. Reuse a stable identity when one already covers the capability; do not fork an alias into a duplicate.
 4. Identify the smallest useful abstraction and its boundary. A capability that is too narrow belongs in an application or workflow; a capability that only binds a vendor belongs in a Tool-use recipe.
@@ -56,7 +56,7 @@ Compare new evidence with affected capability claims and classify it as `confirm
 7. Link the capability to relevant workflows, activities, evidence, Persona applications, Tools, and recipes without copying Persona-specific judgment into the canonical Skill.
 8. Record proficiency signals, prerequisites, quality standards, validation questions, confidence, and open gaps.
 9. For several Personas, use multi-perspective synthesis only when each contributes distinct evidence. Preserve role-specific applications and disagreement.
-10. For an authorized live change, produce the smallest change set, hand it to `persona-reconciliation`, and then run `$change-impact-reconciliation` once. Do not update records by implication.
+10. For an authorized live change, produce the smallest change set and run `$change-impact-reconciliation` once. Use `persona-reconciliation` first only when an actual Persona application changes. Do not update records by implication.
 
 ## Capability profile contract
 
@@ -88,7 +88,7 @@ Use this decision order:
 
 Similar wording is not proof of duplication. Compare triggers, decisions, outputs, quality signals, workflow reach, and boundary before merging or splitting identities.
 
-For this repository, `skillLibrary[personaId]` is the authored **Persona application** surface and the derived `skillCatalog` is the shared identity surface. Repeated names should normalize to one stable Skill ID while their application profiles remain distinct. Do not introduce a second authored core record, delete an application definition, or replace role-specific triggers/workflows/actions/evidence merely to reduce text size. First prove that the candidate semantics are genuinely portable and that the change removes ambiguity rather than adding another source of truth.
+Author neutral methods once in `skillLibrary[skillId]` using the existing model contract: stable method ID, name, status, definition, when, actions, evidence, workflowRefs and provenance. Preserve distinct task conditions and peer variants. Existing unmigrated `skillLibrary[personaId]` records remain authored only in their existing owner; do not duplicate them into a neutral record. `skillCatalog.methods` and compatibility profiles are derived read-only views. No Persona creation, biography or named reviewer is a prerequisite. Preserve migration provenance and original selectors when moving an existing method.
 
 ## Source-change handling
 
@@ -123,7 +123,7 @@ Mark an unknown rather than inventing a quality signal, Tool, relationship, or p
 - Keep prototypes isolated from live Skill and Persona records.
 - If a downstream package is unavailable, report the blocked handoff rather than pretending it ran.
 
-For an authorized update, hand off to `persona-reconciliation` and then `$change-impact-reconciliation` once. The adapter runs before the universal pass; do not recurse.
+For an authorized update, run `$change-impact-reconciliation` once. Use `persona-reconciliation` first only for an affected Persona application; do not recurse.
 
 ## Focused validation
 

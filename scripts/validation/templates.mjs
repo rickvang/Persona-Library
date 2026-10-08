@@ -68,9 +68,12 @@ export async function validateTemplates(context, indexes) {
 
 export function validateTemplateFixtures(context) {
   const { data, model, root } = context;
-  const negativeTemplatePersona = data.personas.find(persona => persona.id === 'ui-expert') || data.personas[0];
-  const negativeTemplateWorkflow = (data.flowLibrary[negativeTemplatePersona?.id] || [])[0];
-  const negativeTemplateSkill = data.skillCatalog.find(skill => skill.profiles?.some(profile => profile.personaId === negativeTemplatePersona?.id) && !skill.workflows?.some(workflow => workflow.personaId === negativeTemplatePersona?.id && workflow.title === negativeTemplateWorkflow?.title));
+  let negativeTemplatePersona, negativeTemplateWorkflow, negativeTemplateSkill;
+  for (const persona of data.personas) {
+    const workflow = (data.flowLibrary[persona.id] || [])[0];
+    const skill = workflow && data.skillCatalog.find(item => item.profiles?.some(profile => profile.personaId === persona.id) && !item.workflows?.some(item => item.personaId === persona.id && item.title === workflow.title));
+    if (skill) { negativeTemplatePersona = persona; negativeTemplateWorkflow = workflow; negativeTemplateSkill = skill; break; }
+  }
   if (!negativeTemplatePersona || !negativeTemplateWorkflow || !negativeTemplateSkill) throw new Error('Could not construct the invalid Template relationship fixture');
   const negativeTemplateCatalog = model.buildTemplateCatalog({ templates: [{ id: 'negative-template-relationship-fixture', applications: [{ personaId: negativeTemplatePersona.id, skillId: negativeTemplateSkill.id, workflow: negativeTemplateWorkflow.title, reason: 'Validator fixture' }] }], personas: data.personas, skillCatalog: data.skillCatalog, flowLibrary: data.flowLibrary, operatingPackCatalog: data.operatingPackCatalog, playbookCatalog: data.playbookCatalog });
   if (negativeTemplateCatalog[0]?.applications[0]?.known) throw new Error('Invalid Template Persona-Skill-workflow relationship was normalized as known');
