@@ -213,6 +213,66 @@ test('CW-92 WP08: reuse visual judgment and prototyping through existing task-co
     'Visual method reuse must not reinstate an authored Persona-keyed bucket');
 });
 
+test('CW-92 WP09: reuse component and interaction methods through existing task-conditioned Skill owners', async () => {
+  // Component Builder stays in SkillRepo as the portable production method.
+  // Persona-Library owns task-conditioned catalog methods and local quality guidance.
+  const ids = [
+    'skill-interaction-states-and-behavior-design',
+    'skill-responsive-and-adaptive-layout',
+    'skill-component-and-design-system-thinking',
+    'skill-accessibility-and-inclusive-design',
+    'skill-design-qa-and-implementation-partnership'
+  ];
+  const core = await current.readFile('content/library-data/skills-core.js');
+  const specialists = await current.readFile('content/library-data/skills-specialists.js');
+  const noMetadata = plain(current.data);
+  delete noMetadata.personas;
+  const independent = current.model.buildSkillCatalog(noMetadata);
+
+  for (const id of ids) {
+    const authored = current.data.skillLibrary[id];
+    assert.equal(authored?.length, 1, `Reuse the single existing semantic method: ${id}`);
+    const method = authored[0];
+    const old = baseline.context.data.skillLibrary['ui-expert']
+      .find(record => current.model.slugify(record.name) === id);
+    assert.ok(old, `Verify original task-conditioned source for ${id}`);
+    for (const [actual, expected] of [
+      [method.id, `method-${id.slice(6)}`], [method.name, old.name],
+      [method.status, old.status], [method.definition, old.definition],
+      [method.when, old.triggers], [method.actions, old.actions],
+      [method.evidence, old.evidence],
+      [method.workflowRefs.map(ref => ref.title).join(' · '), old.workflows],
+      [method.legacySourceKey, 'ui-expert'],
+      [method.provenance.original.selector, `skillLibrary[ui-expert]/${old.name}`],
+      [method.provenance.current.path, 'content/library-data/skills-core.js'],
+      [method.provenance.current.selector, id]
+    ]) assert.equal(actual, expected, `Preserve component/interaction method material: ${id}`);
+    assert.ok(method.workflowRefs.every(ref => ref.id && !ref.unresolved));
+    const header = new RegExp(`['"]${id}['"]\\s*:\\s*\\[`, 'g');
+    assert.equal([...core.matchAll(header)].length, 1, `One authored Skill section for ${id}`);
+    assert.equal([...specialists.matchAll(header)].length, 0, `No parallel specialist source for ${id}`);
+
+    const guidance = current.data.skillGuidance[id];
+    assert.ok(guidance?.operation?.moves?.length, `Retain operating guidance: ${id}`);
+    assert.ok(guidance?.quality?.checks?.length, `Retain verification guidance: ${id}`);
+    const neutral = independent.find(skill => skill.id === id);
+    const original = current.data.skillCatalog.find(skill => skill.id === id);
+    assert.ok(neutral && original);
+    assert.deepStrictEqual(plain(neutral.methods), plain(original.methods),
+      `Persona metadata must not influence reusable method selection: ${id}`);
+    assert.deepStrictEqual(plain(neutral.guidance), plain(original.guidance),
+      `Persona metadata must not influence component/interaction guidance: ${id}`);
+  }
+
+  const portable = 'https://github.com/rickvang/SkillRepo/blob/main/codex/methods/component-builder/SKILL.md';
+  assert.equal(core.includes(portable), false,
+    'Do not turn the external portable Component Builder method into a second authored catalog method');
+  assert.equal(specialists.includes(portable), false,
+    'Do not copy the external Component Builder source into specialist records');
+  assert.equal(current.data.skillLibrary['ui-expert'], undefined,
+    'Component/interaction reuse must not reinstate an authored Persona-keyed bucket');
+});
+
 test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scoped lookup', () => {
   const ui = current.data.flowLibrary['ui-expert'];
   const original = baseline.context.data.flowLibrary['ui-expert'];
