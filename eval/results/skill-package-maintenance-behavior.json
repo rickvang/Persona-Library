@@ -3,7 +3,7 @@
   "evaluation": "skill-package-maintenance-behavioral-parity",
   "fixture_source": "eval/fixtures/skill-package-maintenance-behavior.json",
   "methodology": "deterministic fixed-prompt route and authority fixtures; not subjective LLM response quality",
-  "canonical_routing_changed": false,
+  "canonical_routing_changed": true,
   "fixtures": [
     {
       "id": "authorized-update-existing-package",
@@ -65,8 +65,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35643,
-          "rough_tokens": 8911
+          "utf8_bytes": 35878,
+          "rough_tokens": 8970
         },
         "expectation": {
           "pass": true,
@@ -261,8 +261,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35643,
-          "rough_tokens": 8911
+          "utf8_bytes": 35878,
+          "rough_tokens": 8970
         },
         "expectation": {
           "pass": true,
@@ -1042,8 +1042,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35643,
-          "rough_tokens": 8911
+          "utf8_bytes": 35878,
+          "rough_tokens": 8970
         },
         "expectation": {
           "pass": true,
@@ -1238,8 +1238,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35643,
-          "rough_tokens": 8911
+          "utf8_bytes": 35878,
+          "rough_tokens": 8970
         },
         "expectation": {
           "pass": true,
@@ -1434,8 +1434,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35643,
-          "rough_tokens": 8911
+          "utf8_bytes": 35878,
+          "rough_tokens": 8970
         },
         "expectation": {
           "pass": true,
@@ -1630,8 +1630,8 @@
             "content/orientation/skills.json",
             ".agents/skills/pl-skill-creator/SKILL.md"
           ],
-          "utf8_bytes": 35643,
-          "rough_tokens": 8911
+          "utf8_bytes": 35878,
+          "rough_tokens": 8970
         },
         "expectation": {
           "pass": true,
@@ -1774,11 +1774,11 @@
     "failed": 0,
     "all_pass": true,
     "preferred_context_utf8_bytes": 175896,
-    "control_context_utf8_bytes": 213858,
+    "control_context_utf8_bytes": 215268,
     "preferred_context_rough_tokens": 43974,
-    "control_context_rough_tokens": 53465,
-    "preferred_delta_utf8_bytes": -37962,
-    "preferred_delta_percent": -17.8
+    "control_context_rough_tokens": 53817,
+    "preferred_delta_utf8_bytes": -39372,
+    "preferred_delta_percent": -18.3
   },
   "limitations": [
     "The evaluator is fixture-scoped and is not a general-purpose natural-language router.",

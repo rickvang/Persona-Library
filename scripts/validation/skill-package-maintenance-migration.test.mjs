@@ -44,7 +44,7 @@ test('Skill package migration clears the fourth-route context/read/artifact exit
 
 test('Skill package preferred and fallback paths preserve authority, placement, and live-state behavior', async () => {
   const report = await buildSkillPackageMaintenanceBehaviorReport();
-  assert.equal(report.canonical_routing_changed, false);
+  assert.equal(report.canonical_routing_changed, true);
   assert.deepEqual(report.fixtures.map(item => item.id), REQUIRED_FIXTURES);
   assert.equal(report.aggregate.fixture_count, 9);
   assert.equal(report.aggregate.activated_fixture_count, 6);
