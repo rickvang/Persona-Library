@@ -156,9 +156,9 @@ The Work Order is the active coordination layer. Link, rather than duplicate, th
 
 Do not rename a specialized artifact to Work Order merely because it is linked from one. The names describe different responsibilities.
 
-## Riley cross-agent continuity
+## Cross-agent continuity
 
-For every substantial workstream, treat Riley Morgan / `ai-orchestrator` as the default durable orchestration owner unless the requester explicitly establishes another orchestration boundary. The selected Persona, Skill, Playbook, Tool path, or execution runtime may operate directly without an unnecessary Riley execution hop. Use the user's existing **Notion Current Work** database as the cross-thread/cross-agent index when that tracker is available. Do not create a second orchestration database for the same purpose. One Current Work row represents one substantial workstream. A linked Work Order is optional and exists only when it adds unique detailed execution/recovery state that the issue/PR and domain artifacts do not already preserve.
+For every substantial workstream, the active coordinator owns durable continuity under the existing Intent and Orchestration contracts. Select the smallest capable Skill, Playbook, Tool path or execution runtime directly; a named Persona is optional and grants no authority. Use the user's existing **Notion Current Work** database as the cross-thread/cross-agent index when that tracker is available. Do not create a second orchestration database for the same purpose. One Current Work row represents one substantial workstream. A linked Work Order is optional and exists only when it adds unique detailed execution/recovery state that the issue/PR and domain artifacts do not already preserve.
 
 Use this state hierarchy:
 
@@ -168,7 +168,7 @@ Use this state hierarchy:
 
 **Resume order:** Current Work → linked Work Order when one exists, otherwise the smallest authoritative issue/PR/domain artifact → selectively refresh live systems whose state may have been invalidated. Reuse still-valid evidence instead of reconstructing the conversation or broadly refetching every source.
 
-**Riley reconciliation points:** workstream creation, material rerouting, cross-agent handoff, major blocker, and completion. At these boundaries, update the durable route and next action in Current Work; do not require an extra Riley runtime call when the selected operating route can continue directly.
+**Coordinator reconciliation points:** workstream creation, material rerouting, cross-agent handoff, major blocker, and completion. At these boundaries, update the durable route and next action in Current Work; do not require an extra orchestration runtime call when the selected operating route can continue directly.
 
 Update Current Work at material lifecycle or ownership transitions and whenever the next safe action materially changes. Do not use it as a mirror of every commit, check, review count, current SHA, mergeability result, or deployment event. **Do not mirror volatile live state** merely to make the tracker look complete; the Last Checkpoint should record the last proven state and the Next Action should name what must be refreshed before a consequential mutation.
 

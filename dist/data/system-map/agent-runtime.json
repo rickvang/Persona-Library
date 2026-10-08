@@ -2778,9 +2778,9 @@
       }
     },
     {
-      "id": "edge:skill-package:.agents/skills/persona-skills--declares-reconciliation--contract:reconciliation:persona-reconciliation",
+      "id": "edge:skill-package:.agents/skills/persona-skills--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
       "from": "skill-package:.agents/skills/persona-skills",
-      "to": "contract:reconciliation:persona-reconciliation",
+      "to": "contract:reconciliation:change-impact-reconciliation",
       "relationship": "declares-reconciliation",
       "derivation": "structured-derived",
       "source": {
