@@ -156,6 +156,14 @@ export const orchestrationWorkflowBackfill = [
   ['Adapt after a model or tool change', 'workflow-adapt-after-model-or-tool-change']
 ];
 
+// Expected owner-local projection of each immutable handoff, including its
+// conditional trigger, requiredness, failure path and unproven runtime status.
+export const neutralHandoffText = (handoff, target) => {
+  const responsibility = handoff.responsibility.replaceAll('Riley', 'The coordinator').replaceAll('Evan', 'The frontend specialist').replaceAll('Nadia', 'The application/data specialist').replaceAll('Camille', 'The interface specialist');
+  const output = handoff.output.replaceAll('Evan', 'The frontend specialist');
+  return `Required conditional handoff to ${target}. Trigger: ${handoff.trigger} Responsibility: ${responsibility} Input: ${handoff.input} Output: ${output} If unavailable: ${handoff.onUnavailable} Evidence status: ${handoff.status}.`;
+};
+
 export function readerBaseline(context) {
   const snapshot = capturePilot(context);
   // WP21 explicitly removes named/default routing prerequisites. Derive only
@@ -240,6 +248,26 @@ export function readerBaseline(context) {
         const target = data.skillCatalog.find(candidate => candidate.id === entity.id);
         entity.summary = uniqueValue(target.profiles, 'definition', 'Select a task-conditioned method for its applicable definition.');
       }
+    }
+  }
+  const handoff = id => context.data.personaHandoffs.find(item => item.id === id);
+  const routingId = 'skill-task-decomposition-and-routing';
+  const decisions = [...snapshot.guidance[routingId].operation.moves,
+    neutralHandoffText(handoff('handoff-riley-to-frontend-systems-engineer'), 'skill-web-application-architecture'),
+    neutralHandoffText(handoff('handoff-riley-to-application-data-architect'), 'skill-application-and-data-architecture')];
+  snapshot.guidance[routingId].operation.decisions = decisions;
+  snapshot.catalog.find(skill => skill.id === routingId).guidance.operation.decisions = decisions;
+  const frontendId = 'skill-web-application-architecture';
+  const frontend = snapshot.practice[frontendId];
+  if (frontend) {
+    frontend.operation.boundaries += ' ' + neutralHandoffText(handoff('handoff-frontend-to-camille-interface-intent'), 'skill-interaction-states-and-behavior-design');
+    snapshot.catalog.find(skill => skill.id === frontendId).guidance.operation.boundaries = frontend.operation.boundaries;
+  }
+  for (const field of ['operatingPacks', 'operatingPackCatalog', 'templates', 'templateCatalog']) {
+    for (const record of snapshot.linked[field]) {
+      if (!['operating-pack-design-system', 'template-design-system-web-app'].includes(record.id)) continue;
+      const application = record.applications.find(item => item.personaId === 'ui-expert');
+      record.useWhen += ` Apply ${application.skillId} through the “${application.workflow}” workflow. ${application.reason.replace('Camille uses', 'Use')}`;
     }
   }
   return plain(snapshot);

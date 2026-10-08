@@ -7,7 +7,7 @@ import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
 import { validateSkills } from './skills.mjs';
 import { derivePersonaSkillGraph } from '../build-persona-skill-system-map.mjs';
-import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, neutralHandoffText, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 let current, baseline, expected, historical;
@@ -46,6 +46,28 @@ test('CW-92: preserve full-source material fields under the explicit reader tran
   assert.equal(historical.skillIds.length, fixture.expectedProfileCount);
   assert.equal(baseline.context.libraryDataSources.length, 21);
   assertPreserved(capturePilot(current), expected);
+});
+
+test('CW-92 WP23: required domain handoffs survive without pilot identities', () => {
+  const data = initialize(current, omitPilot);
+  const original = id => baseline.context.data.personaHandoffs.find(item => item.id === id);
+  const routing = data.skillCatalog.find(skill => skill.id === 'skill-task-decomposition-and-routing');
+  for (const [id, target] of [
+    ['handoff-riley-to-frontend-systems-engineer', 'skill-web-application-architecture'],
+    ['handoff-riley-to-application-data-architect', 'skill-application-and-data-architecture']
+  ]) assert.ok(routing.guidance.operation.decisions.includes(neutralHandoffText(original(id), target)));
+  const frontend = data.skillCatalog.find(skill => skill.id === 'skill-web-application-architecture');
+  assert.equal(frontend.guidance.operation.boundaries,
+    baseline.context.data.skillPractice[frontend.id].operation.boundaries + ' ' + neutralHandoffText(original('handoff-frontend-to-camille-interface-intent'), 'skill-interaction-states-and-behavior-design'));
+  const templateReview = data.flowLibrary['template-librarian'].find(flow => flow.title === 'Route Template research and composition').handoff;
+  const old = original('handoff-template-librarian-to-camille');
+  for (const field of ['trigger', 'input', 'output', 'required', 'onUnavailable', 'status']) assert.deepStrictEqual(templateReview[field], old[field], `Template review ${field}`);
+  assert.equal(templateReview.to, 'skill-interaction-states-and-behavior-design');
+  assert.equal(templateReview.responsibility, old.responsibility.replace('Elena', 'The librarian').replace('Camille', 'The interface specialist'));
+  for (const record of [data.operatingPacks.find(item => item.id === 'operating-pack-design-system'), data.templates.find(item => item.id === 'template-design-system-web-app')]) {
+    assert.match(record.useWhen, /skill-component-and-design-system-thinking.*Extend and govern the design system/);
+    assert.ok(record.relatedSkills.includes('skill-component-and-design-system-thinking'));
+  }
 });
 
 test('CW-92 WP05: all eight UI methods are singly authored under semantic Skill IDs', () => {
