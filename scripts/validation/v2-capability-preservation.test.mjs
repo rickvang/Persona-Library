@@ -7,7 +7,10 @@ import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
 import { validateSkills } from './skills.mjs';
 import { derivePersonaSkillGraph } from '../build-persona-skill-system-map.mjs';
-import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, neutralHandoffText, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, neutralHandoffText, neutralRequirementText, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { validatePersonas } from './personas.mjs';
+import { validateRelationships } from './relationships.mjs';
+import { buildValidationIndexes } from './context.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 let current, baseline, expected, historical;
@@ -72,6 +75,28 @@ test('CW-92 WP23: required domain handoffs survive without pilot identities', ()
     assert.match(record.useWhen, /skill-component-and-design-system-thinking.*Extend and govern the design system/);
     assert.ok(record.relatedSkills.includes('skill-component-and-design-system-thinking'));
   }
+});
+
+test('CW-92 WP23: tool requirements survive in recipe owners and optional associations can retire', () => {
+  const data = initialize(current, omitPilot);
+  for (const requirement of baseline.context.data.personaToolRequirements.filter(item => item.personaId === 'ai-orchestrator')) {
+    const recipe = data.toolUseRecipes.find(item => item.id === requirement.recipeId);
+    assert.ok(recipe.steps.includes(neutralRequirementText(requirement)), requirement.id + ' retains every execution requirement');
+  }
+  const evaluation = data.toolUseRecipes.find(item => item.id === 'recipe-riley-trace-evaluation');
+  assert.ok(evaluation.steps.some(step => step.includes('Invoke a qualified independent reviewer')));
+  assert.match(evaluation.fallback, /access-gap or unknown.*without claiming conformance/);
+  assert.equal(evaluation.status, 'Needs validation');
+  // Preview only the optional association removal that WP24 will apply after
+  // acceptance. Missing supplied IDs must still fail; empty arrays are valid.
+  for (const record of [...data.toolCatalog, ...data.toolUseRecipes]) record.personaIds = record.personaIds.filter(id => !fixture.pilotSourceKeys.includes(id));
+  const indexes = buildValidationIndexes(data);
+  assert.doesNotThrow(() => validatePersonas({ data }, indexes));
+  assert.doesNotThrow(() => validateRelationships({ data }, indexes));
+  data.flowLibrary['ui-expert'][0].activities = [];
+  assert.throws(() => validatePersonas({ data }, indexes), /has no activities/);
+  evaluation.personaIds.push('missing-persona');
+  assert.throws(() => validateRelationships({ data }, indexes), /unknown persona/);
 });
 
 test('CW-92 WP05: all eight UI methods are singly authored under semantic Skill IDs', () => {

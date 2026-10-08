@@ -164,6 +164,8 @@ export const neutralHandoffText = (handoff, target) => {
   return `Required conditional handoff to ${target}. Trigger: ${handoff.trigger} Responsibility: ${responsibility} Input: ${handoff.input} Output: ${output} If unavailable: ${handoff.onUnavailable} Evidence status: ${handoff.status}.`;
 };
 
+export const neutralRequirementText = requirement => `Activity: ${requirement.activity}. Workflow: ${requirement.workflow}. Required capability: ${requirement.capability}. Preferred path: ${requirement.preferredTool}. Mode: ${requirement.mode}. Scope: ${requirement.scope}. Unavailable-path fallback: ${requirement.fallback}. Purpose: ${requirement.why.replace('Lets Riley', 'Lets the coordinator')} Evidence status: ${requirement.status}.`;
+
 export function readerBaseline(context) {
   const snapshot = capturePilot(context);
   // WP21 explicitly removes named/default routing prerequisites. Derive only
@@ -262,6 +264,21 @@ export function readerBaseline(context) {
     Object.values(value).forEach(neutralizeScenarioProjection);
   };
   neutralizeScenarioProjection(snapshot);
+  const requirements = context.data.personaToolRequirements.filter(item => item.personaId === 'ai-orchestrator');
+  const neutralizeRecipeProjection = value => {
+    if (!value || typeof value !== 'object') return;
+    const requirement = requirements.find(item => item.recipeId === value.id);
+    if (requirement && value.steps) value.steps.unshift(neutralRequirementText(requirement));
+    if (value.id === 'recipe-riley-trace-evaluation') {
+      value.title = 'Prepare a run for qualified independent conformance review';
+      value.steps = value.steps.map(step => step.replace('Invoke Noor to classify the run', 'Invoke a qualified independent reviewer to classify the run').replace('Route Noor’s finding', 'Route the independent reviewer’s finding'));
+      value.output = 'A normalized run packet, independent observation entry, and bounded next action.';
+      value.fallback = value.fallback.replace('If Noor is unavailable', 'If qualified independent review is unavailable');
+    }
+    if (value.id === 'requirement-riley-trace-evaluation') value.recipeTitle = 'Prepare a run for qualified independent conformance review';
+    Object.values(value).forEach(neutralizeRecipeProjection);
+  };
+  neutralizeRecipeProjection(snapshot);
   const routingId = 'skill-task-decomposition-and-routing';
   const decisions = [...snapshot.guidance[routingId].operation.moves,
     neutralHandoffText(handoff('handoff-riley-to-frontend-systems-engineer'), 'skill-web-application-architecture'),
