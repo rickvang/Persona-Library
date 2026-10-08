@@ -5,14 +5,16 @@ import test, { after, before } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
-import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { validateSkills } from './skills.mjs';
+import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-let current, baseline, expected;
+let current, baseline, expected, historical;
 before(async () => {
   baseline = await loadPinnedBaseline(root);
   current = await loadValidationContext(root);
-  expected = capturePilot(baseline.context);
+  historical = capturePilot(baseline.context);
+  expected = readerBaseline(baseline.context);
 });
 after(async () => { await baseline?.cleanup(); });
 
@@ -24,169 +26,172 @@ function initialize(context, change = () => {}) {
   vm.runInNewContext(context.files.modelSource, sandbox, { filename: 'library-model.js' });
   return sandbox.window.PersonaLibraryData;
 }
+const omitPilot = data => { data.personas = data.personas.filter(persona => !fixture.pilotSourceKeys.includes(persona.id)); };
+const semanticView = catalog => plain(catalog.map(({ id, name, methods, guidance, guidanceCoverage, buildingBlocks, supportingConnections, relatedSkills }) => ({ id, name, methods, guidance, guidanceCoverage, buildingBlocks, supportingConnections, relatedSkills })));
 
-function withoutPilot(data) {
-  const copy = plain(data);
-  copy.personas = copy.personas.filter(persona => !fixture.pilotSourceKeys.includes(persona.id));
-  return copy;
+function neutralInput() {
+  const key = 'skill-interaction-states-and-behavior-design';
+  const record = baseline.context.data.skillLibrary['ui-expert'].find(record => baseline.context.model.slugify(record.name) === key);
+  const original = { repository: 'rickvang/Persona-Library', revision: fixture.baselineCommit, path: 'content/library-data/skills-core.js', selector: 'skillLibrary[ui-expert]/' + record.name };
+  return {
+    skillLibrary: { [key]: [{ id: 'method-interaction-states-and-behavior-design', name: record.name, status: record.status, definition: record.definition, when: record.triggers, actions: record.actions, evidence: record.evidence, legacySourceKey: 'ui-expert', provenance: { original, current: { repository: original.repository, path: original.path, selector: key } }, workflowRefs: [{ id: 'workflow-test-states', title: 'Test states' }] }] },
+    flowLibrary: { 'ui-expert': [{ id: 'workflow-test-states', title: 'Test states', activities: [['Exercise failure and recovery']] }] },
+    personas: [], skillUnits: []
+  };
 }
 
-test('CW-92: preserve actual loaded pilot fields, peer variants, evidence and relationships', () => {
-  assert.equal(Object.values(expected.records).flat().length, fixture.expectedProfileCount);
-  assert.equal(expected.skillIds.length, fixture.expectedProfileCount);
-  assert.ok(baseline.context.libraryDataSources.length >= 21, 'Load the complete ordered modules, scenarios and assembler');
+test('CW-92: preserve full-source material fields under the explicit reader transformation', () => {
+  assert.equal(Object.values(historical.records).flat().length, fixture.expectedProfileCount);
+  assert.equal(historical.skillIds.length, fixture.expectedProfileCount);
+  assert.equal(baseline.context.libraryDataSources.length, 21);
   assertPreserved(capturePilot(current), expected);
 });
 
-test('CW-92: authored source and committed data bundle produce the same effective baseline', () => {
+test('CW-92: generated source and model match actual authored source', () => {
   const sandbox = { window: {} };
-  vm.runInNewContext(current.files.libraryOutput, sandbox, { filename: 'generated-library-source.js' });
+  vm.runInNewContext(current.files.libraryOutput, sandbox);
+  vm.runInNewContext(current.files.templatePreviewSource, sandbox);
+  vm.runInNewContext(current.files.modelOutput, sandbox);
+  assertPreserved(capturePilot({ ...current, data: sandbox.window.PersonaLibraryData }), capturePilot(current));
+});
+
+test('CW-92: preservation rejects lost evidence, activities, variants and unknown source fields', () => {
+  for (const mutate of [
+    value => { delete value.records['ui-expert'][0].evidence; },
+    value => { value.records['ui-expert'][0].unclassified = 'must not disappear'; },
+    value => { value.flows['ui-expert'][0].activities.pop(); },
+    value => { value.catalog.find(skill => skill.profiles.length > 1).profiles.pop(); },
+    value => { value.catalog[0].methods[0].evidence = 'fabricated'; }
+  ]) {
+    const changed = plain(expected); mutate(changed);
+    assert.throws(() => assertPreserved(changed, expected));
+  }
+  const unrelated = current.data.skillCatalog.find(skill => !expected.catalog.some(item => item.id === skill.id)).id;
+  const data = plain(current.data); data.maintenance.skills[unrelated].version = 'unrelated';
+  assertPreserved(capturePilot({ ...current, data }), capturePilot(current));
+  data.maintenance.skills[expected.skillIds[0]].version = 'must-be-detected';
+  assert.throws(() => assertPreserved(capturePilot({ ...current, data }), capturePilot(current)));
+  const bad = plain(current.data); bad.skillLibrary['ui-expert'][0].unclassified = 'not silently omitted';
+  assert.throws(() => current.model.buildSkillCatalog(bad), /Unclassified method field/);
+});
+
+test('CW-92: actual methods and shared guidance are independent of all Persona metadata', () => {
+  const original = current.model.buildSkillCatalog(current.data);
+  for (const mutate of [
+    data => { data.personas.reverse(); },
+    data => { data.personas.forEach(persona => { persona.name = 'metadata only'; persona.roleLabel = 'not a selection key'; }); },
+    data => { data.personas = data.personas.filter(persona => persona.id !== 'ui-expert'); },
+    data => { data.personas = data.personas.filter(persona => persona.id !== 'ai-orchestrator'); },
+    omitPilot,
+    data => { data.personas = []; },
+    data => { delete data.personas; }
+  ]) {
+    const data = plain(current.data); mutate(data);
+    const actual = current.model.buildSkillCatalog(data);
+    assert.deepStrictEqual(semanticView(actual), semanticView(original));
+    assert.deepStrictEqual(profilePayloads(actual), profilePayloads(original));
+  }
+  const observed = original.map(skill => skill.id);
+  for (const skill of baseline.context.data.skillCatalog) assert.ok(observed.includes(skill.id), `Lost baseline ID ${skill.id}`);
+  const pinned = profilePayloads(baseline.context.data.skillCatalog);
+  const keys = new Set(pinned.map(profile => `${profile.skillId}/${profile.personaId}`));
+  const assertBaseline = catalog => assert.deepStrictEqual(profilePayloads(catalog).filter(profile => keys.has(`${profile.skillId}/${profile.personaId}`)), pinned);
+  assertBaseline(original);
+  const lost = plain(current.data); delete lost.skillLibrary['ux-senior'];
+  assert.throws(() => assertBaseline(current.model.buildSkillCatalog(lost)));
+  console.log('CW92_INDEPENDENCE ' + JSON.stringify({ skillIds: original.length, methodCount: original.reduce((sum, skill) => sum + skill.methods.length, 0), metadataCases: 7 }));
+});
+
+test('CW-92: historical failures remain demonstrated only on the immutable baseline', () => {
+  const prior = baseline.context;
+  const data = plain(prior.data); omitPilot(data);
+  assert.equal(prior.model.buildSkillCatalog(prior.data).length, 79);
+  assert.equal(prior.model.buildSkillCatalog(data).length, 72);
+  assert.equal(prior.model.buildSkillCatalog({ ...prior.data, personas: [] }).length, 0);
+  const reversed = plain(prior.data); reversed.personas.reverse();
+  const changed = prior.model.buildSkillCatalog(reversed);
+  assert.equal(prior.data.skillCatalog.filter(skill => JSON.stringify(skill.guidance) !== JSON.stringify(changed.find(item => item.id === skill.id).guidance)).length, 13);
+  assert.throws(() => initialize(prior, data => { data.personas = data.personas.filter(persona => persona.id !== 'ui-expert'); }), /revisions/);
+});
+
+test('CW-92: full source and maintenance initialize without pilot or any Persona records', () => {
+  for (const mutate of [omitPilot, data => { data.personas = []; }, data => { delete data.personas; }]) {
+    const data = initialize(current, mutate);
+    assert.deepStrictEqual(semanticView(data.skillCatalog), semanticView(current.data.skillCatalog));
+    if (!data.personas.length) assert.equal(Object.keys(data.maintenance.personas).length, 0, 'Do not fabricate Persona histories');
+    validateSkills({ data }, { personaIds: new Set(data.personas.map(persona => persona.id)) });
+  }
+  const marker = 'const rileyPersonaRecord = window.PersonaLibraryDataFragments.personas.find';
+  const inject = source => source.replace(marker, "window.PersonaLibraryDataFragments.personas = window.PersonaLibraryDataFragments.personas.filter(p => p.id !== 'ai-orchestrator');\n" + marker);
+  assert.equal(current.files.librarySource.split(marker).length - 1, 1);
+  assert.throws(() => vm.runInNewContext(inject(baseline.context.files.librarySource), { window: {} }), /overview|undefined/);
+  const sandbox = { window: {} };
+  vm.runInNewContext(inject(current.files.librarySource), sandbox);
   vm.runInNewContext(current.files.templatePreviewSource, sandbox);
   vm.runInNewContext(current.files.modelSource, sandbox);
-  const generated = { ...current, data: sandbox.window.PersonaLibraryData };
-  assertPreserved(capturePilot(generated), capturePilot(current));
+  assert.deepStrictEqual(semanticView(sandbox.window.PersonaLibraryData.skillCatalog), semanticView(current.data.skillCatalog));
 });
 
-test('CW-92: preservation rejects dropped evidence, unexpected fields and collapsed variants', () => {
-  const missingEvidence = plain(expected);
-  delete missingEvidence.records[fixture.pilotSourceKeys[0]][0].evidence;
-  assert.throws(() => assertPreserved(missingEvidence, expected));
-  const unknownField = plain(expected);
-  unknownField.records[fixture.pilotSourceKeys[0]][0].unclassifiedField = 'must be classified';
-  assert.throws(() => assertPreserved(unknownField, expected));
-  const shared = expected.catalog.find(skill => skill.profiles.length > 1);
-  assert.ok(shared, 'The actual pilot must exercise a shared identity with peer applications');
-  const collapsed = plain(expected);
-  collapsed.catalog.find(skill => skill.id === shared.id).profiles.pop();
-  assert.throws(() => assertPreserved(collapsed, expected));
-  const lostActivity = plain(expected);
-  lostActivity.flows[fixture.pilotSourceKeys[0]][0].activities.pop();
-  assert.throws(() => assertPreserved(lostActivity, expected));
-  const unrelatedId = current.data.skillCatalog.find(skill => !expected.catalog.some(item => item.id === skill.id))?.id;
-  assert.ok(unrelatedId, 'Require an actual nonpilot skill for the scope check');
-  const unrelatedUpdate = { ...current, data: plain(current.data) };
-  unrelatedUpdate.data.maintenance.skills[unrelatedId].version = 'unrelated-test-change';
-  assertPreserved(capturePilot(unrelatedUpdate), capturePilot(current));
-  const relevantUpdate = { ...current, data: plain(current.data) };
-  relevantUpdate.data.maintenance.skills[expected.skillIds[0]].version = 'must-be-detected';
-  assert.throws(() => assertPreserved(capturePilot(relevantUpdate), capturePilot(current)));
+test('CW-92: actual assembler permits omitted metadata but still requires other source fragments', async () => {
+  const sources = current.libraryDataSources.filter(source => source !== 'content/library-data.js');
+  const source = (await Promise.all(sources.map(source => current.readFile(source)))).join('\n');
+  const assembler = await current.readFile('content/library-data.js');
+  const sandbox = { window: {} }; vm.runInNewContext(source, sandbox);
+  delete sandbox.window.PersonaLibraryDataFragments.personas;
+  vm.runInNewContext(assembler, sandbox);
+  vm.runInNewContext(current.files.templatePreviewSource, sandbox);
+  vm.runInNewContext(current.files.modelSource, sandbox);
+  assert.deepStrictEqual(semanticView(sandbox.window.PersonaLibraryData.skillCatalog), semanticView(current.data.skillCatalog));
+  const incomplete = { window: {} }; vm.runInNewContext(source, incomplete);
+  delete incomplete.window.PersonaLibraryDataFragments.skillLibrary;
+  assert.throws(() => vm.runInNewContext(assembler, incomplete), /Missing.*skillLibrary/);
 });
 
-test('CW-92 characterization: actual catalog loses pilot applications without identities', () => {
-  const full = current.model.buildSkillCatalog(current.data);
-  const absent = current.model.buildSkillCatalog(withoutPilot(current.data));
-  const pilotProfiles = catalog => catalog.flatMap(skill => skill.profiles).filter(profile => fixture.pilotSourceKeys.includes(profile.personaId));
-  assert.equal(pilotProfiles(full).length, fixture.expectedProfileCount);
-  assert.equal(pilotProfiles(absent).length, 0, 'Known identity gate changed: convert this characterization to a positive independence assertion');
-  const surviving = full.map(skill => ({
-    ...skill,
-    profiles: skill.profiles.filter(profile => !fixture.pilotSourceKeys.includes(profile.personaId))
-  })).filter(skill => skill.profiles.length > 0);
-  assert.deepStrictEqual(plain(absent.map(skill => skill.id)), plain(surviving.map(skill => skill.id)), 'Removing pilot identities must retain every nonpilot semantic ID');
-  assert.deepStrictEqual(profilePayloads(absent), profilePayloads(surviving), 'Removing pilot identities must retain every nonpilot application field');
-  const baselineFull = baseline.context.model.buildSkillCatalog(baseline.context.data);
-  const baselineAbsent = baseline.context.model.buildSkillCatalog(withoutPilot(baseline.context.data));
-  assert.equal(baselineFull.length, 79, 'The pinned full-source fixture has 79 semantic IDs');
-  assert.equal(baselineAbsent.length, 72, 'The pinned known-failure fixture has 72 surviving IDs');
-  const pinnedPayloads = profilePayloads(baselineAbsent);
-  const pinnedKeys = new Set(pinnedPayloads.map(profile => `${profile.skillId}/${profile.personaId}`));
-  const assertPinnedSurvivors = candidate => {
-    const ids = new Set(candidate.map(skill => skill.id));
-    for (const skill of baselineAbsent) assert.ok(ids.has(skill.id), `Lost baseline nonpilot Skill ${skill.id}`);
-    const retained = profilePayloads(candidate).filter(profile => pinnedKeys.has(`${profile.skillId}/${profile.personaId}`));
-    assert.deepStrictEqual(retained, pinnedPayloads, 'Baseline nonpilot application fields must survive; new unrelated identities remain allowed');
-  };
-  assertPinnedSurvivors(absent);
-  const lostNonpilot = withoutPilot(current.data);
-  lostNonpilot.personas = lostNonpilot.personas.filter(persona => persona.id !== 'ux-senior');
-  assert.throws(() => assertPinnedSurvivors(current.model.buildSkillCatalog(lostNonpilot)), /Lost baseline|application fields/);
-
-  assert.ok(absent.length > 0, 'This is the full library, not the earlier two-cohort reproduction');
-  assert.equal(current.model.buildSkillCatalog({ ...current.data, personas: [] }).length, 0);
-  for (const sourceKey of fixture.pilotSourceKeys) {
-    const oneMissing = plain(current.data);
-    oneMissing.personas = oneMissing.personas.filter(persona => persona.id !== sourceKey);
-    assert.ok(current.model.buildSkillCatalog(oneMissing).every(skill => skill.profiles.every(profile => profile.personaId !== sourceKey)));
-  }
-  console.log('CW92_DISCOVERY ' + JSON.stringify({ status: 'known_failure_reproduced', beforeIds: full.length, afterPilotRemovalIds: absent.length, beforePilotApplications: pilotProfiles(full).length, afterPilotApplications: pilotProfiles(absent).length }));
+test('CW-92: neutral methods keep explicit identity after display rename and validate without a Persona', () => {
+  const input = neutralInput(), key = Object.keys(input.skillLibrary)[0];
+  const [skill] = current.model.buildSkillCatalog(input);
+  assert.equal(skill.id, key); assert.equal(skill.personas.length, 0);
+  assert.equal(skill.methods[0].when, input.skillLibrary[key][0].when);
+  validateSkills({ data: { ...input, skillCatalog: [skill] } }, { personaIds: new Set() });
+  input.skillLibrary[key][0].name = 'Renamed display only';
+  assert.equal(current.model.buildSkillCatalog(input)[0].id, key);
+  delete input.skillLibrary[key][0].legacySourceKey;
+  const native = current.model.buildSkillCatalog(input)[0];
+  assert.equal(native.profiles.length, 0); assert.equal(native.methods.length, 1);
+  validateSkills({ data: { ...input, skillCatalog: [native] } }, { personaIds: new Set() });
 });
 
-test('CW-92 characterization: reordered and renamed metadata retain fields but order affects profiles', () => {
-  const original = current.model.buildSkillCatalog(current.data);
-  const reversedData = plain(current.data);
-  reversedData.personas.reverse();
-  const reversed = current.model.buildSkillCatalog(reversedData);
-  assert.deepStrictEqual(plain(original.map(skill => skill.id)), plain(reversed.map(skill => skill.id)));
-  assert.deepStrictEqual(profilePayloads(original), profilePayloads(reversed));
-  const orderSensitive = original.filter(skill => {
-    const next = reversed.find(item => item.id === skill.id);
-    return skill.profiles.length > 1 && skill.profiles[0].personaId !== next.profiles[0].personaId;
-  });
-  assert.ok(orderSensitive.length > 0, 'Known first-profile ordering changed: assess and convert the characterization');
-  const renamedData = plain(current.data);
-  for (const persona of renamedData.personas) { persona.name = `renamed ${persona.id}`; persona.roleLabel = 'metadata only'; }
-  const renamed = current.model.buildSkillCatalog(renamedData);
-  assert.deepStrictEqual(profilePayloads(original), profilePayloads(renamed));
-  const guidanceChanged = original.filter(skill => JSON.stringify(skill.guidance) !== JSON.stringify(reversed.find(item => item.id === skill.id).guidance)).map(skill => skill.id);
-  const pinnedOriginal = baseline.context.model.buildSkillCatalog(baseline.context.data);
-  const pinnedReversedData = plain(baseline.context.data);
-  pinnedReversedData.personas.reverse();
-  const pinnedReversed = baseline.context.model.buildSkillCatalog(pinnedReversedData);
-  const pinnedProfileIds = pinnedOriginal.filter(skill => skill.profiles.length > 1 && skill.profiles[0].personaId !== pinnedReversed.find(item => item.id === skill.id).profiles[0].personaId).map(skill => skill.id);
-  const pinnedGuidanceIds = pinnedOriginal.filter(skill => JSON.stringify(skill.guidance) !== JSON.stringify(pinnedReversed.find(item => item.id === skill.id).guidance)).map(skill => skill.id);
-  assert.equal(pinnedProfileIds.length, 14);
-  assert.equal(pinnedGuidanceIds.length, 13);
-  const currentIds = new Set(original.map(skill => skill.id));
-  // Freeze the known characterization for retained baseline identities, not the
-  // existence of unrelated new skills. Accepted fixes convert these assertions.
-  const retainedBaselineIds = new Set(pinnedOriginal.map(skill => skill.id).filter(id => currentIds.has(id)));
-  assert.deepStrictEqual(plain(orderSensitive.map(skill => skill.id).filter(id => retainedBaselineIds.has(id))), plain(pinnedProfileIds.filter(id => currentIds.has(id))), 'Known ordering-sensitive profile set changed');
-  assert.deepStrictEqual(plain(guidanceChanged.filter(id => retainedBaselineIds.has(id))), plain(pinnedGuidanceIds.filter(id => currentIds.has(id))), 'Known ordering-sensitive fallback set changed');
-  console.log('CW92_ORDERING ' + JSON.stringify({ orderSensitiveProfiles: orderSensitive.map(skill => skill.id), orderSensitiveGuidance: guidanceChanged }));
+test('CW-92: reject duplicate methods, dual authored origins, bad provenance and invalid workflow IDs', () => {
+  const input = neutralInput(), key = Object.keys(input.skillLibrary)[0];
+  const duplicate = plain(input); duplicate.skillLibrary[key].push(plain(duplicate.skillLibrary[key][0]));
+  assert.throws(() => current.model.buildSkillCatalog(duplicate), /duplicate method ID/);
+  const dual = plain(input); dual.skillLibrary['ui-expert'] = [plain(baseline.context.data.skillLibrary['ui-expert'].find(record => baseline.context.model.slugify(record.name) === key))];
+  assert.throws(() => current.model.buildSkillCatalog(dual), /Duplicate authored method origin/);
+  const unknown = plain(input); unknown.skillLibrary[key][0].workflowRefs[0].id = 'workflow-missing';
+  assert.throws(() => current.model.buildSkillCatalog(unknown), /Unknown workflow ID/);
+  const provenance = plain(input); delete provenance.skillLibrary[key][0].provenance.original.revision;
+  assert.throws(() => current.model.buildSkillCatalog(provenance), /Incomplete method provenance/);
+  const duplicateFlow = plain(input); duplicateFlow.flowLibrary.second = [plain(duplicateFlow.flowLibrary['ui-expert'][0])];
+  assert.throws(() => current.model.buildSkillCatalog(duplicateFlow), /duplicate workflow ID/);
 });
 
-test('CW-92 characterization: full model initialization fails without the UI pilot identity', () => {
-  assert.doesNotThrow(() => initialize(current));
-  assert.throws(() => initialize(current, data => { data.personas = data.personas.filter(persona => persona.id !== 'ui-expert'); }), error => {
-    assert.match(error.message, /revisions/);
-    assert.match(error.stack, /buildMaintenance/);
-    return true;
-  });
+test('CW-92: real recovery-title collision retains both source bodies without global guessing', () => {
+  const title = 'Recover a failed or unsafe run';
+  const a = current.model.resolveWorkflowReference({ title, legacySourceKey: 'ai-orchestrator' }, current.data.flowLibrary);
+  const b = current.model.resolveWorkflowReference({ title, legacySourceKey: 'conformance-observer' }, current.data.flowLibrary);
+  assert.notDeepStrictEqual(plain(a.flow), plain(b.flow));
+  assert.throws(() => current.model.resolveWorkflowReference({ title }, current.data.flowLibrary), /Ambiguous workflow title/);
+  const input = neutralInput(), key = Object.keys(input.skillLibrary)[0];
+  input.skillLibrary[key][0].workflowRefs = [{ legacySourceKey: 'ui-expert', title: 'An unresolved source title', unresolved: true }];
+  assert.equal(current.model.buildSkillCatalog(input)[0].methods[0].workflowRefs[0].unresolved, true);
 });
 
-test('CW-92 characterization: full source override requires the orchestration identity', () => {
-  const source = current.files.librarySource;
-  const marker = 'const rileyPersonaRecord = window.PersonaLibraryDataFragments.personas.find';
-  assert.equal(source.split(marker).length - 1, 1, 'Require the actual single source override; do not reproduce an excerpt');
-  const injected = source.replace(marker, "window.PersonaLibraryDataFragments.personas = window.PersonaLibraryDataFragments.personas.filter(p => p.id !== 'ai-orchestrator');\n" + marker);
-  assert.doesNotThrow(() => vm.runInNewContext(source, { window: {} }, { filename: 'complete-library-source.js' }));
-  assert.throws(() => vm.runInNewContext(injected, { window: {} }, { filename: 'complete-library-source.js' }), error => {
-    assert.equal(error.name, 'TypeError');
-    assert.match(error.message, /overview|undefined/);
-    return true;
-  });
-});
-
-test('CW-92: track actual full-loaded workflow gaps separately from preservation', () => {
-  const reference = workflowDiagnostics(baseline.context.data);
-  assert.deepStrictEqual(workflowDiagnostics(current.data), reference, 'A relationship change requires an explicit scoped disposition');
-  console.log('CW92_WORKFLOW_DIAGNOSTICS ' + JSON.stringify(reference));
-});
-
-test('CW-92: preserve authored-versus-fallback coverage and source provenance', () => {
+test('CW-92: preserve existing workflow defects, evidence maturity and authored coverage', () => {
+  assert.deepStrictEqual(workflowDiagnostics(current.data), workflowDiagnostics(baseline.context.data));
   for (const skill of expected.catalog) {
-    assert.ok(skill.guidanceCoverage?.operation);
-    assert.ok(skill.guidanceCoverage?.quality);
+    const actual = current.data.skillCatalog.find(item => item.id === skill.id);
+    assert.deepStrictEqual(plain(actual.guidanceCoverage), plain(skill.guidanceCoverage));
+    assert.ok(actual.methods.every(method => method.evidence && method.status));
   }
-  const summary = {
-    baselineCommit: fixture.baselineCommit,
-    profileCount: Object.values(expected.records).flat().length,
-    workflowCount: Object.values(expected.flows).flat().reduce((sum, flow) => sum + 1, 0),
-    activityCount: Object.values(expected.flows).flat().reduce((sum, flow) => sum + (flow.activities || []).length, 0),
-    orderedSourceCount: expected.sourceOrder.length,
-    snapshotSha256: createHash('sha256').update(JSON.stringify(expected)).digest('hex'),
-    sourceBlobs: baseline.sourceBlobs,
-    boundary: 'Full-source preservation and existing-failure characterization, not a fixed implementation or independent review'
-  };
-  console.log('CW92_SOURCE_BASELINE ' + JSON.stringify(summary));
+  console.log('CW92_READER_EVIDENCE ' + JSON.stringify({ baseline: fixture.baselineCommit, sourceCount: expected.sourceOrder.length, preservedSnapshot: createHash('sha256').update(JSON.stringify(expected)).digest('hex'), boundary: 'Reader independence and full-source preservation; no method-body migration, consumer retirement or effectiveness claim' }));
 });

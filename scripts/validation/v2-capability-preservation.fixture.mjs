@@ -115,3 +115,42 @@ export function workflowDiagnostics(data) {
   }
   return { unresolved: ordered(unresolved), unreferenced: ordered(unreferenced) };
 }
+
+// Explicit WP04 expected transformation. Authored fields and history remain
+// byte-for-byte material inputs. Only the new derived view and the documented
+// all-method/shared fallback replace old first-profile presentation.
+export function readerBaseline(context) {
+  const snapshot = capturePilot(context);
+  const { data, model } = context;
+  const selected = 'Select the applicable method by its task conditions; no single shared procedure is authored.';
+  const uniqueValue = (profiles, field, fallback) => new Set(profiles.map(profile => profile[field])).size === 1 ? profiles[0][field] : fallback;
+  for (const skill of snapshot.catalog) {
+    const profiles = skill.profiles;
+    skill.methods = Object.entries(data.skillLibrary).flatMap(([key, records]) => records.flatMap((record, index) => model.slugify(record.name) !== skill.id ? [] : [{
+      id: `method-legacy-${key}-${skill.id.slice(6)}`, name: record.name, status: record.status,
+      definition: record.definition, when: record.triggers, actions: record.actions, evidence: record.evidence,
+      workflowRefs: record.workflows.split(' · ').map(title => title.trim()).filter(Boolean).map(title => ({ legacySourceKey: key, title, ...(!(data.flowLibrary[key] || []).some(flow => flow.title === title) ? { unresolved: true } : {}) })),
+      provenance: { source: { collection: 'skillLibrary', key, index } }, legacySourceKey: key
+    }])).sort((a, b) => a.id.localeCompare(b.id));
+    const authored = { ...(data.skillGuidance[skill.id]?.operation || {}), ...(data.skillPractice[skill.id]?.operation || {}) };
+    const trigger = uniqueValue(profiles, 'triggers', selected);
+    const definition = uniqueValue(profiles, 'definition', 'Method-specific result; inspect the selected method.');
+    const moves = authored.moves || [uniqueValue(profiles, 'actions', selected)];
+    const operation = skill.guidance.operation;
+    if (!authored.startsWith) operation.startsWith = trigger;
+    if (!authored.loop) operation.loop = [`Notice the trigger: ${trigger}`, 'Frame the decision and relevant constraints.', `Apply the capability: ${moves[0]}`, `Check the result: ${skill.guidance.quality.checks[0]}`, 'Adjust the approach based on what was learned.'];
+    if (!authored.inputs) operation.inputs = [trigger];
+    if (!authored.decisions) operation.decisions = moves;
+    if (!authored.outputs) operation.outputs = [authored.leavesBehind || definition];
+    if (!authored.moves) operation.moves = moves;
+    if (!authored.leavesBehind) operation.leavesBehind = definition;
+    for (const field of ['buildingBlocks', 'supportingConnections', 'relatedSkills']) {
+      for (const entity of skill[field]) {
+        if (entity.kind !== 'composed') continue;
+        const target = data.skillCatalog.find(candidate => candidate.id === entity.id);
+        entity.summary = uniqueValue(target.profiles, 'definition', 'Select a task-conditioned method for its applicable definition.');
+      }
+    }
+  }
+  return plain(snapshot);
+}

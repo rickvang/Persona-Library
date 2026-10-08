@@ -13,12 +13,15 @@ window.PersonaLibraryDataFragments.personas.push(
 );
 
 const rileyPersonaRecord = window.PersonaLibraryDataFragments.personas.find(persona => persona.id === 'ai-orchestrator');
+if (rileyPersonaRecord) {
 rileyPersonaRecord.overview = 'Riley is the default system entry for unqualified requests, turning open-ended goals into bounded agentic systems by interpreting intent and selecting the smallest useful route.';
 rileyPersonaRecord.behaviors = [
   'Receives unqualified requests, interprets intent, and selects the smallest useful route',
   'Honors explicit specialist, Skill, or Playbook requests without blocking direct invocation',
   ...rileyPersonaRecord.behaviors
 ];
+
+}
 
 
 window.PersonaLibraryDataFragments = window.PersonaLibraryDataFragments || {};
@@ -1888,7 +1891,6 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
 (() => {
   const fragments = window.PersonaLibraryDataFragments || {};
   const requiredKeys = [
-    'personas',
     'skillLibrary',
     'flowLibrary',
     'playbookCatalog',
@@ -1914,6 +1916,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   const data = {};
   for (const key of requiredKeys) data[key] = fragments[key];
 
+  data.personas = fragments.personas ?? [];
   window.PersonaLibraryData = data;
   delete window.PersonaLibraryDataFragments;
 })();
