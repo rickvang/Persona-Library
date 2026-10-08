@@ -1736,7 +1736,7 @@
     },
     "contract:reconciliation:persona-reconciliation": {
       "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
       "selector": "frontmatter.reconciliation"
     },
     "contract:reconciliation:skip": {
@@ -1773,6 +1773,396 @@
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
       "selector": "frontmatter.skill_layer"
+    },
+    "route-group:decisions": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/decisions.json",
+      "selector": "root"
+    },
+    "route-group:docs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "root"
+    },
+    "route-group:operating-packs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+      "selector": "root"
+    },
+    "route-group:personas": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+      "selector": "root"
+    },
+    "route-group:playbooks": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+      "selector": "root"
+    },
+    "route-group:prototyping": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+      "selector": "root"
+    },
+    "route-group:skills": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "root"
+    },
+    "route-group:templates": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+      "selector": "root"
+    },
+    "route-group:tools": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+      "selector": "root"
+    },
+    "route:bounded-parallel-implementation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+      "selector": "routes[id=bounded-parallel-implementation]"
+    },
+    "route:conformance-evaluation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "routes[id=conformance-evaluation]"
+    },
+    "route:cross-space-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "routes[id=cross-space-reconciliation]"
+    },
+    "route:decision-record": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/decisions.json",
+      "selector": "routes[id=decision-record]"
+    },
+    "route:docs-and-onboarding": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "routes[id=docs-and-onboarding]"
+    },
+    "route:isolated-persona-skill-testing": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "routes[id=isolated-persona-skill-testing]"
+    },
+    "route:local-video-inspection": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "routes[id=local-video-inspection]"
+    },
+    "route:multi-persona-collaboration": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+      "selector": "routes[id=multi-persona-collaboration]"
+    },
+    "route:operating-pack-catalog": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+      "selector": "routes[id=operating-pack-catalog]"
+    },
+    "route:operating-pack-composition": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+      "selector": "routes[id=operating-pack-composition]"
+    },
+    "route:operating-pack-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+      "selector": "routes[id=operating-pack-reconciliation]"
+    },
+    "route:operating-pack-research": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+      "selector": "routes[id=operating-pack-research]"
+    },
+    "route:persona-capability-maintenance": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "routes[id=persona-capability-maintenance]"
+    },
+    "route:persona-consultation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+      "selector": "routes[id=persona-consultation]"
+    },
+    "route:persona-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+      "selector": "routes[id=persona-reconciliation]"
+    },
+    "route:persona-research": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+      "selector": "routes[id=persona-research]"
+    },
+    "route:playbook-composition": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+      "selector": "routes[id=playbook-composition]"
+    },
+    "route:prototype-comparison": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+      "selector": "routes[id=prototype-comparison]"
+    },
+    "route:resume-application-work": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "routes[id=resume-application-work]"
+    },
+    "route:resume-template-semantic-mapping": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "routes[id=resume-template-semantic-mapping]"
+    },
+    "route:skill-formation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "routes[id=skill-formation]"
+    },
+    "route:skill-package-maintenance": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "routes[id=skill-package-maintenance]"
+    },
+    "route:system-orientation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "routes[id=system-orientation]"
+    },
+    "route:template-catalog": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+      "selector": "routes[id=template-catalog]"
+    },
+    "route:template-composition": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+      "selector": "routes[id=template-composition]"
+    },
+    "route:template-library-stewardship": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+      "selector": "routes[id=template-library-stewardship]"
+    },
+    "route:template-lifecycle": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+      "selector": "routes[id=template-lifecycle]"
+    },
+    "route:template-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+      "selector": "routes[id=template-reconciliation]"
+    },
+    "route:template-research": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+      "selector": "routes[id=template-research]"
+    },
+    "route:tool-record-maintenance": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+      "selector": "routes[id=tool-record-maintenance]"
+    },
+    "route:tool-resolution": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+      "selector": "routes[id=tool-resolution]"
+    },
+    "route:work-graph-orchestration": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+      "selector": "routes[id=work-graph-orchestration]"
+    },
+    "route:work-order-start": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+      "selector": "routes[id=work-order-start]"
+    },
+    "route:workflow-canvas-intent": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+      "selector": "routes[id=workflow-canvas-intent]"
+    },
+    "routing:orientation-bootstrap": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "root"
+    },
+    "skill-package:.agents/skills/change-impact-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/layout-lab": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/local-video-inspection": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/multi-perspective-skill-synthesis": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/operating-pack-composer": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/operating-pack-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-reconciliation/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/operating-pack-research": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/persona-library-orientation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/persona-panel-orchestration": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/persona-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/persona-research": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/persona-skill-conformance": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/persona-skills": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/pl-skill-creator": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/playbook-composer": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/resume-template-semantic-mapping": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/template-composer": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/template-reconciliation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/template-reconciliation/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/template-research": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/template-research/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/tool-discovery-and-safe-execution": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/tool-record-maintenance": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/tool-record-maintenance/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/work-graph-orchestration": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "skill-package:.agents/skills/workflow-canvas-reasoning": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.agents/skills/workflow-canvas-reasoning/SKILL.md",
+      "selector": "frontmatter"
+    },
+    "space:decisions": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.decisions"
+    },
+    "space:docs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.docs"
+    },
+    "space:operating-packs": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.operating-packs"
+    },
+    "space:personas": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.personas"
+    },
+    "space:playbooks": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.playbooks"
+    },
+    "space:prototyping": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.prototyping"
+    },
+    "space:skills": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.skills"
+    },
+    "space:templates": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.templates"
+    },
+    "space:tools": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:content/site-orientation.json",
+      "selector": "spaces.tools"
+    },
+    "validation:repository-validation": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:.github/workflows/repository-validation.yml",
+      "selector": "jobs.validate"
+    },
+    "view:agent-runtime": {
+      "kind": "repo-file",
+      "locator": "rickvang/Persona-Library:AGENTS.md",
+      "selector": "Choose the shortest activation path"
     },
     "edge:agent:repository-dispatcher--loads-for-semantic-work--routing:orientation-bootstrap": {
       "kind": "repo-file",
@@ -2628,396 +3018,6 @@
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:AGENTS.md",
       "selector": "Durable work and recovery"
-    },
-    "route-group:decisions": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/decisions.json",
-      "selector": "root"
-    },
-    "route-group:docs": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
-      "selector": "root"
-    },
-    "route-group:operating-packs": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
-      "selector": "root"
-    },
-    "route-group:personas": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
-      "selector": "root"
-    },
-    "route-group:playbooks": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
-      "selector": "root"
-    },
-    "route-group:prototyping": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
-      "selector": "root"
-    },
-    "route-group:skills": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "root"
-    },
-    "route-group:templates": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
-      "selector": "root"
-    },
-    "route-group:tools": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/tools.json",
-      "selector": "root"
-    },
-    "route:bounded-parallel-implementation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
-      "selector": "routes[id=bounded-parallel-implementation]"
-    },
-    "route:conformance-evaluation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
-      "selector": "routes[id=conformance-evaluation]"
-    },
-    "route:cross-space-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
-      "selector": "routes[id=cross-space-reconciliation]"
-    },
-    "route:decision-record": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/decisions.json",
-      "selector": "routes[id=decision-record]"
-    },
-    "route:docs-and-onboarding": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
-      "selector": "routes[id=docs-and-onboarding]"
-    },
-    "route:isolated-persona-skill-testing": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "routes[id=isolated-persona-skill-testing]"
-    },
-    "route:local-video-inspection": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "routes[id=local-video-inspection]"
-    },
-    "route:multi-persona-collaboration": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
-      "selector": "routes[id=multi-persona-collaboration]"
-    },
-    "route:operating-pack-catalog": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
-      "selector": "routes[id=operating-pack-catalog]"
-    },
-    "route:operating-pack-composition": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
-      "selector": "routes[id=operating-pack-composition]"
-    },
-    "route:operating-pack-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
-      "selector": "routes[id=operating-pack-reconciliation]"
-    },
-    "route:operating-pack-research": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
-      "selector": "routes[id=operating-pack-research]"
-    },
-    "route:persona-capability-maintenance": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "routes[id=persona-capability-maintenance]"
-    },
-    "route:persona-consultation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
-      "selector": "routes[id=persona-consultation]"
-    },
-    "route:persona-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
-      "selector": "routes[id=persona-reconciliation]"
-    },
-    "route:persona-research": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/personas.json",
-      "selector": "routes[id=persona-research]"
-    },
-    "route:playbook-composition": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
-      "selector": "routes[id=playbook-composition]"
-    },
-    "route:prototype-comparison": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
-      "selector": "routes[id=prototype-comparison]"
-    },
-    "route:resume-application-work": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
-      "selector": "routes[id=resume-application-work]"
-    },
-    "route:resume-template-semantic-mapping": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "routes[id=resume-template-semantic-mapping]"
-    },
-    "route:skill-formation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "routes[id=skill-formation]"
-    },
-    "route:skill-package-maintenance": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "routes[id=skill-package-maintenance]"
-    },
-    "route:system-orientation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
-      "selector": "routes[id=system-orientation]"
-    },
-    "route:template-catalog": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
-      "selector": "routes[id=template-catalog]"
-    },
-    "route:template-composition": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
-      "selector": "routes[id=template-composition]"
-    },
-    "route:template-library-stewardship": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
-      "selector": "routes[id=template-library-stewardship]"
-    },
-    "route:template-lifecycle": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
-      "selector": "routes[id=template-lifecycle]"
-    },
-    "route:template-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
-      "selector": "routes[id=template-reconciliation]"
-    },
-    "route:template-research": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/templates.json",
-      "selector": "routes[id=template-research]"
-    },
-    "route:tool-record-maintenance": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/tools.json",
-      "selector": "routes[id=tool-record-maintenance]"
-    },
-    "route:tool-resolution": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/tools.json",
-      "selector": "routes[id=tool-resolution]"
-    },
-    "route:work-graph-orchestration": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/skills.json",
-      "selector": "routes[id=work-graph-orchestration]"
-    },
-    "route:work-order-start": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/docs.json",
-      "selector": "routes[id=work-order-start]"
-    },
-    "route:workflow-canvas-intent": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
-      "selector": "routes[id=workflow-canvas-intent]"
-    },
-    "routing:orientation-bootstrap": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "root"
-    },
-    "skill-package:.agents/skills/change-impact-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/layout-lab": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/local-video-inspection": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/multi-perspective-skill-synthesis": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/operating-pack-composer": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/operating-pack-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-reconciliation/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/operating-pack-research": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/persona-library-orientation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/persona-panel-orchestration": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/persona-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/persona-research": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/persona-skill-conformance": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/persona-skills": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/pl-skill-creator": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/playbook-composer": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/resume-template-semantic-mapping": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/template-composer": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/template-reconciliation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/template-reconciliation/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/template-research": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/template-research/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/tool-discovery-and-safe-execution": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/tool-record-maintenance": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/tool-record-maintenance/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/work-graph-orchestration": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "skill-package:.agents/skills/workflow-canvas-reasoning": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.agents/skills/workflow-canvas-reasoning/SKILL.md",
-      "selector": "frontmatter"
-    },
-    "space:decisions": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.decisions"
-    },
-    "space:docs": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.docs"
-    },
-    "space:operating-packs": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.operating-packs"
-    },
-    "space:personas": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.personas"
-    },
-    "space:playbooks": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.playbooks"
-    },
-    "space:prototyping": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.prototyping"
-    },
-    "space:skills": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.skills"
-    },
-    "space:templates": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.templates"
-    },
-    "space:tools": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/site-orientation.json",
-      "selector": "spaces.tools"
-    },
-    "validation:repository-validation": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:.github/workflows/repository-validation.yml",
-      "selector": "jobs.validate"
-    },
-    "view:agent-runtime": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:AGENTS.md",
-      "selector": "Choose the shortest activation path"
     }
   }
 }
