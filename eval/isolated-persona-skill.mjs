@@ -52,13 +52,23 @@ export function slugify(value) {
 }
 
 export async function loadLibraryData(dataPath) {
-  const sourcePaths = dataPath
-    ? [path.resolve(dataPath)]
-    : LIBRARY_DATA_SOURCES.map(sourcePath => resolvePath(sourcePath));
+  // Read the same ordered authored fragments as the existing site builder.
+  // An injected dataPath remains supported for isolated legacy fixtures.
+  const scenarioIndex = dataPath ? null : JSON.parse(await readFile(resolvePath('content/library-data/operational-scenarios/index.json'), 'utf8'));
+  const sourcesList = dataPath ? [] : [
+    ...LIBRARY_DATA_SOURCES.slice(0, -1),
+    ...scenarioIndex.scenarios.map(entry => entry.path),
+    LIBRARY_DATA_SOURCES.at(-1)
+  ];
+  const sourcePaths = dataPath ? [path.resolve(dataPath)] : sourcesList.map(sourcePath => resolvePath(sourcePath));
   const sources = await Promise.all(sourcePaths.map(sourcePath => readFile(sourcePath, 'utf8')));
   const sandbox = { window: {} };
   sources.forEach((source, index) => vm.runInNewContext(source, sandbox, { filename: sourcePaths[index] }));
   if (!sandbox.window.PersonaLibraryData) throw new Error('Authored library data sources did not define PersonaLibraryData');
+  if (!dataPath) {
+    const modelPath = resolvePath('content/library-model.js');
+    vm.runInNewContext(await readFile(modelPath, 'utf8'), sandbox, { filename: modelPath });
+  }
   return sandbox.window.PersonaLibraryData;
 }
 
@@ -113,8 +123,21 @@ export function buildPersonaSkillMatrix(data, config, options = {}) {
   const cases = [];
 
   for (const persona of personas) {
-    for (const profile of data.skillLibrary[persona.id] || []) {
-      const skillId = slugify(profile.name);
+    // The model owns this one-way compatibility projection; do not require
+    // Persona-keyed authorship after the pilot methods move to semantic Skills.
+    const applications = Array.isArray(data.skillCatalog)
+      ? data.skillCatalog.flatMap(skill => (skill.profiles || [])
+          .filter(application => application.personaId === persona.id)
+          .map(application => ({
+            skillId: skill.id,
+            profile: {
+              name: skill.name, status: application.status, definition: application.definition,
+              triggers: application.triggers, workflows: application.workflows,
+              actions: application.actions, evidence: application.evidence
+            }
+          })))
+      : (data.skillLibrary[persona.id] || []).map(profile => ({ skillId: slugify(profile.name), profile }));
+    for (const { skillId, profile } of applications) {
       if (skillSelection && !skillSelection.includes(skillId) && !skillSelection.includes(profile.name)) continue;
       const quality = qualityFor(data, skillId, profile);
       const override = config.overrides?.[`${persona.id}/${skillId}`] || config.overrides?.[skillId] || {};

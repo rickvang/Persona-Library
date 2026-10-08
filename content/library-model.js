@@ -1,5 +1,6 @@
 (() => {
   const data = window.PersonaLibraryData;
+  if (data.personas === undefined) data.personas = [];
   const slugify = value => `skill-${value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
   const templateStateCatalog = {
     lifecycle: {
@@ -40,7 +41,7 @@
 
   function buildOperationalScenarioCatalog({ operationalScenarios = [], personas = [], skillLibrary = {}, toolUseRecipes = [], operatingPacks = [] }) {
     const personaIds = new Set(personas.map(persona => persona.id));
-    const skillIds = new Set(Object.values(skillLibrary).flat().map(profile => slugify(profile.name)));
+    const skillIds = new Set(Object.entries(skillLibrary).flatMap(([key, records]) => records.map(record => key.startsWith('skill-') ? key : slugify(record.name))));
     const recipeIds = new Set(toolUseRecipes.map(recipe => recipe.id));
     const operatingPackIds = new Set(operatingPacks.map(pack => pack.id));
     return operationalScenarios.map(scenario => {
@@ -79,41 +80,198 @@
       }).filter(item => item.score > 0).sort((a,b)=>b.score-a.score || a.scenario.title.localeCompare(b.scenario.title)).slice(0,limit).map(item=>item.scenario);
   }
 
-  function buildSkillCatalog({ personas, skillLibrary, flowLibrary, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [], operationalScenarioCatalog = [] }) {
-    const catalog = new Map();
-    for (const persona of personas) {
-      for (const profile of skillLibrary[persona.id] || []) {
-        const id = slugify(profile.name);
-        if (!catalog.has(id)) catalog.set(id, { id, name: profile.name, personas: [], profiles: [], workflows: [], guidance: skillGuidance[id] || null });
-        const skill = catalog.get(id);
-        if (!skill.personas.some(item => item.id === persona.id)) {
-          skill.personas.push({ id: persona.id, name: persona.name, roleLabel: persona.roleLabel, role: persona.role });
+  function indexWorkflows(flowLibrary = {}) {
+    const byId = new Map(), byScope = new Map(), byTitle = new Map();
+    for (const [sourceKey, flows] of Object.entries(flowLibrary)) {
+      if (!Array.isArray(flows)) throw new Error(`Workflow source must be an array: ${sourceKey}`);
+      for (const [order, flow] of flows.entries()) {
+        const entry = { flow, sourceKey, order };
+        const scoped = JSON.stringify([sourceKey, flow.title]);
+        if (byScope.has(scoped)) throw new Error(`Duplicate scoped workflow: ${scoped}`);
+        byScope.set(scoped, entry);
+        if (!byTitle.has(flow.title)) byTitle.set(flow.title, []);
+        byTitle.get(flow.title).push(entry);
+        if (flow.id) {
+          if (!/^workflow-[a-z0-9][a-z0-9-]*$/.test(flow.id) || byId.has(flow.id)) throw new Error(`Invalid or duplicate workflow ID: ${flow.id}`);
+          byId.set(flow.id, entry);
         }
-        skill.profiles.push({
-          personaId: persona.id,
-          personaName: persona.name,
-          roleLabel: persona.roleLabel,
-          status: profile.status,
-          definition: profile.definition,
-          triggers: profile.triggers,
-          workflows: profile.workflows,
-          actions: profile.actions,
-          evidence: profile.evidence
-        });
-        const workflowNames = (profile.workflows || '').split(' · ').map(item => item.trim()).filter(Boolean);
-        for (const flow of flowLibrary[persona.id] || []) {
-          if (workflowNames.includes(flow.title) && !skill.workflows.some(item => item.personaId === persona.id && item.title === flow.title)) {
-            skill.workflows.push({ personaId: persona.id, personaName: persona.name, type: flow.type, title: flow.title, cadence: flow.cadence });
+      }
+    }
+    return { byId, byScope, byTitle };
+  }
+
+  function resolveWorkflowReference(ref, flowLibrary = {}) {
+    return resolveWorkflow(ref, indexWorkflows(flowLibrary));
+  }
+
+  function resolveWorkflow(ref, index) {
+    if (!ref || typeof ref !== 'object' || Array.isArray(ref)) throw new Error('Invalid workflow reference');
+    if (ref.id) {
+      const entry = index.byId.get(ref.id);
+      if (!entry) throw new Error(`Unknown workflow ID: ${ref.id}`);
+      if (ref.unresolved) throw new Error(`Resolved workflow marked unresolved: ${ref.id}`);
+      // IDs are stable, but any supplied historical scope/title must agree
+      // with the exact authored workflow, never a different ID's body.
+      if (ref.legacySourceKey && ref.legacySourceKey !== entry.sourceKey) throw new Error(`Workflow ID source mismatch: ${ref.id}`);
+      if (ref.title !== undefined && ref.title !== entry.flow.title) throw new Error(`Workflow ID title mismatch: ${ref.id}`);
+      return entry;
+    }
+    if (typeof ref.title !== 'string' || !ref.title.trim()) throw new Error('Workflow reference needs an ID or exact title');
+    if (ref.legacySourceKey) {
+      const entry = index.byScope.get(JSON.stringify([ref.legacySourceKey, ref.title]));
+      if (!entry && !ref.unresolved) throw new Error(`Unknown scoped workflow: ${ref.legacySourceKey}/${ref.title}`);
+      if (entry && ref.unresolved) throw new Error(`Resolved workflow marked unresolved: ${ref.title}`);
+      return entry || null;
+    }
+    const matches = index.byTitle.get(ref.title) || [];
+    if (matches.length > 1) throw new Error(`Ambiguous workflow title: ${ref.title}`);
+    if (!matches.length && !ref.unresolved) throw new Error(`Unknown workflow title: ${ref.title}`);
+    if (matches.length && ref.unresolved) throw new Error(`Resolved workflow marked unresolved: ${ref.title}`);
+    return matches[0] || null;
+  }
+
+  function buildSkillCatalog({ personas = [], skillLibrary = {}, flowLibrary = {}, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [], operationalScenarioCatalog = [] }) {
+    const catalog = new Map(), methodIds = new Set(), origins = new Set();
+    // One-time legacy migration boundary, not runtime availability or an actor registry.
+    const migrationSource = { repository: 'rickvang/Persona-Library', revision: 'd61f850e06d266bc6d608b92b730c97e451ea745', path: 'content/library-data/skills-core.js' };
+    // Immutable original locators for the two authorized pilot cohorts. This is a
+    // temporary provenance guard, not an authored method source or a selection map.
+    // Expand only through a separately accepted source-family migration audit.
+    const pilotOrigins = {
+      'ui-expert': new Set([
+        'Interface hierarchy and visual communication', 'Contextual visual judgment and composition',
+        'Interaction states and behavior design', 'Responsive and adaptive layout',
+        'Component and design-system thinking', 'Accessibility and inclusive design',
+        'Prototyping and interaction craft', 'Design QA and implementation partnership'
+      ]),
+      'ai-orchestrator': new Set([
+        'Agent workflow architecture', 'Work graph orchestration',
+        'Task decomposition and routing', 'Tool and context design',
+        'Risk, guardrails, and human oversight', 'Failure recovery and operational judgment',
+        'Cross-functional systems communication', 'Multi-perspective skill synthesis'
+      ])
+    };
+    const metadata = new Map(personas.map(persona => [persona.id, persona]));
+    const displayOrder = new Map(personas.map((persona, index) => [persona.id, index]));
+    const workflows = indexWorkflows(flowLibrary);
+    const nonempty = value => typeof value === 'string' && value.trim();
+    const neutralFields = new Set(['id', 'name', 'status', 'definition', 'when', 'actions', 'evidence', 'workflowRefs', 'provenance', 'legacySourceKey']);
+    const legacyFields = new Set(['name', 'status', 'definition', 'triggers', 'workflows', 'actions', 'evidence']);
+    for (const [sourceKey, records] of Object.entries(skillLibrary)) {
+      if (!Array.isArray(records)) throw new Error(`Skill source must be an array: ${sourceKey}`);
+      const neutral = sourceKey.startsWith('skill-');
+      if (neutral && records.some(record => record.legacySourceKey) && !records.some(record => record.legacySourceKey && record.id === `method-${sourceKey.slice(6)}`)) throw new Error(`Migrated Skill needs its semantic base method ID: ${sourceKey}`);
+      for (const [sourceIndex, record] of records.entries()) {
+        for (const field of Object.keys(record)) if (!(neutral ? neutralFields : legacyFields).has(field)) throw new Error(`Unclassified method field: ${sourceKey}/${field}`);
+        for (const field of ['name', 'status', 'definition', 'actions', 'evidence', neutral ? 'when' : 'triggers']) {
+          if (!nonempty(record[field])) throw new Error(`Incomplete method ${sourceKey}: ${field}`);
+        }
+        const id = neutral ? sourceKey : slugify(record.name);
+        if (!/^skill-[a-z0-9][a-z0-9-]*$/.test(id)) throw new Error(`Invalid Skill ID: ${id}`);
+        const legacySourceKey = neutral ? record.legacySourceKey : sourceKey;
+        if (legacySourceKey !== undefined && !nonempty(legacySourceKey)) throw new Error(`Invalid legacy source key: ${id}`);
+        const methodId = neutral ? record.id : `method-legacy-${sourceKey}-${id.slice(6)}`;
+        if (!/^method-[a-z0-9][a-z0-9-]*$/.test(methodId || '') || methodIds.has(methodId)) throw new Error(`Invalid or duplicate method ID: ${methodId}`);
+        methodIds.add(methodId);
+        let originalName = record.name;
+        let refs;
+        if (neutral) {
+          if (!Array.isArray(record.workflowRefs) || !record.workflowRefs.length) throw new Error(`Missing method workflow references: ${methodId}`);
+          const provenance = record.provenance;
+          if (!provenance?.original || !provenance?.current || !/^[0-9a-f]{40}$/.test(provenance.original.revision || '') ||
+              !['original', 'current'].every(part => ['repository', 'path', 'selector'].every(field => nonempty(provenance[part][field])))) throw new Error(`Incomplete method provenance: ${methodId}`);
+          if (/^skillLibrary\[/.test(provenance.original.selector) && !legacySourceKey) throw new Error(`Migrated method requires structured legacy origin: ${methodId}`);
+          if (legacySourceKey) {
+            const original = provenance.original, current = provenance.current;
+            const selector = original.selector.match(/^skillLibrary\[([^\]]+)\]\/(.+)$/);
+            if (!selector || selector[1] !== legacySourceKey ||
+                !Object.entries(migrationSource).every(([field, expected]) => original[field] === expected) ||
+                current.repository !== migrationSource.repository || current.path !== migrationSource.path || current.selector !== sourceKey) throw new Error(`Invalid migrated method provenance: ${methodId}`);
+            originalName = selector[2];
+            // A self-consistent selector is not proof that its claimed source
+            // existed. Require exact membership in the pinned pilot source.
+            if (!pilotOrigins[legacySourceKey]?.has(originalName)) throw new Error(`Unknown pinned legacy origin: ${original.selector}`);
+            if (slugify(originalName) !== id) throw new Error(`Conflicting semantic Skill identity for original method: ${original.selector}`);
+            const baseId = `method-${id.slice(6)}`;
+            if (methodId !== baseId && !methodId.startsWith(baseId + '-')) throw new Error(`Migrated method ID must use its semantic Skill prefix: ${methodId}`);
+          } else {
+            // Native methods need an exact source-owned locator, not a loose
+            // non-matching prefix that could disguise a copied legacy record.
+            if (provenance.original.repository !== migrationSource.repository || provenance.original.path !== migrationSource.path ||
+                provenance.original.selector !== `${sourceKey}/${methodId}` ||
+                provenance.current.repository !== migrationSource.repository || provenance.current.path !== migrationSource.path ||
+                provenance.current.selector !== sourceKey) throw new Error(`Invalid native method provenance: ${methodId}`);
+          }
+          refs = record.workflowRefs.map(ref => {
+            if (!ref.id && !ref.unresolved) throw new Error(`Neutral method needs an explicit workflow ID: ${methodId}`);
+            if (ref.unresolved && !ref.legacySourceKey) throw new Error(`Unresolved workflow needs a scoped origin: ${methodId}`);
+            if (ref.unresolved && legacySourceKey && ref.legacySourceKey !== legacySourceKey) throw new Error(`Unresolved workflow scope differs from method origin: ${methodId}`);
+            return { ...ref };
+          });
+        } else {
+          if (!nonempty(record.workflows)) throw new Error(`Missing legacy workflow titles: ${methodId}`);
+          refs = record.workflows.split(' · ').map(title => title.trim()).filter(Boolean).map(title => {
+            const entry = workflows.byScope.get(JSON.stringify([sourceKey, title]));
+            return entry?.flow.id ? { id: entry.flow.id, title } : { legacySourceKey: sourceKey, title, ...(!entry ? { unresolved: true } : {}) };
+          });
+        }
+        if (legacySourceKey) {
+          // Source-record identity is independent of the new semantic/method ID.
+          // This also catches a neutral body left beside its old authored body.
+          const origin = JSON.stringify(['skillLibrary', legacySourceKey, originalName]);
+          if (origins.has(origin)) throw new Error(`Duplicate authored method origin: ${origin}`);
+          origins.add(origin);
+        }
+        const resolved = refs.map(ref => resolveWorkflow(ref, workflows));
+        if (neutral && legacySourceKey) {
+          // Mechanical migration cannot change workflow reach by omitting the
+          // optional reference scope or preserving a title beside a wrong ID.
+          for (const [index, entry] of resolved.entries()) {
+            if (entry && (entry.sourceKey !== legacySourceKey || refs[index].title !== entry.flow.title)) {
+              throw new Error(`Migrated workflow source/title mismatch: ${methodId}`);
+            }
+          }
+        }
+        const method = {
+          id: methodId, name: record.name, status: record.status, definition: record.definition,
+          when: neutral ? record.when : record.triggers, actions: record.actions, evidence: record.evidence,
+          workflowRefs: refs, provenance: neutral ? record.provenance : { source: { collection: 'skillLibrary', key: sourceKey, index: sourceIndex } },
+          ...(legacySourceKey ? { legacySourceKey } : {})
+        };
+        if (!catalog.has(id)) catalog.set(id, { id, name: record.name, methods: [], personas: [], profiles: [], workflows: [], guidance: skillGuidance[id] || null });
+        const skill = catalog.get(id);
+        if (skill.name !== record.name) throw new Error(`Conflicting Skill names for ${id}; resolve the identity explicitly`);
+        skill.methods.push(method);
+        const persona = metadata.get(legacySourceKey);
+        if (persona && !skill.personas.some(item => item.id === persona.id)) skill.personas.push({ id: persona.id, name: persona.name, roleLabel: persona.roleLabel, role: persona.role });
+        // Compatibility is derived from source provenance, never a discovery gate.
+        if (legacySourceKey) skill.profiles.push({ personaId: legacySourceKey, ...(persona ? { personaName: persona.name, roleLabel: persona.roleLabel } : {}), status: method.status, definition: method.definition, triggers: method.when, workflows: refs.map((ref, index) => ref.title || resolved[index]?.flow.title).join(' · '), actions: method.actions, evidence: method.evidence });
+        for (const entry of resolved.filter(Boolean)) {
+          if (!skill.workflows.some(item => item.personaId === entry.sourceKey && item.title === entry.flow.title)) {
+            const owner = metadata.get(entry.sourceKey);
+            skill.workflows.push({ personaId: entry.sourceKey, ...(owner ? { personaName: owner.name } : {}), type: entry.flow.type, title: entry.flow.title, cadence: entry.flow.cadence });
           }
         }
       }
     }
+    const common = (methods, field) => {
+      const values = [...new Set(methods.map(method => method[field]))];
+      return values.length === 1 ? values[0] : null;
+    };
+    const selection = 'Select the applicable method by its task conditions; no single shared procedure is authored.';
     for (const skill of catalog.values()) {
+      skill.methods.sort((a, b) => a.id.localeCompare(b.id));
+      // Historical display order is not used by methods, selection or guidance.
+      const rank = key => displayOrder.get(key) ?? Number.MAX_SAFE_INTEGER;
+      skill.personas.sort((a, b) => rank(a.id) - rank(b.id) || a.id.localeCompare(b.id));
+      skill.profiles.sort((a, b) => rank(a.personaId) - rank(b.personaId) || a.personaId.localeCompare(b.personaId));
+      skill.workflows.sort((a, b) => rank(a.personaId) - rank(b.personaId) || a.personaId.localeCompare(b.personaId) || workflows.byScope.get(JSON.stringify([a.personaId, a.title])).order - workflows.byScope.get(JSON.stringify([b.personaId, b.title])).order);
       const base = skill.guidance || {};
-      const primary = skill.profiles[0] || {};
-      const operation = {...(base.operation || {}), ...(skillPractice[skill.id]?.operation || {})};
-      const quality = {...(base.quality || {}), ...(skillPractice[skill.id]?.quality || {})};
-      const moves = operation.moves || [primary.actions || primary.definition || 'Apply the capability through observable practice.'];
+      const operation = { ...(base.operation || {}), ...(skillPractice[skill.id]?.operation || {}) };
+      const quality = { ...(base.quality || {}), ...(skillPractice[skill.id]?.quality || {}) };
+      const trigger = common(skill.methods, 'when') || selection;
+      const definition = common(skill.methods, 'definition') || 'Method-specific result; inspect the selected method.';
+      const moves = operation.moves || [common(skill.methods, 'actions') || selection];
       const checks = quality.checks || ['Define a skill-specific inspection method, then compare the actual result with the intended outcome and realistic variation.'];
       const specified = (record, fields) => fields.every(field => Array.isArray(record[field]) ? record[field].length > 0 : Boolean(record[field]));
       skill.guidanceCoverage = {
@@ -124,48 +282,31 @@
       skill.operationalScenarios = operationalScenarioCatalog.filter(scenario => scenario.ownerType === 'skill' && scenario.ownerId === skill.id && scenario.status === 'active');
       skill.guidance = {
         operation: {
-          startsWith: operation.startsWith || primary.triggers || 'A situation where this capability is relevant.',
-          loop: operation.loop || [`Notice the trigger: ${primary.triggers || 'identify the relevant situation.'}`, 'Frame the decision and relevant constraints.', `Apply the capability: ${moves[0]}`, `Check the result: ${checks[0]}`, 'Adjust the approach based on what was learned.'],
-          inputs: operation.inputs || [primary.triggers || 'Relevant signals and constraints'],
-          decisions: operation.decisions || moves,
-          outputs: operation.outputs || [operation.leavesBehind || primary.definition || 'A clearer path toward the intended outcome.'],
-          feedback: operation.feedback || checks,
+          startsWith: operation.startsWith || trigger,
+          loop: operation.loop || [`Notice the trigger: ${trigger}`, 'Frame the decision and relevant constraints.', `Apply the capability: ${moves[0]}`, `Check the result: ${checks[0]}`, 'Adjust the approach based on what was learned.'],
+          inputs: operation.inputs || [trigger], decisions: operation.decisions || moves,
+          outputs: operation.outputs || [operation.leavesBehind || definition], feedback: operation.feedback || checks,
           boundaries: operation.boundaries || 'This capability informs the decision; it does not replace domain knowledge, evidence, or decision ownership.',
-          moves,
-          leavesBehind: operation.leavesBehind || primary.definition || 'A result that supports the intended outcome.'
+          moves, leavesBehind: operation.leavesBehind || definition
         },
-        quality: {
-          signals: quality.signals || ['The result supports the intended outcome and holds up under realistic variation.'],
-          checks,
-          watchFor: quality.watchFor || ['A plausible-looking shortcut is treated as evidence of capability.']
-        }
+        quality: { signals: quality.signals || ['The result supports the intended outcome and holds up under realistic variation.'], checks, watchFor: quality.watchFor || ['A plausible-looking shortcut is treated as evidence of capability.'] }
       };
     }
     const unitsById = new Map(skillUnits.map(unit => [unit.id, { id: unit.id, kind: unit.kind, name: unit.name, summary: unit.summary }]));
-    const skillsById = new Map(catalog);
     const entityFor = id => {
       if (unitsById.has(id)) return unitsById.get(id);
-      const skill = skillsById.get(id);
-      return skill ? { id: skill.id, kind: 'composed', name: skill.name, summary: skill.profiles[0]?.definition || '' } : null;
+      const skill = catalog.get(id);
+      return skill ? { id: skill.id, kind: 'composed', name: skill.name, summary: common(skill.methods, 'definition') || 'Select a task-conditioned method for its applicable definition.' } : null;
     };
     for (const skill of catalog.values()) {
-      skill.buildingBlocks = skillRelations
-        .filter(relation => relation.from === skill.id && relation.type === 'built-from')
-        .map(relation => entityFor(relation.to))
-        .filter(Boolean);
-      skill.supportingConnections = skillRelations
-        .filter(relation => relation.to === skill.id && relation.type === 'supports')
-        .map(relation => entityFor(relation.from))
-        .filter(Boolean);
-      skill.relatedSkills = skillRelations
-        .filter(relation => relation.from === skill.id && relation.type === 'related-to')
-        .map(relation => entityFor(relation.to))
-        .filter(Boolean);
+      skill.buildingBlocks = skillRelations.filter(relation => relation.from === skill.id && relation.type === 'built-from').map(relation => entityFor(relation.to)).filter(Boolean);
+      skill.supportingConnections = skillRelations.filter(relation => relation.to === skill.id && relation.type === 'supports').map(relation => entityFor(relation.from)).filter(Boolean);
+      skill.relatedSkills = skillRelations.filter(relation => relation.from === skill.id && relation.type === 'related-to').map(relation => entityFor(relation.to)).filter(Boolean);
     }
     return [...catalog.values()].sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  function buildMaintenance({ personas, skillCatalog }) {
+  function buildMaintenance({ personas = [], skillCatalog }) {
     const personaMaintenance = Object.fromEntries(personas.map(persona => [persona.id, {
       version: '1.0',
       updated: '2026-09-04',
@@ -179,6 +320,7 @@
         confidenceChange: 'Working draft established'
       }]
     }]));
+    if (personaMaintenance['ui-expert']) {
     personaMaintenance['ui-expert'] = {
       version: '1.1',
       updated: '2026-09-04',
@@ -195,6 +337,7 @@
         }
       ]
     };
+    }
     const skillMaintenance = Object.fromEntries(skillCatalog.map(skill => [skill.id, {
       version: '1.0',
       updated: '2026-09-04',
@@ -253,6 +396,7 @@
     }
     for (const id of ['application-editor', 'document-designer']) {
       const record = personaMaintenance[id];
+      if (!record) continue;
       record.version = '1.1'; record.updated = '2026-09-07';
       record.revisions.push({version:'1.1',date:'2026-09-07',changeType:'capability-reconciliation',summary:'Connected evidence-led editing, small content trials, and version-specific review to existing activities.',affectedFields:['behaviors','needs','implication','workflows','skills'],evidence:'Expanded editorial skill methods and application-review contract',confidenceChange:'Remains synthesized; no reader outcome or candidate approval claimed'});
     }
@@ -279,9 +423,12 @@
       record.revisions.push({version:'1.1',date:'2026-09-08',changeType:'capability-formation',summary:'Expanded a distinctive creative-orchestration capability with explicit operation, quality signals, failure indicators, and validation checks.',affectedFields:['operation','quality','workflows','actions','evidence'],evidence:'Mira’s differentiated workflows plus the Persona Skills duplicate and modularity review',confidenceChange:'Working synthesis; reuse boundary and independent validation remain open'});
     }
     const creativeOrchestrator = personaMaintenance['creative-orchestrator'];
+    if (creativeOrchestrator) {
     creativeOrchestrator.version = '1.2'; creativeOrchestrator.updated = '2026-09-08';
     creativeOrchestrator.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added an authoritative source trail for creative direction, multidisciplinary collaboration, and divergent/convergent exploration; clarified the working-synthesis boundary.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'U.S. Bureau of Labor Statistics Art Directors; O*NET Art Directors; Design Council Double Diamond; GOV.UK multidisciplinary service-team guidance',confidenceChange:'Working synthesis remains; source support is stronger and direct observation is still required'});
     creativeOrchestrator.revisions.push({version:'1.2',date:'2026-09-08',changeType:'skill-reconciliation',summary:'Reused existing framing, facilitation, visual judgment, prototyping, validation, rationale, and cross-functional communication Skills; retained only differentiated creative capabilities as new profiles.',affectedFields:['skills'],evidence:'Persona Skills catalog comparison against existing normalized Skill identities and Mira’s workflows',confidenceChange:'Skill inventory deduplicated; new capabilities remain working syntheses'});
+    }
+
     const conformanceSkills = [
       'skill-problem-framing-and-systems-thinking',
       'skill-tool-and-context-design',
@@ -299,6 +446,7 @@
       record.revisions.push({version,date:'2026-09-08',changeType:'persona-application',summary:'Added Noor Vale’s conformance and workflow-observability application while preserving the existing portable Skill boundary.',affectedFields:['profiles','workflows'],evidence:'Issues #37 and #43 plus the conformance Work Order and normalized result contract',confidenceChange:'Portable Skill remains unchanged; Persona-specific application remains a working synthesis'});
     }
     const riley = personaMaintenance['ai-orchestrator'];
+    if (riley) {
     riley.revisions.push({version:'1.1',date:'2026-09-08',changeType:'persona-routing-reconciliation',summary:'Narrowed Riley’s evaluation responsibility to orchestration coordination and made Noor’s conformance observation a required per-run handoff.',affectedFields:['skills','workflows','handoffs'],evidence:'Issue #43 role-boundary cleanup and declared Riley-to-Noor handoff in the conformance Work Order',confidenceChange:'Routing is declared in repository data; runtime enforcement remains untested'});
     riley.revisions.push({version:'1.2',date:'2026-09-14',changeType:'persona-routing-reconciliation',summary:'Confirmed Riley remains an AI orchestrator; Evidence-led Job Search is a Playbook-front-door contextual coordination role, not a Job Search Persona identity.',affectedFields:['roleLabel','implication'],evidence:'Issue #90 ownership correction; no domain expertise added to Riley',confidenceChange:'Identity remains general orchestration; job-search wording corrected on Playbook and docs surfaces'});
     riley.revisions.push({version:'1.3',date:'2026-09-15',changeType:'persona-routing-reconciliation',summary:'Restored Riley Morgan as the default interaction and routing front door for unqualified requests while preserving Playbook procedural ownership, specialist domain ownership, and explicit direct invocation.',affectedFields:['overview','behaviors','workflows'],evidence:'Issue #111 routing correction; issue #90 domain-ownership boundary remains intact',confidenceChange:'Default routing responsibility is explicit; Riley remains a general AI orchestrator and not a job-search domain owner'});
@@ -307,16 +455,21 @@
     riley.revisions.push({version:'1.6',date:'2026-09-22',changeType:'orchestration-capability-extension',summary:'Added provider-neutral work-graph supervision so Riley can maintain authoritative WorkNodes, Dispatches, Gates, evidence, and recovery across multiple execution lanes without becoming the runtime.',affectedFields:['behaviors','needs','skills','workflows','implication'],evidence:'CW-44 research and Persona-Library issue #197; existing bounded-parallel and Current Work contracts',confidenceChange:'Portable supervisory contract is authored; live runtime dispatch and interrupted-run recovery proofs remain required before claiming broad execution conformance'});
     riley.version = '1.6'; riley.updated = '2026-09-22';
 
+    }
+
     const workGraphSkill = skillMaintenance['skill-work-graph-orchestration'];
     workGraphSkill.version = '1.0';
     workGraphSkill.updated = '2026-09-22';
     workGraphSkill.revisions = [{version:'1.0',date:'2026-09-22',changeType:'capability-formation',summary:'Added Work graph orchestration as a distinct supervisory capability composed with Riley’s existing architecture, routing, tool/context, guardrail, and recovery capabilities.',affectedFields:['definition','triggers','operation','quality','workflows','actions','evidence'],evidence:'CW-44 external orchestration pattern review and issue #197 placement decision',confidenceChange:'Working synthesis established; real supervised dispatch and recovery cases remain the next validation step'}];
 
     const elena = personaMaintenance['career-strategist'];
+    if (elena) {
     elena.revisions.push({version:'1.1',date:'2026-09-14',changeType:'capability-extension',summary:'Attached durable job-ledger disposition to Elena’s search sequencing workflow so repeated discovery updates known opportunities instead of resurfacing them as new.',affectedFields:['skills','workflows'],evidence:'Issue #90 job ledger contract; search specialist owns disposition, Riley does not',confidenceChange:'Ledger ownership is declared; private runtime persistence remains outside Persona-Library'});
     elena.revisions.push({version:'1.2',date:'2026-09-16',changeType:'scope-correction',summary:'Narrowed repeated-search persistence from a full opportunity ledger to a lightweight private seen-job set that suppresses openings already presented.',affectedFields:['skills','workflows'],evidence:'Issue #96 clarified user need: find new jobs without repeating previously shown openings; JobAgent remains reference evidence only',confidenceChange:'Duplicate suppression is explicit; application lifecycle tracking is no longer implied by the deduplication contract'});
     elena.revisions.push({version:'1.3',date:'2026-10-01',changeType:'capability-extension',summary:'Made ATS-domain and company-career queries, employer publication/open-status verification, and explicit search coverage part of Elena’s opportunity-discovery workflow.',affectedFields:['skills','workflows'],evidence:'Creative Job Discovery query-bank extension in rickvang/SkillRepo and docs/job-search/implementation.md',confidenceChange:'Discovery instructions and coverage are explicit; runtime availability and live search results still require per-run evidence'});
     elena.version = '1.3'; elena.updated = '2026-10-01';
+
+    }
 
     const searchSequencingSkillId = 'skill-search-sequencing-and-prioritization';
     const searchSequencingRecord = skillMaintenance[searchSequencingSkillId];
@@ -335,6 +488,7 @@
 
     for (const id of ['frontend-systems-engineer', 'application-data-architect']) {
       const record = personaMaintenance[id];
+      if (!record) continue;
       record.version = '1.0';
       record.updated = '2026-09-21';
       record.revisions = [{
@@ -390,8 +544,10 @@
     }
 
     const conformanceObserver = personaMaintenance['conformance-observer'];
+    if (conformanceObserver) {
     conformanceObserver.version = '1.1'; conformanceObserver.updated = '2026-09-08';
     conformanceObserver.revisions.push({version:'1.1',date:'2026-09-08',changeType:'evidence-reconciliation',summary:'Added the Issue #37 conformance suite, Issue #43 observation contract, and explicit live-runtime unknowns to Noor’s working-draft Persona record.',affectedFields:['evidence','resources','context','workflows','needs','implication'],evidence:'Persona Library Issues #37 and #43; conformance-observability Work Order; repository orientation and mutation contracts',confidenceChange:'Working synthesis remains; cross-LLM behavior and identity boundary require actual use'});
+    }
     return { personas: personaMaintenance, skills: skillMaintenance };
   }
 
@@ -511,14 +667,14 @@
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  function buildPersonaToolRequirements({ personas, personaToolRequirements = [] }) {
+  function buildPersonaToolRequirements({ personas = [], personaToolRequirements = [] }) {
     const personaIds = new Set(personas.map(persona => persona.id));
     return personaToolRequirements
       .filter(requirement => personaIds.has(requirement.personaId))
       .map(requirement => ({ ...requirement }));
   }
 
-  function buildPersonaHandoffs({ personas, personaHandoffs = [] }) {
+  function buildPersonaHandoffs({ personas = [], personaHandoffs = [] }) {
     const personaIds = new Set(personas.map(persona => persona.id));
     return personaHandoffs
       .filter(handoff => personaIds.has(handoff.fromPersonaId) && personaIds.has(handoff.toPersonaId))
@@ -533,5 +689,5 @@
   data.personaToolRequirements = buildPersonaToolRequirements(data);
   data.personaHandoffs = buildPersonaHandoffs(data);
   data.maintenance = buildMaintenance(data);
-  window.PersonaLibraryModel = { slugify, buildOperationalScenarioCatalog, buildToolUseRecipes, findOperationalScenarios, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance, templateStateCatalog, templateRuntimeStateByAvailability };
+  window.PersonaLibraryModel = { slugify, resolveWorkflowReference, buildOperationalScenarioCatalog, buildToolUseRecipes, findOperationalScenarios, buildSkillCatalog, buildOperatingPackCatalog, buildTemplateCatalog, buildPersonaToolRequirements, buildPersonaHandoffs, buildMaintenance, templateStateCatalog, templateRuntimeStateByAvailability };
 })();

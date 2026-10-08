@@ -1,7 +1,6 @@
 (() => {
   const fragments = window.PersonaLibraryDataFragments || {};
   const requiredKeys = [
-    'personas',
     'skillLibrary',
     'flowLibrary',
     'playbookCatalog',
@@ -27,6 +26,7 @@
   const data = {};
   for (const key of requiredKeys) data[key] = fragments[key];
 
+  data.personas = fragments.personas ?? [];
   window.PersonaLibraryData = data;
   delete window.PersonaLibraryDataFragments;
 })();

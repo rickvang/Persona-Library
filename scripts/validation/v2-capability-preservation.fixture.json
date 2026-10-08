@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "workstream": "CW-92",
+  "package": "WP02",
+  "baselineCommit": "d61f850e06d266bc6d608b92b730c97e451ea745",
+  "pilotSourceKeys": ["ui-expert", "ai-orchestrator"],
+  "expectedProfileCount": 16,
+  "boundary": "Immutable actual-source baseline, materialized from Git and loaded by its own validation loader. This fixture does not authorize production migration, identity deletion, or evidence promotion."
+}

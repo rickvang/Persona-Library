@@ -47,6 +47,28 @@ test('Persona validation is independently runnable without Site or generated fil
   assert.throws(() => validatePersonas({ data: { ...context.data, flowLibrary: { [persona.id]: [{ type: 'foundational', title: 'Check a contract', activities: [['incomplete']] }] } } }, {}), /incomplete activity row/);
 });
 
+test('CW-92 neutral method source is validated by its canonical Skill, not a Persona identity', () => {
+  const neutral = { id: 'method-test-capability', name: 'Test capability', definition: 'Scoped contract', when: 'When a test applies', actions: 'Check the contract', status: 'Draft', evidence: 'Fixture', workflowRefs: [{ id: 'workflow-check' }], provenance: { original: {}, current: {} } };
+  const shape = {
+    personas: [persona],
+    skillLibrary: { [persona.id]: [profile], 'skill-test-capability': [neutral] },
+    flowLibrary: { [persona.id]: [{ type: 'foundational', title: 'Check a contract', activities: [['Input', 'Action', 'Output', 'Fallback']] }] },
+    skillCatalog: [{ id: 'skill-test-capability', methods: [neutral] }]
+  };
+  const check = data => validatePersonas({ data }, {});
+  assert.doesNotThrow(() => check(shape), 'The existing Skill source must not require a second Persona record');
+  const noCatalog = { ...shape, skillCatalog: [] };
+  assert.throws(() => check(noCatalog), /Neutral method source has no matching canonical Skill/);
+  const wrongMethod = { ...shape, skillLibrary: { ...shape.skillLibrary, 'skill-test-capability': [{ ...neutral, id: 'method-other' }] } };
+  assert.throws(() => check(wrongMethod), /Neutral method source has no matching canonical Skill/);
+  const rogueLegacy = { ...shape, skillLibrary: { ...shape.skillLibrary, 'unknown-persona-source': [profile] } };
+  assert.throws(() => check(rogueLegacy), /Skill library has no matching persona/);
+  const brokenPersona = { ...shape, skillLibrary: { ...shape.skillLibrary, [persona.id]: [{ ...profile, name: 'Unregistered' }] } };
+  assert.throws(() => check(brokenPersona), /unregistered skill profile/);
+  const badFlow = { ...shape, flowLibrary: { ...shape.flowLibrary, [persona.id]: [{ type: 'foundational', title: 'Check a contract', activities: [['incomplete']] }] } };
+  assert.throws(() => check(badFlow), /incomplete activity row/);
+});
+
 test('Persona work modes are optional ordered preferences with a bounded vocabulary', () => {
   const validate = record => validatePersonas({ data: {
     personas: [record],
@@ -71,13 +93,16 @@ test('Persona work modes are optional ordered preferences with a bounded vocabul
 });
 
 test('Skill validation owns skill shape and does not need presentation context', () => {
+  const material = { ...profile, status: 'Synthetic fixture', triggers: profile.triggers.join(' · '), workflows: profile.workflows.join(' · '), actions: profile.actions.join(' · '), evidence: profile.evidence.join(' · ') };
+  const method = { id: 'method-test', name: material.name, status: material.status, definition: material.definition, when: material.triggers, actions: material.actions, evidence: material.evidence, legacySourceKey: persona.id, workflowRefs: [{ title: 'Check a contract', legacySourceKey: persona.id }], provenance: { source: { collection: 'synthetic-fixture', key: 'method-test' } } };
   const context = { data: {
     personas: [persona],
     skillCatalog: [{
       id: 'skill-test',
       name: 'Test capability',
       personas: [{ id: persona.id }],
-      profiles: [{ personaId: persona.id, ...profile }],
+      profiles: [{ personaId: persona.id, ...material }],
+      methods: [method],
       buildingBlocks: [],
       supportingConnections: [],
       relatedSkills: [],
@@ -89,7 +114,7 @@ test('Skill validation owns skill shape and does not need presentation context',
   const indexes = { personaIds: new Set([persona.id]) };
   validateSkills(context, indexes);
   assert.deepEqual([...indexes.catalogIds], ['skill-test']);
-  assert.throws(() => validateSkills({ data: { ...context.data, skillCatalog: [{ ...context.data.skillCatalog[0], profiles: [{ personaId: 'missing-persona', ...profile }] }] } }, { personaIds: new Set([persona.id]) }), /Incomplete skill profile/);
+  assert.throws(() => validateSkills({ data: { ...context.data, skillCatalog: [{ ...context.data.skillCatalog[0], profiles: [{ personaId: 'missing-persona', ...material }] }] } }, { personaIds: new Set([persona.id]) }), /Incomplete skill profile/);
 });
 
 test('Relationship validation keeps cross-domain references explicit', () => {
