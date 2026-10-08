@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test, { after, before } from 'node:test';
 import { fileURLToPath } from 'node:url';
@@ -49,6 +50,21 @@ test('CW-92: preserve full-source material fields under the explicit reader tran
   assert.equal(historical.skillIds.length, fixture.expectedProfileCount);
   assert.equal(baseline.context.libraryDataSources.length, 21);
   assertPreserved(capturePilot(current), expected);
+});
+
+test('CW-92 WP23: unique pilot source references remain discoverable outside wrappers', async () => {
+  for (const [id, file, titles] of [
+    ['ui-expert', 'docs/ux/expert-ux-design-practice.md', ['10 Usability Heuristics for User Interface Design', '5 Principles of Visual Design in UX', 'Layout', 'Develop a component or pattern']],
+    ['ai-orchestrator', 'docs/work-orders.md', ['How we built our multi-agent research system', 'AutoGen']]
+  ]) {
+    const original = baseline.context.data.personas.find(persona => persona.id === id);
+    const text = await readFile(path.join(root, file), 'utf8');
+    assert.ok(text.includes(original.confidence));
+    assert.ok(text.includes(original.evidence));
+    for (const source of original.resources.filter(resource => titles.includes(resource.title))) {
+      for (const field of ['title', 'publisher', 'checked', 'url', 'why']) assert.ok(text.includes(source[field]), `${id}: preserve ${source.title} ${field}`);
+    }
+  }
 });
 
 test('CW-92 WP23: required domain handoffs survive without pilot identities', () => {

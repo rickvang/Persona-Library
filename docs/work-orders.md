@@ -210,3 +210,10 @@ A polished artifact, a handoff, or a full-looking checklist is not completion by
 Active packages stay directly under `docs/work-orders/<work-order-id>/`. When a Work Order reaches a terminal status — `complete`, `no-go`, or `cancelled` — move the package to `docs/work-orders/archive/YYYY-MM/<work-order-id>/` using the month of the reliable terminal update. Archival is lifecycle classification, not deletion; archived packages are read-only historical evidence unless a later issue explicitly reopens or corrects them. Do not archive draft, active, blocked, or ready-for-review work.
 
 When merging the pull request is the last remaining repository step, record the terminal status and move the package in that pull request instead of opening an archive-only pull request; the archived record lands only when the work does.
+
+## Supporting method sources
+
+Evidence maturity: **Working draft**. Cross-industry secondary research synthesis informed by official agent framework documentation, agent architecture research, and NIST AI risk guidance. Specific vendor and tooling examples are representative unless a source names them; validate with implementation interviews, run traces, or work samples.
+
+- [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system) — Anthropic; Checked Sep 2026. Supports planning, parallel delegation, tool use, and the operational lessons of a production multi-agent system.
+- [AutoGen](https://microsoft.github.io/autogen/stable/) — Microsoft Research; Checked Sep 2026. Supports deterministic and dynamic multi-agent workflows, AgentChat, event-driven coordination, and MCP or distributed-agent extensions.

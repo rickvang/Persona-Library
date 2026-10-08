@@ -500,3 +500,12 @@ For a browse, filter, compare, and detail surface, the focused path may use the 
 - [ ] Built QA records tested and untested scope.
 - [ ] Durable changes have the required decision and reconciliation record.
 - [ ] One concrete deliverable, decision, or next action is explicit.
+
+## Supporting method sources
+
+Evidence maturity: **Working draft**. Cross-industry secondary research synthesis informed by O*NET interface-design tasks, the GOV.UK interaction-design capability framework, ISO human-centred design guidance, W3C accessibility standards, usability heuristics, visual-design principles, layout guidance, and design-system contribution practice. Tool entries are representative categories or hypotheses unless a source names the tool; validate with portfolio review, design critiques, implementation audits, or job shadowing.
+
+- [10 Usability Heuristics for User Interface Design](https://www.nngroup.com/articles/ten-usability-heuristics/) — Nielsen Norman Group; Checked Sep 2026. Supports interface priorities around system status, real-world language, user control, consistency, error prevention, recognition, and recovery.
+- [5 Principles of Visual Design in UX](https://www.nngroup.com/articles/principles-visual-design/) — Nielsen Norman Group; Checked Sep 2026. Supports scale, visual hierarchy, balance, contrast, and Gestalt as compositional principles that can improve usability and brand expression.
+- [Layout](https://m3.material.io/foundations/layout/layout-overview) — Material Design 3; Checked Sep 2026. Supports layout as the visual arrangement that directs attention to important information and makes action easier.
+- [Develop a component or pattern](https://design-system.service.gov.uk/community/develop-a-component-or-pattern/) — GOV.UK Design System; Checked Sep 2026. Supports researching existing patterns, working with a design community, testing realistic prototypes, and checking accessibility before publishing.
