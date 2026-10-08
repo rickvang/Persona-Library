@@ -127,8 +127,8 @@ test('CW-92 characterization: reordered and renamed metadata retain fields but o
   // Freeze the known characterization for retained baseline identities, not the
   // existence of unrelated new skills. Accepted fixes convert these assertions.
   const retainedBaselineIds = new Set(pinnedOriginal.map(skill => skill.id).filter(id => currentIds.has(id)));
-  assert.deepStrictEqual(orderSensitive.map(skill => skill.id).filter(id => retainedBaselineIds.has(id)), pinnedProfileIds.filter(id => currentIds.has(id)), 'Known ordering-sensitive profile set changed');
-  assert.deepStrictEqual(guidanceChanged.filter(id => retainedBaselineIds.has(id)), pinnedGuidanceIds.filter(id => currentIds.has(id)), 'Known ordering-sensitive fallback set changed');
+  assert.deepStrictEqual(plain(orderSensitive.map(skill => skill.id).filter(id => retainedBaselineIds.has(id))), plain(pinnedProfileIds.filter(id => currentIds.has(id))), 'Known ordering-sensitive profile set changed');
+  assert.deepStrictEqual(plain(guidanceChanged.filter(id => retainedBaselineIds.has(id))), plain(pinnedGuidanceIds.filter(id => currentIds.has(id))), 'Known ordering-sensitive fallback set changed');
   console.log('CW92_ORDERING ' + JSON.stringify({ orderSensitiveProfiles: orderSensitive.map(skill => skill.id), orderSensitiveGuidance: guidanceChanged }));
 });
 
