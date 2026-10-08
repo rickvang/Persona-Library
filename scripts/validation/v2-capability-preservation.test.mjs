@@ -185,6 +185,15 @@ test('CW-92: reject duplicate methods, dual authored origins, bad provenance and
   const selectorWhitespace = plain(input);
   selectorWhitespace.skillLibrary[key][0].provenance.original.selector = 'skillLibrary[ui-expert]/ ' + selectorWhitespace.skillLibrary[key][0].name;
   assert.throws(() => current.model.buildSkillCatalog(selectorWhitespace), /Unknown pinned legacy origin/);
+  const disguisedHistory = plain(input);
+  delete disguisedHistory.skillLibrary[key][0].legacySourceKey;
+  disguisedHistory.skillLibrary[key][0].provenance.original.selector = ' skillLibrary[ui-expert]/' + disguisedHistory.skillLibrary[key][0].name;
+  assert.throws(() => current.model.buildSkillCatalog(disguisedHistory), /Invalid native method provenance/);
+  const disguisedNativePath = plain(input);
+  delete disguisedNativePath.skillLibrary[key][0].legacySourceKey;
+  disguisedNativePath.skillLibrary[key][0].provenance.original.selector = key + '/method-interaction-states-and-behavior-design';
+  disguisedNativePath.skillLibrary[key][0].provenance.original.path = 'unrelated.js';
+  assert.throws(() => current.model.buildSkillCatalog(disguisedNativePath), /Invalid native method provenance/);
   const nativeBaseMask = plain(input);
   nativeBaseMask.skillLibrary[key][0].id = 'method-interaction-states-and-behavior-design-task';
   const syntheticNative = plain(nativeBaseMask.skillLibrary[key][0]);

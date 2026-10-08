@@ -190,6 +190,13 @@
             if (slugify(originalName) !== id) throw new Error(`Conflicting semantic Skill identity for original method: ${original.selector}`);
             const baseId = `method-${id.slice(6)}`;
             if (methodId !== baseId && !methodId.startsWith(baseId + '-')) throw new Error(`Migrated method ID must use its semantic Skill prefix: ${methodId}`);
+          } else {
+            // Native methods need an exact source-owned locator, not a loose
+            // non-matching prefix that could disguise a copied legacy record.
+            if (provenance.original.repository !== migrationSource.repository || provenance.original.path !== migrationSource.path ||
+                provenance.original.selector !== `${sourceKey}/${methodId}` ||
+                provenance.current.repository !== migrationSource.repository || provenance.current.path !== migrationSource.path ||
+                provenance.current.selector !== sourceKey) throw new Error(`Invalid native method provenance: ${methodId}`);
           }
           refs = record.workflowRefs.map(ref => {
             if (!ref.id && !ref.unresolved) throw new Error(`Neutral method needs an explicit workflow ID: ${methodId}`);
