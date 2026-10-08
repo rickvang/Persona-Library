@@ -59,7 +59,9 @@ function neutralApplicationSource(sources, skillId, methodId) {
     `'${skillId}':[`, `'${skillId}': [`, `"${skillId}":[`, `"${skillId}": [`
   ], `neutral method source for ${skillId}`);
   const content = sources.get(file);
-  const key = content.match(new RegExp(`['"]${escaped(skillId)}['"]\\s*:\\s*\\[`));
+  const sections = [...content.matchAll(new RegExp(`['"]${escaped(skillId)}['"]\\s*:\\s*\\[`, 'g'))];
+  if (sections.length !== 1) throw new Error(`Expected exactly one authored neutral Skill section for ${skillId}; found ${sections.length}`);
+  const key = sections[0];
   const end = key && content.indexOf('\n  ],', key.index + key[0].length);
   if (!key || end < 0) throw new Error(`Cannot locate authored neutral Skill section for ${skillId}`);
   const section = content.slice(key.index + key[0].length, end);

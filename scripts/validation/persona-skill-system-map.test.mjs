@@ -73,6 +73,12 @@ test('CW-92 graph locates a migrated method at its sole authored source', async 
       readFile: file => file === sourcePath ? Promise.resolve(maskedSource) : context.readFile(file)
     };
     await assert.rejects(() => derivePersonaSkillGraph(masked), /Expected exactly one neutral method source/);
+    const duplicatedSource = originalSource + `\nObject.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':[{id:'${methodId}'}] });\n`;
+    const duplicated = {
+      ...context,
+      readFile: file => file === sourcePath ? Promise.resolve(duplicatedSource) : context.readFile(file)
+    };
+    await assert.rejects(() => derivePersonaSkillGraph(duplicated), /Expected exactly one authored neutral Skill section/);
     return;
   }
 
@@ -116,6 +122,13 @@ test('CW-92 graph locates a migrated method at its sole authored source', async 
   assert.ok(application, 'Keep the historical compatibility application during migration');
   assert.match(application.source.locator, /:content\/library-data\/skills-core\.js$/);
   assert.equal(application.source.selector, `skillLibrary[${skillId}][id=${methodId}]`);
+  const duplicatedSource = changedSource + `\nObject.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':[{id:'${methodId}'}] });\n`;
+  const duplicated = {
+    ...simulated,
+    readFile: file => file === sourcePath ? Promise.resolve(duplicatedSource) : context.readFile(file)
+  };
+  await assert.rejects(() => derivePersonaSkillGraph(duplicated), /Expected exactly one authored neutral Skill section/,
+    'Duplicate neutral Skill declarations in one file have no unique authored locator');
   // A matching Skill header and a matching method ID elsewhere in the file
   // are not proof that the claimed source locator exists within that Skill.
   const misplacedSource = changedSource.replace(`"id":"${methodId}"`, '"id":"method-displaced"') +
