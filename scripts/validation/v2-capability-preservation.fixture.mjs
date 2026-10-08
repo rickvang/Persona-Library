@@ -188,15 +188,15 @@ export function readerBaseline(context) {
       if (mapping) method.workflowRefs = method.workflowRefs.map(ref => mapping.has(ref.title)
         ? { id: mapping.get(ref.title), title: ref.title }
         : ref);
-      if (method.legacySourceKey === 'ui-expert') {
-        // WP05's expected representation is derived only from the immutable
+      if (['ui-expert', 'ai-orchestrator'].includes(method.legacySourceKey)) {
+        // WP05/WP06 expected representations derive only from the immutable
         // original record and accepted semantic ID, never current candidate data.
         method.id = `method-${skill.id.slice(6)}`;
         method.provenance = {
           original: {
             repository: 'rickvang/Persona-Library', revision: fixture.baselineCommit,
             path: 'content/library-data/skills-core.js',
-            selector: `skillLibrary[ui-expert]/${method.name}`
+            selector: `skillLibrary[${method.legacySourceKey}]/${method.name}`
           },
           current: { repository: 'rickvang/Persona-Library', path: 'content/library-data/skills-core.js', selector: skill.id }
         };

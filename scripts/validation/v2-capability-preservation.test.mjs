@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
 import { validateSkills } from './skills.mjs';
+import { derivePersonaSkillGraph } from '../build-persona-skill-system-map.mjs';
 import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -74,6 +75,83 @@ test('CW-92 WP05: all eight UI methods are singly authored under semantic Skill 
   assert.equal(current.data.skillCatalog.reduce((n, skill) => n + skill.methods.length, 0), 119, 'All concrete methods remain');
   const withoutMetadata = plain(current.data); withoutMetadata.personas = withoutMetadata.personas.filter(p => p.id !== 'ui-expert');
   assert.deepStrictEqual(semanticView(current.model.buildSkillCatalog(withoutMetadata)), semanticView(current.data.skillCatalog));
+});
+
+test('CW-92 WP06: eight orchestration methods preserve the complete pinned source, including unresolved workflow titles', () => {
+  const historicalOrchestration = baseline.context.data.skillLibrary['ai-orchestrator'];
+  assert.equal(historicalOrchestration.length, 8);
+  assert.equal(current.data.skillLibrary['ai-orchestrator'], undefined, 'No second authored orchestrator source bucket');
+  const workflowIds = new Map(orchestrationWorkflowBackfill);
+  const stillUnresolved = [];
+  for (const old of historicalOrchestration) {
+    const skillId = current.model.slugify(old.name), methodId = `method-${skillId.slice(6)}`;
+    const source = current.data.skillLibrary[skillId];
+    assert.equal(source?.length, 1, `One authored semantic method for ${skillId}`);
+    const method = source[0];
+    for (const [actual, expected] of [
+      [method.id, methodId], [method.name, old.name], [method.status, old.status],
+      [method.definition, old.definition], [method.when, old.triggers],
+      [method.actions, old.actions], [method.evidence, old.evidence],
+      [method.legacySourceKey, 'ai-orchestrator'],
+      [method.provenance.original.revision, fixture.baselineCommit],
+      [method.provenance.original.selector, `skillLibrary[ai-orchestrator]/${old.name}`],
+      [method.provenance.current.selector, skillId]
+    ]) assert.equal(actual, expected);
+    assert.equal(method.workflowRefs.map(ref => ref.title).join(' · '), old.workflows);
+    for (const ref of method.workflowRefs) {
+      const id = workflowIds.get(ref.title);
+      if (id) {
+        assert.equal(ref.id, id);
+        assert.equal(ref.unresolved, undefined);
+        const resolved = current.model.resolveWorkflowReference({ ...ref, legacySourceKey: 'ai-orchestrator' }, current.data.flowLibrary);
+        assert.equal(resolved.flow.title, ref.title);
+        assert.equal(resolved.sourceKey, 'ai-orchestrator');
+      } else {
+        stillUnresolved.push(ref.title);
+        assert.deepStrictEqual(plain(ref), { legacySourceKey: 'ai-orchestrator', title: ref.title, unresolved: true });
+      }
+    }
+    const normalized = current.data.skillCatalog.find(skill => skill.id === skillId);
+    assert.equal(normalized?.methods.filter(method => method.legacySourceKey === 'ai-orchestrator').length, 1);
+    assert.deepStrictEqual(plain(normalized.methods.find(method => method.id === methodId).workflowRefs), plain(method.workflowRefs));
+  }
+  assert.deepStrictEqual(stillUnresolved.sort(), [
+    'Set approval and guardrail points', 'Coordinate perspectives and form the skill',
+    'Formalize and integrate the reusable skill'
+  ].sort(), 'WP07 must resolve these from actual evidence, never invented workflows');
+  assert.equal(current.data.skillCatalog.length, 79);
+  assert.equal(current.data.skillCatalog.reduce((total, skill) => total + skill.methods.length, 0), 119);
+  const withoutPilotPersona = plain(current.data);
+  withoutPilotPersona.personas = withoutPilotPersona.personas.filter(persona => persona.id !== 'ai-orchestrator');
+  assert.deepStrictEqual(semanticView(current.model.buildSkillCatalog(withoutPilotPersona)), semanticView(current.data.skillCatalog));
+});
+
+test('CW-92 WP06: graph application locators follow all eight authored orchestration methods', async () => {
+  const graph = await derivePersonaSkillGraph(current);
+  for (const old of baseline.context.data.skillLibrary['ai-orchestrator']) {
+    const skillId = current.model.slugify(old.name), methodId = `method-${skillId.slice(6)}`;
+    const appId = `skill-application:ai-orchestrator/${skillId}`;
+    const application = graph.nodes.find(node => node.id === appId);
+    assert.ok(application, `Missing graph application ${appId}`);
+    const selector = `skillLibrary[${skillId}][id=${methodId}]`;
+    assert.equal(application.source.selector, selector);
+    const edges = graph.edges.filter(edge =>
+      (edge.to === appId && edge.relationship === 'has-skill-application') ||
+      (edge.from === appId && edge.relationship === 'application-of'));
+    assert.equal(edges.length, 2);
+    assert.ok(edges.every(edge => edge.source.selector === selector));
+  }
+  const skillId = current.model.slugify('Work graph orchestration');
+  const specialistPath = 'content/library-data/skills-specialists.js';
+  const specialists = await current.readFile(specialistPath);
+  const conflicting = {
+    ...current,
+    readFile: file => file === specialistPath
+      ? Promise.resolve(specialists + `\nObject.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':\n[{id:'method-work-graph-orchestration'}] });\n`)
+      : current.readFile(file)
+  };
+  await assert.rejects(() => derivePersonaSkillGraph(conflicting), /Expected exactly one authored neutral Skill section/,
+    'WP06 source graph must reject duplicate authored keys across different files');
 });
 
 test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scoped lookup', () => {

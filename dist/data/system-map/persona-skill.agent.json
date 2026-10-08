@@ -3846,42 +3846,42 @@
     "skill-application:ai-orchestrator/skill-agent-workflow-architecture": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Agent workflow architecture]"
+      "selector": "skillLibrary[skill-agent-workflow-architecture][id=method-agent-workflow-architecture]"
     },
     "skill-application:ai-orchestrator/skill-cross-functional-systems-communication": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Cross-functional systems communication]"
+      "selector": "skillLibrary[skill-cross-functional-systems-communication][id=method-cross-functional-systems-communication]"
     },
     "skill-application:ai-orchestrator/skill-failure-recovery-and-operational-judgment": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Failure recovery and operational judgment]"
+      "selector": "skillLibrary[skill-failure-recovery-and-operational-judgment][id=method-failure-recovery-and-operational-judgment]"
     },
     "skill-application:ai-orchestrator/skill-multi-perspective-skill-synthesis": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Multi-perspective skill synthesis]"
+      "selector": "skillLibrary[skill-multi-perspective-skill-synthesis][id=method-multi-perspective-skill-synthesis]"
     },
     "skill-application:ai-orchestrator/skill-risk-guardrails-and-human-oversight": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Risk, guardrails, and human oversight]"
+      "selector": "skillLibrary[skill-risk-guardrails-and-human-oversight][id=method-risk-guardrails-and-human-oversight]"
     },
     "skill-application:ai-orchestrator/skill-task-decomposition-and-routing": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Task decomposition and routing]"
+      "selector": "skillLibrary[skill-task-decomposition-and-routing][id=method-task-decomposition-and-routing]"
     },
     "skill-application:ai-orchestrator/skill-tool-and-context-design": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Tool and context design]"
+      "selector": "skillLibrary[skill-tool-and-context-design][id=method-tool-and-context-design]"
     },
     "skill-application:ai-orchestrator/skill-work-graph-orchestration": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Work graph orchestration]"
+      "selector": "skillLibrary[skill-work-graph-orchestration][id=method-work-graph-orchestration]"
     },
     "skill-application:application-data-architect/skill-application-and-data-architecture": {
       "kind": "repo-file",
@@ -5081,42 +5081,42 @@
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-agent-workflow-architecture": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Agent workflow architecture]"
+      "selector": "skillLibrary[skill-agent-workflow-architecture][id=method-agent-workflow-architecture]"
     },
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-cross-functional-systems-communication": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Cross-functional systems communication]"
+      "selector": "skillLibrary[skill-cross-functional-systems-communication][id=method-cross-functional-systems-communication]"
     },
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-failure-recovery-and-operational-judgment": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Failure recovery and operational judgment]"
+      "selector": "skillLibrary[skill-failure-recovery-and-operational-judgment][id=method-failure-recovery-and-operational-judgment]"
     },
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-multi-perspective-skill-synthesis": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Multi-perspective skill synthesis]"
+      "selector": "skillLibrary[skill-multi-perspective-skill-synthesis][id=method-multi-perspective-skill-synthesis]"
     },
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-risk-guardrails-and-human-oversight": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Risk, guardrails, and human oversight]"
+      "selector": "skillLibrary[skill-risk-guardrails-and-human-oversight][id=method-risk-guardrails-and-human-oversight]"
     },
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-task-decomposition-and-routing": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Task decomposition and routing]"
+      "selector": "skillLibrary[skill-task-decomposition-and-routing][id=method-task-decomposition-and-routing]"
     },
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-tool-and-context-design": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Tool and context design]"
+      "selector": "skillLibrary[skill-tool-and-context-design][id=method-tool-and-context-design]"
     },
     "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-work-graph-orchestration": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Work graph orchestration]"
+      "selector": "skillLibrary[skill-work-graph-orchestration][id=method-work-graph-orchestration]"
     },
     "edge:persona:application-data-architect--has-skill-application--skill-application:application-data-architect/skill-application-and-data-architecture": {
       "kind": "repo-file",
@@ -5676,42 +5676,42 @@
     "edge:skill-application:ai-orchestrator/skill-agent-workflow-architecture--application-of--skill:skill-agent-workflow-architecture": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Agent workflow architecture]"
+      "selector": "skillLibrary[skill-agent-workflow-architecture][id=method-agent-workflow-architecture]"
     },
     "edge:skill-application:ai-orchestrator/skill-cross-functional-systems-communication--application-of--skill:skill-cross-functional-systems-communication": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Cross-functional systems communication]"
+      "selector": "skillLibrary[skill-cross-functional-systems-communication][id=method-cross-functional-systems-communication]"
     },
     "edge:skill-application:ai-orchestrator/skill-failure-recovery-and-operational-judgment--application-of--skill:skill-failure-recovery-and-operational-judgment": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Failure recovery and operational judgment]"
+      "selector": "skillLibrary[skill-failure-recovery-and-operational-judgment][id=method-failure-recovery-and-operational-judgment]"
     },
     "edge:skill-application:ai-orchestrator/skill-multi-perspective-skill-synthesis--application-of--skill:skill-multi-perspective-skill-synthesis": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Multi-perspective skill synthesis]"
+      "selector": "skillLibrary[skill-multi-perspective-skill-synthesis][id=method-multi-perspective-skill-synthesis]"
     },
     "edge:skill-application:ai-orchestrator/skill-risk-guardrails-and-human-oversight--application-of--skill:skill-risk-guardrails-and-human-oversight": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Risk, guardrails, and human oversight]"
+      "selector": "skillLibrary[skill-risk-guardrails-and-human-oversight][id=method-risk-guardrails-and-human-oversight]"
     },
     "edge:skill-application:ai-orchestrator/skill-task-decomposition-and-routing--application-of--skill:skill-task-decomposition-and-routing": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Task decomposition and routing]"
+      "selector": "skillLibrary[skill-task-decomposition-and-routing][id=method-task-decomposition-and-routing]"
     },
     "edge:skill-application:ai-orchestrator/skill-tool-and-context-design--application-of--skill:skill-tool-and-context-design": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Tool and context design]"
+      "selector": "skillLibrary[skill-tool-and-context-design][id=method-tool-and-context-design]"
     },
     "edge:skill-application:ai-orchestrator/skill-work-graph-orchestration--application-of--skill:skill-work-graph-orchestration": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[ai-orchestrator][name=Work graph orchestration]"
+      "selector": "skillLibrary[skill-work-graph-orchestration][id=method-work-graph-orchestration]"
     },
     "edge:skill-application:application-data-architect/skill-application-and-data-architecture--application-of--skill:skill-application-and-data-architecture": {
       "kind": "repo-file",

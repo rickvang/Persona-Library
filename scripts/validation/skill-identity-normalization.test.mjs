@@ -92,5 +92,31 @@ test('CW-92 shared identity checks a losslessly moved method without counting it
   assert.equal(data.skillCatalog.length, original.skillCatalog.length);
 });
 
+test('CW-92 WP06: orchestration source is singular while peer Skill applications remain distinct', async () => {
+  const { data, model } = await loadValidationContext(root);
+  assert.equal(data.skillLibrary['ai-orchestrator'], undefined);
+  const applications = assertSourceApplicationsMatchCatalog(data, model);
+  const names = [
+    'Agent workflow architecture', 'Work graph orchestration', 'Task decomposition and routing',
+    'Tool and context design', 'Risk, guardrails, and human oversight',
+    'Failure recovery and operational judgment', 'Cross-functional systems communication',
+    'Multi-perspective skill synthesis'
+  ];
+  for (const name of names) {
+    const skillId = model.slugify(name);
+    const method = data.skillLibrary[skillId]?.find(method => method.legacySourceKey === 'ai-orchestrator');
+    assert.ok(method, `Missing task-conditioned method ${skillId}`);
+    assert.equal(applications.get(name).filter(item => item.personaId === 'ai-orchestrator').length, 1);
+  }
+  const duplicated = structuredClone(data);
+  const method = duplicated.skillLibrary['skill-agent-workflow-architecture'][0];
+  duplicated.skillLibrary['ai-orchestrator'] = [{
+    name: method.name, status: method.status, definition: method.definition,
+    triggers: method.when, actions: method.actions, evidence: method.evidence,
+    workflows: method.workflowRefs.map(ref => ref.title).join(' · ')
+  }];
+  assert.throws(() => model.buildSkillCatalog(duplicated), /Duplicate authored method origin/);
+});
+
 // Keep CW-92 preservation checks in the existing required CI test entrypoint.
 import './v2-capability-preservation.test.mjs';
