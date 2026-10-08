@@ -154,6 +154,65 @@ test('CW-92 WP06: graph application locators follow all eight authored orchestra
     'WP06 source graph must reject duplicate authored keys across different files');
 });
 
+test('CW-92 WP08: reuse visual judgment and prototyping through existing task-conditioned Skill owners', async () => {
+  // Aesthetic Reasoning remains authored in SkillRepo; do not copy its portable
+  // research method or create a Persona/profile replacement in this repository.
+  const ids = [
+    'skill-interface-hierarchy-and-visual-communication',
+    'skill-contextual-visual-judgment-and-composition',
+    'skill-prototyping-and-interaction-craft'
+  ];
+  const core = await current.readFile('content/library-data/skills-core.js');
+  const specialists = await current.readFile('content/library-data/skills-specialists.js');
+  const noMetadata = plain(current.data);
+  delete noMetadata.personas;
+  const independent = current.model.buildSkillCatalog(noMetadata);
+
+  for (const id of ids) {
+    const authored = current.data.skillLibrary[id];
+    assert.equal(authored?.length, 1, `Reuse the single existing semantic method: ${id}`);
+    const method = authored[0];
+    const old = baseline.context.data.skillLibrary['ui-expert']
+      .find(record => current.model.slugify(record.name) === id);
+    assert.ok(old, `Verify original owner provenance for ${id}`);
+    for (const [actual, expected] of [
+      [method.id, `method-${id.slice(6)}`], [method.name, old.name],
+      [method.status, old.status], [method.definition, old.definition],
+      [method.when, old.triggers], [method.actions, old.actions],
+      [method.evidence, old.evidence],
+      [method.workflowRefs.map(ref => ref.title).join(' · '), old.workflows],
+      [method.legacySourceKey, 'ui-expert'],
+      [method.provenance.original.selector, `skillLibrary[ui-expert]/${old.name}`],
+      [method.provenance.current.path, 'content/library-data/skills-core.js'],
+      [method.provenance.current.selector, id]
+    ]) assert.equal(actual, expected, `Keep task-specific method fields and single owner: ${id}`);
+    assert.ok(method.workflowRefs.every(ref => ref.id && !ref.unresolved));
+    const header = new RegExp(`['"]${id}['"]\\s*:\\s*\\[`, 'g');
+    assert.equal([...core.matchAll(header)].length, 1, `One authored Skill section for ${id}`);
+    assert.equal([...specialists.matchAll(header)].length, 0, `No parallel specialist source for ${id}`);
+
+    const sourceGuidance = current.data.skillGuidance[id];
+    assert.ok(sourceGuidance?.operation?.moves?.length, `Retain existing operating method guidance: ${id}`);
+    assert.ok(sourceGuidance?.quality?.checks?.length, `Retain existing verification checks: ${id}`);
+    const independentSkill = independent.find(skill => skill.id === id);
+    const originalSkill = current.data.skillCatalog.find(skill => skill.id === id);
+    assert.ok(independentSkill && originalSkill, `Discover ${id} without Persona enumeration`);
+    assert.deepStrictEqual(plain(independentSkill.methods), plain(originalSkill.methods),
+      `Persona metadata must not influence reusable method selection: ${id}`);
+    assert.deepStrictEqual(plain(independentSkill.guidance), plain(originalSkill.guidance),
+      `Persona metadata must not influence shared guidance: ${id}`);
+  }
+
+  // Portable cross-project reasoning has its own canonical owner. The local
+  // visual method links to it but is not a second authored copy of that Skill.
+  const contextual = current.data.skillLibrary['skill-contextual-visual-judgment-and-composition'][0];
+  const portable = 'https://github.com/rickvang/SkillRepo/blob/main/codex/methods/aesthetic-reasoning/SKILL.md';
+  assert.ok(contextual.actions.includes(portable), 'Retain the canonical portable method reference');
+  assert.equal(core.split(portable).length - 1, 1, 'Do not create duplicate authored Aesthetic Reasoning references');
+  assert.equal(current.data.skillLibrary['ui-expert'], undefined,
+    'Visual method reuse must not reinstate an authored Persona-keyed bucket');
+});
+
 test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scoped lookup', () => {
   const ui = current.data.flowLibrary['ui-expert'];
   const original = baseline.context.data.flowLibrary['ui-expert'];
