@@ -5,11 +5,6 @@
   "coverage": "complete-for-scope",
   "nodes": [
     {
-      "id": "persona:ai-orchestrator",
-      "label": "Riley Morgan",
-      "type": "persona"
-    },
-    {
       "id": "persona:amina",
       "label": "Amina Bello",
       "type": "persona"
@@ -105,11 +100,6 @@
       "type": "persona"
     },
     {
-      "id": "persona:ui-expert",
-      "label": "Camille Ortiz",
-      "type": "persona"
-    },
-    {
       "id": "persona:ux-senior",
       "label": "Jordan Lee",
       "type": "persona"
@@ -121,42 +111,42 @@
     },
     {
       "id": "skill-application:ai-orchestrator/skill-agent-workflow-architecture",
-      "label": "Riley Morgan · Agent workflow architecture",
+      "label": "Agent workflow architecture · method-agent-workflow-architecture",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ai-orchestrator/skill-cross-functional-systems-communication",
-      "label": "Riley Morgan · Cross-functional systems communication",
+      "label": "Cross-functional systems communication · method-cross-functional-systems-communication",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ai-orchestrator/skill-failure-recovery-and-operational-judgment",
-      "label": "Riley Morgan · Failure recovery and operational judgment",
+      "label": "Failure recovery and operational judgment · method-failure-recovery-and-operational-judgment",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ai-orchestrator/skill-multi-perspective-skill-synthesis",
-      "label": "Riley Morgan · Multi-perspective skill synthesis",
+      "label": "Multi-perspective skill synthesis · method-multi-perspective-skill-synthesis",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ai-orchestrator/skill-risk-guardrails-and-human-oversight",
-      "label": "Riley Morgan · Risk, guardrails, and human oversight",
+      "label": "Risk, guardrails, and human oversight · method-risk-guardrails-and-human-oversight",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ai-orchestrator/skill-task-decomposition-and-routing",
-      "label": "Riley Morgan · Task decomposition and routing",
+      "label": "Task decomposition and routing · method-task-decomposition-and-routing",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ai-orchestrator/skill-tool-and-context-design",
-      "label": "Riley Morgan · Tool and context design",
+      "label": "Tool and context design · method-tool-and-context-design",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ai-orchestrator/skill-work-graph-orchestration",
-      "label": "Riley Morgan · Work graph orchestration",
+      "label": "Work graph orchestration · method-work-graph-orchestration",
       "type": "persona-skill-application"
     },
     {
@@ -641,42 +631,42 @@
     },
     {
       "id": "skill-application:ui-expert/skill-accessibility-and-inclusive-design",
-      "label": "Camille Ortiz · Accessibility and inclusive design",
+      "label": "Accessibility and inclusive design · method-accessibility-and-inclusive-design",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ui-expert/skill-component-and-design-system-thinking",
-      "label": "Camille Ortiz · Component and design-system thinking",
+      "label": "Component and design-system thinking · method-component-and-design-system-thinking",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ui-expert/skill-contextual-visual-judgment-and-composition",
-      "label": "Camille Ortiz · Contextual visual judgment and composition",
+      "label": "Contextual visual judgment and composition · method-contextual-visual-judgment-and-composition",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ui-expert/skill-design-qa-and-implementation-partnership",
-      "label": "Camille Ortiz · Design QA and implementation partnership",
+      "label": "Design QA and implementation partnership · method-design-qa-and-implementation-partnership",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ui-expert/skill-interaction-states-and-behavior-design",
-      "label": "Camille Ortiz · Interaction states and behavior design",
+      "label": "Interaction states and behavior design · method-interaction-states-and-behavior-design",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ui-expert/skill-interface-hierarchy-and-visual-communication",
-      "label": "Camille Ortiz · Interface hierarchy and visual communication",
+      "label": "Interface hierarchy and visual communication · method-interface-hierarchy-and-visual-communication",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ui-expert/skill-prototyping-and-interaction-craft",
-      "label": "Camille Ortiz · Prototyping and interaction craft",
+      "label": "Prototyping and interaction craft · method-prototyping-and-interaction-craft",
       "type": "persona-skill-application"
     },
     {
       "id": "skill-application:ui-expert/skill-responsive-and-adaptive-layout",
-      "label": "Camille Ortiz · Responsive and adaptive layout",
+      "label": "Responsive and adaptive layout · method-responsive-and-adaptive-layout",
       "type": "persona-skill-application"
     },
     {
@@ -1357,54 +1347,6 @@
   ],
   "edges": [
     {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-agent-workflow-architecture",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-agent-workflow-architecture",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-cross-functional-systems-communication",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-cross-functional-systems-communication",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-failure-recovery-and-operational-judgment",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-failure-recovery-and-operational-judgment",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-multi-perspective-skill-synthesis",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-multi-perspective-skill-synthesis",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-risk-guardrails-and-human-oversight",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-risk-guardrails-and-human-oversight",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-task-decomposition-and-routing",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-task-decomposition-and-routing",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-tool-and-context-design",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-tool-and-context-design",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-work-graph-orchestration",
-      "from": "persona:ai-orchestrator",
-      "to": "skill-application:ai-orchestrator/skill-work-graph-orchestration",
-      "relationship": "has-skill-application"
-    },
-    {
       "id": "edge:persona:application-data-architect--has-skill-application--skill-application:application-data-architect/skill-application-and-data-architecture",
       "from": "persona:application-data-architect",
       "to": "skill-application:application-data-architect/skill-application-and-data-architecture",
@@ -1978,54 +1920,6 @@
       "id": "edge:persona:template-librarian--has-skill-application--skill-application:template-librarian/skill-task-decomposition-and-routing",
       "from": "persona:template-librarian",
       "to": "skill-application:template-librarian/skill-task-decomposition-and-routing",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-accessibility-and-inclusive-design",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-accessibility-and-inclusive-design",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-component-and-design-system-thinking",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-component-and-design-system-thinking",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-contextual-visual-judgment-and-composition",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-contextual-visual-judgment-and-composition",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-design-qa-and-implementation-partnership",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-design-qa-and-implementation-partnership",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-interaction-states-and-behavior-design",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-interaction-states-and-behavior-design",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-interface-hierarchy-and-visual-communication",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-interface-hierarchy-and-visual-communication",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-prototyping-and-interaction-craft",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-prototyping-and-interaction-craft",
-      "relationship": "has-skill-application"
-    },
-    {
-      "id": "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-responsive-and-adaptive-layout",
-      "from": "persona:ui-expert",
-      "to": "skill-application:ui-expert/skill-responsive-and-adaptive-layout",
       "relationship": "has-skill-application"
     },
     {
@@ -3115,12 +3009,6 @@
       "relationship": "contains"
     },
     {
-      "id": "edge:view:personas--contains--persona:ai-orchestrator",
-      "from": "view:personas",
-      "to": "persona:ai-orchestrator",
-      "relationship": "contains"
-    },
-    {
       "id": "edge:view:personas--contains--persona:amina",
       "from": "view:personas",
       "to": "persona:amina",
@@ -3232,12 +3120,6 @@
       "id": "edge:view:personas--contains--persona:tomas",
       "from": "view:personas",
       "to": "persona:tomas",
-      "relationship": "contains"
-    },
-    {
-      "id": "edge:view:personas--contains--persona:ui-expert",
-      "from": "view:personas",
-      "to": "persona:ui-expert",
       "relationship": "contains"
     },
     {
@@ -3728,11 +3610,6 @@
     }
   ],
   "provenance": {
-    "persona:ai-orchestrator": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/personas-core.js",
-      "selector": "personas[id=ai-orchestrator]"
-    },
     "persona:amina": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/personas-core.js",
@@ -3827,11 +3704,6 @@
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/personas-core.js",
       "selector": "personas[id=tomas]"
-    },
-    "persona:ui-expert": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/personas-core.js",
-      "selector": "personas[id=ui-expert]"
     },
     "persona:ux-senior": {
       "kind": "repo-file",
@@ -5078,46 +4950,6 @@
       "locator": "rickvang/Persona-Library:ARCHITECTURE.md",
       "selector": "Skill identity/application invariant"
     },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-agent-workflow-architecture": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-agent-workflow-architecture][id=method-agent-workflow-architecture]"
-    },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-cross-functional-systems-communication": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-cross-functional-systems-communication][id=method-cross-functional-systems-communication]"
-    },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-failure-recovery-and-operational-judgment": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-failure-recovery-and-operational-judgment][id=method-failure-recovery-and-operational-judgment]"
-    },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-multi-perspective-skill-synthesis": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-multi-perspective-skill-synthesis][id=method-multi-perspective-skill-synthesis]"
-    },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-risk-guardrails-and-human-oversight": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-risk-guardrails-and-human-oversight][id=method-risk-guardrails-and-human-oversight]"
-    },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-task-decomposition-and-routing": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-task-decomposition-and-routing][id=method-task-decomposition-and-routing]"
-    },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-tool-and-context-design": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-tool-and-context-design][id=method-tool-and-context-design]"
-    },
-    "edge:persona:ai-orchestrator--has-skill-application--skill-application:ai-orchestrator/skill-work-graph-orchestration": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-work-graph-orchestration][id=method-work-graph-orchestration]"
-    },
     "edge:persona:application-data-architect--has-skill-application--skill-application:application-data-architect/skill-application-and-data-architecture": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-specialists.js",
@@ -5597,46 +5429,6 @@
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:content/library-data/skills-specialists.js",
       "selector": "skillLibrary[template-librarian][name=Task decomposition and routing]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-accessibility-and-inclusive-design": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-accessibility-and-inclusive-design][id=method-accessibility-and-inclusive-design]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-component-and-design-system-thinking": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-component-and-design-system-thinking][id=method-component-and-design-system-thinking]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-contextual-visual-judgment-and-composition": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-contextual-visual-judgment-and-composition][id=method-contextual-visual-judgment-and-composition]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-design-qa-and-implementation-partnership": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-design-qa-and-implementation-partnership][id=method-design-qa-and-implementation-partnership]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-interaction-states-and-behavior-design": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-interaction-states-and-behavior-design][id=method-interaction-states-and-behavior-design]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-interface-hierarchy-and-visual-communication": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-interface-hierarchy-and-visual-communication][id=method-interface-hierarchy-and-visual-communication]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-prototyping-and-interaction-craft": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-prototyping-and-interaction-craft][id=method-prototyping-and-interaction-craft]"
-    },
-    "edge:persona:ui-expert--has-skill-application--skill-application:ui-expert/skill-responsive-and-adaptive-layout": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-      "selector": "skillLibrary[skill-responsive-and-adaptive-layout][id=method-responsive-and-adaptive-layout]"
     },
     "edge:persona:ux-senior--has-skill-application--skill-application:ux-senior/skill-accessibility-and-inclusive-design": {
       "kind": "repo-file",
@@ -6543,11 +6335,6 @@
       "locator": "rickvang/Persona-Library:ARCHITECTURE.md",
       "selector": "Skill identity/application invariant"
     },
-    "edge:view:personas--contains--persona:ai-orchestrator": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:ARCHITECTURE.md",
-      "selector": "Skill identity/application invariant"
-    },
     "edge:view:personas--contains--persona:amina": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:ARCHITECTURE.md",
@@ -6639,11 +6426,6 @@
       "selector": "Skill identity/application invariant"
     },
     "edge:view:personas--contains--persona:tomas": {
-      "kind": "repo-file",
-      "locator": "rickvang/Persona-Library:ARCHITECTURE.md",
-      "selector": "Skill identity/application invariant"
-    },
-    "edge:view:personas--contains--persona:ui-expert": {
       "kind": "repo-file",
       "locator": "rickvang/Persona-Library:ARCHITECTURE.md",
       "selector": "Skill identity/application invariant"

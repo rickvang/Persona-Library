@@ -67,6 +67,18 @@ test('CW-92 WP23: unique pilot source references remain discoverable outside wra
   }
 });
 
+test('CW-92 WP24: archive only pilot wrappers and redundant identity adapters', () => {
+  const retired = new Set(fixture.pilotSourceKeys);
+  assert.deepStrictEqual(plain(current.data.personas.map(item => item.id).sort()), plain(baseline.context.data.personas.map(item => item.id).filter(id => !retired.has(id)).sort()));
+  assert.equal(current.data.personaToolRequirements.some(item => retired.has(item.personaId)), false);
+  assert.equal(current.data.personaHandoffs.some(item => retired.has(item.fromPersonaId) || retired.has(item.toPersonaId)), false);
+  for (const record of [...current.data.toolCatalog, ...current.data.toolUseRecipes]) assert.equal(record.personaIds.some(id => retired.has(id)), false);
+  for (const id of fixture.pilotSourceKeys) assert.equal(current.data.maintenance.personas[id], undefined);
+  for (const field of ['toolUseRecipes', 'toolCatalog', 'operatingPacks', 'templates']) {
+    assert.deepStrictEqual(plain(current.data[field].map(item => item.id).sort()), plain(baseline.context.data[field].map(item => item.id).sort()), field + ' identities must not be retired with wrappers');
+  }
+});
+
 test('CW-92 WP23: required domain handoffs survive without pilot identities', () => {
   const data = initialize(current, omitPilot);
   for (const id of ['scenario-github-issue-implementation', 'scenario-vercel-deployed-state-verification', 'scenario-riley-work-graph-supervision']) {
@@ -205,7 +217,8 @@ test('CW-92 WP06: graph application locators follow all eight authored orchestra
     const edges = graph.edges.filter(edge =>
       (edge.to === appId && edge.relationship === 'has-skill-application') ||
       (edge.from === appId && edge.relationship === 'application-of'));
-    assert.equal(edges.length, 2);
+    assert.equal(edges.length, 1, 'Keep the method application-of edge; the archived Persona edge is gone');
+    assert.equal(edges[0].relationship, 'application-of');
     assert.ok(edges.every(edge => edge.source.selector === selector));
   }
   const skillId = current.model.slugify('Work graph orchestration');
@@ -495,7 +508,7 @@ test('CW-92: full source and maintenance initialize without pilot or any Persona
   }
   const marker = 'const rileyPersonaRecord = window.PersonaLibraryDataFragments.personas.find';
   const inject = source => source.replace(marker, "window.PersonaLibraryDataFragments.personas = window.PersonaLibraryDataFragments.personas.filter(p => p.id !== 'ai-orchestrator');\n" + marker);
-  assert.equal(current.files.librarySource.split(marker).length - 1, 1);
+  assert.equal(current.files.librarySource.split(marker).length - 1, 0, 'The retired wrapper override must be absent');
   assert.throws(() => vm.runInNewContext(inject(baseline.context.files.librarySource), { window: {} }), /overview|undefined/);
   const sandbox = { window: {} };
   vm.runInNewContext(inject(current.files.librarySource), sandbox);

@@ -75,6 +75,8 @@ export function capturePilot(context) {
     }
   } while (entityIds.size !== previousSize);
   const relevantIds = new Set([...keys, ...entityIds]);
+  // Keep checking this retained recipe after its pilot identity edge retires.
+  relevantIds.add('recipe-riley-trace-evaluation');
   const linked = {};
   for (const field of ['toolUseRecipes', 'personaToolRequirements', 'personaHandoffs', 'operationalScenarios', 'operationalScenarioCatalog', 'playbookCatalog', 'operatingPacks', 'operatingPackCatalog', 'templates', 'templateCatalog', 'toolCatalog', 'toolReferences']) {
     linked[field] = plain((data[field] || []).filter(item => mentions(item, relevantIds)));
@@ -298,5 +300,38 @@ export function readerBaseline(context) {
       record.useWhen += ` Apply ${application.skillId} through the “${application.workflow}” workflow. ${application.reason.replace('Camille uses', 'Use')}`;
     }
   }
+  // WP24 archives only the two accepted wrappers and their derived identity
+  // metadata/compatibility edges. All method bodies, variants, workflows,
+  // neutral handoff contracts, recipe requirements and provenance stay pinned.
+  const retired = new Set(['ui-expert', 'ai-orchestrator']);
+  snapshot.definitions = [];
+  snapshot.maintenance.personas = {};
+  for (const skill of snapshot.catalog) {
+    // Optional metadata affects presentation order only; preserve every variant.
+    for (const field of ['profiles', 'workflows']) skill[field].sort((a, b) => Number(retired.has(a.personaId)) - Number(retired.has(b.personaId)));
+  }
+  const retiredRequirements = new Set(requirements.map(item => item.id));
+  const retiredHandoffs = new Set(['handoff-riley-to-noor-conformance', 'handoff-template-librarian-to-camille', 'handoff-riley-to-frontend-systems-engineer', 'handoff-riley-to-application-data-architect', 'handoff-frontend-to-camille-interface-intent']);
+  snapshot.linked.personaToolRequirements = snapshot.linked.personaToolRequirements.filter(item => !retiredRequirements.has(item.id));
+  snapshot.linked.personaHandoffs = snapshot.linked.personaHandoffs.filter(item => !retiredHandoffs.has(item.id));
+  const associated = new Set(['tool-vercel', 'recipe-figma-hierarchy-inspection', ...requirements.map(item => item.recipeId)]);
+  const archiveMetadata = value => {
+    if (!value || typeof value !== 'object') return;
+    if (associated.has(value.id)) {
+      if (value.personaIds) value.personaIds = value.personaIds.filter(id => !retired.has(id));
+      if (value.personaNames) value.personaNames = value.personaNames.filter(name => !['Camille Ortiz', 'Riley Morgan'].includes(name));
+    }
+    if (['operating-pack-design-system', 'template-design-system-web-app'].includes(value.id)) {
+      if (value.applications) value.applications = value.applications.filter(item => item.personaId !== 'ui-expert');
+      if (value.relatedPersonas) value.relatedPersonas = value.relatedPersonas.filter(item => item.id !== 'ui-expert');
+    }
+    if (Array.isArray(value.personas)) value.personas = value.personas.filter(item => !retired.has(item.id));
+    if (retired.has(value.personaId)) {
+      delete value.personaName;
+      delete value.roleLabel;
+    }
+    Object.values(value).forEach(archiveMetadata);
+  };
+  archiveMetadata(snapshot);
   return plain(snapshot);
 }

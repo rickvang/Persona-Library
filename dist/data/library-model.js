@@ -347,7 +347,7 @@
         changeType: 'initial-profile',
         summary: 'Initial capability profile added to the Skills Library.',
         affectedFields: ['definition', 'triggers', 'workflows', 'actions', 'evidence'],
-        evidence: skill.profiles[0]?.evidence || 'Working synthesis',
+        evidence: skill.methods.find(method => method.id === `method-${skill.id.slice(6)}`)?.evidence || skill.profiles[0]?.evidence || 'Working synthesis',
         confidenceChange: 'Synthesized unless otherwise noted'
       }]
     }]));
@@ -560,7 +560,7 @@
         const relatedSkills = (pack.relatedSkills || []).map(id => {
           const skill = skillById.get(id);
           return skill
-            ? { id: skill.id, name: skill.name, definition: skill.profiles[0]?.definition || '', known: true, toolUseRecipes: skill.toolUseRecipes || [] }
+            ? { id: skill.id, name: skill.name, definition: skill.methods.find(method => method.id === `method-${skill.id.slice(6)}`)?.definition || skill.profiles[0]?.definition || '', known: true, toolUseRecipes: skill.toolUseRecipes || [] }
             : { id, name: id, definition: '', known: false, toolUseRecipes: [] };
         });
         const applications = (pack.applications || []).map(application => {
@@ -618,7 +618,7 @@
         const relatedSkills = (template.relatedSkills || []).map(id => {
           const skill = skillById.get(id);
           return skill
-            ? { id: skill.id, name: skill.name, definition: skill.profiles[0]?.definition || '', known: true, toolUseRecipes: skill.toolUseRecipes || [] }
+            ? { id: skill.id, name: skill.name, definition: skill.methods.find(method => method.id === `method-${skill.id.slice(6)}`)?.definition || skill.profiles[0]?.definition || '', known: true, toolUseRecipes: skill.toolUseRecipes || [] }
             : { id, name: id, definition: '', known: false, toolUseRecipes: [] };
         });
         const applications = (template.applications || []).map(application => {
