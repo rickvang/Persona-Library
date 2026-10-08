@@ -1,0 +1,97 @@
+name: CW92 bounded candidate blob transport
+on:
+  pull_request:
+    paths:
+      - 'cw92-transport.json'
+      - '.github/workflows/cw92-bounded-transport.yml'
+permissions:
+  contents: write
+jobs:
+  bounded-transport:
+    if: github.head_ref == 'chatgpt/cw92-bounded-transport' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: input
+          persist-credentials: false
+      - name: Resolve fixed candidate input
+        id: candidate
+        run: |
+          python - <<'PY'
+          import json,re,os
+          x=json.load(open('input/cw92-transport.json'))
+          assert re.fullmatch('[0-9a-f]{40}',x['base'])
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f: f.write('base='+x['base']+'\n')
+          PY
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.candidate.outputs.base }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Apply bounded exact edits
+        run: |
+          python - <<'PY'
+          import json,pathlib,re,subprocess
+          x=json.load(open('input/cw92-transport.json')); root=pathlib.Path('candidate').resolve()
+          assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==x['base']
+          for e in x['edits']:
+            p=root/e['path']; assert p.resolve().is_relative_to(root) and not p.is_symlink()
+            assert e['path'] in x['expected'] and not e['path'].startswith(('.git/','.github/'))
+            t=p.read_text(); assert e['old'] and t.count(e['old'])==1,e['path']
+            p.write_text(t.replace(e['old'],e['new']))
+          PY
+      - name: Rebuild with existing pinned generators
+        working-directory: candidate
+        run: |
+          npm ci --include=dev --ignore-scripts --no-fund --no-audit
+          node scripts/build-library.mjs
+      - name: Validate content and exact output hashes
+        working-directory: candidate
+        run: |
+          node scripts/validate-content.mjs
+          git diff --check
+          python - <<'PY'
+          import json,subprocess,pathlib,hashlib
+          x=json.load(open('../input/cw92-transport.json'))
+          changed=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
+          assert set(changed)==set(x['expected']),str(changed)
+          assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True).strip()
+          for p,expected in x['expected'].items():
+            b=pathlib.Path(p).read_bytes(); actual=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+            assert actual==expected,p+': '+actual
+          PY
+      - name: Upload verified blobs only; never change refs
+        working-directory: candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPOSITORY: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json,os,pathlib,base64,urllib.request,hashlib
+          x=json.load(open('../input/cw92-transport.json')); result=[]
+          endpoint='https://api.github.com/repos/'+os.environ['GH_REPOSITORY']+'/git/blobs'
+          for p,expected in x['expected'].items():
+            b=pathlib.Path(p).read_bytes()
+            assert hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==expected
+            payload=json.dumps({'content':base64.b64encode(b).decode(),'encoding':'base64'}).encode()
+            req=urllib.request.Request(endpoint,data=payload,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json'},method='POST')
+            with urllib.request.urlopen(req) as response: sha=json.load(response)['sha']
+            assert sha==expected
+            result.append({'path':p,'mode':'100644','type':'blob','sha':sha})
+          out=pathlib.Path(os.environ['RUNNER_TEMP'])/'cw92-verified-blobs.json'
+          out.write_text(json.dumps({'base':x['base'],'tree_elements':result},indent=2)+'\n')
+          print('CW92_VERIFIED_BLOBS '+json.dumps(result))
+          PY
+      - uses: actions/upload-artifact@v7
+        with:
+          name: cw92-verified-blobs
+          path: ${{ runner.temp }}/cw92-verified-blobs.json
+          retention-days: 1
+          if-no-files-found: error
