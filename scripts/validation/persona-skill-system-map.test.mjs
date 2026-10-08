@@ -72,13 +72,20 @@ test('CW-92 graph locates a migrated method at its sole authored source', async 
       ...context,
       readFile: file => file === sourcePath ? Promise.resolve(maskedSource) : context.readFile(file)
     };
-    await assert.rejects(() => derivePersonaSkillGraph(masked), /Expected exactly one neutral method source/);
+    await assert.rejects(() => derivePersonaSkillGraph(masked), /Expected exactly one authored neutral Skill section/);
     const duplicatedSource = originalSource + `\nObject.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':[{id:'${methodId}'}] });\n`;
     const duplicated = {
       ...context,
       readFile: file => file === sourcePath ? Promise.resolve(duplicatedSource) : context.readFile(file)
     };
     await assert.rejects(() => derivePersonaSkillGraph(duplicated), /Expected exactly one authored neutral Skill section/);
+    const specialistPath = 'content/library-data/skills-specialists.js';
+    const specialists = await context.readFile(specialistPath);
+    const crossFile = { ...context, readFile: file => file === specialistPath
+      ? Promise.resolve(specialists + `\nObject.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':\n[{id:'${methodId}'}] });\n`)
+      : context.readFile(file) };
+    await assert.rejects(() => derivePersonaSkillGraph(crossFile), /Expected exactly one authored neutral Skill section/,
+      'Duplicate Skill declaration in another source file must fail even with newline whitespace');
     return;
   }
 
@@ -129,6 +136,13 @@ test('CW-92 graph locates a migrated method at its sole authored source', async 
   };
   await assert.rejects(() => derivePersonaSkillGraph(duplicated), /Expected exactly one authored neutral Skill section/,
     'Duplicate neutral Skill declarations in one file have no unique authored locator');
+  const specialistPath = 'content/library-data/skills-specialists.js';
+  const specialists = await context.readFile(specialistPath);
+  const acrossFiles = { ...simulated, readFile: file => file === specialistPath
+    ? Promise.resolve(specialists + `\nObject.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':\n[{id:'${methodId}'}] });\n`)
+    : simulated.readFile(file) };
+  await assert.rejects(() => derivePersonaSkillGraph(acrossFiles), /Expected exactly one authored neutral Skill section/,
+    'Count Skill sections across files, not only files matching literal whitespace variants');
   // A matching Skill header and a matching method ID elsewhere in the file
   // are not proof that the claimed source locator exists within that Skill.
   const misplacedSource = changedSource.replace(`"id":"${methodId}"`, '"id":"method-displaced"') +
@@ -141,7 +155,7 @@ test('CW-92 graph locates a migrated method at its sole authored source', async 
   await assert.rejects(() => derivePersonaSkillGraph(misattributed), /Missing authored neutral method/,
     'Do not join a Skill key with a method ID from another authored section');
   const unmodifiedSource = { ...simulated, readFile: context.readFile };
-  await assert.rejects(() => derivePersonaSkillGraph(unmodifiedSource), /Expected exactly one neutral method source/,
+  await assert.rejects(() => derivePersonaSkillGraph(unmodifiedSource), /Expected exactly one authored neutral Skill section/,
     'Missing a real authored method source must fail instead of citing its vacated Persona row');
 });
 

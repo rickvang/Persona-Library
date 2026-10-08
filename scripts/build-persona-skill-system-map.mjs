@@ -55,13 +55,14 @@ function findUniqueSource(sources, needles, kind) {
 // during CW-92. An application derived from a migrated method must point to
 // the one authored neutral method, not the former Persona-keyed source row.
 function neutralApplicationSource(sources, skillId, methodId) {
-  const file = findUniqueSource(sources, [
-    `'${skillId}':[`, `'${skillId}': [`, `"${skillId}":[`, `"${skillId}": [`
-  ], `neutral method source for ${skillId}`);
-  const content = sources.get(file);
-  const sections = [...content.matchAll(new RegExp(`['"]${escaped(skillId)}['"]\\s*:\\s*\\[`, 'g'))];
+  // A source ID can be declared in two different files, including whitespace
+  // variants that a literal prefilter misses. Count real authored sections
+  // across every eligible source before trusting the provenance locator.
+  const keyPattern = new RegExp(`['"]${escaped(skillId)}['"]\\s*:\\s*\\[`, 'g');
+  const sections = [...sources.entries()].flatMap(([file, content]) =>
+    [...content.matchAll(keyPattern)].map(key => ({ file, content, key })));
   if (sections.length !== 1) throw new Error(`Expected exactly one authored neutral Skill section for ${skillId}; found ${sections.length}`);
-  const key = sections[0];
+  const { file, content, key } = sections[0];
   const end = key && content.indexOf('\n  ],', key.index + key[0].length);
   if (!key || end < 0) throw new Error(`Cannot locate authored neutral Skill section for ${skillId}`);
   const section = content.slice(key.index + key[0].length, end);
