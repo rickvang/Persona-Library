@@ -9,7 +9,7 @@ Use this practice when a product, feature, workflow, or interface needs informat
 
 The practice is designed to produce one useful design outcome, not a gallery of polished screens or a documentation exercise. It makes the reasoning behind structure and visual emphasis inspectable and keeps evidence separate from assumptions.
 
-This is a workflow/reference guide applied through existing Persona records. It is not a replacement for Camille Ortiz, Jordan Lee, Layout Lab, the collaboration context, or the existing Skill catalog.
+This workflow/reference guide applies through existing Skills and optional Persona contexts. Preserve Layout Lab, the collaboration context, and the existing Skill catalog. UI methods do not require a Persona record.
 
 ## Artifact decision and boundaries
 
@@ -97,12 +97,12 @@ An observed finding without a named source and session or revision context is no
 Do not merge Camille Ortiz and Jordan Lee into an invented Expert UX Designer record.
 
 - Jordan Lee, ux-senior, leads when the problem, content model, terminology, task flow, navigation, or evaluation question is unsettled. Jordan owns the reasoning trail for why the structure serves the task.
-- Camille Ortiz, ui-expert, leads once the task and sufficient structure are known. Camille owns visual hierarchy, contextual composition, interaction states, responsive behavior, UI accessibility, implementation notes, and built-versus-designed QA.
-- Both review IA-to-UI coherence and accessibility when the change is material. Neither may invent research or make an unauthorized product decision.
+- Once the task and sufficient structure are known, apply the existing UI Skills for visual hierarchy, contextual composition, interaction states, responsive behavior, accessibility, implementation notes, and built-versus-designed QA. Assign a qualified executor; no named Persona is required.
+- The responsible structure and interface reviewers check IA-to-UI coherence and accessibility when the change is material. Neither may invent research or make an unauthorized product decision.
 - Use the smallest relevant Persona set. If several named Personas need shared state and handoffs, use the shared problem-context and collaboration Playbook.
 - If no relevant Persona exists, generate a temporary project-scoped synthetic participant as described in Phase 2. Do not add it to canonical library data by implication.
 
-Routing is conditional rather than a permanent lead assignment. A settled task may start with Camille; an unsettled task starts with Jordan. The active work record records the actual owner and the reason.
+Routing is conditional rather than a permanent lead assignment. A settled task may start directly with the applicable UI Skill; an unsettled task starts with the task/structure route. The active work record records the actual owner and the reason.
 
 ## Proportionality
 

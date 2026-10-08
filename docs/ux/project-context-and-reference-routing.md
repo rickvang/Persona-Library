@@ -122,7 +122,7 @@ Prefer stable source links and reference IDs. Do not copy entire external pages,
 Use the smallest relevant set.
 
 - Jordan Lee and ux-senior lead when the problem, content model, terminology, task flow, navigation, or evaluation question is unsettled.
-- Camille Ortiz and ui-expert lead when structure is sufficient and visual hierarchy, interaction states, responsive behavior, accessibility, interface craft, or built-versus-designed QA is the main work.
+- Apply the existing UI Skills directly when structure is sufficient and visual hierarchy, interaction states, responsive behavior, accessibility, interface craft, or built-versus-designed QA is the main work. A qualified executor does not require the ui-expert Persona.
 - Consult the knowledge-systems-architect only when taxonomy, labeling, dependency, or system-boundary questions exceed the design team’s scope.
 - Use Layout Lab for materially different IA or layout alternatives, with identical content, task, and criteria. Selection is not live-change authorization.
 - Use the shared problem-context and collaboration Playbook when multiple Personas need shared state and attributable handoffs, not merely because multiple opinions could be useful.
@@ -196,7 +196,7 @@ Route: Focused marketing/content lens. Read the affected page and content, use t
 
 Request: design a dashboard for operators comparing many items and resolving exceptions.
 
-Route: Dashboard plus multi-step operational lens. Jordan leads content model, task flow, labels, and evaluation questions. Camille translates the structure into data hierarchy and states. Use the table/search references, a realistic content fixture, partial/error/permission states, responsive behavior, accessibility checks, and a traceability matrix. Use Layout Lab only if materially different structures remain plausible.
+Route: Dashboard plus multi-step operational lens. Jordan leads content model, task flow, labels, and evaluation questions. Apply the interface hierarchy and interaction-state Skills to translate the structure into data hierarchy and states. Use the table/search references, a realistic content fixture, partial/error/permission states, responsive behavior, accessibility checks, and a traceability matrix. Use Layout Lab only if materially different structures remain plausible.
 
 ### High-risk approval
 

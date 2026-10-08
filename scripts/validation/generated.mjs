@@ -129,7 +129,7 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
   if (!includesAll(all('scenario-github-issue-implementation'), ['reuse still-valid evidence','freshness','cheapest sufficient','immediately before merge','stop'])) throw new Error('GitHub scenario must encode reuse/freshness/stop');
   if (!includesAll(all('scenario-vercel-deployed-state-verification'), ['repository ci','do not deploy','preview','deployed-state question','stop'])) throw new Error('Vercel scenario must encode CI-first/no-unnecessary-preview behavior');
   if (!includesAll(all('scenario-architecture-proportionate-decision'), ['keep-current','do nothing yet','revisit trigger','technology-first'])) throw new Error('Architecture scenario must encode proportionate choice');
-  if (!includesAll(all('scenario-frontend-runtime-boundary'), ['camille','jordan','nadia','accessibility','performance'])) throw new Error('Frontend scenario must preserve handoffs');
+  if (!includesAll(all('scenario-frontend-runtime-boundary'), ['skill-interaction-states-and-behavior-design','jordan','nadia','accessibility','performance'])) throw new Error('Frontend scenario must preserve handoffs');
   if (!includesAll(all('scenario-application-data-source-of-truth'), ['structured files','cms','database','authentication','authorization','rollback'])) throw new Error('Application/data scenario must cover persistence/auth/migration');
   if (model.findOperationalScenarios('implement GitHub issue',{limit:1})[0]?.id !== 'scenario-github-issue-implementation') throw new Error('GitHub matcher failed');
   if (model.findOperationalScenarios('verify deployed preview in Vercel',{limit:1})[0]?.id !== 'scenario-vercel-deployed-state-verification') throw new Error('Vercel matcher failed');
@@ -218,12 +218,12 @@ export function validateGitHubGovernanceContract({ agents, workOrders, boundedPl
 
 const routingCaseRequirements = {
   unqualifiedNarrow: {
-    terms: ['unqualified', 'riley morgan', 'narrow', 'specialist', 'skill'],
-    message: 'Unqualified narrow requests must route from Riley to a specialist or Skill'
+    terms: ['unqualified', 'narrow', 'specialist', 'skill'],
+    message: 'Unqualified narrow requests must route to a specialist or Skill'
   },
   unqualifiedFullOutcome: {
-    terms: ['unqualified', 'riley morgan', 'full-outcome', 'playbook'],
-    message: 'Unqualified full-outcome requests must route from Riley to a Playbook'
+    terms: ['unqualified', 'full-outcome', 'playbook'],
+    message: 'Unqualified full-outcome requests must route to a Playbook'
   },
   explicitSpecialist: {
     terms: ['explicit', 'specialist', 'directly'],

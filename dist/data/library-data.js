@@ -1599,7 +1599,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
   "do": [
     "Map execution, data flow, state, failure, and rendering boundaries before adding abstractions.",
     "Keep server/client state and dependencies as small as the workload permits.",
-    "Route visual/interaction design judgment to Camille and unresolved task/content semantics to Jordan.",
+    "Route visual/interaction design judgment to a qualified reviewer using skill-interaction-states-and-behavior-design and unresolved task/content semantics to Jordan.",
     "Route persistent source-of-truth, CMS/database, service, and authorization architecture to Nadia.",
     "Validate realistic loading/error/content/responsive/accessibility behavior at the cheapest sufficient layer."
   ],
@@ -1633,7 +1633,7 @@ window.PersonaLibraryDataFragments.operationalScenarios.push({
     "A domain handoff is required before safe implementation can continue."
   ],
   "escalationTriggers": [
-    "Visual or interaction intent is unresolved → Camille.",
+    "Visual or interaction intent is unresolved → qualified review using skill-interaction-states-and-behavior-design.",
     "Task/content/navigation semantics are unresolved → Jordan.",
     "Persistence/source-of-truth/service/authorization is unresolved → Nadia.",
     "Deployed behavior cannot be proven below Preview/runtime evidence."
