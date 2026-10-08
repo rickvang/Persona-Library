@@ -249,7 +249,7 @@
   <script src="js/library-ui.js"></script>
   <script src="js/library-state.js"></script>
   <script>
-    const { personas, skillLibrary, flowLibrary, maintenance, personaToolRequirements = [] } = window.PersonaLibraryData;
+    const { personas, skillLibrary, skillCatalog = [], flowLibrary, maintenance, personaToolRequirements = [] } = window.PersonaLibraryData;
     const uiState = PersonaLibraryState.create({ defaults: { role: 'all', query: '', selected: '' }, queryKeys: { role: 'role', query: 'q', selected: 'persona' } });
     let roleFilter = uiState.get('role') || 'all';
     const grid = document.querySelector('#grid');
@@ -303,7 +303,17 @@
     }
     const { fillList, renderResources, renderRevisionHistory } = PersonaLibraryUI;
     function getSkillProfiles(p) {
-      if (skillLibrary[p.id]) return skillLibrary[p.id];
+      // A migrated method has one authored neutral Skill source. Display its
+      // existing read-only catalog projection, not a missing Persona bucket.
+      if (skillLibrary[p.id]?.length) return skillLibrary[p.id];
+      const projected = skillCatalog.flatMap(skill => (skill.profiles || [])
+        .filter(profile => profile.personaId === p.id)
+        .map(profile => ({
+          name: skill.name, status: profile.status, definition: profile.definition,
+          triggers: profile.triggers, workflows: profile.workflows,
+          actions: profile.actions, evidence: profile.evidence
+        })));
+      if (projected.length) return projected;
       const skills = p.skills || [];
       if (!skills.length) return [{name:'Skills not mapped yet',status:'Pending',definition:'This persona does not have expanded skill profiles yet.',triggers:'Add through role research',workflows:'Not mapped yet',actions:'Not mapped yet',evidence:'Use $persona-skills to identify and validate the capabilities behind this work.'}];
       return skills.map(skill => { const [name, status] = skill.split(' — '); return {name,status:status || 'Not mapped',definition:'This skill is listed but has not been expanded into a profile yet.',triggers:'Not mapped yet',workflows:'Not mapped yet',actions:'Not mapped yet',evidence:'Use $persona-skills to expand and validate this skill.'}; });

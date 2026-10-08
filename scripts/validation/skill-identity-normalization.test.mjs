@@ -1,8 +1,11 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import vm from 'node:vm';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { loadValidationContext } from './context.mjs';
+import { loadLibraryData, buildPersonaSkillMatrix } from '../../eval/isolated-persona-skill.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const fields = ['status', 'definition', 'triggers', 'workflows', 'actions', 'evidence'];
@@ -116,6 +119,81 @@ test('CW-92 WP06: orchestration source is singular while peer Skill applications
     workflows: method.workflowRefs.map(ref => ref.title).join(' · ')
   }];
   assert.throws(() => model.buildSkillCatalog(duplicated), /Duplicate authored method origin/);
+});
+
+test('CW-92 deployed Persona drawers and evaluation readers retain all sixteen migrated applications', async () => {
+  const { data, model } = await loadValidationContext(root);
+  const [pageSource, packetSource] = await Promise.all([
+    readFile(path.join(root, 'content/site-pages/index.html'), 'utf8'),
+    readFile(path.join(root, 'eval/persona-context-loading-pilot.mjs'), 'utf8')
+  ]);
+  const extract = (text, start, end, globals = {}) => {
+    const first = text.indexOf(start);
+    const last = text.indexOf(end, first + start.length);
+    assert.ok(first >= 0 && last > first, `Find the real consumer: ${start}`);
+    return vm.runInNewContext('(' + text.slice(first, last).trim() + ')', globals);
+  };
+  const pageGetter = extract(pageSource, 'function getSkillProfiles(p) {', 'function showSkillProfile(index)', {
+    skillLibrary: data.skillLibrary, skillCatalog: data.skillCatalog
+  });
+  const packetGetter = extract(packetSource, 'function profile(loaded, id) {', 'async function prepare()');
+  const plain = value => JSON.parse(JSON.stringify(value));
+  const ordered = records => plain(records).sort((a, b) => a.name.localeCompare(b.name));
+  let materialCount = 0;
+  for (const id of ['ui-expert', 'ai-orchestrator']) {
+    const persona = data.personas.find(persona => persona.id === id);
+    assert.ok(persona, `The temporary Persona page still exposes historical metadata for ${id}`);
+    assert.equal(data.skillLibrary[id], undefined, 'No second authored Persona bucket remains');
+    const expected = data.skillCatalog.flatMap(skill => skill.profiles
+      .filter(application => application.personaId === id)
+      .map(application => ({
+        name: skill.name, status: application.status, definition: application.definition,
+        triggers: application.triggers, workflows: application.workflows,
+        actions: application.actions, evidence: application.evidence
+      })));
+    assert.equal(expected.length, 8);
+    const drawn = pageGetter(persona);
+    const packet = packetGetter({ data, sha: 'source-evidence' }, id);
+    assert.deepStrictEqual(ordered(drawn), ordered(expected), `UI drawer must display actual ${id} material`);
+    assert.deepStrictEqual(ordered(packet.skill_applications), ordered(expected), `Local packet must preserve ${id} material`);
+    assert.deepStrictEqual(ordered(pageGetter({ ...persona, skills: [] })), ordered(expected),
+      'Decorative Persona skill labels cannot gate the existing projection');
+    for (const record of drawn) {
+      assert.ok(record.definition && record.triggers && record.workflows && record.actions && record.evidence);
+      assert.notEqual(record.definition, 'This skill is listed but has not been expanded into a profile yet.');
+      materialCount++;
+    }
+  }
+  assert.equal(materialCount, 16);
+  const other = 'ux-senior';
+  const peer = data.personas.find(persona => persona.id === other);
+  assert.deepStrictEqual(plain(pageGetter(peer)), plain(data.skillLibrary[other]),
+    'Unmigrated Persona reader must retain legacy direct source order and fields');
+  assert.deepStrictEqual(plain(packetGetter({ data, sha: 'source-evidence' }, other).skill_applications),
+    plain(data.skillLibrary[other]));
+
+  const withoutMetadata = { ...data, personas: [] };
+  const independentCatalog = model.buildSkillCatalog(withoutMetadata);
+  const withoutMetadataGetter = extract(pageSource, 'function getSkillProfiles(p) {', 'function showSkillProfile(index)', {
+    skillLibrary: data.skillLibrary, skillCatalog: independentCatalog
+  });
+  const pilot = data.personas.find(persona => persona.id === 'ui-expert');
+  assert.deepStrictEqual(ordered(withoutMetadataGetter(pilot)), ordered(pageGetter(pilot)),
+    'Method discovery must remain independent of Persona metadata');
+
+  const loaded = await loadLibraryData();
+  const cases = buildPersonaSkillMatrix(loaded, {
+    default_test: { request_mode: 'answer', scenario: 'Source-loaded source preservation', prompt_template: 'Test {skill_name}' }
+  }, { personas: ['ui-expert', 'ai-orchestrator'] });
+  assert.equal(cases.length, 16, 'Isolated evaluation must not silently drop either migrated cohort');
+  for (const c of cases) {
+    const expected = data.skillCatalog.find(skill => skill.id === c.skill.id)
+      ?.profiles.find(profile => profile.personaId === c.persona.id);
+    assert.ok(expected, `Selected isolated case has real source ${c.case_id}`);
+    for (const field of ['status', 'definition', 'triggers', 'workflows', 'actions', 'evidence']) {
+      assert.equal(c.skill[field], expected[field], `Isolated method lost ${field}`);
+    }
+  }
 });
 
 // Keep CW-92 preservation checks in the existing required CI test entrypoint.

@@ -11,14 +11,17 @@ import vm from 'node:vm';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const fixture = JSON.parse(await readFile(path.join(root, 'eval/fixtures/persona-context-loading-pilot.json'), 'utf8'));
 const sourceFile = path.join(root, 'dist/data/library-data.js');
+const modelFile = path.join(root, 'dist/data/library-model.js');
 const encode = value => JSON.stringify(value, null, 2) + '\n';
 const hash = text => createHash('sha256').update(text).digest('hex');
 
 async function current() {
-  const text = await readFile(sourceFile, 'utf8');
+  const [source, model] = await Promise.all([readFile(sourceFile, 'utf8'), readFile(modelFile, 'utf8')]);
   const context = { window: {} };
-  vm.runInNewContext(text, context, { filename: sourceFile, timeout: 1000 });
-  return { data: context.window.PersonaLibraryData, sha: hash(text), bytes: Buffer.byteLength(text) };
+  vm.runInNewContext(source, context, { filename: sourceFile, timeout: 1000 });
+  vm.runInNewContext(model, context, { filename: modelFile, timeout: 1000 });
+  const snapshot = source + '\n' + model;
+  return { data: context.window.PersonaLibraryData, sha: hash(snapshot), bytes: Buffer.byteLength(source) + Buffer.byteLength(model), fileReads: 2 };
 }
 
 function index(loaded) {
@@ -31,11 +34,21 @@ function index(loaded) {
 function profile(loaded, id) {
   const persona = loaded.data.personas.find(p => p.id === id);
   if (!persona) throw new Error('Unknown Persona: ' + id);
+  // Historical direct source remains for unmigrated peers. Migrated pilot
+  // applications are derived from the existing model's read-only projection.
+  const legacy = loaded.data.skillLibrary[id] || [];
+  const projected = (loaded.data.skillCatalog || []).flatMap(skill => (skill.profiles || [])
+    .filter(application => application.personaId === id)
+    .map(application => ({
+      name: skill.name, status: application.status, definition: application.definition,
+      triggers: application.triggers, workflows: application.workflows,
+      actions: application.actions, evidence: application.evidence
+    })));
   return {
     source_bundle_sha256: loaded.sha,
     persona,
     workflows: loaded.data.flowLibrary[id] || [],
-    skill_applications: loaded.data.skillLibrary[id] || [],
+    skill_applications: legacy.length ? legacy : projected,
     tool_requirements: (loaded.data.personaToolRequirements || []).filter(item => item.personaId === id),
     handoffs: (loaded.data.personaHandoffs || []).filter(item => item.fromPersonaId === id || item.toPersonaId === id)
   };
@@ -60,7 +73,7 @@ async function currentRead() {
   const second = await current();
   assert.equal(second.sha, first.sha, 'Source changed between selection and profile loading');
   const profileText = encode(profile(second, fixture.expected_persona_id));
-  return { elapsed_ms: performance.now() - started, indexText, profileText, filesystem_bytes_read: first.bytes + second.bytes };
+  return { elapsed_ms: performance.now() - started, indexText, profileText, filesystem_bytes_read: first.bytes + second.bytes, file_reads: first.fileReads + second.fileReads };
 }
 
 async function focusedRead(directory) {
@@ -104,7 +117,7 @@ async function benchmark() {
       excluded: ['Snapshot preparation from repeated timings', 'Model reasoning', 'Tool roundtrip latency', 'Answer quality']
     },
     content_parity: 'Exact serialized index and full selected profile match, including all existing confidence metadata',
-    current: { ...statistics(samples.current), file_reads: 2, filesystem_bytes_read: exemplar.control.filesystem_bytes_read, model_visible_context_bytes: Buffer.byteLength(exemplar.control.indexText + exemplar.control.profileText) },
+    current: { ...statistics(samples.current), file_reads: exemplar.control.file_reads, filesystem_bytes_read: exemplar.control.filesystem_bytes_read, model_visible_context_bytes: Buffer.byteLength(exemplar.control.indexText + exemplar.control.profileText) },
     focused: { ...statistics(samples.focused), file_reads: 2, filesystem_bytes_read: exemplar.candidate.filesystem_bytes_read, model_visible_context_bytes: Buffer.byteLength(exemplar.candidate.indexText + exemplar.candidate.profileText) },
     limitation: 'This measures local retrieval only. Fewer filesystem bytes do not imply fewer model-visible tokens, better reasoning, or faster end-to-end completion.'
   };
