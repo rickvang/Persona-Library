@@ -21,6 +21,17 @@ export function validatePersonas({ data }, indexes) {
   }
 
   for (const [personaId, profiles] of Object.entries(data.skillLibrary)) {
+    // Accepted CW-92 pilot migration: a semantic Skill key is an authored method
+    // source, not a Persona bucket. Skill shape, method fields and uniqueness
+    // belong to validateSkills / the source model, not a second validator here.
+    if (/^skill-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(personaId)) {
+      const canonical = (data.skillCatalog || []).find(skill => skill.id === personaId);
+      if (!canonical || !Array.isArray(profiles) || !profiles.length ||
+          profiles.some(method => !method?.id || !canonical.methods?.some(entry => entry.id === method.id))) {
+        throw new Error(`Neutral method source has no matching canonical Skill/method: ${personaId}`);
+      }
+      continue;
+    }
     if (!personaIds.has(personaId)) throw new Error(`Skill library has no matching persona: ${personaId}`);
     const names = new Set();
     for (const profile of profiles) {
