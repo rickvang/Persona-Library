@@ -116,6 +116,17 @@ test('CW-92 graph locates a migrated method at its sole authored source', async 
   assert.ok(application, 'Keep the historical compatibility application during migration');
   assert.match(application.source.locator, /:content\/library-data\/skills-core\.js$/);
   assert.equal(application.source.selector, `skillLibrary[${skillId}][id=${methodId}]`);
+  // A matching Skill header and a matching method ID elsewhere in the file
+  // are not proof that the claimed source locator exists within that Skill.
+  const misplacedSource = changedSource.replace(`"id":"${methodId}"`, '"id":"method-displaced"') +
+    `\nObject.assign(window.PersonaLibraryDataFragments.skillLibrary, { 'skill-unrelated':[{id:'${methodId}'}] });\n`;
+  assert.notEqual(misplacedSource, changedSource);
+  const misattributed = {
+    ...simulated,
+    readFile: file => file === sourcePath ? Promise.resolve(misplacedSource) : context.readFile(file)
+  };
+  await assert.rejects(() => derivePersonaSkillGraph(misattributed), /Missing authored neutral method/,
+    'Do not join a Skill key with a method ID from another authored section');
   const unmodifiedSource = { ...simulated, readFile: context.readFile };
   await assert.rejects(() => derivePersonaSkillGraph(unmodifiedSource), /Expected exactly one neutral method source/,
     'Missing a real authored method source must fail instead of citing its vacated Persona row');
