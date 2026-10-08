@@ -128,6 +128,8 @@
 
   function buildSkillCatalog({ personas = [], skillLibrary = {}, flowLibrary = {}, skillUnits = [], skillRelations = [], skillGuidance = {}, skillPractice = {}, toolUseRecipes = [], operationalScenarioCatalog = [] }) {
     const catalog = new Map(), methodIds = new Set(), origins = new Set();
+    // One-time legacy migration boundary, not runtime availability or an actor registry.
+    const migrationSource = { repository: 'rickvang/Persona-Library', revision: 'd61f850e06d266bc6d608b92b730c97e451ea745', path: 'content/library-data/skills-core.js' };
     const metadata = new Map(personas.map(persona => [persona.id, persona]));
     const displayOrder = new Map(personas.map((persona, index) => [persona.id, index]));
     const workflows = indexWorkflows(flowLibrary);
@@ -137,6 +139,7 @@
     for (const [sourceKey, records] of Object.entries(skillLibrary)) {
       if (!Array.isArray(records)) throw new Error(`Skill source must be an array: ${sourceKey}`);
       const neutral = sourceKey.startsWith('skill-');
+      if (neutral && records.some(record => record.legacySourceKey) && !records.some(record => record.id === `method-${sourceKey.slice(6)}`)) throw new Error(`Migrated Skill needs its semantic base method ID: ${sourceKey}`);
       for (const [sourceIndex, record] of records.entries()) {
         for (const field of Object.keys(record)) if (!(neutral ? neutralFields : legacyFields).has(field)) throw new Error(`Unclassified method field: ${sourceKey}/${field}`);
         for (const field of ['name', 'status', 'definition', 'actions', 'evidence', neutral ? 'when' : 'triggers']) {
@@ -149,17 +152,24 @@
         const methodId = neutral ? record.id : `method-legacy-${sourceKey}-${id.slice(6)}`;
         if (!/^method-[a-z0-9][a-z0-9-]*$/.test(methodId || '') || methodIds.has(methodId)) throw new Error(`Invalid or duplicate method ID: ${methodId}`);
         methodIds.add(methodId);
-        if (legacySourceKey) {
-          const origin = JSON.stringify([id, legacySourceKey]);
-          if (origins.has(origin)) throw new Error(`Duplicate authored method origin: ${origin}`);
-          origins.add(origin);
-        }
+        let originalName = record.name;
         let refs;
         if (neutral) {
           if (!Array.isArray(record.workflowRefs) || !record.workflowRefs.length) throw new Error(`Missing method workflow references: ${methodId}`);
           const provenance = record.provenance;
           if (!provenance?.original || !provenance?.current || !/^[0-9a-f]{40}$/.test(provenance.original.revision || '') ||
               !['original', 'current'].every(part => ['repository', 'path', 'selector'].every(field => nonempty(provenance[part][field])))) throw new Error(`Incomplete method provenance: ${methodId}`);
+          if (legacySourceKey) {
+            const original = provenance.original, current = provenance.current;
+            const selector = original.selector.match(/^skillLibrary\[([^\]]+)\]\/(.+)$/);
+            if (!selector || selector[1] !== legacySourceKey ||
+                !Object.entries(migrationSource).every(([field, expected]) => original[field] === expected) ||
+                current.repository !== migrationSource.repository || current.path !== migrationSource.path || current.selector !== sourceKey) throw new Error(`Invalid migrated method provenance: ${methodId}`);
+            originalName = selector[2];
+            if (slugify(originalName) !== id) throw new Error(`Conflicting semantic Skill identity for original method: ${original.selector}`);
+            const baseId = `method-${id.slice(6)}`;
+            if (methodId !== baseId && !methodId.startsWith(baseId + '-')) throw new Error(`Migrated method ID must use its semantic Skill prefix: ${methodId}`);
+          }
           refs = record.workflowRefs.map(ref => {
             if (!ref.id && !ref.unresolved) throw new Error(`Neutral method needs an explicit workflow ID: ${methodId}`);
             if (ref.unresolved && !ref.legacySourceKey) throw new Error(`Unresolved workflow needs a scoped origin: ${methodId}`);
@@ -171,6 +181,13 @@
             const entry = workflows.byScope.get(JSON.stringify([sourceKey, title]));
             return entry?.flow.id ? { id: entry.flow.id, title } : { legacySourceKey: sourceKey, title, ...(!entry ? { unresolved: true } : {}) };
           });
+        }
+        if (legacySourceKey) {
+          // Source-record identity is independent of the new semantic/method ID.
+          // This also catches a neutral body left beside its old authored body.
+          const origin = JSON.stringify(['skillLibrary', legacySourceKey, originalName]);
+          if (origins.has(origin)) throw new Error(`Duplicate authored method origin: ${origin}`);
+          origins.add(origin);
         }
         const resolved = refs.map(ref => resolveWorkflow(ref, workflows));
         const method = {

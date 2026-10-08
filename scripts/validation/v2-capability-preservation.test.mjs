@@ -167,6 +167,31 @@ test('CW-92: reject duplicate methods, dual authored origins, bad provenance and
   assert.throws(() => current.model.buildSkillCatalog(duplicate), /duplicate method ID/);
   const dual = plain(input); dual.skillLibrary['ui-expert'] = [plain(baseline.context.data.skillLibrary['ui-expert'].find(record => baseline.context.model.slugify(record.name) === key))];
   assert.throws(() => current.model.buildSkillCatalog(dual), /Duplicate authored method origin/);
+  const renamedIdentity = plain(input);
+  renamedIdentity.skillLibrary[key][0].id = 'method-ui-expert';
+  assert.throws(() => current.model.buildSkillCatalog(renamedIdentity), /semantic base method ID/);
+  const copied = plain(input), wrongKey = 'skill-copied-procedure';
+  copied.skillLibrary[wrongKey] = [plain(copied.skillLibrary[key][0])];
+  copied.skillLibrary[wrongKey][0].id = 'method-copied-procedure';
+  copied.skillLibrary[wrongKey][0].provenance.current.selector = wrongKey;
+  assert.throws(() => current.model.buildSkillCatalog(copied), /Conflicting semantic Skill identity/);
+  const hiddenDual = plain(dual);
+  hiddenDual.skillLibrary[wrongKey] = hiddenDual.skillLibrary[key]; delete hiddenDual.skillLibrary[key];
+  hiddenDual.skillLibrary[wrongKey][0].id = 'method-copied-procedure';
+  hiddenDual.skillLibrary[wrongKey][0].provenance.current.selector = wrongKey;
+  assert.throws(() => current.model.buildSkillCatalog(hiddenDual), /Conflicting semantic Skill identity/);
+  for (const mutate of [
+    method => { method.provenance.original.revision = '0'.repeat(40); },
+    method => { method.provenance.original.repository = 'other/source'; },
+    method => { method.provenance.original.path = 'unrelated.js'; },
+    method => { method.provenance.original.selector = 'skillLibrary[other]/' + method.name; },
+    method => { method.provenance.current.repository = 'other/source'; },
+    method => { method.provenance.current.path = 'unrelated.js'; },
+    method => { method.provenance.current.selector = wrongKey; }
+  ]) {
+    const invalid = plain(input); mutate(invalid.skillLibrary[key][0]);
+    assert.throws(() => current.model.buildSkillCatalog(invalid), /Invalid migrated method provenance/);
+  }
   const unknown = plain(input); unknown.skillLibrary[key][0].workflowRefs[0].id = 'workflow-missing';
   assert.throws(() => current.model.buildSkillCatalog(unknown), /Unknown workflow ID/);
   const provenance = plain(input); delete provenance.skillLibrary[key][0].provenance.original.revision;
