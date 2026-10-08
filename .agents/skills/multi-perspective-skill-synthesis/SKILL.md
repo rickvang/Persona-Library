@@ -16,6 +16,8 @@ This is a repository-local reconstruction. The historical conversation described
 
 This skill is the shared-capability identifier and formation gate between distinct evidence and Skill construction. Evidence may come from workflows, domain sources, project records, existing Skills/methods, evaluations, Tools/recipes, or Persona applications when they are actually relevant. It prepares a defensible capability definition and a handoff brief for the existing Skill authoring path; it does not silently create a live Skill or replace `pl-skill-creator`, which uses the system `$skill-creator` package helper when available.
 
+The catalog record named `skill-multi-perspective-skill-synthesis` preserves the earlier Persona-oriented application and its material fields for lossless migration. Treat that record as a contextual application/evidence source, **not** as the activation contract for this callable package. The reusable package contract is the identity-independent evidence comparison defined here and in the canonical `skill-formation` route.
+
 ## Use this skill when
 
 Activate when a proposed capability is supported by two or more materially distinct evidence sources or applications, or when it is unclear whether the right result is a new Skill, an existing Skill relationship, a composed Skill, a workflow method, a contextual application, or a Tool-use recipe.
