@@ -149,10 +149,35 @@ export async function derivePersonaSkillGraph(context) {
     addEdge(edges, 'view:skills', skillId, 'contains', 'contract-derived', architectureSource);
 
     for (const profile of skill.profiles) {
-      const file = profileSourceByPersona.get(profile.personaId);
-      if (!file) throw new Error(`Missing authored profile source for ${profile.personaId} / ${skill.id}`);
+      const method = skill.methods.find(candidate => candidate.legacySourceKey === profile.personaId);
+      if (!method) throw new Error(`Missing authored method for compatibility application ${profile.personaId} / ${skill.id}`);
+      let appSource;
+      if (method.provenance?.current) {
+        // A mechanically moved method has a new *authored* owner. Never keep a
+        // graph link to the now-retired Persona-keyed source body just because
+        // an old compatibility profile is still derivable from its provenance.
+        const current = method.provenance.current;
+        if (current.repository !== REPO || !PROFILE_SOURCES.includes(current.path) || current.selector !== skill.id) {
+          throw new Error(`Invalid current authored method source for ${skill.id} / ${method.id}`);
+        }
+        // The structured authored collection must own this exact method too;
+        // a coincidental text occurrence elsewhere in the file is not enough.
+        if (!(data.skillLibrary[skill.id] || []).some(record => record.id === method.id)) {
+          throw new Error(`Missing neutral authored method record for ${skill.id} / ${method.id}`);
+        }
+        const source = profileSources.get(current.path);
+        const skillKey = new RegExp(`['"]${escaped(skill.id)}['"]\\s*:\\s*\\[`);
+        const methodKey = new RegExp(`\\bid\\s*:\\s*['"]${escaped(method.id)}['"]`);
+        if (!source || !skillKey.test(source) || !methodKey.test(source)) {
+          throw new Error(`Missing current authored method locator for ${skill.id} / ${method.id}`);
+        }
+        appSource = sourceRef(current.path, `skillLibrary[${skill.id}][id=${method.id}]`);
+      } else {
+        const file = profileSourceByPersona.get(profile.personaId);
+        if (!file) throw new Error(`Missing authored profile source for ${profile.personaId} / ${skill.id}`);
+        appSource = sourceRef(file, `skillLibrary[${profile.personaId}][name=${skill.name}]`);
+      }
       const appId = applicationNodeId(profile.personaId, skill.id);
-      const appSource = sourceRef(file, `skillLibrary[${profile.personaId}][name=${skill.name}]`);
       nodes.push({
         id: appId,
         label: `${profile.personaName} · ${skill.name}`,

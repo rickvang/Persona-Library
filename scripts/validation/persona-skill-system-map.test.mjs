@@ -47,6 +47,50 @@ test('Persona Skill System Map preserves canonical identity and Persona applicat
   }
 });
 
+test('CW-92 graph provenance follows a migrated method current owner and rejects false locators', async () => {
+  const context = await loadValidationContext();
+  const migrated = { ...context, data: structuredClone(context.data) };
+  const skillId = 'skill-interaction-states-and-behavior-design';
+  const skill = migrated.data.skillCatalog.find(item => item.id === skillId);
+  const method = skill.methods.find(item => item.legacySourceKey === 'ui-expert');
+  const methodId = 'method-interaction-states-and-behavior-design';
+  assert.ok(method, 'Start from the actual loaded UI application');
+  method.id = methodId;
+  method.provenance = {
+    original: { repository: 'rickvang/Persona-Library', path: 'content/library-data/skills-core.js', selector: `skillLibrary[ui-expert]/${method.name}` },
+    current: { repository: 'rickvang/Persona-Library', path: 'content/library-data/skills-core.js', selector: skillId }
+  };
+  migrated.data.skillLibrary['ui-expert'] = migrated.data.skillLibrary['ui-expert'].filter(item => item.name !== method.name);
+  migrated.data.skillLibrary[skillId] = [{ ...method }];
+  const read = context.readFile;
+  const neutralSource = `
+Object.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':[{id:'${methodId}'}] });
+`;
+  migrated.readFile = file => file === 'content/library-data/skills-core.js'
+    ? read(file).then(source => source + neutralSource)
+    : read(file);
+  const graph = await derivePersonaSkillGraph(migrated);
+  const application = graph.nodes.find(node => node.id === `skill-application:ui-expert/${skillId}`);
+  assert.equal(application.source.locator, 'rickvang/Persona-Library:content/library-data/skills-core.js');
+  assert.equal(application.source.selector, `skillLibrary[${skillId}][id=${methodId}]`);
+  const originalGraph = await derivePersonaSkillGraph(context);
+  assert.equal(graph.nodes.length, originalGraph.nodes.length, 'No new application or profile graph class');
+  assert.equal(graph.edges.length, originalGraph.edges.length, 'Preserve the existing application relationships');
+  await assert.rejects(() => derivePersonaSkillGraph({ ...migrated, readFile: read }), /Missing current authored method locator/);
+  const missingOwner = { ...migrated, data: structuredClone(migrated.data) };
+  delete missingOwner.data.skillLibrary[skillId];
+  await assert.rejects(() => derivePersonaSkillGraph(missingOwner), /Missing neutral authored method record/);
+  for (const current of [
+    { ...method.provenance.current, selector: 'skill-not-the-owner' },
+    { ...method.provenance.current, path: 'dist/data/library-data.js' },
+    { ...method.provenance.current, repository: 'other/repo' }
+  ]) {
+    const corrupted = { ...migrated, data: structuredClone(migrated.data) };
+    corrupted.data.skillCatalog.find(item => item.id === skillId).methods.find(item => item.id === methodId).provenance.current = current;
+    await assert.rejects(() => derivePersonaSkillGraph(corrupted), /Invalid current authored method source/);
+  }
+});
+
 test('Persona Skill generated artifacts match a fresh derivation', async () => {
   const { graph, files } = await expectedPersonaSkillOutputs();
   assert.ok(graph.nodes.length > 0 && graph.edges.length > 0);
