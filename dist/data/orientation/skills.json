@@ -86,7 +86,7 @@
     },
     {
       "id": "skill-formation",
-      "request": "Form a reusable capability from distinct Persona perspectives",
+      "request": "Form a reusable capability from materially distinct evidence sources or applications",
       "modes": [
         "consult",
         "plan",
@@ -94,29 +94,31 @@
       ],
       "primary_space": "skills",
       "secondary_spaces": [
+        "docs",
         "personas",
         "playbooks",
         "operating-packs",
-        "templates"
+        "templates",
+        "tools"
       ],
       "target": "multi-perspective-skill-synthesis",
       "artifact_kind": "callable_skill",
       "package_path": ".agents/skills/multi-perspective-skill-synthesis",
       "availability_source": "repo_local",
       "first_reads": [
-        "named Persona records",
+        "materially distinct evidence sources or applications",
         "existing Skill catalog",
         "skill relationships",
         "quality signals",
-        "related Templates when the capability supplies a starting artifact"
+        "related Templates or Tool recipes when materially relevant"
       ],
       "mutation_boundary": "artifact_generation",
-      "reconciliation": "persona-reconciliation",
+      "reconciliation": "change-impact-reconciliation",
       "non_triggers": [
-        "A one-Persona capability profile",
+        "A single-source capability claim without independent evidence for synthesis",
         "A request to merely use an existing Skill"
       ],
-      "next_handoff": "Hand the bounded build brief to pl-skill-creator only when a standalone package is justified."
+      "next_handoff": "Hand standalone reusable Skill/package work to pl-skill-creator and use change-impact reconciliation; use Persona-specific authoring/reconciliation only when an actual Persona application is affected."
     },
     {
       "id": "skill-package-maintenance",
