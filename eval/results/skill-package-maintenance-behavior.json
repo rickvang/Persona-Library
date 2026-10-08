@@ -456,8 +456,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 28082,
-          "rough_tokens": 7021
+          "utf8_bytes": 28317,
+          "rough_tokens": 7080
         },
         "expectation": {
           "pass": true,
@@ -533,8 +533,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 28082,
-          "rough_tokens": 7021
+          "utf8_bytes": 28317,
+          "rough_tokens": 7080
         },
         "expectation": {
           "pass": true,
@@ -651,8 +651,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 28082,
-          "rough_tokens": 7021
+          "utf8_bytes": 28317,
+          "rough_tokens": 7080
         },
         "expectation": {
           "pass": true,
@@ -728,8 +728,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 28082,
-          "rough_tokens": 7021
+          "utf8_bytes": 28317,
+          "rough_tokens": 7080
         },
         "expectation": {
           "pass": true,
@@ -846,8 +846,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 28082,
-          "rough_tokens": 7021
+          "utf8_bytes": 28317,
+          "rough_tokens": 7080
         },
         "expectation": {
           "pass": true,
@@ -923,8 +923,8 @@
             "content/site-orientation.json",
             "content/orientation/skills.json"
           ],
-          "utf8_bytes": 28082,
-          "rough_tokens": 7021
+          "utf8_bytes": 28317,
+          "rough_tokens": 7080
         },
         "expectation": {
           "pass": true,
