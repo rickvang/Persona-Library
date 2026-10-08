@@ -15,24 +15,33 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: d56c01f4077ec7dd48379652e865b88de05a88ab
+          ref: 24cfea1d77571d16be33d9d0557c95bfcb99ca5b
           fetch-depth: 0
           persist-credentials: false
-      - name: Package only committed source and history needed by the pinned preservation fixture
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install only pinned development dependencies without lifecycle scripts
+        run: npm ci --include=dev --ignore-scripts --no-fund --no-audit
+      - name: Package committed source and the explicit local validation inputs
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = d56c01f4077ec7dd48379652e865b88de05a88ab
+          test "$(git rev-parse HEAD)" = 24cfea1d77571d16be33d9d0557c95bfcb99ca5b
           git cat-file -e d61f850e06d266bc6d608b92b730c97e451ea745^{commit}
           mkdir -p "$RUNNER_TEMP/cw92-evidence"
           git bundle create "$RUNNER_TEMP/cw92-evidence/source.bundle" HEAD
           git bundle verify "$RUNNER_TEMP/cw92-evidence/source.bundle"
           git rev-parse HEAD > "$RUNNER_TEMP/cw92-evidence/REVISION.txt"
           git rev-parse HEAD^{tree} >> "$RUNNER_TEMP/cw92-evidence/REVISION.txt"
-          (cd "$RUNNER_TEMP/cw92-evidence" && sha256sum source.bundle > SHA256SUMS)
+          tar -czf "$RUNNER_TEMP/cw92-evidence/marked.tgz" node_modules/marked
+          cp "$(command -v node)" "$RUNNER_TEMP/cw92-evidence/node24"
+          node --version > "$RUNNER_TEMP/cw92-evidence/NODE_VERSION.txt"
+          (cd "$RUNNER_TEMP/cw92-evidence" && sha256sum source.bundle marked.tgz node24 > SHA256SUMS)
       - uses: actions/upload-artifact@v7
         with:
-          name: cw92-pinned-source-d56c01f
+          name: cw92-validation-source-24cfea1
           path: ${{ runner.temp }}/cw92-evidence/
           if-no-files-found: error
           retention-days: 1
