@@ -119,8 +119,27 @@ export function workflowDiagnostics(data) {
 // Explicit WP04 expected transformation. Authored fields and history remain
 // byte-for-byte material inputs. Only the new derived view and the documented
 // all-method/shared fallback replace old first-profile presentation.
+export const uiWorkflowBackfill = [
+  ['Translate intent into interface structure', 'workflow-translate-intent-into-interface-structure'],
+  ['Craft the core interaction and visual system', 'workflow-craft-core-interaction-and-visual-system'],
+  ['Extend and govern the design system', 'workflow-extend-and-govern-design-system'],
+  ['Partner through implementation', 'workflow-partner-through-implementation'],
+  ['Validate usability and accessibility', 'workflow-validate-usability-and-accessibility'],
+  ['Repair a broken or confusing interface', 'workflow-repair-broken-or-confusing-interface'],
+  ['Resolve a pattern or constraint conflict', 'workflow-resolve-pattern-or-constraint-conflict']
+];
+
 export function readerBaseline(context) {
   const snapshot = capturePilot(context);
+  // WP04-F1: only the seven explicitly accepted UI workflow IDs are added to
+  // the immutable baseline projection; no workflow body or unrelated source is
+  // normalized away. Method references gain those IDs, not a new authored copy.
+  const backfill = new Map(uiWorkflowBackfill);
+  for (const flow of snapshot.flows['ui-expert']) {
+    const id = backfill.get(flow.title);
+    if (!id) throw new Error(`Unexpected UI workflow in pinned baseline: ${flow.title}`);
+    flow.id = id;
+  }
   const { data, model } = context;
   const selected = 'Select the applicable method by its task conditions; no single shared procedure is authored.';
   const uniqueValue = (profiles, field, fallback) => new Set(profiles.map(profile => profile[field])).size === 1 ? profiles[0][field] : fallback;
@@ -132,6 +151,11 @@ export function readerBaseline(context) {
       workflowRefs: record.workflows.split(' · ').map(title => title.trim()).filter(Boolean).map(title => ({ legacySourceKey: key, title, ...(!(data.flowLibrary[key] || []).some(flow => flow.title === title) ? { unresolved: true } : {}) })),
       provenance: { source: { collection: 'skillLibrary', key, index } }, legacySourceKey: key
     }])).sort((a, b) => a.id.localeCompare(b.id));
+    for (const method of skill.methods) if (method.legacySourceKey === 'ui-expert') {
+      method.workflowRefs = method.workflowRefs.map(ref => backfill.has(ref.title)
+        ? { id: backfill.get(ref.title), title: ref.title }
+        : ref);
+    }
     const authored = { ...(data.skillGuidance[skill.id]?.operation || {}), ...(data.skillPractice[skill.id]?.operation || {}) };
     const trigger = uniqueValue(profiles, 'triggers', selected);
     const definition = uniqueValue(profiles, 'definition', 'Method-specific result; inspect the selected method.');

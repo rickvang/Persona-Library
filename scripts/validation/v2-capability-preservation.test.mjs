@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
 import { validateSkills } from './skills.mjs';
-import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 let current, baseline, expected, historical;
@@ -45,6 +45,27 @@ test('CW-92: preserve full-source material fields under the explicit reader tran
   assert.equal(historical.skillIds.length, fixture.expectedProfileCount);
   assert.equal(baseline.context.libraryDataSources.length, 21);
   assertPreserved(capturePilot(current), expected);
+});
+
+test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scoped lookup', () => {
+  const ui = current.data.flowLibrary['ui-expert'];
+  const original = baseline.context.data.flowLibrary['ui-expert'];
+  assert.equal(ui.length, 7);
+  assert.deepStrictEqual(plain(ui.map(({ id, title }) => [title, id])), uiWorkflowBackfill);
+  assert.deepStrictEqual(plain(ui.map(({ id, ...body }) => body)), plain(original), 'Only ID was added; keep all original activities, evidence, cadence and summaries');
+  const allIds = Object.values(current.data.flowLibrary).flat().map(flow => flow.id).filter(Boolean);
+  assert.equal(new Set(allIds).size, allIds.length, 'Explicit workflow IDs must not collide anywhere in the source');
+  for (const [title, id] of uiWorkflowBackfill) {
+    const entry = current.model.resolveWorkflowReference({ id, legacySourceKey: 'ui-expert', title }, current.data.flowLibrary);
+    assert.equal(entry.flow.id, id);
+    assert.equal(entry.flow.title, title);
+    assert.equal(entry.sourceKey, 'ui-expert');
+    assert.throws(() => current.model.resolveWorkflowReference({ id, legacySourceKey: 'ai-orchestrator', title }, current.data.flowLibrary), /[Ww]orkflow ID source mismatch/);
+    assert.throws(() => current.model.resolveWorkflowReference({ id, legacySourceKey: 'ui-expert', title: 'Renamed in reference only' }, current.data.flowLibrary), /[Ww]orkflow ID title mismatch/);
+  }
+  const arbitrary = plain(current.data.flowLibrary);
+  arbitrary['ui-expert'][0].title = 'Renamed display title';
+  assert.equal(arbitrary['ui-expert'][0].id, uiWorkflowBackfill[0][1], 'Accepted workflow IDs do not derive dynamically from display titles');
 });
 
 test('CW-92: generated source and model match actual authored source', () => {
