@@ -24,7 +24,7 @@ const REQUIRED_FIXTURES = [
 
 test('Skill package migration clears the fourth-route context/read/artifact exit gate', async () => {
   const report = await buildSkillPackageMaintenanceMigrationReport();
-  assert.equal(report.canonical_route_records_changed, false);
+  assert.equal(report.canonical_route_records_changed, true);
   assert.equal(report.bundle.route_id, 'skill-package-maintenance');
   assert.equal(report.bundle.primary_space, 'skills');
   assert.equal(report.bundle.space_entries, 1);
@@ -44,7 +44,7 @@ test('Skill package migration clears the fourth-route context/read/artifact exit
 
 test('Skill package preferred and fallback paths preserve authority, placement, and live-state behavior', async () => {
   const report = await buildSkillPackageMaintenanceBehaviorReport();
-  assert.equal(report.canonical_routing_changed, false);
+  assert.equal(report.canonical_routing_changed, true);
   assert.deepEqual(report.fixtures.map(item => item.id), REQUIRED_FIXTURES);
   assert.equal(report.aggregate.fixture_count, 9);
   assert.equal(report.aggregate.activated_fixture_count, 6);

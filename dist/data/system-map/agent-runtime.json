@@ -335,7 +335,7 @@
       "derivation": "structured-derived",
       "source": {
         "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
         "selector": "frontmatter.reconciliation"
       }
     },
@@ -2346,9 +2346,9 @@
       }
     },
     {
-      "id": "edge:skill-package:.agents/skills/multi-perspective-skill-synthesis--declares-reconciliation--contract:reconciliation:persona-reconciliation",
+      "id": "edge:skill-package:.agents/skills/multi-perspective-skill-synthesis--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
       "from": "skill-package:.agents/skills/multi-perspective-skill-synthesis",
-      "to": "contract:reconciliation:persona-reconciliation",
+      "to": "contract:reconciliation:change-impact-reconciliation",
       "relationship": "declares-reconciliation",
       "derivation": "structured-derived",
       "source": {

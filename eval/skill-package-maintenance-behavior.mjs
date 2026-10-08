@@ -270,7 +270,7 @@ export async function buildSkillPackageMaintenanceBehaviorReport() {
     evaluation: 'skill-package-maintenance-behavioral-parity',
     fixture_source: FIXTURES,
     methodology: 'deterministic fixed-prompt route and authority fixtures; not subjective LLM response quality',
-    canonical_routing_changed: false,
+    canonical_routing_changed: true,
     fixtures: results,
     aggregate: {
       fixture_count: results.length,

@@ -14,16 +14,16 @@
     "behavioral_passed": 39,
     "behavioral_failed": 0,
     "base_context": {
-      "control_utf8_bytes": 139461,
+      "control_utf8_bytes": 139696,
       "preferred_utf8_bytes": 119476,
-      "delta_utf8_bytes": -19985,
-      "delta_percent": -14.3
+      "delta_utf8_bytes": -20220,
+      "delta_percent": -14.5
     },
     "activated_behavior_context": {
-      "control_utf8_bytes": 1044731,
+      "control_utf8_bytes": 1046141,
       "preferred_utf8_bytes": 918715,
-      "delta_utf8_bytes": -126016,
-      "delta_percent": -12.1
+      "delta_utf8_bytes": -127426,
+      "delta_percent": -12.2
     },
     "deterministic_work": {
       "control_completion_file_reads_per_route": 3,
@@ -288,11 +288,11 @@
     {
       "route_id": "skill-package-maintenance",
       "context": {
-        "control_utf8_bytes": 35643,
+        "control_utf8_bytes": 35878,
         "preferred_utf8_bytes": 29316,
-        "delta_utf8_bytes": -6327,
-        "delta_percent": -17.8,
-        "control_rough_tokens": 8911,
+        "delta_utf8_bytes": -6562,
+        "delta_percent": -18.3,
+        "control_rough_tokens": 8970,
         "preferred_rough_tokens": 7329
       },
       "behavior": {
@@ -300,7 +300,7 @@
         "passed": 9,
         "failed": 0,
         "activated_fixtures": 6,
-        "context_delta_percent": -17.8
+        "context_delta_percent": -18.3
       },
       "timing": {
         "control": {

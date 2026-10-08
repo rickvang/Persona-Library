@@ -213,6 +213,35 @@ test('CW-92 WP08: reuse visual judgment and prototyping through existing task-co
     'Visual method reuse must not reinstate an authored Persona-keyed bucket');
 });
 
+test('CW-92 WP16: evidence-driven synthesis preserves the pinned Persona application without requiring it', async () => {
+  const route = JSON.parse(await current.readFile('content/orientation/skills.json')).routes
+    .find(item => item.id === 'skill-formation');
+  assert.ok(route);
+  assert.match(route.request, /evidence sources or applications/i);
+  assert.equal(route.reconciliation, 'change-impact-reconciliation');
+  assert.equal(route.first_reads.some(item => /Persona/i.test(item)), false,
+    'Evidence-only synthesis must not require Persona records to activate');
+  assert.equal(route.non_triggers.some(item => /one-Persona/i.test(item)), false,
+    'A Persona-count rule must not define the synthesis boundary');
+
+  const preserved = current.data.skillLibrary['skill-multi-perspective-skill-synthesis']?.[0];
+  const old = baseline.context.data.skillLibrary['ai-orchestrator']
+    .find(record => current.model.slugify(record.name) === 'skill-multi-perspective-skill-synthesis');
+  assert.ok(preserved && old);
+  for (const [actual, expected] of [
+    [preserved.name, old.name], [preserved.status, old.status],
+    [preserved.definition, old.definition], [preserved.when, old.triggers],
+    [preserved.actions, old.actions], [preserved.evidence, old.evidence]
+  ]) assert.equal(actual, expected, 'Preserve the pinned Persona-oriented method application');
+
+  const pkg = await current.readFile('.agents/skills/multi-perspective-skill-synthesis/SKILL.md');
+  assert.match(pkg, /standalone reusable Skill\/package, hand off to `pl-skill-creator`/);
+  assert.match(pkg, /Persona-specific handoffs only for an actual Persona application/);
+  assert.match(pkg, /fewer than two materially distinct evidence-bearing sources/i);
+  assert.match(pkg, /catalog record named `skill-multi-perspective-skill-synthesis` preserves the earlier Persona-oriented application/i);
+  assert.match(pkg, /not.*activation contract for this callable package/i);
+});
+
 test('CW-92 WP09: reuse component and interaction methods through existing task-conditioned Skill owners', async () => {
   // Component Builder stays in SkillRepo as the portable production method.
   // Persona-Library owns task-conditioned catalog methods and local quality guidance.

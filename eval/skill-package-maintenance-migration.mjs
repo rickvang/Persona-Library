@@ -39,7 +39,7 @@ export async function buildSkillPackageMaintenanceMigrationReport() {
     migration: 'skill-package-maintenance-graph-backed-context',
     estimator: 'utf8-byte-count-divided-by-four',
     estimator_formula: 'ceil(UTF-8 bytes / 4)',
-    canonical_route_records_changed: false,
+    canonical_route_records_changed: true,
     preferred_path: {
       artifacts: [
         'AGENTS.md',
@@ -130,7 +130,7 @@ function markdown(report) {
     '',
     ...report.interpretation.map(item => '- ' + item),
     '',
-    'Canonical Skill routing remains authoritative and unchanged. The generated bundle is only a preferred route context.'
+    'Canonical Skill routing remains authoritative. WP16 updates the skill-formation route while the generated bundle remains only a preferred route context.'
   ].join('\n') + '\n';
 }
 
