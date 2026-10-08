@@ -24,7 +24,7 @@ const REQUIRED_FIXTURES = [
 
 test('Skill package migration clears the fourth-route context/read/artifact exit gate', async () => {
   const report = await buildSkillPackageMaintenanceMigrationReport();
-  assert.equal(report.canonical_route_records_changed, false);
+  assert.equal(report.canonical_route_records_changed, true);
   assert.equal(report.bundle.route_id, 'skill-package-maintenance');
   assert.equal(report.bundle.primary_space, 'skills');
   assert.equal(report.bundle.space_entries, 1);

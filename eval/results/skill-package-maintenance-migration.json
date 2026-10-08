@@ -20,14 +20,14 @@
       "content/orientation/skills.json",
       ".agents/skills/pl-skill-creator/SKILL.md"
     ],
-    "utf8_bytes": 35643,
-    "rough_tokens": 8911
+    "utf8_bytes": 35878,
+    "rough_tokens": 8970
   },
   "deltas": {
     "preferred_vs_current_fallback": {
-      "utf8_bytes": -6327,
-      "rough_tokens": -1582,
-      "percent": -17.8
+      "utf8_bytes": -6562,
+      "rough_tokens": -1641,
+      "percent": -18.3
     }
   },
   "exit_gate": {
