@@ -144,10 +144,10 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
 export function validateRileyContinuityContract({ workOrders, riley, rileyFlows }) {
   if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley AI orchestrator record is missing');
   const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
-  if (!includesAll(personaText, ['current work', 'work order when one exists', 'verification queue', 'recovery artifact', 'live systems', 'broad rediscovery', 'every substantial current work workstream', 'operating route', 'parent work id', 'execute directly'])) throw new Error('Riley must declare universal durable Current Work orchestration with an optional Work Order / authoritative recovery-artifact hierarchy while preserving direct execution');
+  if (!includesAll(personaText, ['current work', 'work order when one exists', 'verification queue', 'recovery artifact', 'live systems', 'broad rediscovery', 'operating route', 'parent work id', 'execute directly'])) throw new Error('The selected coordinator must preserve the optional Work Order / authoritative recovery-artifact hierarchy and direct execution');
   const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
   if (!operate || !includesAll(JSON.stringify(operate), ['resume and checkpoint substantial work', 'work order when one exists', 'authoritative recovery artifact', 'reconcile durable orchestration state', 'operating route', 'parent work id'])) throw new Error('Riley operating workflow must include conditional recovery-artifact checkpoint/resume and durable orchestration reconciliation behavior');
-  if (!includesAll(workOrders, ['every substantial workstream', 'default durable orchestration owner', 'operate directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define universal Riley orchestration plus the Current Work → recovery artifact → live-system hierarchy');
+  if (!includesAll(workOrders, ['every substantial workstream', 'active coordinator', 'directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define coordinator-owned continuity plus the Current Work → recovery artifact → live-system hierarchy');
 }
 
 export function validateRepositoryWorkingCopyContract({ workOrders, architecture, uxPractice, uxContextTemplate, uxWorkOrderTemplate, uxRouting, docsReadme }) {

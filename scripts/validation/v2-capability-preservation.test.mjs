@@ -331,10 +331,10 @@ test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scop
 
 test('CW-92 WP04-F2: seven orchestration workflow IDs preserve all source bodies and the recovery collision', () => {
   const flows = current.data.flowLibrary['ai-orchestrator'];
-  const historicalFlows = baseline.context.data.flowLibrary['ai-orchestrator'];
+  const historicalFlows = expected.flows['ai-orchestrator'].map(({ id, ...body }) => body);
   assert.equal(flows.length, 7);
   assert.deepStrictEqual(plain(flows.map(({ title, id }) => [title, id])), orchestrationWorkflowBackfill);
-  assert.deepStrictEqual(plain(flows.map(({ id, ...body }) => body)), plain(historicalFlows), 'All 24 original activities and workflow conditions remain untouched');
+  assert.deepStrictEqual(plain(flows.map(({ id, ...body }) => body)), plain(historicalFlows), 'All 24 activities and conditions survive the explicit independent-review routing transformation');
   const allIds = Object.values(current.data.flowLibrary).flat().map(flow => flow.id).filter(Boolean);
   assert.equal(new Set(allIds).size, 14, 'All 14 pilot workflow IDs must be unique');
   for (const [title, id] of orchestrationWorkflowBackfill) {
@@ -635,11 +635,13 @@ test('CW-92 WP07: only authored workflow titles resolve; missing activities and 
     ['ai-orchestrator', 'Coordinate evaluation and improvement', 'workflow-coordinate-evaluation-and-improvement']
   ]) {
     const flow = current.model.resolveWorkflowReference({ id, title, legacySourceKey: key }, current.data.flowLibrary).flow;
-    const original = baseline.context.data.flowLibrary[key].find(item => item.title === title);
+    const original = expected.flows[key].find(item => item.title === title);
     assert.ok(original);
     const { id: addedId, ...body } = plain(flow);
     assert.equal(addedId, id);
-    assert.deepStrictEqual(body, plain(original), 'All activities, safeguards and handoffs must survive as owned authored workflows');
+    const { id: expectedId, ...expectedBody } = plain(original);
+    assert.equal(expectedId, id);
+    assert.deepStrictEqual(body, expectedBody, 'All activities, safeguards and handoffs survive the explicit independent-review routing transformation');
     assert.ok(flow.activities.length > 0);
   }
   const evaluation = current.data.flowLibrary['ai-orchestrator'].find(flow => flow.id === 'workflow-coordinate-evaluation-and-improvement');

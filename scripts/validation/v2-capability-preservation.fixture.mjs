@@ -158,6 +158,25 @@ export const orchestrationWorkflowBackfill = [
 
 export function readerBaseline(context) {
   const snapshot = capturePilot(context);
+  // WP21 explicitly removes named/default routing prerequisites. Derive only
+  // these approved replacements from the pinned source, preserving every other
+  // field and every workflow activity (including mandatory independent review).
+  const riley = snapshot.definitions.find(persona => persona.id === 'ai-orchestrator');
+  riley.overview = 'When explicitly selected, Riley applies the existing intent and routing methods to turn open-ended goals into bounded work. Default system entry and durable orchestration do not require this Persona.';
+  riley.behaviors = riley.behaviors.map(value => value
+    .replace('Receives unqualified requests, interprets intent, and selects the smallest useful route', 'When selected, interprets intent and selects the smallest useful route')
+    .replace('Treats every substantial Current Work workstream as Riley-governed for durable orchestration unless the requester explicitly establishes another orchestration boundary, while allowing the selected Persona, Skill, Playbook, Tool path, or runtime to execute directly', 'When selected as coordinator, maintains durable orchestration continuity while allowing the selected Skill, Playbook, Tool path, or runtime to execute directly'));
+  riley.implication = riley.implication
+    .replace('For every substantial Current Work workstream, Riley owns durable orchestration continuity unless the requester explicitly establishes another orchestration boundary;', 'When explicitly selected as coordinator, Riley maintains durable orchestration continuity;')
+    .replace('Route every evaluated run through Noor’s conformance observation before treating the result as evidence.', 'Route every evaluated run through qualified independent conformance review before treating the result as evidence; no named Persona is required.');
+  const evaluation = snapshot.flows['ai-orchestrator'].find(flow => flow.title === 'Coordinate evaluation and improvement');
+  evaluation.summary = 'Frame the evaluation, send every evaluated run to a qualified independent reviewer for conformance observation, and use the classified evidence to improve the system.';
+  evaluation.handoff.to = 'skill-evaluation-and-observability';
+  evaluation.handoff.output = 'Independent observation with result class, evidence status, confidence, severity, repeatability, owner, and next test.';
+  evaluation.activities[0][4] = 'Evaluation brief + independent review handoff';
+  evaluation.activities[1][0] = 'Invoke qualified independent conformance observation';
+  evaluation.activities[1][3] = 'The executor or final answer stands in for independent observation';
+  snapshot.linked.personaHandoffs.find(edge => edge.id === 'handoff-riley-to-noor-conformance').responsibility = 'For an explicitly selected Persona application, Riley prepares comparable conditions and Noor observes conformance evidence. This compatibility route does not own the general review requirement: the evaluation workflow requires qualified independent review without a named Persona prerequisite.';
   // WP04-F1: only the seven explicitly accepted UI workflow IDs are added to
   // the immutable baseline projection; no workflow body or unrelated source is
   // normalized away. Method references gain those IDs, not a new authored copy.
