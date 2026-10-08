@@ -110,6 +110,10 @@
       const entry = index.byId.get(ref.id);
       if (!entry) throw new Error(`Unknown workflow ID: ${ref.id}`);
       if (ref.unresolved) throw new Error(`Resolved workflow marked unresolved: ${ref.id}`);
+      // IDs are stable, but any supplied historical scope/title must agree
+      // with the exact authored workflow, never a different ID's body.
+      if (ref.legacySourceKey && ref.legacySourceKey !== entry.sourceKey) throw new Error(`Workflow ID source mismatch: ${ref.id}`);
+      if (ref.title !== undefined && ref.title !== entry.flow.title) throw new Error(`Workflow ID title mismatch: ${ref.id}`);
       return entry;
     }
     if (typeof ref.title !== 'string' || !ref.title.trim()) throw new Error('Workflow reference needs an ID or exact title');
@@ -219,6 +223,15 @@
           origins.add(origin);
         }
         const resolved = refs.map(ref => resolveWorkflow(ref, workflows));
+        if (neutral && legacySourceKey) {
+          // Mechanical migration cannot change workflow reach by omitting the
+          // optional reference scope or preserving a title beside a wrong ID.
+          for (const [index, entry] of resolved.entries()) {
+            if (entry && (entry.sourceKey !== legacySourceKey || refs[index].title !== entry.flow.title)) {
+              throw new Error(`Migrated workflow source/title mismatch: ${methodId}`);
+            }
+          }
+        }
         const method = {
           id: methodId, name: record.name, status: record.status, definition: record.definition,
           when: neutral ? record.when : record.triggers, actions: record.actions, evidence: record.evidence,

@@ -240,6 +240,48 @@ test('CW-92: real recovery-title collision retains both source bodies without gl
   assert.throws(() => current.model.buildSkillCatalog(input), /Unresolved workflow scope differs from method origin/);
 });
 
+test('CW-92: explicit workflow IDs cannot silently change a migrated method’s original workflow reach', () => {
+  const data = neutralInput();
+  const key = Object.keys(data.skillLibrary)[0];
+  const original = data.skillLibrary[key][0];
+  // Use actual authored workflow bodies; these IDs exist only in this test input.
+  const uiFlow = plain(current.data.flowLibrary['ui-expert'][0]);
+  const otherFlow = plain(current.data.flowLibrary['ai-orchestrator'][0]);
+  uiFlow.id = 'workflow-wp04-test-ui';
+  otherFlow.id = 'workflow-wp04-test-orchestration';
+  data.flowLibrary = { 'ui-expert': [uiFlow], 'ai-orchestrator': [otherFlow] };
+  original.workflowRefs = [{ id: uiFlow.id, title: uiFlow.title, legacySourceKey: 'ui-expert' }];
+  const valid = current.model.buildSkillCatalog(data)[0];
+  assert.equal(valid.workflows[0].title, uiFlow.title);
+  assert.equal(valid.profiles[0].workflows, uiFlow.title);
+  assert.equal(current.model.resolveWorkflowReference({ id: uiFlow.id }, data.flowLibrary).sourceKey, 'ui-expert', 'Native ID-only references remain supported');
+
+  for (const mutate of [
+    ref => { ref.id = otherFlow.id; }, // valid ID, old title and source key; must fail
+    ref => { ref.title = otherFlow.title; }, // valid ID and source, wrong original title
+    ref => { ref.legacySourceKey = 'ai-orchestrator'; }, // ID and title match UI, wrong scoped origin
+    ref => { delete ref.legacySourceKey; ref.id = otherFlow.id; }, // cannot omit the source hint to bypass method origin
+    ref => { delete ref.title; }, // cannot discard original title on a mechanical migration
+  ]) {
+    const corrupted = plain(data);
+    mutate(corrupted.skillLibrary[key][0].workflowRefs[0]);
+    assert.throws(() => current.model.buildSkillCatalog(corrupted), /[Ww]orkflow.*(source|title|origin|scoped)/);
+  }
+  assert.throws(() => current.model.resolveWorkflowReference({ id: uiFlow.id, legacySourceKey: 'ai-orchestrator', title: uiFlow.title }, data.flowLibrary), /[Ww]orkflow.*source/);
+  assert.throws(() => current.model.resolveWorkflowReference({ id: uiFlow.id, legacySourceKey: 'ui-expert', title: otherFlow.title }, data.flowLibrary), /[Ww]orkflow.*title/);
+
+  // The real same-title collision must remain distinct even when both receive IDs.
+  const title = 'Recover a failed or unsafe run';
+  const recovery = plain(current.data.flowLibrary['ai-orchestrator'].find(flow => flow.title === title));
+  const observation = plain(current.data.flowLibrary['conformance-observer'].find(flow => flow.title === title));
+  recovery.id = 'workflow-run-recovery-containment-and-control';
+  observation.id = 'workflow-wp04-test-observation-recovery';
+  const flows = { 'ai-orchestrator': [recovery], 'conformance-observer': [observation] };
+  assert.notDeepStrictEqual(plain(recovery), plain(observation));
+  assert.equal(current.model.resolveWorkflowReference({ id: recovery.id, legacySourceKey: 'ai-orchestrator', title }, flows).sourceKey, 'ai-orchestrator');
+  assert.throws(() => current.model.resolveWorkflowReference({ id: observation.id, legacySourceKey: 'ai-orchestrator', title }, flows), /[Ww]orkflow.*source/);
+});
+
 test('CW-92: preserve existing workflow defects, evidence maturity and authored coverage', () => {
   assert.deepStrictEqual(workflowDiagnostics(current.data), workflowDiagnostics(baseline.context.data));
   for (const skill of expected.catalog) {
