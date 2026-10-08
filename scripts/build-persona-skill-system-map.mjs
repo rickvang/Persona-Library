@@ -170,7 +170,7 @@ export async function derivePersonaSkillGraph(context) {
     for (const method of skill.methods) {
       const persona = skill.personas.find(item => item.id === method.legacySourceKey);
       let appSource;
-      if (data.skillLibrary[skill.id]) {
+      if ((data.skillLibrary[skill.id] || []).some(record => record.id === method.id)) {
         appSource = neutralApplicationSource(profileSources, skill.id, method.id);
       } else {
         const file = profileSourceByPersona.get(method.legacySourceKey);

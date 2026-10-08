@@ -1,0 +1,3417 @@
+{
+  "version": "system-map.graph/v0.1",
+  "scope": "domain:agent-runtime",
+  "coverage": "complete-for-scope",
+  "nodes": [
+    {
+      "id": "agent:repository-dispatcher",
+      "label": "Repository dispatcher",
+      "type": "agent-dispatcher",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Choose the shortest activation path"
+      }
+    },
+    {
+      "id": "boundary:live-runtime-state",
+      "label": "Live runtime state stays external",
+      "type": "runtime-boundary",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "GitHub, CI, review, deployment, permissions, and runtime state"
+      }
+    },
+    {
+      "id": "contract:change-domain:conformance-evaluation",
+      "label": "change domain: conformance-evaluation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:consultation",
+      "label": "change domain: consultation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:cross-space",
+      "label": "change domain: cross-space",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:job-search-application",
+      "label": "change domain: job-search-application",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:local-media-inspection",
+      "label": "change domain: local-media-inspection",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:multi-agent-supervision",
+      "label": "change domain: multi-agent-supervision",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:operating-packs",
+      "label": "change domain: operating-packs",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:personas",
+      "label": "change domain: personas",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:personas-system",
+      "label": "change domain: personas-system",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:playbooks",
+      "label": "change domain: playbooks",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:prototyping",
+      "label": "change domain: prototyping",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:skill-formation",
+      "label": "change domain: skill-formation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:skill-packages",
+      "label": "change domain: skill-packages",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:skills",
+      "label": "change domain: skills",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:templates",
+      "label": "change domain: templates",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-domain:tools",
+      "label": "change domain: tools",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "contract:change-mode:artifact_generation",
+      "label": "change mode: artifact_generation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "contract:change-mode:external_execution",
+      "label": "change mode: external_execution",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "contract:change-mode:prototype",
+      "label": "change mode: prototype",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "contract:change-mode:read_only",
+      "label": "change mode: read_only",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "contract:change-mode:reconciliation_adapter",
+      "label": "change mode: reconciliation_adapter",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "contract:change-mode:record_update",
+      "label": "change mode: record_update",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "contract:change-mode:source_update",
+      "label": "change mode: source_update",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "contract:reconciliation:change-impact-reconciliation",
+      "label": "reconciliation: change-impact-reconciliation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "contract:reconciliation:operating-pack-reconciliation",
+      "label": "reconciliation: operating-pack-reconciliation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "contract:reconciliation:persona-reconciliation",
+      "label": "reconciliation: persona-reconciliation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "contract:reconciliation:skip",
+      "label": "reconciliation: skip",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "contract:reconciliation:template-reconciliation",
+      "label": "reconciliation: template-reconciliation",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "contract:skill-layer:governance",
+      "label": "skill layer: governance",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "contract:skill-layer:library_management",
+      "label": "skill layer: library_management",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "contract:skill-layer:orchestration",
+      "label": "skill layer: orchestration",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "contract:skill-layer:persona_applied",
+      "label": "skill layer: persona_applied",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "contract:skill-layer:tool_safety",
+      "label": "skill layer: tool_safety",
+      "type": "skill-contract-value",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "route-group:decisions",
+      "label": "Decisions routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/decisions.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:docs",
+      "label": "Docs routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:operating-packs",
+      "label": "Operating Packs routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:personas",
+      "label": "Personas routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:playbooks",
+      "label": "Playbooks routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:prototyping",
+      "label": "Prototyping routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:skills",
+      "label": "Skills routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:templates",
+      "label": "Templates routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route-group:tools",
+      "label": "Tools routes",
+      "type": "route-group",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "route:bounded-parallel-implementation",
+      "label": "bounded-parallel-implementation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=bounded-parallel-implementation]"
+      }
+    },
+    {
+      "id": "route:conformance-evaluation",
+      "label": "conformance-evaluation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=conformance-evaluation]"
+      }
+    },
+    {
+      "id": "route:cross-space-reconciliation",
+      "label": "cross-space-reconciliation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=cross-space-reconciliation]"
+      }
+    },
+    {
+      "id": "route:decision-record",
+      "label": "decision-record",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/decisions.json",
+        "selector": "routes[id=decision-record]"
+      }
+    },
+    {
+      "id": "route:docs-and-onboarding",
+      "label": "docs-and-onboarding",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=docs-and-onboarding]"
+      }
+    },
+    {
+      "id": "route:isolated-persona-skill-testing",
+      "label": "isolated-persona-skill-testing",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=isolated-persona-skill-testing]"
+      }
+    },
+    {
+      "id": "route:local-video-inspection",
+      "label": "local-video-inspection",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=local-video-inspection]"
+      }
+    },
+    {
+      "id": "route:multi-persona-collaboration",
+      "label": "multi-persona-collaboration",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=multi-persona-collaboration]"
+      }
+    },
+    {
+      "id": "route:operating-pack-catalog",
+      "label": "operating-pack-catalog",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-catalog]"
+      }
+    },
+    {
+      "id": "route:operating-pack-composition",
+      "label": "operating-pack-composition",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-composition]"
+      }
+    },
+    {
+      "id": "route:operating-pack-reconciliation",
+      "label": "operating-pack-reconciliation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-reconciliation]"
+      }
+    },
+    {
+      "id": "route:operating-pack-research",
+      "label": "operating-pack-research",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-research]"
+      }
+    },
+    {
+      "id": "route:persona-capability-maintenance",
+      "label": "persona-capability-maintenance",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=persona-capability-maintenance]"
+      }
+    },
+    {
+      "id": "route:persona-consultation",
+      "label": "persona-consultation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-consultation]"
+      }
+    },
+    {
+      "id": "route:persona-reconciliation",
+      "label": "persona-reconciliation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-reconciliation]"
+      }
+    },
+    {
+      "id": "route:persona-research",
+      "label": "persona-research",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-research]"
+      }
+    },
+    {
+      "id": "route:playbook-composition",
+      "label": "playbook-composition",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=playbook-composition]"
+      }
+    },
+    {
+      "id": "route:prototype-comparison",
+      "label": "prototype-comparison",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+        "selector": "routes[id=prototype-comparison]"
+      }
+    },
+    {
+      "id": "route:resume-application-work",
+      "label": "resume-application-work",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=resume-application-work]"
+      }
+    },
+    {
+      "id": "route:resume-template-semantic-mapping",
+      "label": "resume-template-semantic-mapping",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=resume-template-semantic-mapping]"
+      }
+    },
+    {
+      "id": "route:skill-formation",
+      "label": "skill-formation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=skill-formation]"
+      }
+    },
+    {
+      "id": "route:skill-package-maintenance",
+      "label": "skill-package-maintenance",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=skill-package-maintenance]"
+      }
+    },
+    {
+      "id": "route:system-orientation",
+      "label": "system-orientation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=system-orientation]"
+      }
+    },
+    {
+      "id": "route:template-catalog",
+      "label": "template-catalog",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-catalog]"
+      }
+    },
+    {
+      "id": "route:template-composition",
+      "label": "template-composition",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-composition]"
+      }
+    },
+    {
+      "id": "route:template-library-stewardship",
+      "label": "template-library-stewardship",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-library-stewardship]"
+      }
+    },
+    {
+      "id": "route:template-lifecycle",
+      "label": "template-lifecycle",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=template-lifecycle]"
+      }
+    },
+    {
+      "id": "route:template-reconciliation",
+      "label": "template-reconciliation",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-reconciliation]"
+      }
+    },
+    {
+      "id": "route:template-research",
+      "label": "template-research",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-research]"
+      }
+    },
+    {
+      "id": "route:tool-record-maintenance",
+      "label": "tool-record-maintenance",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+        "selector": "routes[id=tool-record-maintenance]"
+      }
+    },
+    {
+      "id": "route:tool-resolution",
+      "label": "tool-resolution",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+        "selector": "routes[id=tool-resolution]"
+      }
+    },
+    {
+      "id": "route:work-graph-orchestration",
+      "label": "work-graph-orchestration",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=work-graph-orchestration]"
+      }
+    },
+    {
+      "id": "route:work-order-start",
+      "label": "work-order-start",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=work-order-start]"
+      }
+    },
+    {
+      "id": "route:workflow-canvas-intent",
+      "label": "workflow-canvas-intent",
+      "type": "routing-route",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+        "selector": "routes[id=workflow-canvas-intent]"
+      }
+    },
+    {
+      "id": "routing:orientation-bootstrap",
+      "label": "Orientation bootstrap",
+      "type": "routing-bootstrap",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "root"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/change-impact-reconciliation",
+      "label": "change-impact-reconciliation",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/layout-lab",
+      "label": "layout-lab",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/local-video-inspection",
+      "label": "local-video-inspection",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/multi-perspective-skill-synthesis",
+      "label": "multi-perspective-skill-synthesis",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/operating-pack-composer",
+      "label": "operating-pack-composer",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/operating-pack-reconciliation",
+      "label": "operating-pack-reconciliation",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-reconciliation/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/operating-pack-research",
+      "label": "operating-pack-research",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/persona-library-orientation",
+      "label": "persona-library-orientation",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/persona-panel-orchestration",
+      "label": "persona-panel-orchestration",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/persona-reconciliation",
+      "label": "persona-reconciliation",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/persona-research",
+      "label": "persona-research",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/persona-skill-conformance",
+      "label": "persona-skill-conformance",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/persona-skills",
+      "label": "persona-skills",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/pl-skill-creator",
+      "label": "pl-skill-creator",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/playbook-composer",
+      "label": "playbook-composer",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/resume-template-semantic-mapping",
+      "label": "resume-template-semantic-mapping",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/template-composer",
+      "label": "template-composer",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/template-reconciliation",
+      "label": "template-reconciliation",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-reconciliation/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/template-research",
+      "label": "template-research",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-research/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
+      "label": "tool-discovery-and-safe-execution",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/tool-record-maintenance",
+      "label": "tool-record-maintenance",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-record-maintenance/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/work-graph-orchestration",
+      "label": "work-graph-orchestration",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "skill-package:.agents/skills/workflow-canvas-reasoning",
+      "label": "workflow-canvas-reasoning",
+      "type": "callable-skill-package",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/workflow-canvas-reasoning/SKILL.md",
+        "selector": "frontmatter"
+      }
+    },
+    {
+      "id": "space:decisions",
+      "label": "Decisions",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.decisions"
+      }
+    },
+    {
+      "id": "space:docs",
+      "label": "Docs",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.docs"
+      }
+    },
+    {
+      "id": "space:operating-packs",
+      "label": "Operating Packs",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.operating-packs"
+      }
+    },
+    {
+      "id": "space:personas",
+      "label": "Personas",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.personas"
+      }
+    },
+    {
+      "id": "space:playbooks",
+      "label": "Playbooks",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.playbooks"
+      }
+    },
+    {
+      "id": "space:prototyping",
+      "label": "Prototyping",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.prototyping"
+      }
+    },
+    {
+      "id": "space:skills",
+      "label": "Skills",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.skills"
+      }
+    },
+    {
+      "id": "space:templates",
+      "label": "Templates",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.templates"
+      }
+    },
+    {
+      "id": "space:tools",
+      "label": "Tools",
+      "type": "primary-space",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.tools"
+      }
+    },
+    {
+      "id": "validation:repository-validation",
+      "label": "Repository validation",
+      "type": "validation-boundary",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.github/workflows/repository-validation.yml",
+        "selector": "jobs.validate"
+      }
+    },
+    {
+      "id": "view:agent-runtime",
+      "label": "Agent / runtime",
+      "type": "view-root",
+      "owner": "repository:rickvang/persona-library",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Choose the shortest activation path"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:agent:repository-dispatcher--loads-for-semantic-work--routing:orientation-bootstrap",
+      "from": "agent:repository-dispatcher",
+      "to": "routing:orientation-bootstrap",
+      "relationship": "loads-for-semantic-work",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "library-semantic"
+      }
+    },
+    {
+      "id": "edge:agent:repository-dispatcher--uses-validation-contract--validation:repository-validation",
+      "from": "agent:repository-dispatcher",
+      "to": "validation:repository-validation",
+      "relationship": "uses-validation-contract",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Repository execution and validation"
+      }
+    },
+    {
+      "id": "edge:route-group:decisions--contains--route:decision-record",
+      "from": "route-group:decisions",
+      "to": "route:decision-record",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/decisions.json",
+        "selector": "routes[id=decision-record]"
+      }
+    },
+    {
+      "id": "edge:route-group:docs--contains--route:conformance-evaluation",
+      "from": "route-group:docs",
+      "to": "route:conformance-evaluation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=conformance-evaluation]"
+      }
+    },
+    {
+      "id": "edge:route-group:docs--contains--route:cross-space-reconciliation",
+      "from": "route-group:docs",
+      "to": "route:cross-space-reconciliation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=cross-space-reconciliation]"
+      }
+    },
+    {
+      "id": "edge:route-group:docs--contains--route:docs-and-onboarding",
+      "from": "route-group:docs",
+      "to": "route:docs-and-onboarding",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=docs-and-onboarding]"
+      }
+    },
+    {
+      "id": "edge:route-group:docs--contains--route:resume-application-work",
+      "from": "route-group:docs",
+      "to": "route:resume-application-work",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=resume-application-work]"
+      }
+    },
+    {
+      "id": "edge:route-group:docs--contains--route:system-orientation",
+      "from": "route-group:docs",
+      "to": "route:system-orientation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=system-orientation]"
+      }
+    },
+    {
+      "id": "edge:route-group:docs--contains--route:work-order-start",
+      "from": "route-group:docs",
+      "to": "route:work-order-start",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=work-order-start]"
+      }
+    },
+    {
+      "id": "edge:route-group:operating-packs--contains--route:operating-pack-catalog",
+      "from": "route-group:operating-packs",
+      "to": "route:operating-pack-catalog",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-catalog]"
+      }
+    },
+    {
+      "id": "edge:route-group:operating-packs--contains--route:operating-pack-composition",
+      "from": "route-group:operating-packs",
+      "to": "route:operating-pack-composition",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-composition]"
+      }
+    },
+    {
+      "id": "edge:route-group:operating-packs--contains--route:operating-pack-reconciliation",
+      "from": "route-group:operating-packs",
+      "to": "route:operating-pack-reconciliation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-reconciliation]"
+      }
+    },
+    {
+      "id": "edge:route-group:operating-packs--contains--route:operating-pack-research",
+      "from": "route-group:operating-packs",
+      "to": "route:operating-pack-research",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-research]"
+      }
+    },
+    {
+      "id": "edge:route-group:personas--contains--route:persona-consultation",
+      "from": "route-group:personas",
+      "to": "route:persona-consultation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-consultation]"
+      }
+    },
+    {
+      "id": "edge:route-group:personas--contains--route:persona-reconciliation",
+      "from": "route-group:personas",
+      "to": "route:persona-reconciliation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-reconciliation]"
+      }
+    },
+    {
+      "id": "edge:route-group:personas--contains--route:persona-research",
+      "from": "route-group:personas",
+      "to": "route:persona-research",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-research]"
+      }
+    },
+    {
+      "id": "edge:route-group:playbooks--contains--route:bounded-parallel-implementation",
+      "from": "route-group:playbooks",
+      "to": "route:bounded-parallel-implementation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=bounded-parallel-implementation]"
+      }
+    },
+    {
+      "id": "edge:route-group:playbooks--contains--route:multi-persona-collaboration",
+      "from": "route-group:playbooks",
+      "to": "route:multi-persona-collaboration",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=multi-persona-collaboration]"
+      }
+    },
+    {
+      "id": "edge:route-group:playbooks--contains--route:playbook-composition",
+      "from": "route-group:playbooks",
+      "to": "route:playbook-composition",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=playbook-composition]"
+      }
+    },
+    {
+      "id": "edge:route-group:playbooks--contains--route:template-lifecycle",
+      "from": "route-group:playbooks",
+      "to": "route:template-lifecycle",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=template-lifecycle]"
+      }
+    },
+    {
+      "id": "edge:route-group:prototyping--contains--route:prototype-comparison",
+      "from": "route-group:prototyping",
+      "to": "route:prototype-comparison",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+        "selector": "routes[id=prototype-comparison]"
+      }
+    },
+    {
+      "id": "edge:route-group:prototyping--contains--route:workflow-canvas-intent",
+      "from": "route-group:prototyping",
+      "to": "route:workflow-canvas-intent",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+        "selector": "routes[id=workflow-canvas-intent]"
+      }
+    },
+    {
+      "id": "edge:route-group:skills--contains--route:isolated-persona-skill-testing",
+      "from": "route-group:skills",
+      "to": "route:isolated-persona-skill-testing",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=isolated-persona-skill-testing]"
+      }
+    },
+    {
+      "id": "edge:route-group:skills--contains--route:local-video-inspection",
+      "from": "route-group:skills",
+      "to": "route:local-video-inspection",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=local-video-inspection]"
+      }
+    },
+    {
+      "id": "edge:route-group:skills--contains--route:persona-capability-maintenance",
+      "from": "route-group:skills",
+      "to": "route:persona-capability-maintenance",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=persona-capability-maintenance]"
+      }
+    },
+    {
+      "id": "edge:route-group:skills--contains--route:resume-template-semantic-mapping",
+      "from": "route-group:skills",
+      "to": "route:resume-template-semantic-mapping",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=resume-template-semantic-mapping]"
+      }
+    },
+    {
+      "id": "edge:route-group:skills--contains--route:skill-formation",
+      "from": "route-group:skills",
+      "to": "route:skill-formation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=skill-formation]"
+      }
+    },
+    {
+      "id": "edge:route-group:skills--contains--route:skill-package-maintenance",
+      "from": "route-group:skills",
+      "to": "route:skill-package-maintenance",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=skill-package-maintenance]"
+      }
+    },
+    {
+      "id": "edge:route-group:skills--contains--route:work-graph-orchestration",
+      "from": "route-group:skills",
+      "to": "route:work-graph-orchestration",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=work-graph-orchestration]"
+      }
+    },
+    {
+      "id": "edge:route-group:templates--contains--route:template-catalog",
+      "from": "route-group:templates",
+      "to": "route:template-catalog",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-catalog]"
+      }
+    },
+    {
+      "id": "edge:route-group:templates--contains--route:template-composition",
+      "from": "route-group:templates",
+      "to": "route:template-composition",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-composition]"
+      }
+    },
+    {
+      "id": "edge:route-group:templates--contains--route:template-library-stewardship",
+      "from": "route-group:templates",
+      "to": "route:template-library-stewardship",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-library-stewardship]"
+      }
+    },
+    {
+      "id": "edge:route-group:templates--contains--route:template-reconciliation",
+      "from": "route-group:templates",
+      "to": "route:template-reconciliation",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-reconciliation]"
+      }
+    },
+    {
+      "id": "edge:route-group:templates--contains--route:template-research",
+      "from": "route-group:templates",
+      "to": "route:template-research",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-research]"
+      }
+    },
+    {
+      "id": "edge:route-group:tools--contains--route:tool-record-maintenance",
+      "from": "route-group:tools",
+      "to": "route:tool-record-maintenance",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+        "selector": "routes[id=tool-record-maintenance]"
+      }
+    },
+    {
+      "id": "edge:route-group:tools--contains--route:tool-resolution",
+      "from": "route-group:tools",
+      "to": "route:tool-resolution",
+      "relationship": "contains",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+        "selector": "routes[id=tool-resolution]"
+      }
+    },
+    {
+      "id": "edge:route:cross-space-reconciliation--routes-to--skill-package:.agents/skills/change-impact-reconciliation",
+      "from": "route:cross-space-reconciliation",
+      "to": "skill-package:.agents/skills/change-impact-reconciliation",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=cross-space-reconciliation].package_path"
+      }
+    },
+    {
+      "id": "edge:route:isolated-persona-skill-testing--routes-to--skill-package:.agents/skills/persona-skill-conformance",
+      "from": "route:isolated-persona-skill-testing",
+      "to": "skill-package:.agents/skills/persona-skill-conformance",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=isolated-persona-skill-testing].package_path"
+      }
+    },
+    {
+      "id": "edge:route:local-video-inspection--routes-to--skill-package:.agents/skills/local-video-inspection",
+      "from": "route:local-video-inspection",
+      "to": "skill-package:.agents/skills/local-video-inspection",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=local-video-inspection].package_path"
+      }
+    },
+    {
+      "id": "edge:route:operating-pack-composition--routes-to--skill-package:.agents/skills/operating-pack-composer",
+      "from": "route:operating-pack-composition",
+      "to": "skill-package:.agents/skills/operating-pack-composer",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-composition].package_path"
+      }
+    },
+    {
+      "id": "edge:route:operating-pack-reconciliation--routes-to--skill-package:.agents/skills/operating-pack-reconciliation",
+      "from": "route:operating-pack-reconciliation",
+      "to": "skill-package:.agents/skills/operating-pack-reconciliation",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-reconciliation].package_path"
+      }
+    },
+    {
+      "id": "edge:route:operating-pack-research--routes-to--skill-package:.agents/skills/operating-pack-research",
+      "from": "route:operating-pack-research",
+      "to": "skill-package:.agents/skills/operating-pack-research",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/operating-packs.json",
+        "selector": "routes[id=operating-pack-research].package_path"
+      }
+    },
+    {
+      "id": "edge:route:persona-capability-maintenance--routes-to--skill-package:.agents/skills/persona-skills",
+      "from": "route:persona-capability-maintenance",
+      "to": "skill-package:.agents/skills/persona-skills",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=persona-capability-maintenance].package_path"
+      }
+    },
+    {
+      "id": "edge:route:persona-consultation--routes-to--skill-package:.agents/skills/persona-panel-orchestration",
+      "from": "route:persona-consultation",
+      "to": "skill-package:.agents/skills/persona-panel-orchestration",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-consultation].package_path"
+      }
+    },
+    {
+      "id": "edge:route:persona-reconciliation--routes-to--skill-package:.agents/skills/persona-reconciliation",
+      "from": "route:persona-reconciliation",
+      "to": "skill-package:.agents/skills/persona-reconciliation",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-reconciliation].package_path"
+      }
+    },
+    {
+      "id": "edge:route:persona-research--routes-to--skill-package:.agents/skills/persona-research",
+      "from": "route:persona-research",
+      "to": "skill-package:.agents/skills/persona-research",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/personas.json",
+        "selector": "routes[id=persona-research].package_path"
+      }
+    },
+    {
+      "id": "edge:route:playbook-composition--routes-to--skill-package:.agents/skills/playbook-composer",
+      "from": "route:playbook-composition",
+      "to": "skill-package:.agents/skills/playbook-composer",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/playbooks.json",
+        "selector": "routes[id=playbook-composition].package_path"
+      }
+    },
+    {
+      "id": "edge:route:prototype-comparison--routes-to--skill-package:.agents/skills/layout-lab",
+      "from": "route:prototype-comparison",
+      "to": "skill-package:.agents/skills/layout-lab",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+        "selector": "routes[id=prototype-comparison].package_path"
+      }
+    },
+    {
+      "id": "edge:route:resume-template-semantic-mapping--routes-to--skill-package:.agents/skills/resume-template-semantic-mapping",
+      "from": "route:resume-template-semantic-mapping",
+      "to": "skill-package:.agents/skills/resume-template-semantic-mapping",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=resume-template-semantic-mapping].package_path"
+      }
+    },
+    {
+      "id": "edge:route:skill-formation--routes-to--skill-package:.agents/skills/multi-perspective-skill-synthesis",
+      "from": "route:skill-formation",
+      "to": "skill-package:.agents/skills/multi-perspective-skill-synthesis",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=skill-formation].package_path"
+      }
+    },
+    {
+      "id": "edge:route:skill-package-maintenance--routes-to--skill-package:.agents/skills/pl-skill-creator",
+      "from": "route:skill-package-maintenance",
+      "to": "skill-package:.agents/skills/pl-skill-creator",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=skill-package-maintenance].package_path"
+      }
+    },
+    {
+      "id": "edge:route:system-orientation--routes-to--skill-package:.agents/skills/persona-library-orientation",
+      "from": "route:system-orientation",
+      "to": "skill-package:.agents/skills/persona-library-orientation",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/docs.json",
+        "selector": "routes[id=system-orientation].package_path"
+      }
+    },
+    {
+      "id": "edge:route:template-composition--routes-to--skill-package:.agents/skills/template-composer",
+      "from": "route:template-composition",
+      "to": "skill-package:.agents/skills/template-composer",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-composition].package_path"
+      }
+    },
+    {
+      "id": "edge:route:template-reconciliation--routes-to--skill-package:.agents/skills/template-reconciliation",
+      "from": "route:template-reconciliation",
+      "to": "skill-package:.agents/skills/template-reconciliation",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-reconciliation].package_path"
+      }
+    },
+    {
+      "id": "edge:route:template-research--routes-to--skill-package:.agents/skills/template-research",
+      "from": "route:template-research",
+      "to": "skill-package:.agents/skills/template-research",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/templates.json",
+        "selector": "routes[id=template-research].package_path"
+      }
+    },
+    {
+      "id": "edge:route:tool-record-maintenance--routes-to--skill-package:.agents/skills/tool-record-maintenance",
+      "from": "route:tool-record-maintenance",
+      "to": "skill-package:.agents/skills/tool-record-maintenance",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+        "selector": "routes[id=tool-record-maintenance].package_path"
+      }
+    },
+    {
+      "id": "edge:route:tool-resolution--routes-to--skill-package:.agents/skills/tool-discovery-and-safe-execution",
+      "from": "route:tool-resolution",
+      "to": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/tools.json",
+        "selector": "routes[id=tool-resolution].package_path"
+      }
+    },
+    {
+      "id": "edge:route:work-graph-orchestration--routes-to--skill-package:.agents/skills/work-graph-orchestration",
+      "from": "route:work-graph-orchestration",
+      "to": "skill-package:.agents/skills/work-graph-orchestration",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/skills.json",
+        "selector": "routes[id=work-graph-orchestration].package_path"
+      }
+    },
+    {
+      "id": "edge:route:workflow-canvas-intent--routes-to--skill-package:.agents/skills/workflow-canvas-reasoning",
+      "from": "route:workflow-canvas-intent",
+      "to": "skill-package:.agents/skills/workflow-canvas-reasoning",
+      "relationship": "routes-to",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/orientation/prototyping.json",
+        "selector": "routes[id=workflow-canvas-intent].package_path"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:decisions",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:decisions",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.decisions"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:docs",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:docs",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.docs"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:operating-packs",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:operating-packs",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.operating-packs"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:personas",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:personas",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.personas"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:playbooks",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:playbooks",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.playbooks"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:prototyping",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:prototyping",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.prototyping"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:skills",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:skills",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.skills"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:templates",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:templates",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.templates"
+      }
+    },
+    {
+      "id": "edge:routing:orientation-bootstrap--declares-space--space:tools",
+      "from": "routing:orientation-bootstrap",
+      "to": "space:tools",
+      "relationship": "declares-space",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.tools"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/change-impact-reconciliation--declares-change-domain--contract:change-domain:cross-space",
+      "from": "skill-package:.agents/skills/change-impact-reconciliation",
+      "to": "contract:change-domain:cross-space",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/change-impact-reconciliation--declares-change-mode--contract:change-mode:reconciliation_adapter",
+      "from": "skill-package:.agents/skills/change-impact-reconciliation",
+      "to": "contract:change-mode:reconciliation_adapter",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/change-impact-reconciliation--declares-reconciliation--contract:reconciliation:skip",
+      "from": "skill-package:.agents/skills/change-impact-reconciliation",
+      "to": "contract:reconciliation:skip",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/change-impact-reconciliation--declares-skill-layer--contract:skill-layer:governance",
+      "from": "skill-package:.agents/skills/change-impact-reconciliation",
+      "to": "contract:skill-layer:governance",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/change-impact-reconciliation/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/layout-lab--declares-change-domain--contract:change-domain:prototyping",
+      "from": "skill-package:.agents/skills/layout-lab",
+      "to": "contract:change-domain:prototyping",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/layout-lab--declares-change-mode--contract:change-mode:prototype",
+      "from": "skill-package:.agents/skills/layout-lab",
+      "to": "contract:change-mode:prototype",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/layout-lab--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/layout-lab",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/layout-lab--declares-skill-layer--contract:skill-layer:persona_applied",
+      "from": "skill-package:.agents/skills/layout-lab",
+      "to": "contract:skill-layer:persona_applied",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/layout-lab/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/local-video-inspection--declares-change-domain--contract:change-domain:local-media-inspection",
+      "from": "skill-package:.agents/skills/local-video-inspection",
+      "to": "contract:change-domain:local-media-inspection",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/local-video-inspection--declares-change-mode--contract:change-mode:external_execution",
+      "from": "skill-package:.agents/skills/local-video-inspection",
+      "to": "contract:change-mode:external_execution",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/local-video-inspection--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/local-video-inspection",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/local-video-inspection--declares-skill-layer--contract:skill-layer:persona_applied",
+      "from": "skill-package:.agents/skills/local-video-inspection",
+      "to": "contract:skill-layer:persona_applied",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/local-video-inspection/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/multi-perspective-skill-synthesis--declares-change-domain--contract:change-domain:skill-formation",
+      "from": "skill-package:.agents/skills/multi-perspective-skill-synthesis",
+      "to": "contract:change-domain:skill-formation",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/multi-perspective-skill-synthesis--declares-change-mode--contract:change-mode:artifact_generation",
+      "from": "skill-package:.agents/skills/multi-perspective-skill-synthesis",
+      "to": "contract:change-mode:artifact_generation",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/multi-perspective-skill-synthesis--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/multi-perspective-skill-synthesis",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/multi-perspective-skill-synthesis--declares-skill-layer--contract:skill-layer:orchestration",
+      "from": "skill-package:.agents/skills/multi-perspective-skill-synthesis",
+      "to": "contract:skill-layer:orchestration",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/multi-perspective-skill-synthesis/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-composer--declares-change-domain--contract:change-domain:operating-packs",
+      "from": "skill-package:.agents/skills/operating-pack-composer",
+      "to": "contract:change-domain:operating-packs",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-composer--declares-change-mode--contract:change-mode:artifact_generation",
+      "from": "skill-package:.agents/skills/operating-pack-composer",
+      "to": "contract:change-mode:artifact_generation",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-composer--declares-reconciliation--contract:reconciliation:operating-pack-reconciliation",
+      "from": "skill-package:.agents/skills/operating-pack-composer",
+      "to": "contract:reconciliation:operating-pack-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-composer--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/operating-pack-composer",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-composer/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-reconciliation--declares-change-domain--contract:change-domain:operating-packs",
+      "from": "skill-package:.agents/skills/operating-pack-reconciliation",
+      "to": "contract:change-domain:operating-packs",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-reconciliation--declares-change-mode--contract:change-mode:reconciliation_adapter",
+      "from": "skill-package:.agents/skills/operating-pack-reconciliation",
+      "to": "contract:change-mode:reconciliation_adapter",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-reconciliation--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/operating-pack-reconciliation",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-reconciliation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-reconciliation--declares-skill-layer--contract:skill-layer:governance",
+      "from": "skill-package:.agents/skills/operating-pack-reconciliation",
+      "to": "contract:skill-layer:governance",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-reconciliation/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-research--declares-change-domain--contract:change-domain:operating-packs",
+      "from": "skill-package:.agents/skills/operating-pack-research",
+      "to": "contract:change-domain:operating-packs",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-research--declares-change-mode--contract:change-mode:source_update",
+      "from": "skill-package:.agents/skills/operating-pack-research",
+      "to": "contract:change-mode:source_update",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-research--declares-reconciliation--contract:reconciliation:operating-pack-reconciliation",
+      "from": "skill-package:.agents/skills/operating-pack-research",
+      "to": "contract:reconciliation:operating-pack-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/operating-pack-research--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/operating-pack-research",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/operating-pack-research/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-change-domain--contract:change-domain:personas-system",
+      "from": "skill-package:.agents/skills/persona-library-orientation",
+      "to": "contract:change-domain:personas-system",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-change-mode--contract:change-mode:read_only",
+      "from": "skill-package:.agents/skills/persona-library-orientation",
+      "to": "contract:change-mode:read_only",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-reconciliation--contract:reconciliation:skip",
+      "from": "skill-package:.agents/skills/persona-library-orientation",
+      "to": "contract:reconciliation:skip",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-library-orientation--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/persona-library-orientation",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-library-orientation/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-panel-orchestration--declares-change-domain--contract:change-domain:consultation",
+      "from": "skill-package:.agents/skills/persona-panel-orchestration",
+      "to": "contract:change-domain:consultation",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-panel-orchestration--declares-change-mode--contract:change-mode:read_only",
+      "from": "skill-package:.agents/skills/persona-panel-orchestration",
+      "to": "contract:change-mode:read_only",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-panel-orchestration--declares-reconciliation--contract:reconciliation:skip",
+      "from": "skill-package:.agents/skills/persona-panel-orchestration",
+      "to": "contract:reconciliation:skip",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-panel-orchestration--declares-skill-layer--contract:skill-layer:orchestration",
+      "from": "skill-package:.agents/skills/persona-panel-orchestration",
+      "to": "contract:skill-layer:orchestration",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-panel-orchestration/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-reconciliation--declares-change-domain--contract:change-domain:personas",
+      "from": "skill-package:.agents/skills/persona-reconciliation",
+      "to": "contract:change-domain:personas",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-reconciliation--declares-change-mode--contract:change-mode:reconciliation_adapter",
+      "from": "skill-package:.agents/skills/persona-reconciliation",
+      "to": "contract:change-mode:reconciliation_adapter",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-reconciliation--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/persona-reconciliation",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-reconciliation--declares-skill-layer--contract:skill-layer:governance",
+      "from": "skill-package:.agents/skills/persona-reconciliation",
+      "to": "contract:skill-layer:governance",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-research--declares-change-domain--contract:change-domain:personas",
+      "from": "skill-package:.agents/skills/persona-research",
+      "to": "contract:change-domain:personas",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-research--declares-change-mode--contract:change-mode:source_update",
+      "from": "skill-package:.agents/skills/persona-research",
+      "to": "contract:change-mode:source_update",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-research--declares-reconciliation--contract:reconciliation:persona-reconciliation",
+      "from": "skill-package:.agents/skills/persona-research",
+      "to": "contract:reconciliation:persona-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-research--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/persona-research",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skill-conformance--declares-change-domain--contract:change-domain:conformance-evaluation",
+      "from": "skill-package:.agents/skills/persona-skill-conformance",
+      "to": "contract:change-domain:conformance-evaluation",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skill-conformance--declares-change-mode--contract:change-mode:external_execution",
+      "from": "skill-package:.agents/skills/persona-skill-conformance",
+      "to": "contract:change-mode:external_execution",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skill-conformance--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/persona-skill-conformance",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skill-conformance--declares-skill-layer--contract:skill-layer:orchestration",
+      "from": "skill-package:.agents/skills/persona-skill-conformance",
+      "to": "contract:skill-layer:orchestration",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skill-conformance/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skills--declares-change-domain--contract:change-domain:skills",
+      "from": "skill-package:.agents/skills/persona-skills",
+      "to": "contract:change-domain:skills",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skills--declares-change-mode--contract:change-mode:source_update",
+      "from": "skill-package:.agents/skills/persona-skills",
+      "to": "contract:change-mode:source_update",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skills--declares-reconciliation--contract:reconciliation:persona-reconciliation",
+      "from": "skill-package:.agents/skills/persona-skills",
+      "to": "contract:reconciliation:persona-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/persona-skills--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/persona-skills",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-skills/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/pl-skill-creator--declares-change-domain--contract:change-domain:skill-packages",
+      "from": "skill-package:.agents/skills/pl-skill-creator",
+      "to": "contract:change-domain:skill-packages",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/pl-skill-creator--declares-change-mode--contract:change-mode:artifact_generation",
+      "from": "skill-package:.agents/skills/pl-skill-creator",
+      "to": "contract:change-mode:artifact_generation",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/pl-skill-creator--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/pl-skill-creator",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/pl-skill-creator--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/pl-skill-creator",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/pl-skill-creator/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/playbook-composer--declares-change-domain--contract:change-domain:playbooks",
+      "from": "skill-package:.agents/skills/playbook-composer",
+      "to": "contract:change-domain:playbooks",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/playbook-composer--declares-change-mode--contract:change-mode:record_update",
+      "from": "skill-package:.agents/skills/playbook-composer",
+      "to": "contract:change-mode:record_update",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/playbook-composer--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/playbook-composer",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/playbook-composer--declares-skill-layer--contract:skill-layer:orchestration",
+      "from": "skill-package:.agents/skills/playbook-composer",
+      "to": "contract:skill-layer:orchestration",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/playbook-composer/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/resume-template-semantic-mapping--declares-change-domain--contract:change-domain:job-search-application",
+      "from": "skill-package:.agents/skills/resume-template-semantic-mapping",
+      "to": "contract:change-domain:job-search-application",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/resume-template-semantic-mapping--declares-change-mode--contract:change-mode:artifact_generation",
+      "from": "skill-package:.agents/skills/resume-template-semantic-mapping",
+      "to": "contract:change-mode:artifact_generation",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/resume-template-semantic-mapping--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/resume-template-semantic-mapping",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/resume-template-semantic-mapping--declares-skill-layer--contract:skill-layer:persona_applied",
+      "from": "skill-package:.agents/skills/resume-template-semantic-mapping",
+      "to": "contract:skill-layer:persona_applied",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/resume-template-semantic-mapping/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-composer--declares-change-domain--contract:change-domain:templates",
+      "from": "skill-package:.agents/skills/template-composer",
+      "to": "contract:change-domain:templates",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-composer--declares-change-mode--contract:change-mode:artifact_generation",
+      "from": "skill-package:.agents/skills/template-composer",
+      "to": "contract:change-mode:artifact_generation",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-composer--declares-reconciliation--contract:reconciliation:template-reconciliation",
+      "from": "skill-package:.agents/skills/template-composer",
+      "to": "contract:reconciliation:template-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-composer--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/template-composer",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-composer/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-reconciliation--declares-change-domain--contract:change-domain:templates",
+      "from": "skill-package:.agents/skills/template-reconciliation",
+      "to": "contract:change-domain:templates",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-reconciliation--declares-change-mode--contract:change-mode:reconciliation_adapter",
+      "from": "skill-package:.agents/skills/template-reconciliation",
+      "to": "contract:change-mode:reconciliation_adapter",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-reconciliation/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-reconciliation--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/template-reconciliation",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-reconciliation/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-reconciliation--declares-skill-layer--contract:skill-layer:governance",
+      "from": "skill-package:.agents/skills/template-reconciliation",
+      "to": "contract:skill-layer:governance",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-reconciliation/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-research--declares-change-domain--contract:change-domain:templates",
+      "from": "skill-package:.agents/skills/template-research",
+      "to": "contract:change-domain:templates",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-research/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-research--declares-change-mode--contract:change-mode:source_update",
+      "from": "skill-package:.agents/skills/template-research",
+      "to": "contract:change-mode:source_update",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-research/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-research--declares-reconciliation--contract:reconciliation:template-reconciliation",
+      "from": "skill-package:.agents/skills/template-research",
+      "to": "contract:reconciliation:template-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-research/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/template-research--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/template-research",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/template-research/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-discovery-and-safe-execution--declares-change-domain--contract:change-domain:tools",
+      "from": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
+      "to": "contract:change-domain:tools",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-discovery-and-safe-execution--declares-change-mode--contract:change-mode:external_execution",
+      "from": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
+      "to": "contract:change-mode:external_execution",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-discovery-and-safe-execution--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-discovery-and-safe-execution--declares-skill-layer--contract:skill-layer:tool_safety",
+      "from": "skill-package:.agents/skills/tool-discovery-and-safe-execution",
+      "to": "contract:skill-layer:tool_safety",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-discovery-and-safe-execution/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-record-maintenance--declares-change-domain--contract:change-domain:tools",
+      "from": "skill-package:.agents/skills/tool-record-maintenance",
+      "to": "contract:change-domain:tools",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-record-maintenance/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-record-maintenance--declares-change-mode--contract:change-mode:record_update",
+      "from": "skill-package:.agents/skills/tool-record-maintenance",
+      "to": "contract:change-mode:record_update",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-record-maintenance/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-record-maintenance--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/tool-record-maintenance",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-record-maintenance/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/tool-record-maintenance--declares-skill-layer--contract:skill-layer:library_management",
+      "from": "skill-package:.agents/skills/tool-record-maintenance",
+      "to": "contract:skill-layer:library_management",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/tool-record-maintenance/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/work-graph-orchestration--declares-change-domain--contract:change-domain:multi-agent-supervision",
+      "from": "skill-package:.agents/skills/work-graph-orchestration",
+      "to": "contract:change-domain:multi-agent-supervision",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/work-graph-orchestration--declares-change-mode--contract:change-mode:external_execution",
+      "from": "skill-package:.agents/skills/work-graph-orchestration",
+      "to": "contract:change-mode:external_execution",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/work-graph-orchestration--declares-reconciliation--contract:reconciliation:change-impact-reconciliation",
+      "from": "skill-package:.agents/skills/work-graph-orchestration",
+      "to": "contract:reconciliation:change-impact-reconciliation",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/work-graph-orchestration--declares-skill-layer--contract:skill-layer:orchestration",
+      "from": "skill-package:.agents/skills/work-graph-orchestration",
+      "to": "contract:skill-layer:orchestration",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/work-graph-orchestration/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/workflow-canvas-reasoning--declares-change-domain--contract:change-domain:prototyping",
+      "from": "skill-package:.agents/skills/workflow-canvas-reasoning",
+      "to": "contract:change-domain:prototyping",
+      "relationship": "declares-change-domain",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/workflow-canvas-reasoning/SKILL.md",
+        "selector": "frontmatter.change_domain"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/workflow-canvas-reasoning--declares-change-mode--contract:change-mode:prototype",
+      "from": "skill-package:.agents/skills/workflow-canvas-reasoning",
+      "to": "contract:change-mode:prototype",
+      "relationship": "declares-change-mode",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/workflow-canvas-reasoning/SKILL.md",
+        "selector": "frontmatter.change_mode"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/workflow-canvas-reasoning--declares-reconciliation--contract:reconciliation:skip",
+      "from": "skill-package:.agents/skills/workflow-canvas-reasoning",
+      "to": "contract:reconciliation:skip",
+      "relationship": "declares-reconciliation",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/workflow-canvas-reasoning/SKILL.md",
+        "selector": "frontmatter.reconciliation"
+      }
+    },
+    {
+      "id": "edge:skill-package:.agents/skills/workflow-canvas-reasoning--declares-skill-layer--contract:skill-layer:persona_applied",
+      "from": "skill-package:.agents/skills/workflow-canvas-reasoning",
+      "to": "contract:skill-layer:persona_applied",
+      "relationship": "declares-skill-layer",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:.agents/skills/workflow-canvas-reasoning/SKILL.md",
+        "selector": "frontmatter.skill_layer"
+      }
+    },
+    {
+      "id": "edge:space:decisions--uses-route-group--route-group:decisions",
+      "from": "space:decisions",
+      "to": "route-group:decisions",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.decisions.route_file"
+      }
+    },
+    {
+      "id": "edge:space:docs--uses-route-group--route-group:docs",
+      "from": "space:docs",
+      "to": "route-group:docs",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.docs.route_file"
+      }
+    },
+    {
+      "id": "edge:space:operating-packs--uses-route-group--route-group:operating-packs",
+      "from": "space:operating-packs",
+      "to": "route-group:operating-packs",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.operating-packs.route_file"
+      }
+    },
+    {
+      "id": "edge:space:personas--uses-route-group--route-group:personas",
+      "from": "space:personas",
+      "to": "route-group:personas",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.personas.route_file"
+      }
+    },
+    {
+      "id": "edge:space:playbooks--uses-route-group--route-group:playbooks",
+      "from": "space:playbooks",
+      "to": "route-group:playbooks",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.playbooks.route_file"
+      }
+    },
+    {
+      "id": "edge:space:prototyping--uses-route-group--route-group:prototyping",
+      "from": "space:prototyping",
+      "to": "route-group:prototyping",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.prototyping.route_file"
+      }
+    },
+    {
+      "id": "edge:space:skills--uses-route-group--route-group:skills",
+      "from": "space:skills",
+      "to": "route-group:skills",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.skills.route_file"
+      }
+    },
+    {
+      "id": "edge:space:templates--uses-route-group--route-group:templates",
+      "from": "space:templates",
+      "to": "route-group:templates",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.templates.route_file"
+      }
+    },
+    {
+      "id": "edge:space:tools--uses-route-group--route-group:tools",
+      "from": "space:tools",
+      "to": "route-group:tools",
+      "relationship": "uses-route-group",
+      "derivation": "structured-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:content/site-orientation.json",
+        "selector": "spaces.tools.route_file"
+      }
+    },
+    {
+      "id": "edge:view:agent-runtime--contains--agent:repository-dispatcher",
+      "from": "view:agent-runtime",
+      "to": "agent:repository-dispatcher",
+      "relationship": "contains",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Choose the shortest activation path"
+      }
+    },
+    {
+      "id": "edge:view:agent-runtime--excludes-live-state--boundary:live-runtime-state",
+      "from": "view:agent-runtime",
+      "to": "boundary:live-runtime-state",
+      "relationship": "excludes-live-state",
+      "derivation": "contract-derived",
+      "source": {
+        "kind": "repo-file",
+        "locator": "rickvang/Persona-Library:AGENTS.md",
+        "selector": "Durable work and recovery"
+      }
+    }
+  ]
+}
