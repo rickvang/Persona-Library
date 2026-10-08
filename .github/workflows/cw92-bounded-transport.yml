@@ -35,17 +35,35 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
-      - name: Apply bounded exact edits
+      - name: Apply bounded hash-pinned source edits
         run: |
           python - <<'PY'
-          import json,pathlib,re,subprocess
+          import json,pathlib,subprocess,hashlib,gzip,base64
           x=json.load(open('input/cw92-transport.json')); root=pathlib.Path('candidate').resolve()
           assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==x['base']
-          for e in x['edits']:
+          edits=x.get('edits',[])
+          if 'rangePatchGzipBase64' in x:
+            assert not edits
+            payload=gzip.decompress(base64.b64decode(x['rangePatchGzipBase64'],validate=True))
+            assert len(payload)<1000000
+            edits=json.loads(payload)
+          assert 0<len(edits)<=6
+          assert len({e['path'] for e in edits})==len(edits)
+          for e in edits:
             p=root/e['path']; assert p.resolve().is_relative_to(root) and not p.is_symlink()
             assert e['path'] in x['expected'] and not e['path'].startswith(('.git/','.github/'))
-            t=p.read_text(); assert e['old'] and t.count(e['old'])==1,e['path']
-            p.write_text(t.replace(e['old'],e['new']))
+            b=p.read_bytes()
+            if 'ranges' in e:
+              assert hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==e['before']
+              lines=b.decode().splitlines(keepends=True); end=0
+              for start,stop,text in e['ranges']:
+                assert isinstance(start,int) and isinstance(stop,int) and end<=start<=stop<=len(lines)
+                end=stop
+              for start,stop,text in reversed(e['ranges']): lines[start:stop]=text.splitlines(keepends=True)
+              p.write_text(''.join(lines))
+            else:
+              t=b.decode(); assert e['old'] and t.count(e['old'])==1,e['path']
+              p.write_text(t.replace(e['old'],e['new']))
           PY
       - name: Rebuild with existing pinned generators
         working-directory: candidate
