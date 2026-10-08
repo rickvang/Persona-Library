@@ -38,25 +38,25 @@ Tool failure calls for bounded recovery, not a new application infrastructure pr
 
 ## Recommended operating model
 
-Riley Morgan · AI orchestrator remains the default system entry and routing point for unqualified requests. For a full-outcome job-search request, Riley routes to **Priya Desai · Job search orchestrator**, who operates the **Evidence-led Job Search Playbook** as the durable process surface. Use one primary candidate persona with a coordinated set of specialist lenses:
+The default system entry interprets unqualified requests and routes directly to the applicable Skill or specialist. For a full-outcome job-search request, route to **Priya Desai · Job search orchestrator**, who operates the **Evidence-led Job Search Playbook** as the durable process surface. Use one primary candidate persona with a coordinated set of specialist lenses:
 
 1. **Job seeker** — source of truth for goals, constraints, experience, preferences, voice, and evidence.
 2. **Search strategist (Elena Marin)** — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity evaluation, with lightweight seen-job deduplication for repeated discovery checks.
 3. **Hiring manager / role calibrator (Marcus Chen)** — interprets the role, separates required signals from noise, and defines what success would look like.
 4. **ATS application specialist / application narrative editor (Leah Okafor)** — checks parsing, terminology alignment, structure, and truthful coverage.
 5. **Human narrative editor (conditional)** — improves clarity, relevance, voice, credibility, and story when a human-facing output is warranted.
-6. **Visual communication reviewer (conditional, Camille Ortiz)** — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.
+6. **Visual communication reviewer (conditional, using the interface hierarchy and contextual visual judgment Skills)** — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.
 7. **Research and verification analyst** — researches companies, teams, role expectations, and evidence.
 8. **Outreach and interview coach (Samira Nguyen)** — prepares networking messages, follow-ups, interview stories, and questions.
 9. **Document designer (conditional, Sofia Calder)** — document structure, production, accessibility, and fidelity when a rendered packet is in scope.
 10. **Job search orchestrator (Priya Desai)** — operates the Playbook run: maintains stage and gate state, selects the smallest relevant specialist set, coordinates concurrent opportunities, preserves decisions and boundaries, handles recovery, and synthesizes the next handoff. Priya does not absorb specialist domain expertise.
 
-**Riley Morgan · AI orchestrator** remains the default front door for unqualified requests and the general-purpose orchestration Persona across domains. Riley does not operate the job-search methodology as a domain expert: once Riley identifies a full-outcome job-search route, Priya becomes the operating Persona. Explicit requests naming Priya, a specialist, a Skill, or the Playbook may route directly without an unnecessary Riley hop.
+The selected coordinator interprets intent without requiring a Persona. Priya operates the full-outcome job-search route. Explicit requests naming Priya, a specialist, a Skill, or the Playbook may route directly.
 
 Three-layer ownership:
 
 ```text
-Riley Morgan · AI orchestrator → default entry, intent interpretation, and routing for unqualified requests
+Task decomposition and routing → intent interpretation and direct routing for unqualified requests
 Priya Desai · Job search orchestrator → operates the full job-search outcome after routing and remains responsible for process completion
 Evidence-led Job Search Playbook → supplies stages / shared state / handoffs / quality gates / recovery / learning loop
 Job-search specialists → own domain judgment and artifact-specific expertise
@@ -65,7 +65,7 @@ Job-search specialists → own domain judgment and artifact-specific expertise
 Preferred presentation:
 
 ```text
-Riley Morgan · AI Orchestrator
+Task decomposition and routing
 → routes unqualified full-outcome job-search work to Priya Desai · Job Search Orchestrator
 → Priya uses Evidence-led Job Search Playbook
 ```
@@ -76,7 +76,7 @@ The default path is ATS-first with a material-claim integrity gate. Cover letter
 
 ### Consultation and routing convention
 
-- Unqualified job-search requests → Riley Morgan · AI orchestrator first. Riley routes narrow work to the matching specialist or Skill and full-outcome work to Priya Desai · Job search orchestrator.
+- Unqualified job-search requests → route narrow work directly to the matching specialist or Skill and full-outcome work to Priya Desai · Job search orchestrator.
 - Priya operates the Evidence-led Job Search Playbook for full-outcome work and invokes only the specialists required by the active stage.
 - Explicit specialist, Skill, Priya, or Playbook requests → the named target directly; explicit direct invocation does not require an extra Riley hop. An explicit Evidence-led Job Search Playbook request resolves to that Playbook with Priya as its operating Persona.
 - When a requester explicitly asks to “consult Riley Morgan” for job-search work, use Riley for the requested general orchestration perspective or cross-domain coordination. Do not silently substitute Riley for Priya as the job-search operator, and do not make Riley the sole content, writing, hiring, search-strategy, visual, or document reviewer.
@@ -89,7 +89,7 @@ The first build is a responsive reference surface plus actual working-draft pers
 
 - The persona and responsibilities of each supporting role
 - Six new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), Samira Nguyen (outreach and interview coach), and Priya Desai (job search orchestrator)
-- Reuse of Camille Ortiz for visual communication review and Sofia Calder for document production when needed; Riley Morgan remains the general AI orchestrator outside the default job-search operator role
+- Reuse existing UI Skills for visual communication review and Sofia Calder for document production when needed; the selected coordinator preserves cross-domain continuity
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
 - The end-to-end search workflow defined by the Evidence-led Job Search Playbook and operated by the Job Search Orchestrator
 - A reusable [seen-job deduplication contract](../job-search/job-ledger-contract.md) so repeated job searches can suppress openings already presented
@@ -513,8 +513,8 @@ These other items remain future opportunities, not implied capabilities of the c
 
 ## Validation questions
 
-- Is Riley presented as the default routing front door for unqualified requests, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?
-- Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?
+- Do unqualified requests route directly to the applicable Skill or specialist, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?
+- Can a narrow strategy, hiring, writing, outreach, visual, or document question route directly to Elena, Marcus, Leah, Samira, the applicable UI Skill, or Sofia?
 - Do repeated searches avoid presenting previously shown jobs as new by default, using the seen-job deduplication contract?
 - When opportunity/application tracking is in scope, does the workflow resolve an existing Applications tracker record before creating a duplicate?
 - Does authenticated Supabase remain primary persistence when configured, with browser-local state limited to explicit fallback, migration, and recovery?

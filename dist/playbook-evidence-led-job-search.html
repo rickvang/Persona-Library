@@ -81,28 +81,28 @@
 <p>Add only the steps needed by an observed exception: substantial application-form narratives; a material source conflict that supported wording cannot resolve; a new Template or layout; a second resume rendering requiring parity review; an interrupted handoff whose existing records cannot preserve recovery state; or an explicit request for detailed notes or independent specialist review. Use the relevant sections below and the <a href="https://github.com/rickvang/Persona-Library/blob/main/docs/job-search/application-work-order-template.md" rel="noreferrer">detailed application Work Order template</a> only as needed. A single unresolved answer does not expand every role in the batch into the full workflow.</p>
 <p>Tool failure calls for bounded recovery, not a new application infrastructure project. Make one focused repair attempt, then use an available supported fallback or report the affected output&#39;s limitation. Additional retries are justified by new evidence. Building a new transfer helper, generator, cache or automation requires its own scoped request.</p>
 <h2 id="recommended-operating-model">Recommended operating model</h2>
-<p>Riley Morgan · AI orchestrator remains the default system entry and routing point for unqualified requests. For a full-outcome job-search request, Riley routes to <strong>Priya Desai · Job search orchestrator</strong>, who operates the <strong>Evidence-led Job Search Playbook</strong> as the durable process surface. Use one primary candidate persona with a coordinated set of specialist lenses:</p>
+<p>The default system entry interprets unqualified requests and routes directly to the applicable Skill or specialist. For a full-outcome job-search request, route to <strong>Priya Desai · Job search orchestrator</strong>, who operates the <strong>Evidence-led Job Search Playbook</strong> as the durable process surface. Use one primary candidate persona with a coordinated set of specialist lenses:</p>
 <ol>
 <li><strong>Job seeker</strong> — source of truth for goals, constraints, experience, preferences, voice, and evidence.</li>
 <li><strong>Search strategist (Elena Marin)</strong> — defines target roles, search boundaries, positioning, channels, prioritization, and opportunity evaluation, with lightweight seen-job deduplication for repeated discovery checks.</li>
 <li><strong>Hiring manager / role calibrator (Marcus Chen)</strong> — interprets the role, separates required signals from noise, and defines what success would look like.</li>
 <li><strong>ATS application specialist / application narrative editor (Leah Okafor)</strong> — checks parsing, terminology alignment, structure, and truthful coverage.</li>
 <li><strong>Human narrative editor (conditional)</strong> — improves clarity, relevance, voice, credibility, and story when a human-facing output is warranted.</li>
-<li><strong>Visual communication reviewer (conditional, Camille Ortiz)</strong> — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.</li>
+<li><strong>Visual communication reviewer (conditional, using the interface hierarchy and contextual visual judgment Skills)</strong> — checks hierarchy, aesthetics, portfolio presentation, and context-appropriate polish only when that output is requested.</li>
 <li><strong>Research and verification analyst</strong> — researches companies, teams, role expectations, and evidence.</li>
 <li><strong>Outreach and interview coach (Samira Nguyen)</strong> — prepares networking messages, follow-ups, interview stories, and questions.</li>
 <li><strong>Document designer (conditional, Sofia Calder)</strong> — document structure, production, accessibility, and fidelity when a rendered packet is in scope.</li>
 <li><strong>Job search orchestrator (Priya Desai)</strong> — operates the Playbook run: maintains stage and gate state, selects the smallest relevant specialist set, coordinates concurrent opportunities, preserves decisions and boundaries, handles recovery, and synthesizes the next handoff. Priya does not absorb specialist domain expertise.</li>
 </ol>
-<p><strong>Riley Morgan · AI orchestrator</strong> remains the default front door for unqualified requests and the general-purpose orchestration Persona across domains. Riley does not operate the job-search methodology as a domain expert: once Riley identifies a full-outcome job-search route, Priya becomes the operating Persona. Explicit requests naming Priya, a specialist, a Skill, or the Playbook may route directly without an unnecessary Riley hop.</p>
+<p>The selected coordinator interprets intent without requiring a Persona. Priya operates the full-outcome job-search route. Explicit requests naming Priya, a specialist, a Skill, or the Playbook may route directly.</p>
 <p>Three-layer ownership:</p>
-<pre><code class="language-text">Riley Morgan · AI orchestrator → default entry, intent interpretation, and routing for unqualified requests
+<pre><code class="language-text">Task decomposition and routing → intent interpretation and direct routing for unqualified requests
 Priya Desai · Job search orchestrator → operates the full job-search outcome after routing and remains responsible for process completion
 Evidence-led Job Search Playbook → supplies stages / shared state / handoffs / quality gates / recovery / learning loop
 Job-search specialists → own domain judgment and artifact-specific expertise
 </code></pre>
 <p>Preferred presentation:</p>
-<pre><code class="language-text">Riley Morgan · AI Orchestrator
+<pre><code class="language-text">Task decomposition and routing
 → routes unqualified full-outcome job-search work to Priya Desai · Job Search Orchestrator
 → Priya uses Evidence-led Job Search Playbook
 </code></pre>
@@ -110,7 +110,7 @@ Job-search specialists → own domain judgment and artifact-specific expertise
 <p>The default path is ATS-first with a material-claim integrity gate. Cover letters pass through a positioning layer before review so the evidence ledger informs the writing without dictating every sentence. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.</p>
 <h3 id="consultation-and-routing-convention">Consultation and routing convention</h3>
 <ul>
-<li>Unqualified job-search requests → Riley Morgan · AI orchestrator first. Riley routes narrow work to the matching specialist or Skill and full-outcome work to Priya Desai · Job search orchestrator.</li>
+<li>Unqualified job-search requests → route narrow work directly to the matching specialist or Skill and full-outcome work to Priya Desai · Job search orchestrator.</li>
 <li>Priya operates the Evidence-led Job Search Playbook for full-outcome work and invokes only the specialists required by the active stage.</li>
 <li>Explicit specialist, Skill, Priya, or Playbook requests → the named target directly; explicit direct invocation does not require an extra Riley hop. An explicit Evidence-led Job Search Playbook request resolves to that Playbook with Priya as its operating Persona.</li>
 <li>When a requester explicitly asks to “consult Riley Morgan” for job-search work, use Riley for the requested general orchestration perspective or cross-domain coordination. Do not silently substitute Riley for Priya as the job-search operator, and do not make Riley the sole content, writing, hiring, search-strategy, visual, or document reviewer.</li>
@@ -121,7 +121,7 @@ Job-search specialists → own domain judgment and artifact-specific expertise
 <ul>
 <li>The persona and responsibilities of each supporting role</li>
 <li>Six new job-search persona records in Personas: Avery Brooks (job seeker), Elena Marin (career search strategist), Marcus Chen (hiring-side role calibrator), Leah Okafor (application narrative editor), Samira Nguyen (outreach and interview coach), and Priya Desai (job search orchestrator)</li>
-<li>Reuse of Camille Ortiz for visual communication review and Sofia Calder for document production when needed; Riley Morgan remains the general AI orchestrator outside the default job-search operator role</li>
+<li>Reuse existing UI Skills for visual communication review and Sofia Calder for document production when needed; the selected coordinator preserves cross-domain continuity</li>
 <li>Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record</li>
 <li>The end-to-end search workflow defined by the Evidence-led Job Search Playbook and operated by the Job Search Orchestrator</li>
 <li>A reusable <a href="doc-seen-job-deduplication.html">seen-job deduplication contract</a> so repeated job searches can suppress openings already presented</li>
@@ -470,8 +470,8 @@ Keep target employer, role, location, and work-mode context in the Work Order an
 <p>These other items remain future opportunities, not implied capabilities of the current reference page.</p>
 <h2 id="validation-questions">Validation questions</h2>
 <ul>
-<li>Is Riley presented as the default routing front door for unqualified requests, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?</li>
-<li>Can a narrow strategy, hiring, writing, outreach, visual, or document question route to Elena, Marcus, Leah, Samira, Camille, or Sofia without defaulting to Riley?</li>
+<li>Do unqualified requests route directly to the applicable Skill or specialist, with Priya operating full-outcome job-search work and the Playbook remaining the process surface rather than an actor?</li>
+<li>Can a narrow strategy, hiring, writing, outreach, visual, or document question route directly to Elena, Marcus, Leah, Samira, the applicable UI Skill, or Sofia?</li>
 <li>Do repeated searches avoid presenting previously shown jobs as new by default, using the seen-job deduplication contract?</li>
 <li>When opportunity/application tracking is in scope, does the workflow resolve an existing Applications tracker record before creating a duplicate?</li>
 <li>Does authenticated Supabase remain primary persistence when configured, with browser-local state limited to explicit fallback, migration, and recovery?</li>

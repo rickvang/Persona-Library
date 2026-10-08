@@ -142,9 +142,11 @@ export function validateOperationalKnowledgeContract({ operationalScenarios, ope
 }
 
 export function validateRileyContinuityContract({ workOrders, riley, rileyFlows }) {
-  if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley AI orchestrator record is missing');
-  const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
-  if (!includesAll(personaText, ['current work', 'work order when one exists', 'verification queue', 'recovery artifact', 'live systems', 'broad rediscovery', 'operating route', 'parent work id', 'execute directly'])) throw new Error('The selected coordinator must preserve the optional Work Order / authoritative recovery-artifact hierarchy and direct execution');
+  if (riley) {
+    if (riley.id !== 'ai-orchestrator') throw new Error('Invalid optional AI orchestrator record');
+    const personaText = [riley.behaviors, riley.needs, riley.implication].flat(Infinity).join(' ');
+    if (!includesAll(personaText, ['current work', 'work order when one exists', 'verification queue', 'recovery artifact', 'live systems', 'broad rediscovery', 'operating route', 'parent work id', 'execute directly'])) throw new Error('The selected coordinator must preserve the optional Work Order / authoritative recovery-artifact hierarchy and direct execution');
+  }
   const operate = (rileyFlows || []).find(flow => flow.title === 'Operate and improve the system');
   if (!operate || !includesAll(JSON.stringify(operate), ['resume and checkpoint substantial work', 'work order when one exists', 'authoritative recovery artifact', 'reconcile durable orchestration state', 'operating route', 'parent work id'])) throw new Error('Riley operating workflow must include conditional recovery-artifact checkpoint/resume and durable orchestration reconciliation behavior');
   if (!includesAll(workOrders, ['every substantial workstream', 'active coordinator', 'directly', 'operating route', 'parent work id', 'resume order', 'do not mirror volatile live state'])) throw new Error('Work Order guidance must define coordinator-owned continuity plus the Current Work → recovery artifact → live-system hierarchy');
@@ -172,9 +174,11 @@ export function validateRepositoryWorkingCopyContract({ workOrders, architecture
 }
 
 export function validateRileyWorkGraphContract({ riley, rileyFlows, skillCatalog, operationalScenarioCatalog, skillsRoute, skillPackage }) {
-  if (!riley || riley.id !== 'ai-orchestrator') throw new Error('Riley work-graph validation requires the AI orchestrator Persona');
-  const personaText = normalized([riley.behaviors, riley.needs, riley.skills, riley.implication].flat(Infinity).join(' '));
-  if (!includesAll(personaText, ['work graph', 'authoritative dispatch', 'supervised delegation', 'read-before-retry'])) throw new Error('Riley Persona must expose work-graph supervision, dispatch authority, delegation, and recovery semantics');
+  if (riley) {
+    if (riley.id !== 'ai-orchestrator') throw new Error('Invalid optional AI orchestrator record');
+    const personaText = normalized([riley.behaviors, riley.needs, riley.skills, riley.implication].flat(Infinity).join(' '));
+    if (!includesAll(personaText, ['work graph', 'authoritative dispatch', 'supervised delegation', 'read-before-retry'])) throw new Error('Riley Persona must expose work-graph supervision, dispatch authority, delegation, and recovery semantics');
+  }
 
   const skill = (skillCatalog || []).find(item => item.id === 'skill-work-graph-orchestration');
   if (!skill) throw new Error('Work graph orchestration Skill is missing');
@@ -242,15 +246,16 @@ export function validateJobSearchRoutingCase(route, caseId) {
 }
 
 export function validateJobSearchRoutingContract({ route, implementation, riley, rileyFlows, playbook, specialistIds }) {
-  if (!riley || riley.roleLabel !== 'AI orchestrator') throw new Error('Riley must retain the canonical AI orchestrator identity');
+  if (riley && riley.roleLabel !== 'AI orchestrator') throw new Error('Riley must retain the canonical AI orchestrator identity when selected');
   if (!rileyFlows?.some(flow => includesAll(`${flow.summary || ''} ${flow.title || ''}`, ['unqualified', 'bounded']))) throw new Error('Riley workflow must describe default handling of unqualified requests');
   if (!playbook || playbook.id !== 'playbook-evidence-led-job-search') throw new Error('Evidence-led Job Search must remain the canonical job-search Playbook');
   for (const caseId of Object.keys(routingCaseRequirements)) validateJobSearchRoutingCase(route, caseId);
   if (!includesAll(route?.next_handoff, ['stages', 'shared state', 'quality gates', 'recovery', 'learning loop'])) throw new Error('Docs job-search route must describe Playbook procedure ownership');
   if (!includesAll(route?.next_handoff, ['candidate baseline', 'standing decisions', 'career spine', 'secondary profile'])) throw new Error('Docs job-search route must enforce designated Candidate Baseline resolution before composition');
-  if (!includesAll(implementation, ['default system entry', 'unqualified requests', 'priya desai', 'operates', 'shared state', 'quality gates', 'learning loop', 'explicit requests', 'route directly', 'process surface'])) throw new Error('Job-search guidance must express Riley-first routing, Priya operation, and Playbook process ownership');
+  if (!includesAll(implementation, ['default system entry', 'unqualified requests', 'priya desai', 'operates', 'shared state', 'quality gates', 'learning loop', 'explicit requests', 'route directly', 'process surface'])) throw new Error('Job-search guidance must express direct task routing, Priya operation, and Playbook process ownership');
   if (!includesAll(implementation, ['candidate baseline resume', 'private-source resolution gate', 'career spine', 'secondary profile stores', 'baseline-to-output'])) throw new Error('Job-search guidance must preserve a designated candidate baseline and baseline-integrity gate');
-  const requiredSpecialists = ['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'ui-expert', 'document-designer'];
+  const requiredSpecialists = ['career-strategist', 'role-calibrator', 'application-editor', 'outreach-interview-coach', 'document-designer'];
+  if (!includesAll(implementation, ['visual communication', 'interface hierarchy'])) throw new Error('Job-search guidance must retain the visual communication Skill route');
   for (const id of requiredSpecialists) if (!specialistIds?.has(id)) throw new Error(`Job-search specialist boundary is missing: ${id}`);
   if (specialistIds?.has('job-search')) throw new Error('No generic Job Search Persona may be introduced');
 }
