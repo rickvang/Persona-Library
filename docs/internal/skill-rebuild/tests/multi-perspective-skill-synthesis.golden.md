@@ -12,7 +12,7 @@ These compact scenarios reconstruct observable behavior from the historical Pers
 - Compares triggers, decisions, actions, outputs, quality signals, constraints, and Tool/recipe needs.
 - Separates portable shared judgment from context-specific applications and preserves meaningful disagreement.
 - Checks existing Skills, aliases, primitives, relationships, and recipes before proposing a new identity.
-- Returns a concrete core profile, evidence/uncertainty, validation plan, and a bounded `$persona-skills` handoff; no live record changes occur without authorization.
+- Returns a concrete core profile, evidence/uncertainty, validation plan, and a bounded `pl-skill-creator` handoff for standalone Skill work; Persona-specific handoff is conditional on an actual Persona application; no live record changes occur without authorization.
 
 ## MPSS-2 - reuse or no-new-Skill boundary
 
