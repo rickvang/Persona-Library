@@ -84,7 +84,7 @@ export function capturePilot(context) {
     linked,
     maintenance: {
       personas: Object.fromEntries(keys.map(key => [key, data.maintenance?.personas?.[key]])),
-      skills: data.maintenance?.skills || data.maintenance
+      skills: Object.fromEntries(sorted(Object.entries(data.maintenance?.skills || {}).filter(([id]) => entityIds.has(id))))
     }
   });
 }

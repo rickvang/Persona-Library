@@ -62,6 +62,14 @@ test('CW-92: preservation rejects dropped evidence, unexpected fields and collap
   const lostActivity = plain(expected);
   lostActivity.flows[fixture.pilotSourceKeys[0]][0].activities.pop();
   assert.throws(() => assertPreserved(lostActivity, expected));
+  const unrelatedId = current.data.skillCatalog.find(skill => !expected.catalog.some(item => item.id === skill.id))?.id;
+  assert.ok(unrelatedId, 'Require an actual nonpilot skill for the scope check');
+  const unrelatedUpdate = { ...current, data: plain(current.data) };
+  unrelatedUpdate.data.maintenance.skills[unrelatedId].version = 'unrelated-test-change';
+  assertPreserved(capturePilot(unrelatedUpdate), capturePilot(current));
+  const relevantUpdate = { ...current, data: plain(current.data) };
+  relevantUpdate.data.maintenance.skills[expected.skillIds[0]].version = 'must-be-detected';
+  assert.throws(() => assertPreserved(capturePilot(relevantUpdate), capturePilot(current)));
 });
 
 test('CW-92 characterization: actual catalog loses pilot applications without identities', () => {
@@ -70,6 +78,16 @@ test('CW-92 characterization: actual catalog loses pilot applications without id
   const pilotProfiles = catalog => catalog.flatMap(skill => skill.profiles).filter(profile => fixture.pilotSourceKeys.includes(profile.personaId));
   assert.equal(pilotProfiles(full).length, fixture.expectedProfileCount);
   assert.equal(pilotProfiles(absent).length, 0, 'Known identity gate changed: convert this characterization to a positive independence assertion');
+  const surviving = full.map(skill => ({
+    ...skill,
+    profiles: skill.profiles.filter(profile => !fixture.pilotSourceKeys.includes(profile.personaId))
+  })).filter(skill => skill.profiles.length > 0);
+  assert.deepStrictEqual(plain(absent.map(skill => skill.id)), plain(surviving.map(skill => skill.id)), 'Removing pilot identities must retain every nonpilot semantic ID');
+  assert.deepStrictEqual(profilePayloads(absent), profilePayloads(surviving), 'Removing pilot identities must retain every nonpilot application field');
+  const baselineFull = baseline.context.model.buildSkillCatalog(baseline.context.data);
+  const baselineAbsent = baseline.context.model.buildSkillCatalog(withoutPilot(baseline.context.data));
+  assert.equal(baselineFull.length, 79, 'The pinned full-source fixture has 79 semantic IDs');
+  assert.equal(baselineAbsent.length, 72, 'The pinned known-failure fixture has 72 surviving IDs');
   assert.ok(absent.length > 0, 'This is the full library, not the earlier two-cohort reproduction');
   assert.equal(current.model.buildSkillCatalog({ ...current.data, personas: [] }).length, 0);
   for (const sourceKey of fixture.pilotSourceKeys) {
@@ -97,12 +115,26 @@ test('CW-92 characterization: reordered and renamed metadata retain fields but o
   const renamed = current.model.buildSkillCatalog(renamedData);
   assert.deepStrictEqual(profilePayloads(original), profilePayloads(renamed));
   const guidanceChanged = original.filter(skill => JSON.stringify(skill.guidance) !== JSON.stringify(reversed.find(item => item.id === skill.id).guidance)).map(skill => skill.id);
+  const pinnedOriginal = baseline.context.model.buildSkillCatalog(baseline.context.data);
+  const pinnedReversedData = plain(baseline.context.data);
+  pinnedReversedData.personas.reverse();
+  const pinnedReversed = baseline.context.model.buildSkillCatalog(pinnedReversedData);
+  const pinnedProfileIds = pinnedOriginal.filter(skill => skill.profiles.length > 1 && skill.profiles[0].personaId !== pinnedReversed.find(item => item.id === skill.id).profiles[0].personaId).map(skill => skill.id);
+  const pinnedGuidanceIds = pinnedOriginal.filter(skill => JSON.stringify(skill.guidance) !== JSON.stringify(pinnedReversed.find(item => item.id === skill.id).guidance)).map(skill => skill.id);
+  assert.equal(pinnedProfileIds.length, 14);
+  assert.equal(pinnedGuidanceIds.length, 13);
+  const currentIds = new Set(original.map(skill => skill.id));
+  // Freeze the known characterization for retained baseline identities, not the
+  // existence of unrelated new skills. Accepted fixes convert these assertions.
+  const retainedBaselineIds = new Set(pinnedOriginal.map(skill => skill.id).filter(id => currentIds.has(id)));
+  assert.deepStrictEqual(orderSensitive.map(skill => skill.id).filter(id => retainedBaselineIds.has(id)), pinnedProfileIds.filter(id => currentIds.has(id)), 'Known ordering-sensitive profile set changed');
+  assert.deepStrictEqual(guidanceChanged.filter(id => retainedBaselineIds.has(id)), pinnedGuidanceIds.filter(id => currentIds.has(id)), 'Known ordering-sensitive fallback set changed');
   console.log('CW92_ORDERING ' + JSON.stringify({ orderSensitiveProfiles: orderSensitive.map(skill => skill.id), orderSensitiveGuidance: guidanceChanged }));
 });
 
 test('CW-92 characterization: full model initialization fails without the UI pilot identity', () => {
   assert.doesNotThrow(() => initialize(current));
-  assert.throws(() => initialize(current, data => { data.personas = data.personas.filter(persona => !fixture.pilotSourceKeys.includes(persona.id)); }), error => {
+  assert.throws(() => initialize(current, data => { data.personas = data.personas.filter(persona => persona.id !== 'ui-expert'); }), error => {
     assert.match(error.message, /revisions/);
     assert.match(error.stack, /buildMaintenance/);
     return true;
@@ -136,7 +168,7 @@ test('CW-92: preserve authored-versus-fallback coverage and source provenance', 
   const summary = {
     baselineCommit: fixture.baselineCommit,
     profileCount: Object.values(expected.records).flat().length,
-    workflowCount: Object.values(expected.flows).flat().length,
+    workflowCount: Object.values(expected.flows).flat().reduce((sum, flow) => sum + 1, 0),
     activityCount: Object.values(expected.flows).flat().reduce((sum, flow) => sum + (flow.activities || []).length, 0),
     orderedSourceCount: expected.sourceOrder.length,
     snapshotSha256: createHash('sha256').update(JSON.stringify(expected)).digest('hex'),
