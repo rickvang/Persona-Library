@@ -12,6 +12,7 @@ Root `AGENTS.md` is the activation surface. It should point to the smallest cano
 | Work Graph dispatch, authority, and read-before-retry recovery | `.agents/skills/work-graph-orchestration/SKILL.md` | Route multi-node supervision to the Work Graph capability when applicable. |
 | Operational Scenario targeted retrieval | `docs/operational-knowledge.md` + `content/library-data/operational-scenarios/index.json` | Activate scenario routing when a matching Skill or Tool-use recipe needs concrete execution guidance. |
 | Reusable GitHub mutation, freshness, review, merge, and linked-issue semantics | pinned `rickvang/tool-repo/.../tools/github/AGENTS.md` contract | Pin and activate the external contract. Persona-Library root remains the owner only of its repository-specific standing-completion authorization and requester overrides. |
+| GitHub connector invocation troubleshooting learned in this repository | `docs/github-connector-troubleshooting.md` | Keep connector-specific failure classification and safe retry notes out of root activation/context metrics; reusable GitHub policy still belongs to the pinned external contract. |
 | Generated Site provenance / cleanliness | `scripts/build-library.mjs` + `scripts/check-generated-output.mjs` | Point repository work to the build/validation gates rather than restating generated-file rules. |
 
 ## Validation rule

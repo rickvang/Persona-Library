@@ -44,18 +44,6 @@ For Persona-Library itself, a requester instruction to **implement**, **fix**, *
 
 Immediately before a consequential GitHub mutation, refresh the live state needed by the pinned contract. Do not merge with a known blocker, failing required check, unresolved blocking review, conflict, or out-of-scope side effect.
 
-### GitHub connector branch troubleshooting
-
-When using the connected GitHub action to start a focused branch, prefer the smallest valid request: `create_branch(repository_full_name, branch_name, base_ref: "main")` after refreshing `main`. Use `sha` only when the work specifically requires an exact non-branch commit, and provide **exactly one** of `base_ref` or `sha`.
-
-Classify failures before escalating them:
-- `INVALID_ARGUMENT` normally means the connector request or fetch path is malformed; re-read the live action schema before blaming GitHub permissions or safety policy.
-- A tool-execution safety rejection is not by itself proof of a durable platform blocker. Retry once with the minimal schema-valid branch request and a short ordinary branch name after verifying authorization and repository state.
-- Verify slash-named branches with the branch-specific action/search. Generic fetch helpers may reject URL-encoded branch paths even when the branch exists.
-- Do not bypass a genuine safety rejection by abusing `update_ref`, force pushes, or a more consequential endpoint. If the minimal valid request still fails, preserve the exact error and stop at the execution-path blocker.
-
-
-
 ## Tool-heavy execution
 
 When a selected Skill or Tool-use recipe has a matching active Operational Scenario, read `content/library-data/operational-scenarios/index.json` and load only the selected scenario body. Reuse still-valid evidence, refresh only at material freshness boundaries, validate at the cheapest sufficient layer, and stop when evidence is sufficient. Scenario guidance never overrides authorization or current source-of-truth rules.
