@@ -270,7 +270,7 @@ test('CW-92 WP09: reuse component and interaction methods through existing task-
   assert.equal(specialists.split(portable).length - 1, 1,
     'Retain the one existing canonical Component Builder reference without multiplying links');
   const specialistSource = current.data.skillLibrary['frontend-systems-engineer']
-    ?.find(method => method.name === 'Component architecture and reusable UI primitives');
+    ?.find(method => method.name === 'Component and design-system thinking');
   assert.ok(specialistSource?.actions.includes(portable),
     'The existing frontend systems application should keep linking to the external canonical method');
   assert.equal(specialistSource.definition.includes('Research, design, implement, and verify reusable web components'), false,
