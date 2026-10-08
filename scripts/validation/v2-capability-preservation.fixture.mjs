@@ -129,16 +129,31 @@ export const uiWorkflowBackfill = [
   ['Resolve a pattern or constraint conflict', 'workflow-resolve-pattern-or-constraint-conflict']
 ];
 
+export const orchestrationWorkflowBackfill = [
+  ['Frame the system goal and boundary', 'workflow-frame-system-goal-and-boundary'],
+  ['Compose the agent and tool system', 'workflow-compose-agent-and-tool-system'],
+  ['Coordinate evaluation and improvement', 'workflow-coordinate-evaluation-and-improvement'],
+  ['Operate and improve the system', 'workflow-operate-and-improve-system'],
+  ['Coordinate stakeholders and governance', 'workflow-coordinate-stakeholders-and-governance'],
+  ['Recover a failed or unsafe run', 'workflow-run-recovery-containment-and-control'],
+  ['Adapt after a model or tool change', 'workflow-adapt-after-model-or-tool-change']
+];
+
 export function readerBaseline(context) {
   const snapshot = capturePilot(context);
   // WP04-F1: only the seven explicitly accepted UI workflow IDs are added to
   // the immutable baseline projection; no workflow body or unrelated source is
   // normalized away. Method references gain those IDs, not a new authored copy.
-  const backfill = new Map(uiWorkflowBackfill);
-  for (const flow of snapshot.flows['ui-expert']) {
-    const id = backfill.get(flow.title);
-    if (!id) throw new Error(`Unexpected UI workflow in pinned baseline: ${flow.title}`);
-    flow.id = id;
+  const backfills = {
+    'ui-expert': new Map(uiWorkflowBackfill),
+    'ai-orchestrator': new Map(orchestrationWorkflowBackfill)
+  };
+  for (const [sourceKey, mapping] of Object.entries(backfills)) {
+    for (const flow of snapshot.flows[sourceKey]) {
+      const id = mapping.get(flow.title);
+      if (!id) throw new Error(`Unexpected pinned ${sourceKey} workflow: ${flow.title}`);
+      flow.id = id;
+    }
   }
   const { data, model } = context;
   const selected = 'Select the applicable method by its task conditions; no single shared procedure is authored.';
@@ -151,9 +166,10 @@ export function readerBaseline(context) {
       workflowRefs: record.workflows.split(' · ').map(title => title.trim()).filter(Boolean).map(title => ({ legacySourceKey: key, title, ...(!(data.flowLibrary[key] || []).some(flow => flow.title === title) ? { unresolved: true } : {}) })),
       provenance: { source: { collection: 'skillLibrary', key, index } }, legacySourceKey: key
     }])).sort((a, b) => a.id.localeCompare(b.id));
-    for (const method of skill.methods) if (method.legacySourceKey === 'ui-expert') {
-      method.workflowRefs = method.workflowRefs.map(ref => backfill.has(ref.title)
-        ? { id: backfill.get(ref.title), title: ref.title }
+    for (const method of skill.methods) {
+      const mapping = backfills[method.legacySourceKey];
+      if (mapping) method.workflowRefs = method.workflowRefs.map(ref => mapping.has(ref.title)
+        ? { id: mapping.get(ref.title), title: ref.title }
         : ref);
     }
     const authored = { ...(data.skillGuidance[skill.id]?.operation || {}), ...(data.skillPractice[skill.id]?.operation || {}) };

@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
 import { validateSkills } from './skills.mjs';
-import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
+import { assertPreserved, capturePilot, fixture, loadPinnedBaseline, plain, profilePayloads, readerBaseline, uiWorkflowBackfill, orchestrationWorkflowBackfill, workflowDiagnostics } from './v2-capability-preservation.fixture.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 let current, baseline, expected, historical;
@@ -66,6 +66,29 @@ test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scop
   const arbitrary = plain(current.data.flowLibrary);
   arbitrary['ui-expert'][0].title = 'Renamed display title';
   assert.equal(arbitrary['ui-expert'][0].id, uiWorkflowBackfill[0][1], 'Accepted workflow IDs do not derive dynamically from display titles');
+});
+
+test('CW-92 WP04-F2: seven orchestration workflow IDs preserve all source bodies and the recovery collision', () => {
+  const flows = current.data.flowLibrary['ai-orchestrator'];
+  const historicalFlows = baseline.context.data.flowLibrary['ai-orchestrator'];
+  assert.equal(flows.length, 7);
+  assert.deepStrictEqual(plain(flows.map(({ title, id }) => [title, id])), orchestrationWorkflowBackfill);
+  assert.deepStrictEqual(plain(flows.map(({ id, ...body }) => body)), plain(historicalFlows), 'All 24 original activities and workflow conditions remain untouched');
+  const allIds = Object.values(current.data.flowLibrary).flat().map(flow => flow.id).filter(Boolean);
+  assert.equal(new Set(allIds).size, 14, 'All 14 pilot workflow IDs must be unique');
+  for (const [title, id] of orchestrationWorkflowBackfill) {
+    const resolved = current.model.resolveWorkflowReference({ id, title, legacySourceKey: 'ai-orchestrator' }, current.data.flowLibrary);
+    assert.equal(resolved.flow.id, id);
+    assert.equal(resolved.sourceKey, 'ai-orchestrator');
+    assert.throws(() => current.model.resolveWorkflowReference({ id, title, legacySourceKey: 'ui-expert' }, current.data.flowLibrary), /[Ww]orkflow ID source mismatch/);
+  }
+  const recoveryTitle = 'Recover a failed or unsafe run';
+  const orchestration = current.model.resolveWorkflowReference({ id: 'workflow-run-recovery-containment-and-control', title: recoveryTitle, legacySourceKey: 'ai-orchestrator' }, current.data.flowLibrary);
+  const observer = current.model.resolveWorkflowReference({ title: recoveryTitle, legacySourceKey: 'conformance-observer' }, current.data.flowLibrary);
+  assert.equal(observer.flow.id, undefined, 'Do not backfill the nonpilot observer workflow');
+  assert.notDeepStrictEqual(plain(orchestration.flow.activities), plain(observer.flow.activities));
+  assert.throws(() => current.model.resolveWorkflowReference({ title: recoveryTitle }, current.data.flowLibrary), /Ambiguous workflow title/);
+  assert.throws(() => current.model.resolveWorkflowReference({ id: orchestration.flow.id, legacySourceKey: 'conformance-observer', title: recoveryTitle }, current.data.flowLibrary), /[Ww]orkflow ID source mismatch/);
 });
 
 test('CW-92: generated source and model match actual authored source', () => {
