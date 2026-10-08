@@ -3,7 +3,7 @@
   "migration": "skill-package-maintenance-graph-backed-context",
   "estimator": "utf8-byte-count-divided-by-four",
   "estimator_formula": "ceil(UTF-8 bytes / 4)",
-  "canonical_route_records_changed": false,
+  "canonical_route_records_changed": true,
   "preferred_path": {
     "artifacts": [
       "AGENTS.md",

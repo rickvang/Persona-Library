@@ -37,4 +37,4 @@ Preferred vs current fallback: **-17.8%** (-6327 bytes / -1582 rough tokens).
 - The preferred path removes one route-selection read, one completion read, and one static artifact while preserving the canonical Skills fallback.
 - Rough-token estimates are static UTF-8/4 approximations, not observed model or subscription usage.
 
-Canonical Skill routing remains authoritative and unchanged. The generated bundle is only a preferred route context.
+Canonical Skill routing remains authoritative. WP16 updates the skill-formation route while the generated bundle remains only a preferred route context.
