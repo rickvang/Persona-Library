@@ -178,6 +178,21 @@ test('CW-92: reject duplicate methods, dual authored origins, bad provenance and
   copied.skillLibrary[wrongKey][0].id = 'method-copied-procedure';
   copied.skillLibrary[wrongKey][0].provenance.current.selector = wrongKey;
   assert.throws(() => current.model.buildSkillCatalog(copied), /Conflicting semantic Skill identity/);
+  const forgedOrigin = plain(input);
+  forgedOrigin.skillLibrary[key][0].legacySourceKey = 'made-up-origin';
+  forgedOrigin.skillLibrary[key][0].provenance.original.selector = 'skillLibrary[made-up-origin]/' + forgedOrigin.skillLibrary[key][0].name;
+  assert.throws(() => current.model.buildSkillCatalog(forgedOrigin), /Unknown pinned legacy origin/);
+  const selectorWhitespace = plain(input);
+  selectorWhitespace.skillLibrary[key][0].provenance.original.selector = 'skillLibrary[ui-expert]/ ' + selectorWhitespace.skillLibrary[key][0].name;
+  assert.throws(() => current.model.buildSkillCatalog(selectorWhitespace), /Unknown pinned legacy origin/);
+  const nativeBaseMask = plain(input);
+  nativeBaseMask.skillLibrary[key][0].id = 'method-interaction-states-and-behavior-design-task';
+  const syntheticNative = plain(nativeBaseMask.skillLibrary[key][0]);
+  syntheticNative.id = 'method-interaction-states-and-behavior-design';
+  delete syntheticNative.legacySourceKey;
+  syntheticNative.provenance.original.selector = key + '/method-interaction-states-and-behavior-design';
+  nativeBaseMask.skillLibrary[key].push(syntheticNative);
+  assert.throws(() => current.model.buildSkillCatalog(nativeBaseMask), /semantic base method ID/);
   const hiddenDual = plain(dual);
   hiddenDual.skillLibrary[wrongKey] = hiddenDual.skillLibrary[key]; delete hiddenDual.skillLibrary[key];
   hiddenDual.skillLibrary[wrongKey][0].id = 'method-copied-procedure';
@@ -212,6 +227,8 @@ test('CW-92: real recovery-title collision retains both source bodies without gl
   const input = neutralInput(), key = Object.keys(input.skillLibrary)[0];
   input.skillLibrary[key][0].workflowRefs = [{ legacySourceKey: 'ui-expert', title: 'An unresolved source title', unresolved: true }];
   assert.equal(current.model.buildSkillCatalog(input)[0].methods[0].workflowRefs[0].unresolved, true);
+  input.skillLibrary[key][0].workflowRefs[0].legacySourceKey = 'ai-orchestrator';
+  assert.throws(() => current.model.buildSkillCatalog(input), /Unresolved workflow scope differs from method origin/);
 });
 
 test('CW-92: preserve existing workflow defects, evidence maturity and authored coverage', () => {

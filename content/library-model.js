@@ -130,6 +130,23 @@
     const catalog = new Map(), methodIds = new Set(), origins = new Set();
     // One-time legacy migration boundary, not runtime availability or an actor registry.
     const migrationSource = { repository: 'rickvang/Persona-Library', revision: 'd61f850e06d266bc6d608b92b730c97e451ea745', path: 'content/library-data/skills-core.js' };
+    // Immutable original locators for the two authorized pilot cohorts. This is a
+    // temporary provenance guard, not an authored method source or a selection map.
+    // Expand only through a separately accepted source-family migration audit.
+    const pilotOrigins = {
+      'ui-expert': new Set([
+        'Interface hierarchy and visual communication', 'Contextual visual judgment and composition',
+        'Interaction states and behavior design', 'Responsive and adaptive layout',
+        'Component and design-system thinking', 'Accessibility and inclusive design',
+        'Prototyping and interaction craft', 'Design QA and implementation partnership'
+      ]),
+      'ai-orchestrator': new Set([
+        'Agent workflow architecture', 'Work graph orchestration',
+        'Task decomposition and routing', 'Tool and context design',
+        'Risk, guardrails, and human oversight', 'Failure recovery and operational judgment',
+        'Cross-functional systems communication', 'Multi-perspective skill synthesis'
+      ])
+    };
     const metadata = new Map(personas.map(persona => [persona.id, persona]));
     const displayOrder = new Map(personas.map((persona, index) => [persona.id, index]));
     const workflows = indexWorkflows(flowLibrary);
@@ -139,7 +156,7 @@
     for (const [sourceKey, records] of Object.entries(skillLibrary)) {
       if (!Array.isArray(records)) throw new Error(`Skill source must be an array: ${sourceKey}`);
       const neutral = sourceKey.startsWith('skill-');
-      if (neutral && records.some(record => record.legacySourceKey) && !records.some(record => record.id === `method-${sourceKey.slice(6)}`)) throw new Error(`Migrated Skill needs its semantic base method ID: ${sourceKey}`);
+      if (neutral && records.some(record => record.legacySourceKey) && !records.some(record => record.legacySourceKey && record.id === `method-${sourceKey.slice(6)}`)) throw new Error(`Migrated Skill needs its semantic base method ID: ${sourceKey}`);
       for (const [sourceIndex, record] of records.entries()) {
         for (const field of Object.keys(record)) if (!(neutral ? neutralFields : legacyFields).has(field)) throw new Error(`Unclassified method field: ${sourceKey}/${field}`);
         for (const field of ['name', 'status', 'definition', 'actions', 'evidence', neutral ? 'when' : 'triggers']) {
@@ -167,6 +184,9 @@
                 !Object.entries(migrationSource).every(([field, expected]) => original[field] === expected) ||
                 current.repository !== migrationSource.repository || current.path !== migrationSource.path || current.selector !== sourceKey) throw new Error(`Invalid migrated method provenance: ${methodId}`);
             originalName = selector[2];
+            // A self-consistent selector is not proof that its claimed source
+            // existed. Require exact membership in the pinned pilot source.
+            if (!pilotOrigins[legacySourceKey]?.has(originalName)) throw new Error(`Unknown pinned legacy origin: ${original.selector}`);
             if (slugify(originalName) !== id) throw new Error(`Conflicting semantic Skill identity for original method: ${original.selector}`);
             const baseId = `method-${id.slice(6)}`;
             if (methodId !== baseId && !methodId.startsWith(baseId + '-')) throw new Error(`Migrated method ID must use its semantic Skill prefix: ${methodId}`);
@@ -174,6 +194,7 @@
           refs = record.workflowRefs.map(ref => {
             if (!ref.id && !ref.unresolved) throw new Error(`Neutral method needs an explicit workflow ID: ${methodId}`);
             if (ref.unresolved && !ref.legacySourceKey) throw new Error(`Unresolved workflow needs a scoped origin: ${methodId}`);
+            if (ref.unresolved && legacySourceKey && ref.legacySourceKey !== legacySourceKey) throw new Error(`Unresolved workflow scope differs from method origin: ${methodId}`);
             return { ...ref };
           });
         } else {
