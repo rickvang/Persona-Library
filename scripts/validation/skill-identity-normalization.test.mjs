@@ -46,3 +46,6 @@ test('shared Skill identities preserve distinct Persona application profiles', a
   assert.equal(new Set(architecture.map(item => item.profile.definition)).size, 1, 'fixture expects a shared definition');
   assert.ok(new Set(architecture.map(item => item.profile.triggers)).size > 1, 'even a shared definition can have distinct Persona triggers');
 });
+
+// Keep CW-92 preservation checks in the existing required CI test entrypoint.
+import './v2-capability-preservation.test.mjs';
