@@ -335,7 +335,7 @@
       "derivation": "structured-derived",
       "source": {
         "kind": "repo-file",
-        "locator": "rickvang/Persona-Library:.agents/skills/persona-reconciliation/SKILL.md",
+        "locator": "rickvang/Persona-Library:.agents/skills/persona-research/SKILL.md",
         "selector": "frontmatter.reconciliation"
       }
     },
