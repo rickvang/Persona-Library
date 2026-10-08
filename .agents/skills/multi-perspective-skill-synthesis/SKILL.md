@@ -51,7 +51,7 @@ Do not activate for:
    - recommend no new Skill when the action is one-off, merely relational, or unsupported by distinct evidence.
 5. **Formalize the shared core.** For a justified candidate, state a stable name, definition, boundary, trigger, inputs, decisions, observable actions, outputs, feedback, quality signals, failure modes, evidence, confidence, and validation questions. Do not average away a difference that changes use or quality.
 6. **Preserve applications separately.** Record how each materially different context or application uses the shared core, including local priorities, protections, thresholds, workflow reach, and constraints. Persona applications may be retained when relevant, but they are optional evidence—not a prerequisite for synthesis. Link applications to the core instead of copying context-specific judgment into it.
-7. **Prepare the handoff.** Return a compact build brief for `$persona-skills` containing the identity decision, core profile, role-specific applications, duplicate analysis, source trail, unknowns, validation cases, and proposed change scope. When a problem context is active, also include `context_id`, stage, the distinct synthesis finding, evidence status, tradeoffs, recommended action, and a provisional disposition for the coordinator to record. If a durable update is explicitly authorized, identify the named target and hand off to `$persona-reconciliation`; run `$change-impact-reconciliation` after the domain adapter when the initiating contract requires it.
+7. **Prepare the handoff.** Return a compact build brief containing the identity decision, core profile, context-specific applications, duplicate analysis, source trail, unknowns, validation cases, and proposed change scope. For a standalone reusable Skill/package, hand off to `pl-skill-creator` and use `$change-impact-reconciliation` for an authorized durable update. Use `$persona-skills` / `$persona-reconciliation` only when an actual Persona application is in scope. When a problem context is active, also include `context_id`, stage, the distinct synthesis finding, evidence status, tradeoffs, recommended action, and a provisional disposition for the coordinator to record.
 8. **Validate proportionally.** Test one representative multi-source synthesis that does not require Persona records, plus one no-new-Skill or insufficient-evidence boundary. Add a Persona-based case only when Persona applications are materially relevant. Do not present a draft proposal as a changed library record.
 
 ## Output contract
@@ -63,7 +63,7 @@ Return:
 - comparison of shared capability, role-specific applications, disagreements, tradeoffs, and unknowns;
 - classification as existing Skill, relationship, primitive, composed Skill, Persona application, workflow method, Tool-use recipe, or new Skill candidate, with reasons;
 - the reusable core profile and validation plan when a new or revised Skill is justified;
-- a handoff brief for the existing Skill authoring/maintenance path, or an explicit recommendation not to create a Skill;
+- a handoff brief for `pl-skill-creator` / the existing Skill authoring path, or an explicit recommendation not to create a Skill; use Persona-specific handoffs only for an actual Persona application;
 - when a shared context is active: one attributable synthesis contribution, its disposition reason, the concrete solution/decision it supports, and the next handoff action;
 - affected scope, unchanged checked items, evidence status, confidence, blockers, and next action.
 
@@ -91,7 +91,7 @@ Before handoff, confirm:
 - role-specific context, evidence, uncertainty, and disagreements remain visible;
 - the no-new-Skill path is considered;
 - when a shared context is active, the output is attributable, distinct from other contributions, and useful toward a concrete solution rather than a generic synthesis;
-- authorization, target, mutation boundary, and reconciliation handoff are explicit;
+- authorization, target, mutation boundary, and reconciliation handoff are explicit; standalone Skill work uses the universal change-impact path, while Persona reconciliation is conditional on a real Persona application;
 - no live mutation, Tool execution, or installation occurred during proposal work.
 
 See the [concise golden scenarios and comparison](../../../docs/internal/skill-rebuild/tests/multi-perspective-skill-synthesis.golden.md) and [shared problem-context contract](../../../docs/collaboration/problem-context.md).
