@@ -1536,7 +1536,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Accessibility and inclusive design]"
+        "selector": "skillLibrary[skill-accessibility-and-inclusive-design][id=method-accessibility-and-inclusive-design]"
       }
     },
     {
@@ -1548,7 +1548,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Component and design-system thinking]"
+        "selector": "skillLibrary[skill-component-and-design-system-thinking][id=method-component-and-design-system-thinking]"
       }
     },
     {
@@ -1560,7 +1560,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Contextual visual judgment and composition]"
+        "selector": "skillLibrary[skill-contextual-visual-judgment-and-composition][id=method-contextual-visual-judgment-and-composition]"
       }
     },
     {
@@ -1572,7 +1572,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Design QA and implementation partnership]"
+        "selector": "skillLibrary[skill-design-qa-and-implementation-partnership][id=method-design-qa-and-implementation-partnership]"
       }
     },
     {
@@ -1584,7 +1584,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Interaction states and behavior design]"
+        "selector": "skillLibrary[skill-interaction-states-and-behavior-design][id=method-interaction-states-and-behavior-design]"
       }
     },
     {
@@ -1596,7 +1596,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Interface hierarchy and visual communication]"
+        "selector": "skillLibrary[skill-interface-hierarchy-and-visual-communication][id=method-interface-hierarchy-and-visual-communication]"
       }
     },
     {
@@ -1608,7 +1608,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Prototyping and interaction craft]"
+        "selector": "skillLibrary[skill-prototyping-and-interaction-craft][id=method-prototyping-and-interaction-craft]"
       }
     },
     {
@@ -1620,7 +1620,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Responsive and adaptive layout]"
+        "selector": "skillLibrary[skill-responsive-and-adaptive-layout][id=method-responsive-and-adaptive-layout]"
       }
     },
     {
@@ -4502,7 +4502,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Accessibility and inclusive design]"
+        "selector": "skillLibrary[skill-accessibility-and-inclusive-design][id=method-accessibility-and-inclusive-design]"
       }
     },
     {
@@ -4514,7 +4514,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Component and design-system thinking]"
+        "selector": "skillLibrary[skill-component-and-design-system-thinking][id=method-component-and-design-system-thinking]"
       }
     },
     {
@@ -4526,7 +4526,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Contextual visual judgment and composition]"
+        "selector": "skillLibrary[skill-contextual-visual-judgment-and-composition][id=method-contextual-visual-judgment-and-composition]"
       }
     },
     {
@@ -4538,7 +4538,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Design QA and implementation partnership]"
+        "selector": "skillLibrary[skill-design-qa-and-implementation-partnership][id=method-design-qa-and-implementation-partnership]"
       }
     },
     {
@@ -4550,7 +4550,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Interaction states and behavior design]"
+        "selector": "skillLibrary[skill-interaction-states-and-behavior-design][id=method-interaction-states-and-behavior-design]"
       }
     },
     {
@@ -4562,7 +4562,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Interface hierarchy and visual communication]"
+        "selector": "skillLibrary[skill-interface-hierarchy-and-visual-communication][id=method-interface-hierarchy-and-visual-communication]"
       }
     },
     {
@@ -4574,7 +4574,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Prototyping and interaction craft]"
+        "selector": "skillLibrary[skill-prototyping-and-interaction-craft][id=method-prototyping-and-interaction-craft]"
       }
     },
     {
@@ -4586,7 +4586,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Responsive and adaptive layout]"
+        "selector": "skillLibrary[skill-responsive-and-adaptive-layout][id=method-responsive-and-adaptive-layout]"
       }
     },
     {
@@ -5930,7 +5930,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Accessibility and inclusive design]"
+        "selector": "skillLibrary[skill-accessibility-and-inclusive-design][id=method-accessibility-and-inclusive-design]"
       }
     },
     {
@@ -5942,7 +5942,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Component and design-system thinking]"
+        "selector": "skillLibrary[skill-component-and-design-system-thinking][id=method-component-and-design-system-thinking]"
       }
     },
     {
@@ -5954,7 +5954,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Contextual visual judgment and composition]"
+        "selector": "skillLibrary[skill-contextual-visual-judgment-and-composition][id=method-contextual-visual-judgment-and-composition]"
       }
     },
     {
@@ -5966,7 +5966,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Design QA and implementation partnership]"
+        "selector": "skillLibrary[skill-design-qa-and-implementation-partnership][id=method-design-qa-and-implementation-partnership]"
       }
     },
     {
@@ -5978,7 +5978,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Interaction states and behavior design]"
+        "selector": "skillLibrary[skill-interaction-states-and-behavior-design][id=method-interaction-states-and-behavior-design]"
       }
     },
     {
@@ -5990,7 +5990,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Interface hierarchy and visual communication]"
+        "selector": "skillLibrary[skill-interface-hierarchy-and-visual-communication][id=method-interface-hierarchy-and-visual-communication]"
       }
     },
     {
@@ -6002,7 +6002,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Prototyping and interaction craft]"
+        "selector": "skillLibrary[skill-prototyping-and-interaction-craft][id=method-prototyping-and-interaction-craft]"
       }
     },
     {
@@ -6014,7 +6014,7 @@
       "source": {
         "kind": "repo-file",
         "locator": "rickvang/Persona-Library:content/library-data/skills-core.js",
-        "selector": "skillLibrary[ui-expert][name=Responsive and adaptive layout]"
+        "selector": "skillLibrary[skill-responsive-and-adaptive-layout][id=method-responsive-and-adaptive-layout]"
       }
     },
     {

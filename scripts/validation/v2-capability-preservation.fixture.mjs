@@ -48,7 +48,17 @@ function mentions(value, ids) {
 export function capturePilot(context) {
   const { data, model } = context;
   const keys = fixture.pilotSourceKeys;
-  const records = Object.fromEntries(keys.map(key => [key, plain(data.skillLibrary[key] || [])]));
+  // During the authorized pilot move, legacy display fields are derived from
+  // the one authored method. Do not require an old Persona-keyed source bucket.
+  const records = Object.fromEntries(keys.map(key => [key, plain([
+    ...(data.skillLibrary[key] || []),
+    ...Object.entries(data.skillLibrary).flatMap(([sourceKey, methods]) => sourceKey.startsWith('skill-')
+      ? methods.filter(method => method.legacySourceKey === key).map(method => ({
+        name: method.name, status: method.status, definition: method.definition,
+        triggers: method.when, workflows: method.workflowRefs.map(ref => ref.title).join(' · '),
+        actions: method.actions, evidence: method.evidence
+      })) : [])
+  ])]));
   const flows = Object.fromEntries(keys.map(key => [key, plain(data.flowLibrary[key] || [])]));
   const skillIds = new Set(Object.values(records).flat().map(record => model.slugify(record.name)));
   // Include peer applications of a shared semantic ID and transitive Skill-unit
@@ -105,7 +115,14 @@ export function workflowDiagnostics(data) {
   for (const key of fixture.pilotSourceKeys) {
     const titles = new Set((data.flowLibrary[key] || []).map(flow => flow.title));
     const referenced = new Set();
-    for (const profile of data.skillLibrary[key] || []) {
+    const applications = [
+      ...(data.skillLibrary[key] || []),
+      ...Object.entries(data.skillLibrary).flatMap(([id, methods]) => id.startsWith('skill-')
+        ? methods.filter(method => method.legacySourceKey === key).map(method => ({
+          name: method.name, workflows: method.workflowRefs.map(ref => ref.title).join(' · ')
+        })) : [])
+    ];
+    for (const profile of applications) {
       for (const title of (profile.workflows || '').split(' · ').map(value => value.trim()).filter(Boolean)) {
         referenced.add(title);
         if (!titles.has(title)) unresolved.push({ sourceKey: key, skill: profile.name, title });
@@ -171,7 +188,21 @@ export function readerBaseline(context) {
       if (mapping) method.workflowRefs = method.workflowRefs.map(ref => mapping.has(ref.title)
         ? { id: mapping.get(ref.title), title: ref.title }
         : ref);
+      if (method.legacySourceKey === 'ui-expert') {
+        // WP05's expected representation is derived only from the immutable
+        // original record and accepted semantic ID, never current candidate data.
+        method.id = `method-${skill.id.slice(6)}`;
+        method.provenance = {
+          original: {
+            repository: 'rickvang/Persona-Library', revision: fixture.baselineCommit,
+            path: 'content/library-data/skills-core.js',
+            selector: `skillLibrary[ui-expert]/${method.name}`
+          },
+          current: { repository: 'rickvang/Persona-Library', path: 'content/library-data/skills-core.js', selector: skill.id }
+        };
+      }
     }
+    skill.methods.sort((a, b) => a.id.localeCompare(b.id));
     const authored = { ...(data.skillGuidance[skill.id]?.operation || {}), ...(data.skillPractice[skill.id]?.operation || {}) };
     const trigger = uniqueValue(profiles, 'triggers', selected);
     const definition = uniqueValue(profiles, 'definition', 'Method-specific result; inspect the selected method.');

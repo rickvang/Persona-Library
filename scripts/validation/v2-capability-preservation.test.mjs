@@ -47,6 +47,35 @@ test('CW-92: preserve full-source material fields under the explicit reader tran
   assertPreserved(capturePilot(current), expected);
 });
 
+test('CW-92 WP05: all eight UI methods are singly authored under semantic Skill IDs', () => {
+  const historicalUI = baseline.context.data.skillLibrary['ui-expert'];
+  assert.equal(historicalUI.length, 8);
+  assert.equal(current.data.skillLibrary['ui-expert'], undefined, 'The legacy UI source bucket must not keep a second authored copy');
+  for (const old of historicalUI) {
+    const skillId = current.model.slugify(old.name), methodId = `method-${skillId.slice(6)}`;
+    const source = current.data.skillLibrary[skillId];
+    assert.equal(source?.length, 1, `One authored neutral method for ${skillId}`);
+    const method = source[0];
+    assert.equal(method.id, methodId);
+    assert.equal(method.name, old.name); assert.equal(method.status, old.status);
+    assert.equal(method.definition, old.definition); assert.equal(method.when, old.triggers);
+    assert.equal(method.actions, old.actions); assert.equal(method.evidence, old.evidence);
+    assert.equal(method.workflowRefs.map(ref => ref.title).join(' · '), old.workflows);
+    assert.ok(method.workflowRefs.every(ref => ref.id && !ref.unresolved));
+    assert.equal(method.legacySourceKey, 'ui-expert');
+    assert.equal(method.provenance.original.selector, `skillLibrary[ui-expert]/${old.name}`);
+    assert.equal(method.provenance.current.selector, skillId);
+    const normalized = current.data.skillCatalog.find(skill => skill.id === skillId);
+    const matching = normalized?.methods.filter(m => m.legacySourceKey === 'ui-expert');
+    assert.equal(matching?.length, 1);
+    assert.deepStrictEqual(plain(matching[0].workflowRefs), plain(method.workflowRefs));
+  }
+  assert.equal(current.data.skillCatalog.length, baseline.context.data.skillCatalog.length, 'All 79 Skill IDs remain');
+  assert.equal(current.data.skillCatalog.reduce((n, skill) => n + skill.methods.length, 0), 119, 'All concrete methods remain');
+  const withoutMetadata = plain(current.data); withoutMetadata.personas = withoutMetadata.personas.filter(p => p.id !== 'ui-expert');
+  assert.deepStrictEqual(semanticView(current.model.buildSkillCatalog(withoutMetadata)), semanticView(current.data.skillCatalog));
+});
+
 test('CW-92 WP04-F1: seven UI workflow IDs preserve every authored body and scoped lookup', () => {
   const ui = current.data.flowLibrary['ui-expert'];
   const original = baseline.context.data.flowLibrary['ui-expert'];
@@ -115,7 +144,7 @@ test('CW-92: preservation rejects lost evidence, activities, variants and unknow
   assertPreserved(capturePilot({ ...current, data }), capturePilot(current));
   data.maintenance.skills[expected.skillIds[0]].version = 'must-be-detected';
   assert.throws(() => assertPreserved(capturePilot({ ...current, data }), capturePilot(current)));
-  const bad = plain(current.data); bad.skillLibrary['ui-expert'][0].unclassified = 'not silently omitted';
+  const bad = plain(current.data); bad.skillLibrary['skill-interface-hierarchy-and-visual-communication'][0].unclassified = 'not silently omitted';
   assert.throws(() => current.model.buildSkillCatalog(bad), /Unclassified method field/);
 });
 
