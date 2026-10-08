@@ -10,8 +10,8 @@
       "dist/data/agent-context/tool-resolution.json",
       ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
     ],
-    "utf8_bytes": 33912,
-    "rough_tokens": 8478
+    "utf8_bytes": 33957,
+    "rough_tokens": 8490
   },
   "canonical_fallback": {
     "artifacts": [
@@ -20,8 +20,8 @@
       "content/orientation/tools.json",
       ".agents/skills/tool-discovery-and-safe-execution/SKILL.md"
     ],
-    "utf8_bytes": 36064,
-    "rough_tokens": 9016
+    "utf8_bytes": 36192,
+    "rough_tokens": 9048
   },
   "phase9_control_baseline": {
     "utf8_bytes": 32899,
@@ -29,14 +29,14 @@
   },
   "deltas": {
     "preferred_vs_current_fallback": {
-      "utf8_bytes": -2152,
-      "rough_tokens": -538,
-      "percent": -6
+      "utf8_bytes": -2235,
+      "rough_tokens": -558,
+      "percent": -6.2
     },
     "preferred_vs_phase9_control": {
-      "utf8_bytes": 1013,
-      "rough_tokens": 253,
-      "percent": 3.1
+      "utf8_bytes": 1058,
+      "rough_tokens": 265,
+      "percent": 3.2
     }
   },
   "bundle": {
