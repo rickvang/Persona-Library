@@ -88,6 +88,19 @@ test('CW-92 characterization: actual catalog loses pilot applications without id
   const baselineAbsent = baseline.context.model.buildSkillCatalog(withoutPilot(baseline.context.data));
   assert.equal(baselineFull.length, 79, 'The pinned full-source fixture has 79 semantic IDs');
   assert.equal(baselineAbsent.length, 72, 'The pinned known-failure fixture has 72 surviving IDs');
+  const pinnedPayloads = profilePayloads(baselineAbsent);
+  const pinnedKeys = new Set(pinnedPayloads.map(profile => `${profile.skillId}/${profile.personaId}`));
+  const assertPinnedSurvivors = candidate => {
+    const ids = new Set(candidate.map(skill => skill.id));
+    for (const skill of baselineAbsent) assert.ok(ids.has(skill.id), `Lost baseline nonpilot Skill ${skill.id}`);
+    const retained = profilePayloads(candidate).filter(profile => pinnedKeys.has(`${profile.skillId}/${profile.personaId}`));
+    assert.deepStrictEqual(retained, pinnedPayloads, 'Baseline nonpilot application fields must survive; new unrelated identities remain allowed');
+  };
+  assertPinnedSurvivors(absent);
+  const lostNonpilot = withoutPilot(current.data);
+  lostNonpilot.personas = lostNonpilot.personas.filter(persona => persona.id !== 'ux-senior');
+  assert.throws(() => assertPinnedSurvivors(current.model.buildSkillCatalog(lostNonpilot)), /Lost baseline|application fields/);
+
   assert.ok(absent.length > 0, 'This is the full library, not the earlier two-cohort reproduction');
   assert.equal(current.model.buildSkillCatalog({ ...current.data, personas: [] }).length, 0);
   for (const sourceKey of fixture.pilotSourceKeys) {
