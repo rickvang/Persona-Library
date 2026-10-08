@@ -159,6 +159,7 @@
           const provenance = record.provenance;
           if (!provenance?.original || !provenance?.current || !/^[0-9a-f]{40}$/.test(provenance.original.revision || '') ||
               !['original', 'current'].every(part => ['repository', 'path', 'selector'].every(field => nonempty(provenance[part][field])))) throw new Error(`Incomplete method provenance: ${methodId}`);
+          if (/^skillLibrary\[/.test(provenance.original.selector) && !legacySourceKey) throw new Error(`Migrated method requires structured legacy origin: ${methodId}`);
           if (legacySourceKey) {
             const original = provenance.original, current = provenance.current;
             const selector = original.selector.match(/^skillLibrary\[([^\]]+)\]\/(.+)$/);

@@ -156,6 +156,9 @@ test('CW-92: neutral methods keep explicit identity after display rename and val
   input.skillLibrary[key][0].name = 'Renamed display only';
   assert.equal(current.model.buildSkillCatalog(input)[0].id, key);
   delete input.skillLibrary[key][0].legacySourceKey;
+  assert.throws(() => current.model.buildSkillCatalog(input), /requires structured legacy origin/);
+  // Synthetic native input has no legacy-record provenance to reconstruct.
+  input.skillLibrary[key][0].provenance.original.selector = key + '/method-interaction-states-and-behavior-design';
   const native = current.model.buildSkillCatalog(input)[0];
   assert.equal(native.profiles.length, 0); assert.equal(native.methods.length, 1);
   validateSkills({ data: { ...input, skillCatalog: [native] } }, { personaIds: new Set() });
