@@ -14,9 +14,9 @@
     "behavioral_passed": 39,
     "behavioral_failed": 0,
     "base_context": {
-      "control_utf8_bytes": 140271,
-      "preferred_utf8_bytes": 119702,
-      "delta_utf8_bytes": -20569,
+      "control_utf8_bytes": 140428,
+      "preferred_utf8_bytes": 119782,
+      "delta_utf8_bytes": -20646,
       "delta_percent": -14.7
     },
     "activated_behavior_context": {
@@ -69,12 +69,12 @@
     {
       "route_id": "system-orientation",
       "context": {
-        "control_utf8_bytes": 34471,
-        "preferred_utf8_bytes": 27619,
-        "delta_utf8_bytes": -6852,
-        "delta_percent": -19.9,
-        "control_rough_tokens": 8618,
-        "preferred_rough_tokens": 6905
+        "control_utf8_bytes": 34628,
+        "preferred_utf8_bytes": 27699,
+        "delta_utf8_bytes": -6929,
+        "delta_percent": -20,
+        "control_rough_tokens": 8657,
+        "preferred_rough_tokens": 6925
       },
       "behavior": {
         "fixtures": 8,
