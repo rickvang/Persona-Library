@@ -62,9 +62,12 @@ export async function validateOperatingPacks(context, indexes) {
 
 export function validateOperatingPackFixtures(context) {
   const { data, model, root } = context;
-  const negativeRelationshipPersona = data.personas.find(persona => persona.id === 'ui-expert') || data.personas[0];
-  const negativeRelationshipWorkflow = (data.flowLibrary[negativeRelationshipPersona?.id] || [])[0];
-  const negativeRelationshipSkill = data.skillCatalog.find(skill => skill.profiles?.some(profile => profile.personaId === negativeRelationshipPersona?.id) && !skill.workflows?.some(workflow => workflow.personaId === negativeRelationshipPersona?.id && workflow.title === negativeRelationshipWorkflow?.title));
+  let negativeRelationshipPersona, negativeRelationshipWorkflow, negativeRelationshipSkill;
+  for (const persona of data.personas) {
+    const workflow = (data.flowLibrary[persona.id] || [])[0];
+    const skill = workflow && data.skillCatalog.find(item => item.profiles?.some(profile => profile.personaId === persona.id) && !item.workflows?.some(item => item.personaId === persona.id && item.title === workflow.title));
+    if (skill) { negativeRelationshipPersona = persona; negativeRelationshipWorkflow = workflow; negativeRelationshipSkill = skill; break; }
+  }
   if (!negativeRelationshipPersona || !negativeRelationshipWorkflow || !negativeRelationshipSkill) throw new Error('Could not construct the invalid Operating Pack relationship fixture');
   const negativeRelationshipCatalog = model.buildOperatingPackCatalog({ operatingPacks: [{ id: 'negative-relationship-fixture', name: 'Negative relationship fixture', applications: [{ personaId: negativeRelationshipPersona.id, skillId: negativeRelationshipSkill.id, workflow: negativeRelationshipWorkflow.title, reason: 'Validator fixture' }] }], personas: data.personas, skillCatalog: data.skillCatalog, flowLibrary: data.flowLibrary, playbookCatalog: data.playbookCatalog });
   if (negativeRelationshipCatalog[0]?.applications[0]?.known) throw new Error('Invalid Operating Pack Persona-Skill-workflow relationship was normalized as known');

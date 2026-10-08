@@ -181,10 +181,9 @@ test('CW-92 compatibility drawers retain all sixteen methods and retired Persona
     'Method discovery must remain independent of Persona metadata');
 
   const loaded = await loadLibraryData();
-  const cases = buildPersonaSkillMatrix(loaded, {
+  assert.throws(() => buildPersonaSkillMatrix(loaded, {
     default_test: { request_mode: 'answer', scenario: 'Source-loaded source preservation', prompt_template: 'Test {skill_name}' }
-  }, { personas: ['ui-expert', 'ai-orchestrator'] });
-  assert.equal(cases.length, 0, 'Persona-only evaluation must not reactivate archived wrappers; all sixteen methods remain checked above');
+  }, { personas: ['ui-expert', 'ai-orchestrator'] }), /Unknown Persona/, 'Persona-only evaluation must not reactivate archived wrappers; all sixteen methods remain checked above');
 });
 
 // Keep CW-92 preservation checks in the existing required CI test entrypoint.
