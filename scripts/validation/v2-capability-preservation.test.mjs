@@ -213,7 +213,7 @@ test('CW-92 WP08: reuse visual judgment and prototyping through existing task-co
     'Visual method reuse must not reinstate an authored Persona-keyed bucket');
 });
 
-test('CW-92 WP16: evidence-driven Skill synthesis does not require Persona identity', async () => {
+test('CW-92 WP16: evidence-driven synthesis preserves the pinned Persona application without requiring it', async () => {
   const route = JSON.parse(await current.readFile('content/orientation/skills.json')).routes
     .find(item => item.id === 'skill-formation');
   assert.ok(route);
@@ -224,23 +224,22 @@ test('CW-92 WP16: evidence-driven Skill synthesis does not require Persona ident
   assert.equal(route.non_triggers.some(item => /one-Persona/i.test(item)), false,
     'A Persona-count rule must not define the synthesis boundary');
 
-  const skill = current.data.skillLibrary['skill-multi-perspective-skill-synthesis']?.[0];
-  assert.ok(skill);
-  assert.match(skill.definition, /evidence sources or applications/i);
-  assert.match(skill.actions, /Persona applications may contribute evidence but are not required/i);
-  assert.doesNotMatch(skill.definition + skill.when + skill.actions + skill.evidence,
-    /multiple personas|Selects relevant personas|cross-persona review/i);
-
-  const guidance = current.data.skillGuidance['skill-multi-perspective-skill-synthesis'];
-  assert.ok(guidance);
-  assert.match(guidance.operation.startsWith, /evidence sources or applications/i);
-  assert.ok(guidance.quality.checks.some(item => /trigger, decisions, outputs, and quality/i.test(item)));
-  assert.ok(guidance.quality.watchFor.some(item => /Persona records or a panel are treated as mandatory/i.test(item)));
+  const preserved = current.data.skillLibrary['skill-multi-perspective-skill-synthesis']?.[0];
+  const old = baseline.context.data.skillLibrary['ai-orchestrator']
+    .find(record => current.model.slugify(record.name) === 'skill-multi-perspective-skill-synthesis');
+  assert.ok(preserved && old);
+  for (const [actual, expected] of [
+    [preserved.name, old.name], [preserved.status, old.status],
+    [preserved.definition, old.definition], [preserved.when, old.triggers],
+    [preserved.actions, old.actions], [preserved.evidence, old.evidence]
+  ]) assert.equal(actual, expected, 'Preserve the pinned Persona-oriented method application');
 
   const pkg = await current.readFile('.agents/skills/multi-perspective-skill-synthesis/SKILL.md');
   assert.match(pkg, /standalone reusable Skill\/package, hand off to `pl-skill-creator`/);
   assert.match(pkg, /Persona-specific handoffs only for an actual Persona application/);
   assert.match(pkg, /fewer than two materially distinct evidence-bearing sources/i);
+  assert.match(pkg, /catalog record named `skill-multi-perspective-skill-synthesis` preserves the earlier Persona-oriented application/i);
+  assert.match(pkg, /not.*activation contract for this callable package/i);
 });
 
 test('CW-92 WP09: reuse component and interaction methods through existing task-conditioned Skill owners', async () => {
