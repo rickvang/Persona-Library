@@ -26,7 +26,6 @@ test('a source edit reaches catalog and focused detail without editing either pa
   edited.toolCatalog[0].scope = 'Unique fixture scope';
   edited.toolCatalog[0].permission = 'Unique fixture permission';
   edited.toolUseRecipes.find(recipe => recipe.toolId === 'tool-vercel').tool = 'Vercel fixture';
-  edited.personaToolRequirements.find(requirement => requirement.preferredToolId === 'tool-vercel').preferredTool = 'Vercel fixture';
   const entry = buildToolEntries(edited)[0];
   const catalog = renderToolsPage(template,edited);
   const detail = renderToolDetail(entry,edited);
@@ -54,7 +53,7 @@ test('canonical recipe bindings never resolve by similar Tool names', () => {
   edited.toolUseRecipes.push({...edited.toolUseRecipes[0],id:'recipe-name-only',tool:'Vercel'});
   const entry = buildToolEntries(edited).find(entry => entry.id === 'tool-vercel');
   assert.deepEqual(entry.recipes.map(recipe => recipe.id),['recipe-riley-vercel-review-checkpoint']);
-  assert.equal(entry.requirements.length,1);
+  assert.equal(entry.requirements.length,0, 'The redundant Persona adapter is archived; the neutral recipe remains');
 });
 
 test('missing, conflicting, and promoted reference bindings fail publication', () => {

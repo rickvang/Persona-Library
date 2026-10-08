@@ -17,7 +17,8 @@ export function validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, 
   const recipe = (toolUseRecipes || []).find(item => item.id === 'recipe-riley-vercel-review-checkpoint');
   if (!recipe || recipe.toolId !== tool.id || recipe.tool !== tool.name || !tool.toolUseRecipeIds?.includes(recipe.id)) throw new Error('Canonical Vercel Tool recipe relationship is invalid');
   const requirement = (personaToolRequirements || []).find(item => item.id === 'requirement-riley-vercel-review-checkpoint');
-  if (!requirement || requirement.preferredToolId !== tool.id || requirement.preferredTool !== tool.name || requirement.recipeId !== recipe.id) throw new Error('Canonical Vercel Persona Tool relationship is invalid');
+  if (requirement && (requirement.preferredToolId !== tool.id || requirement.preferredTool !== tool.name || requirement.recipeId !== recipe.id)) throw new Error('Canonical Vercel Persona Tool relationship is invalid');
+  if (!includesAll((recipe.steps || []).join(' '), ['required capability:', 'preferred path: vercel', 'scope:', 'unavailable-path fallback:', 'evidence status:'])) throw new Error('Canonical Vercel recipe must retain the neutral execution requirement');
   if (!includesAll(toolsPage, ['data-tool-id="tool-vercel"', '<h3>vercel</h3>', 'runtime availability', 'account permission', '#recipe-vercel-review-checkpoint'])) throw new Error('Tools page must expose the canonical Vercel Tool record and linked recipe');
 }
 
@@ -51,9 +52,6 @@ export function validateWebArchitecturePersonaContract({ personas, flowLibrary, 
   }
 
   const requiredHandoffs = [
-    'handoff-riley-to-frontend-systems-engineer',
-    'handoff-riley-to-application-data-architect',
-    'handoff-frontend-to-camille-interface-intent',
     'handoff-frontend-to-jordan-ux-structure',
     'handoff-frontend-to-application-data-architect',
     'handoff-application-data-to-frontend-systems-engineer',

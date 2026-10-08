@@ -11,7 +11,6 @@ window.PersonaLibraryDataFragments.personas.push(
 );
 
 
-
 window.PersonaLibraryDataFragments = window.PersonaLibraryDataFragments || {};
 window.PersonaLibraryDataFragments.personas = window.PersonaLibraryDataFragments.personas || [];
 window.PersonaLibraryDataFragments.personas.push(

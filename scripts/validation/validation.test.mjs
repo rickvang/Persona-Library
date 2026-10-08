@@ -143,10 +143,12 @@ test('Vercel canonical Tool record stays linked to its recipe and Tools surface'
     skillIds:['skill-tool-and-context-design'], status:'active', version:'1.0', updated:'2026-09-21',
     revisions:[{version:'1.0'}]
   }];
-  const toolUseRecipes = [{ id:'recipe-riley-vercel-review-checkpoint', toolId:'tool-vercel', tool:'Vercel' }];
+  const toolUseRecipes = [{ id:'recipe-riley-vercel-review-checkpoint', toolId:'tool-vercel', tool:'Vercel', steps:['Required capability: deployment review. Preferred path: Vercel. Scope: named project. Unavailable-path fallback: repository validation. Evidence status: Representative.'] }];
   const personaToolRequirements = [{ id:'requirement-riley-vercel-review-checkpoint', preferredToolId:'tool-vercel', preferredTool:'Vercel', recipeId:'recipe-riley-vercel-review-checkpoint' }];
   const toolsPage = '<article id="tool-vercel" data-tool-id="tool-vercel"><h3>Vercel</h3>Runtime availability and account permission remain separate.<a href="#recipe-vercel-review-checkpoint">Open Vercel review-checkpoint recipe</a></article>';
   assert.doesNotThrow(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements, toolsPage }));
+  assert.doesNotThrow(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements: [], toolsPage }));
+  assert.throws(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes: [{...toolUseRecipes[0], steps:[]}], personaToolRequirements: [], toolsPage }), /neutral execution requirement/);
   assert.throws(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes: [{ ...toolUseRecipes[0], toolId:'missing' }], personaToolRequirements, toolsPage }), /recipe/i);
   assert.throws(() => validateVercelToolCatalogSurface({ toolCatalog, toolUseRecipes, personaToolRequirements, toolsPage: toolsPage.replace('data-tool-id="tool-vercel"', '') }), /Tools page/i);
 });
