@@ -71,13 +71,16 @@ test('Persona work modes are optional ordered preferences with a bounded vocabul
 });
 
 test('Skill validation owns skill shape and does not need presentation context', () => {
+  const material = { ...profile, status: 'Synthetic fixture', triggers: profile.triggers.join(' · '), workflows: profile.workflows.join(' · '), actions: profile.actions.join(' · '), evidence: profile.evidence.join(' · ') };
+  const method = { id: 'method-test', name: material.name, status: material.status, definition: material.definition, when: material.triggers, actions: material.actions, evidence: material.evidence, legacySourceKey: persona.id, workflowRefs: [{ title: 'Check a contract', legacySourceKey: persona.id }], provenance: { source: { collection: 'synthetic-fixture', key: 'method-test' } } };
   const context = { data: {
     personas: [persona],
     skillCatalog: [{
       id: 'skill-test',
       name: 'Test capability',
       personas: [{ id: persona.id }],
-      profiles: [{ personaId: persona.id, ...profile }],
+      profiles: [{ personaId: persona.id, ...material }],
+      methods: [method],
       buildingBlocks: [],
       supportingConnections: [],
       relatedSkills: [],
@@ -89,7 +92,7 @@ test('Skill validation owns skill shape and does not need presentation context',
   const indexes = { personaIds: new Set([persona.id]) };
   validateSkills(context, indexes);
   assert.deepEqual([...indexes.catalogIds], ['skill-test']);
-  assert.throws(() => validateSkills({ data: { ...context.data, skillCatalog: [{ ...context.data.skillCatalog[0], profiles: [{ personaId: 'missing-persona', ...profile }] }] } }, { personaIds: new Set([persona.id]) }), /Incomplete skill profile/);
+  assert.throws(() => validateSkills({ data: { ...context.data, skillCatalog: [{ ...context.data.skillCatalog[0], profiles: [{ personaId: 'missing-persona', ...material }] }] } }, { personaIds: new Set([persona.id]) }), /Incomplete skill profile/);
 });
 
 test('Relationship validation keeps cross-domain references explicit', () => {
