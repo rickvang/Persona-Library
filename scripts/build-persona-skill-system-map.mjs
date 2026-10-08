@@ -51,6 +51,23 @@ function findUniqueSource(sources, needles, kind) {
   return matches[0];
 }
 
+// The current Persona/Skill graph remains a historical compatibility view
+// during CW-92. An application derived from a migrated method must point to
+// the one authored neutral method, not the former Persona-keyed source row.
+function neutralApplicationSource(sources, skillId, methodId) {
+  const file = findUniqueSource(sources, [
+    `'${skillId}':[`, `'${skillId}': [`, `"${skillId}":[`, `"${skillId}": [`
+  ], `neutral method source for ${skillId}`);
+  const content = sources.get(file);
+  const key = content.match(new RegExp(`['"]${escaped(skillId)}['"]\\s*:\\s*\\[`));
+  const end = key && content.indexOf('\n  ],', key.index + key[0].length);
+  if (!key || end < 0) throw new Error(`Cannot locate authored neutral Skill section for ${skillId}`);
+  const section = content.slice(key.index + key[0].length, end);
+  const methodIdPattern = new RegExp(`(?:\\bid|['"]id['"])\\s*:\\s*['"]${escaped(methodId)}['"]`);
+  if (!methodIdPattern.test(section)) throw new Error(`Missing authored neutral method ${skillId}/${methodId}`);
+  return sourceRef(file, `skillLibrary[${skillId}][id=${methodId}]`);
+}
+
 function addEdge(edges, from, to, relationship, derivation, source) {
   edges.push({
     id: edgeId(from, relationship, to),
@@ -149,29 +166,14 @@ export async function derivePersonaSkillGraph(context) {
     addEdge(edges, 'view:skills', skillId, 'contains', 'contract-derived', architectureSource);
 
     for (const profile of skill.profiles) {
-      const method = skill.methods.find(candidate => candidate.legacySourceKey === profile.personaId);
-      if (!method) throw new Error(`Missing authored method for compatibility application ${profile.personaId} / ${skill.id}`);
+      const migrated = (data.skillLibrary[skill.id] || []).filter(method =>
+        method.legacySourceKey === profile.personaId && method.name === skill.name &&
+        method.definition === profile.definition && method.when === profile.triggers
+      );
+      if (migrated.length > 1) throw new Error(`Ambiguous migrated method for ${profile.personaId} / ${skill.id}`);
       let appSource;
-      if (method.provenance?.current) {
-        // A mechanically moved method has a new *authored* owner. Never keep a
-        // graph link to the now-retired Persona-keyed source body just because
-        // an old compatibility profile is still derivable from its provenance.
-        const current = method.provenance.current;
-        if (current.repository !== REPO || !PROFILE_SOURCES.includes(current.path) || current.selector !== skill.id) {
-          throw new Error(`Invalid current authored method source for ${skill.id} / ${method.id}`);
-        }
-        // The structured authored collection must own this exact method too;
-        // a coincidental text occurrence elsewhere in the file is not enough.
-        if (!(data.skillLibrary[skill.id] || []).some(record => record.id === method.id)) {
-          throw new Error(`Missing neutral authored method record for ${skill.id} / ${method.id}`);
-        }
-        const source = profileSources.get(current.path);
-        const skillKey = new RegExp(`['"]${escaped(skill.id)}['"]\\s*:\\s*\\[`);
-        const methodKey = new RegExp(`\\bid\\s*:\\s*['"]${escaped(method.id)}['"]`);
-        if (!source || !skillKey.test(source) || !methodKey.test(source)) {
-          throw new Error(`Missing current authored method locator for ${skill.id} / ${method.id}`);
-        }
-        appSource = sourceRef(current.path, `skillLibrary[${skill.id}][id=${method.id}]`);
+      if (migrated.length) {
+        appSource = neutralApplicationSource(profileSources, skill.id, migrated[0].id);
       } else {
         const file = profileSourceByPersona.get(profile.personaId);
         if (!file) throw new Error(`Missing authored profile source for ${profile.personaId} / ${skill.id}`);

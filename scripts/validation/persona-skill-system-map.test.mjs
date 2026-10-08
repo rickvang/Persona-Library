@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import vm from 'node:vm';
 import { loadValidationContext } from './context.mjs';
 import {
   derivePersonaSkillGraph,
@@ -47,48 +48,77 @@ test('Persona Skill System Map preserves canonical identity and Persona applicat
   }
 });
 
-test('CW-92 graph provenance follows a migrated method current owner and rejects false locators', async () => {
+test('CW-92 graph locates a migrated method at its sole authored source', async () => {
   const context = await loadValidationContext();
-  const migrated = { ...context, data: structuredClone(context.data) };
-  const skillId = 'skill-interaction-states-and-behavior-design';
-  const skill = migrated.data.skillCatalog.find(item => item.id === skillId);
-  const method = skill.methods.find(item => item.legacySourceKey === 'ui-expert');
-  const methodId = 'method-interaction-states-and-behavior-design';
-  assert.ok(method, 'Start from the actual loaded UI application');
-  method.id = methodId;
-  method.provenance = {
-    original: { repository: 'rickvang/Persona-Library', path: 'content/library-data/skills-core.js', selector: `skillLibrary[ui-expert]/${method.name}` },
-    current: { repository: 'rickvang/Persona-Library', path: 'content/library-data/skills-core.js', selector: skillId }
-  };
-  migrated.data.skillLibrary['ui-expert'] = migrated.data.skillLibrary['ui-expert'].filter(item => item.name !== method.name);
-  migrated.data.skillLibrary[skillId] = [{ ...method }];
-  const read = context.readFile;
-  const neutralSource = `
-Object.assign(window.PersonaLibraryDataFragments.skillLibrary, { '${skillId}':[{id:'${methodId}'}] });
-`;
-  migrated.readFile = file => file === 'content/library-data/skills-core.js'
-    ? read(file).then(source => source + neutralSource)
-    : read(file);
-  const graph = await derivePersonaSkillGraph(migrated);
-  const application = graph.nodes.find(node => node.id === `skill-application:ui-expert/${skillId}`);
-  assert.equal(application.source.locator, 'rickvang/Persona-Library:content/library-data/skills-core.js');
-  assert.equal(application.source.selector, `skillLibrary[${skillId}][id=${methodId}]`);
-  const originalGraph = await derivePersonaSkillGraph(context);
-  assert.equal(graph.nodes.length, originalGraph.nodes.length, 'No new application or profile graph class');
-  assert.equal(graph.edges.length, originalGraph.edges.length, 'Preserve the existing application relationships');
-  await assert.rejects(() => derivePersonaSkillGraph({ ...migrated, readFile: read }), /Missing current authored method locator/);
-  const missingOwner = { ...migrated, data: structuredClone(migrated.data) };
-  delete missingOwner.data.skillLibrary[skillId];
-  await assert.rejects(() => derivePersonaSkillGraph(missingOwner), /Missing neutral authored method record/);
-  for (const current of [
-    { ...method.provenance.current, selector: 'skill-not-the-owner' },
-    { ...method.provenance.current, path: 'dist/data/library-data.js' },
-    { ...method.provenance.current, repository: 'other/repo' }
-  ]) {
-    const corrupted = { ...migrated, data: structuredClone(migrated.data) };
-    corrupted.data.skillCatalog.find(item => item.id === skillId).methods.find(item => item.id === methodId).provenance.current = current;
-    await assert.rejects(() => derivePersonaSkillGraph(corrupted), /Invalid current authored method source/);
+  const sourcePath = 'content/library-data/skills-core.js';
+  const originalSource = await context.readFile(sourcePath);
+  const legacyKey = 'ui-expert';
+  const name = 'Interaction states and behavior design';
+  const legacyRecord = context.data.skillLibrary[legacyKey]?.find(record => record.name === name);
+  const skillId = context.model.slugify(name);
+  const methodId = `method-${skillId.slice(6)}`;
+  const alreadyMigrated = context.data.skillLibrary[skillId]?.find(method => method.id === methodId);
+  assert.notEqual(Boolean(legacyRecord), Boolean(alreadyMigrated), 'Exactly one authored source must exist');
+
+  // This prerequisite test remains valid after WP05: inspect the actual
+  // migrated source once present, rather than only a pre-cutover simulation.
+  if (alreadyMigrated) {
+    const graph = await derivePersonaSkillGraph(context);
+    const application = graph.nodes.find(node => node.id === `skill-application:${legacyKey}/${skillId}`);
+    assert.equal(application?.source.selector, `skillLibrary[${skillId}][id=${methodId}]`);
+    const maskedSource = originalSource.replace(`'${skillId}':[`, `'hidden-${skillId}':[`);
+    assert.notEqual(maskedSource, originalSource, 'Find the exact authored neutral source section');
+    const masked = {
+      ...context,
+      readFile: file => file === sourcePath ? Promise.resolve(maskedSource) : context.readFile(file)
+    };
+    await assert.rejects(() => derivePersonaSkillGraph(masked), /Expected exactly one neutral method source/);
+    return;
   }
+
+  const workflowRefs = legacyRecord.workflows.split(' · ').map(title => {
+    const match = context.data.flowLibrary[legacyKey].find(flow => flow.title === title);
+    assert.ok(match?.id, `Require the real accepted workflow ID for ${title}`);
+    return { id: match.id, title };
+  });
+  const migrated = {
+    id: methodId, name, status: legacyRecord.status, definition: legacyRecord.definition,
+    when: legacyRecord.triggers, actions: legacyRecord.actions,
+    evidence: legacyRecord.evidence, workflowRefs, legacySourceKey: legacyKey,
+    provenance: {
+      original: {
+        repository: 'rickvang/Persona-Library',
+        revision: 'd61f850e06d266bc6d608b92b730c97e451ea745',
+        path: sourcePath, selector: `skillLibrary[${legacyKey}]/${name}`
+      },
+      current: { repository: 'rickvang/Persona-Library', path: sourcePath, selector: skillId }
+    }
+  };
+  const oldLine = originalSource.split('\n').find(line => line.trimStart().startsWith(`{name:'${name}'`));
+  assert.ok(oldLine && originalSource.includes(oldLine + '\n'), 'Locate the exact original authored row');
+  const replacement = `  '${skillId}':[\n    ${JSON.stringify(migrated)}\n  ],\n  'ai-orchestrator':[`;
+  const changedSource = originalSource.replace(oldLine + '\n', '').replace("  'ai-orchestrator':[", replacement);
+  assert.equal(changedSource.includes(oldLine), false, 'Remove the prior authored body, not duplicate it');
+  const originalProgram = context.files.librarySource;
+  assert.equal(originalProgram.split(originalSource).length, 2, 'Replace the precise original source module once');
+  const sandbox = { window: {} };
+  vm.runInNewContext(originalProgram.replace(originalSource, changedSource), sandbox, { filename: 'migrated-full-library.js' });
+  const data = sandbox.window.PersonaLibraryData;
+  data.skillCatalog = context.model.buildSkillCatalog(data);
+  assert.equal(data.skillCatalog.length, context.data.skillCatalog.length);
+  assert.equal(data.skillLibrary[legacyKey].length, context.data.skillLibrary[legacyKey].length - 1);
+  const simulated = {
+    ...context, data,
+    readFile: file => file === sourcePath ? Promise.resolve(changedSource) : context.readFile(file)
+  };
+  const graph = await derivePersonaSkillGraph(simulated);
+  const application = graph.nodes.find(node => node.id === `skill-application:${legacyKey}/${skillId}`);
+  assert.ok(application, 'Keep the historical compatibility application during migration');
+  assert.match(application.source.locator, /:content\/library-data\/skills-core\.js$/);
+  assert.equal(application.source.selector, `skillLibrary[${skillId}][id=${methodId}]`);
+  const unmodifiedSource = { ...simulated, readFile: context.readFile };
+  await assert.rejects(() => derivePersonaSkillGraph(unmodifiedSource), /Expected exactly one neutral method source/,
+    'Missing a real authored method source must fail instead of citing its vacated Persona row');
 });
 
 test('Persona Skill generated artifacts match a fresh derivation', async () => {
