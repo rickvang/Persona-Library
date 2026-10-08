@@ -433,6 +433,66 @@ test('CW-92: explicit workflow IDs cannot silently change a migrated method’s 
   assert.throws(() => current.model.resolveWorkflowReference({ id: observation.id, legacySourceKey: 'ai-orchestrator', title }, flows), /[Ww]orkflow.*source/);
 });
 
+test('CW-92 WP07: only authored workflow titles resolve; missing activities and unattached workflows retain their exact owners', () => {
+  // Inspect the actual assembled source after both pilot method cohorts moved.
+  // Historical missing titles are not authority to invent new workflow records.
+  const report = workflowDiagnostics(current.data);
+  const byIdentity = values => plain(values).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+  assert.deepStrictEqual(byIdentity(report.unresolved), byIdentity([
+    { sourceKey: 'ai-orchestrator', skill: 'Risk, guardrails, and human oversight', title: 'Set approval and guardrail points' },
+    { sourceKey: 'ai-orchestrator', skill: 'Multi-perspective skill synthesis', title: 'Coordinate perspectives and form the skill' },
+    { sourceKey: 'ai-orchestrator', skill: 'Multi-perspective skill synthesis', title: 'Formalize and integrate the reusable skill' }
+  ]));
+  assert.deepStrictEqual(byIdentity(report.unreferenced), byIdentity([
+    { sourceKey: 'ui-expert', title: 'Validate usability and accessibility' },
+    { sourceKey: 'ai-orchestrator', title: 'Coordinate evaluation and improvement' }
+  ]));
+
+  const compose = current.model.resolveWorkflowReference({
+    id: 'workflow-compose-agent-and-tool-system', title: 'Compose the agent and tool system',
+    legacySourceKey: 'ai-orchestrator'
+  }, current.data.flowLibrary);
+  assert.equal(compose.sourceKey, 'ai-orchestrator');
+  assert.equal(compose.flow.activities.filter(activity => activity[0] === 'Set approval and guardrail points').length, 1,
+    'Approval and guardrail points are an existing activity, not an authored workflow title');
+  const incomplete = [
+    ['skill-risk-guardrails-and-human-oversight', 'Set approval and guardrail points'],
+    ['skill-multi-perspective-skill-synthesis', 'Coordinate perspectives and form the skill'],
+    ['skill-multi-perspective-skill-synthesis', 'Formalize and integrate the reusable skill']
+  ];
+  for (const [skillId, title] of incomplete) {
+    const methods = current.data.skillLibrary[skillId];
+    assert.equal(methods.length, 1);
+    const ref = methods[0].workflowRefs.find(item => item.title === title);
+    assert.deepStrictEqual(plain(ref), { legacySourceKey: 'ai-orchestrator', title, unresolved: true },
+      'Keep the exact historical material until a real authored Workflow owner exists');
+    assert.equal(current.model.resolveWorkflowReference(ref, current.data.flowLibrary), null);
+    assert.equal((current.data.flowLibrary['ai-orchestrator'] || []).some(flow => flow.title === title), false);
+  }
+  assert.throws(() => current.model.resolveWorkflowReference({
+    id: compose.flow.id, title: 'Set approval and guardrail points', legacySourceKey: 'ai-orchestrator'
+  }, current.data.flowLibrary), /Workflow ID title mismatch/,
+  'An activity must never masquerade as the containing workflow ID');
+
+  // Both untouched workflow bodies remain usable by direct stable ID even if no
+  // pilot method currently links them. Do not delete or falsely attach them.
+  for (const [key, title, id] of [
+    ['ui-expert', 'Validate usability and accessibility', 'workflow-validate-usability-and-accessibility'],
+    ['ai-orchestrator', 'Coordinate evaluation and improvement', 'workflow-coordinate-evaluation-and-improvement']
+  ]) {
+    const flow = current.model.resolveWorkflowReference({ id, title, legacySourceKey: key }, current.data.flowLibrary).flow;
+    const original = baseline.context.data.flowLibrary[key].find(item => item.title === title);
+    assert.ok(original);
+    const { id: addedId, ...body } = plain(flow);
+    assert.equal(addedId, id);
+    assert.deepStrictEqual(body, plain(original), 'All activities, safeguards and handoffs must survive as owned authored workflows');
+    assert.ok(flow.activities.length > 0);
+  }
+  const evaluation = current.data.flowLibrary['ai-orchestrator'].find(flow => flow.id === 'workflow-coordinate-evaluation-and-improvement');
+  assert.equal(evaluation.handoff.required, true,
+    'Current source requires independent observation; WP07 must not silently waive the handoff');
+});
+
 test('CW-92: preserve existing workflow defects, evidence maturity and authored coverage', () => {
   assert.deepStrictEqual(workflowDiagnostics(current.data), workflowDiagnostics(baseline.context.data));
   for (const skill of expected.catalog) {
