@@ -1,148 +1,17 @@
-# Project Context Template
+# Design brief — optional prompts
 
-> Optional legacy worksheet. Current design execution uses [Adaptive UX Design](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/SKILL.md) and one existing living brief. Use only fields needed for a concrete recovery or coverage gap; skip requirements below that duplicate existing context. This worksheet does not establish experience quality.
+Use these prompts within the existing project/work record only where context is missing. [Adaptive UX Design](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/SKILL.md) owns routing; its [experience/content method](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/references/experience-content.md) explains the brief. A separate packet is unnecessary by default.
 
-Use selected fields only when the existing project record cannot capture a material context gap. A separate UX Work Order is not required. It is a routing and evidence packet, not a transcript, user research result, Persona record, or permission grant.
+Do not create this packet for a qualifying small-change-lane change. The pull request can remain the active work record; an existing WorkNode retains its Work Graph obligations.
 
-Do not create this packet for a qualifying small-change-lane change. The pull request is the active work record; if the change is already a WorkNode in an active Work Graph, preserve its WorkNode, Dispatch, Gate, evidence, and disposition obligations there instead of creating duplicate project-state artifacts.
+## Capture only the unresolved context
 
-## Header
+- **Experience north star:** whose situation improves, today's friction, what becomes easier to understand/do/feel, and observable improvement.
+- **Audience/task/journey:** relevant knowledge and circumstances; before/during/after this task. Label proposed users and assumptions.
+- **Content/evidence:** source material, findings and their limits, meaningful gaps. Link sources; do not invent proof or user responses.
+- **Scope/fidelity:** deliverable, included/excluded work, real versus simulated behavior, constraints and tradeoffs.
+- **Direction:** current specimen, user-agreed choices, consequential unknowns and next action.
 
-- Context ID:
-- Work Order ID:
-- Title:
-- Status: draft / active / blocked / ready-for-review / complete / no-go
-- Created:
-- Last updated:
-- Requester:
-- Current owner:
-- Request mode:
-- Change mode and domain:
-- Reconciliation requirement:
-- Explicit authorization and target:
-- Stopping condition:
+When helpful, annotate a reference as **what informs the design → why it fits → what must not transfer**. Research personas can represent end users when useful; agent personas and independent module briefs are not required.
 
-## 1. Project profile
-
-| Field | Value | Source | Status | Confidence | Confirmation or revision |
-| --- | --- | --- | --- | --- | --- |
-| Project type |  |  | supplied / sourced / observed / heuristic / inferred / assumption / unknown |  |  |
-| Secondary type |  |  |  |  |  |
-| Primary user or operator job |  |  |  |  |  |
-| Platform and environment |  |  |  |  |  |
-| Content density and variability |  |  |  |  |  |
-| Risk or consequence level |  |  |  |  |  |
-| Uncertainty level |  |  |  |  |  |
-| Audience or role |  |  |  |  |  |
-| Constraints |  |  |  |  |  |
-| Success criteria |  |  |  |  |  |
-| Stopping condition |  |  |  |  |  |
-
-An inferred value controls routing only. Do not present it as a verified requirement, user preference, research finding, or stakeholder decision.
-
-## 2. Routing decision
-
-- Primary lens:
-- Secondary lens, if any:
-- Why this route fits:
-- Classification confidence:
-- Question that would change the route:
-- Provisional assumption, if proceeding:
-- Proportionality tier:
-- Minimum gates:
-- Conditional gates:
-- Gates explicitly skipped and reason:
-
-### Selected Personas and Skills
-
-| Record | Responsibility | Why selected | Availability | Evidence boundary |
-| --- | --- | --- | --- | --- |
-|  |  |  |  | perspective / capability / research proxy only |
-
-### Selected references and examples
-
-| Reference ID | Title | Lens relevance | Source | Evidence status | Intended use | Limitation |
-| --- | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |  |
-
-## 3. Evidence and unknowns
-
-### Evidence ledger
-
-| Evidence ID | Claim or observation | Source or revision | Status | Scope and limitation | Used for |
-| --- | --- | --- | --- | --- | --- |
-| E-001 |  |  | sourced / observed / heuristic / synthetic_assumption / assumption / recommendation / unknown |  |  |
-
-### Unknowns and validation questions
-
-| Unknown ID | Unknown | Why it matters | Next validation method | Owner | Status |
-| --- | --- | --- | --- | --- | --- |
-| U-001 |  |  |  |  | open / resolved / deferred |
-
-## 4. Workflow and tool context
-
-Use for new, unfamiliar, or consequential work. For a known small change outside the small-change lane, record a skip reason in the Work Order; for the small-change lane, record it in the pull request.
-
-| Step ID | Trigger or action | Information needed | Tool or system | Handoff or interruption | Failure or recovery | Evidence status |
-| --- | --- | --- | --- | --- | --- | --- |
-| W-001 |  |  |  |  |  |  |
-
-### Tool and system inventory
-
-| Tool or system | Appears to support | Known or unverified | Source | Permission or access question |
-| --- | --- | --- | --- | --- |
-| T-001 |  |  |  |  |
-
-## 5. Participant modeling
-
-| Participant ID | Type | Role and task | Source or construction basis | Evidence status | Validation question |
-| --- | --- | --- | --- | --- | --- |
-| P-001 | existing Persona / generated synthetic / real participant |  |  |  |  |
-
-Synthetic participant prompt and responses:
-
-- Role and task:
-- Known context and sources:
-- Known tools:
-- Unknown or unverified details:
-- Constraints:
-
-| Question ID | Question | Response or finding | Basis | Status | Real-user validation question |
-| --- | --- | --- | --- | --- | --- |
-| Q-001 |  |  |  | synthetic_assumption / assumption / recommendation / unknown |  |
-
-Synthetic responses are not observed user behavior, validation, demand, satisfaction, prevalence, task time, or stakeholder agreement.
-
-## 6. Reference application record
-
-| Reference ID | Project decision or gate informed | Observable pattern used | Tradeoff accepted | What was not assumed | Owner |
-| --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |
-
-## 7. Profile revisions
-
-| Revision | Date | Field or lens changed | New evidence | Impact on route | Decision or next action |
-| --- | --- | --- | --- | --- | --- |
-| R-001 |  |  |  |  |  |
-
-## 8. Promotion review
-
-Keep project-specific material isolated unless it is explicitly reviewed for reuse.
-
-| Candidate ID | Candidate lesson or example | Generalizable beyond project? | Evidence status | Source and limits | Proposed shared location | Decision |
-| --- | --- | --- | --- | --- | --- | --- |
-| PROMO-001 |  | yes / no / unknown |  |  |  | retain project-only / propose / reject / deferred |
-
-Do not promote synthetic responses, private project facts, unsupported preferences, or copied external content by implication.
-
-## 9. Close
-
-- Concrete output or decision:
-- Success criterion addressed:
-- Selected route was appropriate: yes / no / unknown
-- Evidence limitations:
-- Gates passed, skipped, blocked, or no-go:
-- Remaining unknowns:
-- What was not tested:
-- Next validation or maintenance action:
-- Final status:
+Keep the brief living and compact. Reuse existing project visual rules and known context; do not fill fields for their own sake. The [former worksheet](https://github.com/rickvang/Persona-Library/blob/5b694211fc219ceb43f85fa8aaf52ac424d35b29/docs/ux/project-context-template.md) is historical.
