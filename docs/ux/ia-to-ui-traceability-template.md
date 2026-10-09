@@ -1,9 +1,9 @@
-
+> Optional legacy worksheet. Current design execution uses [Adaptive UX Design](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/SKILL.md) and one existing living brief. Use only fields needed for a concrete recovery or coverage gap; skip requirements below that duplicate existing context. This worksheet does not establish experience quality.
 # IA-to-UI Traceability Matrix Template
 
-Use this matrix with the [Expert UX Design Practice](expert-ux-design-practice.md) and [UX Work Order](ux-work-order-template.md).
+Use a compact coverage matrix only when the scope makes traceability useful; link the existing project record.
 
-The matrix is a coverage artifact. It proves that the important user goals and content needs carry through information architecture, flows, screens, states, responsive behavior, accessibility, and implementation acceptance. It does not replace the work order, research record, decision record, or QA report.
+The matrix is a coverage artifact. It helps inspect whether important user goals and content needs carry through information architecture, flows, screens, states, responsive behavior, accessibility, and implementation acceptance. It does not replace the work order, research record, decision record, or QA report.
 
 ## Header
 

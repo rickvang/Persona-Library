@@ -13,13 +13,22 @@ import { validatePersonas } from './personas.mjs';
 import { validateRelationships } from './relationships.mjs';
 import { buildValidationIndexes } from './context.mjs';
 
+// CW-97 / DEC-CW97-DESIGN-CAPABILITY: exactly one approved route-text change.
+// Keep the immutable CW-92 baseline and every other field protected.
+function cw97DesignRoute(value) {
+  if (typeof value === 'string') return value === "Studies relevant visual and interaction references, tests hierarchy and composition with realistic content, separates preference from rationale, and makes contextual tradeoffs explicit. For cross-project evidence-to-experience reasoning and reusable aesthetic research, follow the canonical SkillRepo aesthetic-reasoning method at https://github.com/rickvang/SkillRepo/blob/main/codex/methods/aesthetic-reasoning/SKILL.md; keep Persona-specific application and project-specific decisions in their owning contexts." ? "Studies relevant visual and interaction references, tests hierarchy and composition with realistic content, separates preference from rationale, and makes contextual tradeoffs explicit. For persona-independent experience/content, concept/composition, interaction and review, use the canonical Adaptive UX Design package at https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/SKILL.md. Reuse the existing living brief; craft references inform context-specific choices rather than a universal style." : value;
+  if (Array.isArray(value)) return value.map(cw97DesignRoute);
+  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, cw97DesignRoute(item)]));
+  return value;
+}
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 let current, baseline, expected, historical;
 before(async () => {
   baseline = await loadPinnedBaseline(root);
   current = await loadValidationContext(root);
   historical = capturePilot(baseline.context);
-  expected = readerBaseline(baseline.context);
+  expected = cw97DesignRoute(readerBaseline(baseline.context));
 });
 after(async () => { await baseline?.cleanup(); });
 
@@ -139,7 +148,7 @@ test('CW-92 WP05: all eight UI methods are singly authored under semantic Skill 
     assert.equal(method.id, methodId);
     assert.equal(method.name, old.name); assert.equal(method.status, old.status);
     assert.equal(method.definition, old.definition); assert.equal(method.when, old.triggers);
-    assert.equal(method.actions, old.actions); assert.equal(method.evidence, old.evidence);
+    assert.equal(method.actions, cw97DesignRoute(old.actions)); assert.equal(method.evidence, old.evidence);
     assert.equal(method.workflowRefs.map(ref => ref.title).join(' · '), old.workflows);
     assert.ok(method.workflowRefs.every(ref => ref.id && !ref.unresolved));
     assert.equal(method.legacySourceKey, 'ui-expert');
@@ -170,7 +179,7 @@ test('CW-92 WP06: eight orchestration methods preserve the complete pinned sourc
     for (const [actual, expected] of [
       [method.id, methodId], [method.name, old.name], [method.status, old.status],
       [method.definition, old.definition], [method.when, old.triggers],
-      [method.actions, old.actions], [method.evidence, old.evidence],
+      [method.actions, cw97DesignRoute(old.actions)], [method.evidence, old.evidence],
       [method.legacySourceKey, 'ai-orchestrator'],
       [method.provenance.original.revision, fixture.baselineCommit],
       [method.provenance.original.selector, `skillLibrary[ai-orchestrator]/${old.name}`],
@@ -235,7 +244,7 @@ test('CW-92 WP06: graph application locators follow all eight authored orchestra
 });
 
 test('CW-92 WP08: reuse visual judgment and prototyping through existing task-conditioned Skill owners', async () => {
-  // Aesthetic Reasoning remains authored in SkillRepo; do not copy its portable
+  // Adaptive UX Design remains authored in SkillRepo; do not copy its portable
   // research method or create a Persona/profile replacement in this repository.
   const ids = [
     'skill-interface-hierarchy-and-visual-communication',
@@ -258,7 +267,7 @@ test('CW-92 WP08: reuse visual judgment and prototyping through existing task-co
     for (const [actual, expected] of [
       [method.id, `method-${id.slice(6)}`], [method.name, old.name],
       [method.status, old.status], [method.definition, old.definition],
-      [method.when, old.triggers], [method.actions, old.actions],
+      [method.when, old.triggers], [method.actions, cw97DesignRoute(old.actions)],
       [method.evidence, old.evidence],
       [method.workflowRefs.map(ref => ref.title).join(' · '), old.workflows],
       [method.legacySourceKey, 'ui-expert'],
@@ -286,9 +295,9 @@ test('CW-92 WP08: reuse visual judgment and prototyping through existing task-co
   // Portable cross-project reasoning has its own canonical owner. The local
   // visual method links to it but is not a second authored copy of that Skill.
   const contextual = current.data.skillLibrary['skill-contextual-visual-judgment-and-composition'][0];
-  const portable = 'https://github.com/rickvang/SkillRepo/blob/main/codex/methods/aesthetic-reasoning/SKILL.md';
+  const portable = 'https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/SKILL.md';
   assert.ok(contextual.actions.includes(portable), 'Retain the canonical portable method reference');
-  assert.equal(core.split(portable).length - 1, 1, 'Do not create duplicate authored Aesthetic Reasoning references');
+  assert.equal(core.split(portable).length - 1, 1, 'Do not create duplicate authored Adaptive UX Design references');
   assert.equal(current.data.skillLibrary['ui-expert'], undefined,
     'Visual method reuse must not reinstate an authored Persona-keyed bucket');
 });
@@ -348,7 +357,7 @@ test('CW-92 WP09: reuse component and interaction methods through existing task-
     for (const [actual, expected] of [
       [method.id, `method-${id.slice(6)}`], [method.name, old.name],
       [method.status, old.status], [method.definition, old.definition],
-      [method.when, old.triggers], [method.actions, old.actions],
+      [method.when, old.triggers], [method.actions, cw97DesignRoute(old.actions)],
       [method.evidence, old.evidence],
       [method.workflowRefs.map(ref => ref.title).join(' · '), old.workflows],
       [method.legacySourceKey, 'ui-expert'],
@@ -478,7 +487,7 @@ test('CW-92: actual methods and shared guidance are independent of all Persona m
   }
   const observed = original.map(skill => skill.id);
   for (const skill of baseline.context.data.skillCatalog) assert.ok(observed.includes(skill.id), `Lost baseline ID ${skill.id}`);
-  const pinned = profilePayloads(baseline.context.data.skillCatalog);
+  const pinned = cw97DesignRoute(profilePayloads(baseline.context.data.skillCatalog));
   const keys = new Set(pinned.map(profile => `${profile.skillId}/${profile.personaId}`));
   const assertBaseline = catalog => assert.deepStrictEqual(profilePayloads(catalog).filter(profile => keys.has(`${profile.skillId}/${profile.personaId}`)), pinned);
   assertBaseline(original);

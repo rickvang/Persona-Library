@@ -20,7 +20,7 @@
   "routes": [
     {
       "id": "prototype-comparison",
-      "request": "Compare contested IA, layouts, or Persona concepts before commitment",
+      "request": "Explore unresolved interface IA or layouts through Adaptive UX Design",
       "modes": [
         "prototype"
       ],
@@ -46,7 +46,7 @@
         "Directly editing the live experience",
         "Treating a selected prototype as authorization to promote it"
       ],
-      "next_handoff": "Record comparison evidence and use an explicit promotion decision for any live change."
+      "next_handoff": "Use the shared design method with the existing brief; record concept alignment and apply existing authorization for scoped live promotion."
     },
     {
       "id": "workflow-canvas-intent",

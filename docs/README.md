@@ -16,7 +16,7 @@ This directory contains current, reusable guidance and project-scoped work recor
 | Compose or review an application packet | [Application context and review](job-search/application-context-and-review.md) |
 | Resolve candidate context, resume content, or Template mapping | [Candidate context](job-search/candidate-context-contract.md), [resume content model](job-search/resume-content-model.md), and [resume Template mapping](job-search/resume-template-mapping.md) |
 | Understand application tracking or seen-job deduplication | [Application tracker](job-search/application-tracker-contract.md) and [job ledger](job-search/job-ledger-contract.md) |
-| Route UX work to project context and design references | [Expert UX practice](ux/expert-ux-design-practice.md) and [project-context routing](ux/project-context-and-reference-routing.md) |
+| Route UX work to project context and design references | [Design entry](ux/expert-ux-design-practice.md) → [Adaptive UX architecture](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/ARCHITECTURE.md) |
 | Record work or find an active Work Order | [Work tracking contract](work-orders.md) and [active package index](work-orders/README.md) |
 | Find a matching tool-heavy execution scenario | [Operational knowledge](operational-knowledge.md) |
 | Change a page shell, reader presentation, or publication selection | [Site authoring guide](../content/site-pages/README.md) and [publication manifest](../content/site-publication.json) |

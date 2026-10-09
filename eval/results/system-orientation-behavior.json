@@ -273,8 +273,8 @@
             "content/orientation/templates.json",
             "docs/README.md"
           ],
-          "utf8_bytes": 56788,
-          "rough_tokens": 14197
+          "utf8_bytes": 56836,
+          "rough_tokens": 14209
         },
         "expectation": {
           "pass": true,
@@ -356,8 +356,8 @@
             "content/orientation/templates.json",
             "docs/README.md"
           ],
-          "utf8_bytes": 49859,
-          "rough_tokens": 12465
+          "utf8_bytes": 49907,
+          "rough_tokens": 12477
         },
         "expectation": {
           "pass": true,
@@ -475,8 +475,8 @@
             "docs/policy-ownership.md",
             "docs/README.md"
           ],
-          "utf8_bytes": 48334,
-          "rough_tokens": 12084
+          "utf8_bytes": 48382,
+          "rough_tokens": 12096
         },
         "expectation": {
           "pass": true,
@@ -557,8 +557,8 @@
             "docs/policy-ownership.md",
             "docs/README.md"
           ],
-          "utf8_bytes": 41405,
-          "rough_tokens": 10352
+          "utf8_bytes": 41453,
+          "rough_tokens": 10364
         },
         "expectation": {
           "pass": true,
@@ -1562,10 +1562,10 @@
     "passed": 8,
     "failed": 0,
     "all_pass": true,
-    "preferred_context_utf8_bytes": 227116,
-    "control_context_utf8_bytes": 268690,
-    "preferred_context_rough_tokens": 56779,
-    "control_context_rough_tokens": 67173,
+    "preferred_context_utf8_bytes": 227212,
+    "control_context_utf8_bytes": 268786,
+    "preferred_context_rough_tokens": 56803,
+    "control_context_rough_tokens": 67197,
     "preferred_delta_utf8_bytes": -41574,
     "preferred_delta_percent": -15.5
   },

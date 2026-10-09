@@ -1,4 +1,4 @@
-
+> Optional legacy worksheet. Current design execution uses [Adaptive UX Design](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/SKILL.md) and one existing living brief. Use only fields needed for a concrete recovery or coverage gap; skip requirements below that duplicate existing context. This worksheet does not establish experience quality.
 # UX Work Order Template
 
 Use this template when a UX practice run needs a dedicated Work Order execution/recovery packet. It combines the initial request with concise progress records so another person or agent can resume the work. It is not a transcript, a research result, or permission to mutate an external system.

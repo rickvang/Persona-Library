@@ -1,6 +1,8 @@
 # Project Context Template
 
-Use this as a linked project-scoped artifact with the [UX Work Order](ux-work-order-template.md) for work outside the repository small-change lane. It is a routing and evidence packet, not a transcript, user research result, Persona record, or permission grant.
+> Optional legacy worksheet. Current design execution uses [Adaptive UX Design](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/SKILL.md) and one existing living brief. Use only fields needed for a concrete recovery or coverage gap; skip requirements below that duplicate existing context. This worksheet does not establish experience quality.
+
+Use selected fields only when the existing project record cannot capture a material context gap. A separate UX Work Order is not required. It is a routing and evidence packet, not a transcript, user research result, Persona record, or permission grant.
 
 Do not create this packet for a qualifying small-change-lane change. The pull request is the active work record; if the change is already a WorkNode in an active Work Graph, preserve its WorkNode, Dispatch, Gate, evidence, and disposition obligations there instead of creating duplicate project-state artifacts.
 
