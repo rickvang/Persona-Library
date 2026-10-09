@@ -1,4 +1,4 @@
 interface:
   display_name: "Layout Lab"
-  short_description: "Compare isolated layouts before live changes"
-  default_prompt: "Use $layout-lab to compare materially different layouts with stable content and explicit promotion."
+  short_description: "Route layout concepts through Adaptive UX"
+  default_prompt: "Use $layout-lab as the repository adapter to Adaptive UX Design, reusing the brief and comparing concepts only as needed."

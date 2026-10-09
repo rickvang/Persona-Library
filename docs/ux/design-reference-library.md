@@ -10,7 +10,7 @@ Access date for external sources: 2026-09-08.
 
 1. Select only entries relevant to the project lens.
 2. Read the source itself when a decision depends on detail.
-3. Record the reference ID and project-specific application in the Work Order.
+3. Record the reference ID and project-specific application in the existing brief/work record.
 4. Separate sourced guidance from heuristic interpretation and recommendation.
 5. Preserve tradeoffs and unknowns.
 6. Do not copy full external pages or present a product example as user evidence.

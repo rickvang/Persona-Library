@@ -901,6 +901,22 @@
       "affects": "Riley Morgan, Evan Reyes, and Mara Okoye authored Persona records; Persona optional-field validation; architecture semantics; generated library data and Decisions reader.",
       "evidence": "Requester approval on 2026-10-03 following a read-only three-Persona pilot; existing role, behavior, workflow, and evidence claims; bounded knowledge-systems semantic review.",
       "revisit": "Observed dispatch chooses the wrong domain or imposes an unnecessary review or orchestration hop; additional Personas need explicit preferences; or runtime evidence warrants changing the ordered choices."
+    },
+    {
+      "id": "DEC-CW97-DESIGN-CAPABILITY",
+      "status": "Applied",
+      "category": "Design capability",
+      "date": "2026-10-08",
+      "title": "Use one persona-independent design method",
+      "summary": "Adaptive UX Design in SkillRepo owns proportional experience/content, concept/composition, interaction and review. Persona-Library supplies discovery and repository placement rules.",
+      "question": "How do we stop competing design workflows from increasing effort without improving human experience?",
+      "decision": "Route interface/prototype work to the shared package. Layout Lab is a repository adapter, old UX practice/routing pages are compatibility entries, and existing craft references remain available. Keep one living brief and refine a visible concept before substantial implementation when direction is uncertain.",
+      "rationale": "CW-97 inspected overlapping brief/exploration rules and conflicting idea counts. The user adopted C09/C10/C11 after collaborative research. Structural consolidation is justified; improved aesthetics and latency still need a bounded trial.",
+      "alternatives": "Patch several competing coordinators; adopt a large external suite; rewrite unrelated domain systems.",
+      "tradeoffs": "A shared source requires retrieval or installation. Other media are mapped specialist routes, not validated by this interface release.",
+      "affects": "Layout Lab, design catalog pointer, guide/prototyping entry, UX practice/routing and optional worksheet status; generated output. Generic personas, Golden and unrelated workflows remain unchanged.",
+      "evidence": "CW-97: https://app.notion.com/p/3f3cd82535ff81ad9357dc85de1073c8; SkillRepo source: https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/ARCHITECTURE.md",
+      "revisit": "A bounded artifact trial finds weak human comprehension, content, aesthetic fit or excessive effort/corrections; repair the responsible method rather than add a second coordinator."
     }
   ]
 }
