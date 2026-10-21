@@ -39,7 +39,7 @@ If the candidate boundary, a designated Candidate Baseline Resume, content-model
 
 1. **Verify candidate, baseline, and model.** Read current standing decisions. If they designate a Candidate Baseline Resume, resolve that exact artifact and record its source/revision before mapping. Confirm the normalized model belongs to the active candidate, matches the expected schema version, and keeps material nodes traceable to current evidence/decisions.
 2. **Verify Template and slots.** Resolve the Template's current source path, entrypoint, starter boundary, revision, and semantic slot manifest. Confirm the manifest targets a compatible Resume Content Model version.
-3. **Select role-relevant content.** Use the current requirement-to-evidence map to choose supported descriptors, profile statements, skills, achievements, projects, and portfolio content. Keep this selection in application-instance state rather than rewriting canonical candidate data.
+3. **Select role-relevant content and Skills.** Use the current requirement-to-evidence map to choose supported descriptors, profile statements, skills, achievements, projects, and portfolio content. For a role-specific resume, prioritize the posting's required/preferred capabilities, disposition each as evidence-supported, transferable/adjacent, or unverified, and select and order the supported entries for the actual `SKILLS` slot. Do not carry an untailored baseline skill list through by default. Keep this selection in application-instance state rather than rewriting canonical candidate data.
 4. **Map by semantic purpose.** Match each selected content node to a legitimate Template slot. Preserve the owning employment relationship, employment period, client engagement, dates, locations, achievements, and skills.
 5. **Preserve candidate structure.** Keep employer-of-record distinct from clients; keep separate employment periods separate when evidence/standing decisions require it; preserve metric, scope, contribution, and outcome meaning. When a Candidate Baseline Resume is active, preserve its identity/contact, recent employers, chronology, education, certifications, and candidate-confirmed historical grouping unless a verified correction or explicit candidate decision authorizes a difference.
 6. **Classify material results.** Mark each material source as `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable`. Never silently drop material content because the Template lacks a destination.
@@ -56,6 +56,7 @@ A mapping is ready to hand off from Leah only when all of the following are true
 - **Structural fidelity:** employer-of-record/client-engagement hierarchy, repeated employment periods, dates, role ownership, and candidate-specific chronology decisions survive the mapping. An active Candidate Baseline Resume's protected career spine also survives unless each material difference has a supported disposition.
 - **Loss visibility:** every material candidate node considered for the artifact ends as `mapped`, `omitted_with_reason`, `blocked`, `unmapped`, or `not_applicable`; no material node disappears silently.
 - **Role-instance isolation:** role-specific selection, emphasis, target terminology, and ordering choices stay in the application instance rather than becoming canonical candidate truth.
+- **Role-specific Skills parity:** the final `SKILLS` slot reflects prioritized, evidence-backed role requirements rather than an unreviewed copy of the baseline. Compare its actual text with the baseline and requirement map; if unchanged, record why the existing selection was already appropriate. Unsupported skill, tool, level, or domain claims remain blocked/gaps.
 - **Candidate isolation:** the model, decisions, evidence, and resulting mapping all belong to the active candidate.
 - **Validation boundary:** semantic mapping success is not reported as ATS, accessibility, visual, parser, or export success unless those checks were separately run on the actual output.
 
@@ -83,6 +84,7 @@ Watch for:
 - replacing employer-of-record with a client because the Template has one employer line;
 - merging repeated employment periods for visual convenience;
 - promoting a role-specific descriptor, keyword, or summary into canonical candidate data;
+- changing only the summary or accomplishments while leaving a mismatched generic `SKILLS` section untouched; or adding an unverified posting keyword as a skill;
 - silently discarding projects, certifications, engagements, or achievements that do not fit the chosen Template;
 - treating a successful mapping as proof of ATS compatibility or document accessibility;
 - copying content from another candidate context.
