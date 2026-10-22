@@ -13,22 +13,26 @@ This is a Persona-operated Playbook surface. The Playbook composes Personas, Ski
 | Request | Direct path | Context needed |
 | --- | --- | --- |
 | Find new jobs | Search and shortlist; use the [seen-job ledger](../job-search/job-ledger-contract.md) for repeated discovery | Approved target/preferences, saved queries, seen identities; verify shortlisted employer postings |
-| Prepare an application packet | Routine path below and the [local packet command](../job-search/application-context-and-review.md#local-packet-operation) | One source-bound private profile, current employer posting, one role draft, local output folder |
+| Prepare an application packet | Routine path below and the [production route](../job-search/application-context-and-review.md#local-packet-operation) | Designated master/evidence, current standing decisions, employer posting and private working copy |
 | Update application status | [Application tracker](../job-search/application-tracker-contract.md) | Owner-scoped existing record and confirmed event; do not rebuild the packet or rerun discovery |
 
 The selected executor can operate directly. Persona ownership and review lenses do not require a runtime handoff or independent agent for each operation. The routine path owns the sequence; supporting contracts supply facts, boundaries and review criteria only when needed.
 
 ## Routine application preparation — default
 
-Use this path for one role or a batch. A request to create application packets starts here with the executable local builder; it does not automatically request every specialist, a new evidence ledger, or a detailed Work Order. The existing baseline's facts remain evidence; its layout and content selection are not automatically a quality standard.
+Use one regular editable résumé and its PDF, plus a separate cover letter when requested or required. An extra ATS/DOCX variant needs an actual format requirement, demonstrated parsing need or explicit request. A normal packet serves both people and screening systems; do not create competing versions or research every ATS by default.
 
-1. **Load one private profile.** Reuse the source-bound profile with its standing decisions, original passages and source revisions. Bootstrap it from the designated baseline/evidence once when missing; refresh when sources or candidate instructions change or conflict. Keep factual history complete in the profile while allowing supported editorial selection. Do not reopen the whole library or every source for each packet.
-2. **Read the employer posting and draft once.** Record current requirements and evidence matches/gaps. Write one role-specific draft with a focused resume and a separate cover letter only when required or requested. Retain unknown application answers without blocking writing. Favor relevant recent evidence and candidate voice over indiscriminate history or repeated lists of accomplishments.
-3. **Run the local packet command.** Follow [Local packet operation](../job-search/application-context-and-review.md#local-packet-operation). One command produces the requested PDF/DOCX files, text/link/source checks and PDF page previews. Use the native runner only for explicitly needed baseline-fidelity/Drive compatibility. External Template research is conditional on choosing a reusable external Template.
-4. **Review once and deliver.** Check meaning against original evidence, role fit, voice, chronology and every final PDF page. DOCX layout needs actual renderer review when it is the submission format. The builder reports mechanical checks and pending editorial review honestly. Correct only affected content/checks. Deliver the reviewed documents and remaining answers; avoid separate notes unless substantial content warrants them.
-5. **Record separately when needed.** Tracking follows delivery rather than blocking it. Resolve an existing Applications record before creating one, record the reviewed files and source references, preserve later confirmed states, and keep required answers pending. Update Current Work only at meaningful workstream boundaries. Preparation never sets Applied or an applied date.
+1. **Load current sources and posting.** Resolve the designated factual master, applicable standing decisions and current employer requirements. Reuse unchanged evidence and record source revisions in the existing private context. Missing authority blocks the affected claim, not unrelated writing. A prior packet may supply approved formatting, never new career facts.
+2. **Tailor one editable source.** Work in a private copy. Preserve official roles, chronology, employer/client attribution and confirmed historical grouping. Map important requirements to supported, adjacent or missing evidence; explicitly tailor Skills as well as relevant summary/experience content. Write a requested letter in the candidate's natural voice, connecting selected evidence to a plausible contribution.
+3. **Export from that source.** Prefer the candidate-designated native source and formatting preset; use the [production route](../job-search/application-context-and-review.md#local-packet-operation). Make wording and layout corrections in the source, then regenerate. A second renderer is conditional and cannot establish source/PDF layout parity merely by sharing text.
+4. **Review the final packet once.** Compare claims/wording with evidence, then inspect every actual final PDF page together for hierarchy, employer/date/detail grouping, wrapping, density and page flow. Check extracted text/order, links and unwanted attachments/actions; preserve supplied tags/language. Review any submitted DOCX in a compatible renderer. Correct observed failures and recheck affected evidence; an earlier file's review does not cover a later export.
+5. **Deliver and stop.** Link the editable source and reviewed PDF, identify the exact revision/file, and state unresolved answers and actual limits. Keep brief evidence/readiness notes in the existing private task/tracker. Preserve later confirmed tracking states. Application Entry separately handles authorized uploads, parsed-field repair and confirmed declarations; packet preparation never submits or sets Applied.
 
-The existing tracker plus private submission files normally carry enough application state. Create a Work Order only under the repository's recovery-state rule, and use one Current Work row for a substantial batch rather than one per role or document. Select the smallest operating specialist set; review lenses are criteria, not instructions to dispatch separate agents or invoke a council.
+One executor can apply the relevant review criteria. No new ledger, notes document, Work Order or independent specialist pass is required for an ordinary successful packet. Use the repository's existing recovery-state rule only when current records cannot preserve necessary continuation state.
+
+### Live ATS form preparation
+
+Use [Application Entry](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/application-entry/SKILL.md) (`$application-entry`) for authorized live form entry, attachment verification, parsing repair and the candidate's review handoff. The Playbook owns packet preparation and tracking; the Skill owns form procedure and submission authorization.
 
 ### When more detail is needed
 
@@ -72,7 +76,7 @@ Task decomposition and routing
 
 Avoid presenting Riley as the Job Search Persona, as the sole job-search expert, or as the owner of search strategy, hiring judgment, narrative, outreach, visuals, documents, or private seen-job state.
 
-The default path is ATS-first with a material-claim integrity gate. Cover letters pass through a positioning layer before review so the evidence ledger informs the writing without dictating every sentence. Human and visual review remain separate conditional gates: a document can be technically parseable but unconvincing to a person, or visually polished but semantically weak for a screening system. Do not create the second rendering unless the channel or review context justifies it.
+The default packet combines truthful role fit, human readability, extractable structure and visual review. The evidence informs the letter without dictating every sentence. A second rendering and independent specialist review are conditional; neither is required for ordinary packet production.
 
 ### Consultation and routing convention
 
@@ -93,14 +97,14 @@ The first build is a responsive reference surface plus actual working-draft pers
 - Full workflow inventories, activity-level priorities and representative tools, skills, evidence status, and end-of-page source trails on each new record
 - The end-to-end search workflow defined by the Evidence-led Job Search Playbook and operated by the Job Search Orchestrator
 - A reusable [seen-job deduplication contract](../job-search/job-ledger-contract.md) so repeated job searches can suppress openings already presented
-- Quality gates for ATS compatibility and evidence integrity by default, with human readability and visual communication when those outputs are warranted
+- Combined checks for evidence integrity, extractable structure, human readability and final-page layout
 - A clear boundary between current capabilities and later product work
 
 The new records are synthetic composites. They are intentionally marked as working drafts and should be refined with the person’s actual target, industry, constraints, employer process, and source documents.
 
 The first workflow is:
 
-`Define target → Analyze role → Map evidence → Build shared evidence source → Render ATS → Review integrity → Optionally render human version and review parity → Submit → Learn`
+`Define target → Analyze role → Tailor editable source → Export → Combined review → Authorized application entry → Learn`
 
 ## Application tracker companion surface
 
@@ -168,21 +172,9 @@ Create a human-facing resume only when the target channel accepts it and the rev
 
 `rickvang/template-library` is the canonical owner of reusable starting artifacts. Persona-Library may catalog Template identity, applicability, relationships, and verified source evidence, but it does not own the starter files.
 
-Before drafting or rendering a reusable application artifact:
+Resolve the catalog identity, external path/entrypoint and revision only when selecting a reusable Template from `rickvang/template-library`. Its starter remains independently owned after a private role-specific copy is made. If that selected source cannot be verified, stop the affected template use; do not silently promote a private packet into a public Template.
 
-1. resolve the Template through the Persona-Library Template catalog;
-2. verify the external `template-library` path, `README.md` entrypoint, and Git revision;
-3. inspect the documented `starter/` boundary; copy/adapt it into the candidate's private role-specific application folder only when no standing-decision-designated Candidate Baseline Resume is active, otherwise use the baseline as the composition starting artifact while retaining the verified Template as the reusable-structure contract;
-4. record the Template ID and revision used;
-5. keep the resulting role-specific artifact independently owned after instantiation.
-
-Verify the reusable starters only for artifacts actually being created:
-
-- ATS resume → `template-resume-classic-single-column` / `templates/resumes/classic-single-column`;
-- cover letter, when needed → `template-cover-letter-evidence-led` / `templates/cover-letters/evidence-led`;
-- separate Application Notes & Answers, when warranted → `template-job-application-notes` / `templates/job-applications/application-notes`.
-
-A repository or catalog entry is not proof that a Template exists. If a required Template path or entrypoint is missing, stale, or unverifiable, route to Template research/composition and create or repair the reusable Template in `rickvang/template-library` before treating it as the application starter. Do not silently promote a private Google Drive master, prior application, or ad hoc document into the canonical Template source. This reusable-Template boundary does **not** demote a candidate-designated baseline resume: the Template owns reusable presentation structure, while the Candidate Baseline Resume owns the candidate-specific composed career spine when standing decisions designate one. A requester may explicitly authorize a one-off non-reusable artifact, but that exception must be recorded and must not be cataloged as a Template without the normal Template lifecycle review.
+A candidate-designated native baseline or approved formatting reference can be used directly for private packet work. It does not require fresh Template research or a new catalog record. It never replaces original career evidence. Existing reusable choices include `template-resume-classic-single-column`, `template-cover-letter-evidence-led` and `template-job-application-notes`; load only a choice actually needed.
 
 ### Shared evidence source
 
@@ -192,7 +184,7 @@ Before drafting, maintain one evidence inventory or claim ledger containing:
 - action, attribution, scope, method, outcome, metric, and uncertainty;
 - target-role relevance and confidence;
 - approved wording or unresolved question;
-- destination in the ATS resume, optional human-facing resume, cover letter, or portfolio.
+- destination in the regular résumé, conditional format variant, cover letter or portfolio.
 
 The ledger is authoritative. Candidate facts, researched claims, interpretations, generated wording, assumptions, and unknowns remain visibly distinct.
 
@@ -204,7 +196,7 @@ Do not send the evidence ledger directly into prose. Identify the role-relevant 
 
 Apply evidence rigor according to the artifact:
 
-- ATS resume: use high exactness for dates, titles, employers, metrics, tools, credentials, ownership, scope, and outcomes. Plain-text extraction and material-claim integrity remain strict.
+- Résumé and any format variant: use high exactness for dates, titles, employers, metrics, tools, credentials, ownership, scope, and outcomes. Plain-text extraction and material-claim integrity remain strict.
 - Cover letter: keep material facts, scope, ownership, metrics, tools, credentials, and known gaps truthful, while allowing sentence-level synthesis, broader descriptors, and candidate-owned voice when they faithfully summarize related evidence.
 - Portfolio, outreach, and interview materials: keep material facts stable and choose the lightest review that fits the format and consequence of the claim.
 
@@ -256,23 +248,11 @@ The baseline does not override contradictory evidence. A verified evidence corre
 
 ### ATS resume contract
 
-The default ATS resume must be semantically structured, extraction-safe, readable, naturally aligned to supported role terminology, and clear about dates, titles, employers, engagement identity, attribution, scope, and outcomes.
-
-It must not hide content in graphics, rely on decorative layout, stuff keywords, silently normalize ambiguous facts, or claim a parser result that was not actually tested. If no employer parser is available, record parser suitability as unknown rather than implying validation.
+The regular résumé must be readable, extractable and clear about titles, dates, employers, clients, scope and outcomes. Use supported role terminology naturally. Do not hide claims in graphics, stuff keywords, silently resolve ambiguous facts or claim untested parser behavior.
 
 ### Accessible document production and export verification
 
-ATS-safe and human-readable are compatible when visual treatment preserves semantic structure. Use native hyperlinks for email, portfolio, and LinkedIn; native list structures for bullets; semantic heading levels for the title, sections, and employers; and styled normal paragraphs for dates so heading navigation stops at meaningful content boundaries. Break long skills content into short categorized lines with visible labels. Use restrained color, typography, indentation, and spacing only when contrast, extraction, and reading order remain intact. Do not replace list structures with bullet-looking special characters.
-
-When a document is exported, record separate checks for:
-
-- tagged output and document language metadata;
-- heading, paragraph, list/list-item, and link structures;
-- reading order and link destinations;
-- page count, page breaks, clipped content, and orphaned headings or bullets; and
-- live screen-reader behavior when it is actually tested.
-
-A successful tagged-PDF export is evidence about the exported structure, not proof of NVDA, JAWS, or other assistive-technology behavior. If live testing is not available, record that limitation explicitly.
+Use semantic headings, clear linear text and native contact links. Follow candidate-confirmed list/formatting conventions; use native list semantics where the selected format supports them. Preserve supplied tags and document language through export or necessary cleanup. Check extraction/order, destinations and every final page as part of the combined review. Tagged output does not establish live screen-reader behavior; local extraction does not establish employer parsing. Record those limits without adding a separate report.
 
 ### Default ATS section structure
 
@@ -305,28 +285,13 @@ When several short historical roles need a grouped presentation, use an explicit
 
 ### ATS provider and channel profiles
 
-A provider profile is an evidence record, not a guess based on a portal name. Use one when the employer, application channel, or a tested downstream validator supplies actual constraints.
+Check accepted formats and limits when available in the actual application instructions. Use provider-specific rules only for a documented constraint, observed parsing issue or explicit request; a portal name or generic checker proves neither compatibility nor a vendor preference. Record only the relevant observed requirement and untested scope in existing private context. GPT Work/Application Entry can repair parsed fields separately without generating extra documents by default.
 
-Record:
+Keep target employer/role context in application metadata and the letter; add a target line to the résumé only when requested or required. Keep metrics in their evidence-backed role and repeat only when it helps the reader.
 
-- provider or channel name and the exact application URL;
-- evidence source, research date, and any version or submission instructions;
-- accepted upload formats and document limits;
-- heading aliases, extraction behavior, or field-mapping rules that were actually documented or tested;
-- the fixture or export used for a test, the observed result, and the untested scope;
-- rules that remain unknown.
-
-Apply a provider profile only where its evidence supports it. A generic internal checker, a portal label, or advice from one vendor does not establish a universal Workday, Greenhouse, ZipRecruiter, or other ATS rule. When no provider evidence exists, use the default structure and report provider behavior as unknown.
-
-The current JobAgent implementation contains a generic text check rather than a provider matrix. Its required headings and parser warnings are useful as a tool-compatibility profile only; they are not evidence that a named ATS prefers those labels. Keep that distinction in the Work Order.
-Keep target employer, role, location, and work-mode context in the Work Order and requirement map. Do not add a target line to the resume body by default unless the requester explicitly wants a role-labeled version or the submission format requires it. A file name or Work Order can carry target context without adding it to the resume.
-
-Before review, compare the heading list against this structure, record intentional deviations, and check for duplicated material claims across summary, highlights, skills, and experience. A metric should have one canonical evidence-backed home; repeat it only when repetition materially improves the intended reading path.
 ### Optional human-facing resume
 
-A human-facing version is a second rendering of the same approved evidence source. It may improve scan path, hierarchy, density, order, voice, and context-appropriate visual communication. It must preserve the meaning of every material claim and remain reasonably parseable when the employer still uses screening software.
-
-Run a separate human and visual review only when this version is created. Record every material content or order difference and why it helps the intended reader. If the difference changes meaning, return to source review.
+The regular résumé already receives human and visual review. Create a second rendering only for a channel constraint, demonstrated need or explicit request. Preserve material meaning and compare the variants' wording, chronology and attribution; inspect every final page in each submitted format. Do not imply that a second rendering is inherently more accessible or parser-safe.
 
 ### Future human-facing templates
 
@@ -336,27 +301,9 @@ A template should define its intended audience, scan path, hierarchy, density, a
 
 ### Review and integrity gate
 
-Every application packet covers these criteria in the final revision review; they do not require separate passes, reports or agent calls:
+Use the routine path's combined final review; its criteria apply to the actual source revision and final files. Check role fit/voice, evidence and chronology, supported Skills, employer/client grouping, extraction/order, links, full-page layout and unwanted attachments/actions. A selected external Template needs source verification; a second rendering needs content parity. Neither is mandatory for a candidate-designated native source.
 
-- role-to-evidence mapping;
-- Template-source verification for every reusable starter;
-- ATS structure and terminology review;
-- claim-to-ledger integrity review;
-- chronology and ambiguity preflight;
-- explicit unknown and untested-scope review;
-- conventional-heading and target-context review;
-- duplicate-claim review across summary, highlights, skills, and experience.
-- semantic document and export review when a file is rendered;
-- page-flow review for clipped content, orphaned headings or bullets, and unintended whitespace;
-- explicit separation between verified exported structure and untested live screen-reader behavior.
-
-When a human-facing version exists, also run the human/visual review and a parity comparison against the ATS version. When it does not exist, do not report human parity as passed or failed; report it as not applicable and preserve the reason.
-
-The selected submission artifact follows employer instructions. Do not submit both resume versions unless the employer or requester explicitly asks for both. Cover-letter claims, when requested, trace to the same ledger and add useful context rather than becoming a second evidence source.
-
-The reusable cover-letter starting artifact lives in `rickvang/template-library`, not in a private Drive master. Each application copies/adapts the verified Template starter into the role-specific private folder, then combines it with the positioning brief and shared evidence ledger. Prior role-specific drafts remain project artifacts and are not reusable Template sources unless the requester explicitly includes them as evidence for a later Template revision.
-
-For cover letters, the internal tailoring brief is the positioning layer. It may translate several related evidence items into a candidate-approved theme or descriptor so the sendable letter can read naturally. The final review protects material truth and role coverage without turning the letter into a line-by-line evidence audit.
+Requested cover letters use the same factual evidence and add interpretation and useful contribution rather than reciting the résumé. Prefer the designated approved letter source/formatting when provided; otherwise use a verified starter only when one is needed. Do not copy another employer's wording. Preserve unknowns and distinguish local checks from live ATS or screen-reader testing. Application Entry owns later form checks and submission authorization.
 
 ### Work Order tracking
 
@@ -364,7 +311,7 @@ Applications owns the role's lifecycle, packet link, brief answers/unknowns and 
 
 ## Phased delivery
 
-These phases describe the wider search and external-Template/native-baseline cases. Routine local packet production uses the short path above; the built-in renderer does not instantiate a separate reusable Template record, require cloud uploads, or wait for tracker access.
+These phases describe wider search and exception cases. Routine packet production uses the short path above and does not wait for tracker access or require a new reusable Template.
 
 ### Phase 0 — Define the search
 
@@ -380,39 +327,15 @@ These phases describe the wider search and external-Template/native-baseline cas
 
 ### Phase 2 — Application packet
 
-Use the routine preparation path above by default. These phase details are available for campaign planning and exceptions; complete only the applicable work.
-
-- Resolve every reusable application starter through the Persona-Library Template catalog and a verified `rickvang/template-library` path/entrypoint/revision. If a required Template is missing, route to Template research/composition before drafting from it.
-- Create one role-specific folder in the configured private application workspace. Keep the resume and any requested cover letter independently openable; use tracker notes unless a separate Application Notes & Answers document is warranted.
-- Build one shared evidence source. When the active Candidate Context designates a Candidate Baseline Resume, copy/adapt that baseline into the role-specific artifact and tailor it conservatively; otherwise compose from the validated evidence/model into the verified Template. Add a human-facing resume only when the target channel or review context justifies a second output.
-- Draft a separate cover letter when needed under the routine path; review material claims and voice as criteria within the final review.
-- Capture role fit, constraints, questions, portfolio choices, blockers and submission checks briefly in tracker notes; create a separate notes document only when that content warrants it.
-- At packet completion, resolve the Applications tracker record, set `packetUrl`, and advance to `Packet Ready` when appropriate without downgrading a later confirmed state.
-- Select relevant existing portfolio examples for design-oriented roles; create new case-study work only when requested or required.
+Follow the routine path above. Reuse current evidence and approved formatting; create only the requested private documents. Portfolio selection or substantial form narratives are additional work only when requested or required.
 
 ### Application preflight — before final review
 
-Include a small structural check in the final review. An independent council is conditional, not a prerequisite:
-
-- Parse every role’s start and end date into a consistent month-level representation.
-- Sort the employer-facing resume reverse chronologically by end date unless a deliberate functional format is documented.
-- Check for missing dates, inconsistent date formats, duplicate employer records, same-month ties, and month-level overlaps.
-- Preserve source ambiguity. Do not invent day-level precision to make the timeline look cleaner.
-- Carry the preflight result into the ATS, human-reader, and integrity reviews so a polished draft cannot hide a basic chronology error.
-
-Leah owns the application-review criteria; the selected executor can apply them directly. A failed ordering check stops readiness, and an overlap or same-month ambiguity remains visible until the source is confirmed or the user explicitly accepts it. Routine work records these findings in tracker notes; independent specialist review is reserved for requested or unresolved judgment.
+Within the combined review, check reverse chronology, month precision, missing/inconsistent dates, repeat engagements, overlaps and grouped-history attribution. Preserve legitimate ambiguity; do not invent precision or merge distinct employment periods. Resolve unsupported changes before readiness. Keep findings in existing private context.
 
 ### Phase 3 — Quality review
 
-Apply these criteria within the routine final review. Separate passes are conditional on the exception being addressed, not mandatory tasks for each lens.
-
-- Start with the preflight result rather than relying on visual inspection or persona memory.
-- Verify each reusable artifact's Template ID, canonical source path, entrypoint, and revision.
-- Run the ATS pass for parseability, terminology coverage, structure, and truthful alignment.
-- Run the claim-to-ledger integrity pass and chronology preflight.
-- For a cover letter, run the positioning and voice pass before the material-claim pass. Accept candidate-owned abstractions that preserve meaning; escalate only new material facts or changes to scope, ownership, metrics, tools, credentials, dates, or gaps.
-- Run human/narrative and visual passes only when a human-facing version exists or a human-facing template is being evaluated.
-- Record unresolved tradeoffs instead of silently flattening them.
+Apply the combined review and integrity gate above. Use independent review only for a request or unresolved judgment; keep its actual evidence and limits. A failed check keeps the affected file unready. Correct in the source and re-export, then recheck affected evidence.
 
 ### Phase 4 — Outreach and interview
 
@@ -433,20 +356,22 @@ Apply these criteria within the routine final review. Separate passes are condit
 
 - Every reusable application artifact has a Template ID and a verified `rickvang/template-library` path, `README.md` entrypoint, and Git revision before use.
 - The documented `starter/` copy boundary exists and is non-empty.
-- A missing or stale Template routes to Template research/composition rather than a silent private-master fallback.
+- A missing selected external Template stops its use; a candidate-designated native source needs no new Template record.
 - Candidate facts and role-specific content live only in the instantiated private artifact, not the reusable Template source.
 - Persona-Library does not claim a proposed external Template is canonical on `main` until the source path and entrypoint actually resolve there.
 
 ### Candidate-baseline quality
 
 - Any standing-decision-designated baseline/master was resolved and read before resume drafting.
-- The final ATS artifact passed **baseline-to-output** integrity by comparing the protected baseline career spine against the role-specific output.
+- The regular résumé and any format variant passed **baseline-to-output** integrity by comparing the protected baseline career spine against the role-specific output.
 - Name/contact, employer/title/date/location chronology, employer/client hierarchy, recent employers, education, certifications, and candidate-confirmed historical grouping are unchanged unless a supported correction or explicit candidate decision authorizes the difference.
 - Every material baseline omission is recorded as `omitted_with_reason`; every protected-field change identifies its evidence or decision basis.
 - Secondary profile stores and stale summaries did not replace unresolved authoritative private sources.
 - Reusable Template verification remains separate from candidate-baseline verification.
 
 ### ATS default quality
+
+These extraction and integrity criteria apply to the regular résumé, without implying a separate ATS document or live parser test.
 
 - The document parses into the intended sections or parser suitability is explicitly unknown.
 - Role-relevant terminology appears naturally where supported by evidence.
@@ -484,10 +409,10 @@ Apply these criteria within the routine final review. Separate passes are condit
 
 - Use only when the channel or review context warrants a second rendering.
 - The first scan communicates role, level, relevant value, and credible contribution quickly.
-- Claims are specific, credible, and supported by the same ledger as the ATS version.
+- Claims are specific, credible, and supported by the same evidence as the regular résumé.
 - Visual emphasis follows target-role relevance and evidence, not decoration.
 - Content remains readable, accessible, truthful, and reasonably parseable.
-- Material differences from the ATS version are recorded and meaning is preserved.
+- Material differences from the regular résumé are recorded and meaning is preserved.
 
 ### Optional human-template quality
 
@@ -495,7 +420,7 @@ Apply these criteria within the routine final review. Separate passes are condit
 - Audience, scan path, hierarchy, density, accessibility, page or responsive behavior, and safe text structure are explicit.
 - Sample content is clearly illustrative; private facts and employer-specific claims are not embedded.
 - Use conditions, non-use conditions, and instantiation review are documented.
-- The template does not bypass the shared evidence ledger or the ATS default path.
+- The template does not bypass shared evidence or the routine combined review.
 
 ## Deliberately out of scope for the MVP
 
@@ -519,8 +444,8 @@ These other items remain future opportunities, not implied capabilities of the c
 - When opportunity/application tracking is in scope, does the workflow resolve an existing Applications tracker record before creating a duplicate?
 - Does authenticated Supabase remain primary persistence when configured, with browser-local state limited to explicit fallback, migration, and recovery?
 - Are `postingDate` values source-backed only, and are `Applied`, `appliedDate`, interview, offer, and closure transitions recorded only from confirmed events?
-- Does every reusable application artifact resolve to a verified `rickvang/template-library` Template before it is instantiated?
-- When a needed reusable Template is missing, does the workflow create/repair it in `template-library` instead of silently falling back to a private Drive master?
+- Does each selected external Template resolve to its verified source, while a candidate-designated native source remains usable directly?
+- When a selected external Template is missing, does the workflow stop that use without silently promoting a private packet into the catalog?
 - When standing decisions designate an active Candidate Baseline Resume, is that exact private artifact resolved before drafting?
 - Does the role-specific resume preserve the baseline career spine or record every material difference with evidence and an explicit disposition?
 - Are secondary profile stores prevented from substituting for an unresolved designated baseline or authoritative evidence source?
@@ -530,13 +455,13 @@ These other items remain future opportunities, not implied capabilities of the c
 - Does the ATS pass improve retrieval without making the writing unnatural?
 - Does the positioning layer preserve candidate voice while keeping material facts and role coverage stable?
 - Are candidate edits routed by consequence instead of receiving the same sentence-level evidence scrutiny?
-- When a human-facing output is warranted, can a reviewer identify fit, level, and contribution quickly?
+- Can a reviewer identify fit, level and contribution quickly in the regular résumé?
 - Does visual treatment support the context rather than merely signal taste?
 - Does feedback change the search model only when it is repeated or well-supported?
 - Does the heading structure make section boundaries obvious to a parser?
 - Does the resume preserve employer-of-record and client attribution without relying on visual indentation?
 - Does the resume keep target context in the Work Order while keeping the resume reusable?
 - Do any highlights or alignment sections add distinct value instead of repeating experience or skills?
-- Do native links, lists, headings, dates, and categorized skills survive extraction and assistive-technology review?
+- Do links, headings, dates and categorized skills survive export/extraction, with supplied tags/language preserved and untested assistive-technology behavior stated?
 - Does the rendered file preserve page flow without clipping, orphaned content, or a stray list item?
 - Are exact candidate-specific typography, color, and spacing settings kept in the private artifact or document spec rather than treated as universal rules?
