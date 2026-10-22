@@ -917,6 +917,25 @@
       "affects": "Layout Lab, design catalog pointer, guide/prototyping entry, UX practice/routing and optional worksheet status; generated output. Generic personas, Golden and unrelated workflows remain unchanged.",
       "evidence": "CW-97: https://app.notion.com/p/3f3cd82535ff81ad9357dc85de1073c8; SkillRepo source: https://github.com/rickvang/SkillRepo/blob/main/codex/methods/adaptive-ux-design/ARCHITECTURE.md",
       "revisit": "A bounded artifact trial finds weak human comprehension, content, aesthetic fit or excessive effort/corrections; repair the responsible method rather than add a second coordinator."
+    },
+    {
+      "id": "DEC-031",
+      "status": "Applied",
+      "category": "Application packet execution",
+      "date": "2026-10-21",
+      "title": "Prefer a designated native source for routine packet fidelity",
+      "summary": "Keep one regular editable resume/PDF pair and requested letter; preserve a designated native source and use the local builder as a suitable fallback.",
+      "question": "How should routine production preserve approved native formatting without duplicating documents and review?",
+      "decision": "Prefer a private copy of the candidate-designated native editable source and formatting, tailored from the designated factual master and evidence. Export from that source and combine content, structure and full final-page review. Use scripts/application-packet.py when no native source is designated and its built-in layout is suitable. Extra ATS/DOCX variants require an actual format requirement, demonstrated need or explicit request. Application Entry separately handles authorized uploads and parsing repair. Preserve separate delivery/tracking and submission authorization. DEC-029 remains applicable to the local fallback; its unconditional builder default and compatibility-only native scope are qualified by this decision.",
+      "rationale": "Independent PDF/DOCX rendering cannot establish fidelity to a designated native layout. JS-7 reproduced a native export pagination failure, corrected spacing in a private source copy once, and verified a two-page resume and one-page letter without changing wording or patching PDF layout. The same review can cover factual meaning, readability and export integrity without a second routine rendering.",
+      "alternatives": "Keep the local renderer mandatory; always create an ATS variant; rewrite the generic builder; or repair PDF layout independently of its source.",
+      "tradeoffs": "Native tools and exports remain availability- and source-layout-dependent. Review actual final pages and preserve supplied tags/language. Local extraction and tagged output do not prove live ATS or screen-reader behavior. The existing local builder remains useful when its layout fits.",
+      "affects": "AGENTS.md routine packet activation; content/orientation/docs.json application route; application context/review; job-search Playbook; generated readers and context. Generic renderer implementation, discovery, tracking and interview methods are unchanged.",
+      "evidence": "JS-7 approved implementation plan and three-owner amendment; private resume/letter source and final-file review recorded in the owning task; PR #319 activation-consistency finding.",
+      "qualifies": [
+        "DEC-029"
+      ],
+      "revisit": "A designated source/export cannot preserve required layout or structure, employer instructions require another format, or observed parsing problems justify a format variant."
     }
   ]
 }
