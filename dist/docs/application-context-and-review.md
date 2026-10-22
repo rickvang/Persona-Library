@@ -4,7 +4,9 @@ Use the [Evidence-led Job Search Playbook's routine application path](../playboo
 
 ## Local packet operation
 
-Routine packets use [scripts/application-packet.py](https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.py). Load one private source-bound candidate profile, read the current employer posting, and write one role-specific JSON draft containing the job and both documents. Run the command once, inspect the final files, correct only observed failures, and deliver. The builder has no network, model API, Drive, Notion, Supabase, or application-tracker dependency.
+Use the candidate-designated native editable source and approved formatting when provided. Copy it privately, tailor from factual evidence, then export through the native tools below. The source owns wording and layout; preserve it alongside the reviewed PDF.
+
+When no native source is designated and the built-in layout is suitable, use [scripts/application-packet.py](https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.py). Load one private source-bound candidate profile, read the current employer posting, and write one role-specific JSON draft containing the job and both documents. Run the command once, inspect the final files, correct observed failures, and deliver. Its independent PDF/DOCX renderers are not a fidelity route for a designated native layout. The builder has no network, model API, Drive, Notion, Supabase, or application-tracker dependency.
 
 ```sh
 python scripts/application-packet.py --profile /private/candidate-profile.json --draft /private/role-draft.json --output /private/new-packet
@@ -48,15 +50,19 @@ The role draft binds `candidate_id` and `profile_version`. Its `job` records `id
 
 ### Review and deliver
 
-The builder preserves source career identity, sorts source dates, rejects missing/cross-role evidence, unconfirmed skills, unsupported numeric claims, undisclosed role omissions, incomplete requirement dispositions, placeholders, missing exported text/links, and exceeded page budgets. Each role is kept together; it never shrinks text to force a page count. These are mechanical integrity checks, not proof that wording preserves meaning or that an employer's ATS accepted it.
+The builder preserves source career identity, sorts source dates, rejects missing/cross-role evidence, unconfirmed skills, unsupported numeric claims, undisclosed role omissions, incomplete requirement dispositions, placeholders, missing exported text/links, and exceeded page budgets. The builder keeps each role together; use the native source route when that behavior conflicts with approved natural page flow. It never shrinks text to force a page count. These are mechanical integrity checks, not proof that wording preserves meaning or that an employer's ATS accepted it.
 
 `preview/` contains every PDF page for one visual review. `build-report.json` contains source revisions, output hashes, mechanical timing, omissions, unknown answers, and explicitly pending editorial/layout review. Review source meaning, role fit, voice, and every actual final PDF page. DOCX has structural/text/link checks; its layout remains unverified until a Word-compatible renderer is inspected when that format will be submitted. Correct only affected content/checks and build a new output revision.
 
-Measure job reading/drafting, command execution, and final review separately, with the full user-request interval when benchmarking. A fast render is not a fast end-to-end application. Deliver reviewed files before bookkeeping. Resolve/update the existing Applications record separately when tracking is in scope; preserve later confirmed states and keep unresolved answers visible. Production does not submit, upload, or set `Applied`.
+Deliver reviewed files before bookkeeping. Resolve/update the existing Applications record separately when tracking is in scope; preserve later confirmed states and keep unresolved answers visible. Production does not submit, upload, or set `Applied`.
 
 ## Native packet operation — compatibility
 
-Use this path only when native Google Docs baseline fidelity or private Drive/Applications recording is explicitly needed. It is not the default full-packet builder and does not produce the cover letter or DOCX exports.
+Use connected native-document tools for a designated Google Docs résumé and requested letter. Copy the approved source into the private role folder, edit with revision guards, and export each through Drive `fetch` with `download_raw_file=true`, `raw_export_mime_type="application/pdf"`, `include_base64=false`. This route can avoid an exporter-added tab-title page; pagination remains dependent on the source and must be reviewed. If output fails, correct the editable source and re-export. Do not patch PDF text positions or delete a content-bearing page to manufacture a fit.
+
+Apply the routine combined review to the exact exported bytes: source wording, every final page, text order, live links, unwanted attachments/actions and supplied tags/language. Store the source revision and reviewed file/hash in the existing private record. Verify the stored bytes when saving a final PDF to Drive. A DOCX export is conditional on an actual format requirement, demonstrated need or request and requires compatible-renderer review if submitted.
+
+The existing native runner below is optional for checkpointed résumé/Drive/tracker compatibility. Direct native editing/export also handles the letter; the runner does not produce letters or DOCX, and its saved export needs the same final-file checks.
 
 [scripts/application-packet.mjs](https://github.com/rickvang/Persona-Library/blob/main/scripts/application-packet.mjs) is the executable routine for an approved Google Docs baseline and the existing private Drive/Applications store. It has no model calls, credentials or new service dependencies. The executor supplies tailoring judgment and final-file review; the runner supplies copy, indexed edit, export/save, recovery and owner-scoped recording.
 
@@ -75,7 +81,7 @@ Inputs are one active `candidateId`, the approved native `baseline` document sna
 
 The first call returns `review_required` with a stable native document revision and a saved private PDF. Review that actual PDF's text, links and every rendered page, plus claims, chronology and employer requirements. Call again with the same inputs/checkpoint and `review: { documentId, revisionId, pdfId, checks: { claims, chronology, requirements, text, links, pages } }`; each finding is a boolean. Failed/pending findings or unresolved answers keep the record Reviewing. Later application states and confirmed submission dates are preserved. A missing tracker permits an explicit artifact-only smoke run, never a claim that Applications was updated.
 
-If export adds an unexpected tab-title page, remove only the verified extra page, review the resulting complete submission PDF, and supply its native file reference or absolute local path as `review.fileUri` and its SHA-256 as `review.fileHash`. The runner uploads that reviewed PDF before recording its link. Do not mark a native three-page export reviewed because an earlier two-page file passed.
+If the runner export adds a tab-title page or otherwise differs from the intended source layout, use the direct native export route above. Supply the reviewed export reference or absolute local path as `review.fileUri` and its SHA-256 as `review.fileHash`; the runner uploads that file before recording its link. Preserve supplied tags/language and review the actual resulting file, rather than relying on an earlier export.
 
 `needs_attention` retains completed work. A failed read/export can resume from that checkpoint. A lost edit response is reconciled against actual original/planned content before another write. A lost copy/upload response requires inspecting the private destination and adopting the confirmed artifact ID before clearing `pendingMutation`; never blindly repeat a creation. Changed candidate/job/baseline inputs need a fresh checkpoint. Resolving an answer or adding a review finding updates only the recording milestone, preserving the existing files. A changed document invalidates its export/review evidence; a changed transformed-PDF reference/hash uploads only that new reviewed file. Keep tool-required trusted-read and permission checks; a runner receipt does not substitute for them.
 
@@ -112,7 +118,7 @@ After content is accepted, compare layouts using identical claims. Judge typogra
 
 For routine packets, the selected executor reviews the actual final submission revision once against the applicable ATS, narrative, visual/production and integrity criteria. Export and inspect only required submission formats; check text, links and every rendered submission page. Do not export internal notes for QA by default. Keep findings and untested scope concise in the tracker, and rerun only checks affected by a later correction.
 
-Use independent specialist passes when requested, when introducing a second rendering/new layout, or when a finding needs unresolved specialist judgment. Those detailed reviews use the following record; the record itself is not required for each successful routine check:
+Use independent specialist passes when requested or when a finding needs unresolved specialist judgment. Those detailed reviews use the following record; the record itself is not required for each successful routine check:
 
 | Field | Required content |
 | --- | --- |
@@ -135,4 +141,4 @@ After editing, reopen affected checks and perform one bounded change-impact reco
 
 Skills hold reusable methods and quality signals; personas apply them in context; playbooks coordinate handoffs; Docs explain current use; Prototyping holds isolated trials; Decisions preserve chosen rationale. The individual context brief travels with the request. Do not turn candidate-specific career facts into generic persona knowledge.
 
-Revision 1.1 · 2026-10-01. Routine preparation reuses approved context and combines final review; independent reviews and content trials remain available for exceptions. Reader-trial outcomes remain untested.
+Revision 1.2 · 2026-10-21. Prefer designated native source fidelity, one regular packet and combined final review. Extra formats and independent reviews are conditional. Local checks do not establish live ATS or screen-reader behavior.
