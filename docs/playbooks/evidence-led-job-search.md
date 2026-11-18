@@ -32,7 +32,7 @@ One executor can apply the relevant review criteria. No new ledger, notes docume
 
 ### Live ATS form preparation
 
-Use [Application Entry](https://github.com/rickvang/SkillRepo/blob/main/codex/methods/application-entry/SKILL.md) (`$application-entry`) for authorized live form entry, attachment verification, parsing repair and the candidate's review handoff. The Playbook owns packet preparation and tracking; the Skill owns form procedure and submission authorization.
+Read the current Application Entry procedure from the connected Taskosaur organization Skills library at `capabilities/job-applications/application-entry/SKILL.md` for authorized live form entry, attachment verification, parsing repair and the candidate's review handoff. The Codex `$application-entry` entrypoint loads the same document. The Playbook owns packet preparation and tracking; the Skill owns form procedure and submission authorization.
 
 ### When more detail is needed
 
